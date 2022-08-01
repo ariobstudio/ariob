@@ -4,7 +4,7 @@
 	bottom: 1em;
 	right: 2em;
 	font-size: 14pt;
-	color: var(--text);
+	color: #707070;
 	border-radius: 1em;
 	text-align: center;
 	z-index: 999999;
@@ -15,7 +15,7 @@
 	outline: none;
 	cursor: pointer;
 	overflow: none;
-	transition: all 0.1s ease-in;
+	transition: all 0.2s ease-in;
 }
 #meta * {
 	outline: none;
@@ -41,10 +41,6 @@
 	flex-direction: column;
 }
 #meta .meta-menu ul li {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
 	display: inline-block;
 	float: right;
 	padding: 0.5em 1em;
@@ -59,10 +55,7 @@
 	cursor: pointer;
 }
 #meta .meta-menu ul li:hover {
-	background: var(--primary);
-}
-.active {
-	background: var(--primary);
+	background: rgba(0, 0, 0, 0.5);
 }
 #meta a {
 	color: black;
@@ -91,7 +84,7 @@
 		z-index: 999999;
 		-webkit-tap-highlight-color: transparent;
 		padding: 0;
-		
+
 		margin: 0em 0.5em;
 		height: 2em;
 		width: 100%;
@@ -100,13 +93,13 @@
 		overflow: none;
 	}
 	#meta .meta-menu {
-	  border-radius: var(--radius);
+		border-radius: var(--radius);
 		background-color: var(--surface);
 		bottom: 0;
 		animation: none;
 		animation-delay: 0ms;
 		position: absolute;
-		padding : 0.25em;
+		padding: 0.25em;
 	}
 	#meta .meta-none {
 		display: block;

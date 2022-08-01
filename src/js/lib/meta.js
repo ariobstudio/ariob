@@ -1,139 +1,122 @@
 (function () {
-	var noop = function () {},
-		u;
-	var m = (window.meta = { edit: [] });
-	var k = (m.key = {});
-	k.meta = { 17: 17, 91: 17, 93: 17, 224: 17 };
+	function USE(arg, req) {
+		return req
+			? require(arg)
+			: arg.slice
+			? USE[R(arg)]
+			: function (mod, path) {
+					arg((mod = { exports: {} }));
+					USE[R(path)] = mod.exports;
+			  };
+		function R(p) {
+			return p.split("/").slice(-1).toString().replace(".js", "");
+		}
+	}
+	if (typeof module !== "undefined") {
+		var MODULE = module;
+	}
 
-	k.down = function (eve) {
-		if (eve.repeat) {
-			return;
-		}
-		var key = ((k.eve = m.eve = eve).which =
-			eve.which || eve.fake || eve.keyCode);
-		if (!eve.fake && key === k.last) {
-			return;
-		}
-		k.last = key;
-		if (
-			!eve.fake &&
-			$(eve.target).closest("input, textarea, [contenteditable=true]")
-				.length
-		) {
-			if (k.meta[key]) {
-				k.down.meta = key = -1;
-			}
-			if (!k.down.meta) {
+	/* UNBUILD */
+	USE(function (module) {
+		var noop = function () {},
+			u;
+		$.fn.or = function (s) {
+			return this.length ? this : $(s || "body");
+		};
+		var m = (window.meta = { edit: [] });
+		var k = (m.key = {});
+		k.meta = { 17: 17, 91: 17, 93: 17, 224: 17, 18: 17 }; // ALT added
+		function withMeta(eve) {
+			return eve.metaKey || eve.ctrlKey || eve.altKey;
+		} // ALT added
+		k.down = function (eve) {
+			var key = ((k.eve = m.eve = eve).which =
+				eve.which || eve.fake || eve.keyCode);
+			if (eve.repeat) {
 				return;
 			}
-		}
-		(k.combo || (k.combo = [])).push(key);
-		m.check("on", key, k.at || (k.at = m.edit));
-		m.check("up");
-		if (k.meta[key]) {
-			m.list(k.at.back || m.edit);
-			if (k.at && !k.at.back) {
+			if (!k.meta[key] && withMeta(eve) && !k.at[key]) {
+				return m.flip(false);
+			} // cancel and close when no action and "meta key" held down (e.g. ctrl+c)
+			if (!eve.fake && key === k.last) {
+				return;
+			}
+			k.last = key; // jussi: polyfilling eve.repeat?
+			if (
+				!eve.fake &&
+				$(eve.target).closest("input, textarea, [contenteditable=true]")
+					.length /* && !$(eve.target).closest('#meta').get().length*/
+			) {
+				return;
+				//if(meta.flip.is() && !withMeta(eve)) eve.preventDefault()
+			}
+			m.check("on", key, k.at || (k.at = m.edit));
+			if (k.meta[key]) {
 				m.flip();
 			}
-		}
-	};
-	k.up = function (eve) {
-		var tmp;
-		var key = ((k.eve = m.eve = eve).which =
-			eve.which || eve.fake || eve.keyCode);
-		if (
-			!eve.fake &&
-			$(eve.target).closest("input, textarea, [contenteditable=true]")
-				.length
-		) {
-			if (k.meta[key]) {
-				k.down.meta = null;
-				key = -1;
-			} else if (!k.down.meta) {
+		};
+		k.down.keys = {}; // currently pressed keys
+		k.up = function (eve) {
+			var tmp;
+			var key = ((k.eve = m.eve = eve).which =
+				eve.which || eve.fake || eve.keyCode);
+			k.last = null;
+			m.check("up", key);
+			if (k.meta[key] && m.check.fired) {
+				m.close();
+			}
+		};
+		m.flip = function (tmp) {
+			m.flip.active = true;
+			tmp === false || (!tmp && m.ui.board.is(":visible"))
+				? m.close()
+				: m.open();
+			m.flip.active = false;
+		};
+		m.open = function () {
+			m.check.fired = null;
+			m.ui.board.removeClass("meta-none");
+		};
+		m.close = function () {
+			Object.keys(k.down.keys).forEach((keyDown) => {
+				m.check("up", keyDown);
+			});
+			m.ui.board.addClass("meta-none");
+		};
+		m.flip.is = function () {
+			return m.ui.board.is(":visible");
+		};
+		m.flip.wait = 500;
+		m.check = function (how, key, at) {
+			if (!m.flip.is() && !k.meta[key]) {
+				return;
+			} // TEMP: cancel non-open events when closed TODO make optional
+			at = k.at || m.edit;
+			var next = at[key];
+			if (!next) {
 				return;
 			}
-		}
-		k.last = null;
-		if ($(":focus").closest("#meta").length) {
-			return;
-		}
-		m.check("up", key);
-		if (-1 === key || 27 === eve.which) {
-			k.wipe();
-		}
-	};
-	m.flip = function (tmp) {
-		var board = $("#meta .meta-menu");
-		tmp === false || (!tmp && board.is(":visible"))
-			? board.addClass("meta-none")
-			: board.removeClass("meta-none");
-	};
-	m.flip.is = function () {
-		return $("#meta .meta-menu").is(":visible");
-	};
-	m.flip.wait = 500;
-	m.check = function (how, key, at) {
-		at = k.at || m.edit;
-
-		var edit = at[key];
-		if (!edit) {
-			return;
-		}
-		var tmp = k.eve || noop;
-		if (tmp.preventDefault) {
-			tmp.preventDefault();
-		}
-		if (edit[how]) {
-			if (tmp.fake && !edit.fake) {
-				m.tap.edit = edit;
-			} else {
-				edit[how](m.eve);
-				if (k.at !== m.edit && "up" === how) {
-					if (k.down.meta) {
-						m.list((k.at = m.edit));
-					} else {
-						k.wipe();
-					}
-				}
+			var tmp = k.eve || noop;
+			if (tmp.preventDefault) {
+				tmp.preventDefault();
+			} // prevent typing (etc) when action found
+			if (next[how]) {
+				next[how](m.eve);
+				meta.ui.blink();
+				m.check.fired = true;
+				if (how == "up") delete k.down.keys[key];
+				else k.down.keys[key] = 1;
 			}
-		}
-		if ("up" != how) {
-			return;
-		}
-		if (at != edit) {
-			edit.back = at;
-		}
-		m.list(edit, true);
-	};
-	m.hash = function (at, li, opt) {
-	  if (!at.name) return
-	  var loc = window.location.hash.substr(1);
-	  var nav = at.name.toLowerCase()
-    
-	  if (nav === loc) {
-	    if (!li) return;
-	    console.log("hash check ", at.name.toLowerCase() , " --- ", li)
-	    //li.addClass('active')
-	    li.get(0).style.setProperty('background', 'var(--primary)')
-	  }
-	  //li.removeClass('active')
-	}
-	m.list = function (at, opt) {
-	  
-		if (!at) {
-			return m.flip(false);
-		}
-		var l = [];
-		$.each(at, function (i, k) {
-			"back" != i && k.combo && k.name && l.push(k);
-		
-		});
-		if (!l.length) {
-		  console.log("no l")
-			return;
-		}
-		k.at = at;
-		l = l.sort(function (a, b) {
+			if ("up" == how) {
+				return;
+			}
+			if (at != next && !next.back) {
+				next.back = at;
+			}
+			(k.combo || (k.combo = [])).push(key);
+			m.list(next, true);
+		};
+		function defaultSort(a, b) {
 			a = a.combo.slice(-1)[0] || 0;
 			if (a.length) {
 				a = a.toUpperCase().charCodeAt(0);
@@ -142,183 +125,421 @@
 			if (b.length) {
 				b = b.toUpperCase().charCodeAt(0);
 			}
-			return a > b ? -1 : 1;
-		});
-		var $ul = $("#meta .meta-menu ul");
-		$ul.children("li").addClass("meta-none").hide();
-		setTimeout(function () {
-			$ul.children(".meta-none").remove();
-		}, 250); // necessary fix for weird bug glitch
-		$.each(l, function (i, k) {
-			var $li = $("<li>").html(k.name);
-			$li.get(0).style.setProperty("--meta-key", l.length - i);
-			$li.get(0).style.setProperty('background', 'transparent')
-		  m.hash(k, $li);
-			$ul.append($li);
-		});
-		if (opt) {
-			m.flip(true);
+			return a < b ? -1 : 1;
 		}
-    if (!at.back) return
-		$ul.append(
-			$("<li>")
-				.html("&larr;")
-				.addClass("meta-back")
-				.on("click", function () {
-					//   console.log("back ", k.at)
-					// if (k.at.page) {
-					// 	//   console.log(k.at.page)
-					// 	history.back();
-					// }
-					console.log("back", at.back)
-					m.list((k.at = at.back));
-				})
-		);
-		function back() {
-			//   console.log("back ", k.at)
-			if (k.at.page) {
-				//   console.log(k.at.page)
-				history.back();
+		m.list = function (at, opt) {
+			if (!at) {
+				return m.flip(false);
 			}
-			m.list((k.at = at.back));
-		}
-	};
-
-	m.ask = function (help, cb) {
-		var $ul = $("#meta .meta-menu ul").empty();
-		var $put = $("<input class='min'>")
-			.attr("id", "meta-ask")
-			.attr("placeholder", help);
-		var $form = $("<form>")
-			.append($put)
-			.on("submit", function (eve) {
-				eve.preventDefault();
-				cb($put.val());
-				$li.remove();
-				k.wipe();
+			var l = [];
+			$.each(at, function (i, k) {
+				"back" != i && k && k.combo && k.name && l.push(k);
 			});
-		var $li = $("<li>").append($form);
-		$ul.append($li);
-		m.flip(true);
-		$put.focus();
-	};
-	k.wipe = function (opt) {
-		k.down.meta = false;
-		k.combo = [];
-		if (!opt) {
-			m.flip(false);
+			if (!l.length) {
+				return;
+			}
+			k.at = at;
+			if (at.sort !== null) {
+				l = l.sort(at.sort || defaultSort);
+			}
+			var $ul = $("#meta .meta-menu ul");
+			$ul.children("li").addClass("meta-none").hide();
+			setTimeout(function () {
+				$ul.children(".meta-none").remove();
+			}, 250); // necessary fix for weird bug glitch
+			$.each(l, function (i, k) {
+				var $li = $("<li>").text(k.name).data(k);
+				$ul.append($li);
+				if (k.styles) meta.ui.iniline($li[0], k.styles);
+			});
+			if (opt) {
+				m.flip(true);
+			}
+			if (!at.back) {
+				return;
+			}
+			$ul.append(
+				$("<li>")
+					.html("&larr;")
+					.on("click", function () {
+						m.list((k.at = at.back));
+					})
+			);
+		};
+		m.ask = function (help, cb, opt) {
+			var $ul = $("#meta .meta-menu ul").empty();
+			var $put = $("<input>")
+				.attr("id", "meta-ask")
+				.attr("placeholder", help)
+				.addClass("min");
+
+			var $form = $("<form>")
+				.append($put)
+				.on("submit", function (eve) {
+					eve.preventDefault();
+					cb($put.val());
+					$li.remove();
+					k.wipe();
+				});
+			if (opt) {
+				$form.on("keyup", function (eve) {
+					cb($put.val());
+				});
+			}
+			var $li = $("<li>").append($form);
+			$ul.append($li);
+			m.flip(true);
+			$put.focus();
+		};
+		k.wipe = function (opt) {
+			k.combo = [];
+			if (!opt) {
+				m.flip(false);
+			}
+			m.list((k.at = m.edit));
+		};
+		m.tap = function () {
+			var on = $(".meta-on")
+				.or(
+					$(
+						$(document.querySelectorAll(":hover")).get().reverse()
+					).first()
+				)
+				.or($(document.elementFromPoint(meta.tap.x, meta.tap.y)));
+			return on;
+		};
+		meta.edit = function (e) {
+			var path = [];
+			$.each(e.combo || (e.combo = []), function (i, k) {
+				if (!k || !k.length) {
+					if ("number" == typeof k) {
+						path.push(k);
+					}
+					return;
+				}
+				path.push(k.toUpperCase().charCodeAt(0));
+			});
+			var at = meta.edit,
+				l = e.combo.length;
+			$.each(path, function (i, k) {
+				at = at[k] = at[k] || Object.create(defaults);
+			});
+			$.extend(at, e); // fixes overwriting when sub action is defined before parent
+			e.combow = path.join(","); // deprecate?
+			m.list(k.at || meta.edit);
+		};
+		function back() {
+			// close root or go back on submenu
+			k.at == m.edit ? m.flip(false) : m.check("down", "back");
 		}
-		m.list((k.at = m.edit));
-	};
-	m.tap = function () {
-		var on = $(".meta-on")
-			.or(
-				$(
-					$(document.querySelectorAll(":hover")).get().reverse()
-				).first()
-			)
-			.or($(document.elementFromPoint(meta.tap.x, meta.tap.y)));
-		return on;
-	};
-	// $(window).on("blur", k.wipe).on("focus", k.wipe);
-	$(window).on('hashchange', function(e){
-	  console.log("hash at", m)
-	  console.log("hash", e)
-	  m.hash(m.edit)
-	});
-	  
-	$(document)
-		.on("mousedown mousemove mouseup touchstart touchend", function (eve) {
+		var defaults = {
+			8: { on: back }, // backspace
+			27: { up: k.wipe }, // esc: close and reset menu
+		};
+		$.extend(meta.edit, defaults);
+	})(USE, "./metaCore");
+	USE(function (module) {
+		/* UI */
+		meta.ui = {
+			blink: function () {
+				// hint visually that action has happened
+				$("#meta").css("transition", "none").css("background", "none");
+				setTimeout(function () {
+					$("#meta")[0].style.transition = null;
+					$("#meta")[0].style.background = null;
+				});
+			},
+			depth: function (n) {
+				if (n) {
+					$("#meta").css(
+						"background",
+						"hsl(60, 100%," + (85 - n * 10) + "%)"
+					);
+				} else {
+					$("#meta")[0].style.background = null;
+				}
+			},
+		};
+		var $m = $("<div>").attr("id", "meta");
+		//$m.append($('<span>').html('&#9776;').addClass('meta-start'));
+		$m.append($("<span>").html("+").addClass("meta-start"));
+		$m.append($("<div>").addClass("meta-menu meta-none").append("<ul>"));
+		$m.on("mouseenter", function () {
+			if (meta.flip.active || meta.flip.is()) return;
+			meta.flip();
+		});
+		$m.on("mouseleave", function () {
+			if (meta.flip.active || !meta.flip.is()) return;
+			meta.flip(false);
+		});
+		$(document.body).append($m);
+		meta.ui.board = $(".meta-menu", $m);
+		css(`
+		#meta {
+			display: block;
+			position: fixed;
+			bottom: 1em;
+			right: 2em;
+			font-size: 14pt;
+			color: #707070;
+			border-radius: 1em;
+			text-align: center;
+			z-index: 999999;
+			-webkit-tap-highlight-color: transparent;
+			margin: 0;
+			padding: 0;
+			height: 2em;
+			outline: none;
+			cursor: pointer;
+			overflow: none;
+			transition: all 0.2s ease-in;
+		}
+		#meta * {
+			outline: none;
+		}
+		#meta .meta-none {
+			display: none;
+		}
+		#meta span {
+			line-height: 2em;
+		}
+		#meta .meta-menu {
+			animation-name: animateOut;
+			animation-duration: 210ms;
+			right: -2em;
+			bottom: 2.5em;
+			overflow: none;
+			position: absolute;
+			text-align: right;
+		}
+		#meta .meta-menu ul {
+			list-style-type: none;
+			display: flex;
+			flex-direction: column;
+		}
+		#meta .meta-menu ul li {
+			display: inline-block;
+			float: right;
+			padding: 0.5em 1em;
+			font-size: 14pt;
+			border-radius: 0.75em;
+			text-align: center;
+			animation-name: animateIn;
+			animation-duration: 210ms;
+			animation-delay: calc(var(--meta-key) * 70ms);
+			animation-fill-mode: both;
+			animation-timing-function: ease-in-out;
+			cursor: pointer;
+		}
+		#meta .meta-menu ul li:hover{
+			background: var(--primary);
+		}
+		#meta a {
+			color: black;
+		}
+		#meta:hover {
+			opacity: 1;
+		}
+		#meta:hover .meta-menu {
+			display: block;
+		}
+		#meta .meta-menu ul:before {
+			content: " ";
+			display: block;
+		}
+		#meta .meta-start {
+			cursor: pointer;
+		}
+		@media only screen and (max-width: 600px) {
+			#meta {
+				display: block;
+				position: fixed;
+				bottom: 0.5em;
+				font-size: 14pt;
+				color: var(--text);
+				text-align: center;
+				z-index: 999999;
+				-webkit-tap-highlight-color: transparent;
+				padding: 0;
+
+				margin: 0em 0.5em;
+				height: 2em;
+				width: 100%;
+				outline: none;
+				cursor: pointer;
+				overflow: none;
+			}
+			#meta .meta-menu {
+				border-radius: var(--radius);
+				background-color: var(--surface);
+				bottom: 0;
+				animation: none;
+				animation-delay: 0ms;
+				position: absolute;
+				padding: 0.25em;
+			}
+			#meta .meta-none {
+				display: block;
+			}
+			#meta .meta-icon .meta-start {
+				display: none;
+			}
+			#meta .meta-menu ul {
+				padding: 0;
+				margin: 0;
+				white-space: nowrap;
+				display: flex;
+				flex-direction: row;
+				overflow-y: auto;
+				overflow-x: auto;
+			}
+			#meta .meta-menu ul li {
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				display: inline;
+				padding: 0.25em 0.5em;
+				margin: 0.25em;
+				font-size: 14pt;
+				border-radius: var(--radius);
+				text-align: center;
+				cursor: pointer;
+			}
+			#meta a {
+				color: black;
+			}
+			#meta:hover {
+				opacity: 1;
+			}
+			#meta .meta-start {
+				display: none;
+			}
+			#meta:hover .meta-menu {
+				display: block;
+			}
+			#meta .meta-menu ul:before {
+				content: " ";
+				display: block;
+			}
+			#meta .meta-start {
+				cursor: pointer;
+			}
+		}
+`);
+		// css({
+		// 	'#meta': {
+		// 		display: 'block',
+		// 		position: 'fixed',
+		// 		bottom: '2em',
+		// 		right: '2em',
+		// 		'font-size': '18pt',
+		// 		'font-family': 'Tahoma, arial',
+		// 		'border-radius': '1em',
+		// 		'text-align': 'center',
+		// 		'z-index': 999999,
+		// 		margin: 0,
+		// 		padding: 0,
+		// 		width: '2em',
+		// 		height: '2em',
+		// 		outline: 'none',
+		// 		overflow: 'visible',
+		// 		background: 'rgba(0,0,0,0.5)', color: 'white',
+		// 		transition: 'all 0.2s ease-in'
+		// 	},
+		// 	'#meta *': {outline: 'none'},
+		// 	'#meta .meta-none': {display: 'none'},
+		// 	'#meta span': {'line-height': '2em'},
+		// 	'#meta .meta-menu': {
+		// 		background: 'rgba(0,0,0,0.2)',
+		// 		width: '12em',
+		// 		right: '-2em',
+		// 		bottom: '-2em',
+		// 		overflow: 'visible',
+		// 		position: 'absolute',
+		// 		'overflow-y': 'scroll',
+		// 		'text-align': 'right',
+		// 		'min-height': '20em',
+		// 		height: '100vh'
+		// 	},
+		// 	'#meta .meta-menu ul': {
+		// 		padding: 0,
+		// 		margin: '1em 1em 2em 0',
+		// 		'list-style-type': 'none'
+		// 	},
+		// 	'#meta .meta-menu ul li': {
+		// 		display: 'block',
+		// 		'float': 'right',
+		// 		padding: '0.5em 1em',
+		// 		'border-radius': '1em',
+		// 		'margin-left': '0.25em',
+		// 		'margin-top': '0.25em',
+		// 		background: 'rgba(0,0,0,0.2)', 'backdrop-filter': 'blur(10px)', color: 'white',
+		// 		'cursor':  'pointer'
+		// 	},
+		// 	'#meta .meta-menu ul li:hover': {
+		// 		background: 'rgba(0,0,0,0.5)'
+		// 	},
+		// 	'#meta a': {color: 'black'},
+		// 	'#meta:hover': {opacity: 1},
+		// 	'#meta:hover .meta-menu': {display: 'block'},
+		// 	'#meta .meta-menu ul:before': {
+		// 		content: "' '",
+		// 		display: 'block',
+		// 		'min-height': '15em',
+		// 		height: '50vh'
+		// 	},
+		// 	'#meta .meta-start': {
+		// 		cursor: 'pointer'
+		// 	}
+		// });
+		function css(css) {
+			// var tmp = '';
+			// $.each(css, function(c,r){
+			// 	tmp += c + ' {\n';
+			// 	$.each(r, function(k,v){
+			// 		tmp += '\t'+ k +': '+ v +';\n';
+			// 	});
+			// 	tmp += '}\n';
+			// });
+			var tag = document.createElement("style");
+			tag.innerHTML = css;
+			$m.append(tag);
+		}
+		meta.ui.iniline = function (el, cssObj) {
+			for (var k in cssObj) {
+				el.style[k] = cssObj[k];
+			}
+		};
+	})(USE, "./metaUI");
+	USE(function (module) {
+		var m = meta,
+			k = m.key;
+
+		// $(window).on("focus", k.wipe.bind(null, false)); // .on('blur', k.wipe.bind(null, false))
+		$(document).on("mousedown mousemove mouseup", function (eve) {
 			m.tap.eve = eve;
 			m.tap.x = eve.pageX || 0;
 			m.tap.y = eve.pageY || 0;
 			m.tap.on = $(eve.target);
-		})
-		.on("mousedown touchend", function (eve) {
-			// console.log("clicked", m.tap.edit);
-			var tmp = m.tap.edit;
-
-			if (!tmp || !tmp.on) {
-				return;
-			}
-			if (!eve.target.closest(".meta-menu")) {
-				return;
-			}
-			tmp.on(eve);
-			// console.log("click: ", m.tap.stun);
-			m.tap.edit = null;
 		});
-	$(document).on("touchend", "#meta .meta-start", function (eve) {
-		if (m.tap.stun) {
-			return (m.tap.stun = false);
-		}
-	});
-	$(document).on("click", "#meta .meta-menu li", function (eve) {
-		if (m.tap.stun) {
-			return (m.tap.stun = false);
-		}
-		if (
-			!(eve.fake = eve.which =
-				(($(this).text().match(/[A-Z]/) || {})[0] || "")
-					.toUpperCase()
-					.charCodeAt(0))
-		) {
+		var [start, end] =
+			"ontouchstart" in window
+				? ["touchstart", "touchend"]
+				: ["mousedown", "mouseup"];
+		$(document).on(start, "#meta .meta-menu li", function (eve) {
+			var combo = $(this).data().combo;
+			eve.fake = eve.which =
+				combo && combo.slice(-1)[0].toUpperCase().charCodeAt(0);
+			eve.tap = true;
+			k.down(eve);
+			$(document).one(end, () => k.up(eve));
 			return;
-		}
-		eve.tap = true;
-		k.down(eve);
-		k.up(eve);
-	});
-
-	$(document).on("keydown", k.down).on("keyup", k.up);
-	meta.edit = function (edit) {
-		var tmp = (edit.combow = []);
-		$.each(edit.combo || (edit.combo = []), function (i, k) {
-			if (!k || !k.length) {
-				if ("number" == typeof k) {
-					tmp.push(k);
-				}
-				return;
-			}
-			tmp.push(k.toUpperCase().charCodeAt(0));
 		});
-		var at = meta.edit,
-			l = edit.combo.length;
-		$.each(tmp, function (i, k) {
-			at = at[k] = ++i >= l ? edit : at[k] || {};
+		$(document).on("keydown", k.down).on("keyup", k.up);
+		$("#meta").on(start, function (ev) {
+			if (ev.target.tagName == "LI" || ev.target.tagName == "UL") return;
+			meta.flip();
 		});
-		edit.combow = edit.combow.join(",");
-		m.list(meta.edit);
-	};
-	$.fn.or = function (s) {
-		return this.length ? this : $(s || "body");
-	};
-
-	var m = meta,
-		k = m.key;
-	//$(window).on('focus', k.wipe.bind(null, false)); // .on('blur', k.wipe.bind(null, false))
-	$(document).on("mousedown mousemove mouseup", function (eve) {
-		m.tap.eve = eve;
-		m.tap.x = eve.pageX || 0;
-		m.tap.y = eve.pageY || 0;
-		m.tap.on = $(eve.target);
-	});
-	var [start, end] =
-		"ontouchstart" in window
-			? ["touchstart", "touchend"]
-			: ["mousedown", "mouseup"];
-	$(document).on(start, "#meta .meta-menu li", function (eve) {
-		var combo = $(this).data().combo;
-		eve.fake = eve.which =
-			combo && combo.slice(-1)[0].toUpperCase().charCodeAt(0);
-		eve.tap = true;
-		k.down(eve);
-		$(document).one(end, () => k.up(eve));
-		return;
-	});
-	$(document).on("keydown", k.down).on("keyup", k.up);
-	$("#meta").on(start, function (ev) {
-		if (ev.target.tagName == "LI" || ev.target.tagName == "UL") return;
-		meta.flip();
-	});
+	})(USE, "./metaEvents");
 })();
