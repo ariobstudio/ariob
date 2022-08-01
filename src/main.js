@@ -122,6 +122,14 @@ commands.settings = function () {
 		name: "Theme",
 		combo: ["O", "C"],
 		fake: -1,
+		on: function () {
+			var currentTheme =
+				document.documentElement.getAttribute("data-theme");
+			var newTheme = currentTheme === "light" ? "dark" : "light";
+			document.documentElement.setAttribute("data-theme", newTheme);
+			localStorage.setItem("theme", newTheme);
+			// return;
+		},
 	});
 };
 
@@ -141,15 +149,6 @@ meta.edit({
 	},
 });
 meta.edit({
-	name: "Friends",
-	combo: ["F"],
-	fake: -1,
-	on: () => {
-		as.route("friends");
-		// commands.home();
-	},
-});
-meta.edit({
 	name: "Settings",
 	combo: ["B"],
 	fake: -1,
@@ -162,7 +161,7 @@ meta.edit({
 meta.edit({
 	name: "Activity",
 	combo: ["A"],
-	fake: -1,
+	// fake: -1,
 	on: () => {
 		as.route("activity");
 	},

@@ -515,6 +515,27 @@
 	USE(function (module) {
 		var m = meta,
 			k = m.key;
+		$(document).on("touchend", "#meta .meta-start", function (eve) {
+			if (m.tap.stun) {
+				return (m.tap.stun = false);
+			}
+		});
+		$(document).on("click", "#meta .meta-menu li", function (eve) {
+			if (m.tap.stun) {
+				return (m.tap.stun = false);
+			}
+			if (
+				!(eve.fake = eve.which =
+					(($(this).text().match(/[A-Z]/) || {})[0] || "")
+						.toUpperCase()
+						.charCodeAt(0))
+			) {
+				return;
+			}
+			eve.tap = true;
+			k.down(eve);
+			k.up(eve);
+		});
 
 		// $(window).on("focus", k.wipe.bind(null, false)); // .on('blur', k.wipe.bind(null, false))
 		$(document).on("mousedown mousemove mouseup", function (eve) {
