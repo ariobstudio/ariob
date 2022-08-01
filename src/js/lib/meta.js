@@ -105,15 +105,31 @@
 		}
 		m.list(edit, true);
 	};
+	m.hash = function (at, li, opt) {
+	  if (!at.name) return
+	  var loc = window.location.hash.substr(1);
+	  var nav = at.name.toLowerCase()
+    
+	  if (nav === loc) {
+	    if (!li) return;
+	    console.log("hash check ", at.name.toLowerCase() , " --- ", li)
+	    //li.addClass('active')
+	    li.get(0).style.setProperty('background', 'var(--primary)')
+	  }
+	  //li.removeClass('active')
+	}
 	m.list = function (at, opt) {
+	  
 		if (!at) {
 			return m.flip(false);
 		}
 		var l = [];
 		$.each(at, function (i, k) {
 			"back" != i && k.combo && k.name && l.push(k);
+		
 		});
 		if (!l.length) {
+		  console.log("no l")
 			return;
 		}
 		k.at = at;
@@ -126,7 +142,7 @@
 			if (b.length) {
 				b = b.toUpperCase().charCodeAt(0);
 			}
-			return a < b ? -1 : 1;
+			return a > b ? -1 : 1;
 		});
 		var $ul = $("#meta .meta-menu ul");
 		$ul.children("li").addClass("meta-none").hide();
@@ -136,12 +152,14 @@
 		$.each(l, function (i, k) {
 			var $li = $("<li>").html(k.name);
 			$li.get(0).style.setProperty("--meta-key", l.length - i);
+			$li.get(0).style.setProperty('background', 'transparent')
+		  m.hash(k, $li);
 			$ul.append($li);
 		});
 		if (opt) {
 			m.flip(true);
 		}
-
+    if (!at.back) return
 		$ul.append(
 			$("<li>")
 				.html("&larr;")
@@ -152,6 +170,7 @@
 					// 	//   console.log(k.at.page)
 					// 	history.back();
 					// }
+					console.log("back", at.back)
 					m.list((k.at = at.back));
 				})
 		);
@@ -202,6 +221,12 @@
 		return on;
 	};
 	// $(window).on("blur", k.wipe).on("focus", k.wipe);
+	$(window).on('hashchange', function(e){
+	  console.log("hash at", m)
+	  console.log("hash", e)
+	  m.hash(m.edit)
+	});
+	  
 	$(document)
 		.on("mousedown mousemove mouseup touchstart touchend", function (eve) {
 			m.tap.eve = eve;

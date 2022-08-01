@@ -32,7 +32,7 @@ button,
 input,
 textarea {
 	background: inherit;
-	border: inherit;
+	border: none;
 	color: inherit;
 	text-decoration: inherit;
 	outline: none;
