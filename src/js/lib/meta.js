@@ -230,7 +230,7 @@
 		};
 		function back() {
 			// close root or go back on submenu
-			k.at == m.edit ? m.flip(false) : m.check("down", "back");
+			k.at == m.edit ? m.flip(false) : m.check("up", "back");
 		}
 		var defaults = {
 			8: { on: back }, // backspace

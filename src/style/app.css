@@ -24,7 +24,7 @@ html,
 	font-family: "Nunito", sans-serif;
 }
 
-html[data-theme="light"] {
+html[theme="day"] {
 	--text: #121212;
 	--background: #fff;
 	--primary: var(--blue);
@@ -33,7 +33,7 @@ html[data-theme="light"] {
 	--surface: #ebe9e9;
 }
 
-html[data-theme="dark"] {
+html[theme="night"] {
 	--text: #fff;
 	--background: #121212;
 	--primary: var(--blue);
@@ -58,7 +58,6 @@ button {
 }
 input {
 	padding: 0.5em;
-	/* background: var(--surface); */
 	border: none;
 	border-radius: var(--radius);
 	color: var(--text);
@@ -66,5 +65,34 @@ input {
 }
 button:hover,
 input:hover {
-	transform: scale(1.03);
+
+}
+
+#tell {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 0;
+	overflow: visible;
+}
+#tell p {
+  background: rgba(var(--background), 0.8);
+  border: 0.1em solid var(--text);
+  border-radius: var(--radius);
+  box-shadow: 0 0.5em 1em var(--surface);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+	top: -2em;
+	width: 75%;
+	padding: 1%;
+	opacity: 0;
+	visibility: hidden;
+	transition: visibility 1s, all 0.5s ease-in;
+}
+#tell .notify {
+	top: 0.25em;
+	opacity: 1;
+	visibility: visible;
+	transition: visibility 0s, all 0.25s ease-out;
 }

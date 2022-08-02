@@ -23,17 +23,159 @@ const logo = (size) => {
 };
 
 // HTML
+
+
+// Theme
+var storedTheme =
+	localStorage.getItem("theme") ||
+	(window.matchMedia("(prefers-color-scheme: dark)").matches
+		? "night"
+		: "day");
+if (storedTheme)
+	document.documentElement.setAttribute("theme", storedTheme);
+
+// Events
+var commands = {};
+
+commands.home = function () {
+	meta.edit({
+		name: "create",
+		combo: ["O", "C"],
+		fake: -1,
+		on: () => {
+			meta.ask("create new page", function (ans) {
+				c.tell(ans)
+			});
+			return;
+		},
+	});
+};
+commands.activity = function () {
+	meta.edit({
+		name: "clear",
+		combo: ["O", "C"],
+		fake: -1,
+		on: function(){
+		  as.route.render('hello', '.rand', $('#activity'), "Hello WWorld");
+		  return;
+		}
+	});
+};
+commands.friends = function () {
+	meta.edit({
+		name: "New Friend",
+		combo: ["O", "C"],
+		fake: -1,
+		on: function(){
+		  return;
+		}
+	});
+};
+commands.settings = function () {
+	meta.edit({
+		name: "theme",
+		combo: ["O", "C"],
+		fake: -1,
+		on: function () {
+			var before =
+				document.documentElement.getAttribute("theme");
+			var now = before === "day" ? "night" : "day";
+			document.documentElement.setAttribute("theme", now);
+			localStorage.setItem("theme", now);
+			c.tell(`${now} mode activated`)
+			return;
+		},
+	});
+};
+
+var hash = window.location.hash.slice(1);
+if (hash) {
+	if (commands[hash] && commands[hash] instanceof Function) {
+		commands[hash]();
+	}
+}
+meta.edit({
+	name: "home",
+	combo: ["H"],
+	fake: -1,
+	on: () => {
+		as.route("home");
+		// commands.home();
+	},
+});
+meta.edit({
+	name: "settings",
+	combo: ["B"],
+	fake: -1,
+	on: () => {
+		as.route("settings");
+		// commands.home();
+	},
+});
+
+meta.edit({
+	name: "activity",
+	combo: ["A"],
+	// fake: -1,
+	on: () => {
+		as.route("activity");
+	},
+});
+
+meta.edit({
+	name: "⣿",
+	combo: ["O"],
+	fake: -1,
+	on: (e) => {
+	  e.preventDefault();
+		// as.route("friends");
+	},
+});
+
+$(window).on("hashchange", function () {
+	console.log("hashchange");
+	var hash = window.location.hash.substring(1);
+	if (!hash) {
+		return;
+	}
+	if (commands[hash]) {
+		commands[hash]();
+	}
+});
+var c = {}
+c.tell = function(what, n){
+	var e = $('#tell').find('p');
+	e.addClass('notify').text(what);
+	clearTimeout(c.tell.to);
+	c.tell.to = setTimeout(function(){e.removeClass('notify')}, n || 2500);
+}
+
+
+as.route.page('home', function(){
+  document.title = "Ariob"
+  c.tell("Welcome to Ariob Studio!")
+});
+as.route.page('activity', function(){
+  document.title = "Ariob - Activity"
+	//c.tell('In Activity')
+});
+as.route.page('settings', function(){
+  document.title = "Ariob - Settings"
+	//c.tell('In Settings')
+});
+
+
 document.querySelector("#app").innerHTML = `
   <div id="home" class="page full hold center">
     <div class="unit row center">
       <div class="unit col left">
         ${logo(2)}
-        <p class="unit gap bold">Home</p>
+        <p class="unit gap bold">ariob</p>
       </div>
     </div>
     
     <div class="center pad">
-      <p>Home</p>
+      <p>home</p>
     </div>
     
   </div>
@@ -42,12 +184,12 @@ document.querySelector("#app").innerHTML = `
     <div class="unit row center">
       <div class="unit col left">
         ${logo(2)}
-        <p class="unit gap bold">Settings</p>
+        <p class="unit gap bold">settings</p>
       </div>
     </div>
     
     <div class="center pad">
-      <p>Settings</p>
+      <p>settings</p>
     </div>
     
   </div>
@@ -55,12 +197,15 @@ document.querySelector("#app").innerHTML = `
     <div class="unit row center">
       <div class="unit col left">
         ${logo(2)}
-        <p class="unit gap bold">Activity</p>
+        <p class="unit gap bold">activity</p>
       </div>
     </div>
-    
+   
+    <div class='model'>
+      <p class'rand'> { content }</p>
+    </div>
     <div class="center pad">
-      <p>Activity</p>
+      <p>activity</p>
     </div>
     
   </div>
@@ -78,111 +223,3 @@ document.querySelector("#app").innerHTML = `
     
   </div>
 `;
-
-// Theme
-var storedTheme =
-	localStorage.getItem("theme") ||
-	(window.matchMedia("(prefers-color-scheme: dark)").matches
-		? "dark"
-		: "light");
-if (storedTheme)
-	document.documentElement.setAttribute("data-theme", storedTheme);
-
-// Events
-var commands = {};
-
-commands.home = function () {
-	meta.edit({
-		name: "Create",
-		combo: ["O", "C"],
-		fake: -1,
-		on: () => {
-			meta.ask("Create new page", function (ans) {
-				console.log(ans);
-			});
-		},
-	});
-};
-commands.activity = function () {
-	meta.edit({
-		name: "Clear Activities",
-		combo: ["O", "C"],
-		fake: -1,
-	});
-};
-commands.friends = function () {
-	meta.edit({
-		name: "New Friend",
-		combo: ["O", "C"],
-		fake: -1,
-	});
-};
-commands.settings = function () {
-	meta.edit({
-		name: "Theme",
-		combo: ["O", "C"],
-		fake: -1,
-		on: function () {
-			var currentTheme =
-				document.documentElement.getAttribute("data-theme");
-			var newTheme = currentTheme === "light" ? "dark" : "light";
-			document.documentElement.setAttribute("data-theme", newTheme);
-			localStorage.setItem("theme", newTheme);
-			// return;
-		},
-	});
-};
-
-var hash = window.location.hash.slice(1);
-if (hash) {
-	if (commands[hash] && commands[hash] instanceof Function) {
-		commands[hash]();
-	}
-}
-meta.edit({
-	name: "Home",
-	combo: ["H"],
-	fake: -1,
-	on: () => {
-		as.route("home");
-		// commands.home();
-	},
-});
-meta.edit({
-	name: "Settings",
-	combo: ["B"],
-	fake: -1,
-	on: () => {
-		as.route("settings");
-		// commands.home();
-	},
-});
-
-meta.edit({
-	name: "Activity",
-	combo: ["A"],
-	// fake: -1,
-	on: () => {
-		as.route("activity");
-	},
-});
-
-meta.edit({
-	name: "⣿",
-	combo: ["O"],
-	fake: -1,
-	on: () => {
-		// as.route("friends");
-	},
-});
-
-$(window).on("hashchange", function () {
-	console.log("hashchange");
-	var hash = window.location.hash.substring(1);
-	if (!hash) {
-		return;
-	}
-	if (commands[hash]) {
-		commands[hash]();
-	}
-});
