@@ -155,9 +155,9 @@
 			if (opt) {
 				m.flip(true);
 			}
-			if (!at.back) {
-				return;
-			}
+			// if (!at.back) {
+			// 	return;
+			// }
 			$ul.append(
 				$("<li>")
 					.html("&larr;")
@@ -240,6 +240,20 @@
 	})(USE, "./metaCore");
 	USE(function (module) {
 		/* UI */
+		meta.css = function (css, m) {
+			var tmp = m ? "@media " + m + " {\n\t" : "";
+
+			$.each(css, function (c, r) {
+				tmp += c + " {\n";
+				$.each(r, function (k, v) {
+					tmp += "\t" + k + ": " + v + ";\n";
+				});
+				tmp += "}\n";
+			});
+			var tag = document.createElement("style");
+			tag.innerHTML = m ? tmp + "\n}" : tmp;
+			$m.append(tag);
+		};
 		meta.ui = {
 			blink: function () {
 				// hint visually that action has happened
@@ -262,7 +276,7 @@
 		};
 		var $m = $("<div>").attr("id", "meta");
 		//$m.append($('<span>').html('&#9776;').addClass('meta-start'));
-		$m.append($("<span>").html("+").addClass("meta-start"));
+		$m.append($("<span>").html("☰").addClass("meta-start"));
 		$m.append($("<div>").addClass("meta-menu meta-none").append("<ul>"));
 		$m.on("mouseenter", function () {
 			if (meta.flip.active || meta.flip.is()) return;
@@ -274,244 +288,174 @@
 		});
 		$(document.body).append($m);
 		meta.ui.board = $(".meta-menu", $m);
-		css(`
-		#meta {
-			display: block;
-			position: fixed;
-			bottom: 1em;
-			right: 2em;
-			font-size: 14pt;
-			color: #707070;
-			border-radius: 1em;
-			text-align: center;
-			z-index: 999999;
-			-webkit-tap-highlight-color: transparent;
-			margin: 0;
-			padding: 0;
-			height: 2em;
-			outline: none;
-			cursor: pointer;
-			overflow: none;
-			transition: all 0.2s ease-in;
-		}
-		#meta * {
-			outline: none;
-		}
-		#meta .meta-none {
-			display: none;
-		}
-		#meta span {
-			line-height: 2em;
-		}
-		#meta .meta-menu {
-			animation-name: animateOut;
-			animation-duration: 210ms;
-			right: -2em;
-			bottom: 2.5em;
-			overflow: none;
-			position: absolute;
-			text-align: right;
-		}
-		#meta .meta-menu ul {
-			list-style-type: none;
-			display: flex;
-			flex-direction: column;
-		}
-		#meta .meta-menu ul li {
-			display: inline-block;
-			float: right;
-			padding: 0.5em 1em;
-			font-size: 14pt;
-			border-radius: 0.75em;
-			text-align: center;
-			animation-name: animateIn;
-			animation-duration: 210ms;
-			animation-delay: calc(var(--meta-key) * 70ms);
-			animation-fill-mode: both;
-			animation-timing-function: ease-in-out;
-			cursor: pointer;
-		}
-		#meta .meta-menu ul li:hover{
-			background: var(--primary);
-		}
-		#meta a {
-			color: black;
-		}
-		#meta:hover {
-			opacity: 1;
-		}
-		#meta:hover .meta-menu {
-			display: block;
-		}
-		#meta .meta-menu ul:before {
-			content: " ";
-			display: block;
-		}
-		#meta .meta-start {
-			cursor: pointer;
-		}
-		@media only screen and (max-width: 600px) {
-			#meta {
-				display: block;
-				position: fixed;
-				bottom: 1em;
-				font-size: 16pt;
-				background: var(--surface);
-				color: var(--text);
-				text-align: center;
-				z-index: 999999;
-				-webkit-tap-highlight-color: transparent;
-        right: 1em;
-				margin: 0;
-				
-				width: 2.4em;
-				outline: none;
-				cursor: pointer;
-				overflow: none;
-			}
-			#meta .meta-menu {
-				border-radius: var(--radius);
-				background: var(--surface);
-				/*background: rgba(var(--background), 0.8);
-        border: 0.1em solid var(--text);
-        border-radius: var(--radius);
-        box-shadow: 0 0.5em 1em var(--surface);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);*/
-				bottom: 2.5em;
-				right: 0;
-				animation: none;
-				animation-delay: 0ms;
-				position: absolute;
-				padding: 0.25em;
-			}
-			#meta .meta-none {
-				display: none;
-			}
-	
-			#meta .meta-menu ul {
-				padding: 0;
-				margin: 0;
-				white-space: nowrap;
-				display: flex;
-				flex-direction: row;
-				overflow-y: auto;
-				overflow-x: auto;
-			}
-			#meta .meta-menu ul li {
-				-webkit-user-select: none;
-				-moz-user-select: none;
-				-ms-user-select: none;
-				user-select: none;
-				display: inline;
-				padding: 0.25em 0.5em;
-				margin: 0.25em;
-				font-size: 14pt;
-				border-radius: var(--radius);
-				text-align: center;
-				cursor: pointer;
-			}
-			.current {
-			  background: var(--primary);
-			}
-			#meta a {
-				color: black;
-			}
-			#meta:hover {
-				opacity: 1;
-			}
-			
-			#meta:hover .meta-menu {
-				display: block;
-			}
-			#meta .meta-menu ul:before {
-				content: " ";
-				display: block;
-			}
-			#meta .meta-start {
-				cursor: pointer;
-			}
-		}
-`);
-		// css({
-		// 	'#meta': {
-		// 		display: 'block',
-		// 		position: 'fixed',
-		// 		bottom: '2em',
-		// 		right: '2em',
-		// 		'font-size': '18pt',
-		// 		'font-family': 'Tahoma, arial',
-		// 		'border-radius': '1em',
-		// 		'text-align': 'center',
-		// 		'z-index': 999999,
-		// 		margin: 0,
-		// 		padding: 0,
-		// 		width: '2em',
-		// 		height: '2em',
-		// 		outline: 'none',
-		// 		overflow: 'visible',
-		// 		background: 'rgba(0,0,0,0.5)', color: 'white',
-		// 		transition: 'all 0.2s ease-in'
-		// 	},
-		// 	'#meta *': {outline: 'none'},
-		// 	'#meta .meta-none': {display: 'none'},
-		// 	'#meta span': {'line-height': '2em'},
-		// 	'#meta .meta-menu': {
-		// 		background: 'rgba(0,0,0,0.2)',
-		// 		width: '12em',
-		// 		right: '-2em',
-		// 		bottom: '-2em',
-		// 		overflow: 'visible',
-		// 		position: 'absolute',
-		// 		'overflow-y': 'scroll',
-		// 		'text-align': 'right',
-		// 		'min-height': '20em',
-		// 		height: '100vh'
-		// 	},
-		// 	'#meta .meta-menu ul': {
-		// 		padding: 0,
-		// 		margin: '1em 1em 2em 0',
-		// 		'list-style-type': 'none'
-		// 	},
-		// 	'#meta .meta-menu ul li': {
-		// 		display: 'block',
-		// 		'float': 'right',
-		// 		padding: '0.5em 1em',
-		// 		'border-radius': '1em',
-		// 		'margin-left': '0.25em',
-		// 		'margin-top': '0.25em',
-		// 		background: 'rgba(0,0,0,0.2)', 'backdrop-filter': 'blur(10px)', color: 'white',
-		// 		'cursor':  'pointer'
-		// 	},
-		// 	'#meta .meta-menu ul li:hover': {
-		// 		background: 'rgba(0,0,0,0.5)'
-		// 	},
-		// 	'#meta a': {color: 'black'},
-		// 	'#meta:hover': {opacity: 1},
-		// 	'#meta:hover .meta-menu': {display: 'block'},
-		// 	'#meta .meta-menu ul:before': {
-		// 		content: "' '",
-		// 		display: 'block',
-		// 		'min-height': '15em',
-		// 		height: '50vh'
-		// 	},
-		// 	'#meta .meta-start': {
-		// 		cursor: 'pointer'
-		// 	}
-		// });
-		function css(css) {
-			// var tmp = '';
-			// $.each(css, function(c,r){
-			// 	tmp += c + ' {\n';
-			// 	$.each(r, function(k,v){
-			// 		tmp += '\t'+ k +': '+ v +';\n';
-			// 	});
-			// 	tmp += '}\n';
-			// });
-			var tag = document.createElement("style");
-			tag.innerHTML = css;
-			$m.append(tag);
-		}
+		meta.css({
+			"#meta": {
+				display: "block",
+				position: "fixed",
+				bottom: "1em",
+				"font-size": "16pt",
+				background: "var(--surface)",
+				/*border: 0.1em solid var(--text),*/
+				color: "var(--text)",
+				"text-align": "center",
+				"z-index": 999999,
+				"-webkit-tap-highlight-color": "transparent",
+				right: "1em",
+				margin: 0,
+				"border-radius": "var(--radius)",
+				width: "2.4em",
+				outline: "none",
+				cursor: "pointer",
+				overflow: "none",
+			},
+			"#meta *": {
+				outline: "none",
+			},
+			"#meta .meta-none": {
+				display: "none",
+			},
+			"#meta span": {
+				"line-height": "2em",
+			},
+			"#meta .meta-menu": {
+				background: "var(--surface)",
+				// background: "rgba(var(--background), 0.5)",
+				// border: "0.1em solid var(--text)",
+				// "backdrop-filter": "blur(5px)",
+				// "-webkit-backdrop-filter": "blur(5px)",
+				"border-radius": "var(--radius)",
+				"animation-name": "animateOut",
+				"animation-duration": "210ms",
+				right: 0,
+				bottom: "2.5em",
+				overflow: "none",
+				position: "absolute",
+				"text-align": "right",
+			},
+			"#meta .meta-menu ul": {
+				"list-style-type": "none",
+				display: "flex",
+				"flex-direction": "column",
+			},
+			"#meta .meta-menu ul li": {
+				color: "var(--text)",
+				display: "inline-block",
+				float: "right",
+				padding: "0.5em 1em",
+				"font-size": "14pt",
+				"border-radius": "0.75em",
+				"text-align": "center",
+				"animation-name": "animateIn",
+				"animation-duration": "210ms",
+				"animation-delay": "calc(var(--meta-key) * 70ms)",
+				"animation-fill-mode": "both",
+				"animation-timing-function": "ease-in-out",
+				cursor: "pointer",
+			},
+			"#meta .meta-menu ul li:focus": {
+				background: "var(--primary)",
+			},
+			"#meta a": {
+				color: "var(--text)",
+			},
+			"#meta:hover": {
+				opacity: 1,
+			},
+			"#meta:hover .meta-menu": {
+				display: "block",
+			},
+			"#meta .meta-menu ul:before": {
+				content: " ",
+				display: "block",
+			},
+			"#meta .meta-start": {
+				cursor: "pointer",
+			},
+		});
+
+		// Moobile menu
+		meta.css(
+			{
+				"#meta": {
+					display: "block",
+					position: "fixed",
+					bottom: "1em",
+					"font-size": "16pt",
+					/*background: "var(--surface)",*/
+
+					color: "var(--text)",
+					"text-align": "center",
+					"z-index": 999999,
+					"-webkit-tap-highlight-color": "transparent",
+					right: "1em",
+					margin: 0,
+
+					width: "2.4em",
+					outline: "none",
+					cursor: "pointer",
+					overflow: "none",
+				},
+				"#meta .meta-menu": {
+					"border-radius": "var(--radius)",
+					background: "var(--surface)",
+					/*background: "rgba(var(--background), 0.8)",
+				"border-radius": "var(--radius)",
+				"backdrop-filter: "blur(5px)",
+				"-webkit-backdrop-filter": "blur(5px),*/
+					bottom: "2.5em",
+					right: 0,
+					animation: "none",
+					"animation-delay": "0ms",
+					position: "absolute",
+					padding: "0.25em",
+				},
+				"#meta .meta-none": {
+					display: "none",
+				},
+
+				"#meta .meta-menu ul": {
+					padding: 0,
+					margin: 0,
+					"white-space": "nowrap",
+					display: "flex",
+					"flex-direction": "row",
+					"overflow-y": "auto",
+					"overflow-x": "auto",
+				},
+				"#meta .meta-menu ul li": {
+					"-webkit-user-select": "none",
+					"-moz-user-select": "none",
+					"-ms-user-select": "none",
+					"user-select": "none",
+					display: "inline",
+					padding: "0.25em 0.5em",
+					margin: "0.25em",
+					"font-size": "14pt",
+					"border-radius": "var(--radius)",
+					"text-align": "center",
+					cursor: "pointer",
+				},
+				"#meta a": {
+					color: "var(--text)",
+				},
+				"#meta:hover": {
+					opacity: 1,
+				},
+
+				"#meta:hover .meta-menu": {
+					display: "block",
+				},
+				"#meta .meta-menu ul:before": {
+					content: " ",
+					display: "block",
+				},
+				"#meta .meta-start": {
+					cursor: "pointer",
+				},
+			},
+			"only screen and (max-width: 600px)"
+		);
+
 		meta.ui.iniline = function (el, cssObj) {
 			for (var k in cssObj) {
 				el.style[k] = cssObj[k];
@@ -526,7 +470,6 @@
 				return (m.tap.stun = false);
 			}
 		});
-	  
 
 		// $(window).on("focus", k.wipe.bind(null, false)); // .on('blur', k.wipe.bind(null, false))
 		$(document).on("mousedown mousemove mouseup", function (eve) {
