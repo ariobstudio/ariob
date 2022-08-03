@@ -77,12 +77,13 @@ input:hover {
 	overflow: visible;
 }
 #tell p {
-  background: rgba(var(--background), 0.8);
-  border: 0.1em solid var(--text);
+  background: var(--surface);
   border-radius: var(--radius);
+  /*background: rgba(var(--background), 0.8);
+  border: 0.1em solid var(--text);
   box-shadow: 0 0.5em 1em var(--surface);
   backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);*/
 	top: -2em;
 	width: 75%;
 	padding: 1%;

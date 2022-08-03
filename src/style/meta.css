@@ -94,7 +94,7 @@
 	}
 	#meta .meta-menu {
 		border-radius: var(--radius);
-		background-color: var(--surface);
+		/*background-color: var(--surface);*/
 		bottom: 0;
 		animation: none;
 		animation-delay: 0ms;
@@ -129,6 +129,9 @@
 		border-radius: var(--radius);
 		text-align: center;
 		cursor: pointer;
+	}
+	 .current {
+	  background: var(--secondary);
 	}
 	#meta a {
 		color: black;

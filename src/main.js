@@ -1,7 +1,7 @@
 // Styles
 import "./style/style.css";
 import "./style/app.css";
-import "./style/meta.css";
+// import "./style/meta.css";
 
 // Scripts
 import "gun/gun.js";
@@ -33,127 +33,97 @@ var storedTheme =
 		: "day");
 if (storedTheme)
 	document.documentElement.setAttribute("theme", storedTheme);
+var joy = {}
+joy.tell = function(what, n){
+	var e = $('#tell').find('p');
+	e.addClass('notify').text(what);
+	clearTimeout(joy.tell.to);
+	joy.tell.to = setTimeout(function(){e.removeClass('notify')}, n || 2500);
+}
 
-// Events
-var commands = {};
 
-commands.home = function () {
-	meta.edit({
-		name: "create",
-		combo: ["O", "C"],
-		fake: -1,
-		on: () => {
-			meta.ask("create new page", function (ans) {
-				c.tell(ans)
-			});
-			return;
-		},
-	});
-};
-commands.activity = function () {
-	meta.edit({
-		name: "clear",
-		combo: ["O", "C"],
-		fake: -1,
-		on: function(){
-		  as.route.render('hello', '.rand', $('#activity'), "Hello WWorld");
-		  return;
-		}
-	});
-};
-commands.friends = function () {
-	meta.edit({
-		name: "New Friend",
-		combo: ["O", "C"],
-		fake: -1,
-		on: function(){
-		  return;
-		}
-	});
-};
-commands.settings = function () {
-	meta.edit({
-		name: "theme",
-		combo: ["O", "C"],
-		fake: -1,
+
+meta.edit({
+	name: "Home",
+	combo: ["H"],
+	fake: -1,
+	on: (eve) => {
+		as.route("home");
+		console.log('target ', eve.target)
+		//select(eve.target);
+		// commands.home();
+	},
+});
+meta.edit({
+	name: "Toast",
+	combo: ["H", "T"],
+	on: (eve) => {
+		joy.tell("Hooray 🎉")
+		// commands.home();
+	},
+});
+meta.edit({
+	name: "Settings",
+	combo: ["S"],
+	fake: -1,
+	up: (eve) => {
+		as.route("settings");
+		return 
+		//select(eve.target)
+		// commands.home();
+	},
+});
+meta.edit({
+		name: "Theme",
+		combo: ["S", "C"],
 		on: function () {
 			var before =
 				document.documentElement.getAttribute("theme");
 			var now = before === "day" ? "night" : "day";
 			document.documentElement.setAttribute("theme", now);
 			localStorage.setItem("theme", now);
-			c.tell(`${now} mode activated`)
+			joy.tell(`${now} mode activated`)
 			return;
 		},
 	});
-};
-
-var hash = window.location.hash.slice(1);
-if (hash) {
-	if (commands[hash] && commands[hash] instanceof Function) {
-		commands[hash]();
-	}
-}
-meta.edit({
-	name: "home",
-	combo: ["H"],
-	fake: -1,
-	on: () => {
-		as.route("home");
-		// commands.home();
-	},
-});
-meta.edit({
-	name: "settings",
-	combo: ["B"],
-	fake: -1,
-	on: () => {
-		as.route("settings");
-		// commands.home();
-	},
-});
 
 meta.edit({
-	name: "activity",
+	name: "Activity",
 	combo: ["A"],
-	// fake: -1,
-	on: () => {
+	on: (eve) => {
 		as.route("activity");
+		//select(eve.target)
 	},
 });
-
-meta.edit({
-	name: "⣿",
-	combo: ["O"],
-	fake: -1,
-	on: (e) => {
-	  e.preventDefault();
-		// as.route("friends");
-	},
-});
-
-$(window).on("hashchange", function () {
-	console.log("hashchange");
-	var hash = window.location.hash.substring(1);
-	if (!hash) {
-		return;
-	}
-	if (commands[hash]) {
-		commands[hash]();
-	}
-});
-var c = {}
-c.tell = function(what, n){
-	var e = $('#tell').find('p');
-	e.addClass('notify').text(what);
-	clearTimeout(c.tell.to);
-	c.tell.to = setTimeout(function(){e.removeClass('notify')}, n || 2500);
-}
 
 
 as.route.page('home', function(){
   document.title = "Ariob"
-  c.tell("Welcome to Ariob Studio!")
+  
+  $("#content").append(`
+  <p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nunc pulvinar sapien et ligula. Vitae tempus quam pellentesque nec. Porta nibh venenatis cras sed felis eget velit aliquet. Vitae semper quis lectus nulla at volutpat. Eget nunc scelerisque viverra mauris in aliquam. Lectus mauris ultrices eros in cursus turpis massa tincidunt dui. Tincidunt augue interdum velit euismod in pellentesque massa placerat. Lacus sed viverra tellus in hac habitasse platea dictumst. Tristique sollicitudin nibh sit amet commodo nulla facilisi nullam. Tincidunt dui ut ornare lectus sit amet est. Nulla facilisi morbi tempus iaculis urna id.
+
+Sagittis orci a scelerisque purus semper. Metus aliquam eleifend mi in nulla posuere sollicitudin. Ultricies lacus sed turpis tincidunt id aliquet risus feugiat. Eu non diam phasellus vestibulum lorem. Morbi tempus iaculis urna id. Scelerisque in dictum non consectetur a erat nam at. Tortor at risus viverra adipiscing. Pretium viverra suspendisse potenti nullam. Faucibus nisl tincidunt eget nullam non nisi est sit. Sagittis eu volutpat odio facilisis mauris. Ligula ullamcorper malesuada proin libero nunc consequat interdum varius. Ultrices tincidunt arcu non sodales neque sodales ut etiam. Elementum facilisis leo vel fringilla est ullamcorper. Fermentum et sollicitudin ac orci phasellus egestas tellus. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim. Eget egestas purus viverra accumsan. Eu volutpat odio facilisis mauris. Eu volutpat odio facilisis mauris.
+
+Purus sit amet luctus venenatis. Ipsum dolor sit amet consectetur. Ut sem nulla pharetra diam sit amet nisl suscipit. Pharetra sit amet aliquam id diam maecenas. Ante metus dictum at tempor commodo ullamcorper. Tincidunt ornare massa eget egestas purus viverra accumsan in. Nec nam aliquam sem et. Vestibulum lectus mauris ultrices eros in cursus turpis massa. Volutpat consequat mauris nunc congue nisi vitae. Sit amet aliquam id diam maecenas ultricies mi eget mauris. Sit amet nisl purus in mollis nunc sed id semper. Ut sem viverra aliquet eget sit amet. Tincidunt lobortis feugiat vivamus at augue eget arcu. Magna eget est lorem ipsum dolor. Nibh sit amet commodo nulla facilisi nullam vehicula ipsum. Eget mi proin sed libero enim sed faucibus turpis in. Ultrices dui sapien eget mi proin.
+
+Nunc sed augue lacus viverra vitae congue eu consequat ac. Felis donec et odio pellentesque. Egestas sed sed risus pretium quam vulputate. Elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Neque gravida in fermentum et. At lectus urna duis convallis convallis tellus. Urna molestie at elementum eu facilisis sed. Tristique senectus et netus et malesuada fames. In arcu cursus euismod quis viverra. Sit amet mattis vulputate enim nulla. Vitae et leo duis ut diam quam nulla porttitor massa. Sapien faucibus et molestie ac. Et tortor at risus viverra adipiscing. Cras ornare arcu dui vivamus arcu felis.
+
+Sed arcu non odio euismod lacinia at quis risus. A erat nam at lectus urna duis convallis. Risus ultricies tristique nulla aliquet enim tortor at auctor urna. Sed viverra ipsum nunc aliquet bibendum. Interdum varius sit amet mattis vulputate enim nulla. Ullamcorper velit sed ullamcorper morbi tincidunt ornare. Tristique risus nec feugiat in fermentum. Ultrices sagittis orci a scelerisque purus semper eget duis. Donec adipiscing tristique risus nec. Imperdiet nulla malesuada pellentesque elit eget gravida cum. Bibendum neque egestas congue quisque. Enim neque volutpat ac tincidunt vitae semper quis lectus nulla. Id nibh tortor id aliquet lectus proin nibh nisl. Eget gravida cum sociis natoque penatibus.
+
+Diam phasellus vestibulum lorem sed risus ultricies tristique nulla. Lectus quam id leo in vitae turpis massa. Non curabitur gravida arcu ac tortor. Elementum sagittis vitae et leo duis ut diam quam. Sit amet nisl purus in. Non diam phasellus vestibulum lorem sed risus ultricies. Donec enim diam vulputate ut pharetra sit amet aliquam id. Eu non diam phasellus vestibulum lorem sed. Molestie a iaculis at erat pellentesque. Pretium viverra suspendisse potenti nullam ac tortor. Morbi tristique senectus et netus et malesuada fames ac turpis. Turpis egestas pretium aenean pharetra magna. Eget felis eget nunc lobortis mattis aliquam. Faucibus et molestie ac feugiat sed lectus. Tincidunt arcu non sodales neque sodales ut etiam. Varius duis at consectetur lorem donec massa sapien faucibus et. Et molestie ac feugiat sed lectus.
+
+Turpis nunc eget lorem dolor sed viverra. Eleifend quam adipiscing vitae proin sagittis nisl. Fames ac turpis egestas sed. In fermentum posuere urna nec. Id venenatis a condimentum vitae sapien pellentesque habitant morbi. Congue nisi vitae suscipit tellus mauris. Porta lorem mollis aliquam ut porttitor leo a diam. Duis convallis convallis tellus id interdum velit. Pellentesque habitant morbi tristique senectus et netus et. Magna fermentum iaculis eu non. Lacinia quis vel eros donec. Aliquam ultrices sagittis orci a scelerisque purus semper eget duis. In iaculis nunc sed augue lacus. Aliquet lectus proin nibh nisl condimentum id venenatis a condimentum. In massa tempor nec feugiat nisl pretium. Ipsum a arcu cursus vitae congue. Id venenatis a condimentum vitae sapien pellentesque habitant. Maecenas accumsan lacus vel facilisis. Eu lobortis elementum nibh tellus. Bibendum enim facilisis gravida neque convallis.
+
+Eget sit amet tellus cras adipiscing enim eu. Etiam erat velit scelerisque in dictum non consectetur a erat. Diam ut venenatis tellus in metus. Vulputate enim nulla aliquet porttitor lacus luctus accumsan. Porta nibh venenatis cras sed felis eget. Tempor nec feugiat nisl pretium fusce id velit ut. Nisl rhoncus mattis rhoncus urna neque viverra. Id leo in vitae turpis. Enim tortor at auctor urna nunc. A lacus vestibulum sed arcu non odio. Laoreet non curabitur gravida arcu ac. Aliquam purus sit amet luctus venenatis. Hac habitasse platea dictumst quisque sagittis. Luctus venenatis lectus magna fringilla urna porttitor. Mi ipsum faucibus vitae aliquet nec ullamcorper sit amet. Volutpat lacus laoreet non curabitur gravida arcu. Etiam erat velit scelerisque in dictum non consectetur. Sed nisi lacus sed viverra tellus in.
+
+Porta non pulvinar neque laoreet suspendisse interdum consectetur libero id. Placerat duis ultricies lacus sed turpis tincidunt. Pretium aenean pharetra magna ac. Lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi. Fringilla est ullamcorper eget nulla facilisi etiam dignissim. Vel elit scelerisque mauris pellentesque pulvinar pellentesque habitant. Aliquam nulla facilisi cras fermentum odio eu. In nisl nisi scelerisque eu ultrices. Nunc sed augue lacus viverra vitae. Dolor magna eget est lorem ipsum dolor sit amet. Ipsum dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id diam maecenas ultricies mi eget mauris pharetra et.
+
+Massa tincidunt dui ut ornare. Nec sagittis aliquam malesuada bibendum arcu vitae elementum curabitur. Amet purus gravida quis blandit turpis cursus. Tempus imperdiet nulla malesuada pellentesque elit. Eu augue ut lectus arcu bibendum at varius vel. At auctor urna nunc id cursus metus aliquam eleifend mi. Ultrices in iaculis nunc sed. Sapien pellentesque habitant morbi tristique senectus et netus. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Diam quam nulla porttitor massa. A lacus vestibulum sed arcu. Convallis convallis tellus id interdum velit laoreet id donec ultrices. Vel pharetra vel turpis nunc eget. Accumsan sit amet nulla facilisi morbi tempus iaculis. Leo vel fringilla est ullamcorper eget nulla facilisi. Duis convallis convallis tellus id interdum velit laoreet id. Quam elementum pulvinar etiam non quam. Fringilla urna porttitor rhoncus dolor purus.
+  </p>
+  `);
+  joy.tell("Welcome to Ariob Studio!")
 });
 as.route.page('activity', function(){
   document.title = "Ariob - Activity"
@@ -166,7 +136,7 @@ as.route.page('settings', function(){
 
 
 document.querySelector("#app").innerHTML = `
-  <div id="home" class="page full hold center">
+  <div id="home" class="page hold center">
     <div class="unit row center">
       <div class="unit col left">
         ${logo(2)}
@@ -174,7 +144,7 @@ document.querySelector("#app").innerHTML = `
       </div>
     </div>
     
-    <div class="center pad">
+    <div id="content" class="center leak">
       <p>home</p>
     </div>
     

@@ -354,36 +354,41 @@
 			#meta {
 				display: block;
 				position: fixed;
-				bottom: 0.5em;
-				font-size: 14pt;
+				bottom: 1em;
+				font-size: 16pt;
+				background: var(--surface);
 				color: var(--text);
 				text-align: center;
 				z-index: 999999;
 				-webkit-tap-highlight-color: transparent;
-				padding: 0;
-
-				margin: 0em 0.5em;
-				height: 2em;
-				width: 100%;
+        right: 1em;
+				margin: 0;
+				
+				width: 2.4em;
 				outline: none;
 				cursor: pointer;
 				overflow: none;
 			}
 			#meta .meta-menu {
 				border-radius: var(--radius);
-				background-color: var(--surface);
-				bottom: 0;
+				background: var(--surface);
+				/*background: rgba(var(--background), 0.8);
+        border: 0.1em solid var(--text);
+        border-radius: var(--radius);
+        box-shadow: 0 0.5em 1em var(--surface);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);*/
+				bottom: 2.5em;
+				right: 0;
 				animation: none;
 				animation-delay: 0ms;
 				position: absolute;
 				padding: 0.25em;
 			}
 			#meta .meta-none {
-				display: block;
-			}
-			#meta .meta-icon .meta-start {
 				display: none;
 			}
+	
 			#meta .meta-menu ul {
 				padding: 0;
 				margin: 0;
@@ -406,15 +411,16 @@
 				text-align: center;
 				cursor: pointer;
 			}
+			.current {
+			  background: var(--primary);
+			}
 			#meta a {
 				color: black;
 			}
 			#meta:hover {
 				opacity: 1;
 			}
-			#meta .meta-start {
-				display: none;
-			}
+			
 			#meta:hover .meta-menu {
 				display: block;
 			}
@@ -520,22 +526,7 @@
 				return (m.tap.stun = false);
 			}
 		});
-		$(document).on("click", "#meta .meta-menu li", function (eve) {
-			if (m.tap.stun) {
-				return (m.tap.stun = false);
-			}
-			if (
-				!(eve.fake = eve.which =
-					(($(this).text().match(/[A-Z]/) || {})[0] || "")
-						.toUpperCase()
-						.charCodeAt(0))
-			) {
-				return;
-			}
-			eve.tap = true;
-			k.down(eve);
-			k.up(eve);
-		});
+	  
 
 		// $(window).on("focus", k.wipe.bind(null, false)); // .on('blur', k.wipe.bind(null, false))
 		$(document).on("mousedown mousemove mouseup", function (eve) {
