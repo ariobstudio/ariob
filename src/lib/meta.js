@@ -155,24 +155,30 @@
 			if (opt) {
 				m.flip(true);
 			}
-			// if (!at.back) {
-			// 	return;
-			// }
+			 //if (!at.back) {
+			 //	return;
+			 //}
 			$ul.append(
 				$("<li>")
 					.html("&larr;")
 					.on("click", function () {
+					  
 						m.list((k.at = at.back));
 					})
 			);
 		};
-		m.ask = function (help, cb, opt) {
+		m.ask = function (help, cb, opt, live) {
 			var $ul = $("#meta .meta-menu ul").empty();
 			var $put = $("<input>")
 				.attr("id", "meta-ask")
 				.attr("placeholder", help)
 				.addClass("min");
-
+			if (opt){
+  			$.each(opt, function (k, v) {
+  			  $put.attr(k, v);
+  			  console.log(k, v)
+  			})
+			}
 			var $form = $("<form>")
 				.append($put)
 				.on("submit", function (eve) {
@@ -181,7 +187,7 @@
 					$li.remove();
 					k.wipe();
 				});
-			if (opt) {
+			if (live) {
 				$form.on("keyup", function (eve) {
 					cb($put.val());
 				});
@@ -402,7 +408,7 @@
 				"border-radius": "var(--radius)",
 				"backdrop-filter: "blur(5px)",
 				"-webkit-backdrop-filter": "blur(5px),*/
-					bottom: "2.5em",
+					bottom: "2.7em",
 					right: 0,
 					animation: "none",
 					"animation-delay": "0ms",
@@ -450,6 +456,7 @@
 					display: "block",
 				},
 				"#meta .meta-start": {
+				 
 					cursor: "pointer",
 				},
 			},

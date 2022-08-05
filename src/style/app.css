@@ -27,7 +27,7 @@ html,
 html[theme="day"] {
 	--text: #121212;
 	--background: #fff;
-	--primary: var(--blue);
+	--primary: var(--green);
 	--secondary: #eae086;
 	--accent: #f3646d;
 	--surface: #ebe9e9;
@@ -36,11 +36,26 @@ html[theme="day"] {
 html[theme="night"] {
 	--text: #fff;
 	--background: #121212;
-	--primary: var(--blue);
+	--primary: var(--green);
 	--secondary: #dcde87;
 	--accent: #de8787;
 	--surface: #2f2f2f;
 }
+
+.primary {
+  background: var(--primary);
+}
+.secondary {
+  background: var(--secondary);
+}
+.accent {
+  background: var(--accent);
+}
+.surface {
+  background: var(--surface);
+}
+
+.air { padding-top: 30%; }
 
 body {
 	background: var(--background);
