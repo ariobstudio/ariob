@@ -8,7 +8,7 @@
 	--white: #ffffff;
 	--black: #121212;
 	--slate: #707070;
-	--neutral: #f6f6f6;
+	--neutral: #e4e2e2;
 
 	--text: var(--black);
 	--background: var(--white);
@@ -16,7 +16,7 @@
 	--secondary: var(--yellow);
 	--accent: var(--red);
 
-	--radius: 0.75em;
+	--radius: 0.5em;
 }
 
 html,
@@ -25,37 +25,57 @@ html,
 }
 
 html[theme="day"] {
-	--text: #121212;
-	--background: #fff;
+	--green: #96eaa3;
+	--yellow: #eae086;
+	--red: #f3646d;
+	--blue: #649ef3;
+	--white: #ffffff;
+	--black: #121212;
+	--slate: #707070;
+	--neutral: #eeeded;
+
+	--text: var(--black);
+	--background: var(--white);
 	--primary: var(--green);
-	--secondary: #eae086;
-	--accent: #f3646d;
-	--surface: #ebe9e9;
+	--secondary: var(--yellow);
+	--accent: var(--red);
+	--surface: var(--neutral);
 }
 
 html[theme="night"] {
-	--text: #fff;
+	--green: #74e284;
+	--yellow: #ded36d;
+	--red: #f3646d;
+	--blue: #649ef3;
+	--white: #ffffff;
+	--black: #121212;
+	--slate: #2f2f2f;
+	--neutral: #eeeded;
+
+	--text: var(--white);
 	--background: #121212;
 	--primary: var(--green);
-	--secondary: #dcde87;
-	--accent: #de8787;
-	--surface: #2f2f2f;
+	--secondary: var(--yellow);
+	--accent: var(--red);
+	--surface: var(--slate);
 }
 
 .primary {
-  background: var(--primary);
+	background: var(--primary);
 }
 .secondary {
-  background: var(--secondary);
+	background: var(--secondary);
 }
 .accent {
-  background: var(--accent);
+	background: var(--accent);
 }
 .surface {
-  background: var(--surface);
+	background: var(--surface);
 }
 
-.air { padding-top: 30%; }
+.air {
+	padding-top: 9%;
+}
 
 body {
 	background: var(--background);
@@ -71,8 +91,11 @@ button {
 	margin: 0.5em;
 	cursor: pointer;
 }
+button:disabled {
+	background: var(--surface);
+}
 input {
-	padding: 0.25em;
+	padding: 0.5em 0.25em;
 	border: none;
 	border-radius: var(--radius);
 	color: var(--text);

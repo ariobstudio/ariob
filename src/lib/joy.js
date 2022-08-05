@@ -1,4 +1,3 @@
-
 (function () {
 	$(document).on("click", "a, button", function (e) {
 		var tmp = $(this).attr("href") || "";
@@ -56,22 +55,10 @@
 	$.route = r;
 })();
 
-$(function () {
-	$(".page").not(":first").hide();
-	$.route(location.hash.slice(1));
-	
-
-	if ($("body").attr("peers")) {
-		(console.warn || console.log)(
-			'Warning: Please upgrade <body peers=""> to https://github.com/eraeco/joydb#peers !'
-		);
-	}
-});
 (function () {
 	// need to isolate into separate module!
 	var joy = (window.JOY = function () {});
 	joy.route = $.route;
-	
 	joy.auth = function (k, cb, o) {
 		if (!o) {
 			o = cb;
@@ -86,17 +73,17 @@ $(function () {
 			});
 			return;
 		}
-	  joy.key = k
-		gun.user().auth(k, cb, o);
+		joy.key = k;
+		joy.user.auth(k, cb, o);
 	};
 	joy.tell = function (what, n) {
-  	var e = $("#tell").find("p");
-  	e.addClass("notify").text(what);
-  	clearTimeout(joy.tell.to);
-  	joy.tell.to = setTimeout(function () {
-  		e.removeClass("notify");
-  	}, n || 2500);
-  };
+		var e = $("#tell").find("p");
+		e.addClass("notify").text(what);
+		clearTimeout(joy.tell.to);
+		joy.tell.to = setTimeout(function () {
+			e.removeClass("notify");
+		}, n || 2500);
+	};
 
 	var opt = (joy.opt = window.CONFIG || {}),
 		peers;
@@ -114,4 +101,5 @@ $(function () {
 				return ["http://localhost:8765/gun"];
 			})());
 	window.gun = window.gun || Gun(opt);
+	joy.user = gun.user();
 })();

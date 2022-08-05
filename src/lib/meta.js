@@ -155,14 +155,13 @@
 			if (opt) {
 				m.flip(true);
 			}
-			 //if (!at.back) {
-			 //	return;
-			 //}
+			//if (!at.back) {
+			//	return;
+			//}
 			$ul.append(
 				$("<li>")
 					.html("&larr;")
 					.on("click", function () {
-					  
 						m.list((k.at = at.back));
 					})
 			);
@@ -173,11 +172,10 @@
 				.attr("id", "meta-ask")
 				.attr("placeholder", help)
 				.addClass("min");
-			if (opt){
-  			$.each(opt, function (k, v) {
-  			  $put.attr(k, v);
-  			  console.log(k, v)
-  			})
+			if (opt) {
+				$.each(opt, function (k, v) {
+					$put.attr(k, v);
+				});
 			}
 			var $form = $("<form>")
 				.append($put)
@@ -456,7 +454,6 @@
 					display: "block",
 				},
 				"#meta .meta-start": {
-				 
 					cursor: "pointer",
 				},
 			},

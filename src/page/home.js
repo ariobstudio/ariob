@@ -1,13 +1,34 @@
-import header from '../component/header.js';
+import header from "../component/header.js";
 
 const home = `
-  <div id="home" class="page hold center">
-    ${header('Home')}
-    <div class="center gap leak">
-      <p>Home - In development</p>
-      <button id="askme">Ask</button>
-    </div>
-  </div>
-`
+<div id="home" class="page hold center">
+	${header("Home")}
+	<div class="center gap leak">
+		<p>Home</p>
+	</div>
+</div>
+`;
+JOY.route.page("home", function () {
+	document.title = "Home";
+});
 
-export default home
+meta.edit({
+	name: "Home",
+	combo: ["H"],
+	on: (eve) => {
+		JOY.route("home");
+	},
+});
+meta.edit({
+	name: "Task",
+	combo: ["H", "T"],
+	on: (eve) => {
+		meta.ask("Enter a name for your new task", (name) => {
+			JOY.route.render(Gun.text.random(8), ".profile", $("#me div"), {
+				name: name,
+			});
+		});
+		// joy.render("", "", );
+	},
+});
+export default home;
