@@ -24,9 +24,7 @@ meta.edit({
 	combo: ["H", "T"],
 	on: (eve) => {
 		meta.ask("Enter a name for your new task", (name) => {
-			JOY.route.render(Gun.text.random(8), ".profile", $("#me div"), {
-				name: name,
-			});
+			 
 		});
 		// joy.render("", "", );
 	},

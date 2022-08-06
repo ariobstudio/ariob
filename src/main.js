@@ -8,9 +8,11 @@ import "./lib/joy.js";
 import "./lib/meta.js";
 
 import home from "./page/home.js";
+import search from "./page/search.js";
 import settings from "./page/settings.js";
 import activity from "./page/activity.js";
-import profile from "./model/profile.js";
+import profile from "./page/profile.js";
+import user_card from "./model/user_card.js";
 import { create, auth } from "./page/auth.js";
 
 var user = JOY.user;
@@ -29,13 +31,15 @@ gun.on("auth", function (ack) {
 		localStorage.setItem("key", JSON.stringify(JOY.key));
 	}
 	if (ack.soul) {
-		var $me = $("#me a");
+		var $me = $("#account a");
 		$me.html("");
 		$me.attr("href", `#profile/${ack.soul}`);
 		user.get("profile")
 			.get("name")
 			.once((data) => {
-				JOY.route.render("profile", ".profile", $me, {
+			  console.log(data)
+			 
+				JOY.route.render("my", ".profile", $me, {
 					name: data,
 				});
 			});
@@ -47,9 +51,11 @@ document.querySelector("#app").innerHTML = `
   ${activity}
   ${home}
   ${settings}
+  ${profile}
   ${create}
   ${auth}
+  ${search}
   <div class="model">
-	${profile}
+	  ${user_card}
   </div>
 `;

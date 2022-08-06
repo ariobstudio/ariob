@@ -66,10 +66,7 @@
 		}
 		if (o === true) {
 			SEA.pair().then((key) => {
-				joy.auth(key);
-				if (cb) {
-					cb(k);
-				}
+				joy.auth(key, cb);
 			});
 			return;
 		}

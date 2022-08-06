@@ -44,6 +44,26 @@ const auth = `
 </div>
 `;
 
+JOY.route.page("auth", function () {
+	document.title = "Existing account";
+	var key = $("#key");
+	key.focus();
+	var $form = $("#signin");
+	$form.submit(function (e) {
+		e.preventDefault();
+		JOY.auth(
+			JSON.parse(key.val()),
+			(ack) => {
+			  if (!ack.err) {
+				  JOY.route("home");
+			  } else {
+			    JOY.tell(ack.err);
+			  }
+			}
+		);
+	});
+});
+
 JOY.route.page("create", function () {
 	document.title = "Create an account";
 	var name = $("#alias");
@@ -54,7 +74,7 @@ JOY.route.page("create", function () {
 
 		JOY.auth(
 			null,
-			() => {
+			(ack) => {
 				JOY.tell("Account created.", name.val());
 				JOY.user.get("profile").get("name").put(name.val());
 				JOY.route("home");
