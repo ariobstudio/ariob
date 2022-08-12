@@ -16,10 +16,11 @@ JOY.route.page("profile", function () {
 	document.title = "Profile";
   var pub = location.hash.split('/').slice(-1)[0]
   console.log(pub)
-  $('#profile').attr('name', pub);
+  $("#profile").attr('name', pub)
   $("#cpk").click(()=>{
     navigator.clipboard.writeText(JSON.stringify(JOY.key))
   });
 });
+
 
 export default profile;

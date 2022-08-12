@@ -1,11 +1,11 @@
 import "./style/style.css";
 import "./style/app.css";
-
 import "gun/gun.js";
 import "gun/sea.js";
 import "./lib/as.js";
 import "./lib/joy.js";
 import "./lib/meta.js";
+import "./style/index.js";
 
 import home from "./page/home.js";
 import search from "./page/search.js";

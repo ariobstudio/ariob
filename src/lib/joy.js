@@ -42,14 +42,16 @@
 			if ($.isPlainObject(val)) {
 				return;
 			}
-			$data
-				.find("[name='" + field + "']")
-				.val(val)
+			var $n = $data.find("[name='" + field + "']")
+			var $k = $data.find("[key='" + field + "']")
+			$k.attr("name" , val)
+			$n.val(val)
 				.text(val);
 		});
 		return $data;
 	};
 	window.onhashchange = function () {
+	  window.top.location.reload(true)
 		r(location.hash.slice(1));
 	};
 	$.route = r;
@@ -81,6 +83,20 @@
 			e.removeClass("notify");
 		}, n || 2500);
 	};
+	joy.css = function (css, m) {
+			var tmp = m ? "@media " + m + " {\n\t" : "";
+
+			$.each(css, function (c, r) {
+				tmp += c + " {\n";
+				$.each(r, function (k, v) {
+					tmp += "\t" + k + ": " + v + ";\n";
+				});
+				tmp += "}\n";
+			});
+			var tag = document.createElement("style");
+			tag.innerHTML = m ? tmp + "\n}" : tmp;
+			document.documentElement.append(tag);
+		};
 
 	var opt = (joy.opt = window.CONFIG || {}),
 		peers;
