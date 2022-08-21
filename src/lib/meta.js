@@ -162,6 +162,9 @@
 				$("<li>")
 					.html("&larr;")
 					.on("click", function () {
+					  if (m.tap.stun) {
+      				return (m.tap.stun = false);
+      			}
 						m.list((k.at = at.back));
 					})
 			);
@@ -265,7 +268,7 @@
 				setTimeout(function () {
 					$("#meta")[0].style.transition = null;
 					$("#meta")[0].style.background = null;
-				});
+				}, 100);
 			},
 			depth: function (n) {
 				if (n) {

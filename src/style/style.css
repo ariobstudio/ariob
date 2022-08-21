@@ -270,42 +270,42 @@ p + p {
 }
 
 .hue {
-	background: #4d79d8;
-	-webkit-animation: hue 900s infinite;
-	animation: hue 900s infinite;
+	background: var(--green);
+	-webkit-animation: hue 3s infinite;
+	animation: hue 3s infinite;
 }
 @keyframes hue {
 	0% {
-		background-color: #4d79d8;
+		background-color: var(--green);
 	}
 	25% {
-		background-color: #33cc33;
+		background-color: var(--yellow);
 	}
 	50% {
-		background-color: #d3a438;
+		background-color: var(--red);
 	}
 	75% {
-		background-color: #ea3224;
+		background-color: var(--blue);
 	}
 	100% {
-		background-color: #4d79d8;
+		background-color: var(--green);
 	}
 }
 @-webkit-keyframes hue {
 	0% {
-		background-color: #4d79d8;
+		background-color: var(--green);
 	}
 	25% {
-		background-color: #33cc33;
+		background-color: var(--yellow);
 	}
 	50% {
-		background-color: #d3a438;
+		background-color: var(--red);
 	}
 	75% {
-		background-color: #ea3224;
+		background-color: var(--blue);
 	}
 	100% {
-		background-color: #4d79d8;
+		background-color: var(--green);
 	}
 }
 
@@ -391,8 +391,8 @@ p + p {
 
 .huet2 {
 	color: #ea3224;
-	-webkit-animation: huet2 900s infinite;
-	animation: huet2 900s infinite;
+	-webkit-animation: huet2 1s infinite;
+	animation: huet2 1s infinite;
 }
 @keyframes huet2 {
 	0% {

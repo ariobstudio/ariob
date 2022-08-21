@@ -2,7 +2,7 @@ import header from "../component/header.js";
 
 const settings = `
 <div id="settings" class="page hold center">
-	${header("Settings")}
+  ${header('Settings')}
 	<div class="center gap leak">
 		<p>Settings</p>
 	</div>
@@ -11,19 +11,10 @@ const settings = `
 
 JOY.route.page("settings", function () {
 	document.title = "Settings";
-});
 
-meta.edit({
-	name: "Settings",
-	combo: ["S"],
-	on: (eve) => {
-		JOY.route("settings");
-	},
-});
-
-meta.edit({
+	meta.edit({
 	name: "Logout",
-	combo: ["S", "L"],
+	combo: ["L"],
 	on: (eve) => {
 		JOY.user.leave();
 		localStorage.removeItem("key");
@@ -33,7 +24,7 @@ meta.edit({
 });
 meta.edit({
 	name: "Theme",
-	combo: ["S", "T"],
+	combo: ["T"],
 	on: function () {
 		var before = document.documentElement.getAttribute("theme");
 		var now = before === "day" ? "night" : "day";
@@ -43,5 +34,8 @@ meta.edit({
 		return;
 	},
 });
+});
+
+
 
 export default settings;

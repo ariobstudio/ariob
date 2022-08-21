@@ -92,17 +92,16 @@ JOY.css(
 			bottom: "0em",
 			"font-size": "16pt",
 			/*background: "var(--surface)",*/
-      left:0,
-      right:0,
+
       
 			color: "var(--text)",
-			"text-align": "right",
+			"text-align": "center",
 			"z-index": 999999,
 			"-webkit-tap-highlight-color": "transparent",
 			
 			margin: "1em auto",
 
-			width: "80%",
+			width: "2.5em",
 			outline: "none",
 			cursor: "pointer",
 			overflow: "none",
@@ -116,19 +115,13 @@ JOY.css(
 		"border-radius": "var(--radius)",
 		"backdrop-filter: "blur(5px)",
 		"-webkit-backdrop-filter": "blur(5px),*/
-		width: "100%",
-		height: "auto",
-			bottom: 0,
-			
-			right: 0,
-			left: 0,
 			//animation: "none",
 			//"animation-delay": "0ms"
 			position: "absolute",
 			padding: "0.25em",
 		},
 		"#meta .meta-none": {
-		   display: "block",
+		   display: "none",
 		},
 
 		"#meta .meta-menu ul": {
@@ -136,7 +129,8 @@ JOY.css(
 			margin: 0,
 			"white-space": "nowrap",
 			display: "flex",
-      "flex-wrap": "wrap",
+			"justify-content": "space-around"
+,      "flex-wrap": "wrap",
 			"flex-direction": "row",
 			//"overflow-yrow-revese"
 			//"overflow-x": "auto",
@@ -148,7 +142,7 @@ JOY.css(
 			"user-select": "none",
 			display: "inline",
 			padding: "0.25em 0.5em",
-			margin: "0.25em",
+
 			"font-size": "14pt",
 			"border-radius": "var(--radius)",
 			"text-align": "right",
@@ -169,9 +163,29 @@ JOY.css(
 			display: "block",
 		},
 		"#meta .meta-start": {
-		  display: "none",
 			cursor: "pointer",
 		},
 	},
 	"only screen and (max-width: 600px)"
 );
+JOY.css({
+  "#nav": {
+    width: '70vw',
+    height: '2.5em',
+    background: 'var(--surface)',
+    position: 'fixed',
+    bottom: 0,
+    right: '5em',
+    margin: '1em auto',
+    'border-radius': 'var(--radius)'
+  },
+  "#nav ul": {
+			"white-space": "nowrap",
+			height: '100%',
+			display: "flex",
+			'align-items': 'center',
+			"justify-content": "space-around"
+,      "flex-wrap": "wrap",
+			"flex-direction": "row",
+  }
+});

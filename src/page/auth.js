@@ -74,9 +74,16 @@ JOY.route.page("create", function () {
 
 		JOY.auth(
 			null,
-			(ack) => {
-				JOY.tell("Account created.", name.val());
+			async (ack) => {
+			  var avatar = await SEA.work(JOY.key.pub, null, null, {name: "SHA-256"})
+				await JOY.user.generateCert(
+				"*",
+				[{ "*": "notifications" }, { "*": "notify" }],
+				"certificates/notifications"
+			  );
 				JOY.user.get("profile").get("name").put(name.val());
+				JOY.user.get("profile").get("avatar").put(avatar);
+				
 				JOY.route("home");
 			},
 			true
