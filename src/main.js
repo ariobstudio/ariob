@@ -35,16 +35,14 @@ gun.on("auth", async function (ack) {
 	}
 	if (ack.soul) {
 		var $me = $("#account a");
-		var pub = ack.soul
+		var pub = ack.soul;
 		$me.html("");
 		$me.attr("href", `#profile/${pub}`);
-		
-		var n = await gun.get(pub).get('profile').get('name')
-    var a = await gun.get(pub).get('profile').get('avatar') 
-    console.log(a)
-    JOY.route.render("my", ".persona-mini", $me, {
-		  name: n
-      });
+		user.get("profile").on((d) => {
+			JOY.route.render("my", ".persona-mini", $me, {
+				name: d.name,
+			});
+		});
 	}
 	console.log("Your namespace is publicly available at", ack.soul);
 });

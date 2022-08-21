@@ -93,12 +93,11 @@ JOY.css(
 			"font-size": "16pt",
 			/*background: "var(--surface)",*/
 
-      
 			color: "var(--text)",
 			"text-align": "center",
 			"z-index": 999999,
 			"-webkit-tap-highlight-color": "transparent",
-			
+
 			margin: "1em auto",
 
 			width: "2.5em",
@@ -121,7 +120,7 @@ JOY.css(
 			padding: "0.25em",
 		},
 		"#meta .meta-none": {
-		   display: "none",
+			display: "none",
 		},
 
 		"#meta .meta-menu ul": {
@@ -129,8 +128,8 @@ JOY.css(
 			margin: 0,
 			"white-space": "nowrap",
 			display: "flex",
-			"justify-content": "space-around"
-,      "flex-wrap": "wrap",
+			"justify-content": "space-around",
+			"flex-wrap": "wrap",
 			"flex-direction": "row",
 			//"overflow-yrow-revese"
 			//"overflow-x": "auto",
@@ -168,24 +167,61 @@ JOY.css(
 	},
 	"only screen and (max-width: 600px)"
 );
-JOY.css({
-  "#nav": {
-    width: '70vw',
-    height: '2.5em',
-    background: 'var(--surface)',
-    position: 'fixed',
-    bottom: 0,
-    right: '5em',
-    margin: '1em auto',
-    'border-radius': 'var(--radius)'
-  },
-  "#nav ul": {
-			"white-space": "nowrap",
-			height: '100%',
+JOY.css(
+	{
+		"#nav": {
+			"z-index": 999,
+			height: "50%",
+			position: "fixed",
+			top: "5em",
+			// left: "0",
+			// "border-radius": "var(--radius)",
+		},
+		"#nav ul": {
+			padding: 0,
+			margin: 0,
+			// "white-space": "nowrap",
+			"list-style": "none",
 			display: "flex",
-			'align-items': 'center',
-			"justify-content": "space-around"
-,      "flex-wrap": "wrap",
+			// gap: "2em",
+			"justify-content": "space-around",
+			"flex-direction": "column",
+			"align-items": "center",
+			// "flex-wrap": "wrap",
+			height: "100%",
+		},
+	},
+	"only screen and (min-width: 600px)"
+);
+JOY.css(
+	{
+		"#nav": {
+			width: "70vw",
+			height: "2.5em",
+			background: "var(--surface)",
+			position: "fixed",
+			bottom: 0,
+			right: "5em",
+			margin: "1em auto",
+			"border-radius": "var(--radius)",
+		},
+		"#nav ul": {
+			"white-space": "nowrap",
+			height: "100%",
+			display: "flex",
+			"align-items": "center",
+			"justify-content": "space-around",
+			"flex-wrap": "wrap",
 			"flex-direction": "row",
-  }
-});
+		},
+	},
+	"only screen and (max-width: 600px)"
+);
+JOY.css(
+	{
+		".screen": {
+			"margin-left": "4em",
+		},
+	},
+	"only screen and (min-width: 600px)"
+);

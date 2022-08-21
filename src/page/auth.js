@@ -2,7 +2,7 @@ import logo from "../component/logo.js";
 
 const create = `
 <div id="create" class="page hold center">
-  <div class="center gap air">
+  <div class="center screen gap air">
     <div class="unit row gap">
       <a href="#home">${logo(5)}</a>
     </div>
@@ -23,7 +23,7 @@ const create = `
 
 const auth = `
 <div id="auth" class="page hold center">
-  <div class="center gap leak air">
+  <div class="center screen gap leak air">
     <div class="unit row gap">
       <a href="#home">${logo(5)}</a>
     </div>
@@ -51,16 +51,13 @@ JOY.route.page("auth", function () {
 	var $form = $("#signin");
 	$form.submit(function (e) {
 		e.preventDefault();
-		JOY.auth(
-			JSON.parse(key.val()),
-			(ack) => {
-			  if (!ack.err) {
-				  JOY.route("home");
-			  } else {
-			    JOY.tell(ack.err);
-			  }
+		JOY.auth(JSON.parse(key.val()), (ack) => {
+			if (!ack.err) {
+				JOY.route("home");
+			} else {
+				JOY.tell(ack.err);
 			}
-		);
+		});
 	});
 });
 
@@ -75,15 +72,18 @@ JOY.route.page("create", function () {
 		JOY.auth(
 			null,
 			async (ack) => {
-			  var avatar = await SEA.work(JOY.key.pub, null, null, {name: "SHA-256"})
+				var avatar = await SEA.work(JOY.key.pub, null, null, {
+					name: "SHA-256",
+				});
 				await JOY.user.generateCert(
-				"*",
-				[{ "*": "notifications" }, { "*": "notify" }],
-				"certificates/notifications"
-			  );
+					"*",
+					[{ "*": "notifications" }, { "*": "notify" }],
+					"certificates/notifications"
+				);
+				console.log(name.val());
 				JOY.user.get("profile").get("name").put(name.val());
 				JOY.user.get("profile").get("avatar").put(avatar);
-				
+
 				JOY.route("home");
 			},
 			true

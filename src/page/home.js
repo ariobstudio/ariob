@@ -2,8 +2,8 @@ import header from "../component/header.js";
 
 const home = `
 <div id="home" class="page hold center">
-  ${header('Home')}
-	<div class="center gap leak">
+  ${header("Home")}
+	<div class="center screen gap leak">
 		<p>Dashboard</p>
 	</div>
 </div>
@@ -11,14 +11,12 @@ const home = `
 JOY.route.page("home", function () {
 	document.title = "Home";
 	meta.edit({
-	  name: "Create",
-	  combo: ["C"],
-	  on: (eve) => {
-		// joy.render("", "", );
-	  },
-  });
-	
+		name: "Create",
+		combo: ["C"],
+		on: (eve) => {
+			// joy.render("", "", );
+		},
+	});
 });
-
 
 export default home;
