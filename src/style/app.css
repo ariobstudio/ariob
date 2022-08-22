@@ -134,3 +134,19 @@ input:hover {
 	visibility: visible;
 	transition: visibility 0s, all 0.25s ease-out;
 }
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateY(-25%);
+  }
+  100% {
+    opacity:1;
+    transform: translateY(0);
+  }
+}
+
+header {  
+  /* This section calls the slideInFromLeft animation we defined above */
+  
+  animation: 1s ease-out 0s 1 slideInFromLeft;
+}

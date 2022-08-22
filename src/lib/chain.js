@@ -1,5 +1,3 @@
-var Gun = typeof window !== "undefined" ? window.Gun : require("gun");
-var SEA = typeof window !== "undefined" ? window.SEA : require("gun/sea");
 
 // Gun.chain.useCertificate = async function (pub, certPath, path, cb) {
 // 	const user = this;
@@ -13,8 +11,11 @@ Gun.chain.generateCert = async function (who, where, path) {
 	var user = this;
 	var gun = user.back(-1);
 	var pair = user._.sea;
-	let certExists =
-		who === "*" ? await user.get(path) : await user.get(path).get(who);
+  
+	var certExists =
+		who === "*" ? await user.get(path) : await user.get(path).get(who)
+  console.log("Certificate exists!!" )
+	
 	if (certExists) return;
 	let certificate = await SEA.certify(who, where, pair);
 	if (who === "*") {

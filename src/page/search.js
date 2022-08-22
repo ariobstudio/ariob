@@ -4,9 +4,9 @@ const search = `
 <div id="search" class="page hold center">
 	<div class="center screen gap leak">
 	  <form id="search">
-	    <input class='surface gap unit max row' id='query' placeholder='Search'/>
+	    <input class='surface focus gap unit max row' id='query' placeholder='Search'/>
 	  </form>
-		<p></p>
+		<p class='gap'>No recent searches</p>
 	</div>
 </div>
 `;

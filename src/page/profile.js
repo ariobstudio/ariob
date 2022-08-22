@@ -29,21 +29,20 @@ JOY.route.page("profile", async function () {
 				name: p.name,
 				avatar: {
 					src:
-						"https://vibatar.herokuapp.com/4.x/big-smile/svg?seed=" +
-						p.avatar,
+						JOY.avatar(p.avatar),
 				},
 			});
 		});
 	if (!JOY.key) {
-		$("#profile-header").html(header("Profile"));
 		$(".their").addClass("none");
 		return;
 	}
-	$("#profile-header").html(header("Profile", true));
+
 	if (JOY.key && "~" + JOY.key.pub === pub) {
 		$(".their").addClass("none");
 		$(".mine").removeClass("none");
 		meta.edit({
+		  place: "profile",
 			name: "Avatar",
 			combo: ["A"],
 			on: async (eve) => {

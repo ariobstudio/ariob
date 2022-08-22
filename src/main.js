@@ -2,6 +2,7 @@ import "./style/style.css";
 import "./style/app.css";
 import "gun/gun.js";
 import "gun/sea.js";
+import "gun/lib/utils.js";
 import "./lib/as.js";
 import "./lib/chain.js";
 import "./lib/joy.js";
@@ -9,6 +10,7 @@ import "./lib/meta.js";
 import "./style/index.js";
 
 import nav from "./component/nav.js";
+import header from "./component/header.js";
 import home from "./page/home.js";
 import search from "./page/search.js";
 import settings from "./page/settings.js";
@@ -33,17 +35,28 @@ gun.on("auth", async function (ack) {
 	if (!storedKey) {
 		localStorage.setItem("key", JSON.stringify(JOY.key));
 	}
-	if (ack.soul) {
-		var $me = $("#account a");
-		var pub = ack.soul;
+  if (ack.soul) {
+    var $me = $("#account a.primary");
+		var pub = '~' + user.is.pub;
 		$me.html("");
+		$me.removeClass('primary')
+		$me.addClass('rim sap')
+		$me.removeClass('act')
 		$me.attr("href", `#profile/${pub}`);
-		user.get("profile").on((d) => {
+    user.get("profile").on((d) => {
+      console.log(location.hash + "updating")
 			JOY.route.render("my", ".persona-mini", $me, {
-				name: d.name,
+				avatar: {
+				  src: JOY.avatar(d.avatar)
+				}
 			});
 		});
-	}
+  }
+	await JOY.user.generateCert(
+				"*",
+				[{ "*": "notifications" }, { "*": "notify" }],
+				"certificates/notifications"
+			);
 	console.log("Your namespace is publicly available at", ack.soul);
 });
 /*meta.edit({
@@ -51,16 +64,37 @@ gun.on("auth", async function (ack) {
   fake: -1,
   combo: ["X"]
 })*/
-
+var routes = [
+  {
+    where: "home", 
+    icon:'home'
+  },
+  {
+    where: "activity", 
+    icon:'notification'
+  },
+  {
+    where: "settings", 
+    icon:'settings'
+  }
+]
 document.querySelector("#app").innerHTML = `
-  ${activity}
-  ${home}
-  ${settings}
-  ${profile}
-  ${create}
-  ${auth}
-  ${search}
-  ${nav()}
+  <header>
+    ${header()}
+  </header>
+  
+  <main>
+    ${activity}
+    ${home}
+    ${settings}
+    ${profile}
+    ${create}
+    ${auth}
+    ${search}
+  </main>
+  <footer>
+    ${nav(routes)}
+  <footer>
   <div class="model">
 	  ${notification}
 	  ${persona}

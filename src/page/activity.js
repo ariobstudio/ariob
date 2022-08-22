@@ -2,7 +2,6 @@ import header from "../component/header.js";
 
 const activity = `
 <div id="activity" class="page hold center">
-  ${header("Activity")}
 	<div class="center screen gap leak">
 	  <ul id="activities">
 	    
@@ -13,7 +12,7 @@ const activity = `
 var notifications = {};
 JOY.route.page("activity", function () {
 	document.title = "Activity";
-
+  place.textContent = "Activity"
 	JOY.user
 		.get("notifications")
 		.map()

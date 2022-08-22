@@ -133,6 +133,8 @@
 			}
 			var l = [];
 			$.each(at, function (i, k) {
+			 
+			  if(k.place && !location.hash.substring(1).includes(k.place)) return 
 				"back" != i && k && k.combo && k.name && l.push(k);
 			});
 			if (!l.length) {

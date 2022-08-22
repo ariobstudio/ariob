@@ -9,9 +9,7 @@ const persona = `
 		</div>
 </div>
 <div class="persona-mini">
-    <span class=''>
-		  <p class="unit" name='name'></p>
-		</span>
+  <img name="avatar" width="42em" alt="persona" class="unit center max"/>
 </div>
 `;
 

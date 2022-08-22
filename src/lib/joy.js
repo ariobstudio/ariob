@@ -52,7 +52,7 @@
 		return $data;
 	};
 	window.onhashchange = function () {
-	  window.top.location.reload(true)
+	  //window.location.reload(true)
 		r(location.hash.slice(1));
 	};
 	$.route = r;
@@ -76,6 +76,9 @@
 		joy.key = k;
 		joy.user.auth(k, cb, o);
 	};
+	joy.avatar = function(seed, type){
+	  return `https://vibatar.herokuapp.com/4.x/${type || 'big-smile'}/svg?seed=${seed}`
+	}
 	joy.tell = function (what, n) {
 		var e = $("#tell").find("p");
 		e.addClass("notify").text(what);

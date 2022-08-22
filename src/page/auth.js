@@ -66,7 +66,7 @@ JOY.route.page("create", function () {
 	var name = $("#alias");
 	name.focus();
 	var $form = $("#signup");
-	$form.submit(function (e) {
+	$form.submit(async function (e) {
 		e.preventDefault();
 
 		JOY.auth(
@@ -75,11 +75,7 @@ JOY.route.page("create", function () {
 				var avatar = await SEA.work(JOY.key.pub, null, null, {
 					name: "SHA-256",
 				});
-				await JOY.user.generateCert(
-					"*",
-					[{ "*": "notifications" }, { "*": "notify" }],
-					"certificates/notifications"
-				);
+				
 				console.log(name.val());
 				JOY.user.get("profile").get("name").put(name.val());
 				JOY.user.get("profile").get("avatar").put(avatar);

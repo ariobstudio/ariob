@@ -2,7 +2,7 @@ import header from "../component/header.js";
 
 const settings = `
 <div id="settings" class="page hold center">
-  ${header("Settings")}
+
 	<div class="center screen gap leak">
 		<p>Settings</p>
 	</div>
@@ -11,8 +11,9 @@ const settings = `
 
 JOY.route.page("settings", function () {
 	document.title = "Settings";
-
+  place.textContent = "Settings"
 	meta.edit({
+		place: "settings",
 		name: "Logout",
 		combo: ["L"],
 		on: (eve) => {
@@ -23,6 +24,7 @@ JOY.route.page("settings", function () {
 		},
 	});
 	meta.edit({
+	  place: "settings",
 		name: "Theme",
 		combo: ["T"],
 		on: function () {
