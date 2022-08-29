@@ -3,22 +3,84 @@ import header from "../component/header.js";
 const search = `
 <div id="search" class="page hold center">
 	<div class="center screen gap leak">
-	  <form id="search">
-	    <input class='surface focus gap unit max row' id='query' placeholder='Search'/>
+	  <form id="search" class="rim">
+	    <input class='surface unit max row' id='query' placeholder='Search !title, @person, #tag...'/>
 	  </form>
-		<p class='gap'>No recent searches</p>
+		<ul class="gap" id="searches">
+		</ul>
 	</div>
 </div>
 `;
 
 JOY.route.page("search", function () {
-	document.title = "Search";
+	JOY.head("Search", true);
 	var $search = $("#query");
 	$search.focus();
 	var $form = $("#search");
-	$form.submit(function (e) {
+	$form.on("keyup", function (e) {
 		e.preventDefault();
-		$search.val("");
+
+		// console.log($search.val());
+		JOY.user
+			.get("friends")
+			.map()
+			.on(async (d) => {
+				debounce(query(d, $search.val()), 300);
+			});
+	});
+	const query = async (pub, v, i) => {
+		$("#searches").empty();
+		if (pub.slice(1) === JOY.key.pub) return;
+
+		gun.get(pub)
+			.get("friends")
+			.map()
+			.on((f) => {
+				if (i) return;
+				query(f, v, true);
+			});
+		var q = v.substring(1);
+		if (v.charAt(0) === "@") {
+			var friend = await gun.get(pub).get("profile");
+			if (q && friend?.name.toLowerCase().includes(q.toLowerCase()))
+				JOY.route.render(
+					pub.substring(1, 8),
+					".persona-friend",
+					$("#searches"),
+					{
+						avatar: {
+							src: JOY.avatar(friend?.avatar),
+						},
+						link: {
+							href: `#profile/?pub=${pub}`,
+						},
+						name: friend?.name,
+					}
+				);
+		}
+
+		// if ($search.val().toLowerCase() !== friend.name.toLowerCase()) {
+		// 	$(`#${d.substring(1, 8)}`).remove();
+		// }
+		//Calls API to get Data
+	};
+
+	const debounce = function (fn, d) {
+		let timer;
+		return function () {
+			let context = this,
+				args = arguments;
+			clearTimeout(timer);
+			timer = setTimeout(() => {
+				fn.apply(context, args);
+			}, d);
+		};
+	};
+
+	meta.edit({
+		name: "Reset",
+		place: "search",
+		combo: ["R"],
 	});
 });
 
