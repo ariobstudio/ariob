@@ -30,129 +30,135 @@
 			return eve.metaKey || eve.ctrlKey || eve.altKey;
 		} // ALT added
 		k.down = function (eve) {
-			var key = ((k.eve = m.eve = eve).which =
-				eve.which || eve.fake || eve.keyCode);
 			if (eve.repeat) {
 				return;
 			}
-			if (!k.meta[key] && withMeta(eve) && !k.at[key]) {
-				return m.flip(false);
-			} // cancel and close when no action and "meta key" held down (e.g. ctrl+c)
+			var key = ((k.eve = m.eve = eve).which =
+				eve.which || eve.fake || eve.keyCode);
 			if (!eve.fake && key === k.last) {
 				return;
 			}
-			k.last = key; // jussi: polyfilling eve.repeat?
+			k.last = key;
 			if (
 				!eve.fake &&
 				$(eve.target).closest("input, textarea, [contenteditable=true]")
-					.length /* && !$(eve.target).closest('#meta').get().length*/
+					.length
 			) {
-				return;
-				//if(meta.flip.is() && !withMeta(eve)) eve.preventDefault()
+				if (k.meta[key]) {
+					k.down.meta = key = -1;
+				}
+				if (!k.down.meta) {
+					return;
+				}
 			}
+			(k.combo || (k.combo = [])).push(key);
 			m.check("on", key, k.at || (k.at = m.edit));
 			if (k.meta[key]) {
-				m.flip();
+				m.list(k.at.back || m.edit);
+				if (k.at && !k.at.back) {
+					m.flip();
+				}
 			}
 		};
-		k.down.keys = {}; // currently pressed keys
 		k.up = function (eve) {
 			var tmp;
 			var key = ((k.eve = m.eve = eve).which =
 				eve.which || eve.fake || eve.keyCode);
+			if (
+				!eve.fake &&
+				$(eve.target).closest("input, textarea, [contenteditable=true]")
+					.length
+			) {
+				if (k.meta[key]) {
+					k.down.meta = null;
+					key = -1;
+				} else if (!k.down.meta) {
+					return;
+				}
+			}
 			k.last = null;
+			if ($(":focus").closest("#meta").length) {
+				return;
+			}
 			m.check("up", key);
-			if (k.meta[key] && m.check.fired) {
-				m.close();
+			if (-1 === key || 27 === eve.which) {
+				k.wipe();
 			}
 		};
 		m.flip = function (tmp) {
-			m.flip.active = true;
-			tmp === false || (!tmp && m.ui.board.is(":visible"))
-				? m.close()
-				: m.open();
-			m.flip.active = false;
-		};
-		m.open = function () {
-			m.check.fired = null;
-			m.ui.board.removeClass("meta-none");
-		};
-		m.close = function () {
-			Object.keys(k.down.keys).forEach((keyDown) => {
-				m.check("up", keyDown);
-			});
-			m.ui.board.addClass("meta-none");
+			var board = $("#meta .meta-menu");
+			tmp === false || (!tmp && board.is(":visible"))
+				? board.addClass("meta-none")
+				: board.removeClass("meta-none");
 		};
 		m.flip.is = function () {
-			return m.ui.board.is(":visible");
+			return $("#meta .meta-menu").is(":visible");
 		};
 		m.flip.wait = 500;
 		m.check = function (how, key, at) {
-			if (!m.flip.is() && !k.meta[key]) {
-				return;
-			} // TEMP: cancel non-open events when closed TODO make optional
 			at = k.at || m.edit;
-			var next = at[key];
-			if (!next) {
+			var edit = at[key];
+			if (!edit) {
 				return;
 			}
 			var tmp = k.eve || noop;
 			if (tmp.preventDefault) {
 				tmp.preventDefault();
-			} // prevent typing (etc) when action found
-			if (next[how]) {
-				next[how](m.eve);
-				meta.ui.blink();
-				m.check.fired = true;
-				if (how == "up") delete k.down.keys[key];
-				else k.down.keys[key] = 1;
 			}
-			if ("up" == how) {
+			if (edit[how]) {
+				if (tmp.fake && !edit.fake) {
+					m.tap.edit = edit;
+				} else {
+					edit[how](m.eve);
+					if (k.at !== m.edit && "up" === how) {
+						if (k.down.meta) {
+							m.list((k.at = m.edit));
+						} else {
+							k.wipe();
+						}
+					}
+				}
+			}
+			if ("up" != how) {
 				return;
 			}
-			if (at != next && !next.back) {
-				next.back = at;
+			if (at != edit) {
+				edit.back = at;
 			}
-			(k.combo || (k.combo = [])).push(key);
-			m.list(next, true);
+			m.list(edit, true);
 		};
-		function defaultSort(a, b) {
-			a = a.combo.slice(-1)[0] || 0;
-			if (a.length) {
-				a = a.toUpperCase().charCodeAt(0);
-			}
-			b = b.combo.slice(-1)[0] || 0;
-			if (b.length) {
-				b = b.toUpperCase().charCodeAt(0);
-			}
-			return a < b ? -1 : 1;
-		}
 		m.list = function (at, opt) {
 			if (!at) {
 				return m.flip(false);
 			}
 			var l = [];
 			$.each(at, function (i, k) {
-			 
-			  if(k.place && !location.hash.substring(1).includes(k.place)) return 
-				"back" != i && k && k.combo && k.name && l.push(k);
+				"back" != i && k.combo && k.name && l.push(k);
 			});
 			if (!l.length) {
 				return;
 			}
 			k.at = at;
-			if (at.sort !== null) {
-				l = l.sort(at.sort || defaultSort);
-			}
+			l = l.sort(function (a, b) {
+				a = a.combo.slice(-1)[0] || 0;
+				if (a.length) {
+					a = a.toUpperCase().charCodeAt(0);
+				}
+				b = b.combo.slice(-1)[0] || 0;
+				if (b.length) {
+					b = b.toUpperCase().charCodeAt(0);
+				}
+				return a < b ? -1 : 1;
+			});
 			var $ul = $("#meta .meta-menu ul");
 			$ul.children("li").addClass("meta-none").hide();
 			setTimeout(function () {
 				$ul.children(".meta-none").remove();
 			}, 250); // necessary fix for weird bug glitch
 			$.each(l, function (i, k) {
-				var $li = $("<li>").text(k.name).data(k);
+				var $li = $("<li>").html(k.name);
+				$li.get(0).style.setProperty("--meta-key", l.length - i);
 				$ul.append($li);
-				if (k.styles) meta.ui.iniline($li[0], k.styles);
 			});
 			if (opt) {
 				m.flip(true);
@@ -164,9 +170,9 @@
 				$("<li>")
 					.html("&larr;")
 					.on("click", function () {
-					  if (m.tap.stun) {
-      				return (m.tap.stun = false);
-      			}
+						if (m.tap.stun) {
+							return (m.tap.stun = false);
+						}
 						m.list((k.at = at.back));
 					})
 			);
@@ -242,7 +248,7 @@
 			k.at == m.edit ? m.flip(false) : m.check("up", "back");
 		}
 		var defaults = {
-			8: { on: back }, // backspace
+			8: { on: meta.edit }, // backspace
 			27: { up: k.wipe }, // esc: close and reset menu
 		};
 		$.extend(meta.edit, defaults);
@@ -297,7 +303,6 @@
 		});
 		$(document.body).append($m);
 		meta.ui.board = $(".meta-menu", $m);
-		
 
 		meta.ui.iniline = function (el, cssObj) {
 			for (var k in cssObj) {
