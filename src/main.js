@@ -47,11 +47,11 @@ gun.on("auth", async function (ack) {
 			});
 		});
 	}
-	await JOY.user.generateCert(
-		"*",
-		[{ "*": "notifications" }, { "*": "notify" }],
-		"certificates/notifications"
-	);
+	// await JOY.user.generateCert(
+	// 	"*",
+	// 	[{ "*": "notifications" }, { "*": "notify" }],
+	// 	"certificates/notifications"
+	// );
 	console.log("Your namespace is publicly available at", ack.soul);
 });
 

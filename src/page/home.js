@@ -24,7 +24,7 @@ JOY.route.page("home", function () {
 			SEA.work(key.pub, null, null, {
 				name: "SHA-256",
 			}).then(function (hash) {
-				gun.get(`test-paper#`)
+				gun.get("test-paper#")
 					.get(hash)
 					.put(key.pub)
 					.on((d, k) => console.log(d, "----", k));

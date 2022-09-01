@@ -15,31 +15,33 @@ JOY.route.page("paper", async function () {
 
 	JOY.head("Paper");
 	var page = {};
-	// page.render = async (obj, who) => {
-	// 	if (who == "me") {
-	// 		var mine = await gun.user().get("papers").get(obj.hash).get(obj.id);
-	// 		mine?.content && $("#content").html(mine.content);
-	// 	} else {
-	// 		gun.get("~" + obj.author)
-	// 			.get("papers")
-	// 			.get(obj.hash)
-	// 			.get(obj.id)
-	// 			.on((d) => {
-	// 				$("#content").html(d.content);
-	// 			});
-	// 	}
-	// };
+	page.render = async (obj, who) => {
+		console.log({ obj, who });
+		// if (who == "me") {
+		// 	var mine = await gun.user().get("papers").get(obj.hash).get(obj.id);
+		// 	mine?.content && $("#content").html(mine.content);
+		// } else {
+		// 	gun.get("~" + obj.author)
+		// 		.get("papers")
+		// 		.get(obj.hash)
+		// 		.get(obj.id)
+		// 		.on((d) => {
+		// 			$("#content").html(d.content);
+		// 		});
+		// }
+	};
 
 	page.start = async function () {
 		var url = new URLSearchParams(location.hash.split("/")[1]);
 		if (url.get("p")) {
-			page.id = url.get("p");
-			page.hash = url.get("h");
-			var author = await gun.get("test-paper#").get(page.hash);
+			var id = url.get("p");
+			var hash = url.get("h");
+			var author = await gun.get("test-paper#").get(hash);
 			var key = JOY.key;
+			console.log(author);
 			if (author === key.pub) {
 				// console.log("author, author is: ", author);
-				page.render({ id: page.id, hash: page.hash }, "me");
+				// page.render({ id: page.id, hash: page.hash }, "me");
 
 				// Edit
 				meta.edit({
