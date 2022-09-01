@@ -1,48 +1,99 @@
-import header from "../component/header.js";
-
 const profile = `
 <div id="profile" class="page hold center">
-	<div id="profile-header">
-	</div>
-	<div class="center screen gap leak">
+
+	<div class="center pad screen gap leak">
 		<div id="persona">
 		</div>
-		<div class='mine none'>
+		<div class='mine'>
 		  <button id="cpk">Copy Key</button>
-		  
 		</div>
 		<div class='their'>
-		  <button id="conn">Connect</button>
+			<button id="conn">Add Friend</button>
+      		<button id="share">Share</button>
 		</div>
+		<div id="profile-view" class="unit row min">
+			<h3 class="tab left act">Friends</h3>
+			<h3 class="tab left act surfacet">Posts</h3>
+		</div>
+		<ul id='others'></ul>
 	</div>
 </div>
 `;
 
-JOY.route.page("profile", async function () {
-	document.title = "Profile";
-	var pub = location.hash.split("/").slice(-1)[0];
+JOY.route.page("profile", async function (a) {
+	JOY.head("Profile", true);
+	var url = new URLSearchParams(location.hash.split("/")[1]);
+	var pub = url.get("pub");
+	$(".mine").addClass("none");
+	$(".their").addClass("none");
 	gun.get(pub)
 		.get("profile")
-		.on((p) => {
-			console.log(p);
+		.on(async (p) => {
 			JOY.route.render("p", ".persona-main", $("#persona"), {
-				name: p.name,
+				username: p.name,
 				avatar: {
-					src:
-						JOY.avatar(p.avatar),
+					src: JOY.avatar(p.avatar),
 				},
 			});
+			JOY.user
+				.get("friends")
+				.map()
+				.on((a) => {
+					if (a == pub) {
+						$("#conn").addClass("none");
+					}
+				});
 		});
-	if (!JOY.key) {
-		$(".their").addClass("none");
-		return;
-	}
+	$("#profile-view .tab").each((i, tab) => {
+		$(tab).click(function () {
+			$(this).removeClass("surfacet");
+			$(this).siblings(".tab").addClass("surfacet");
+			$("#others").empty();
+			render(pub, $(this).text());
+		});
+		if ($(tab).hasClass("surfacet")) {
+			return;
+		}
+		render(pub, $(tab).text());
+	});
+	function render(p, t) {
+		if (t == "Friends") {
+			gun.get(p)
+				.get("friends")
+				.map()
+				.on(async (d, k) => {
+					if (!d) return;
 
-	if (JOY.key && "~" + JOY.key.pub === pub) {
-		$(".their").addClass("none");
+					var friend = await gun.get(d).get("profile");
+					JOY.route.render(
+						d.substring(1, 8),
+						".persona-friend",
+						$("#others"),
+						{
+							avatar: {
+								src: JOY.avatar(friend.avatar),
+							},
+							link: {
+								href: `#profile/?pub=${d}`,
+							},
+							name: friend.name,
+						}
+					);
+				});
+		}
+	}
+	meta.edit({
+		place: "profile",
+		name: "Share",
+		combo: ["S"],
+		on: async (eve) => {
+			navigator.clipboard.writeText(location.href);
+		},
+	});
+	if (JOY.key && `~${JOY.key.pub}` === pub) {
 		$(".mine").removeClass("none");
 		meta.edit({
-		  place: "profile",
+			place: "profile",
 			name: "Avatar",
 			combo: ["A"],
 			on: async (eve) => {
@@ -52,23 +103,37 @@ JOY.route.page("profile", async function () {
 				JOY.user.get("profile").get("avatar").put(avatar);
 			},
 		});
+
+		var username = $("p[name='username']");
+		if (JOY.key && "~" + JOY.key.pub === pub) {
+			if (!username.text()) {
+				username.text("Double Tap!");
+			}
+			username.addClass("noselect");
+			username.on("dblclick", function () {
+				meta.ask(
+					"Change username",
+					(name) => {
+						JOY.user.get("profile").get("name").put(name);
+					},
+					null,
+					true
+				);
+			});
+		}
+		$("#cpk").click(() => {
+			navigator.clipboard.writeText(JSON.stringify(JOY.key));
+		});
+		return;
+	} else {
+		$(".their").removeClass("none");
 	}
 
-	$("#cpk").click(() => {
-		navigator.clipboard.writeText(JSON.stringify(JOY.key));
+	$("#conn").click(() => {
+		JOY.user.connect(pub);
 	});
-
-	$("#conn").click(async () => {
-		var name = await gun.getUsername(pub);
-		JOY.tell("Successfully sent request to " + name);
-		JOY.user.sendNotification(pub, {
-			data: JOY.user.is.pub,
-			type: "friend-request",
-			createdAt: Date.now(),
-		});
-
-		//user.notify(pub, true);
-		//user.generateCert(pub, { "*": "friends" }, "certificates/friends");
+	$("#share").click(() => {
+		navigator.clipboard.writeText(location.href);
 	});
 });
 

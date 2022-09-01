@@ -4,6 +4,7 @@ const friends = `
 <div id="friends" class="page hold center">
 	<div class="center screen rim hold">
 	  <ul id="friend">
+	    
 	  </ul>
 	</div>
 </div>
