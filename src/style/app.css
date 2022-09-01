@@ -15,6 +15,7 @@
 	--primary: var(--green);
 	--secondary: var(--yellow);
 	--accent: var(--red);
+
 	--radius: 0.75em;
 }
 
@@ -94,7 +95,7 @@ button:disabled {
 	background: var(--surface);
 }
 input {
-	padding: 0.5em 1em;
+	padding: 0.5em 0.25em;
 	border: none;
 	border-radius: var(--radius);
 	color: var(--text);
@@ -133,47 +134,19 @@ input:hover {
 	visibility: visible;
 	transition: visibility 0s, all 0.25s ease-out;
 }
-
-.noselect {
-	-moz-user-select: none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	user-select: none;
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateY(-25%);
+  }
+  100% {
+    opacity:1;
+    transform: translateY(0);
+  }
 }
 
-@keyframes fade {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
-}
-@keyframes shake {
-	0% {
-		transform: translateX(0);
-	}
-	25% {
-		transform: translateX(0.5em);
-	}
-	50% {
-		transform: translateX(-0.5em);
-	}
-	75% {
-		transform: translateX(0.5em);
-	}
-	100% {
-		transform: translateX(0);
-	}
-}
-main {
-	/* opacity: 0; */
-	animation: 0.3s ease-out 0s 1 shake;
-}
-img {
-	animation: 0.3s ease-out 0s 1 fade;
-}
-
-[contenteditable]:focus {
-	outline: none;
+header {  
+  /* This section calls the slideInFromLeft animation we defined above */
+  
+  animation: 1s ease-out 0s 1 slideInFromLeft;
 }

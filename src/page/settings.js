@@ -10,7 +10,8 @@ const settings = `
 `;
 
 JOY.route.page("settings", function () {
-	JOY.head("Settings");
+	document.title = "Settings";
+  place.textContent = "Settings"
 	meta.edit({
 		place: "settings",
 		name: "Logout",
@@ -23,7 +24,7 @@ JOY.route.page("settings", function () {
 		},
 	});
 	meta.edit({
-		place: "settings",
+	  place: "settings",
 		name: "Theme",
 		combo: ["T"],
 		on: function () {

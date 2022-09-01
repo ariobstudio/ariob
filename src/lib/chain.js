@@ -1,3 +1,4 @@
+
 // Gun.chain.useCertificate = async function (pub, certPath, path, cb) {
 // 	const user = this;
 // 	const gun = user.back(-1);
@@ -10,32 +11,30 @@ Gun.chain.generateCert = async function (who, where, path) {
 	var user = this;
 	var gun = user.back(-1);
 	var pair = user._.sea;
-
+  
 	var certExists =
-		who === "*" ? await user.get(path) : await user.get(path).get(who);
-	console.log("Certificate exists!!", certExists);
+		who === "*" ? await user.get(path) : await user.get(path).get(who)
+  console.log("Certificate exists!!" )
+	
 	if (certExists) return;
 	let certificate = await SEA.certify(who, where, pair);
-	if (who !== "*") {
-		console.log("USER??", user);
+	if (who === "*") {
+		user.get(path).put(certificate, ({ ok }) => {
+			if (ok) console.log("Public Request Certificate created");
+		});
+	} else {
 		user &&
 			user
 				.get(path)
 				.get(who)
-				.put(certificate)
-				.once((data) => {
-					if (data) {
+				.put(certificate, ({ ok }) => {
+					if (ok)
 						console.log("Friend Certificate created for: ", who);
-					}
 					console.log("Friend Certificate: ", certificate);
-					return;
 				});
-		return;
 	}
-	user.get(path).put(certificate, ({ ok }) => {
-		if (ok) console.log("Public Request Certificate created");
-	});
 };
+
 
 Gun.chain.notify = function (pub, message) {
 	var gun = this;
@@ -90,28 +89,28 @@ Gun.chain.sendNotification = async function (pub, message) {
 					);
 		});
 };
-Gun.chain.acceptConnection = async function (pub) {
+Gun.chain.acceptFriend = async function (pub) {
 	var user = this;
 	var gun = user.back(-1);
 	user.generateCert(pub, { "*": "friends" }, "certificates/friends");
-	console.log("Accepting connection");
+
 	gun.get(pub)
 		.get("certificates/friends")
 		.get(user.is.pub)
-		.on(async (cert) => {
-			console.log("Friend Cert: ", cert);
+		.once(async (cert) => {
 			if (cert) {
-				if (!(await gun.get(pub).get("friends").get(user.is.pub))) {
-					gun.get(pub)
+				if (
+					!(await gun
+						.get( pub)
+						.get("friends")
+						.get(user.is.pub))
+				) {
+					gun.get( pub)
 						.get("friends")
 						.set(
 							user.is.pub,
 							({ ok }) => {
-								console.log("Adding my pub to friend's graph");
 								if (ok) user.get("friends").set(pub);
-								console.log(
-									"Done setting my friend's pub to mine"
-								);
 							},
 							{ opt: { cert } }
 						);
@@ -123,36 +122,8 @@ Gun.chain.acceptConnection = async function (pub) {
 Gun.chain.getUsername = async function (pub) {
 	var user = this;
 	var gun = user.back(-1);
-	return gun.get(pub).get("profile").get("name");
-};
-
-Gun.chain.connect = async function (pub) {
-	var user = this;
-	var gun = user.back();
-	var epub = await gun.get(pub).get("epub");
-	var pair = await SEA.pair();
-	var payload = {
-		from: user.is.pub,
-		created: Date.now(),
-		payload: "friend-request",
-	};
-	var secret = await SEA.secret(epub, pair);
-	var encrypted = await SEA.encrypt(payload, secret);
-	gun.get(`@${pub.substring(1)}`)
-		.get("notifications")
-		.set({ data: encrypted, epub: pair.epub });
-
-	user.get("friends").set(pub);
-	// var throwaway = gun.user();
-	// throwaway.auth(pair);
-};
-Gun.chain.ack = function (pub) {
-	const user = this;
-	user.get("friends").set(pub);
-};
-Gun.chain.rej = function (pub) {
-	const user = this;
-	const gun = user.back(-1);
+	return gun.get(pub)
+		.get("profile").get("name")
 };
 
 Gun.chain.upload = function (b64, opt, cb) {

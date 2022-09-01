@@ -45,7 +45,7 @@ const auth = `
 `;
 
 JOY.route.page("auth", function () {
-	JOY.head("Access", true);
+	document.title = "Existing account";
 	var key = $("#key");
 	key.focus();
 	var $form = $("#signin");
@@ -62,7 +62,7 @@ JOY.route.page("auth", function () {
 });
 
 JOY.route.page("create", function () {
-	JOY.head("Join", true);
+	document.title = "Create an account";
 	var name = $("#alias");
 	name.focus();
 	var $form = $("#signup");
@@ -75,10 +75,11 @@ JOY.route.page("create", function () {
 				var avatar = await SEA.work(JOY.key.pub, null, null, {
 					name: "SHA-256",
 				});
+				
 				console.log(name.val());
-				JOY.user.get("epub").put(JOY.key.epub);
 				JOY.user.get("profile").get("name").put(name.val());
 				JOY.user.get("profile").get("avatar").put(avatar);
+
 				JOY.route("home");
 			},
 			true

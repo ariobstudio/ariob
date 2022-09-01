@@ -5,6 +5,7 @@ JOY.css({
 		bottom: "1em",
 		"font-size": "16pt",
 		background: "var(--surface)",
+		/*border: 0.1em solid var(--text),*/
 		color: "var(--text)",
 		"text-align": "center",
 		"z-index": 999999,
@@ -29,6 +30,7 @@ JOY.css({
 	"#meta .meta-menu": {
 		background: "var(--surface)",
 		// background: "rgba(var(--background), 0.5)",
+		// border: "0.1em solid var(--text)",
 		// "backdrop-filter": "blur(5px)",
 		// "-webkit-backdrop-filter": "blur(5px)",
 		"border-radius": "var(--radius)",
@@ -110,7 +112,7 @@ JOY.css(
 			//background: "rgba(var(--primary), 0.8)",
 			/*
 		"border-radius": "var(--radius)",
-		"backdrop-filter": "blur(5px)",
+		"backdrop-filter: "blur(5px)",
 		"-webkit-backdrop-filter": "blur(5px),*/
 			//animation: "none",
 			//"animation-delay": "0ms"
@@ -169,22 +171,20 @@ JOY.css(
 	{
 		"#nav": {
 			"z-index": 999,
-			height: "auto",
+			height: "50%",
 			position: "fixed",
 			top: "5em",
-			left: "0em",
 			// left: "0",
 			// "border-radius": "var(--radius)",
 		},
 		"#nav ul": {
 			padding: 0,
 			margin: 0,
-			gap: "2.5em",
 			// "white-space": "nowrap",
 			"list-style": "none",
 			display: "flex",
 			// gap: "2em",
-			"justify-content": "space-between",
+			"justify-content": "space-around",
 			"flex-direction": "column",
 			"align-items": "center",
 			// "flex-wrap": "wrap",
@@ -224,12 +224,4 @@ JOY.css(
 		},
 	},
 	"only screen and (min-width: 600px)"
-);
-JOY.css(
-	{
-		".screen": {
-			"margin-bottom": "4em",
-		},
-	},
-	"only screen and (max-width: 600px)"
 );

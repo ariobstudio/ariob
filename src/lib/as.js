@@ -235,3 +235,21 @@
 	window.as = as;
 	$.as = as;
 })();
+
+$(function () {
+	$(".page").not(":first").hide();
+	JOY.route(location.hash.slice(1));
+	$(
+		(JOY.start =
+			JOY.start ||
+			function () {
+				$.as(document, gun, null, JOY.opt);
+			})
+	);
+
+	if ($("body").attr("peers")) {
+		(console.warn || console.log)(
+			'Warning: Please upgrade <body peers=""> to https://github.com/eraeco/joydb#peers !'
+		);
+	}
+});

@@ -85,7 +85,7 @@ p + p {
 .hide {
 	opacity: 0;
 	visibility: hidden;
-	transition: all 1s;
+	transition: all 2s;
 }
 
 .full {
@@ -225,16 +225,16 @@ p + p {
 }
 
 .red {
-	background: var(--red);
+	background: #ea3224;
 }
 .green {
-	background: var(--green);
+	background: #33cc33;
 }
 .blue {
-	background: var(--blue);
+	background: #4d79d8;
 }
 .yellow {
-	background: var(--yellow);
+	background: #d3a438;
 }
 .black {
 	background: black;
@@ -246,22 +246,21 @@ p + p {
 .shade {
 	background: rgba(0%, 0%, 0%, 0.1);
 }
-
 .tint {
 	background: rgba(100%, 100%, 100%, 0.1);
 }
 
 .redt {
-	color: var(--red);
+	color: #ea3224;
 }
 .greent {
-	color: var(--green);
+	color: #33cc33;
 }
 .bluet {
-	color: var(--);
+	color: #4d79d8;
 }
 .yellowt {
-	color: var(--yellow);
+	color: #d3a438;
 }
 .blackt {
 	color: black;
@@ -269,9 +268,7 @@ p + p {
 .whitet {
 	color: white;
 }
-.surfacet {
-	color: var(--surface);
-}
+
 .hue {
 	background: var(--green);
 	-webkit-animation: hue 3s infinite;
@@ -313,282 +310,282 @@ p + p {
 }
 
 .huet {
-	color: var(--);
+	color: #4d79d8;
 	-webkit-animation: huet 900s infinite;
 	animation: huet 900s infinite;
 }
 @keyframes huet {
 	0% {
-		color: var(--);
+		color: #4d79d8;
 	}
 	25% {
-		color: var(--green);
+		color: #33cc33;
 	}
 	50% {
-		color: var(--yellow);
+		color: #d3a438;
 	}
 	75% {
-		color: var(--red);
+		color: #ea3224;
 	}
 	100% {
-		color: var(--);
+		color: #4d79d8;
 	}
 }
 @-webkit-keyframes huet {
 	0% {
-		color: var(--);
+		color: #4d79d8;
 	}
 	25% {
-		color: var(--green);
+		color: #33cc33;
 	}
 	50% {
-		color: var(--yellow);
+		color: #d3a438;
 	}
 	75% {
-		color: var(--red);
+		color: #ea3224;
 	}
 	100% {
-		color: var(--);
+		color: #4d79d8;
 	}
 }
 
 .hue2 {
-	background: var(--red);
+	background: #ea3224;
 	-webkit-animation: hue2 900s infinite;
 	animation: hue2 900s infinite;
 }
 @keyframes hue2 {
 	0% {
-		background-color: var(--red);
+		background-color: #ea3224;
 	}
 	25% {
-		background-color: var(--);
+		background-color: #4d79d8;
 	}
 	50% {
-		background-color: var(--green);
+		background-color: #33cc33;
 	}
 	75% {
-		background-color: var(--yellow);
+		background-color: #d3a438;
 	}
 	100% {
-		background-color: var(--red);
+		background-color: #ea3224;
 	}
 }
 @-webkit-keyframes hue2 {
 	0% {
-		background-color: var(--red);
+		background-color: #ea3224;
 	}
 	25% {
-		background-color: var(--);
+		background-color: #4d79d8;
 	}
 	50% {
-		background-color: var(--green);
+		background-color: #33cc33;
 	}
 	75% {
-		background-color: var(--yellow);
+		background-color: #d3a438;
 	}
 	100% {
-		background-color: var(--red);
+		background-color: #ea3224;
 	}
 }
 
 .huet2 {
-	color: var(--red);
+	color: #ea3224;
 	-webkit-animation: huet2 1s infinite;
 	animation: huet2 1s infinite;
 }
 @keyframes huet2 {
 	0% {
-		color: var(--red);
+		color: #ea3224;
 	}
 	25% {
-		color: var(--);
+		color: #4d79d8;
 	}
 	50% {
-		color: var(--green);
+		color: #33cc33;
 	}
 	75% {
-		color: var(--yellow);
+		color: #d3a438;
 	}
 	100% {
-		color: var(--red);
+		color: #ea3224;
 	}
 }
 @-webkit-keyframes huet2 {
 	0% {
-		color: var(--red);
+		color: #ea3224;
 	}
 	25% {
-		color: var(--);
+		color: #4d79d8;
 	}
 	50% {
-		color: var(--green);
+		color: #33cc33;
 	}
 	75% {
-		color: var(--yellow);
+		color: #d3a438;
 	}
 	100% {
-		color: var(--red);
+		color: #ea3224;
 	}
 }
 
 .hue3 {
-	background: var(--green);
+	background: #33cc33;
 	-webkit-animation: hue3 900s infinite;
 	animation: hue3 900s infinite;
 }
 @keyframes hue3 {
 	0% {
-		background-color: var(--green);
+		background-color: #33cc33;
 	}
 	25% {
-		background-color: var(--yellow);
+		background-color: #d3a438;
 	}
 	50% {
-		background-color: var(--red);
+		background-color: #ea3224;
 	}
 	75% {
-		background-color: var(--);
+		background-color: #4d79d8;
 	}
 	100% {
-		background-color: var(--green);
+		background-color: #33cc33;
 	}
 }
 @-webkit-keyframes hue3 {
 	0% {
-		background-color: var(--green);
+		background-color: #33cc33;
 	}
 	25% {
-		background-color: var(--yellow);
+		background-color: #d3a438;
 	}
 	50% {
-		background-color: var(--red);
+		background-color: #ea3224;
 	}
 	75% {
-		background-color: var(--);
+		background-color: #4d79d8;
 	}
 	100% {
-		background-color: var(--green);
+		background-color: #33cc33;
 	}
 }
 
 .huet3 {
-	color: var(--green);
+	color: #33cc33;
 	-webkit-animation: huet3 900s infinite;
 	animation: huet3 900s infinite;
 }
 @keyframes huet3 {
 	0% {
-		color: var(--green);
+		color: #33cc33;
 	}
 	25% {
-		color: var(--yellow);
+		color: #d3a438;
 	}
 	50% {
-		color: var(--red);
+		color: #ea3224;
 	}
 	75% {
-		color: var(--);
+		color: #4d79d8;
 	}
 	100% {
-		color: var(--green);
+		color: #33cc33;
 	}
 }
 @-webkit-keyframes huet3 {
 	0% {
-		color: var(--green);
+		color: #33cc33;
 	}
 	25% {
-		color: var(--yellow);
+		color: #d3a438;
 	}
 	50% {
-		color: var(--red);
+		color: #ea3224;
 	}
 	75% {
-		color: var(--);
+		color: #4d79d8;
 	}
 	100% {
-		color: var(--green);
+		color: #33cc33;
 	}
 }
 
 .hue4 {
-	background: var(--yellow);
+	background: #d3a438;
 	-webkit-animation: hue4 900s infinite;
 	animation: hue4 900s infinite;
 }
 @keyframes hue4 {
 	0% {
-		background-color: var(--yellow);
+		background-color: #d3a438;
 	}
 	25% {
-		background-color: var(--red);
+		background-color: #ea3224;
 	}
 	50% {
-		background-color: var(--);
+		background-color: #4d79d8;
 	}
 	75% {
-		background-color: var(--green);
+		background-color: #33cc33;
 	}
 	100% {
-		background-color: var(--yellow);
+		background-color: #d3a438;
 	}
 }
 @-webkit-keyframes hue4 {
 	0% {
-		background-color: var(--yellow);
+		background-color: #d3a438;
 	}
 	25% {
-		background-color: var(--red);
+		background-color: #ea3224;
 	}
 	50% {
-		background-color: var(--);
+		background-color: #4d79d8;
 	}
 	75% {
-		background-color: var(--green);
+		background-color: #33cc33;
 	}
 	100% {
-		background-color: var(--yellow);
+		background-color: #d3a438;
 	}
 }
 
 .huet4 {
-	color: var(--yellow);
+	color: #d3a438;
 	-webkit-animation: huet4 900s infinite;
 	animation: huet4 900s infinite;
 }
 @keyframes huet4 {
 	0% {
-		color: var(--yellow);
+		color: #d3a438;
 	}
 	25% {
-		color: var(--red);
+		color: #ea3224;
 	}
 	50% {
-		color: var(--);
+		color: #4d79d8;
 	}
 	75% {
-		color: var(--green);
+		color: #33cc33;
 	}
 	100% {
-		color: var(--yellow);
+		color: #d3a438;
 	}
 }
 @-webkit-keyframes huet4 {
 	0% {
-		color: var(--yellow);
+		color: #d3a438;
 	}
 	25% {
-		color: var(--red);
+		color: #ea3224;
 	}
 	50% {
-		color: var(--);
+		color: #4d79d8;
 	}
 	75% {
-		color: var(--green);
+		color: #33cc33;
 	}
 	100% {
-		color: var(--yellow);
+		color: #d3a438;
 	}
 }
 

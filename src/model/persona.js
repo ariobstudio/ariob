@@ -1,26 +1,16 @@
+
 const persona = `
-	<div class="persona-main unit">
-		<div class='unit'>
-			<div class="unit sap">
-			<img name="avatar" width="35%" alt="persona" class="gap sap"/>
-			</div>
-		<p class="unit row crack" name='username'></p>
+<div class="persona-main unit">
+    <div class='unit'>
+		  <div class="unit sap">
+		    <img name="avatar" width="35%" alt="persona" class=""/>
+		   </div>
+		  <p class="unit row crack" name='name'></p>
 		</div>
-	</div>
-	<div class="persona-mini">
-		<img name="avatar" width="54em" alt="persona" class="gap sap"/>
-	</div>
-	<div class="persona-friend">
-		<li
-		 class='unit row rim sap'>
-			<a name="link" class="act">
-				<img name="avatar" width="54em" alt="persona" class="unit left sap"/>
-				<div class="unit left" style="margin-left: 1em;">
-					<p name="name" class="unit gap center"></p>
-				</div>
-			</a>
-		</li>
-	</div>
+</div>
+<div class="persona-mini">
+  <img name="avatar" width="42em" alt="persona" class="unit center max"/>
+</div>
 `;
 
 export default persona;
