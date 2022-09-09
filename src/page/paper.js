@@ -85,7 +85,7 @@ JOY.route.page("paper", async function () {
 		var time = await u.get("when");
 		if (!time) return;
 		var when = JOY.since(new Date());
-		$("#saved").text("Last edited " + when + " ago");
+		// $("#saved").text("Last edited " + when + " ago");
 	};
 	console.log("GET TIME:", u);
 	u.on((d) => {
@@ -127,6 +127,7 @@ JOY.route.page("paper", async function () {
 	}
 	meta.edit({
 		name: "Name",
+		fake: -1,
 		combo: ["N"],
 		on: function () {
 			meta.ask("Enter the name of the file", (answer) => {
