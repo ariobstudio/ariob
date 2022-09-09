@@ -54,7 +54,23 @@ gun.on("auth", async function (ack) {
 if (!location.hash) {
 	JOY.route("home");
 }
-
+var prevScrollpos = window.pageYOffset;
+var x = window.matchMedia("(min-width: 600px)");
+window.onscroll = function () {
+	var currentScrollPos = window.pageYOffset;
+	if (prevScrollpos > currentScrollPos) {
+		if (x) {
+			document.getElementById("nav").style.bottom = "0";
+			document.getElementById("meta").style.bottom = "0";
+		}
+	} else {
+		if (x) {
+			document.getElementById("meta").style.bottom = "-10em";
+			document.getElementById("nav").style.bottom = "-10em";
+		}
+	}
+	prevScrollpos = currentScrollPos;
+};
 // meta.edit({
 // 	combo: [192],
 // 	on: function () {

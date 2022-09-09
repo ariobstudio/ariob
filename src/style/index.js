@@ -91,6 +91,7 @@ JOY.css(
 			position: "fixed",
 			bottom: "0em",
 			"font-size": "16pt",
+			transition: "bottom 0.5s",
 			/*background: "var(--surface)",*/
 
 			color: "var(--text)",
@@ -201,6 +202,7 @@ JOY.css(
 			background: "var(--surface)",
 			position: "fixed",
 			bottom: 0,
+			transition: "bottom 0.5s",
 			right: "5em",
 			margin: "1em auto",
 			"border-radius": "var(--radius)",
