@@ -2,18 +2,21 @@ import logo from "./logo.js";
 import icon from "./icon.js";
 const header = `
     <div id="header" class="unit row center">
-      <div class="unit rim left">
+      <div class="unit gap left">
         <a href="#home">
           ${logo(2.5)}
-        <p id="place" class="unit right gap"></p>
         </a>
+        <p id="place" class="unit right gap"></p>
       </div>
       <div>
-      <div class="rim right" id="account">
-        <a class='unit act primary right' href="#create">Join</a>
-      </div>
-      <div class="rim right">
-        <a class=" unit act gap right" href='#search'>${icon("search")}</a>
+      <div class="rim">
+        <div class="rim  right" id="account">
+          <a class='unit act but primary right' href="#create">Join</a>
+        </div>
+        <div class="rim right">
+          <a class="act right" href='#activity'>${icon("notification")}</a>
+            <a class="act right" href='#search'>${icon("search")}</a>
+        </div>
       </div>
     </div>
   `;

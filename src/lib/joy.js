@@ -5,14 +5,7 @@
 			return;
 		}
 		e.preventDefault();
-		var prev = tmp?.split("/");
-		var now = location.hash.split("/");
-		// if (prev[0] == now[0]) {
-		// 	r(tmp);
-		// 	return;
-		// }
 		r(tmp);
-		window.location.reload(true);
 	});
 	function r(href) {
 		if (!href) {
@@ -58,7 +51,7 @@
 		return $data;
 	};
 	window.onhashchange = function () {
-		//window.location.reload(true)
+		window.location.reload(true);
 		r(location.hash.slice(1));
 	};
 	$.route = r;
@@ -83,9 +76,9 @@
 		joy.user.auth(k, cb, o);
 	};
 	joy.avatar = function (seed, type) {
-		return `https://vibatar.herokuapp.com/4.x/${
-			type || "big-smile"
-		}/svg?seed=${seed}`;
+		return `https://avatars.dicebear.com/api/${
+			type || "identicon"
+		}/${seed}.svg`;
 	};
 	joy.head = function (title, hide) {
 		var $head = $("header");
@@ -127,28 +120,46 @@
 		document.documentElement.append(tag);
 	};
 	joy.since = function (date) {
+		if (typeof date !== "object") {
+			date = new Date(date);
+		}
+
 		var seconds = Math.floor((new Date() - date) / 1000);
-		var interval = seconds / 31536000;
-		if (interval > 1) {
-			return Math.floor(interval) + " years";
+		var intervalType;
+
+		var interval = Math.floor(seconds / 31536000);
+		if (interval >= 1) {
+			intervalType = "year";
+		} else {
+			interval = Math.floor(seconds / 2592000);
+			if (interval >= 1) {
+				intervalType = "month";
+			} else {
+				interval = Math.floor(seconds / 86400);
+				if (interval >= 1) {
+					intervalType = "day";
+				} else {
+					interval = Math.floor(seconds / 3600);
+					if (interval >= 1) {
+						intervalType = "hour";
+					} else {
+						interval = Math.floor(seconds / 60);
+						if (interval >= 1) {
+							intervalType = "minute";
+						} else {
+							interval = seconds;
+							intervalType = "second";
+						}
+					}
+				}
+			}
 		}
-		interval = seconds / 2592000;
-		if (interval > 1) {
-			return Math.floor(interval) + " months";
+
+		if (interval > 1 || interval === 0) {
+			intervalType += "s";
 		}
-		interval = seconds / 86400;
-		if (interval > 1) {
-			return Math.floor(interval) + " days";
-		}
-		interval = seconds / 3600;
-		if (interval > 1) {
-			return Math.floor(interval) + " hours";
-		}
-		interval = seconds / 60;
-		if (interval > 1) {
-			return Math.floor(interval) + " minutes";
-		}
-		return Math.floor(seconds) + " seconds";
+
+		return interval + " " + intervalType;
 	};
 	var opt = (joy.opt = window.CONFIG || {}),
 		peers;
@@ -160,9 +171,6 @@
 			opt.peers ||
 			peers ||
 			(function () {
-				(console.warn || console.log)(
-					"Warning: No peer provided, defaulting to DEMO peer. Do not run in production, or your data will be regularly wiped, reset, or deleted. For more info, check https://github.com/eraeco/joydb#peers !"
-				);
 				return ["http://localhost:8765/gun"];
 			})());
 	window.gun = window.gun || Gun(opt);

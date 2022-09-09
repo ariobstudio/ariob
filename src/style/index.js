@@ -171,7 +171,7 @@ JOY.css(
 	{
 		"#nav": {
 			"z-index": 999,
-			height: "50%",
+			height: "25%",
 			position: "fixed",
 			top: "5em",
 			// left: "0",
@@ -209,6 +209,8 @@ JOY.css(
 			"white-space": "nowrap",
 			height: "100%",
 			display: "flex",
+			"list-style": "none",
+
 			"align-items": "center",
 			"justify-content": "space-around",
 			"flex-wrap": "wrap",
@@ -225,3 +227,26 @@ JOY.css(
 	},
 	"only screen and (min-width: 600px)"
 );
+JOY.css(
+	{
+		".paper": {
+			"margin-right": "1em",
+		},
+	},
+	"only screen and (min-width: 600px)"
+);
+JOY.css(
+	{
+		".paper": {
+			margin: "1em",
+		},
+	},
+	"only screen and (max-width: 600px)"
+);
+
+JOY.css({
+	"#papers": {
+		display: "flex",
+		gap: "1em",
+	},
+});

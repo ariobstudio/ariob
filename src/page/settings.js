@@ -4,7 +4,7 @@ const settings = `
 <div id="settings" class="page hold center">
 
 	<div class="center screen gap leak">
-		<p>Settings</p>
+		<p>Coming Soon...</p>
 	</div>
 </div>
 `;
@@ -14,6 +14,7 @@ JOY.route.page("settings", function () {
 	meta.edit({
 		place: "settings",
 		name: "Logout",
+		fake: -1,
 		combo: ["L"],
 		on: (eve) => {
 			JOY.user.leave();
@@ -25,6 +26,7 @@ JOY.route.page("settings", function () {
 	meta.edit({
 		place: "settings",
 		name: "Theme",
+		fake: -1,
 		combo: ["T"],
 		on: function () {
 			var before = document.documentElement.getAttribute("theme");

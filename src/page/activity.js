@@ -31,16 +31,14 @@ JOY.route.page("activity", function () {
 			var soul = k;
 			var pub = "~" + decrypted.from;
 			var who = await gun.getUsername(pub);
+			var when = JOY.since(new Date(decrypted.created));
 			console.log(pub);
 			JOY.route.render(soul, ".notification-ask", $("#activities"), {
 				from: {
 					"data-from": pub,
 				},
 				message: `${who} is requesting to connect with you!`,
-				when: new Date(decrypted.created).toLocaleDateString("en-US", {
-					hour: "numeric",
-					minute: "numeric",
-				}),
+				when: when,
 			});
 		});
 
