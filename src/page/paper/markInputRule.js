@@ -1,56 +1,26 @@
 import { InputRule } from "prosemirror-inputrules";
+import { schema } from "prosemirror-schema-basic";
 
-function getMarksBetween(start, end, state) {
-	let marks = [];
+export const markInputRule = (regexp, markType, getAttrs) => {
+	const newRegexp = new RegExp(
+		regexp.source.replace(/\$$/, "") + "(.)" + "$"
+	);
 
-	state.doc.nodesBetween(start, end, (node, pos) => {
-		marks = [
-			...marks,
-			...node.marks.map((mark) => ({
-				start: pos,
-				end: pos + node.nodeSize,
-				mark,
-			})),
-		];
-	});
-
-	return marks;
-}
-
-export default function (regexp, markType, getAttrs) {
-	return new InputRule(regexp, (state, match, start, end) => {
+	return new InputRule(newRegexp, (state, match, start, end) => {
 		const attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs;
-		const { tr } = state;
-		const m = match.length - 1;
-		let markEnd = end;
-		let markStart = start;
+		const textStart = start + match[0].indexOf(match[1]);
+		const textEnd = textStart + match[1].length;
+		const tr = state.tr;
 
-		if (match[m]) {
-			const matchStart = start + match[0].indexOf(match[m - 1]);
-			const matchEnd = matchStart + match[m - 1].length - 1;
-			const textStart = matchStart + match[m - 1].lastIndexOf(match[m]);
-			const textEnd = textStart + match[m].length;
+		start = match[0].match(/^\s/) ? start + 1 : start;
 
-			const excludedMarks = getMarksBetween(start, end, state)
-				.filter((item) => item.mark.type.excludes(markType))
-				.filter((item) => item.end > matchStart);
+		if (textEnd < end) tr.delete(textEnd, end);
+		if (textStart > start) tr.delete(start, textStart);
 
-			if (excludedMarks.length) {
-				return null;
-			}
+		end = start + match[1].length;
 
-			if (textEnd < matchEnd) {
-				tr.delete(textEnd, matchEnd);
-			}
-			if (textStart > matchStart) {
-				tr.delete(matchStart, textStart);
-			}
-			markStart = matchStart;
-			markEnd = markStart + match[m].length;
-		}
-
-		tr.addMark(markStart, markEnd, markType.create(attrs));
-		tr.removeStoredMark(markType);
-		return tr;
+		return tr
+			.addMark(start, end, markType.create(attrs))
+			.insert(end, schema.text(match[2]));
 	});
-}
+};

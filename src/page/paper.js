@@ -11,6 +11,11 @@ import { buildKeymap } from "./paper/keymap";
 import { addListNodes } from "prosemirror-schema-list";
 import { highlightPlugin } from "prosemirror-highlightjs";
 import hljs from "highlight.js";
+import {
+	createMathSchema,
+	mathPlugin,
+	mathSchemaSpec,
+} from "@benrbray/prosemirror-math";
 
 const paper = `
 <div id="paper" class="page screen hold center" >
@@ -57,7 +62,6 @@ JOY.route.page("paper", async function () {
 	// who.on((d) => {
 	// 	console.log(d);
 	// });
-
 	var paperSchema = new Schema({
 		nodes: addListNodes(schema.spec.nodes, "paragraph block*", "block"),
 		marks: schema.spec.marks,

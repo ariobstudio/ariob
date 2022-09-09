@@ -8,7 +8,7 @@ const persona = `
 		</div>
 	</div>
 	<div class="persona-mini">
-		<img name="avatar" width="54em" alt="persona" class="gap sap"/>
+		<img name="avatar" width="48em" alt="persona" class="gap sap"/>
 	</div>
 	<div class="persona-friend">
 		<li

@@ -6,7 +6,13 @@ import {
 	emDash,
 	ellipsis,
 } from "prosemirror-inputrules";
-import markInputRule from "./markInputRule";
+import {
+	makeBlockMathInputRule,
+	makeInlineMathInputRule,
+	REGEX_INLINE_MATH_DOLLARS,
+	REGEX_BLOCK_MATH_DOLLARS,
+} from "@benrbray/prosemirror-math";
+import { markInputRule } from "./markInputRule";
 /// Given a blockquote node type, returns an input rule that turns `"> "`
 /// at the start of a textblock into a blockquote.
 export function blockQuoteRule(nodeType) {
@@ -59,5 +65,24 @@ export function buildInputRules(schema) {
 	if ((type = schema.nodes.bullet_list)) rules.push(bulletListRule(type));
 	if ((type = schema.nodes.code_block)) rules.push(codeBlockRule(type));
 	if ((type = schema.nodes.heading)) rules.push(headingRule(type, 6));
+	if ((type = schema.marks.strong))
+		rules.push(markInputRule(/(?:\*\*|__)([^\*_]+)(?:\*\*|__)$/, type));
+	if ((type = schema.marks.em))
+		rules.push(
+			markInputRule(/(?:^|[^\*_])(?:\*|_)([^\*_]+)(?:\*|_)$/, type)
+		);
+
+	rules.push(
+		makeInlineMathInputRule(
+			REGEX_INLINE_MATH_DOLLARS,
+			schema.nodes.math_inline
+		)
+	);
+	rules.push(
+		makeBlockMathInputRule(
+			REGEX_BLOCK_MATH_DOLLARS,
+			schema.nodes.math_display
+		)
+	);
 	return inputRules({ rules });
 }

@@ -8,6 +8,9 @@ import {
 	joinDown,
 	lift,
 	selectParentNode,
+	deleteSelection,
+	joinBackward,
+	selectNodeBackward,
 } from "prosemirror-commands";
 import {
 	wrapInList,
@@ -17,6 +20,7 @@ import {
 } from "prosemirror-schema-list";
 import { undo, redo } from "prosemirror-history";
 import { undoInputRule } from "prosemirror-inputrules";
+import { insertMathCmd, mathBackspaceCmd } from "@benrbray/prosemirror-math";
 
 const mac =
 	typeof navigator != "undefined"
@@ -71,7 +75,16 @@ export function buildKeymap(schema, mapKeys) {
 	bind("Alt-ArrowDown", joinDown);
 	bind("Mod-BracketLeft", lift);
 	bind("Escape", selectParentNode);
-
+	bind("Ctrl-Space", insertMathCmd(schema.nodes.math_inline));
+	bind(
+		"Backspace",
+		chainCommands(
+			deleteSelection,
+			mathBackspaceCmd,
+			joinBackward,
+			selectNodeBackward
+		)
+	);
 	if ((type = schema.marks.strong)) {
 		bind("Mod-b", toggleMark(type));
 		bind("Mod-B", toggleMark(type));

@@ -10,12 +10,16 @@
     "panic": "mocha src/test/panic.cjs"
   },
   "devDependencies": {
-    "vite": "^3.0.0"
+    "vite": "^3.0.0",
+    "vite-plugin-pwa": "^0.12.7",
+    "puppeteer": "^17.1.1"
   },
   "dependencies": {
+    "@benrbray/prosemirror-math": "^0.2.2",
     "gun": "^0.2020.1237",
     "highlight.js": "^11.6.0",
     "ip": "^1.1.8",
+    "katex": "^0.13.0",
     "mocha": "^10.0.0",
     "panic-client": "^1.0.2",
     "panic-manager": "^1.2.0",
@@ -31,7 +35,6 @@
     "prosemirror-schema-list": "^1.2.1",
     "prosemirror-state": "^1.4.1",
     "prosemirror-suggest": "^1.1.4",
-    "prosemirror-view": "^1.27.2",
-    "puppeteer": "^17.1.1"
+    "prosemirror-view": "^1.27.2"
   }
 }

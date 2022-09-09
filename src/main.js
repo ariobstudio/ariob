@@ -2,7 +2,8 @@ import "./style/style.css";
 import "./style/app.css";
 import "gun/gun.js";
 import "gun/sea.js";
-
+// import "@benrbray/prosemirror-math/style/math.css";
+// import "katex/dist/katex.min.css";
 import "./lib/as.js";
 import "./lib/chain.js";
 import "./lib/joy.js";
@@ -13,7 +14,6 @@ import nav from "./component/nav.js";
 import header from "./component/header.js";
 import { page } from "./page";
 import { model } from "./model";
-import hljs from "highlight.js";
 var user = JOY.user;
 var storedTheme =
 	localStorage.getItem("theme") ||
