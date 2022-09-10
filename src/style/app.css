@@ -165,8 +165,9 @@ header {
 }
 
 .ProseMirror pre {
-	background: rgba(0%, 0%, 0%, 0.2);
+	background: var(--surface);
 	white-space: pre-wrap;
+	padding: 1em;
 }
 .ProseMirror ul,
 ol {
@@ -176,10 +177,11 @@ ol {
 	position: relative;
 }
 .ProseMirror blockquote {
-	background: rgba(0%, 0%, 0%, 0.2);
+	background: var(--surface);
 	border-left: 4px solid var(--text);
+	/* border-top-right-radius: var(--radius);
+	border-bottom-right-radius: var(--radius); */
 	padding: 0.5em;
-	margin: 0.5em;
 }
 .ProseMirror-hideselection *::selection {
 	background: transparent;

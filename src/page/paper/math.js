@@ -1,6 +1,6 @@
 import { Schema } from "prosemirror-model";
 
-let schema = new Schema({
+export const math = new Schema({
 	nodes: {
 		doc: {
 			content: "block+",

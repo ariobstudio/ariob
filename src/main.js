@@ -10,6 +10,8 @@ import "./lib/joy.js";
 import "./lib/meta.js";
 import "./style";
 Gun.log.off = true;
+import "@benrbray/prosemirror-math/style/math.css";
+import "katex/dist/katex.min.css";
 import nav from "./component/nav.js";
 import header from "./component/header.js";
 import { page } from "./page";

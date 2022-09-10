@@ -75,16 +75,7 @@ export function buildKeymap(schema, mapKeys) {
 	bind("Alt-ArrowDown", joinDown);
 	bind("Mod-BracketLeft", lift);
 	bind("Escape", selectParentNode);
-	bind("Ctrl-Space", insertMathCmd(schema.nodes.math_inline));
-	bind(
-		"Backspace",
-		chainCommands(
-			deleteSelection,
-			mathBackspaceCmd,
-			joinBackward,
-			selectNodeBackward
-		)
-	);
+
 	if ((type = schema.marks.strong)) {
 		bind("Mod-b", toggleMark(type));
 		bind("Mod-B", toggleMark(type));
@@ -139,6 +130,16 @@ export function buildKeymap(schema, mapKeys) {
 			return true;
 		});
 	}
+	bind("Ctrl-Shift-4", insertMathCmd(schema.nodes.math_inline));
+	// bind(
+	// 	"Backspace",
+	// 	chainCommands(
+	// 		deleteSelection,
+	// 		mathBackspaceCmd,
+	// 		joinBackward,
+	// 		selectNodeBackward
+	// 	)
+	// );
 
 	return keys;
 }

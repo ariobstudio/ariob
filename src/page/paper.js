@@ -15,18 +15,20 @@ import {
 	createMathSchema,
 	mathPlugin,
 	mathSchemaSpec,
+	mathSerializer,
 } from "@benrbray/prosemirror-math";
+import { math } from "./paper/math";
 
 const paper = `
 <div id="paper" class="page screen hold center" >
-	<div id="content" class=" sap left paper focus gap surface"></div>
+	<div id="content" class=" sap left paper focus"></div>
 	<span id="saved" class="small right gap"></span>
 </div>
 `;
 
 var user = JOY.user;
 JOY.route.page("paper", async function () {
-	JOY.head("Paper");
+	JOY.head("Paper", true);
 	var url = new URLSearchParams(location.hash.split("/")[1]);
 	var who = location.hash.split("&")[1].slice(5);
 	var hash = url.get("file");
@@ -62,11 +64,22 @@ JOY.route.page("paper", async function () {
 	// who.on((d) => {
 	// 	console.log(d);
 	// });
+	// var mathSchema = createMathSchema();
+
+	// var baseSchema = new Schema({
+	// 	nodes: schema.spec.nodes.append(mathSchemaSpec.nodes),
+	// 	mark: schema.spec.marks,
+	// })
 	var paperSchema = new Schema({
 		nodes: addListNodes(schema.spec.nodes, "paragraph block*", "block"),
 		marks: schema.spec.marks,
 	});
 
+	// var baseSchema = new Schema({
+	// 	nodes: math.spec.nodes.append(paperSchema.spec.nodes),
+	// 	marks: schema.spec.marks,
+	// });
+	// console.log(baseSchema);
 	var opts = {
 		schema: paperSchema,
 		keys: null,
@@ -78,6 +91,7 @@ JOY.route.page("paper", async function () {
 			buildInputRules(opts.schema),
 			keymap(buildKeymap(opts.schema, opts.keys)),
 			keymap(baseKeymap),
+			mathPlugin,
 		],
 	});
 	// u.get("when").on((d) => {
@@ -115,6 +129,9 @@ JOY.route.page("paper", async function () {
 			},
 			editable() {
 				return !lock;
+			},
+			clipboardTextSerializer: (slice) => {
+				return mathSerializer.serializeSlice(slice);
 			},
 			dispatchTransaction(transaction) {
 				// var doc = JSON.string

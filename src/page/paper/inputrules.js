@@ -72,17 +72,19 @@ export function buildInputRules(schema) {
 			markInputRule(/(?:^|[^\*_])(?:\*|_)([^\*_]+)(?:\*|_)$/, type)
 		);
 
-	rules.push(
-		makeInlineMathInputRule(
-			REGEX_INLINE_MATH_DOLLARS,
-			schema.nodes.math_inline
-		)
-	);
-	rules.push(
-		makeBlockMathInputRule(
-			REGEX_BLOCK_MATH_DOLLARS,
-			schema.nodes.math_display
-		)
-	);
+	if ((type = schema.marks.math_display)) {
+		rules.push(
+			makeInlineMathInputRule(
+				REGEX_INLINE_MATH_DOLLARS,
+				schema.nodes.math_inline
+			)
+		);
+		rules.push(
+			makeBlockMathInputRule(
+				REGEX_BLOCK_MATH_DOLLARS,
+				schema.nodes.math_display
+			)
+		);
+	}
 	return inputRules({ rules });
 }
