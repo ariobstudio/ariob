@@ -137,6 +137,10 @@ input:hover {
 	visibility: visible;
 	transition: visibility 0s, all 0.25s ease-out;
 }
+
+#install {
+	display: none;
+}
 @keyframes slide {
 	0% {
 		transform: translateY(-50%);

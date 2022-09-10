@@ -10,9 +10,11 @@
     "panic": "mocha src/test/panic.cjs"
   },
   "devDependencies": {
+    "puppeteer": "^17.1.1",
     "vite": "^3.0.0",
     "vite-plugin-pwa": "^0.12.7",
-    "puppeteer": "^17.1.1"
+    "workbox": "0.0.0",
+    "workbox-cli": "^6.5.4"
   },
   "dependencies": {
     "@benrbray/prosemirror-math": "^0.2.2",
