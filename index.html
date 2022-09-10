@@ -9,6 +9,7 @@
   <link rel="icon" type="image/svg+xml" href="/logo.svg" />
   <link rel="apple-touch-icon" href="/ios/180.png" sizes="180x180">
   <link rel="mask-icon" href="/logo.svg" color="#ffffff">
+  <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#121212">
 
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css">
@@ -25,6 +26,10 @@
   </div>
   <script type="module" src="/src/main.js"></script>
   <script>
+    // Registering our Service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js', { scope: './' })
+    }
   </script>
 </body>
 

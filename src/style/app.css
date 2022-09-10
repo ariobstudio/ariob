@@ -146,10 +146,6 @@ input:hover {
 	}
 }
 
-header {
-	/* This section calls the slide animation we defined above */
-	animation: 1s ease-out 0s 1 slide;
-}
 .ProseMirror {
 	position: relative;
 }
