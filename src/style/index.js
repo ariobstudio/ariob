@@ -17,6 +17,7 @@ JOY.css({
 		outline: "none",
 		cursor: "pointer",
 		overflow: "none",
+		transition: "all 0.2s",
 	},
 	"#meta *": {
 		outline: "none",
@@ -172,24 +173,24 @@ JOY.css(
 	{
 		"#nav": {
 			"z-index": 999,
-			height: "25%",
+			height: "100%",
+			width: "3em",
 			position: "fixed",
-			top: "5em",
 			// left: "0",
-			// "border-radius": "var(--radius)",
+			top: 0,
+			"border-right": "1px solid var(--surface)",
 		},
 		"#nav ul": {
-			padding: 0,
+			padding: "1em 0",
 			margin: 0,
 			// "white-space": "nowrap",
 			"list-style": "none",
 			display: "flex",
-			// gap: "2em",
+			gap: "2em",
 			"justify-content": "space-around",
 			"flex-direction": "column",
 			"align-items": "center",
 			// "flex-wrap": "wrap",
-			height: "100%",
 		},
 	},
 	"only screen and (min-width: 600px)"
@@ -212,7 +213,6 @@ JOY.css(
 			height: "100%",
 			display: "flex",
 			"list-style": "none",
-
 			"align-items": "center",
 			"justify-content": "space-around",
 			"flex-wrap": "wrap",
@@ -224,30 +224,32 @@ JOY.css(
 JOY.css(
 	{
 		".screen": {
-			"margin-left": "4em",
+			margin: "auto",
+			"padding-left": "3em",
 		},
 	},
 	"only screen and (min-width: 600px)"
 );
 JOY.css(
 	{
-		".paper": {
-			"margin-right": "1em",
+		header: {
+			margin: "auto",
+			"padding-left": "3em",
 		},
 	},
 	"only screen and (min-width: 600px)"
 );
 JOY.css(
 	{
-		".paper": {
-			margin: "1em",
+		".screen": {
+			"padding-bottom": "4em",
 		},
 	},
 	"only screen and (max-width: 600px)"
 );
 
 JOY.css({
-	"#papers": {
+	".flex": {
 		display: "flex",
 		gap: "1em",
 	},

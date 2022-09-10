@@ -3,10 +3,7 @@ import icon from "./icon.js";
 const header = `
     <div id="header" class="unit row center">
       <div class="unit gap left">
-        <a href="#home">
-          ${logo(2.4)}
-        </a>
-        <p id="place" class="unit right gap"></p>
+        <p id="place" class="unit right loud"></p>
       </div>
       <div>
       <div class="rim">

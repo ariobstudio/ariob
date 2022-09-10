@@ -148,8 +148,7 @@ input:hover {
 
 header {
 	/* This section calls the slide animation we defined above */
-
-	/* animation: 1s ease-out 0s 1 slide; */
+	animation: 1s ease-out 0s 1 slide;
 }
 .ProseMirror {
 	position: relative;
@@ -169,6 +168,9 @@ header {
 	white-space: pre-wrap;
 	padding: 1em;
 }
+.ProseMirror code {
+	font-family: monospace;
+}
 .ProseMirror ul,
 ol {
 	margin-left: 1em;
@@ -179,8 +181,6 @@ ol {
 .ProseMirror blockquote {
 	background: var(--surface);
 	border-left: 4px solid var(--text);
-	/* border-top-right-radius: var(--radius);
-	border-bottom-right-radius: var(--radius); */
 	padding: 0.5em;
 }
 .ProseMirror-hideselection *::selection {

@@ -20,40 +20,48 @@ import {
 import { math } from "./paper/math";
 
 const paper = `
-<div id="paper" class="page screen hold center" >
-	<div id="content" class=" sap left paper focus"></div>
-	<span id="saved" class="small right gap"></span>
+<div id="paper" class="page screen center" >
+	<div id="who" class=" none"></div>
+	<div id="content" class="rim left gap focus"></div>
 </div>
 `;
 
 var user = JOY.user;
 JOY.route.page("paper", async function () {
-	JOY.head("Paper", true);
 	var url = new URLSearchParams(location.hash.split("/")[1]);
 	var who = location.hash.split("&")[1].slice(5);
 	var hash = url.get("file");
-	var pub = url.get("pub");
 	var u = gun
 		.get("~" + who)
 		.get("test/paper/files")
 		.get(hash);
-	var lock = false;
-
+	window.LOCK = false;
+	var title = (await u.get("name")) || `Untitled-${hash}`;
 	if (who !== JOY?.key?.pub) {
-		lock = true;
+		window.LOCK = true;
+		// console.log(who);
+		$("#who").removeClass("none");
+		var friend = await gun.get("~" + who).get("profile");
+		console.log(friend);
+		JOY.route.render(
+			who.substring(1, 8),
+			".persona-mini-detail",
+			$("#who"),
+			{
+				title: title,
+				avatar: {
+					src: JOY.avatar(friend.avatar),
+				},
+				link: {
+					href: `#profile/?pub=~${who}`,
+				},
+				name: friend.name,
+			}
+		);
 	}
-	// if ()
-	// gun.get("files")
-	// 	.get(hash)
-	// 	.get("pub")
-	// 	.on(async (d) => {
-	// 		if (d === JOY?.key?.pub) {
-	// 			lock = false;
-	// 			console.log("ME");
-	// u = JOY.user.get("test/paper/files").get(hash);
-	if (!(await u.get("name"))) {
-		u.get("name").put(hash.slice(0, 5));
-	}
+
+	JOY.head(title);
+
 	// 		} else {
 	// 			u = gun
 	// 				.get("~" + d)
@@ -128,7 +136,7 @@ JOY.route.page("paper", async function () {
 				},
 			},
 			editable() {
-				return !lock;
+				return !window.LOCK;
 			},
 			clipboardTextSerializer: (slice) => {
 				return mathSerializer.serializeSlice(slice);
@@ -146,16 +154,44 @@ JOY.route.page("paper", async function () {
 			},
 		});
 	}
-	meta.edit({
-		name: "Name",
-		fake: -1,
-		combo: ["N"],
-		on: function () {
-			meta.ask("Enter the name of the file", (answer) => {
-				u.get("name").put(answer);
+	if (who === JOY?.key?.pub) {
+		let t = $("#place");
+		t.on("dblclick", function () {
+			t.attr("contenteditable", true).on("keydown", (e) => {
+				u.get("name").put(t.text());
+				if (e.which === 13) {
+					t.attr("contenteditable", false);
+					return;
+				}
 			});
-		},
-	});
+
+			// meta.ask("Enter the name of the file", (answer) => {
+			// 	u.get("name").put(answer);
+			// });
+		});
+
+		// meta.edit({
+		// 	name: "Name",
+		// 	fake: -1,
+		// 	combo: [16, "N"],
+		// 	on: function () {
+
+		// 	},
+		// });
+		// meta.edit({
+		// 	name: "Edit",
+		// 	fake: -1,
+		// 	combo: ["E"],
+		// 	on: function () {
+		// 		if (who === JOY?.key?.pub) {
+		// 			window.LOCK = !window.LOCK;
+		// 			console.log(JOY.paper);
+		// 			// JOY.paper.editable = lock;
+		// 			// JOY.paper.updateState(JOY.paper.state);
+		// 		}
+		// 	},
+		// });
+	}
 	// console.log(state.doc.toString()); // An empty paragraph
 	// console.log(state.selection.from); // 1, the start of the paragraph
 });

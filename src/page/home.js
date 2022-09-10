@@ -2,8 +2,8 @@ import header from "../component/header.js";
 
 const home = `
 <div id="home" class="page hold center">
-	<div class="center screen gap leak">
-		<div id="papers">
+	<div class="center screen gap">
+		<div id="papers" class="flex gap">
 		</div>
 	</div>
 </div>
@@ -21,7 +21,7 @@ JOY.route.page("home", function () {
 				link: {
 					href: `#paper/?file=${k}&?pub=${JOY.key.pub}`,
 				},
-				name: `${d.name}`,
+				name: `${d.name || `Untitled-${k}`}`,
 				when: when,
 			});
 		});

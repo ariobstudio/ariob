@@ -63,11 +63,12 @@ window.onscroll = function () {
 	if (prevScrollpos > currentScrollPos) {
 		if (x) {
 			document.getElementById("nav").style.bottom = "0";
-			document.getElementById("meta").style.bottom = "0";
+			document.getElementById("meta").style.display = "block";
+		} else {
 		}
 	} else {
 		if (x) {
-			document.getElementById("meta").style.bottom = "-10em";
+			document.getElementById("meta").style.display = "none";
 			document.getElementById("nav").style.bottom = "-10em";
 		}
 	}
@@ -114,10 +115,6 @@ window.onscroll = function () {
 // });
 
 var routes = [
-	{
-		where: "home",
-		icon: "home",
-	},
 	{
 		where: "friends",
 		icon: "friends",
