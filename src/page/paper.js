@@ -60,8 +60,6 @@ JOY.route.page("paper", async function () {
 		);
 	}
 
-	JOY.head(title);
-
 	// 		} else {
 	// 			u = gun
 	// 				.get("~" + d)
@@ -102,20 +100,16 @@ JOY.route.page("paper", async function () {
 			mathPlugin,
 		],
 	});
-	// u.get("when").on((d) => {
-	// 	var when = JOY.since(new Date(d));
-	// 	$("#saved").text("Last edited " + when + " ago");
-	// });
-	// if (!u) return;
+
 	const getTime = async () => {
 		var time = await u.get("when");
 		if (!time) return;
 		var when = JOY.since(new Date());
 		// $("#saved").text("Last edited " + when + " ago");
 	};
-	console.log("GET TIME:", u);
 	u.on((d) => {
 		if (!d.document) return;
+		JOY.head(d.name);
 
 		var doc = state.schema.nodeFromJSON(JSON.parse(d.document));
 		state.doc = doc;
@@ -157,47 +151,11 @@ JOY.route.page("paper", async function () {
 	if (who === JOY?.key?.pub) {
 		let t = $("#place");
 		t.on("dblclick", function () {
-			t.attr("contenteditable", true).on("keydown", (e) => {
-				u.get("name").put(t.text());
-				if (e.which === 13) {
-					t.attr("contenteditable", false);
-					return;
-				}
+			meta.ask("Enter the name of the file", (answer) => {
+				u.get("name").put(answer);
 			});
-
-			// meta.ask("Enter the name of the file", (answer) => {
-			// 	u.get("name").put(answer);
-			// });
 		});
-
-		// meta.edit({
-		// 	name: "Name",
-		// 	fake: -1,
-		// 	combo: [16, "N"],
-		// 	on: function () {
-
-		// 	},
-		// });
-		// meta.edit({
-		// 	name: "Edit",
-		// 	fake: -1,
-		// 	combo: ["E"],
-		// 	on: function () {
-		// 		if (who === JOY?.key?.pub) {
-		// 			window.LOCK = !window.LOCK;
-		// 			console.log(JOY.paper);
-		// 			// JOY.paper.editable = lock;
-		// 			// JOY.paper.updateState(JOY.paper.state);
-		// 		}
-		// 	},
-		// });
 	}
-	// console.log(state.doc.toString()); // An empty paragraph
-	// console.log(state.selection.from); // 1, the start of the paragraph
 });
-// window.addEventListener("input", (e) => {
-// 	if (window.GEEZ) {
-// 		geezify(e);
-// 	}
-// });
+
 export default paper;

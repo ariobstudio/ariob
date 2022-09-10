@@ -169,6 +169,16 @@ JOY.css(
 	},
 	"only screen and (max-width: 600px)"
 );
+JOY.css({
+	"#place": {
+		width: "100%",
+		"-webkit-user-select": "none",
+		"-moz-user-select": "none",
+		"-ms-user-select": "none",
+		"user-select": "none",
+		"text-overflow": "ellipsis",
+	},
+});
 JOY.css(
 	{
 		"#nav": {
