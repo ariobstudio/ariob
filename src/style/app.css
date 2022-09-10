@@ -23,7 +23,9 @@ html,
 * {
 	font-family: "Nunito", sans-serif;
 }
-
+mark {
+	background-color: var(--yellow);
+}
 html[theme="day"] {
 	--green: #96eaa3;
 	--yellow: #eae086;

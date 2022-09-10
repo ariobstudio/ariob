@@ -1,7 +1,7 @@
 import logo from "./logo.js";
 import icon from "./icon.js";
 const header = `
-    <div id="header" class="unit row center">
+    <div id="header" class="unit row rim center">
       <div class="rim  right" id="account">
         <a class='unit act but primary right' href="#create">Join</a>
       </div>

@@ -204,9 +204,11 @@ p + p {
 	cursor: pointer;
 	-webkit-tap-highlight-color: transparent;
 	border-radius: var(--radius);
-	color: var(--text);
 	margin: 0.5em;
+}
+.link {
 	cursor: pointer;
+	color: var(--text);
 }
 .unit,
 .symbol {

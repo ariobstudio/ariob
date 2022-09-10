@@ -13,8 +13,8 @@ const persona = `
 	<div class="persona-mini-detail">
 		<div class=" unit row">
 			<a name="link" class="unit gap left">
+			<span name="name"></span>
 				<img name="avatar" width="52em" alt="persona" class="gap sap"/>
-				<span name="name"></span>
 			</a>
 		</div>
 	</div>

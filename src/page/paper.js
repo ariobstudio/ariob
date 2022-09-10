@@ -3,7 +3,8 @@ import "gun/lib/monotype.js";
 import { EditorState, Plugin } from "prosemirror-state";
 import { EditorView } from "prosemirror-view";
 import { Node, Schema } from "prosemirror-model";
-import { schema } from "prosemirror-schema-basic";
+// import { schema } from "prosemirror-schema-basic";
+import { schema } from "./paper/schema";
 import { buildInputRules } from "./paper/inputrules";
 import { baseKeymap, chainCommands } from "prosemirror-commands";
 import { keymap } from "prosemirror-keymap";
@@ -18,11 +19,12 @@ import {
 	mathSerializer,
 } from "@benrbray/prosemirror-math";
 import { math } from "./paper/math";
+import { linkPlugin } from "./paper/plugins";
 
 const paper = `
 <div id="paper" class="page screen center" >
-	<div id="who" class=" none"></div>
 	<div id="content" class="rim left gap focus"></div>
+	<div id="who" class="right none"></div>
 </div>
 `;
 
@@ -59,7 +61,7 @@ JOY.route.page("paper", async function () {
 			}
 		);
 	}
-
+	// JOY.head(title);
 	// 		} else {
 	// 			u = gun
 	// 				.get("~" + d)
@@ -76,18 +78,14 @@ JOY.route.page("paper", async function () {
 	// 	nodes: schema.spec.nodes.append(mathSchemaSpec.nodes),
 	// 	mark: schema.spec.marks,
 	// })
-	var paperSchema = new Schema({
+	var pSchema = new Schema({
 		nodes: addListNodes(schema.spec.nodes, "paragraph block*", "block"),
 		marks: schema.spec.marks,
 	});
 
-	// var baseSchema = new Schema({
-	// 	nodes: math.spec.nodes.append(paperSchema.spec.nodes),
-	// 	marks: schema.spec.marks,
-	// });
 	// console.log(baseSchema);
 	var opts = {
-		schema: paperSchema,
+		schema: pSchema,
 		keys: null,
 	};
 
@@ -109,7 +107,7 @@ JOY.route.page("paper", async function () {
 	};
 	u.on((d) => {
 		if (!d.document) return;
-		JOY.head(d.name);
+		JOY.head(d.name || title);
 
 		var doc = state.schema.nodeFromJSON(JSON.parse(d.document));
 		state.doc = doc;

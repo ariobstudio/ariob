@@ -5,6 +5,7 @@ import {
 	smartQuotes,
 	emDash,
 	ellipsis,
+	InputRule,
 } from "prosemirror-inputrules";
 import {
 	makeBlockMathInputRule,
@@ -55,6 +56,24 @@ export function headingRule(nodeType, maxLevel) {
 	);
 }
 
+export function linkRule(nodeType) {
+	return new InputRule(/\[([^[]+)]\((\S+)\)$/, (state, match, start, end) => {
+		const [okay, alt, href] = match;
+		const { tr } = state;
+
+		if (okay) {
+			console.log(href);
+			tr.replaceWith(start, end, nodeType.schema.text(alt)).addMark(
+				start,
+				start + alt.length,
+				nodeType.create({ href })
+			);
+		}
+
+		return tr;
+	});
+}
+
 /// A set of input rules for creating the basic block quotes, lists,
 /// code blocks, and heading.
 export function buildInputRules(schema) {
@@ -71,20 +90,16 @@ export function buildInputRules(schema) {
 		rules.push(
 			markInputRule(/(?:^|[^\*_])(?:\*|_)([^\*_]+)(?:\*|_)$/, type)
 		);
-
-	if ((type = schema.marks.math_display)) {
-		rules.push(
-			makeInlineMathInputRule(
-				REGEX_INLINE_MATH_DOLLARS,
-				schema.nodes.math_inline
-			)
-		);
-		rules.push(
-			makeBlockMathInputRule(
-				REGEX_BLOCK_MATH_DOLLARS,
-				schema.nodes.math_display
-			)
-		);
-	}
+	if ((type = schema.marks.underline))
+		rules.push(markInputRule(/(?:__)([^_]+)(?:__)$/, type));
+	if ((type = schema.marks.strikethrough))
+		rules.push(markInputRule(/~([^~]+)~$/, type));
+	if ((type = schema.marks.link)) rules.push(linkRule(type));
+	if ((type = schema.marks.highlight))
+		rules.push(markInputRule(/(?:==)([^=]+)(?:==)$/, type));
+	if ((type = schema.nodes.math_inline))
+		rules.push(makeInlineMathInputRule(REGEX_INLINE_MATH_DOLLARS, type));
+	if ((type = schema.nodes.math_display))
+		rules.push(makeBlockMathInputRule(REGEX_BLOCK_MATH_DOLLARS, type));
 	return inputRules({ rules });
 }

@@ -130,16 +130,29 @@ export function buildKeymap(schema, mapKeys) {
 			return true;
 		});
 	}
-	bind("Ctrl-Shift-4", insertMathCmd(schema.nodes.math_inline));
-	// bind(
-	// 	"Backspace",
-	// 	chainCommands(
-	// 		deleteSelection,
-	// 		mathBackspaceCmd,
-	// 		joinBackward,
-	// 		selectNodeBackward
-	// 	)
-	// );
+	if ((type = schema.marks.link)) {
+		console.log(type);
+		bind("Mod-k", (state, dispatch) => {
+			if (state.selection.empty) {
+				this.options.onKeyboardShortcut();
+				return true;
+			}
+			return toggleMark(type, { href: "" })(state, dispatch);
+		});
+	}
+	bind("Mod-u", toggleMark(schema.marks.underline));
+	bind("Mod-d", toggleMark(schema.marks.strikethrough));
+	bind("Mod-Ctrl-h", toggleMark(schema.marks.highlight));
+	bind("Mod-Ctrl-m", insertMathCmd(schema.nodes.math_inline));
+	bind(
+		"Backspace",
+		chainCommands(
+			deleteSelection,
+			mathBackspaceCmd,
+			joinBackward,
+			selectNodeBackward
+		)
+	);
 
 	return keys;
 }
