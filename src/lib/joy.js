@@ -171,7 +171,7 @@
 			opt.peers ||
 			peers ||
 			(function () {
-				return ["http://localhost:8765/gun"];
+				return ["https://marda.herokuapp.com/gun"];
 			})());
 	window.gun = window.gun || Gun(opt);
 	joy.user = gun.user();
