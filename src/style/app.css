@@ -19,6 +19,9 @@
 	--radius: 0.75em;
 }
 
+html {
+	height: -webkit-fill-available;
+}
 html,
 * {
 	font-family: "Nunito", sans-serif;
@@ -217,9 +220,62 @@ li.ProseMirror-selectednode:after {
 }
 
 /* Protect against generic img rules */
+p.loud:empty:not(:focus)::before {
+	content: "Title";
+	color: var(--surface);
+}
 
 img.ProseMirror-separator {
 	display: inline !important;
 	border: none !important;
 	margin: 0 !important;
+}
+li[data-type="todo_item"] {
+	display: flex;
+	flex-direction: row;
+}
+
+.todo-checkbox {
+	border: 1px solid var(--text);
+	height: 1em;
+	width: 1em;
+	box-sizing: border-box;
+	margin-top: 0.3em;
+	margin-right: 0.5em;
+	user-select: none;
+	-webkit-user-select: none;
+	cursor: pointer;
+	border-radius: var(--radius);
+}
+
+.todo-checkbox-checked {
+	background-color: var(--primary);
+}
+
+.todo-content {
+	flex: 1;
+}
+
+li[data-done="true"] {
+	text-decoration: line-through;
+}
+
+li[data-done="true"] .todo-checkbox-unchecked {
+	display: none;
+}
+
+li[data-done="false"] .todo-checkbox-checked {
+	display: none;
+}
+
+li[data-done="true"] li[data-done="false"] .todo-checkbox-checked {
+	display: inline-block;
+}
+
+li[data-done="false"] li[data-done="true"] .todo-checkbox-checked {
+	display: inline-block;
+}
+
+li[data-done="false"] {
+	text-decoration: none;
 }

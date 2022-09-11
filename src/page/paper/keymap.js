@@ -65,6 +65,22 @@ export function buildKeymap(schema, mapKeys) {
 		}
 		keys[key] = cmd;
 	}
+	function cmdItem(cmd, options) {
+		let passedOptions = {
+			label: options.title,
+			run: cmd,
+		};
+		for (let prop in options) passedOptions[prop] = options[prop];
+		if ((!options.enable || options.enable === true) && !options.select)
+			passedOptions[options.enable ? "enable" : "select"] = (state) =>
+				cmd(state);
+
+		return new MenuItem(passedOptions);
+	}
+
+	function wrapListItem(nodeType, options) {
+		return cmdItem(wrapInList(nodeType, options.attrs), options);
+	}
 
 	bind("Mod-z", undo);
 	bind("Shift-Mod-z", redo);
@@ -86,6 +102,7 @@ export function buildKeymap(schema, mapKeys) {
 	}
 	if ((type = schema.marks.code)) bind("Mod-`", toggleMark(type));
 
+	if ((type = schema.nodes.todo_list)) bind("Shift-Ctrl-7", wrapInList(type));
 	if ((type = schema.nodes.bullet_list))
 		bind("Shift-Ctrl-8", wrapInList(type));
 	if ((type = schema.nodes.ordered_list))
@@ -106,8 +123,16 @@ export function buildKeymap(schema, mapKeys) {
 		bind("Shift-Enter", cmd);
 		if (mac) bind("Ctrl-Enter", cmd);
 	}
+
 	if ((type = schema.nodes.list_item)) {
 		bind("Enter", splitListItem(type));
+		bind("Mod-[", liftListItem(type));
+		bind("Shift-Tab", liftListItem(type));
+		bind("Tab", sinkListItem(type));
+		bind("Mod-]", sinkListItem(type));
+	}
+	if ((type = schema.nodes.todo_item)) {
+		bind("Shift-Enter", splitListItem(type));
 		bind("Mod-[", liftListItem(type));
 		bind("Shift-Tab", liftListItem(type));
 		bind("Tab", sinkListItem(type));
@@ -140,6 +165,7 @@ export function buildKeymap(schema, mapKeys) {
 			return toggleMark(type, { href: "" })(state, dispatch);
 		});
 	}
+
 	bind("Mod-u", toggleMark(schema.marks.underline));
 	bind("Mod-d", toggleMark(schema.marks.strikethrough));
 	bind("Mod-Ctrl-h", toggleMark(schema.marks.highlight));

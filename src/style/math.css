@@ -25,7 +25,7 @@
 
 .math-node .math-src {
 	display: none;
-	color: var(--primary);
+	color: var(--blue);
 	tab-size: 4;
 }
 
@@ -98,15 +98,15 @@ math-display .katex-display {
 
 p::selection,
 p > *::selection {
-	background-color: #c0c0c0;
+	background-color: var(--surface);
 }
 .katex-html *::selection {
 	background-color: none !important;
 }
 
 .math-node.math-select .math-render {
-	background-color: #c0c0c0ff;
+	background-color: var(--surface);
 }
 math-inline.math-select .math-render {
-	padding-top: 2px;
+	padding-top: 1em;
 }

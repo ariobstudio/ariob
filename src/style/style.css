@@ -96,6 +96,7 @@ p + p {
 .full {
 	width: 100%;
 	min-height: 100vh;
+	height: -webkit-fill-available;
 }
 .max {
 	max-width: 48em;

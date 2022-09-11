@@ -12,7 +12,6 @@ const header = `
       <div class="unit rim left">
         <p id="place" class="unit left loud"></p>
       </div>
-          
     </div>
   `;
 export default header;

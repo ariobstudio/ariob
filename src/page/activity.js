@@ -20,6 +20,7 @@ JOY.route.page("activity", function () {
 		.on(async (d, k) => {
 			console.log(d);
 			if (!d) return;
+			if ($(`#${soul.slice(0, 8)}`)) return;
 			var notification = d.data;
 			var secret = await SEA.secret(d.epub, JOY.key);
 			var decrypted = await SEA.decrypt(notification, secret);
@@ -27,19 +28,23 @@ JOY.route.page("activity", function () {
 			// var decrypted = await SEA.decrypt(notification.data, JOY.key.epub);
 			// console.log(decrypted);
 			// return;
-			console.log(decrypted);
 			var soul = k;
 			var pub = "~" + decrypted.from;
 			var who = await gun.getUsername(pub);
 			var when = JOY.since(new Date(decrypted.created));
 			console.log(pub);
-			JOY.route.render(soul, ".notification-ask", $("#activities"), {
-				from: {
-					"data-from": pub,
-				},
-				message: `${who} is requesting to connect with you!`,
-				when: when,
-			});
+			JOY.route.render(
+				soul.slice(0, 8),
+				".notification-ask",
+				$("#activities"),
+				{
+					from: {
+						"data-from": pub,
+					},
+					message: `${who} is requesting to connect with you!`,
+					when: when,
+				}
+			);
 		});
 
 	// async function render(n) {

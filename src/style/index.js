@@ -262,5 +262,7 @@ JOY.css({
 	".flex": {
 		display: "flex",
 		gap: "1em",
+		padding: "1em",
+		"flex-wrap": "wrap",
 	},
 });

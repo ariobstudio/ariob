@@ -20,10 +20,11 @@ import {
 } from "@benrbray/prosemirror-math";
 import { math } from "./paper/math";
 import { linkPlugin } from "./paper/plugins";
+import { suggestionPlugin } from "./paper/suggest";
 
 const paper = `
-<div id="paper" class="page screen center" >
-	<div id="content" class="rim left gap focus"></div>
+<div id="paper" class="page screen" >
+	<div id="content" class="rim gap focus"></div>
 	<div id="who" class="right none"></div>
 </div>
 `;
@@ -44,7 +45,6 @@ JOY.route.page("paper", async function () {
 		// console.log(who);
 		$("#who").removeClass("none");
 		var friend = await gun.get("~" + who).get("profile");
-		console.log(friend);
 		JOY.route.render(
 			who.substring(1, 8),
 			".persona-mini-detail",
@@ -61,6 +61,7 @@ JOY.route.page("paper", async function () {
 			}
 		);
 	}
+	JOY.head(title);
 	// JOY.head(title);
 	// 		} else {
 	// 			u = gun
@@ -78,8 +79,76 @@ JOY.route.page("paper", async function () {
 	// 	nodes: schema.spec.nodes.append(mathSchemaSpec.nodes),
 	// 	mark: schema.spec.marks,
 	// })
+	var todoItemSpec = {
+		attrs: {
+			done: { default: false },
+		},
+		content: "paragraph block*",
+		toDOM(node) {
+			const { done } = node.attrs;
+
+			return [
+				"li",
+				{
+					"data-type": "todo_item",
+					"data-done": done.toString(),
+				},
+				[
+					"span",
+					{
+						class: "todo-checkbox todo-checkbox-unchecked",
+						contenteditable: "false",
+					},
+				],
+				[
+					"span",
+					{
+						class: "todo-checkbox todo-checkbox-checked",
+						contenteditable: "false",
+					},
+				],
+				["div", { class: "todo-content" }, 0],
+			];
+		},
+		parseDOM: [
+			{
+				tag: '[data-type="todo_item"]',
+				getAttrs(dom) {
+					return {
+						done: dom.getAttribute("data-done") === "true",
+					};
+				},
+			},
+		],
+	};
+	var todoListSpec = {
+		group: "block",
+		content: "todo_item+ | list_item+",
+		toDOM(node) {
+			return [
+				"ul",
+				{
+					"data-type": "todo_list",
+				},
+				0,
+			];
+		},
+		parseDOM: [
+			{
+				priority: 51, // Needs higher priority than other nodes that use a "ul" tag
+				tag: '[data-type="todo_list"]',
+			},
+		],
+	};
 	var pSchema = new Schema({
-		nodes: addListNodes(schema.spec.nodes, "paragraph block*", "block"),
+		nodes: addListNodes(
+			schema.spec.nodes,
+			"paragraph* block+",
+			"block"
+		).append({
+			todo_item: todoItemSpec,
+			todo_list: todoListSpec,
+		}),
 		marks: schema.spec.marks,
 	});
 
@@ -92,6 +161,7 @@ JOY.route.page("paper", async function () {
 	var state = EditorState.create({
 		schema: opts.schema,
 		plugins: [
+			// suggestionPlugin,
 			buildInputRules(opts.schema),
 			keymap(buildKeymap(opts.schema, opts.keys)),
 			keymap(baseKeymap),
@@ -106,9 +176,8 @@ JOY.route.page("paper", async function () {
 		// $("#saved").text("Last edited " + when + " ago");
 	};
 	u.on((d) => {
-		if (!d.document) return;
 		JOY.head(d.name || title);
-
+		if (!d.document) return;
 		var doc = state.schema.nodeFromJSON(JSON.parse(d.document));
 		state.doc = doc;
 		if (JOY.paper?.state === state) {
@@ -116,11 +185,23 @@ JOY.route.page("paper", async function () {
 		}
 		getTime();
 	});
-
-	setInterval(getTime, 6 * 1000);
+	function toggleTodoItemAction(state, pos, todoItemNode) {
+		return state.tr.setNodeMarkup(pos, null, {
+			done: !todoItemNode.attrs.done,
+		});
+	}
+	// setInterval(getTime, 6 * 1000);
 	if (!$("div .ProseMirror").get(0)) {
 		JOY.paper = new EditorView($("#content").get(0), {
 			state,
+			handleClickOn(view, pos, node, nodePos, event) {
+				if (event.target.classList.contains("todo-checkbox")) {
+					view.dispatch(
+						toggleTodoItemAction(view.state, nodePos, node)
+					);
+					return true;
+				}
+			},
 			handleDOMEvents: {
 				input(view, event) {
 					console.log(event.currentTarget.value);
@@ -153,6 +234,26 @@ JOY.route.page("paper", async function () {
 				u.get("name").put(answer);
 			});
 		});
+		// if (!JOY.paper.focused) {
+		// 	meta.edit({
+		// 		name: "Edit",
+		// 		combo: ["E"],
+		// 		on: function () {
+		// 			window.LOCK = !window.LOCK;
+		// 		},
+		// 	});
+		// }
+		// if (!JOY.paper.focused) {
+		// 	meta.edit({
+		// 		name: "Delete",
+		// 		combo: ["D"],
+		// 		on: async function () {
+		// 			// console.log(await u);
+		// 			u.put(null);
+		// 			JOY.route("home");
+		// 		},
+		// 	});
+		// }
 	}
 });
 
