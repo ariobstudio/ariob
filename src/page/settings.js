@@ -27,10 +27,15 @@ JOY.route.page("settings", function () {
 		}
 	});
 	meta.edit({
+		name: "Preference",
+		combo: [191],
+		fake: -1,
+	});
+	meta.edit({
 		place: "settings",
 		name: "Logout",
 		fake: -1,
-		combo: ["L"],
+		combo: [191, "L"],
 		on: (eve) => {
 			JOY.user.leave();
 			localStorage.removeItem("key");
@@ -42,7 +47,7 @@ JOY.route.page("settings", function () {
 		place: "settings",
 		name: "Theme",
 		fake: -1,
-		combo: ["T"],
+		combo: [191, "T"],
 		on: function () {
 			var before = document.documentElement.getAttribute("theme");
 			var now = before === "day" ? "night" : "day";

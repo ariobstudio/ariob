@@ -171,7 +171,6 @@ input:hover {
 .ProseMirror pre {
 	background: var(--surface);
 	white-space: pre-wrap;
-	padding: 1em;
 }
 .ProseMirror code {
 	font-family: monospace;
@@ -186,6 +185,7 @@ ol {
 .ProseMirror blockquote {
 	background: var(--surface);
 	border-left: 4px solid var(--text);
+	border-radius: var(--radius);
 	padding: 0.5em;
 }
 .ProseMirror-hideselection *::selection {

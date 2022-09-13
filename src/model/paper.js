@@ -1,9 +1,11 @@
 import icon from "../component/icon";
 const paper = `
 <div class="paper-card">
-    <li class='unit gap sap'>
+    <li class='unit sap'>
 		<a name="link" class="unit">
-			<div class=" ">${icon("document", 48)}</div>
+			<div >
+				<img class="icon-cover sap" name="cover"/>
+			</div>
 			<p class="unit gap" name='name'></p>
 		</a>
 		<div class="max">

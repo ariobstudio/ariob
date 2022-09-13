@@ -1,5 +1,5 @@
-export const geezify = (e) => {
-	var char = e.target.value;
+export const geezify = (v, e) => {
+	var char = e.data;
 	console.log(char);
 	char = char.replace(/[äâ]/g, "e");
 	char = char.replace(/[êëē]/g, "é");
@@ -523,7 +523,7 @@ export const geezify = (e) => {
 	e.target.value = char;
 	e.target.selectionStart = startPos + adjustment;
 	e.target.selectionEnd = endPos + adjustment;
-	var obj = e.target;
-	obj.focus();
-	obj.scrollTop = obj.scrollHeight;
+	// var obj = e.target;
+	// obj.focus();
+	// obj.scrollTop = obj.scrollHeight;
 };

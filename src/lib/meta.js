@@ -153,18 +153,21 @@
 				})
 		);
 	};
-	m.ask = function (help, cb) {
+	m.ask = function (help, cb, o) {
 		var $ul = $("#meta .meta-menu ul").empty();
 		var $put = $("<input class='min'>")
 			.attr("id", "meta-ask")
 			.attr("placeholder", help);
+		$.each(o, (k, v) => {
+			$put.attr(k, v);
+		});
 		var $form = $("<form>")
 			.append($put)
 			.on("submit", function (eve) {
 				eve.preventDefault();
 				cb($put.val());
 				$li.remove();
-				k.wipe();
+				!!o?.wipe && k.wipe();
 			});
 		var $li = $("<li>").append($form);
 		$ul.append($li);

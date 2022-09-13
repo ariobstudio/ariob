@@ -64,12 +64,10 @@ window.onscroll = function () {
 	if (prevScrollpos > currentScrollPos) {
 		if (x) {
 			document.getElementById("nav").style.bottom = "0";
-			document.getElementById("meta").style.display = "block";
-		} else {
 		}
 	} else {
 		if (x) {
-			document.getElementById("meta").style.display = "none";
+			//document.getElementById("meta").style.display = "none";
 			document.getElementById("nav").style.bottom = "-10em";
 		}
 	}

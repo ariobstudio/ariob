@@ -1,5 +1,5 @@
 import header from "../component/header.js";
-
+import icon from "../component/icon.js";
 const home = `
 <div id="home" class="page hold center">
 	<div class="center screen gap">
@@ -10,6 +10,7 @@ const home = `
 </div>
 `;
 var user = JOY.user;
+var colors = ["green", "yellow", "red", "blue"];
 JOY.route.page("home", function () {
 	JOY.head("Home");
 	JOY.user
@@ -17,8 +18,9 @@ JOY.route.page("home", function () {
 		.map()
 		.on(async (d, k) => {
 			// if (!d?.when || !d?.document || !d?.name) return;
-			if (!d) return;
+			if (!d || !d?.document || !d?.when) return;
 			console.log(d);
+
 			var when = JOY.since(new Date(d.when));
 			JOY.route.render(k, ".paper-card", $("#drafts"), {
 				"data-paper": {
@@ -30,13 +32,21 @@ JOY.route.page("home", function () {
 				link: {
 					href: `#paper/?file=${k}&?pub=${JOY.key.pub}`,
 				},
+				cover: {
+					src: d.cover,
+					class: `icon-cover sap ${
+						colors[Math.floor(Math.random() * colors.length)]
+					}`,
+				},
 				name: `${d.name || `Untitled-${k}`}`,
 				when: when,
 			});
 			$(".delete").on("click", function (e) {
 				e.preventDefault();
 				let p = $(this).attr("data-paper");
-				$(`#${k}`).remove();
+				// $(p.parent().get(0)).remove();
+				console.log();
+				$(this).parent().parent().remove();
 				JOY.user.get(`test/paper/files`).get(p).put(null);
 				JOY.tell("Successfully Deleted!");
 			});
@@ -57,26 +67,28 @@ JOY.route.page("home", function () {
 					}
 				});
 		});
+
 	meta.edit({
-		name: "New",
+		name: "Create",
+		combo: ["C"],
 		fake: -1,
-		place: "home",
-		combo: ["N"],
 		on: () => {
 			var key = JOY.key;
 			if (!key) {
 				JOY.tell("Join to save your data!");
 				return;
 			}
-			SEA.work(SEA.random(7) + key.pub, null, null, {
-				name: "SHA-256",
-			}).then(function (hash) {
-				var url = `#paper/?file=${hash.slice(0, 7)}&?pub=${
-					JOY.key.pub
-				}`;
-				JOY.route(url);
-				// page.start();
-			});
+			var uuid = Gun.text.random(11);
+			var url = `#paper/?file=${uuid}&?pub=${JOY.key.pub}`;
+			JOY.user
+				.get(`test/paper/files`)
+				.get(uuid)
+				.put({
+					name: "Untitled-" + uuid.slice(0, 4),
+				})
+				.on((d) => {
+					JOY.route(url);
+				});
 		},
 	});
 });

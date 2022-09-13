@@ -9,8 +9,10 @@ import { buildInputRules } from "./paper/inputrules";
 import { baseKeymap, chainCommands } from "prosemirror-commands";
 import { keymap } from "prosemirror-keymap";
 import { buildKeymap } from "./paper/keymap";
-import { addListNodes } from "prosemirror-schema-list";
+import { addListNodes, splitListItem } from "prosemirror-schema-list";
 import { highlightPlugin } from "prosemirror-highlightjs";
+import { history } from "prosemirror-history";
+
 import hljs from "highlight.js";
 import {
 	createMathSchema,
@@ -21,25 +23,38 @@ import {
 import { math } from "./paper/math";
 import { linkPlugin } from "./paper/plugins";
 import { suggestionPlugin } from "./paper/suggest";
+import { geezify } from "../lib/geezify";
 
 const paper = `
 <div id="paper" class="page screen" >
-	<div id="content" class="rim gap focus"></div>
-	<div id="who" class="right none"></div>
+	<div id="paper-img" class="none row gap">
+		<img class="cover sap primary" />
+	</div>
+	<div id="content" class="gap"></div>
+	<div id="who" class="left none"></div>
+	<small id="when" class="right gap"></small>
 </div>
 `;
+const historyPlugin = history();
 
 var user = JOY.user;
 JOY.route.page("paper", async function () {
 	var url = new URLSearchParams(location.hash.split("/")[1]);
 	var who = location.hash.split("&")[1].slice(5);
 	var hash = url.get("file");
+	console.log(hash);
 	var u = gun
 		.get("~" + who)
 		.get("test/paper/files")
 		.get(hash);
 	window.LOCK = false;
 	var title = (await u.get("name")) || `Untitled-${hash}`;
+	var last = await u.get("when");
+	if (last) {
+		$("#when").text("Last saved: " + JOY.since(last) + " ago");
+	}
+	// JOY.head(title);
+
 	if (who !== JOY?.key?.pub) {
 		window.LOCK = true;
 		// console.log(who);
@@ -52,7 +67,7 @@ JOY.route.page("paper", async function () {
 			{
 				title: title,
 				avatar: {
-					src: JOY.avatar(friend.avatar),
+					src: friend.avatar && JOY.avatar(friend.avatar),
 				},
 				link: {
 					href: `#profile/?pub=~${who}`,
@@ -61,24 +76,23 @@ JOY.route.page("paper", async function () {
 			}
 		);
 	}
-	JOY.head(title);
-	// JOY.head(title);
-	// 		} else {
-	// 			u = gun
-	// 				.get("~" + d)
-	// 				.get("test/paper/files")
-	// 				.get(hash);
-	// 		}
-	// 	});
-	// who.on((d) => {
-	// 	console.log(d);
-	// });
-	// var mathSchema = createMathSchema();
+	u.on(async (d) => {
+		JOY.head(d.name || title);
 
-	// var baseSchema = new Schema({
-	// 	nodes: schema.spec.nodes.append(mathSchemaSpec.nodes),
-	// 	mark: schema.spec.marks,
-	// })
+		if (!d || !d.document) return;
+
+		var doc = state.schema.nodeFromJSON(JSON.parse(d.document));
+		if (!doc) return;
+		state.doc = doc;
+
+		if (JOY.paper?.state === state) {
+			JOY.paper?.updateState(state);
+		}
+		if (d.cover) {
+			$("#paper-img img").attr("src", d.cover);
+			$("#paper-img").removeClass("none");
+		}
+	});
 	var todoItemSpec = {
 		attrs: {
 			done: { default: false },
@@ -124,7 +138,7 @@ JOY.route.page("paper", async function () {
 	var todoListSpec = {
 		group: "block",
 		content: "todo_item+ | list_item+",
-		toDOM(node) {
+		toDOM() {
 			return [
 				"ul",
 				{
@@ -135,7 +149,7 @@ JOY.route.page("paper", async function () {
 		},
 		parseDOM: [
 			{
-				priority: 51, // Needs higher priority than other nodes that use a "ul" tag
+				priority: 51,
 				tag: '[data-type="todo_list"]',
 			},
 		],
@@ -161,6 +175,7 @@ JOY.route.page("paper", async function () {
 	var state = EditorState.create({
 		schema: opts.schema,
 		plugins: [
+			historyPlugin,
 			// suggestionPlugin,
 			buildInputRules(opts.schema),
 			keymap(buildKeymap(opts.schema, opts.keys)),
@@ -169,29 +184,13 @@ JOY.route.page("paper", async function () {
 		],
 	});
 
-	const getTime = async () => {
-		var time = await u.get("when");
-		if (!time) return;
-		var when = JOY.since(new Date());
-		// $("#saved").text("Last edited " + when + " ago");
-	};
-	u.on((d) => {
-		JOY.head(d.name || title);
-		if (!d.document) return;
-		var doc = state.schema.nodeFromJSON(JSON.parse(d.document));
-		state.doc = doc;
-		if (JOY.paper?.state === state) {
-			JOY.paper?.updateState(state);
-		}
-		getTime();
-	});
 	function toggleTodoItemAction(state, pos, todoItemNode) {
 		return state.tr.setNodeMarkup(pos, null, {
 			done: !todoItemNode.attrs.done,
 		});
 	}
 	// setInterval(getTime, 6 * 1000);
-	if (!$("div .ProseMirror").get(0)) {
+	if (!JOY.paper) {
 		JOY.paper = new EditorView($("#content").get(0), {
 			state,
 			handleClickOn(view, pos, node, nodePos, event) {
@@ -202,11 +201,9 @@ JOY.route.page("paper", async function () {
 					return true;
 				}
 			},
-			handleDOMEvents: {
-				input(view, event) {
-					console.log(event.currentTarget.value);
-					// geezify(event);
-				},
+
+			ignoreMutation() {
+				return true;
 			},
 			editable() {
 				return !window.LOCK;
@@ -214,46 +211,45 @@ JOY.route.page("paper", async function () {
 			clipboardTextSerializer: (slice) => {
 				return mathSerializer.serializeSlice(slice);
 			},
-			dispatchTransaction(transaction) {
-				// var doc = JSON.string
+			async dispatchTransaction(transaction) {
 				var doc = transaction.doc.toJSON();
 				doc = JSON.stringify(doc);
-				// console.log(doc);
-				var w = +new Date();
+				var w = Date.now();
 				u.put({ document: doc, when: w });
-				console.log(transaction);
+				$("#when").text("Last saved: " + JOY.since(w) + " ago");
 				let newState = JOY.paper.state.apply(transaction);
 				JOY.paper.updateState(newState);
 			},
 		});
 	}
-	if (who === JOY?.key?.pub) {
+
+	if (who == JOY?.key?.pub) {
 		let t = $("#place");
 		t.on("dblclick", function () {
+			console.log("PREV: ");
 			meta.ask("Enter the name of the file", (answer) => {
 				u.get("name").put(answer);
 			});
 		});
-		// if (!JOY.paper.focused) {
-		// 	meta.edit({
-		// 		name: "Edit",
-		// 		combo: ["E"],
-		// 		on: function () {
-		// 			window.LOCK = !window.LOCK;
-		// 		},
-		// 	});
-		// }
-		// if (!JOY.paper.focused) {
-		// 	meta.edit({
-		// 		name: "Delete",
-		// 		combo: ["D"],
-		// 		on: async function () {
-		// 			// console.log(await u);
-		// 			u.put(null);
-		// 			JOY.route("home");
-		// 		},
-		// 	});
-		// }
+		if (!JOY.paper.focused) {
+			meta.edit({
+				name: "Preference",
+				fake: -1,
+				combo: [191],
+			});
+			meta.edit({
+				name: "Image",
+				combo: [191, "I"],
+				fake: -1,
+				on: function () {
+					meta.ask("Enter Image Source or Url", function (url) {
+						u.get("cover").put(url);
+						$("#paper-img img").attr("src", url);
+						$("#paper-img").removeClass("none");
+					});
+				},
+			});
+		}
 	}
 });
 

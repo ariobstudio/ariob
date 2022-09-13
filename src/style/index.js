@@ -249,14 +249,11 @@ JOY.css(
 	},
 	"only screen and (min-width: 600px)"
 );
-JOY.css(
-	{
-		".screen": {
-			"padding-bottom": "4em",
-		},
+JOY.css({
+	".screen": {
+		"padding-bottom": "7em",
 	},
-	"only screen and (max-width: 600px)"
-);
+});
 
 JOY.css({
 	".flex": {
@@ -264,5 +261,31 @@ JOY.css({
 		gap: "1em",
 		padding: "1em",
 		"flex-wrap": "wrap",
+	},
+});
+JOY.css({
+	".icon-cover": {
+		height: "5em",
+		width: "5em",
+		"object-fit": "cover",
+		color: "var(--text)",
+	},
+});
+JOY.css({
+	".cover": {
+		height: "calc(30vh + 10em)",
+		width: "100%",
+		"object-fit": "cover",
+	},
+	".inline-icon": {
+		height: "1.2em",
+		width: "1.2em",
+		"vertical-align": "sub",
+	},
+	"#header-icon": {
+		top: "-0.5em",
+		left: "0.5em",
+		"line-height": "1.1",
+		"font-size": "5em",
 	},
 });

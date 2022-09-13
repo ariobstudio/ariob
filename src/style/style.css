@@ -25,6 +25,7 @@ img {
 	vertical-align: inherit;
 	box-sizing: border-box;
 	font: inherit;
+	border: none !important;
 }
 
 a,
@@ -634,4 +635,8 @@ p + p {
 	100% {
 		background-position: -2800px 0;
 	}
+}
+
+.textt {
+	color: var(--text);
 }
