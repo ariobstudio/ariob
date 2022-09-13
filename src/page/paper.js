@@ -233,13 +233,8 @@ JOY.route.page("paper", async function () {
 		});
 		if (!JOY.paper.focused) {
 			meta.edit({
-				name: "Preference",
-				fake: -1,
-				combo: [191],
-			});
-			meta.edit({
 				name: "Image",
-				combo: [191, "I"],
+				combo: ["I"],
 				fake: -1,
 				on: function () {
 					meta.ask("Enter Image Source or Url", function (url) {
