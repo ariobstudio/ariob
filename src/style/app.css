@@ -279,3 +279,18 @@ li[data-done="false"] li[data-done="true"] .todo-checkbox-checked {
 li[data-done="false"] {
 	text-decoration: none;
 }
+
+details > summary {
+	cursor: pointer;
+	user-select: none;
+	padding: 0.5em;
+	background: var(--surface);
+	margin: 0.5em 0;
+}
+summary {
+	display: inline;
+}
+details[open] summary {
+	font-weight: bold;
+	background: transparent;
+}

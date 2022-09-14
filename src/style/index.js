@@ -235,7 +235,7 @@ JOY.css(
 	{
 		".screen": {
 			margin: "auto",
-			"padding-left": "3em",
+			"padding-left": "4em",
 		},
 	},
 	"only screen and (min-width: 600px)"
@@ -258,8 +258,6 @@ JOY.css({
 JOY.css({
 	".flex": {
 		display: "flex",
-		gap: "1em",
-		padding: "1em",
 		"flex-wrap": "wrap",
 	},
 });

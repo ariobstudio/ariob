@@ -119,6 +119,24 @@
 		tag.innerHTML = m ? tmp + "\n}" : tmp;
 		document.documentElement.append(tag);
 	};
+	joy.download = function (filename, data, type, charset, href) {
+		let hiddenElement;
+		if (charset === null) {
+			charset = "utf-8";
+		}
+		hiddenElement = document.createElement("a");
+		hiddenElement.href =
+			href || `data:${type};charset=${charset},${encodeURI(data)}`;
+		hiddenElement.target = "_blank";
+		hiddenElement.download = filename;
+		hiddenElement.click();
+	};
+	joy.capitalize = function (s) {
+		if (s === undefined) {
+			return "";
+		}
+		return s.charAt(0).toUpperCase() + s.slice(1);
+	};
 	joy.since = function (date) {
 		if (typeof date !== "object") {
 			date = new Date(date);

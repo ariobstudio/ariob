@@ -1,9 +1,8 @@
 import header from "../component/header.js";
 import icon from "../component/icon.js";
 const home = `
-<div id="home" class="page hold center">
-	<div class="center screen gap">
-		<p class="col center loud">Recents</p>
+<div id="home" class="page hold">
+	<div class="center screen">
 		<div id="drafts" class="flex">
 		</div>
 	</div>
