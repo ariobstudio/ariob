@@ -39,6 +39,7 @@ JOY.route.page("search", function () {
 				if (i) return;
 				query(f, v, true);
 			});
+
 		var q = v.substring(1);
 		if (v.charAt(0) === "@") {
 			var friend = await gun.get(pub).get("profile");
@@ -58,11 +59,6 @@ JOY.route.page("search", function () {
 					}
 				);
 		}
-
-		// if ($search.val().toLowerCase() !== friend.name.toLowerCase()) {
-		// 	$(`#${d.substring(1, 8)}`).remove();
-		// }
-		//Calls API to get Data
 	};
 
 	const debounce = function (fn, d) {
