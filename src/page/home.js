@@ -47,13 +47,17 @@ JOY.route.page("home", function () {
 				console.log();
 				$(this).parent().parent().remove();
 				JOY.user.get(`test/paper/files`).get(p).put(null);
-				JOY.tell("Successfully Deleted!");
+				JOY.tell(
+					`<strong class="greent">Successfully</strong> Deleted!`
+				);
 			});
 			$(".share").on("click", function (e) {
 				e.preventDefault();
 				let p = $(this).attr("data-link");
 				navigator.clipboard.writeText(location.origin + p);
-				JOY.tell("Copied! Share this with others!");
+				JOY.tell(
+					`<strong class="greent">Copied!</strong> Share this with others!`
+				);
 			});
 			var dup = {};
 			$("#drafts")
@@ -74,7 +78,9 @@ JOY.route.page("home", function () {
 		on: () => {
 			var key = JOY.key;
 			if (!key) {
-				JOY.tell("Join to save your data!");
+				JOY.tell(
+					`<strong class="bluet">Join</strong> to save your data!`
+				);
 				return;
 			}
 			var uuid = Gun.text.random(11);

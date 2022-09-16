@@ -237,7 +237,6 @@ JOY.route.page("paper", async function () {
 	if (who == JOY?.key?.pub) {
 		let t = $("#place");
 		t.on("dblclick", function () {
-			console.log("PREV: ");
 			meta.ask("Enter the name of the file", (answer) => {
 				u.get("name").put(answer);
 			});
@@ -253,31 +252,6 @@ JOY.route.page("paper", async function () {
 						$("#paper-img img").attr("src", url);
 						$("#paper-img").removeClass("none");
 					});
-				},
-			});
-			meta.edit({
-				name: "Export",
-				combo: ["E"],
-				on: function () {
-					var theme = document.documentElement.getAttribute("theme");
-					if (theme === "night") {
-						JOY.tell(
-							`<p><strong class="redt">Theme</strong> has to be in day mode to export to pdf</p>`
-						);
-						return;
-					}
-					// console.log(MarkdownSerializer(JOY.paper.doc));
-					var doc = new jsPDF();
-					doc.fromHTML(
-						document.getElementById("content"),
-						10,
-						10,
-						{},
-						function (a) {
-							console.log(a);
-							doc.save(`${title}.pdf`);
-						}
-					);
 				},
 			});
 		}
