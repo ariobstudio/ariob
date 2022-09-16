@@ -220,7 +220,7 @@ li.ProseMirror-selectednode:after {
 }
 
 /* Protect against generic img rules */
-img {
+.ProseMirror img {
 	max-width: 100%;
 	margin: 1em;
 	display: block;
