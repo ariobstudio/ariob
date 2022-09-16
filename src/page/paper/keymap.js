@@ -144,7 +144,6 @@ export function buildKeymap(schema, mapKeys) {
 		});
 	}
 	if ((type = schema.marks.link)) {
-		console.log(type);
 		bind("Mod-k", (state, dispatch) => {
 			if (state.selection.empty) {
 				this.options.onKeyboardShortcut();

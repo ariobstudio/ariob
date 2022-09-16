@@ -99,7 +99,7 @@
 	};
 	joy.tell = function (what, n) {
 		var e = $("#tell").find("p");
-		e.addClass("notify").text(what);
+		e.addClass("notify").html(what);
 		clearTimeout(joy.tell.to);
 		joy.tell.to = setTimeout(function () {
 			e.removeClass("notify");

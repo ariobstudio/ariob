@@ -19,7 +19,14 @@ import { markInputRule } from "./markInputRule";
 export function blockQuoteRule(nodeType) {
 	return wrappingInputRule(/^\s*>\s$/, nodeType);
 }
-
+const IMAGE_INPUT_REGEX =
+	/!\[(?<alt>.*?)]\((?<filename>.*?)(?=\“|\))\“?(?<layoutclass>[^\”]+)?\”?\)/;
+const getLayoutAndTitle = (tokenTitle) => {
+	if (!tokenTitle) return {};
+	return {
+		title: tokenTitle,
+	};
+};
 /// Given a list node type, returns an input rule that turns a number
 /// followed by a dot at the start of a textblock into an ordered list.
 export function orderedListRule(nodeType) {
@@ -76,6 +83,25 @@ export function linkRule(nodeType) {
 		return tr;
 	});
 }
+export function imageRule(nodeType) {
+	return new InputRule(IMAGE_INPUT_REGEX, (state, match, start, end) => {
+		const [okay, alt, src, matchedTitle] = match;
+		const { tr } = state;
+		if (okay) {
+			tr.replaceWith(
+				start - 1,
+				end,
+				nodeType.create({
+					src,
+					alt,
+					...getLayoutAndTitle(matchedTitle),
+				})
+			);
+		}
+
+		return tr;
+	});
+}
 
 /// A set of input rules for creating the basic block quotes, lists,
 /// code blocks, and heading.
@@ -101,6 +127,7 @@ export function buildInputRules(schema) {
 	if ((type = schema.marks.link)) rules.push(linkRule(type));
 	if ((type = schema.marks.highlight))
 		rules.push(markInputRule(/(?:==)([^=]+)(?:==)$/, type));
+	if ((type = schema.nodes.image)) rules.push(imageRule(type));
 	if ((type = schema.nodes.math_inline))
 		rules.push(makeInlineMathInputRule(REGEX_INLINE_MATH_DOLLARS, type));
 	if ((type = schema.nodes.math_display))

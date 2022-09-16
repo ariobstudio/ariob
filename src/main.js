@@ -124,6 +124,9 @@ var routes = [
 		icon: "settings",
 	},
 ];
+if (!location.hash) {
+	JOY.route("home");
+}
 document.querySelector("#app").innerHTML = `
   <header>
     ${header}

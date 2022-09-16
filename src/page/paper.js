@@ -1,36 +1,23 @@
 import "gun/lib/monotype.js";
 
-import { EditorState, Plugin } from "prosemirror-state";
+import { EditorState } from "prosemirror-state";
 import { EditorView } from "prosemirror-view";
-import { Node, Schema } from "prosemirror-model";
-// import { schema } from "prosemirror-schema-basic";
+import { Schema } from "prosemirror-model";
 import { schema } from "./paper/schema";
 import { buildInputRules } from "./paper/inputrules";
-import { baseKeymap, chainCommands } from "prosemirror-commands";
+import { baseKeymap } from "prosemirror-commands";
 import { keymap } from "prosemirror-keymap";
 import { buildKeymap } from "./paper/keymap";
 import { addListNodes, splitListItem } from "prosemirror-schema-list";
-import { highlightPlugin } from "prosemirror-highlightjs";
 import { history } from "prosemirror-history";
 
-import hljs from "highlight.js";
-import {
-	createMathSchema,
-	mathPlugin,
-	mathSchemaSpec,
-	mathSerializer,
-} from "@benrbray/prosemirror-math";
-import { math } from "./paper/math";
-import { linkPlugin } from "./paper/plugins";
-import { suggestionPlugin } from "./paper/suggest";
-import { geezify } from "../lib/geezify";
-
+import { mathPlugin, mathSerializer } from "@benrbray/prosemirror-math";
 const paper = `
 <div id="paper" class="page screen" >
 	<div id="paper-img" class="none row gap">
 		<img class="cover sap primary" />
 	</div>
-	<div id="content" class="gap"></div>
+	<div id="content" class="gap background textt"></div>
 	<div id="who" class="left none"></div>
 	<small id="when" class="right gap"></small>
 </div>
@@ -53,11 +40,9 @@ JOY.route.page("paper", async function () {
 	if (last) {
 		$("#when").text("Last saved: " + JOY.since(last) + " ago");
 	}
-	// JOY.head(title);
 
 	if (who !== JOY?.key?.pub) {
 		window.LOCK = true;
-		// console.log(who);
 		$("#who").removeClass("none");
 		var friend = await gun.get("~" + who).get("profile");
 		JOY.route.render(
@@ -175,6 +160,29 @@ JOY.route.page("paper", async function () {
 	var state = EditorState.create({
 		schema: opts.schema,
 		plugins: [
+			// selectionMenu({
+			// 	content: [
+			// 		{
+			// 			command: toggleMark(opts.schema.marks.strong),
+			// 			dom: icon("B", "strong"),
+			// 		},
+			// 		{
+			// 			command: toggleMark(opts.schema.marks.em),
+			// 			dom: icon("i", "em"),
+			// 		},
+			// 		{
+			// 			command: setBlockType(opts.schema.nodes.paragraph),
+			// 			dom: icon("p", "paragraph"),
+			// 		},
+			// 		heading(1),
+			// 		heading(2),
+			// 		heading(3),
+			// 		{
+			// 			command: wrapIn(opts.schema.nodes.blockquote),
+			// 			dom: icon(">", "blockquote"),
+			// 		},
+			// 	],
+			// }),
 			historyPlugin,
 			// suggestionPlugin,
 			buildInputRules(opts.schema),
@@ -211,6 +219,9 @@ JOY.route.page("paper", async function () {
 			clipboardTextSerializer: (slice) => {
 				return mathSerializer.serializeSlice(slice);
 			},
+			content() {
+				return;
+			},
 			async dispatchTransaction(transaction) {
 				var doc = transaction.doc.toJSON();
 				doc = JSON.stringify(doc);
@@ -242,6 +253,31 @@ JOY.route.page("paper", async function () {
 						$("#paper-img img").attr("src", url);
 						$("#paper-img").removeClass("none");
 					});
+				},
+			});
+			meta.edit({
+				name: "Export",
+				combo: ["E"],
+				on: function () {
+					var theme = document.documentElement.getAttribute("theme");
+					if (theme === "night") {
+						JOY.tell(
+							`<p><strong class="redt">Theme</strong> has to be in day mode to export to pdf</p>`
+						);
+						return;
+					}
+					// console.log(MarkdownSerializer(JOY.paper.doc));
+					var doc = new jsPDF();
+					doc.fromHTML(
+						document.getElementById("content"),
+						10,
+						10,
+						{},
+						function (a) {
+							console.log(a);
+							doc.save(`${title}.pdf`);
+						}
+					);
 				},
 			});
 		}

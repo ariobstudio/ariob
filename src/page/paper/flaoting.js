@@ -1,5 +1,5 @@
 import { Plugin } from "prosemirror-state";
-
+import { renderGrouped } from "prosemirror-menu";
 export function selectionMenu(options) {
 	return new Plugin({
 		view(editorView) {
@@ -12,9 +12,8 @@ class SelectionMenu {
 	constructor(editorView, options) {
 		this.editorView = editorView;
 		this.options = options;
-
 		this.menu = document.createElement("div");
-		this.menu.style.display = "none";
+		// this.menu.style.display = "none";
 		this.menu.style.position = "absolute";
 		this.menu.className = "pm-selectionmenu";
 
@@ -24,6 +23,7 @@ class SelectionMenu {
 		);
 
 		this.contentUpdate = update;
+		console.log(this.options.content);
 		this.menu.appendChild(dom);
 
 		editorView.dom.parentNode.appendChild(this.menu);
