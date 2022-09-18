@@ -131,10 +131,10 @@ if (!location.hash) {
 }
 document.querySelector("#app").innerHTML = `
 
+  <div id="loader" class="full hold"><div id="spinner"></div></div>
   <header>
     ${header}
   </header>
- <div id="loader" class="full hold"><div id="spinner"></div></div>
 
   <main>
     ${page}
@@ -196,5 +196,5 @@ $(window).on("load", function () {
 	setTimeout(() => {
 		$("#loader").hide();
 		enableScroll();
-	}, 1000);
+	}, 300);
 });

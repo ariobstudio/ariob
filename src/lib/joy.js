@@ -17,9 +17,11 @@
 		var h = href.split("/")[0];
 		$(".page").hide();
 
-		$(document).ready(function () {
-			$("#" + h).show();
-		});
+		// $(document).ready(function () {
+		let data = window.performance.getEntriesByType("navigation")[0].type;
+		console.log(data);
+		if (data === "reload") $("#" + h).show();
+		// });
 
 		location.hash = href;
 
