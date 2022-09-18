@@ -7,12 +7,12 @@ import friends from "./friends.js";
 import { create, auth } from "./auth.js";
 import paper from "./paper.js";
 export const page = `
+    ${create}
+    ${auth}
     ${activity}
     ${home}
     ${settings}
     ${profile}
-    ${create}
-    ${auth}
     ${search}
     ${friends}
     ${paper}

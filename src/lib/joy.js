@@ -19,7 +19,6 @@
 
 		// $(document).ready(function () {
 		let data = window.performance.getEntriesByType("navigation")[0].type;
-		console.log(data);
 		if (data === "reload") $("#" + h).show();
 		// });
 
@@ -56,8 +55,8 @@
 		return $data;
 	};
 	window.onhashchange = function () {
-		r(location.hash.slice(1));
 		window.location.reload(true);
+		r(location.hash.slice(1));
 	};
 	$.route = r;
 })();

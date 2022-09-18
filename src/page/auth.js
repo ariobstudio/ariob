@@ -22,8 +22,8 @@ const create = `
 </div>`;
 
 const auth = `
-<div id="auth" class="page hold center">
-  <div class="center screen gap leak air">
+<div id="auth" class="page center">
+  <div class="center screen gap">
     <div class="unit row gap">
       <a href="#home">${logo(5)}</a>
     </div>
