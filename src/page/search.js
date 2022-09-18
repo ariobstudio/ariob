@@ -2,9 +2,9 @@ import header from "../component/header.js";
 
 const search = `
 <div id="search" class="page hold center">
-	<div class="center screen gap leak">
-	  <form id="search" class="rim">
-	    <input class='surface unit max row' id='query' placeholder='Search !title, @person, #tag...'/>
+	<div class=" screen">
+	  <form id="search" class="gap">
+	    <input class='surface unit max  row' id='query' placeholder='Search !title, @person, #tag...'/>
 	  </form>
 		<ul class="gap" id="searches">
 		</ul>
@@ -13,7 +13,7 @@ const search = `
 `;
 
 JOY.route.page("search", function () {
-	JOY.head("Search", true);
+	JOY.head("Search");
 	var $search = $("#query");
 	$search.focus();
 	var $form = $("#search");

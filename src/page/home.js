@@ -12,13 +12,14 @@ var user = JOY.user;
 var colors = ["green", "yellow", "red", "blue"];
 JOY.route.page("home", function () {
 	JOY.head("Home");
+	console.log("HOME");
 	JOY.user
 		.get(`test/paper/files`)
 		.map()
 		.on(async (d, k) => {
 			// if (!d?.when || !d?.document || !d?.name) return;
 			if (!d || !d?.document || !d?.when) return;
-			console.log(d);
+			// console.log(d);
 
 			var when = JOY.since(new Date(d.when));
 			JOY.route.render(k, ".paper-card", $("#drafts"), {
@@ -44,7 +45,7 @@ JOY.route.page("home", function () {
 				e.preventDefault();
 				let p = $(this).attr("data-paper");
 				// $(p.parent().get(0)).remove();
-				console.log();
+				// console.log();
 				$(this).parent().parent().remove();
 				JOY.user.get(`test/paper/files`).get(p).put(null);
 				JOY.tell(
@@ -70,9 +71,10 @@ JOY.route.page("home", function () {
 					}
 				});
 		});
-
+	// console.log(meta);
 	meta.edit({
 		name: "Create",
+		place: "home",
 		combo: ["C"],
 		fake: -1,
 		on: () => {

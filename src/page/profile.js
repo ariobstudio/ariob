@@ -21,7 +21,7 @@ const profile = `
 `;
 
 JOY.route.page("profile", async function (a) {
-	JOY.head("Profile", true);
+	JOY.head("Profile");
 	var url = new URLSearchParams(location.hash.split("/")[1]);
 	var pub = url.get("pub");
 	$(".mine").addClass("none");
@@ -136,5 +136,4 @@ JOY.route.page("profile", async function (a) {
 		navigator.clipboard.writeText(location.href);
 	});
 });
-
 export default profile;

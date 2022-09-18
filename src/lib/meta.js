@@ -113,6 +113,7 @@
 		if (!l.length) {
 			return;
 		}
+
 		k.at = at;
 		l = l.sort(function (a, b) {
 			a = a.combo.slice(-1)[0] || 0;

@@ -16,11 +16,13 @@
 		}
 		var h = href.split("/")[0];
 		$(".page").hide();
-		$("#" + h).show();
-		// if (r.on === h) {
-		// 	return;
-		// }
+
+		$(document).ready(function () {
+			$("#" + h).show();
+		});
+
 		location.hash = href;
+
 		(r.page[h] || { on: function () {} }).on();
 		r.on = h;
 		return r;
@@ -48,11 +50,12 @@
 			}
 			$n.val(val).text(val);
 		});
+
 		return $data;
 	};
 	window.onhashchange = function () {
-		window.location.reload(true);
 		r(location.hash.slice(1));
+		window.location.reload(true);
 	};
 	$.route = r;
 })();

@@ -64,9 +64,9 @@ JOY.route.page("paper", async function () {
 	u.on(async (d) => {
 		JOY.head(d.name || title);
 
-		if (!d || !d.document) return;
-
-		var doc = state.schema.nodeFromJSON(JSON.parse(d.document));
+		if (!d || !state || !d.document) return;
+		console.log(d.document);
+		var doc = state.schema.nodeFromJSON(JSON.parse(d.document)) || null;
 		if (!doc) return;
 		state.doc = doc;
 
@@ -78,6 +78,7 @@ JOY.route.page("paper", async function () {
 			$("#paper-img").removeClass("none");
 		}
 	});
+	u.off();
 	var todoItemSpec = {
 		attrs: {
 			done: { default: false },
@@ -243,8 +244,9 @@ JOY.route.page("paper", async function () {
 		});
 		if (!JOY.paper.focused) {
 			meta.edit({
-				name: "Image",
-				combo: ["I"],
+				name: "Cover",
+				// combo: ["C"],
+				place: "paper",
 				fake: -1,
 				on: function () {
 					meta.ask("Enter Image Source or Url", function (url) {
