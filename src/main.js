@@ -32,17 +32,17 @@ var storedKey = localStorage.getItem("key");
 if (storedTheme) document.documentElement.setAttribute("theme", storedTheme);
 if (storedKey) {
 	JOY.auth(JSON.parse(storedKey));
-	var pub = "~" + user.is.pub;
-	user.get("profile").on((d) => {
-		$("#my").attr("href", `#profile/?pub=${pub}`);
-		$("#my img").attr("src", JOY.avatar(d.avatar));
-	});
 }
 // JOY.route("home");
 gun.on("auth", async function (ack) {
 	if (!storedKey) {
 		localStorage.setItem("key", JSON.stringify(JOY.key));
 	}
+	var pub = "~" + user.is.pub;
+	user.get("profile").on((d) => {
+		$("#my").attr("href", `#profile/?pub=${pub}`);
+		$("#my img").attr("src", JOY.avatar(d.avatar));
+	});
 });
 
 // first, find all the div.code blocks
