@@ -6,7 +6,7 @@
     "background_color": "#121212",
     "description": "Decentralized Social Platform",
     "theme_color": "#121212",
-    "scope": "/",
+    "scope": "/#home",
     "icons": [
         {
             "src": "windows11/SmallTile.scale-100.png",

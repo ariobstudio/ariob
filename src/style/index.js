@@ -258,7 +258,7 @@ JOY.css({
 JOY.css({
 	".flex": {
 		display: "flex",
-		"justify-content": "space-around",
+		"justify-content": "space-between",
 		"flex-wrap": "wrap",
 	},
 });

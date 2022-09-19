@@ -13,6 +13,9 @@ const search = `
 `;
 
 JOY.route.page("search", function () {
+	if (!JOY.key) {
+		JOY.route("create");
+	}
 	JOY.head("Search");
 	var $search = $("#query");
 	$search.focus();

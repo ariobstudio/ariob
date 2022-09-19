@@ -14,6 +14,17 @@ const paper = `
 		</div>		
 	</li>
 </div>
+<div class="paper-card-mini">
+    <li class='unit crack'>
+		<a name="link" class="unit">
+			<div >
+				<img class="icon-cover sap" name="cover"/>
+			</div>
+			<p class="unit gap" name='name'></p>
+		</a>
+		
+	</li>
+</div>
 `;
 
 export default paper;

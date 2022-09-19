@@ -4,11 +4,9 @@ import settings from "./settings.js";
 import activity from "./activity.js";
 import profile from "./profile.js";
 import friends from "./friends.js";
-import { create, auth } from "./auth.js";
+// import { create, auth } from "./auth.js";
 import paper from "./paper.js";
 export const page = `
-    ${create}
-    ${auth}
     ${activity}
     ${home}
     ${settings}

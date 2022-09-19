@@ -16,14 +16,88 @@ const profile = `
 			<h3 class="tab left act surfacet">Posts</h3>
 		</div>
 		<ul id='others'></ul>
+		<ul id='posts' class="flex"></ul>
 	</div>
 </div>
 `;
+var colors = ["green", "yellow", "red", "blue"];
 
 JOY.route.page("profile", async function (a) {
+	if (!JOY.key) {
+		JOY.route("create");
+	}
 	JOY.head("Profile");
 	var url = new URLSearchParams(location.hash.split("/")[1]);
 	var pub = url.get("pub");
+	var tabs = {
+		friends: {
+			graph: gun.get(pub).get("friends"),
+			render: async function (d, k) {
+				$("#posts").empty();
+				var friend = await gun.get(d).get("profile");
+				JOY.route.render(
+					d.substring(1, 8),
+					".persona-friend",
+					$("#others"),
+					{
+						avatar: {
+							src: JOY.avatar(friend.avatar),
+						},
+						link: {
+							href: `#profile/?pub=${d}`,
+						},
+						name: friend.name,
+					}
+				);
+			},
+		},
+		posts: {
+			graph: gun.get(pub).get("posts"),
+			render: async function (d, k) {
+				$("#others").empty();
+				var paper = await gun.get(pub).get("test/paper/files").get(d);
+				JOY.route.render(
+					k.substring(1, 4),
+					".paper-card-mini",
+					$("#posts"),
+					{
+						"data-paper": {
+							"data-paper": k,
+						},
+						"data-link": {
+							"data-link": `#paper/?file=${k}&?pub=${pub.slice(
+								1
+							)}`,
+						},
+						link: {
+							href: `#paper/?file=${d}&?pub=${pub.slice(1)}`,
+						},
+						cover: {
+							src: paper.cover,
+							class: `icon-cover sap ${
+								colors[
+									Math.floor(Math.random() * colors.length)
+								]
+							}`,
+						},
+						name: `${paper.name}`,
+						when: when,
+					}
+				);
+				var dup = {};
+				$("#posts")
+					.children()
+					.each(function () {
+						if (dup.hasOwnProperty(this.id)) {
+							$(this).remove();
+						} else {
+							dup[this.id] = "true";
+						}
+					});
+			},
+		},
+	};
+
 	$(".mine").addClass("none");
 	$(".their").addClass("none");
 	gun.get(pub)
@@ -48,46 +122,29 @@ JOY.route.page("profile", async function (a) {
 		$(tab).click(function () {
 			$(this).removeClass("surfacet");
 			$(this).siblings(".tab").addClass("surfacet");
-			$("#others").empty();
-			render(pub, $(this).text());
+			var current = tabs[$(tab).text().toLowerCase()];
+			render(current.graph, current.render);
 		});
 		if ($(tab).hasClass("surfacet")) {
 			return;
 		}
-		render(pub, $(tab).text());
+		var current = tabs[$(tab).text().toLowerCase()];
+		render(current.graph, current.render);
 	});
-	function render(p, t) {
-		if (t == "Friends") {
-			gun.get(p)
-				.get("friends")
-				.map()
-				.on(async (d, k) => {
-					if (!d) return;
-
-					var friend = await gun.get(d).get("profile");
-					JOY.route.render(
-						d.substring(1, 8),
-						".persona-friend",
-						$("#others"),
-						{
-							avatar: {
-								src: JOY.avatar(friend.avatar),
-							},
-							link: {
-								href: `#profile/?pub=${d}`,
-							},
-							name: friend.name,
-						}
-					);
-				});
-		}
+	function render(graph, cb) {
+		if (!graph) return;
+		graph.map().on(cb);
 	}
 	meta.edit({
 		place: "profile",
 		name: "Share",
+		fake: -1,
 		combo: ["S"],
 		on: async (eve) => {
 			navigator.clipboard.writeText(location.href);
+			JOY.tell(
+				`<strong class="greent">Copied! </strong> your profile link.`
+			);
 		},
 	});
 	if (JOY.key && `~${JOY.key.pub}` === pub) {
@@ -95,6 +152,7 @@ JOY.route.page("profile", async function (a) {
 		meta.edit({
 			place: "profile",
 			name: "Avatar",
+			fake: -1,
 			combo: ["A"],
 			on: async (eve) => {
 				var avatar = await SEA.work(Gun.text.random(16), null, null, {

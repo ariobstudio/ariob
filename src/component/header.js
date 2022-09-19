@@ -3,7 +3,9 @@ import icon from "./icon.js";
 const header = `
     <div id="header" class="unit row rim center">
       <div class="rim  right" id="account">
-        <a class='unit act but primary right' href="#create">Join</a>
+        <a id="my" class='unit right gap'>
+          <img name="avatar" width="32em" class=" sap "/>
+        </a>
       </div>
       <div class="flex rim right">
         <a class="gap" href='#activity'>${icon("notification")}</a>

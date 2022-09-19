@@ -1,7 +1,7 @@
 import logo from "../component/logo.js";
 
 const create = `
-<div id="create" class="page hold center">
+<div id="create" class="page full hold center">
   <div class="center screen gap air">
     <div class="unit row gap">
       <a href="#home">${logo(5)}</a>
@@ -22,7 +22,7 @@ const create = `
 </div>`;
 
 const auth = `
-<div id="auth" class="page center">
+<div id="auth" class="page full center">
   <div class="center screen gap">
     <div class="unit row gap">
       <a href="#home">${logo(5)}</a>
@@ -45,6 +45,9 @@ const auth = `
 `;
 
 JOY.route.page("auth", function () {
+	if (JOY.key) {
+		JOY.route("home");
+	}
 	JOY.head("Access", true);
 	var key = $("#key");
 	key.focus();
@@ -53,6 +56,7 @@ JOY.route.page("auth", function () {
 		e.preventDefault();
 		JOY.auth(JSON.parse(key.val()), (ack) => {
 			if (!ack.err) {
+				// history.back();
 				JOY.route("home");
 			} else {
 				JOY.tell(ack.err);
@@ -62,6 +66,9 @@ JOY.route.page("auth", function () {
 });
 
 JOY.route.page("create", function () {
+	if (JOY.key) {
+		JOY.route("home");
+	}
 	JOY.head("Join", true);
 	var name = $("#alias");
 	name.focus();
@@ -79,6 +86,7 @@ JOY.route.page("create", function () {
 				JOY.user.get("epub").put(JOY.key.epub);
 				JOY.user.get("profile").get("name").put(name.val());
 				JOY.user.get("profile").get("avatar").put(avatar);
+				// history.back();
 				JOY.route("home");
 			},
 			true

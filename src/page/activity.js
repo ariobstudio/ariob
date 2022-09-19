@@ -11,16 +11,18 @@ const activity = `
 
 JOY.route.page("activity", function () {
 	var notifications = {};
+	if (!JOY.key) {
+		JOY.route("create");
+	}
 	// .get("notifications").
 	JOY.head("Activity");
-	console.log(JOY.user.is);
 	gun.get(`@${JOY.key.pub}`)
 		.get("notifications")
 		.map()
 		.on(async (d, k) => {
-			console.log(d);
+			console.log("NOTIFY: ", d);
 			if (!d) return;
-			if ($(`#${soul.slice(0, 8)}`)) return;
+			if ($(`#${k.substring(0, 5)}`).length > 1) return;
 			var notification = d.data;
 			var secret = await SEA.secret(d.epub, JOY.key);
 			var decrypted = await SEA.decrypt(notification, secret);
@@ -34,7 +36,7 @@ JOY.route.page("activity", function () {
 			var when = JOY.since(new Date(decrypted.created));
 			console.log(pub);
 			JOY.route.render(
-				soul.slice(0, 8),
+				soul.substring(0, 5),
 				".notification-ask",
 				$("#activities"),
 				{

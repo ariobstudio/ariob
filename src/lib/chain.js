@@ -137,12 +137,13 @@ Gun.chain.connect = async function (pub) {
 	};
 	var secret = await SEA.secret(epub, pair);
 	var encrypted = await SEA.encrypt(payload, secret);
+	// console.log(pub.slice(1));
 	gun.get(`@${pub.substring(1)}`)
 		.get("notifications")
 		.set({ data: encrypted, epub: pair.epub });
 
 	user.get("friends").set(pub);
-	return this;
+	// return this;
 	// var throwaway = gun.user();
 	// throwaway.auth(pair);
 };

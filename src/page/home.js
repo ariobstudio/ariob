@@ -11,15 +11,16 @@ const home = `
 var user = JOY.user;
 var colors = ["green", "yellow", "red", "blue"];
 JOY.route.page("home", function () {
+	if (!JOY.key) {
+		JOY.route("create");
+	}
 	JOY.head("Home");
-	console.log("HOME");
+
 	JOY.user
 		.get(`test/paper/files`)
 		.map()
 		.on(async (d, k) => {
-			// if (!d?.when || !d?.document || !d?.name) return;
 			if (!d || !d?.document || !d?.when) return;
-			// console.log(d);
 
 			var when = JOY.since(new Date(d.when));
 			JOY.route.render(k, ".paper-card", $("#drafts"), {
@@ -44,8 +45,6 @@ JOY.route.page("home", function () {
 			$(".delete").on("click", function (e) {
 				e.preventDefault();
 				let p = $(this).attr("data-paper");
-				// $(p.parent().get(0)).remove();
-				// console.log();
 				$(this).parent().parent().remove();
 				JOY.user.get(`test/paper/files`).get(p).put(null);
 				JOY.tell(

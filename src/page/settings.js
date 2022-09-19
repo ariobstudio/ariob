@@ -49,6 +49,9 @@ window.addEventListener("beforeinstallprompt", (e) => {
 	deferredPrompt = e;
 });
 JOY.route.page("settings", function () {
+	if (!JOY.key) {
+		JOY.route("create");
+	}
 	JOY.head("Settings");
 	var before = document.documentElement.getAttribute("theme");
 	$("#theme").text(JOY.capitalize(before));

@@ -17,7 +17,8 @@ const paper = `
 	<div id="paper-img" class="none row gap">
 		<img class="cover sap primary" />
 	</div>
-	<div id="content" class="gap background textt"></div>
+	<div id="content" class="gap background">
+	</div>
 	<div id="who" class="left none"></div>
 	<small id="when" class="right gap"></small>
 </div>
@@ -60,12 +61,23 @@ JOY.route.page("paper", async function () {
 				name: friend.name,
 			}
 		);
+		meta.edit({
+			name: "Save",
+			fake: -1,
+			combo: ["S"],
+			on: async function () {
+				var uuid = Gun.text.random(11);
+				// console.log();
+				var data = await u;
+				JOY.user.get("test/paper/files").get(uuid).put(data);
+				JOY.tell(`<strong class="greent">Saved!</strong>`);
+			},
+		});
 	}
 	u.on(async (d) => {
 		JOY.head(d.name || title);
 
 		if (!d || !state || !d.document) return;
-		console.log(d.document);
 		var doc = state.schema.nodeFromJSON(JSON.parse(d.document)) || null;
 		if (!doc) return;
 		state.doc = doc;
@@ -78,7 +90,7 @@ JOY.route.page("paper", async function () {
 			$("#paper-img").removeClass("none");
 		}
 	});
-	u.off();
+	// u.off();
 	var todoItemSpec = {
 		attrs: {
 			done: { default: false },
@@ -152,7 +164,6 @@ JOY.route.page("paper", async function () {
 		marks: schema.spec.marks,
 	});
 
-	// console.log(baseSchema);
 	var opts = {
 		schema: pSchema,
 		keys: null,
@@ -161,31 +172,7 @@ JOY.route.page("paper", async function () {
 	var state = EditorState.create({
 		schema: opts.schema,
 		plugins: [
-			// selectionMenu({
-			// 	content: [
-			// 		{
-			// 			command: toggleMark(opts.schema.marks.strong),
-			// 			dom: icon("B", "strong"),
-			// 		},
-			// 		{
-			// 			command: toggleMark(opts.schema.marks.em),
-			// 			dom: icon("i", "em"),
-			// 		},
-			// 		{
-			// 			command: setBlockType(opts.schema.nodes.paragraph),
-			// 			dom: icon("p", "paragraph"),
-			// 		},
-			// 		heading(1),
-			// 		heading(2),
-			// 		heading(3),
-			// 		{
-			// 			command: wrapIn(opts.schema.nodes.blockquote),
-			// 			dom: icon(">", "blockquote"),
-			// 		},
-			// 	],
-			// }),
 			historyPlugin,
-			// suggestionPlugin,
 			buildInputRules(opts.schema),
 			keymap(buildKeymap(opts.schema, opts.keys)),
 			keymap(baseKeymap),
@@ -198,7 +185,6 @@ JOY.route.page("paper", async function () {
 			done: !todoItemNode.attrs.done,
 		});
 	}
-	// setInterval(getTime, 6 * 1000);
 	if (!JOY.paper) {
 		JOY.paper = new EditorView($("#content").get(0), {
 			state,
@@ -245,8 +231,7 @@ JOY.route.page("paper", async function () {
 		if (!JOY.paper.focused) {
 			meta.edit({
 				name: "Cover",
-				// combo: ["C"],
-				place: "paper",
+				combo: ["C"],
 				fake: -1,
 				on: function () {
 					meta.ask("Enter Image Source or Url", function (url) {
@@ -254,6 +239,15 @@ JOY.route.page("paper", async function () {
 						$("#paper-img img").attr("src", url);
 						$("#paper-img").removeClass("none");
 					});
+				},
+			});
+			meta.edit({
+				name: "Post",
+				combo: ["P"],
+				fake: -1,
+				on: function () {
+					user.get("posts").set(hash);
+					JOY.tell(`<strong class="greent">Posted!</strong>`);
 				},
 			});
 		}

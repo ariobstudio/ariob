@@ -85,21 +85,23 @@
 		}/${seed}.svg`;
 	};
 	joy.head = function (title, hide) {
-		var $head = $("header");
-		// var $profile = $("#account");
-		document.title = title;
-		place.textContent = title;
-		if (hide) {
-			if (hide.only) {
-				// console.log("hide.only", hide.only);
-				account.style.display = "none";
+		$(document).ready(function () {
+			var $head = $("header");
+			// var $profile = $("#account");
+			document.title = title;
+			place.textContent = title;
+			if (hide) {
+				if (hide.only) {
+					// console.log("hide.only", hide.only);
+					account.style.display = "none";
+					return;
+				}
+				$head.addClass("none");
 				return;
 			}
-			$head.addClass("none");
-			return;
-		}
-		account.style.display = "flex";
-		$("header").removeClass("none");
+			account.style.display = "flex";
+			$("header").removeClass("none");
+		});
 	};
 	joy.tell = function (what, n) {
 		var e = $("#tell").find("p");
@@ -193,7 +195,7 @@
 			opt.peers ||
 			peers ||
 			(function () {
-				return ["https://marda.herokuapp.com/gun"];
+				return ["http://localhost:8765/gun"];
 			})());
 	window.gun = window.gun || Gun(opt);
 	joy.user = gun.user();

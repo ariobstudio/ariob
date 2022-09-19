@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@benrbray/prosemirror-math": "^0.2.2",
+    "Buffer": "0.0.0",
     "gun": "^0.2020.1237",
     "highlight.js": "^11.6.0",
     "html2canvas": "^1.4.1",

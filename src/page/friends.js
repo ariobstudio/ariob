@@ -11,6 +11,10 @@ const friends = `
 `;
 
 JOY.route.page("friends", function () {
+	if (!JOY.key) {
+		JOY.route("create");
+	}
+
 	JOY.head("Friends");
 	JOY.user
 		.get("friends")
@@ -35,15 +39,6 @@ JOY.route.page("friends", function () {
 				}
 			);
 		});
-
-	// async function render(n) {
-	// 	for (let [soul, notification] of Object.entries(n)) {
-	// 		console.log(soul, node);
-	// 		if (!node) return;
-
-	// 		console.log("RENDERED");
-	// 	}
-	// }
 });
 
 export default friends;
