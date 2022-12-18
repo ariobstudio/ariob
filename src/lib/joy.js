@@ -185,7 +185,7 @@
 
 		return interval + " " + intervalType;
 	};
-	var opt = (joy.opt = window.CONFIG || {}),
+	var opt = (joy.opt = window.CONFIG || {axe: false}),
 		peers;
 	$("link[type=peer]").each(function () {
 		(peers || (peers = [])).push($(this).attr("href"));
@@ -196,7 +196,6 @@
 			peers ||
 			(function () {
 				return [
-					"https://marda.herokuapp.com/gun",
 					"https://gun-us.herokuapp.com/gun",
 				];
 			})());
