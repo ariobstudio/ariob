@@ -1,0 +1,30 @@
+{
+  "name": "ariob",
+  "version": "1.0.0",
+  "description": "Cross platform Decentralized Platform",
+  "main": "index.js",
+  "scripts": {
+    "start": "pnpm run start:web",
+    "start:web": "pnpm --filter web run start",
+    "start:core": "pnpm --filter core run start",
+    "dev": "pnpm run dev:web",
+    "dev:web": "pnpm --filter web run dev",
+    "dev:core": "pnpm --filter core run dev",
+    "dev:all": "pnpm run build:core && pnpm run dev:web",
+    "build": "pnpm run build:core && pnpm run build:web",
+    "build:web": "pnpm --filter web run build",
+    "build:core": "pnpm --filter core run build",
+    "clean": "pnpm run clean:web && pnpm run clean:core",
+    "clean:web": "pnpm --filter web run clean",
+    "clean:core": "pnpm --filter core run clean",
+    "test": "pnpm run test:web && pnpm run test:core",
+    "test:web": "pnpm --filter web run test",
+    "test:core": "pnpm --filter core run test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10"
+  }
+}
