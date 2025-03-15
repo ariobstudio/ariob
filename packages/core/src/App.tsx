@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from '@lynx-js/react'
+import { lazy, useCallback, useEffect, useState } from '@lynx-js/react'
 
 import './App.css'
 import arrow from './assets/arrow.png'
