@@ -1,0 +1,747 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		10BAAD9A2D845330003310C6 /* main.lynx.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 10BAAD8F2D8446D9003310C6 /* main.lynx.bundle */; };
+		4933750D50830B5A5742E3F2 /* Pods_Ariob.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 907A486D56F9D9B12F56BADF /* Pods_Ariob.framework */; };
+		62C438D5285924A1788FA3D6 /* Pods_Ariob_AriobUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 196F541EC7B97F334F946503 /* Pods_Ariob_AriobUITests.framework */; };
+		B45AE1DE0F0EC826666BDE03 /* Pods_AriobTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0FC96F3F2BF86E8FABB14C /* Pods_AriobTests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		108F65322D8433430090407E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 108F65192D8433400090407E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 108F65202D8433400090407E;
+			remoteInfo = Ariob;
+		};
+		108F653C2D8433430090407E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 108F65192D8433400090407E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 108F65202D8433400090407E;
+			remoteInfo = Ariob;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		03C629F7078F889CE01249F5 /* Pods-Ariob-AriobUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ariob-AriobUITests.release.xcconfig"; path = "Target Support Files/Pods-Ariob-AriobUITests/Pods-Ariob-AriobUITests.release.xcconfig"; sourceTree = "<group>"; };
+		108F65212D8433400090407E /* Ariob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ariob.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		108F65312D8433430090407E /* AriobTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AriobTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		108F653B2D8433430090407E /* AriobUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AriobUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		10BAAD8F2D8446D9003310C6 /* main.lynx.bundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = main.lynx.bundle; sourceTree = "<group>"; };
+		196F541EC7B97F334F946503 /* Pods_Ariob_AriobUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ariob_AriobUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		218000B4380AD95FC86301B4 /* Pods-AriobTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriobTests.debug.xcconfig"; path = "Target Support Files/Pods-AriobTests/Pods-AriobTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6F0FC96F3F2BF86E8FABB14C /* Pods_AriobTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AriobTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		735D22C27D2282EC89D33369 /* Pods-Ariob-AriobUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ariob-AriobUITests.debug.xcconfig"; path = "Target Support Files/Pods-Ariob-AriobUITests/Pods-Ariob-AriobUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		839C682384C5C0D51B9061C8 /* Pods-Ariob.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ariob.debug.xcconfig"; path = "Target Support Files/Pods-Ariob/Pods-Ariob.debug.xcconfig"; sourceTree = "<group>"; };
+		8FB0701472103E992F70BAA5 /* Pods-AriobTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriobTests.release.xcconfig"; path = "Target Support Files/Pods-AriobTests/Pods-AriobTests.release.xcconfig"; sourceTree = "<group>"; };
+		907A486D56F9D9B12F56BADF /* Pods_Ariob.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ariob.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0E9DD3710E1F51960CC3EA3 /* Pods-Ariob.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ariob.release.xcconfig"; path = "Target Support Files/Pods-Ariob/Pods-Ariob.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		10BAAD9E2D8454AF003310C6 /* Exceptions for "Ariob" folder in "Ariob" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 108F65202D8433400090407E /* Ariob */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		108F65232D8433400090407E /* Ariob */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				10BAAD9E2D8454AF003310C6 /* Exceptions for "Ariob" folder in "Ariob" target */,
+			);
+			path = Ariob;
+			sourceTree = "<group>";
+		};
+		108F65342D8433430090407E /* AriobTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AriobTests;
+			sourceTree = "<group>";
+		};
+		108F653E2D8433430090407E /* AriobUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AriobUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		108F651E2D8433400090407E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4933750D50830B5A5742E3F2 /* Pods_Ariob.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		108F652E2D8433430090407E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B45AE1DE0F0EC826666BDE03 /* Pods_AriobTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		108F65382D8433430090407E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				62C438D5285924A1788FA3D6 /* Pods_Ariob_AriobUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		108F65182D8433400090407E = {
+			isa = PBXGroup;
+			children = (
+				10BAAD8F2D8446D9003310C6 /* main.lynx.bundle */,
+				108F65232D8433400090407E /* Ariob */,
+				108F65342D8433430090407E /* AriobTests */,
+				108F653E2D8433430090407E /* AriobUITests */,
+				108F65222D8433400090407E /* Products */,
+				55C0B6B801A66F054B4DF46F /* Pods */,
+				EB8B18E75089A2B990E5D57A /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		108F65222D8433400090407E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				108F65212D8433400090407E /* Ariob.app */,
+				108F65312D8433430090407E /* AriobTests.xctest */,
+				108F653B2D8433430090407E /* AriobUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		55C0B6B801A66F054B4DF46F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				839C682384C5C0D51B9061C8 /* Pods-Ariob.debug.xcconfig */,
+				E0E9DD3710E1F51960CC3EA3 /* Pods-Ariob.release.xcconfig */,
+				735D22C27D2282EC89D33369 /* Pods-Ariob-AriobUITests.debug.xcconfig */,
+				03C629F7078F889CE01249F5 /* Pods-Ariob-AriobUITests.release.xcconfig */,
+				218000B4380AD95FC86301B4 /* Pods-AriobTests.debug.xcconfig */,
+				8FB0701472103E992F70BAA5 /* Pods-AriobTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		EB8B18E75089A2B990E5D57A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				907A486D56F9D9B12F56BADF /* Pods_Ariob.framework */,
+				196F541EC7B97F334F946503 /* Pods_Ariob_AriobUITests.framework */,
+				6F0FC96F3F2BF86E8FABB14C /* Pods_AriobTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		108F65202D8433400090407E /* Ariob */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 108F65452D8433430090407E /* Build configuration list for PBXNativeTarget "Ariob" */;
+			buildPhases = (
+				DD805A02C84DDA2A139E6C72 /* [CP] Check Pods Manifest.lock */,
+				108F651D2D8433400090407E /* Sources */,
+				108F651E2D8433400090407E /* Frameworks */,
+				108F651F2D8433400090407E /* Resources */,
+				8D2CFC459EFEE945BEF40D6F /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				108F65232D8433400090407E /* Ariob */,
+			);
+			name = Ariob;
+			productName = Ariob;
+			productReference = 108F65212D8433400090407E /* Ariob.app */;
+			productType = "com.apple.product-type.application";
+		};
+		108F65302D8433430090407E /* AriobTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 108F65482D8433430090407E /* Build configuration list for PBXNativeTarget "AriobTests" */;
+			buildPhases = (
+				7657E3D39A9536A895EB9A7F /* [CP] Check Pods Manifest.lock */,
+				108F652D2D8433430090407E /* Sources */,
+				108F652E2D8433430090407E /* Frameworks */,
+				108F652F2D8433430090407E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				108F65332D8433430090407E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				108F65342D8433430090407E /* AriobTests */,
+			);
+			name = AriobTests;
+			productName = AriobTests;
+			productReference = 108F65312D8433430090407E /* AriobTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		108F653A2D8433430090407E /* AriobUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 108F654B2D8433430090407E /* Build configuration list for PBXNativeTarget "AriobUITests" */;
+			buildPhases = (
+				E6F25DDDBD70356F232146E5 /* [CP] Check Pods Manifest.lock */,
+				108F65372D8433430090407E /* Sources */,
+				108F65382D8433430090407E /* Frameworks */,
+				108F65392D8433430090407E /* Resources */,
+				796E8456BF89DAEB97B45481 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				108F653D2D8433430090407E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				108F653E2D8433430090407E /* AriobUITests */,
+			);
+			name = AriobUITests;
+			productName = AriobUITests;
+			productReference = 108F653B2D8433430090407E /* AriobUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		108F65192D8433400090407E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					108F65202D8433400090407E = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					108F65302D8433430090407E = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 108F65202D8433400090407E;
+					};
+					108F653A2D8433430090407E = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 108F65202D8433400090407E;
+					};
+				};
+			};
+			buildConfigurationList = 108F651C2D8433400090407E /* Build configuration list for PBXProject "Ariob" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 108F65182D8433400090407E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 108F65222D8433400090407E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				108F65202D8433400090407E /* Ariob */,
+				108F65302D8433430090407E /* AriobTests */,
+				108F653A2D8433430090407E /* AriobUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		108F651F2D8433400090407E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				10BAAD9A2D845330003310C6 /* main.lynx.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		108F652F2D8433430090407E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		108F65392D8433430090407E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7657E3D39A9536A895EB9A7F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AriobTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		796E8456BF89DAEB97B45481 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ariob-AriobUITests/Pods-Ariob-AriobUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ariob-AriobUITests/Pods-Ariob-AriobUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ariob-AriobUITests/Pods-Ariob-AriobUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8D2CFC459EFEE945BEF40D6F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DD805A02C84DDA2A139E6C72 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Ariob-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E6F25DDDBD70356F232146E5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Ariob-AriobUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		108F651D2D8433400090407E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		108F652D2D8433430090407E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		108F65372D8433430090407E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		108F65332D8433430090407E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 108F65202D8433400090407E /* Ariob */;
+			targetProxy = 108F65322D8433430090407E /* PBXContainerItemProxy */;
+		};
+		108F653D2D8433430090407E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 108F65202D8433400090407E /* Ariob */;
+			targetProxy = 108F653C2D8433430090407E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		108F65432D8433430090407E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/$(PROJECT_NAME)/Ariob-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		108F65442D8433430090407E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/$(PROJECT_NAME)/Ariob-Bridging-Header.h";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		108F65462D8433430090407E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 839C682384C5C0D51B9061C8 /* Pods-Ariob.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"Ariob/Preview Content\"";
+				DEVELOPMENT_TEAM = G5Q4DZX2NT;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Ariob/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ariobstudio.Ariob;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DISABLE_SAFETY_CHECKS = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		108F65472D8433430090407E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E0E9DD3710E1F51960CC3EA3 /* Pods-Ariob.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"Ariob/Preview Content\"";
+				DEVELOPMENT_TEAM = G5Q4DZX2NT;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Ariob/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ariobstudio.Ariob;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS[arch=*]" = "";
+				SWIFT_DISABLE_SAFETY_CHECKS = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		108F65492D8433430090407E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 218000B4380AD95FC86301B4 /* Pods-AriobTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = G5Q4DZX2NT;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ariobstudio.AriobTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ariob.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Ariob";
+			};
+			name = Debug;
+		};
+		108F654A2D8433430090407E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8FB0701472103E992F70BAA5 /* Pods-AriobTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = G5Q4DZX2NT;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ariobstudio.AriobTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ariob.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Ariob";
+			};
+			name = Release;
+		};
+		108F654C2D8433430090407E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 735D22C27D2282EC89D33369 /* Pods-Ariob-AriobUITests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = G5Q4DZX2NT;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ariobstudio.AriobUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Ariob;
+			};
+			name = Debug;
+		};
+		108F654D2D8433430090407E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 03C629F7078F889CE01249F5 /* Pods-Ariob-AriobUITests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = G5Q4DZX2NT;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ariobstudio.AriobUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Ariob;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		108F651C2D8433400090407E /* Build configuration list for PBXProject "Ariob" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				108F65432D8433430090407E /* Debug */,
+				108F65442D8433430090407E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		108F65452D8433430090407E /* Build configuration list for PBXNativeTarget "Ariob" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				108F65462D8433430090407E /* Debug */,
+				108F65472D8433430090407E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		108F65482D8433430090407E /* Build configuration list for PBXNativeTarget "AriobTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				108F65492D8433430090407E /* Debug */,
+				108F654A2D8433430090407E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		108F654B2D8433430090407E /* Build configuration list for PBXNativeTarget "AriobUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				108F654C2D8433430090407E /* Debug */,
+				108F654D2D8433430090407E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 108F65192D8433400090407E /* Project object */;
+}
