@@ -66,7 +66,7 @@ pnpm dev:web
 
 ### Development
 
-Step 1 install dependencies with these commands
+
 ```bash
 pnpm start       # Alias for pnpm start:web
 # or specifically
