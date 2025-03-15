@@ -1,0 +1,6 @@
+framework module Pods_AriobTests {
+  umbrella header "Pods-AriobTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

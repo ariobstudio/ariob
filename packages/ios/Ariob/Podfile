@@ -1,0 +1,34 @@
+source 'https://cdn.cocoapods.org/'
+# Uncomment the next line to define a global platform for your project
+platform :ios, '10.0'
+
+target 'Ariob' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+  pod 'Lynx', '3.2.0-rc.0', :subspecs => [
+    'Framework',
+  ]
+
+  pod 'PrimJS', '2.11.1-rc.0', :subspecs => ['quickjs', 'napi']
+
+  # integrate image-service, log-service, and http-service
+  pod 'LynxService', '3.2.0-rc.0', :subspecs => [
+      'Image',
+      'Log',
+      'Http',
+  ]
+
+  # ImageService dependencies:
+  pod 'SDWebImage','5.15.5'
+  pod 'SDWebImageWebPCoder', '0.11.0'
+  
+  target 'AriobTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'AriobUITests' do
+    # Pods for testing
+  end
+
+end

@@ -39,6 +39,7 @@ coverage/
 # OS specific files
 .DS_Store
 packages/.DS_Store
+packages/ios/.DS_Store
 Thumbs.db
 ehthumbs.db
 Desktop.ini
