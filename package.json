@@ -4,9 +4,9 @@
   "description": "Cross platform Decentralized Platform",
   "main": "index.js",
   "scripts": {
-    "start": "pnpm run start:web",
-    "start:web": "pnpm --filter web run start",
-    "start:core": "pnpm --filter core run start",
+    "start": "pnpm run start:core && pnpm run start:web",
+    "start:web": "pnpm --filter web install",
+    "start:core": "pnpm --filter core install",
     "dev": "pnpm run dev:core",
     "dev:web": "pnpm --filter web run dev",
     "dev:core": "pnpm --filter core run dev",

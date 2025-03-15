@@ -66,6 +66,13 @@ pnpm dev:web
 
 ### Development
 
+Step 1 install dependencies with these commands
+```bash
+pnpm start       # Alias for pnpm start:web
+# or specifically
+pnpm start:web
+```
+
 **Important**: Always build the core bundle first before running the web server:
 
 ```bash
@@ -97,22 +104,6 @@ Or build them separately:
 ```bash
 pnpm build:core  # Build the core bundle first
 pnpm build:web   # Then build the web container
-```
-
-### Running Production Builds
-
-Start the web application in production mode:
-
-```bash
-pnpm start       # Alias for pnpm start:web
-# or specifically
-pnpm start:web
-```
-
-Start the core application in production mode for mobile devices:
-
-```bash
-pnpm start:core
 ```
 
 ### Other Commands
