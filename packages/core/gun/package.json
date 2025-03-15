@@ -1,0 +1,15 @@
+{
+  "name": "@ariob/gun",
+  "version": "0.2020.1239",
+  "description": "A realtime, decentralized, offline-first, graph data synchronization engine.",
+  "types": "index.d.ts",
+  "main": "index.js",
+  "browser": "browser.js",
+  "private": true,
+  "author": "Mark Nadal",
+  "license": "(Zlib OR MIT OR Apache-2.0)",
+  "homepage": "https://github.com/amark/gun#readme",
+  "tsd": {
+    "directory": "types"
+  }
+}

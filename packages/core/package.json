@@ -12,7 +12,11 @@
     "test": "echo \"No tests yet\""
   },
   "dependencies": {
-    "@lynx-js/react": "^0.105.1"
+    "@lynx-js/react": "^0.105.1",
+    "@peculiar/webcrypto": "^1.5.0",
+    "crypto": "^1.0.1",
+    "text-encoding": "^0.7.0",
+    "ws": "^7.2.1"
   },
   "devDependencies": {
     "@lynx-js/qrcode-rsbuild-plugin": "^0.3.4",
@@ -20,11 +24,34 @@
     "@lynx-js/rspeedy": "^0.8.3",
     "@lynx-js/types": "^3.2.0",
     "@types/react": "^18.3.18",
+    "aws-sdk": "^2.528.0",
+    "emailjs": "^2.2.0",
+    "ip": "^1.1.5",
+    "mocha": "^6.2.0",
     "prettier": "^3.5.2",
-    "typescript": "~5.7.3"
+    "typescript": "~5.7.3",
+    "uglify-js": "^3.6.0"
   },
   "engines": {
     "node": ">=18"
   },
-  "private": true
+  "workspaces": [
+    "gun"
+  ],
+  "private": true,
+  "exports": {
+    "@gun": {
+      "require": "./gun/index.js",
+      "import": "./gun/index.js",
+      "types": "./gun/index.d.ts"
+    },
+    "@gun/sea": {
+      "require": "./gun/sea.js",
+      "import": "./gun/sea.js",
+      "types": "./gun/sea.d.ts"
+    },
+    "@gun/src/*": "./gun/src/*.js",
+    "@gun/lib/*": "./gun/lib/*.js",
+    "@gun/sea/*": "./gun/sea/*.js"
+  }
 }
