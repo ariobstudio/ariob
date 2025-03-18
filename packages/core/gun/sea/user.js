@@ -4,7 +4,7 @@
     if(SEA.window){
       Gun = SEA.window.GUN || {chain:{}};
     } else {
-      Gun = require('./gun.js')
+      Gun = require((u+'' == typeof MODULE?'.':'')+'./gun', 1);
     }
     SEA.GUN = Gun;
 

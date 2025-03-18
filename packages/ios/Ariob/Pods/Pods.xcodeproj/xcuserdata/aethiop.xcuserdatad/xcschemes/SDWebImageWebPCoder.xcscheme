@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1953860EA9853AA2BC8022B242F08512"
-               BuildableName = "SDWebImageWebPCoder.framework"
+               BuildableName = "libSDWebImageWebPCoder.a"
                BlueprintName = "SDWebImageWebPCoder"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

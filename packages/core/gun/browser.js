@@ -1,12 +1,4 @@
-// Gun.js for browser environments
-const Gun = require('./src/index');
-
-// Add browser-specific adapters and polyfills
-require('./lib/dom');
-require('./lib/store');
-
-// Make SEA available
-Gun.SEA = require('./sea');
-
-// Export Gun
-module.exports = Gun; 
+// if(!(typeof navigator == "undefined") && navigator.product == "ReactNative"){
+//     require("./lib/mobile.js");
+// }
+module.exports = require('./gun.js');

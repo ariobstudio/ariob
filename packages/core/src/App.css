@@ -115,5 +115,7 @@ text {
 .Hint {
   font-size: 12px;
   margin: 5px;
-  color: rgba(255, 255, 255, 0.65);
+  font-family: 'Courier New', Courier, monospace;
+  padding: 10px;
+  color: rgba(255, 255, 255, 0.7);
 }

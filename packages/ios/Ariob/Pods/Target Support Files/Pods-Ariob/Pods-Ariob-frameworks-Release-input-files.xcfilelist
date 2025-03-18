@@ -1,7 +1,0 @@
-${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-frameworks.sh
-${BUILT_PRODUCTS_DIR}/Lynx/Lynx.framework
-${BUILT_PRODUCTS_DIR}/LynxService/LynxService.framework
-${BUILT_PRODUCTS_DIR}/PrimJS/PrimJS.framework
-${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework
-${BUILT_PRODUCTS_DIR}/SDWebImageWebPCoder/SDWebImageWebPCoder.framework
-${BUILT_PRODUCTS_DIR}/libwebp/libwebp.framework

@@ -1,0 +1,1 @@
+../../../../../../../../LynxDevtool/lynx/core/template_bundle/template_codec/generator/template_dynamic_component_parser.h

@@ -1,0 +1,1 @@
+../../../../../../../../LynxDevtool/lynx/core/template_bundle/template_codec/generator/base_struct.h

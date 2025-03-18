@@ -1,41 +1,39 @@
 import { lazy, useCallback, useEffect, useState } from '@lynx-js/react'
+import SEA from '@/gun/sea/sea.js'
 
 import './App.css'
-import arrow from './assets/arrow.png'
-import lynxLogo from './assets/lynx-logo.png'
-import reactLynxLogo from './assets/react-logo.png'
+import eraLogo from './assets/era.png'
 
 export function App() {
-  const [alterLogo, setAlterLogo] = useState(false)
-
+  const [pair, setPair] = useState("")
   useEffect(() => {
-    console.info('Hello, ReactLynx')
+    console.info('Hello, ')
   }, [])
 
-  const onTap = useCallback(() => {
+  const createPair = useCallback(async () => {
     'background only'
-    setAlterLogo(!alterLogo)
-  }, [alterLogo])
-
+    const pair = await SEA.pair();
+    const pairString = JSON.stringify(pair)
+    setPair(pairString)
+  }, [])
+  
   return (
     <view>
-      <view className='Background' />
       <view className='App'>
         <view className='Banner'>
-          <view className='Logo' bindtap={onTap}>
-            {alterLogo
-              ? <image src={reactLynxLogo} className='Logo--react' />
-              : <image src={lynxLogo} className='Logo--lynx' />}
+          <view className='Logo' bindtap={createPair}>
+            <image src={eraLogo} className='Logo--react' />
           </view>
-          <text className='Title'>React</text>
-          <text className='Subtitle'>on Lynx</text>
         </view>
         <view className='Content'>
-          <image src={arrow} className='Arrow' />
-          <text className='Description'>Tap zzz logo and have fun!</text>
+          <text className='Description'>
+            Security Encryption Authentication
+          </text>
           <text className='Hint'>
-            Edit<text style={{ fontStyle: 'italic' }}>{' src/App.tsx '}</text>
-            to see updates!
+            Click the logo to generate a key pair
+          </text>
+          <text className='Hint'>
+            {pair}
           </text>
         </view>
         <view style={{ flex: 1 }}></view>
