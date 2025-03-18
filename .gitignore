@@ -67,3 +67,27 @@ $RECYCLE.BIN/
 *.tsbuildinfo
 .vercel
 .netlify 
+
+# Ignore gun ignored files
+packages/core/gun/node_modules
+packages/core/gun/npm-debug.log
+packages/core/gun/yarn.lock
+packages/core/gun/*data.json
+packages/core/gun/*data*
+packages/core/gun/*.db
+packages/core/gun/.idea/
+packages/core/gun/*.bak
+packages/core/gun/*.new
+packages/core/gun/*.log
+packages/core/gun/v8.json
+packages/core/gun/*.DS_store
+packages/core/gun/isolate*.log
+packages/core/gun/.esm-cache
+packages/core/gun/.sessionStorage
+packages/core/gun/.localStorage
+packages/core/gun/types/**/*.ts
+!/packages/core/gun/types/**/*.d.ts
+!/packages/core/gun/types/**/*.test-d.ts
+packages/core/gun/gun.ts
+packages/core/gun/temp/
+packages/core/node_modules

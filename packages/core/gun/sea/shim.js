@@ -15,48 +15,34 @@
       JSON.stringifyAsync(v,function(err, raw){ err? rej(err) : res(raw) },r,s);
     })}
 
-    if (SEA.window) {
-      api.crypto = window.crypto || window.msCrypto
-      console.log('api.crypto', api.crypto)
+    if(SEA.window){
+      api.crypto = SEA.window.crypto || SEA.window.msCrypto
       api.subtle = (api.crypto||o).subtle || (api.crypto||o).webkitSubtle;
-      
-      // Use native TextEncoder/TextDecoder if available in the browser
-      if (typeof SEA.window.TextEncoder !== 'undefined' && typeof SEA.window.TextDecoder !== 'undefined') {
-        api.TextEncoder = SEA.window.TextEncoder;
-        api.TextDecoder = SEA.window.TextDecoder;
-      } else {
-        // Fallback to polyfill if not available
-        api.TextEncoder = require('text-encoding').TextEncoder;
-        api.TextDecoder = require('text-encoding').TextDecoder;
-      }
-      
+      api.TextEncoder = SEA.window.TextEncoder;
+      api.TextDecoder = SEA.window.TextDecoder;
       api.random = (len) => api.Buffer.from(api.crypto.getRandomValues(new Uint8Array(api.Buffer.alloc(len))));
     }
-    
-    if(!api.TextDecoder)
-    {
-      const { TextEncoder, TextDecoder } = require('./lib/text-encoding')
-      api.TextDecoder = TextDecoder;
-      api.TextEncoder = TextEncoder;
-    }
-    
-    if(!api.crypto)
-    {
-      try
-      {
-      var crypto = require('crypto');
-      Object.assign(api, {
-        crypto,
-        random: (len) => api.Buffer.from(crypto.randomBytes(len)),
-        getRandomValues: arr => crypto.randomBytes(arr.length)
-      });      
-        const { Crypto: WebCrypto } = require('@peculiar/webcrypto');
-        console.log('WebCrypto', WebCrypto)
-      api.ossl = api.subtle = new WebCrypto({directory: 'ossl'}).subtle // ECDH
-    }
-    catch(e){
-      console.log("Please `npm install @peculiar/webcrypto` or add it to your package.json !");
-    }}
+    // if(!api.TextDecoder)
+    // {
+    //   const { TextEncoder, TextDecoder } = require('../lib/text-encoding/index.js');
+    //   api.TextDecoder = TextDecoder;
+    //   api.TextEncoder = TextEncoder;
+    // }
+    // if(!api.crypto)
+    // {
+    //   try
+    //   {
+    //   var crypto = require('crypto', 1);
+    //   Object.assign(api, {
+    //     crypto,
+    //     random: (len) => api.Buffer.from(crypto.randomBytes(len))
+    //   });      
+    //   const { Crypto: WebCrypto } = require('@peculiar/webcrypto', 1);
+    //   api.ossl = api.subtle = new WebCrypto({directory: 'ossl'}).subtle // ECDH
+    // }
+    // catch(e){
+    //   console.log("Please `npm install @peculiar/webcrypto` or add it to your package.json !");
+    // }}
 
     module.exports = api
   

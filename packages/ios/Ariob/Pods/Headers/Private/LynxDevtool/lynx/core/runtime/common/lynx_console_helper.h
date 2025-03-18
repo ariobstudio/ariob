@@ -1,0 +1,1 @@
+../../../../../../../LynxDevtool/lynx/core/runtime/common/lynx_console_helper.h

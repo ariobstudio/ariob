@@ -1,7 +1,7 @@
 ;(function(){
 
-    var SEA = require('./sea.js'), S = require('./settings.js'), noop = function() {}, u;
-    var Gun = (SEA.window||'').GUN || require('./gun.js');
+    var SEA = require('./sea'), S = require('./settings'), noop = function() {}, u;
+    var Gun = (SEA.window||'').GUN || require((''+u === typeof MODULE?'.':'')+'./gun', 1);
     // After we have a GUN extension to make user registration/login easy, we then need to handle everything else.
 
     // We do this with a GUN adapter, we first listen to when a gun instance is created (and when its options change)
@@ -99,7 +99,7 @@
             if (u !== data && u !== data.e && msg.put['>'] && msg.put['>'] > parseFloat(data.e)) return no("Certificate expired.") // certificate expired
             // "data.c" = a list of certificants/certified users
             // "data.w" = lex WRITE permission, in the future, there will be "data.r" which means lex READ permission
-            if (u !== data && data.c && data.w && (data.c === certificant || data.c.indexOf('*') > -1 || data.c.indexOf(certificant) > -1)) {
+            if (u !== data && data.c && data.w && (data.c === certificant || data.c.indexOf('*' || certificant) > -1)) {
               // ok, now "certificant" is in the "certificants" list, but is "path" allowed? Check path
               let path = soul.indexOf('/') > -1 ? soul.replace(soul.substring(0, soul.indexOf('/') + 1), '') : ''
               String.match = String.match || Gun.text.match

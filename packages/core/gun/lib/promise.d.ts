@@ -1,4 +1,4 @@
-import { IGunChain2TNode } from '../types/utils';
+import { IGunChain2TNode } from '../types/utils.d';
 import {
   GunCallbackOn,
   GunDataNode,

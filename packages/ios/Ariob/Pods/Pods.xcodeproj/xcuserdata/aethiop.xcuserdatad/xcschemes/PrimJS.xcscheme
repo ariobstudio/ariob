@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "01CBDCF992C9B6CE8A813DF8429879C3"
-               BuildableName = "PrimJS.framework"
+               BuildableName = "libPrimJS.a"
                BlueprintName = "PrimJS"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

@@ -1,6 +1,0 @@
-framework module PrimJS {
-  umbrella header "PrimJS-umbrella.h"
-
-  export *
-  module * { export * }
-}

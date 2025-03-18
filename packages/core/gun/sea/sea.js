@@ -9,6 +9,7 @@
     SEA.encrypt = require('./encrypt');
     SEA.decrypt = require('./decrypt');
     SEA.certify = require('./certify');
+    SEA.pair = require('./pair');
     //SEA.opt.aeskey = require('./aeskey'); // not official! // this causes problems in latest WebCrypto.
 
     SEA.random = SEA.random || shim.random;
