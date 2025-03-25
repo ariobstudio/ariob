@@ -16,10 +16,26 @@
         key = pair.epriv || pair;
       }
       var msg = (typeof data == 'string')? data : await shim.stringify(data);
-      var rand = {s: shim.random(9), iv: shim.random(15)}; // consider making this 9 and 15 or 18 or 12 to reduce == padding.
-      var ct = await aeskey(key, rand.s, opt).then((aes) => (/*shim.ossl ||*/ shim.subtle).encrypt({ // Keeping the AES key scope as private as possible...
-        name: opt.name || 'AES-GCM', iv: new Uint8Array(rand.iv)
-      }, aes, new shim.TextEncoder().encode(msg)));
+      var rand = {s: NativeModules.NativeWebCryptoModule.getRandomValues(9), iv: NativeModules.NativeWebCryptoModule.getRandomValues(15)};
+      var aesKey = await aeskey(key, rand.s, opt);
+      console.log('Encryption - AES Key:', aesKey);
+      
+      // Keep original code with added logging
+      console.log('Encryption - IV length:', rand.iv.length);
+      console.log('Encryption - Message:', msg);
+      
+      
+      var ct = await NativeModules.NativeWebCryptoModule.encrypt(
+        JSON.stringify({
+          name: opt.name || 'AES-GCM', 
+          iv: Array.from(rand.iv).map(c => c.charCodeAt(0))
+        }), 
+        aesKey, 
+        NativeModules.NativeWebCryptoModule.textEncode(msg)
+      );
+      
+      console.log('Encryption - Result received');
+      
       var r = {
         ct: shim.Buffer.from(ct, 'binary').toString(opt.encode || 'base64'),
         iv: rand.iv.toString(opt.encode || 'base64'),
@@ -30,7 +46,7 @@
       if(cb){ try{ cb(r) }catch(e){console.log(e)} }
       return r;
     } catch(e) { 
-      console.log(e);
+      console.log('Encryption error:', e);
       SEA.err = e;
       if(SEA.throw){ throw e }
       if(cb){ cb() }
