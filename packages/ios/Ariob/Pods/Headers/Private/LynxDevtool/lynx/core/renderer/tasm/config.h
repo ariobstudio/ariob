@@ -1,1 +1,0 @@
-../../../../../../../LynxDevtool/lynx/core/renderer/tasm/config.h

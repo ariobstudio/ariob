@@ -1,1 +1,0 @@
-../../../../../../../LynxDevtool/lynx/core/shell/testing/mock_runner_manufactor.h

@@ -1,7 +1,7 @@
 ;(function(){
 
     const SEA = require('./root')
-    const api = {Buffer: require('./buffer')}
+    const api = {Buffer: require('./buffer.js')}
     var o = {}, u;
 
     // ideally we can move away from JSON entirely? unlikely due to compatibility issues... oh well.

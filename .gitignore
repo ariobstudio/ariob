@@ -91,3 +91,7 @@ packages/core/gun/types/**/*.ts
 packages/core/gun/gun.ts
 packages/core/gun/temp/
 packages/core/node_modules
+
+# iOS Pod files
+packages/ios/Ariob/Podfile.lock
+packages/ios/Ariob/Pods

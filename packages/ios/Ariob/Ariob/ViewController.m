@@ -26,7 +26,7 @@
   lynxView.layoutHeightMode = LynxViewSizeModeExact;
   [self.view addSubview:lynxView];
   
-  [lynxView loadTemplateFromURL:@"http://10.0.0.246:3000/main.lynx.bundle?fullscreen=true" initData:nil];
+  [lynxView loadTemplateFromURL:@"http://10.0.0.13:3000/main.lynx.bundle?fullscreen=true" initData:nil];
   [lynxView triggerLayout];
 }
 - (void)viewWillAppear:(BOOL)animated {

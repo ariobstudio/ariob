@@ -851,7 +851,6 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
             // Return decrypted data
             return decryptedData.base64EncodedString()
         } catch {
-            print("❌ Decryption failed with error: \(error)")
             return nil
         }
     }

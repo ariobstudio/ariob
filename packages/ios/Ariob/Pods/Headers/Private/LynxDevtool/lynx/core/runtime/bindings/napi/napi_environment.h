@@ -1,1 +1,0 @@
-../../../../../../../../LynxDevtool/lynx/core/runtime/bindings/napi/napi_environment.h

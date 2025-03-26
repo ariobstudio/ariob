@@ -4,68 +4,11 @@ import SEA from '@/gun/sea/sea.js'
 import './App.css'
 import eraLogo from './assets/era.png'
 
-
-async function testDirectEncryptDecryptManual() {
-  // Use fixed values for consistent testing
-  var aeskey = require('@/gun/sea/aeskey.js');
-  const plaintext = "test message2";
-  const testKey = await aeskey("testKey", SEA.Buffer.from("testSalt"));
-  const testIV = Array.from(SEA.Buffer.from("testIVtestIVtest")).map(b => b);
-  
-  console.log("TEST - Using key:", testKey);
-  console.log("TEST - Using IV:", testIV.slice(0, 5));
-  
-  // Encrypt
-  const encodedText = NativeModules.NativeWebCryptoModule.textEncode(plaintext);
-  console.log("TEST - Encoded text:", encodedText);
-  
-  const encrypted = await NativeModules.NativeWebCryptoModule.encrypt(
-    JSON.stringify({name: 'AES-GCM', iv: testIV}),
-    testKey,
-    encodedText
-  );
-  console.log("TEST - Encrypted result:", encrypted);
-  
-  // Decrypt
-  const decrypted = await NativeModules.NativeWebCryptoModule.decrypt(
-    JSON.stringify({name: 'AES-GCM', iv: testIV}),
-    testKey,
-    encrypted
-  );
-  console.log("TEST - Decrypted result:", decrypted);
-  
-  const decodedText = NativeModules.NativeWebCryptoModule.textDecode(decrypted);
-  console.log("TEST - Decoded text:", decodedText);
-  
-  return decodedText === plaintext;
-}
 // Add this function to test direct encryption/decryption
 async function testDirectEncryptDecrypt() {
-  // Use fixed values for consistent testing
-  var aeskey = require('@/gun/sea/aeskey.js');
-  const plaintext = "test message";
-  const testKey = await aeskey("testKey", SEA.Buffer.from("testSalt"));
-  const testIV = Array.from(SEA.Buffer.from("testIVtestIVtest")).map(b => b);
-  
-  console.log("TEST - Using key:", testKey);
-  console.log("TEST - Using IV:", testIV.slice(0, 5));
-  
-  // Encrypt
-  const encodedText = NativeModules.NativeWebCryptoModule.textEncode(plaintext);
-  console.log("TEST - Encoded text:", encodedText);
-  
-  const encrypted = await SEA.encrypt(plaintext, testKey);
-  console.log("TEST - Encrypted result:", encrypted);
-  
-  // Decrypt
-  const decrypted = await SEA.decrypt(encrypted, testKey);
-  console.log("TEST - Decrypted result:", decrypted);
-  
-  const decodedText = NativeModules.NativeWebCryptoModule.textDecode(decrypted);
-  console.log("TEST - Decoded text:", decodedText);
-  
-  return decodedText === plaintext;
+
 }
+
 export function App() {
   const [pair, setPair] = useState("")
   const [enc, setEnc] = useState("")
