@@ -16,37 +16,27 @@
         key = pair.epriv || pair;
       }
       var msg = (typeof data == 'string')? data : await shim.stringify(data);
-      var rand = {s: NativeModules.NativeWebCryptoModule.getRandomValues(9), iv: NativeModules.NativeWebCryptoModule.getRandomValues(15)};
-      var aesKey = await aeskey(key, rand.s, opt);
-      console.log('Encryption - AES Key:', aesKey);
-      
-      // Keep original code with added logging
-      console.log('Encryption - IV length:', rand.iv.length);
-      console.log('Encryption - Message:', msg);
-      
-      
-      var ct = await NativeModules.NativeWebCryptoModule.encrypt(
-        JSON.stringify({
-          name: opt.name || 'AES-GCM', 
-          iv: Array.from(rand.iv).map(c => c.charCodeAt(0))
-        }), 
-        aesKey, 
-        NativeModules.NativeWebCryptoModule.textEncode(msg)
-      );
-      
-      console.log('Encryption - Result received');
-      
+      var rand = {s: NativeModules.NativeWebCryptoModule.getRandomValues(9), iv: NativeModules.NativeWebCryptoModule.getRandomValues(15)}; // consider making this 9 and 15 or 18 or 12 to reduce == padding.
+      var ct = await aeskey(key, rand.s, opt).then((aes) => {
+        console.log("Encryption - Params: ", JSON.stringify(JSON.stringify({
+          name: opt.name || 'AES-GCM', iv: rand.iv
+        }), aes, NativeModules.NativeWebCryptoModule.textEncode(msg)))
+        return NativeModules.NativeWebCryptoModule.encrypt(JSON.stringify({
+          name: opt.name || 'AES-GCM', iv: rand.iv
+        }), aes, NativeModules.NativeWebCryptoModule.textEncode(msg));
+      });
       var r = {
-        ct: shim.Buffer.from(ct, 'binary').toString(opt.encode || 'base64'),
+        ct: ct, // ct is already base64 encoded from native module
         iv: rand.iv.toString(opt.encode || 'base64'),
         s: rand.s.toString(opt.encode || 'base64')
       }
       if(!opt.raw){ r = 'SEA' + await shim.stringify(r) }
+      console.log("Encryption - Result: ", r)
 
       if(cb){ try{ cb(r) }catch(e){console.log(e)} }
       return r;
     } catch(e) { 
-      console.log('Encryption error:', e);
+      console.log(e);
       SEA.err = e;
       if(SEA.throw){ throw e }
       if(cb){ cb() }

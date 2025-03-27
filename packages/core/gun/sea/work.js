@@ -19,15 +19,15 @@
         if(cb){ try{ cb(rsha) }catch(e){console.log(e)} }
         return rsha;
       }
-      salt = salt || shim.random(9);
-      var key = await (shim.ossl || shim.subtle).importKey('raw', new shim.TextEncoder().encode(data), {name: opt.name || 'PBKDF2'}, false, ['deriveBits']);
-      var work = await (shim.ossl || shim.subtle).deriveBits({
+      salt = salt || NativeModules.NativeWebCryptoModule.getRandomValues(9);
+      var key = await NativeModules.NativeWebCryptoModule.importKey('raw', NativeModules.NativeWebCryptoModule.textEncode(data), JSON.stringify({name: opt.name || 'PBKDF2'}), false, JSON.stringify(['deriveBits']));
+      var work = await NativeModules.NativeWebCryptoModule.deriveBits(JSON.stringify({
         name: opt.name || 'PBKDF2',
         iterations: opt.iterations || S.pbkdf2.iter,
-        salt: new shim.TextEncoder().encode(opt.salt || salt),
-        hash: opt.hash || S.pbkdf2.hash,
-      }, key, opt.length || (S.pbkdf2.ks * 8))
-      data = shim.random(data.length)  // Erase data in case of passphrase
+        salt: NativeModules.NativeWebCryptoModule.textEncode(opt.salt || salt),
+        hash: opt.hash || JSON.stringify(S.pbkdf2.hash),
+      }), key, opt.length || (S.pbkdf2.ks * 8))
+      data = NativeModules.NativeWebCryptoModule.getRandomValues(data.length)  // Erase data in case of passphrase
       var r = shim.Buffer.from(work, 'binary').toString(opt.encode || 'base64')
       if(cb){ try{ cb(r) }catch(e){console.log(e)} }
       return r;

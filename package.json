@@ -21,6 +21,7 @@
     "clean:web": "pnpm --filter web run clean",
     "clean:android": "rm -rf ./packages/android/app/src/main/assets/main.lynx.bundle",
     "clean:ios": "rm -rf ./packages/ios/Ariob/main.lynx.bundle",
+    "relay": "node ./packages/core/gun/examples/http.js ",
     "test": "pnpm run test:web && pnpm run test:core",
     "test:web": "pnpm --filter web run test",
     "test:core": "pnpm --filter core run test"
