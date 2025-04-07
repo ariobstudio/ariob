@@ -8,7 +8,7 @@ export function Header() {
     <view className="Header">
       <view className="HeaderContent">
         <view className="HeaderLeft" bindtap={() => navigate('/')}>
-          <image src={ariob} className="HeaderLogo" />
+          {/* <image src={ariob} className="HeaderLogo" /> */}
         </view>
       </view>
     </view>
