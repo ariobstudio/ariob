@@ -1,17 +1,14 @@
 package com.lynx.explorer.modules
 
 import android.content.Context
-import android.security.keystore.KeyProperties
 import android.util.Base64
 import android.util.Log
 import com.lynx.jsbridge.LynxMethod
 import com.lynx.jsbridge.LynxModule
-import com.lynx.tasm.behavior.LynxContext
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.math.BigInteger
-import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.security.*
 import java.security.interfaces.ECPrivateKey
@@ -21,25 +18,39 @@ import javax.crypto.*
 import javax.crypto.spec.*
 
 // BouncyCastle imports
-import org.bouncycastle.jce.ECNamedCurveTable
-import org.bouncycastle.jce.interfaces.ECPublicKey as BCECPublicKey
 import org.bouncycastle.jce.provider.BouncyCastleProvider
-import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec
 import org.bouncycastle.crypto.agreement.ECDHBasicAgreement
 import org.bouncycastle.crypto.params.ECDomainParameters
 import org.bouncycastle.crypto.params.ECPrivateKeyParameters
 import org.bouncycastle.crypto.params.ECPublicKeyParameters
 
+/**
+ * Native implementation of Web Cryptography API for Android platforms.
+ *
+ * This module provides cryptographic operations compatible with the JavaScript
+ * Web Cryptography API (https://www.w3.org/TR/WebCryptoAPI/), allowing secure
+ * cryptographic operations to be performed natively on Android devices while
+ * maintaining API compatibility with browser-based implementations.
+ *
+ * Supported algorithms:
+ * - Digests: SHA-256, SHA-384, SHA-512
+ * - Signatures: ECDSA (P-256)
+ * - Key Agreement: ECDH (P-256)
+ * - Encryption: AES-GCM
+ * - Key Derivation: PBKDF2, ECDH+HKDF
+ */
 class NativeWebCryptoModule(context: Context) : LynxModule(context) {
     private val TAG = "NativeWebCryptoModule"
 
     companion object {
-        // Constants for curve information (P-256 parameters)
-        // These are standard parameters for the NIST P-256 curve (secp256r1)
+        /**
+         * Constants for P-256 curve parameters (secp256r1)
+         * These are standard parameters defined by NIST and used globally
+         */
         private val P256_FIELD_SIZE = 256
         private val P256_CURVE_NAME = "secp256r1" // Android's name for P-256 curve
 
-        // Standard P-256 curve parameters - these are well-known constants
+        // Standard P-256 curve parameters
         private val P256_P = BigInteger("115792089210356248762697446949407573530086143415290314195533631308867097853951")
         private val P256_A = BigInteger("-3")
         private val P256_B = BigInteger("5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b", 16)
@@ -56,8 +67,15 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
-    // MARK: - Helper Methods for JSON and Base64
+    /**
+     * Helper Methods for JSON and Base64
+     */
 
+    /**
+     * Parses a JSON string into a JSONObject.
+     * @param jsonString The JSON string to parse
+     * @return The parsed JSONObject or null if parsing failed
+     */
     private fun parseJSONObject(jsonString: String): JSONObject? {
         return try {
             JSONObject(jsonString)
@@ -67,6 +85,11 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
+    /**
+     * Parses a JSON string into a JSONArray.
+     * @param jsonString The JSON string to parse
+     * @return The parsed JSONArray or null if parsing failed
+     */
     private fun parseJSONArray(jsonString: String): JSONArray? {
         return try {
             JSONArray(jsonString)
@@ -76,7 +99,12 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
-    // Base64URL encoding (RFC 4648 Section 5) - For JWK components
+    /**
+     * Encodes binary data using Base64URL format (RFC 4648 Section 5).
+     * Used for JWK components.
+     * @param data The binary data to encode
+     * @return Base64URL encoded string
+     */
     private fun base64urlEncode(data: ByteArray): String {
         val base64 = Base64.encodeToString(data, Base64.NO_WRAP)
         return base64.replace("+", "-")
@@ -84,7 +112,12 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
             .replace("=", "")
     }
 
-    // Base64URL decoding (RFC 4648 Section 5) - For JWK components
+    /**
+     * Decodes a Base64URL encoded string (RFC 4648 Section 5).
+     * Used for JWK components.
+     * @param string The Base64URL encoded string
+     * @return The decoded binary data or null if decoding failed
+     */
     private fun base64urlDecode(string: String): ByteArray? {
         return try {
             var base64 = string
@@ -102,11 +135,20 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
-    // Standard Base64 encode/decode for data transfer
+    /**
+     * Encodes binary data using standard Base64 format.
+     * @param data The binary data to encode
+     * @return Base64 encoded string
+     */
     private fun base64Encode(data: ByteArray): String {
         return Base64.encodeToString(data, Base64.NO_WRAP)
     }
 
+    /**
+     * Decodes a standard Base64 encoded string.
+     * @param string The Base64 encoded string
+     * @return The decoded binary data or null if decoding failed
+     */
     private fun base64Decode(string: String): ByteArray? {
         return try {
             Base64.decode(string, Base64.NO_WRAP)
@@ -116,7 +158,11 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
-    // MARK: - Error JSON Conversion
+    /**
+     * Creates a JSON error response.
+     * @param message The error message
+     * @return JSON string containing the error details
+     */
     private fun errorToJSON(message: String): String {
         val errorObj = JSONObject()
         try {
@@ -129,7 +175,11 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
-    // MARK: - TextEncoder/TextDecoder Emulation
+    /**
+     * TextEncoder implementation - converts text to UTF-8 and returns base64.
+     * @param text The text to encode
+     * @return Base64 encoded UTF-8 bytes
+     */
     @LynxMethod
     fun textEncode(text: String): String {
         try {
@@ -140,6 +190,11 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
+    /**
+     * TextDecoder implementation - converts base64 to UTF-8 text.
+     * @param data Base64 encoded UTF-8 bytes
+     * @return Decoded UTF-8 text
+     */
     @LynxMethod
     fun textDecode(data: String): String {
         try {
@@ -150,7 +205,11 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
-    // MARK: - Random Values Generator
+    /**
+     * Generates cryptographically secure random values.
+     * @param length The number of random bytes to generate
+     * @return Base64 encoded random bytes
+     */
     @LynxMethod
     fun getRandomValues(length: Int): String {
         if (length <= 0) {
@@ -166,7 +225,14 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
-    // MARK: - Digest Function
+    /**
+     * Computes a digest (hash) of the provided data.
+     * Supports SHA-256, SHA-384, and SHA-512 algorithms.
+     *
+     * @param options JSON string containing algorithm name
+     * @param data Base64 encoded data to hash
+     * @return Base64 encoded hash
+     */
     @LynxMethod
     fun digest(options: String, data: String): String {
         try {
@@ -189,7 +255,10 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
-    // Create P-256 Parameter Specs for EC key operations
+    /**
+     * Creates ECParameterSpec for P-256 curve operations.
+     * @return ECParameterSpec configured for the P-256 curve
+     */
     private fun getP256ParameterSpec(): ECParameterSpec {
         // Create the curve using standard P-256 parameters
         val curve = EllipticCurve(ECFieldFp(P256_P), P256_A, P256_B)
@@ -197,7 +266,15 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         return ECParameterSpec(curve, generator, P256_N, P256_H.toInt())
     }
 
-    // MARK: - EC Key JWK Creation Helpers
+    /**
+     * Creates a JWK (JSON Web Key) representation of an EC key pair.
+     *
+     * @param privateKey The EC private key
+     * @param publicKey The EC public key
+     * @param keyOps Allowed key operations
+     * @param extractable Whether the key can be exported
+     * @return JWK as a JSONObject or null if creation failed
+     */
     private fun createECJWK(privateKey: ECPrivateKey, publicKey: ECPublicKey, keyOps: List<String>, extractable: Boolean): JSONObject? {
         try {
             // Get the private key data - convert to byte array with proper length
@@ -240,6 +317,14 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
+    /**
+     * Creates a JWK representation of an EC public key.
+     *
+     * @param publicKey The EC public key
+     * @param keyOps Allowed key operations
+     * @param extractable Whether the key can be exported
+     * @return JWK as a JSONObject or null if creation failed
+     */
     private fun createECJWK(publicKey: ECPublicKey, keyOps: List<String>, extractable: Boolean): JSONObject? {
         try {
             // Get public key coordinates
@@ -275,7 +360,13 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
-    // MARK: - AES Key Helper
+    /**
+     * Normalizes an AES key to a valid length.
+     * Ensures the key is 128, 192, or 256 bits by hashing if necessary.
+     *
+     * @param keyData The input key data
+     * @return Normalized key data
+     */
     private fun normalizeAESKey(keyData: ByteArray): ByteArray {
         val keyBitSize = keyData.size * 8
         if (keyBitSize == 128 || keyBitSize == 192 || keyBitSize == 256) {
@@ -287,6 +378,12 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         return md.digest(keyData)
     }
 
+    /**
+     * Creates a symmetric key from a JWK.
+     *
+     * @param jwk The JWK containing the key data
+     * @return SecretKey or null if creation failed
+     */
     private fun createSymmetricKeyFromJWK(jwk: JSONObject): SecretKey? {
         try {
             if (jwk.getString("kty") != "oct") return null
@@ -302,8 +399,15 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
-    // MARK: - Web Crypto API Methods Implementation
-
+    /**
+     * Generates a new cryptographic key or key pair.
+     * Supports ECDSA, ECDH, and AES-GCM algorithms.
+     *
+     * @param algorithm JSON string with algorithm parameters
+     * @param extractable Whether the key can be exported
+     * @param keyUsages JSON array of allowed key operations
+     * @return JSON string containing the generated key(s)
+     */
     @LynxMethod
     fun generateKey(algorithm: String, extractable: Boolean, keyUsages: String): String {
         try {
@@ -427,6 +531,14 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
+    /**
+     * Exports a key in the requested format.
+     * Supports JWK and raw formats.
+     *
+     * @param format Export format ("jwk" or "raw")
+     * @param key JSON string containing the key to export
+     * @return Exported key in the requested format
+     */
     @LynxMethod
     fun exportKey(format: String, key: String): String {
         try {
@@ -458,6 +570,17 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
+    /**
+     * Imports a key from external format.
+     * Supports JWK and raw formats for various algorithms.
+     *
+     * @param format Import format ("jwk" or "raw")
+     * @param keyDataString Key data to import
+     * @param algorithm JSON string with algorithm parameters
+     * @param extractable Whether the imported key can be exported
+     * @param keyUsages JSON array of allowed key operations
+     * @return JSON string containing the imported key
+     */
     @LynxMethod
     fun importKey(format: String, keyDataString: String, algorithm: String, extractable: Boolean, keyUsages: String): String {
         try {
@@ -569,6 +692,15 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
+    /**
+     * Signs data using the specified key.
+     * Currently supports ECDSA with P-256 curve.
+     *
+     * @param algorithm JSON string with algorithm parameters
+     * @param key JSON string containing the private key
+     * @param data Base64 encoded data to sign
+     * @return Base64 encoded signature
+     */
     @LynxMethod
     fun sign(algorithm: String, key: String, data: String): String {
         try {
@@ -615,6 +747,16 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
+    /**
+     * Verifies a signature against the provided data.
+     * Currently supports ECDSA with P-256 curve.
+     *
+     * @param algorithm JSON string with algorithm parameters
+     * @param key JSON string containing the public key
+     * @param signature Base64 encoded signature to verify
+     * @param data Base64 encoded signed data
+     * @return String "true" or "false" indicating verification result
+     */
     @LynxMethod
     fun verify(algorithm: String, key: String, signature: String, data: String): String {
         try {
@@ -657,9 +799,22 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
+    /**
+     * Encrypts data using the specified algorithm and key.
+     * Currently supports AES-GCM.
+     *
+     * This is an optimized version that reduces memory operations and
+     * avoids unnecessary logging to improve performance.
+     *
+     * @param algorithm JSON string with algorithm parameters
+     * @param key JSON string containing the key
+     * @param data Base64 encoded data to encrypt
+     * @return Base64 encoded encrypted data
+     */
     @LynxMethod
     fun encrypt(algorithm: String, key: String, data: String): String {
         try {
+            // Parse inputs once and validate
             val algorithmObj = parseJSONObject(algorithm) ?: throw Exception("Invalid algorithm format")
             val algorithmName = algorithmObj.getString("name")
 
@@ -672,25 +827,20 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
             val ivBase64 = algorithmObj.getString("iv")
             val iv = base64Decode(ivBase64) ?: throw Exception("Invalid IV")
 
+            // Create key once
             val symmetricKey = createSymmetricKeyFromJWK(keyObj) ?: throw Exception("Invalid symmetric key")
 
-            // Optional additional authenticated data
-            val aadBase64 = algorithmObj.optString("additionalData", null)
-            val aad = if (aadBase64 != null) base64Decode(aadBase64) else null
+            // Optional AAD - only process if present
+            val aad = algorithmObj.optString("additionalData", null)?.let { base64Decode(it) }
 
-            // Create GCM parameters
-            val gcmParameterSpec = GCMParameterSpec(128, iv) // 128-bit authentication tag
-
-            // Initialize cipher
+            // Initialize cipher with GCM parameters (128-bit auth tag)
             val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-            cipher.init(Cipher.ENCRYPT_MODE, symmetricKey, gcmParameterSpec)
+            cipher.init(Cipher.ENCRYPT_MODE, symmetricKey, GCMParameterSpec(128, iv))
 
             // Add AAD if provided
-            if (aad != null) {
-                cipher.updateAAD(aad)
-            }
+            aad?.let { cipher.updateAAD(it) }
 
-            // Encrypt
+            // Single-step encryption is more efficient
             val ciphertext = cipher.doFinal(inputData)
 
             return base64Encode(ciphertext)
@@ -699,50 +849,65 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
+    /**
+     * Decrypts data using the specified algorithm and key.
+     * Currently supports AES-GCM.
+     *
+     * This is an optimized version that reduces memory operations and
+     * only logs critical errors to improve performance.
+     *
+     * @param algorithm JSON string with algorithm parameters
+     * @param key JSON string containing the key
+     * @param data Base64 encoded encrypted data
+     * @return Base64 encoded decrypted data or empty string on failure
+     */
     @LynxMethod
     fun decrypt(algorithm: String, key: String, data: String): String {
         try {
-            val algorithmObj = parseJSONObject(algorithm) ?: throw Exception("Invalid algorithm format")
-            val algorithmName = algorithmObj.getString("name")
-
-            if (algorithmName.uppercase() != "AES-GCM") {
-                Log.e(TAG, "Decrypt: Unsupported algorithm: $algorithmName")
+            // Fast path validation - minimal processing
+            val algorithmObj = parseJSONObject(algorithm) ?: return ""
+            if (algorithmObj.optString("name", "").uppercase() != "AES-GCM") {
                 return ""
             }
 
-            val keyObj = parseJSONObject(key) ?: throw Exception("Invalid key format")
-            val encryptedData = base64Decode(data) ?: throw Exception("Invalid encrypted data")
-            val ivBase64 = algorithmObj.getString("iv")
-            val iv = base64Decode(ivBase64) ?: throw Exception("Invalid IV")
+            val keyObj = parseJSONObject(key) ?: return ""
+            val encryptedData = base64Decode(data) ?: return ""
+            val iv = base64Decode(algorithmObj.getString("iv")) ?: return ""
 
-            val symmetricKey = createSymmetricKeyFromJWK(keyObj) ?: throw Exception("Invalid symmetric key")
+            // Create key once
+            val symmetricKey = createSymmetricKeyFromJWK(keyObj) ?: return ""
 
-            // Optional additional authenticated data
-            val aadBase64 = algorithmObj.optString("additionalData", null)
-            val aad = if (aadBase64 != null) base64Decode(aadBase64) else null
+            // Optional AAD - only process if present
+            val aad = algorithmObj.optString("additionalData", null)?.let { base64Decode(it) }
 
-            // Create GCM parameters
-            val gcmParameterSpec = GCMParameterSpec(128, iv) // 128-bit authentication tag
-
-            // Initialize cipher
+            // Initialize cipher with GCM parameters
             val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-            cipher.init(Cipher.DECRYPT_MODE, symmetricKey, gcmParameterSpec)
+            cipher.init(Cipher.DECRYPT_MODE, symmetricKey, GCMParameterSpec(128, iv))
 
             // Add AAD if provided
-            if (aad != null) {
-                cipher.updateAAD(aad)
-            }
+            aad?.let { cipher.updateAAD(it) }
 
-            // Decrypt
+            // Single-step decryption is more efficient
             val decryptedData = cipher.doFinal(encryptedData)
 
             return base64Encode(decryptedData)
         } catch (e: Exception) {
-            Log.e(TAG, "Decrypt failed: ${e.message}")
+            // Minimize logging for performance - only log critical errors
+            if (e is InvalidKeyException || e is InvalidAlgorithmParameterException) {
+                Log.e(TAG, "Decrypt failed with critical error: ${e.javaClass.simpleName}")
+            }
             return "" // Return empty string on decrypt failure
         }
     }
 
+    /**
+     * Derives cryptographic key material from a base key.
+     *
+     * @param algorithm JSON string with algorithm parameters
+     * @param baseKey JSON string containing the base key
+     * @param length Length of the derived material in bits
+     * @return Base64 encoded derived key material
+     */
     @LynxMethod
     fun deriveBits(algorithm: String, baseKey: String, length: Int): String {
         try {
@@ -828,7 +993,14 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
-    // Helper function for PBKDF2 derivation
+    /**
+     * Helper function for PBKDF2 key derivation.
+     *
+     * @param passwordData Password bytes
+     * @param algoObj Algorithm parameters
+     * @param derivedKeyLengthBytes Desired output length in bytes
+     * @return Base64 encoded derived key
+     */
     private fun deriveBitsPBKDF2(passwordData: ByteArray, algoObj: JSONObject, derivedKeyLengthBytes: Int): String {
         try {
             val saltBase64 = algoObj.getString("salt")
@@ -870,7 +1042,16 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         }
     }
 
-    // HKDF implementation for ECDH key derivation
+    /**
+     * HKDF (HMAC-based Key Derivation Function) implementation.
+     * Used for ECDH key derivation.
+     *
+     * @param ikm Input key material
+     * @param salt Salt value
+     * @param info Context and application specific information
+     * @param outputLength Desired output length in bytes
+     * @return Derived key material
+     */
     private fun hkdfDerive(ikm: ByteArray, salt: ByteArray, info: ByteArray, outputLength: Int): ByteArray {
         val effectiveSalt = if (salt.isEmpty()) ByteArray(32) else salt
 
@@ -905,13 +1086,30 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
         return result
     }
 
-    // HMAC-SHA256 implementation
+    /**
+     * HMAC-SHA256 implementation.
+     *
+     * @param key Key for HMAC
+     * @param data Data to HMAC
+     * @return HMAC result
+     */
     private fun hmacSha256(key: ByteArray, data: ByteArray): ByteArray {
         val mac = Mac.getInstance("HmacSHA256")
         mac.init(SecretKeySpec(key, "HmacSHA256"))
         return mac.doFinal(data)
     }
 
+    /**
+     * Derives a cryptographic key from a base key.
+     * Supports ECDH and PBKDF2 algorithms.
+     *
+     * @param algorithm JSON string with algorithm parameters
+     * @param baseKey JSON string containing the base key
+     * @param derivedKeyType JSON string with derived key parameters
+     * @param extractable Whether the derived key can be exported
+     * @param keyUsages JSON array of allowed key operations
+     * @return JSON string containing the derived key
+     */
     @LynxMethod
     fun deriveKey(algorithm: String, baseKey: String, derivedKeyType: String, extractable: Boolean, keyUsages: String): String {
         try {
@@ -967,7 +1165,7 @@ class NativeWebCryptoModule(context: Context) : LynxModule(context) {
                     val targetKeyLengthBytes = targetKeyLengthBits / 8
 
                     // Create key objects using BouncyCastle for better compatibility
-                    val ecSpec = ECNamedCurveTable.getParameterSpec("secp256r1") // P-256 curve
+                    val ecSpec = org.bouncycastle.jce.ECNamedCurveTable.getParameterSpec("secp256r1") // P-256 curve
 
                     // Create private key
                     val privateKeyParams = ECPrivateKeyParameters(

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		109E67E52D9A4F340085D6B1 /* K1 in Frameworks */ = {isa = PBXBuildFile; productRef = 109E67E42D9A4F340085D6B1 /* K1 */; };
 		10FE12DB2D87F5790092961B /* main.lynx.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 10FE12DA2D87F5790092961B /* main.lynx.bundle */; };
 		2B5015C11E8DAAE76262AEFB /* libPods-Ariob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18DF23D473B478DE779CDB7C /* libPods-Ariob.a */; };
 /* End PBXBuildFile section */
@@ -75,7 +74,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				109E67E52D9A4F340085D6B1 /* K1 in Frameworks */,
 				2B5015C11E8DAAE76262AEFB /* libPods-Ariob.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -237,7 +235,6 @@
 			mainGroup = 10305DA42D87ED200021DD5A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				109E67E32D9A4F200085D6B1 /* XCRemoteSwiftPackageReference "K1" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 10305DAE2D87ED200021DD5A /* Products */;
@@ -649,25 +646,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		109E67E32D9A4F200085D6B1 /* XCRemoteSwiftPackageReference "K1" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Sajjon/K1.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.6.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		109E67E42D9A4F340085D6B1 /* K1 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 109E67E32D9A4F200085D6B1 /* XCRemoteSwiftPackageReference "K1" */;
-			productName = K1;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 10305DA52D87ED200021DD5A /* Project object */;
 }

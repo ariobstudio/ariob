@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import eraLogo from '../assets/era.png';
+import ariob from '../assets/ariob.png';
 
 export function Header() {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ export function Header() {
     <view className="Header">
       <view className="HeaderContent">
         <view className="HeaderLeft" bindtap={() => navigate('/')}>
-          <image src={eraLogo} className="HeaderLogo" />
+          <image src={ariob} className="HeaderLogo" />
         </view>
       </view>
     </view>
