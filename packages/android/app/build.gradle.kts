@@ -94,4 +94,6 @@ dependencies {
     // add devtool's dependencies
     implementation ("org.lynxsdk.lynx:lynx-devtool:3.2.0-rc.0")
     implementation ("org.lynxsdk.lynx:lynx-service-devtool:3.2.0-rc.0")
+
+    implementation ("org.bouncycastle:bcprov-jdk15on:1.70")
 }

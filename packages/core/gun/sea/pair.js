@@ -17,64 +17,44 @@
 
   //SEA.pair = async (data, proof, cb) => { try {
   SEA.pair = SEA.pair || (async (cb, opt) => { try {
-
-    // var ecdhSubtle = shim.ossl || shim.subtle;
-    // First: ECDSA keys for signing/verifying...
-    let sa;
-    try {
-      sa = await Promise.resolve(NativeModules.NativeWebCryptoModule.generateKey(JSON.stringify({name: 'ECDSA', namedCurve: 'P-256'}), true, JSON.stringify(['sign', 'verify'])))
-      .then(async (keys) => {
-        var key = {};
-        var vkeys = JSON.parse(keys);
-        var priv = await NativeModules.NativeWebCryptoModule.exportKey('jwk', JSON.stringify(vkeys.privateKey));
-        key.priv = JSON.parse(priv);
-        var pub = await NativeModules.NativeWebCryptoModule.exportKey('jwk', JSON.stringify(vkeys.publicKey));
-        pub = JSON.parse(pub);
-        key.pub = pub.x+'.'+pub.y;
-        return key;
-      });
-    } catch(e) {
-      console.error('Error generating ECDSA keys:', e);
-      throw e;
+      // Generate ECDSA keys for signing/verifying
+      var signingKeys = await NativeModules.NativeWebCryptoModule.generateKey(
+        JSON.stringify({name: 'ECDSA', namedCurve: 'P-256'}), 
+        true, 
+        JSON.stringify(['sign', 'verify'])
+      );
+      
+      var keyPair = JSON.parse(signingKeys);
+      var privateJWK = JSON.parse(await NativeModules.NativeWebCryptoModule.exportKey('jwk', JSON.stringify(keyPair.privateKey)));
+      var publicJWK = JSON.parse(await NativeModules.NativeWebCryptoModule.exportKey('jwk', JSON.stringify(keyPair.publicKey)));
+      
+      // Generate ECDH keys for encryption/decryption
+      var encryptionKeys = await NativeModules.NativeWebCryptoModule.generateKey(
+        JSON.stringify({name: 'ECDH', namedCurve: 'P-256'}), 
+        true, 
+        JSON.stringify(['deriveKey'])
+      );
+      
+      var ecdhKeyPair = JSON.parse(encryptionKeys);
+      var ePrivJWK = JSON.parse(await NativeModules.NativeWebCryptoModule.exportKey('jwk', JSON.stringify(ecdhKeyPair.privateKey)));
+      var ePubJWK = JSON.parse(await NativeModules.NativeWebCryptoModule.exportKey('jwk', JSON.stringify(ecdhKeyPair.publicKey)));
+      
+      // Create the result object with pub/priv and epub/epriv
+      var result = {
+        pub: publicJWK.x + '.' + publicJWK.y,
+        priv: privateJWK.d,
+        epub: ePubJWK.x + '.' + ePubJWK.y,
+        epriv: ePrivJWK.d
+      };
+      
+      if (cb) { cb(result); }
+      return result;
+    } catch (e) {
+      console.log("Key generation error:", e);
+      if (cb) { cb(); }
+      return null;
     }
-    
-    // To include PGPv4 kind of keyId:
-    // const pubId = await SEA.keyid(keys.pub)
-    // Next: ECDH keys for encryption/decryption...
-
-    // await ecdhSubtle.generateKey({name: 'ECDH', namedCurve: 'P-256'}, true, ['deriveKey'])
-    let dh = {};
-    try {
-      dh = await Promise.resolve(NativeModules.NativeWebCryptoModule.generateKey(JSON.stringify({name: 'ECDH', namedCurve: 'P-256'}), true, JSON.stringify(['deriveKey'])))
-      .then(async (keys) => {
-        var key = {};
-        var vkeys = JSON.parse(keys);
-        var epriv = await NativeModules.NativeWebCryptoModule.exportKey('jwk', JSON.stringify(vkeys.privateKey));
-        key.epriv = JSON.parse(epriv);
-        var pub = await NativeModules.NativeWebCryptoModule.exportKey('jwk', JSON.stringify(vkeys.publicKey));
-        pub = JSON.parse(pub);
-        key.epub = pub.x+'.'+pub.y;
-        return key;
-      });
-    } catch(e) {
-      if(SEA.window){ throw e }
-      if(e == 'Error: ECDH is not a supported algorithm'){ 
-        console.log('Ignoring ECDH...');
-      } else { 
-        throw e;
-      }
-    }
-
-    var r = { pub: sa.pub, priv: sa.priv.d, /* pubId, */ epub: dh.epub, epriv: dh.epriv.d }
-    if(cb){ try{ cb(r) }catch(e){console.log(e)} }
-    return r;
-  } catch(e) {
-    console.log(e);
-    SEA.err = e;
-    if(SEA.throw){ throw e }
-    if(cb){ cb() }
-    return;
-  }});
+  });
 
   module.exports = SEA.pair;
 

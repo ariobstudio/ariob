@@ -9,6 +9,7 @@ import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.facebook.imagepipeline.memory.PoolConfig
 import com.facebook.imagepipeline.memory.PoolFactory
 import com.lynx.devtoolwrapper.LynxDevtoolGlobalHelper
+import com.lynx.explorer.modules.NativeWebCryptoModule
 import com.lynx.service.devtool.LynxDevToolService
 import com.lynx.service.image.LynxImageService
 import com.lynx.service.log.LynxLogService
@@ -49,6 +50,8 @@ class Ariob : Application() {
         LynxEnv.inst().enableDevtool(true)
         // Turn on Lynx LogBox
         LynxEnv.inst().enableLogBox(true)
+        LynxEnv.inst()
+            .registerModule("NativeWebCryptoModule", NativeWebCryptoModule::class.java )
         // Create a Handler associated with the main thread's Looper
         val mainHandler = Handler(Looper.getMainLooper())
         // Register OpenCard for Lynx DevTool

@@ -1,5 +1,6 @@
 // declare let NativeModules: {
 // }
+declare module "*.png?inline";
 
 declare let NativeModules: {
     NativeWebCryptoModule: {
@@ -12,6 +13,8 @@ declare let NativeModules: {
         verify(algorithm: string, key: string, signature: string, data: string): Promise<boolean>;
         encrypt(algorithm: string, key: string, data: string): Promise<string | null>;
         decrypt(algorithm: string, key: string, data: string): Promise<string | null>;
+        deriveBits(algorithm: string, key: string, length: number): Promise<string | null>;
+        deriveKey(algorithm: string, baseKey: string, derivedKeyAlgorithm: string, extractable: boolean, keyUsages: string): Promise<string | null>;
 
         // TextEncoder/TextDecoder equivalents
         textEncode(text: string): Promise<string>;

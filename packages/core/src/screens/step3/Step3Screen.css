@@ -1,0 +1,257 @@
+/* Simplified styles for Step3Screen - focused on functionality */
+
+/* Basic container styling */
+.Result {
+  background-color: rgba(30, 30, 40, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-top: var(--spacing-md);
+}
+
+.ResultTitle {
+  color: white;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+}
+
+/* User section - simple flex layout with fixed spacing */
+.UserSection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .UserSection {
+    flex-direction: row;
+    gap: var(--spacing-lg);
+    align-items: stretch;
+  }
+}
+
+/* User card with fixed structure */
+.UserCard {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+}
+
+.UserCard .Alice {
+  border-left: 3px solid #667eea;
+  padding: var(--spacing-md);
+}
+
+.UserCard .Bob {
+  border-left: 3px solid #764ba2;
+  padding: var(--spacing-md);
+}
+
+.UserTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: white;
+  margin-bottom: var(--spacing-md);
+}
+
+.UserSubTitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary-light);
+}
+
+.UserDescription {
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-md);
+  color: var(--color-light);
+  line-height: 1.4;
+}
+
+.SubHeading {
+  font-size: var(--font-size-md);
+  color: var(--color-primary-light);
+  margin-bottom: var(--spacing-xs);
+}
+
+/* Message section - simplified */
+.MessageSection {
+  margin-top: var(--spacing-md);
+}
+
+.MessageTitle {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: white;
+  margin-bottom: var(--spacing-md);
+}
+
+.MessageFlow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.MessageItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.MessageLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-light);
+}
+
+/* Message content with minimal styling */
+.MessageContent {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+}
+
+.MessageContent.Original {
+  border-left: 3px solid #667eea;
+}
+
+.MessageContent.Encrypted {
+  border-left: 3px solid #764ba2;
+}
+
+.MessageContent.Decrypted {
+  border-left: 3px solid #48bb78;
+}
+
+.MessageText {
+  font-family: monospace;
+  font-size: var(--font-size-sm);
+  color: var(--color-light);
+}
+
+/* Verification section - simplified */
+.VerificationCard {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-sm);
+}
+
+.ProcessStepTitle {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-primary-light);
+}
+
+.VerificationBadge {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  display: flex;
+  justify-content: center;
+}
+
+.VerificationBadge.Success {
+  background-color: rgba(72, 187, 120, 0.2);
+  border: 1px solid rgba(72, 187, 120, 0.5);
+}
+
+.VerificationBadge.Failure {
+  background-color: rgba(229, 62, 62, 0.2);
+  border: 1px solid rgba(229, 62, 62, 0.5);
+}
+
+.VerificationText {
+  font-size: var(--font-size-md);
+  font-weight: 500;
+}
+
+/* Navigation - simple flex */
+.Navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--spacing-lg);
+  width: 100%;
+}
+
+.NavButton {
+  color: var(--color-primary-light);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid rgba(106, 127, 222, 0.3);
+  border-radius: var(--radius-sm);
+}
+
+/* Button - simplified */
+.Button {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: var(--radius-sm);
+  margin: var(--spacing-md) 0;
+  align-self: center;
+}
+
+.Button.disabled {
+  opacity: 0.6;
+  background-color: var(--color-gray);
+}
+
+.ButtonText {
+  color: white;
+}
+
+/* Fixed CodeBlock positioning */
+.CodeBlock {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  margin-top: 0;
+  overflow: hidden;
+}
+
+.CodeBlock text {
+  font-family: monospace;
+  font-size: var(--font-size-sm);
+  color: var(--color-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  padding: 2px 0;
+}
+
+/* Additional styles for the Card component */
+.Card {
+  background-color: rgba(30, 30, 40, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.CardTitle {
+  color: white;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+}
+
+.CardText {
+  color: var(--color-light);
+  font-size: var(--font-size-md);
+  line-height: 1.4;
+}
+
+/* Simple title styles */
+.PageTitle {
+  color: white;
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+} 

@@ -9,14 +9,14 @@
   SEA.verify = SEA.verify || (async (data, pair, cb, opt) => { 
     try {
       var json = await S.parse(data);
-      if(false === pair){ // don't verify!
-        var raw = await S.parse(json.m);
-        if(cb){ try{ cb(raw) }catch(e){console.log(e)} }
-        return raw;
+      
+      if (!json || !json.m || !json.s) {
+        throw "Invalid signature format";
       }
-      opt = opt || {};
+      
       var pub = pair.pub || pair;
-      // Import the public key using JWK (or SPKI if you prefer)
+      
+      // Import the public key
       var key = await NativeModules.NativeWebCryptoModule.importKey(
         'jwk',
         JSON.stringify(S.jwk(pub)), 
@@ -24,25 +24,28 @@
         false, 
         JSON.stringify(['verify'])
       );
+      
       var hash = await sha(json.m);
-      // Here we assume the signature is now DER encoded.
-      var buf = shim.Buffer.from(json.s, opt.encode || 'base64');
+      var buf = shim.Buffer.from(json.s, 'base64');
+      
       var check = await NativeModules.NativeWebCryptoModule.verify(
         JSON.stringify({name: 'ECDSA', hash: {name: 'SHA-256'}}),
         key,
         buf.toString("base64"),
         hash.toString("base64")
       );
-      if(!check){ throw "Signature did not match." }
-      var r = check ? await S.parse(json.m) : u;
-      if(cb){ try{ cb(r) }catch(e){console.log(e)} }
-      return r;
-    } catch(e) {
-      console.log(e);
-      SEA.err = e;
-      if(SEA.throw){ throw e }
-      if(cb){ cb() }
-      return;
+      
+      if (!check) { 
+        throw "Signature did not match."; 
+      }
+      
+      var result = check ? await S.parse(json.m) : undefined;
+      if (cb) { cb(result); }
+      return result;
+    } catch (e) {
+      console.log("Verification error:", e);
+      if (cb) { cb(); }
+      return null;
     }
   });
 
