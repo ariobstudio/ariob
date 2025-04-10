@@ -7,7 +7,7 @@
 
 #import <Lynx/LynxView.h>
 #import <Lynx/LynxEnv.h>
-
+#import "AriobInput.h"
 #import "ViewController.h"
 #import "NetworkLynxProvider.h"
 
@@ -17,9 +17,12 @@
   [super viewDidLoad];
   LynxView *lynxView = [[LynxView alloc] initWithBuilderBlock:^(LynxViewBuilder *builder) {
     builder.config = [[LynxConfig alloc] initWithProvider:[LynxEnv sharedInstance].config.templateProvider];
+  [builder.config registerUI:[AriobInput class] withName:@"input"];
     builder.screenSize = self.view.frame.size;
     builder.fontScale = 1.0;
   }];
+
+
   lynxView.preferredLayoutWidth = self.view.frame.size.width;
   lynxView.preferredLayoutHeight = self.view.frame.size.height;
   lynxView.layoutWidthMode = LynxViewSizeModeExact;
@@ -27,6 +30,7 @@
   [self.view addSubview:lynxView];
   
   [lynxView loadTemplateFromURL:@"http://10.0.0.13:3000/main.lynx.bundle?fullscreen=true" initData:nil];
+    
   [lynxView triggerLayout];
 }
 - (void)viewWillAppear:(BOOL)animated {

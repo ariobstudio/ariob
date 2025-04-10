@@ -88,7 +88,6 @@ dependencies {
 
     // integrating http-service
     implementation("org.lynxsdk.lynx:lynx-service-http:3.2.0-rc.0")
-
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
 
     // add devtool's dependencies
@@ -96,4 +95,5 @@ dependencies {
     implementation ("org.lynxsdk.lynx:lynx-service-devtool:3.2.0-rc.0")
 
     implementation ("org.bouncycastle:bcprov-jdk15on:1.70")
+    implementation ("androidx.appcompat:appcompact:1.7.0")
 }

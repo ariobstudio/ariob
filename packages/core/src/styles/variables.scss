@@ -1,0 +1,184 @@
+// _variables.scss
+
+// ===============================
+// Colors & Design Tokens
+// ===============================
+
+// Primary & Secondary
+$color-primary: #3B82F6;               // A modern blue for primary actions
+$color-primary-rgb: 59, 130, 246;
+$color-primary-contrast: #ffffff;
+
+$color-secondary: #6B7280;             // A cool gray tone for secondary elements
+$color-secondary-rgb: 107, 114, 128;
+$color-secondary-contrast: #ffffff;
+
+// Status Colors
+$color-success: #10B981;               // Modern green for success
+$color-success-contrast: #ffffff;
+$color-warning: #F59E0B;               // Amber for warnings
+$color-warning-contrast: #ffffff;
+$color-error: #EF4444;                 // Red for errors/destructive actions
+$color-error-contrast: #ffffff;
+$color-info: #0EA5E9;                  // Light blue for info messages
+$color-info-contrast: #ffffff;
+
+// -------------------------------
+// Light Theme Colors
+// -------------------------------
+$bg-light-1: #ffffff;                  // Base page background
+$bg-light-2: #F9FAFB;                  // Elevated surfaces (cards, modals, etc.)
+$bg-light-3: #F3F4F6;                  // Subtle backgrounds or hover states
+$bg-light-1-rgb: 255, 255, 255;
+$bg-light-2-rgb: 249, 250, 251;
+$bg-light-3-rgb: 243, 244, 246;
+
+$text-light-1: #111827;                // Primary text color
+$text-light-2: #6B7280;                // Secondary text color
+$text-light-3: #9CA3AF;                // Tertiary/Hints
+$text-light-1-rgb: 17, 24, 39;
+$text-light-2-rgb: 107, 114, 128;
+$text-light-3-rgb: 156, 163, 175;
+
+$border-light: #E5E7EB;                // Border color for light theme
+
+$card-bg-light: #ffffff;               // Card background
+$card-bg-light-rgb: 255, 255, 255;
+
+// -------------------------------
+// Dark Theme Colors
+// -------------------------------
+$bg-dark-1: #1F2937;                   // Base dark background
+$bg-dark-2: #111827;                   // Elevated dark surfaces
+$bg-dark-3: #1E293B;                   // Subtle dark hover areas
+$bg-dark-1-rgb: 31, 41, 55;
+$bg-dark-2-rgb: 17, 24, 39;
+$bg-dark-3-rgb: 30, 41, 59;
+
+$text-dark-1: #F9FAFB;                 // Primary text color (light on dark)
+$text-dark-2: #D1D5DB;                 // Secondary text color
+$text-dark-3: #9CA3AF;                 // Tertiary text color
+$text-dark-1-rgb: 249, 250, 251;
+$text-dark-2-rgb: 209, 213, 219;
+$text-dark-3-rgb: 156, 163, 175;
+
+$border-dark: #374151;                 // Border color for dark theme
+
+$card-bg-dark: #1F2937;                // Card background dark mode
+$card-bg-dark-rgb: 31, 41, 55;
+
+// -------------------------------
+// Neutrals
+// -------------------------------
+$white: #FFFFFF;
+$black: #000000;
+
+$gray-100: #F3F4F6;
+$gray-200: #E5E7EB;
+$gray-300: #D1D5DB;
+$gray-400: #9CA3AF;
+$gray-500: #6B7280;
+$gray-600: #4B5563;
+$gray-700: #374151;
+$gray-800: #1F2937;
+$gray-900: #111827;
+
+// ===============================
+// Typography
+// ===============================
+$font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-family-mono: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+$font-size-base: 1rem;
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: 1.25rem;
+$font-size-xxl: 1.5rem;
+$font-size-xxxl: 2rem;
+
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-loose: 1.8;
+
+// ===============================
+// Spacing
+// ===============================
+$space-0: 0;
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.25rem;
+$space-6: 1.5rem;
+$space-8: 2rem;
+$space-10: 2.5rem;
+$space-12: 3rem;
+$space-16: 4rem;
+
+// ===============================
+// Border Radius & Borders
+// ===============================
+$radius-sm: 0.25rem;
+$radius-md: 0.375rem;
+$radius-lg: 0.5rem;
+$radius-xl: 1rem;
+$radius-full: 9999px;
+
+$border-width-base: 1px;
+$border-width-lg: 2px;
+
+// ===============================
+// Shadows & Transitions
+// ===============================
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -2px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+            0 4px 6px -4px rgba(0, 0, 0, 0.1);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+            0 8px 10px -6px rgba(0, 0, 0, 0.1);
+$shadow-inset: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+
+$transition-duration-fast: 150ms;
+$transition-duration-normal: 300ms;
+$transition-duration-slow: 500ms;
+$transition-property-common: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+$transition-easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+
+// ===============================
+// Z-Index
+// ===============================
+$z-index-base: 0;
+$z-index-content: 10;
+$z-index-sticky: 1020;
+$z-index-overlay: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+
+// ===============================
+// Form Elements & Buttons
+// ===============================
+$input-height-md: 2.75rem;
+$input-padding-x: $space-3;
+$input-padding-y: $space-2;
+$input-focus-ring-width: 3px;
+$input-focus-ring-opacity: 0.25;
+
+$button-padding-y-md: $space-2;
+$button-padding-x-md: $space-4;
+$button-min-height-md: $input-height-md;
+
+// Breakpoints remain unchanged
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;

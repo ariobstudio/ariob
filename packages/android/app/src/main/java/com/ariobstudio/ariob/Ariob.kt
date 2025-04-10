@@ -14,6 +14,8 @@ import com.lynx.service.devtool.LynxDevToolService
 import com.lynx.service.image.LynxImageService
 import com.lynx.service.log.LynxLogService
 import com.lynx.tasm.LynxEnv
+import com.lynx.tasm.behavior.Behavior
+import com.lynx.tasm.behavior.LynxContext
 import com.lynx.tasm.service.LynxServiceCenter
 
 class Ariob : Application() {
@@ -52,6 +54,12 @@ class Ariob : Application() {
         LynxEnv.inst().enableLogBox(true)
         LynxEnv.inst()
             .registerModule("NativeWebCryptoModule", NativeWebCryptoModule::class.java )
+
+        LynxEnv.inst().addBehavior(object : Behavior("input") {
+            override fun createUI(context: LynxContext): AriobInput {
+                return AriobInput(context)
+            }
+        })
         // Create a Handler associated with the main thread's Looper
         val mainHandler = Handler(Looper.getMainLooper())
         // Register OpenCard for Lynx DevTool

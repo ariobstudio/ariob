@@ -1,21 +1,42 @@
-import '../App.css';
-import { ScrollableContent } from './ScrollableContent';
-import { Header } from './Header';
+import React from 'react';
 
-export function Layout({ children, title }: { children: React.ReactNode, title: string }) {
+type LayoutProps = {
+  children: React.ReactNode;
+  header?: React.ReactNode;
+  className?: string;
+};
+
+/**
+ * Main layout component for app structure
+ */
+export function Layout({
+  children,
+  header,
+  className = ''
+}: LayoutProps) {
   return (
-    <view className="LayoutRoot">
-      <Header />
-      <view className="App">
-        <ScrollableContent className="ContentWrapper">
-          <view className="Content">
-            <text className="PageTitle">
-              {title || 'Security Encryption Authentication'}
-            </text>
-            {children}
-          </view>
-        </ScrollableContent>
+    <view 
+      className={`flex flex-col safe-area-top bg-background ${className}`} 
+      style={{ 
+        width: '100%', 
+        height: '100%', 
+        display: 'flex', 
+        flexDirection: 'column',
+      }}
+    >
+      <view className="bg-background">
+        {header}
+      </view>
+      
+      <view 
+        style={{ 
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {children}
       </view>
     </view>
   );
-} 
+}

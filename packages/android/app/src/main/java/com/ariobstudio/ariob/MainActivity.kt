@@ -57,7 +57,6 @@ class MainActivity : Activity() {
 
     private fun buildLynxView(): LynxView {
         val viewBuilder = LynxViewBuilder()
-        
         // Use NetworkTemplateProvider to enable loading from URLs
         viewBuilder.setTemplateProvider(NetworkTemplateProvider(this))
         

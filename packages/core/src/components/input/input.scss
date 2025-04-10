@@ -1,0 +1,53 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.input-container {
+  @include box;
+  flex-direction: column;
+  margin-bottom: $space-4;
+  background: var(--card-bg);
+}
+
+.input-label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--text-2);
+  margin: 0 $space-3 $space-2;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-box {
+  @include form-control-base;
+  border-radius: $radius-md;
+  background-color: transparent;
+
+  // Variant: underline (default)
+  &--underline {
+    border: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    padding-left: 0;
+    padding-right: 0;
+
+    &:focus {
+      border-bottom: 1px solid var(--primary);
+      box-shadow: none;
+    }
+  }
+
+  // Variant: outlined
+  &--outlined {
+    border: 1px solid var(--border);
+    background-color: var(--bg-2);
+    padding: $space-2 $space-3;
+
+    &:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
+    }
+  }
+}
