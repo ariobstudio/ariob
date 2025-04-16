@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import './card.scss';
+import { useTheme } from '../ThemeProvider';
 
 export type CardProps = {
   children: React.ReactNode;
@@ -20,6 +20,8 @@ export function Card({
   onPress,
   variant = 'default',
 }: CardProps) {
+  const { withTheme } = useTheme();
+
   const handleClick = (e: any) => {
     if (onPress) {
       onPress();
@@ -27,10 +29,16 @@ export function Card({
   };
 
   const cardClasses = clsx(
-    'card',
+    withTheme(
+      'card flex flex-col bg-white rounded-lg border border-gray-200 mb-4',
+      'card flex flex-col bg-gray-800 rounded-lg border border-gray-700 mb-4'
+    ),
     {
-      'card--elevated': variant === 'elevated',
-      'card--outlined': variant === 'outlined',
+      'shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all': variant === 'elevated',
+      [withTheme(
+        'bg-transparent border border-gray-300 shadow-none',
+        'bg-transparent border border-gray-600 shadow-none'
+      )]: variant === 'outlined',
     },
     className
   );
@@ -42,11 +50,17 @@ export function Card({
       bindtap={onPress ? handleClick : undefined}
     >
       {title && (
-        <view className="card__header">
-            {typeof title === 'string' ? <text className="card__title">{title}</text> : title}
+        <view className={withTheme(
+          "p-4 pb-2 border-b border-gray-200 font-semibold text-lg text-gray-900",
+          "p-4 pb-2 border-b border-gray-700 font-semibold text-lg text-white"
+        )}>
+            {typeof title === 'string' ? <text>{title}</text> : title}
           </view>
       )}
-      <view className="card__content">
+      <view className={withTheme(
+        "p-4 text-gray-700 flex flex-col gap-3",
+        "p-4 text-gray-300 flex flex-col gap-3"
+      )}>
         {children}
       </view>
     

@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom animations */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Custom utilities */
+@layer utilities {
+  .animate-spin-slow {
+    animation: spin 20s linear infinite;
+  }
+
+  .animate-shake {
+    animation: shake 0.5s ease infinite;
+  }
+  
+  /* Scale utilities */
+  .scale-98 {
+    transform: scale(0.98);
+  }
+  
+  /* Min height utilities */
+  .min-h-8 {
+    min-height: 2rem; /* 32px */
+  }
+  
+  .min-h-10 {
+    min-height: 2.5rem; /* 40px */
+  }
+  
+  .min-h-12 {
+    min-height: 3rem; /* 48px */
+  }
+}

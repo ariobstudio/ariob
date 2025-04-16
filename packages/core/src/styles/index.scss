@@ -1,8 +1,0 @@
-@import 'variables'; // Tokens first
-@import 'mixins';    // Mixins next
-@import 'main';      // Base styles, theme vars, utilities
-
-// Component styles
-@import '../components/button/button';    
-@import '../components/card/card';
-@import '../components/input/input';

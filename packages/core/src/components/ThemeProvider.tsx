@@ -1,31 +1,66 @@
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext, useState, ReactNode } from '@lynx-js/react';
 
-type ThemeContextType = {
-  isDarkMode: boolean; // Note: This is now just for informational purposes
-};
+type ThemeType = 'auto' | 'light' | 'dark';
 
-// Create context with a default value
+interface ThemeContextType {
+  theme: ThemeType;
+  isDarkMode: boolean;
+  setTheme: (theme: ThemeType) => void;
+  withTheme: (lightClasses: string, darkClasses: string) => string;
+  withNotchScreen: (className: string) => string;
+}
+
 const ThemeContext = createContext<ThemeContextType>({
-  isDarkMode: false
+  theme: 'auto',
+  isDarkMode: false,
+  setTheme: () => {},
+  withTheme: (light, dark) => light,
+  withNotchScreen: (className) => className,
 });
 
-export const useTheme = () => useContext(ThemeContext);
+interface ThemeProviderProps {
+  children: ReactNode;
+}
 
-// Simple ThemeProvider that doesn't use window and doesn't try to control dark mode
-// Instead relies on Tailwind's built-in dark mode detection via media queries
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // We're using a simpler approach now - let Tailwind handle dark mode
-  // based on prefers-color-scheme media query
-
-  // Instead of controlling isDarkMode, we're just including it for
-  // component use if needed, but not actually changing theme state
-  const contextValue = {
-    isDarkMode: false // This is just a placeholder now
+export function ThemeProvider({ children }: ThemeProviderProps) {
+  // Initialize theme from lynx global props
+  const initialTheme = (lynx.__globalProps as any).preferredTheme || 'auto';
+  const [theme, setTheme] = useState<ThemeType>(initialTheme as ThemeType);
+  
+  // Determine if dark mode is active based on theme setting and system preference
+  const isDarkMode = theme !== 'auto' 
+    ? theme === 'dark'
+    : (lynx.__globalProps as any).theme.toLowerCase() === 'dark';
+  
+  const handleSetTheme = (newTheme: ThemeType) => {
+    setTheme(newTheme);
+    // Save the theme preference
+    (NativeModules as any).ExplorerModule.saveThemePreferences('preferredTheme', newTheme);
+  };
+  
+  // Helper function to apply theme classes - this is the key function for theming
+  const withTheme = (lightClasses: string, darkClasses: string) => {
+    return isDarkMode ? darkClasses : lightClasses;
+  };
+  
+  // Helper function to handle notch screens
+  const withNotchScreen = (className: string) => {
+    return (lynx.__globalProps as any).isNotchScreen ? `${className} pb-safe` : className;
   };
   
   return (
-    <ThemeContext.Provider value={contextValue}>
+    <ThemeContext.Provider
+      value={{
+        theme,
+        isDarkMode,
+        setTheme: handleSetTheme,
+        withTheme,
+        withNotchScreen,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );
-} 
+}
+
+export const useTheme = () => useContext(ThemeContext); 

@@ -1,62 +1,71 @@
-import './styles/main.scss';
-import { Layout } from './components/Layout';
-import { RouterProvider, useRouter } from './router';
+import './tailwind.css';
+import { RouterProvider, useRouter, Route } from './router';
 import { 
-  WelcomeScreen, 
-  LoginScreen, 
-  QRLoginScreen, 
-  ManualKeyLoginScreen, 
-  HomeScreen 
+  HomeScreen,
+  SettingsScreen,
+  AboutScreen,
+  AuthScreen
 } from './screens';
-import { Header } from './components/Header';
+import { ThemeProvider, useTheme, AppNavigation } from './components';
+import { AuthProvider } from './hooks';
+import { useState, useEffect } from 'react';
 
-// Main App wrapper that provides router context
+// Main App wrapper that provides router and theme context
 export function App() {
+  const { withTheme } = useTheme();
   return (
-    <page className="theme-light bg-background" style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <RouterProvider>
-        <AppContent />
-      </RouterProvider>
+    <page id='app' className={`flex flex-col w-full h-full`}>
+      <ThemeProvider>
+        <RouterProvider>
+          <AuthProvider>
+            <AppContent />
+          </AuthProvider>
+        </RouterProvider>
+      </ThemeProvider>
     </page>
   );
 }
 
+// Routes that should show the bottom navigation
+const AUTHENTICATED_ROUTES: Route[] = ['home', 'settings', 'about'];
+
 // Inner component that consumes router context
 function AppContent() {
   const { currentRoute } = useRouter();
+  const { withTheme } = useTheme();
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Render different screens with appropriate layout
-  const getHeader = () => {
-    if (currentRoute === 'home') {
-      return (
-        <Header
-          title="Ariob"
-          rightContent={
-            <text className="text-md text-on-surface-variant">Version 1.0</text>
-          }
-        />
-      );
-    }
-    return null;
-  };
+  useEffect(() => {
+    // Initialize the app
+    setIsInitialized(true);
+  }, []);
 
-  // Render the appropriate screen based on current route
-  const getContent = () => {
-    switch (currentRoute) {
-      case 'welcome':
-        return <WelcomeScreen />;
-      case 'login':
-        return <LoginScreen />;
-      case 'qrLogin':
-        return <QRLoginScreen />;
-      case 'manualKeyLogin':
-        return <ManualKeyLoginScreen />;
-      case 'home':
-        return <HomeScreen />;
-      default:
-        return <WelcomeScreen />;
-    }
-  };
+  // Loading state
+  if (!isInitialized) {
+    return (
+      <view className="bg-background flex-1 flex justify-center items-center">
+        <text className="text-on-background">Loading...</text>
+      </view>
+    );
+  }
 
-  return getContent();
+  // Auth route (welcome, login, register)
+  if (currentRoute === 'auth') {
+    return <AuthScreen />;
+  }
+
+  // Authenticated routes with bottom navigation
+  if (AUTHENTICATED_ROUTES.includes(currentRoute)) {
+    return (
+      <view className={`flex flex-col h-full pb-safe-bottom ${withTheme('bg-white', 'bg-gray-800')}`}>
+        {currentRoute === 'home' && <HomeScreen />}
+        {currentRoute === 'settings' && <SettingsScreen />}
+        {currentRoute === 'about' && <AboutScreen />}
+        <AppNavigation />
+      </view>
+    );
+  }
+
+  // Fallback to auth screen
+  return <AuthScreen />;
 }

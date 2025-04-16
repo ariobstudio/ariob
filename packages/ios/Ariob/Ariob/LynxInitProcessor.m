@@ -16,6 +16,7 @@
 #import <SDWebImage/SDWebImage.h>
 #import <SDWebImageWebPCoder/SDWebImageWebPCoder.h>
 #import "NetworkLynxProvider.h"
+#import "ExplorerModule.h"
 #import "Ariob-Swift.h"
 
 @implementation LynxInitProcessor
@@ -41,6 +42,7 @@ static LynxInitProcessor *_instance = nil;
   LynxConfig *globalConfig = [[LynxConfig alloc] initWithProvider:[NetworkLynxProvider new]];
 
   // register global JS module
+  [globalConfig registerModule:ExplorerModule.class];
   [globalConfig registerModule:NativeWebCryptoModule.class];
 
   // prepare global config

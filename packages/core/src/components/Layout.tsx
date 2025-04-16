@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from './ThemeProvider';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -14,9 +15,14 @@ export function Layout({
   header,
   className = ''
 }: LayoutProps) {
+  const { withTheme } = useTheme();
+  
   return (
     <view 
-      className={`flex flex-col safe-area-top bg-background ${className}`} 
+      className={withTheme(
+        "flex flex-col safe-area-top bg-white",
+        "flex flex-col safe-area-top bg-gray-900"
+      ) + ` ${className}`} 
       style={{ 
         width: '100%', 
         height: '100%', 
@@ -24,7 +30,7 @@ export function Layout({
         flexDirection: 'column',
       }}
     >
-      <view className="bg-background">
+      <view className={withTheme("bg-white", "bg-gray-900")}>
         {header}
       </view>
       

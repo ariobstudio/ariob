@@ -13,12 +13,17 @@ declare namespace JSX {
   }
 }
 
-// Define global variables
+// Define global variables directly
 declare const lynx: {
-  __globalProps: any;
+  __globalProps: {
+    theme: 'Light' | 'Dark';
+    preferredTheme?: 'Auto' | 'Light' | 'Dark';
+    platform: string;
+    isNotchScreen?: boolean;
+  }
 };
 
-// Define NativeModules
+// Define NativeModules directly
 declare const NativeModules: {
   NativeWebCryptoModule: {
     // Core Web Crypto API methods
@@ -39,5 +44,11 @@ declare const NativeModules: {
 
     // Random values generator
     getRandomValues(length: number): Promise<string>;
-  }
+  };
+  ExplorerModule: {
+    openScan(): void;
+    openSchema(url: string): void;
+    openDevtoolSwitchPage(): void;
+    saveThemePreferences(key: string, value: string): void;
+  };
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from './ThemeProvider';
 
 type ScrollableContentProps = {
   children: React.ReactNode;
@@ -15,6 +16,8 @@ export function ScrollableContent({
   className = '',
   padded = true
 }: ScrollableContentProps) {
+  const { withTheme } = useTheme();
+  
   return (
     <scroll-view 
       scroll-orientation="vertical"
@@ -23,7 +26,10 @@ export function ScrollableContent({
         height: '100%',
         flex: 1,
       }}
-      className={`scroll-container ${className}`}
+      className={withTheme(
+        "scroll-container bg-white",
+        "scroll-container bg-gray-900"
+      ) + ` ${className}`}
       bindscroll={(e) => {
         // Optional scroll event handling
         // console.log('Scrolling', e.detail);

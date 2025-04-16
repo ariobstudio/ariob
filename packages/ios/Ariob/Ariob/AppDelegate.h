@@ -1,14 +1,12 @@
-//
-//  AppDelegate.h
-//  Ariob
-//
-//  Created by Natnael Teferi on 3/16/25.
-//
+// Copyright 2024 The Lynx Authors. All rights reserved.
+// Licensed under the Apache License Version 2.0 that can be found in the
+// LICENSE file in the root directory of this source tree.
 
 #import <UIKit/UIKit.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property(strong, nonatomic) UIWindow *window;
+@property(nonatomic) UINavigationController *navigationController;
 
 @end

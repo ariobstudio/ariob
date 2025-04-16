@@ -25,7 +25,7 @@ export function WelcomeScreen() {
         <view className="p-4 rounded-lg mb-4 border border-outline" style={{ width: '100%', maxWidth: '340px' }}>
           <view className="flex flex-col items-center">
             <text className="text-2xl py-2 font-semibold text-on-surface mb-4 text-center">
-              Welcome
+              Welcome to Ariob
             </text>
 
             <view className="w-full px-6">

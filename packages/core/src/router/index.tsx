@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-type Route = 'welcome' | 'login' | 'register' | 'home' | 'qrLogin' | 'manualKeyLogin';
+export type Route = 'welcome' | 'login' | 'register' | 'home' | 'qrLogin' | 'manualKeyLogin' | 'settings' | 'auth' | 'about';
 
 interface RouterContextType {
   currentRoute: Route;
@@ -10,7 +10,7 @@ interface RouterContextType {
 const RouterContext = createContext<RouterContextType | undefined>(undefined);
 
 export function RouterProvider({ children }: { children: ReactNode }) {
-  const [currentRoute, setCurrentRoute] = useState<Route>('welcome');
+  const [currentRoute, setCurrentRoute] = useState<Route>('auth');
 
   const navigate = (route: Route) => {
     setCurrentRoute(route);

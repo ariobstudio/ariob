@@ -68,11 +68,9 @@ LYNX_PROP_SETTER("value", setValue, NSString *) { self.view.text = value; }
 
 LYNX_PROP_SETTER("placeholder", setPlaceholder, NSString *) { self.view.placeholder = value; }
 
-LYNX_PROP_SETTER("text-color", setTextColor, NSString *) {
-  UIColor *textColor = [UIHelper colorWithHexString:value];
-  self.view.textColor = textColor;
-
-  UIColor *placeholderColor = [textColor colorWithAlphaComponent:0.6];
+LYNX_PROP_SETTER("placeholder-color", setPlaceholderColor, NSString *) {
+  UIColor *placeholderColor = [UIHelper colorWithHexString:value];
+  
   if (@available(iOS 13.0, *)) {
     NSAttributedString *attributedPlaceholder = [[NSAttributedString alloc]
         initWithString:self.view.placeholder ?: @""
@@ -80,6 +78,23 @@ LYNX_PROP_SETTER("text-color", setTextColor, NSString *) {
     self.view.attributedPlaceholder = attributedPlaceholder;
   } else {
     [self.view setValue:placeholderColor forKeyPath:@"_placeholderLabel.textColor"];
+  }
+}
+
+LYNX_PROP_SETTER("text-color", setTextColor, NSString *) {
+  UIColor *textColor = [UIHelper colorWithHexString:value];
+  self.view.textColor = textColor;
+  
+  if (!self.view.attributedPlaceholder) {
+    UIColor *placeholderColor = [textColor colorWithAlphaComponent:0.6];
+    if (@available(iOS 13.0, *)) {
+      NSAttributedString *attributedPlaceholder = [[NSAttributedString alloc]
+          initWithString:self.view.placeholder ?: @""
+              attributes:@{NSForegroundColorAttributeName : placeholderColor}];
+      self.view.attributedPlaceholder = attributedPlaceholder;
+    } else {
+      [self.view setValue:placeholderColor forKeyPath:@"_placeholderLabel.textColor"];
+    }
   }
 }
 

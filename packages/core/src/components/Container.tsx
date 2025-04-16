@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from './ThemeProvider';
 
 type ContainerProps = {
   children: React.ReactNode;
@@ -12,9 +13,14 @@ export function Container({
   children,
   className = ''
 }: ContainerProps) {
+  const { withTheme } = useTheme();
+  
   return (
     <view 
-      className={`container px-4 flex flex-col ${className}`}
+      className={withTheme(
+        "container px-4 flex flex-col bg-white",
+        "container px-4 flex flex-col bg-gray-900"
+      ) + ` ${className}`}
       style={{
         width: '100%',
         height: '100%',
