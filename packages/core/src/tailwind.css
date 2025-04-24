@@ -51,4 +51,29 @@
   .min-h-12 {
     min-height: 3rem; /* 48px */
   }
+
+  /* Card shadow and border utilities */
+  .card {
+    @apply rounded-xl shadow-md border border-outline;
+  }
+  .card-section {
+    @apply p-4;
+  }
+  .shadow-subtle {
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
+  }
+  .border-subtle {
+    border-color: #e5e7eb;
+  }
+  /* Improved spacing utilities */
+  .space-y-2 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+  }
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+  }
 }

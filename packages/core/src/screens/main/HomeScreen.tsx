@@ -6,7 +6,7 @@ import { useRouter } from '../../router';
 import { useKeyManager, KeyPair } from '../../hooks/useKeyManager';
 
 export function HomeScreen() {
-  const { withTheme } = useTheme();
+  const { withTheme, isDarkMode } = useTheme();
   const { user, generateNewKey } = useAuth();
   const { navigate } = useRouter();
   const keyManager = useKeyManager();
@@ -37,41 +37,39 @@ export function HomeScreen() {
   return (
     <PageContainer safeAreaTop={true}>
       <view className="mb-4">
-        <text className={`text-2xl font-bold ${withTheme('text-on-background')}`}>
+        <text className={`text-2xl font-bold ${withTheme('text-gray-900', 'text-white')}`}>
           Welcome, {user?.username || 'User'}
         </text>
-        <text className={`mt-1 ${withTheme('text-on-surface-variant')}`}>
+        <text className={`mt-1 ${withTheme('text-gray-500', 'text-gray-400')}`}>
           Your secure Ariob platform
         </text>
       </view>
 
-      <Card className="mb-4 p-4" variant="elevated">
+      <view className="card card-section mb-4">
         <view className="mb-4">
-          <text className={`text-xl font-semibold mb-2 ${withTheme('text-on-surface')}`}>
+          <text className={`text-xl font-semibold mb-2 ${withTheme('text-gray-900', 'text-white')}`}>
             Security Status
           </text>
         </view>
-
-        <view className={`p-5 ${withTheme('bg-primary-container')} rounded-lg mb-4`}>
+        <view className={`p-5 ${withTheme('bg-gray-100', 'bg-gray-800')} rounded-lg mb-4`}>
           <view className="flex items-center mb-3">
-            <view className={`w-12 h-12 rounded-full ${withTheme('bg-primary')} mr-3 flex items-center justify-center`}>
-              <text className={`text-xl ${withTheme('text-on-primary')}`}>🔒</text>
+            <view className="w-12 h-12 rounded-full bg-primary mr-3 flex items-center justify-center">
+              <text className="text-xl text-background">🔒</text>
             </view>
-            <text className={`text-xl font-semibold ${withTheme('text-on-primary-container')}`}>Secure Connection</text>
+            <text className={`text-xl font-semibold ${withTheme('text-gray-700', 'text-gray-300')}`}>Secure Connection</text>
           </view>
-          <text className={`text-md ${withTheme('text-on-primary-container')} mb-3`}>
+          <text className={`text-md ${withTheme('text-gray-600', 'text-gray-400')} mb-3`}>
             Your connection is encrypted and secure
           </text>
           <view className="flex items-center">
-            <view className={`h-3 ${withTheme('bg-surface')} flex-1 rounded-full overflow-hidden`}>
-              <view className={`h-full ${withTheme('bg-primary')} w-full`}></view>
+            <view className={`h-3 ${withTheme('bg-gray-300', 'bg-gray-600')} flex-1 rounded-full overflow-hidden`}>
+              <view className="h-full bg-primary w-full"></view>
             </view>
-            <text className={`text-sm ${withTheme('text-on-primary-container')} ml-2`}>100%</text>
+            <text className={`text-sm ${withTheme('text-gray-600', 'text-gray-400')} ml-2`}>100%</text>
           </view>
         </view>
-
         <Button
-          variant="outlined"
+          variant="secondary"
           onPress={() => navigate('about')}
           className="mt-4 h-14"
           size="lg"
@@ -79,25 +77,23 @@ export function HomeScreen() {
         >
           About Ariob
         </Button>
-      </Card>
-    
-      <Card className="p-4 mb-4" variant="outlined">
+      </view>
+
+      <view className="card card-section mb-4">
         <view className="mb-3">
-          <text className={`text-xl font-semibold ${withTheme('text-on-surface')}`}>Your Magic Key</text>
-          <text className={`text-md ${withTheme('text-on-surface-variant')} mb-3`}>
+          <text className={`text-xl font-semibold ${withTheme('text-gray-900', 'text-white')}`}>Your Magic Key</text>
+          <text className={`text-md ${withTheme('text-gray-600', 'text-gray-400')} mb-3`}>
             Keep this key safe and secure
           </text>
         </view>
-        
-        <view className={`mb-5 p-4 ${withTheme('bg-surface-variant')} rounded-lg`}>
-          <text className={`text-md font-mono ${withTheme('text-on-surface-variant')}`}>
+        <view className={`mb-5 p-4 ${withTheme('bg-gray-100', 'bg-gray-800/50')} rounded-lg`}>
+          <text className={`text-md font-mono ${withTheme('text-gray-600', 'text-gray-400')}`}>
             {user?.magicKey || 'MAG_{fkQ23...X48Z}'}
           </text>
         </view>
-        
         <view className="flex flex-row gap-3">
           <Button
-            variant="secondary"
+            variant="primary"
             className="flex-1 h-14"
             size="lg"
             icon={<text>🔄</text>}
@@ -117,26 +113,24 @@ export function HomeScreen() {
             {isCopied ? 'Copied!' : 'Copy Key'}
           </Button>
         </view>
-      </Card>
+      </view>
 
-      <Card className="p-4" variant="outlined">
+      <view className="card card-section mb-4">
         <view className="mb-3">
-          <text className={`text-xl font-semibold ${withTheme('text-on-surface')}`}>Your Public Key</text>
-          <text className={`text-md ${withTheme('text-on-surface-variant')} mb-3`}>
+          <text className={`text-xl font-semibold ${withTheme('text-gray-900', 'text-white')}`}>Your Public Key</text>
+          <text className={`text-md ${withTheme('text-gray-600', 'text-gray-400')} mb-3`}>
             Used for secure encryption
           </text>
         </view>
-        
-        <view className={`mb-5 p-4 ${withTheme('bg-surface-variant')} rounded-lg`}>
-          <text className={`text-md font-mono ${withTheme('text-on-surface-variant')}`}>
+        <view className={`mb-5 p-4 ${withTheme('bg-gray-100', 'bg-gray-800/50')} rounded-lg`}>
+          <text className={`text-md font-mono ${withTheme('text-gray-600', 'text-gray-400')}`}>
             {publicKey}
           </text>
         </view>
-        
-        <text className={`text-sm ${withTheme('text-on-surface-variant')} mb-3`}>
+        <text className={`text-sm ${withTheme('text-gray-500', 'text-gray-400')} mb-3`}>
           Total keys: {keyManager.keys.length}
         </text>
-      </Card>
+      </view>
     </PageContainer>
   );
 } 

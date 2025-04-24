@@ -14,54 +14,53 @@ export function WelcomeScreen() {
   return (
     <Layout>
       <view 
-        className="flex-1 flex flex-col items-center justify-center px-4 mt-10 bg-gradient-to-b from-primary-container to-background" 
+        className="flex-1 flex flex-col items-center justify-center px-4 mt-10 bg-gradient-to-b from-primary-container to-background"
         style={{ width: '100%', height: '100%' }}
       >
-        <view className="mb-8 flex flex-col items-center">
-          <image src={logo} clip-radius="true" className="mb-4 rounded-lg bg-surface-variant" style={{width: '100px', height: '100px', backgroundColor: 'transparent'}} />
-          <text className="text-heading-2 font-bold text-on-background mb-1">Ariob</text>
+        <view className="flex flex-col items-center space-y-2 mb-10">
+          <image src={logo} clip-radius="true" className="mb-2 rounded-lg bg-surface-variant shadow-subtle" style={{width: '100px', height: '100px', backgroundColor: 'transparent'}} />
+          <text className="text-heading-2 font-bold text-on-background">Ariob</text>
         </view>
 
-        <view className="p-4 rounded-lg mb-4 border border-outline" style={{ width: '100%', maxWidth: '340px' }}>
-          <view className="flex flex-col items-center">
-            <text className="text-2xl py-2 font-semibold text-on-surface mb-4 text-center">
+        <view className="card card-section mb-4 w-full max-w-xs space-y-6">
+          <view className="flex flex-col items-center space-y-2">
+            <text className="text-2xl font-semibold text-on-surface text-center">
               Welcome to Ariob
             </text>
+          </view>
 
-            <view className="w-full px-6">
-              <Input
-                placeholder="Enter your username"
-                variant="outlined"
-                style={{ width: '100%' }}
-                value={username}
-                onChange={handleUsernameChange}
-                size="lg"
-              />
-            </view>
+          <view className="w-full px-2">
+            <Input
+              placeholder="Enter your username"
+              variant="outlined"
+              style={{ width: '100%' }}
+              value={username}
+              onChange={handleUsernameChange}
+              size="lg"
+            />
+          </view>
 
-            <view className="flex flex-col gap-4" style={{ width: '100%' }}>
-              <Button
-                variant="secondary"
-                onPress={() => navigate('login')}
-                size="lg"
-                className="h-14"
-              >
-                Login with Magic Key
-              </Button>
-              
-              <Button
-                variant="primary"
-                onPress={() => {
-                  if (username.trim()) {
-                    navigate('home');
-                  }
-                }}
-                size="lg"
-                className="h-14"
-              >
-                Register
-              </Button>
-            </view>
+          <view className="flex flex-col gap-3 w-full">
+            <Button
+              variant="secondary"
+              onPress={() => navigate('login')}
+              size="lg"
+              className="h-14"
+            >
+              Login with Magic Key
+            </Button>
+            <Button
+              variant="primary"
+              onPress={() => {
+                if (username.trim()) {
+                  navigate('home');
+                }
+              }}
+              size="lg"
+              className="h-14"
+            >
+              Register
+            </Button>
           </view>
         </view>
       </view>
