@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { useTheme } from '../ThemeProvider';
+import { Box, Flex, Text, Pressable } from '../primitives';
 
 export type ButtonProps = {
   children: React.ReactNode;
@@ -66,7 +67,7 @@ export function Button({
   });
   
   const buttonClass = clsx(
-    'flex items-center justify-center rounded-lg font-medium transition-all duration-200',
+    'rounded-lg font-medium transition-all duration-200',
     variantClasses,
     sizeClasses,
     stateClasses,
@@ -99,34 +100,32 @@ export function Button({
   );
 
   return (
-    <view 
-      className={buttonClass} 
-      bindtap={handleTap}
-      bindtouchstart={handleTouchStart}
-      bindtouchend={handleTouchEnd}
+    <Pressable
+      className={buttonClass}
       style={{
         width: fullWidth ? '100%' : 'auto',
         cursor: disabled || loading ? 'not-allowed' : 'pointer',
         transform: isPressed ? 'scale(0.98)' : 'scale(1)',
       }}
+      onPress={onPress}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={() => setIsPressed(false)}
+      onTouchCancel={() => setIsPressed(false)}
+      disabled={disabled || loading}
     >
-      {loading && (
-        <view className="mr-2 flex items-center justify-center">
-          <view className={spinnerClass}></view>
-        </view>
-      )}
-      
-      {icon && !loading && (
-        <view className="mr-2">
-          {icon}
-        </view>
-      )}
-      
-      {typeof children === 'string' ? (
-        <text>
-          {children}
-        </text>
-      ) : children}
-    </view>
+      <Flex align="center" justify="center">
+        {loading && (
+          <Box className="mr-2 flex items-center justify-center">
+            <Box className={spinnerClass} />
+          </Box>
+        )}
+        {icon && !loading && (
+          <Box className="mr-2">{icon}</Box>
+        )}
+        {typeof children === 'string' ? (
+          <Text>{children}</Text>
+        ) : children}
+      </Flex>
+    </Pressable>
   );
 }

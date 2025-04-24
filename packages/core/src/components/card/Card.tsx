@@ -1,5 +1,6 @@
 import { clsx } from 'clsx';
 import { useTheme } from '../ThemeProvider';
+import { Box, Flex, Text, Pressable } from '../primitives';
 
 export type CardProps = {
   children: React.ReactNode;
@@ -55,20 +56,23 @@ export function Card({
     'p-4 text-foreground flex flex-col gap-3'
   );
 
-  return (
-    <view 
-      clip-radius="true" 
-      className={cardClasses}
-      bindtap={onPress ? handleClick : undefined}
-    >
+  const CardContent = (
+    <Box clip-radius="true" className={cardClasses}>
       {title && (
-        <view className={titleClasses}>
-            {typeof title === 'string' ? <text>{title}</text> : title}
-          </view>
+        <Box className={titleClasses}>
+          {typeof title === 'string' ? <Text>{title}</Text> : title}
+        </Box>
       )}
-      <view className={sectionClasses}>
-        {children}
-      </view>
-    </view>
+      <Box className={sectionClasses}>{children}</Box>
+    </Box>
   );
+
+  if (onPress) {
+    return (
+      <Pressable onPress={handleClick} className={className}>
+        {CardContent}
+      </Pressable>
+    );
+  }
+  return CardContent;
 } 
