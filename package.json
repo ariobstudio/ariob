@@ -1,35 +1,27 @@
 {
   "name": "ariob",
   "version": "1.0.0",
-  "description": "Cross platform Decentralized Platform",
+  "description": "Ariob - Decentralized Platform",
   "main": "index.js",
+  "packageManager": "pnpm@8.15.4",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "server/*"
+  ],
   "scripts": {
-    "setup": "pnpm setup:core && pnpm setup:web",
-    "setup:web": "pnpm --filter web install",
-    "setup:core": "pnpm --filter core install",
-    "dev": "pnpm run dev:core",
-    "dev:web": "pnpm --filter web run dev",
-    "dev:core": "pnpm --filter core run dev",
-    "dev:all": "pnpm run build:core && pnpm run dev:web",
-    "build": "pnpm run build:core && pnpm run build:web && pnpm run copy:ios && pnpm run copy:android",
-    "build:core": "pnpm --filter core run build",
-    "build:web": "pnpm --filter web run build",
-    "copy:ios": "cp ./packages/core/dist/main.lynx.bundle ./packages/ios/Ariob/",
-    "copy:android": "cp ./packages/core/dist/main.lynx.bundle ./packages/android/app/src/main/assets/",
-    "clean": " pnpm run clean:core && pnpm run clean:web && pnpm run clean:ios && pnpm run clean:android",
-    "clean:core": "pnpm --filter core run clean",
-    "clean:web": "pnpm --filter web run clean",
-    "clean:android": "rm -rf ./packages/android/app/src/main/assets/main.lynx.bundle",
-    "clean:ios": "rm -rf ./packages/ios/Ariob/main.lynx.bundle",
-    "relay": "node ./packages/core/gun/examples/http.js ",
-    "test": "pnpm run test:web && pnpm run test:core",
-    "test:web": "pnpm --filter web run test",
-    "test:core": "pnpm --filter core run test"
+    "install": "turbo run install",
+    "build": "turbo run build",
+    "lint": "eslint . --ext .ts,.tsx,.js",
+    "test": "jest",
+    "dev:web": "cd apps/ariob && pnpm run dev:web",
+    "dev:android": "cd apps/ariob && pnpm run dev:android",
+    "dev:ios": "cd apps/ariob && pnpm run dev:ios",
+    "build:apps": "turbo run build --filter=apps/**",
+    "build:packages": "turbo run build --filter=packages/**",
+    "start:relay": "node server/gun/examples/http.js"
   },
   "engines": {
     "node": ">=18"
-  },
-  "dependencies": {
-    "react-router": "6"
   }
 }
