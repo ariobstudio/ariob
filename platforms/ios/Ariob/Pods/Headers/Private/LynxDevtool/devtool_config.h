@@ -1,1 +1,0 @@
-../../../LynxDevtool/lynx/devtool/lynx_devtool/config/devtool_config.h

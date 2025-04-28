@@ -1,1 +1,0 @@
-../../../../../../../../LynxDevtool/lynx/core/runtime/piper/js/lynx_runtime_helper.h

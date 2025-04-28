@@ -1,27 +1,26 @@
 {
   "name": "ariob",
   "version": "1.0.0",
-  "description": "Ariob - Decentralized Platform",
+  "description": "Cross platform Decentralized Platform",
   "main": "index.js",
-  "packageManager": "pnpm@8.15.4",
+  "engines": {
+    "node": ">=18"
+  },
   "workspaces": [
     "apps/*",
     "packages/*",
     "server/*"
   ],
   "scripts": {
-    "install": "turbo run install",
+    "dev": "turbo run dev",
     "build": "turbo run build",
-    "lint": "eslint . --ext .ts,.tsx,.js",
-    "test": "jest",
-    "dev:web": "cd apps/ariob && pnpm run dev:web",
-    "dev:android": "cd apps/ariob && pnpm run dev:android",
-    "dev:ios": "cd apps/ariob && pnpm run dev:ios",
-    "build:apps": "turbo run build --filter=apps/**",
-    "build:packages": "turbo run build --filter=packages/**",
-    "start:relay": "node server/gun/examples/http.js"
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "format": "turbo run format",
+    "clean": "turbo run clean"
   },
-  "engines": {
-    "node": ">=18"
+  "packageManager": "pnpm@8.15.4",
+  "devDependencies": {
+    "turbo": "^2.5.2"
   }
 }

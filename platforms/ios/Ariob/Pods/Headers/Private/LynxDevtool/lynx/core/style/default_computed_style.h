@@ -1,1 +1,0 @@
-../../../../../../LynxDevtool/lynx/core/style/default_computed_style.h

@@ -208,7 +208,7 @@
 		10305DA52D87ED200021DD5A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = 1;
+				BuildIndependentTargetsInParallel = NO;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					10305DAC2D87ED200021DD5A = {
@@ -395,6 +395,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -413,6 +414,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ariobstudio.Ariob;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Ariob/modules/Ariob-Bridging-Header.h";
 				SWIFT_VERSION = 6.0;
@@ -616,7 +618,7 @@
 				10305DDF2D87ED230021DD5A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		10305DDB2D87ED230021DD5A /* Build configuration list for PBXNativeTarget "Ariob" */ = {
 			isa = XCConfigurationList;
@@ -625,7 +627,7 @@
 				10305DDD2D87ED230021DD5A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		10305DE02D87ED230021DD5A /* Build configuration list for PBXNativeTarget "AriobTests" */ = {
 			isa = XCConfigurationList;
@@ -634,7 +636,7 @@
 				10305DE22D87ED230021DD5A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		10305DE32D87ED230021DD5A /* Build configuration list for PBXNativeTarget "AriobUITests" */ = {
 			isa = XCConfigurationList;
@@ -643,7 +645,7 @@
 				10305DE52D87ED230021DD5A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

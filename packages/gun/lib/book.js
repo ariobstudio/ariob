@@ -1,1 +1,0 @@
-console.log("Officially moved to gun.js core, use gun/src/book.js on own.");

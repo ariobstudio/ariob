@@ -1,16 +1,15 @@
 {
-  "compilerOptions": {
-    "jsx": "preserve",
-
-    "module": "node16",
-    "moduleResolution": "node16",
-
-    "strict": true,
-    "isolatedModules": true,
-    "verbatimModuleSyntax": true,
-
+ "compilerOptions": {
+    "target": "ESNext",
+    "module": "esnext",
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
-    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": ["./src/*"],
+    },
+    "noEmit": true
   },
-  "exclude": ["dist/"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
 }
