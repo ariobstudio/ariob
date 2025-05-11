@@ -1,0 +1,1 @@
+../../../../../../../../LynxDevtool/lynx/core/template_bundle/template_codec/binary_encoder/template_binary_writer.h

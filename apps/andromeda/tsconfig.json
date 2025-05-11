@@ -1,15 +1,16 @@
 {
- "compilerOptions": {
+  "compilerOptions": {
     "target": "ESNext",
     "module": "esnext",
     "jsx": "react-jsx",
     "moduleResolution": "bundler",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*"]
     },
     "noEmit": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

@@ -1,3 +1,5 @@
+import '@/styles/globals.css';
+
 import { root } from '@lynx-js/react';
 import { App } from './App';
 

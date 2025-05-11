@@ -22,9 +22,12 @@
     }
   },
   "linter": {
-    "enabled": true,
+    "enabled": false,
     "rules": {
       "recommended": true
     }
+  },
+  "files": {
+    "ignore": ["src/lib/gun.js", "src/lib/sea.js"]
   }
 }

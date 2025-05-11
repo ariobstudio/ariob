@@ -1,0 +1,1 @@
+../../../LynxDevtool/lynx/platform/darwin/common/lynx_devtool/Helper/LynxScreenCastHelper.h
