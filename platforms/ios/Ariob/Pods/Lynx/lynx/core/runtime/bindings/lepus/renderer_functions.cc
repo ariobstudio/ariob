@@ -116,13 +116,13 @@ void RenderWarning(const char* fmt, Args&&... a) {
 
 lepus::Value ElementAPIFatal(lepus::Context* ctx, const std::string& msg) {
   auto err_msg = std::string("\nerror code: ")
-                     .append(std::to_string(error::E_ELEMENT_API_ERROR))
+                     .append(std::to_string(error::E_ELEMENT_API_FATAL))
                      .append("\nerror message: ")
                      .append(msg);
   bool should_abort = tasm::LynxEnv::GetInstance().IsDevToolComponentAttach() &&
                       !tasm::LynxEnv::GetInstance().IsLogBoxEnabled();
   return ctx->ReportFatalError(err_msg, should_abort,
-                               error::E_ELEMENT_API_ERROR);
+                               error::E_ELEMENT_API_FATAL);
 }
 
 template <class... Args>
@@ -1898,8 +1898,11 @@ RENDERER_FUNCTION_CC(CreateComponentByName) {
   int component_instance_id = static_cast<int>(arg2->Number());
   lepus::Context* context = LEPUS_CONTEXT();
   auto* self = GET_TASM_POINTER();
-  auto iter = self->component_name_to_id(context->name()).find(component_name);
-  DCHECK(iter != self->component_name_to_id(context->name()).end());
+  auto iter = self->FindEntry(context->name())
+                  ->component_name_to_id()
+                  .find(component_name);
+  DCHECK(iter !=
+         self->FindEntry(context->name())->component_name_to_id().end());
   int tid = iter->second;
 
   auto cm_pair = self->FindComponentMould(context->name(), component_name, tid);
@@ -2077,7 +2080,7 @@ RENDERER_FUNCTION_CC(RenderDynamicComponent) {
 
   lepus::Context* context = LEPUS_CONTEXT();
   std::string url = self->GetTargetUrl(context->name(), entry_name);
-  lepus::Context* target_context = self->context(url);
+  lepus::Context* target_context = self->GetLepusContext(url).get();
   BASE_STATIC_STRING_DECL(kRenderEntranceDynamicComponent,
                           "$renderEntranceDynamicComponent");
   target_context->Call(kRenderEntranceDynamicComponent, *arg2, *arg3, *arg4,
@@ -2950,35 +2953,29 @@ RENDERER_FUNCTION_CC(FiberReplaceElements) {
     RETURN_UNDEFINED();
   }
 
+  std::function<void(std::deque<fml::RefPtr<FiberElement>>&,
+                     const lepus::Value&)>
+      convert_function = [&](std::deque<fml::RefPtr<FiberElement>>& elements,
+                             const lepus::Value& input) {
+        if (input.IsRefCounted()) {
+          elements.emplace_back(
+              fml::static_ref_ptr_cast<FiberElement>(input.RefCounted()));
+        } else if (input.IsArrayOrJSArray()) {
+          tasm::ForEachLepusValue(
+              input, [&elements, &convert_function](const auto& index,
+                                                    const auto& value) {
+                convert_function(elements, value);
+              });
+        }
+      };
+
   // Get inserted elements.
   std::deque<fml::RefPtr<FiberElement>> inserted_elements{};
-  if (arg1->IsRefCounted()) {
-    inserted_elements.emplace_back(
-        fml::static_ref_ptr_cast<FiberElement>(arg1->RefCounted()));
-  } else if (arg1->IsArrayOrJSArray()) {
-    tasm::ForEachLepusValue(
-        *arg1, [&inserted_elements](const auto& index, const auto& value) {
-          if (value.IsRefCounted()) {
-            inserted_elements.emplace_back(
-                fml::static_ref_ptr_cast<FiberElement>(value.RefCounted()));
-          }
-        });
-  }
+  convert_function(inserted_elements, *arg1);
 
   // Get removed elements.
   std::deque<fml::RefPtr<FiberElement>> removed_elements{};
-  if (arg2->IsRefCounted()) {
-    removed_elements.emplace_back(
-        fml::static_ref_ptr_cast<FiberElement>(arg2->RefCounted()));
-  } else if (arg2->IsArrayOrJSArray()) {
-    tasm::ForEachLepusValue(*arg2, [&removed_elements](const auto& index,
-                                                       const auto& value) {
-      if (value.IsRefCounted()) {
-        removed_elements.emplace_back(
-            fml::static_ref_ptr_cast<FiberElement>(value.RefCounted()).get());
-      }
-    });
-  }
+  convert_function(removed_elements, *arg2);
 
   // Perform a simple diff on the inserted_elements and removed_elements,
   // removing each element one by one until either inserted_elements
@@ -4144,6 +4141,7 @@ RENDERER_FUNCTION_CC(FiberUpdateListCallbacks) {
     component_at_indexes = *arg3;
   }
   auto list_element = fml::static_ref_ptr_cast<ListElement>(arg0->RefCounted());
+  list_element->set_tasm(GET_TASM_POINTER());
   list_element->UpdateCallbacks(*arg1, *arg2, component_at_indexes);
   RETURN_UNDEFINED();
 }
@@ -4498,20 +4496,25 @@ RENDERER_FUNCTION_CC(FiberElementFromBinary) {
   // parameter size >= 2
   // [0] String -> template id
   // [1] Number -> component id
-  CHECK_ARGC_EQ(FiberElementFromBinary, 2);
+  CHECK_ARGC_GE(FiberElementFromBinary, 2);
   CONVERT_ARG_AND_CHECK_FOR_ELEMENT_API(arg0, 0, String,
                                         FiberElementFromBinary);
   CONVERT_ARG_AND_CHECK_FOR_ELEMENT_API(arg1, 1, Number,
                                         FiberElementFromBinary);
 
-  const auto& self = GET_TASM_POINTER();
-  const auto& entry = self->FindEntry(tasm::DEFAULT_ENTRY_NAME);
-  const auto& info = entry->GetElementTemplateInfo(arg0->StdString());
+  std::string entry_name = tasm::DEFAULT_ENTRY_NAME;
+  if (argc >= 3) {
+    CONVERT_ARG(arg2, 2);
+    if (arg2->IsString()) {
+      entry_name = arg2->StdString();
+    }
+  }
 
-  lepus::Value node_ary = TreeResolver::InitElementTree(
-      TreeResolver::FromTemplateInfo(info), arg1->Int64(),
-      self->page_proxy()->element_manager().get(),
-      self->style_sheet_manager(DEFAULT_ENTRY_NAME));
+  const auto& self = GET_TASM_POINTER();
+  const auto& entry = self->FindEntry(entry_name);
+  auto node_ary =
+      entry->ElementFromBinary(arg0->StdString(), arg1->Int64(),
+                               self->page_proxy()->element_manager().get());
 
   // Call manager->PrepareNodeForInspector to init inspector attr for the
   // element tree.
@@ -5057,16 +5060,34 @@ RENDERER_FUNCTION_CC(FiberCreateSignal) {
   CONVERT_ARG(arg0, 0);  // init value
 
   auto signal = fml::MakeRefCounted<Signal>(
-      GET_TASM_POINTER()->GetSignalContext(), *arg0);
+      GET_TASM_POINTER()->GetSignalContext(), LEPUS_CONTEXT(), *arg0);
+
+  if (argc >= 2) {
+    CONVERT_ARG(arg1, 1);
+    if (auto function = arg1->GetProperty(BASE_STATIC_STRING(runtime::kEquals));
+        function.IsCallable()) {
+      signal->SetCustomEqualFunction(function);
+    }
+  }
 
   RETURN(lepus::Value(signal));
 }
 
 RENDERER_FUNCTION_CC(FiberWriteSignal) {
   TRACE_EVENT(LYNX_TRACE_CATEGORY, "FiberWriteSignal");
-  CHECK_ARGC_GE(FiberCreateSignal, 1);
+  CHECK_ARGC_GE(FiberCreateSignal, 2);
   CONVERT_ARG(arg0, 0);  // signal or signal array
   CONVERT_ARG(arg1, 1);  // value or value array
+
+  bool skip_compare = false;
+  if (argc >= 3) {
+    CONVERT_ARG(arg2, 2);
+    if (auto skip_compare_value =
+            arg2->GetProperty(BASE_STATIC_STRING(runtime::kSkipCompare));
+        skip_compare_value.IsBool()) {
+      skip_compare = skip_compare_value.Bool();
+    }
+  }
 
   if (!arg0->IsRefCounted() && !arg0->IsArrayOrJSArray()) {
     RenderWarning(
@@ -5074,19 +5095,22 @@ RENDERER_FUNCTION_CC(FiberWriteSignal) {
     RETURN_UNDEFINED();
   }
 
-  GET_TASM_POINTER()->GetSignalContext()->RunUpdates([arg0, arg1]() {
+  GET_TASM_POINTER()->GetSignalContext()->RunUpdates([arg0, arg1,
+                                                      skip_compare]() {
     if (arg0->IsRefCounted() &&
         arg0->RefCounted()->GetRefType() == lepus::RefType::kSignal) {
       auto signal = fml::static_ref_ptr_cast<Signal>(arg0->RefCounted());
+      signal->MarkSkipCompare(skip_compare);
       signal->SetValue(*arg1);
     } else if (arg0->IsArrayOrJSArray() && arg1->IsArrayOrJSArray()) {
       int32_t index = 0;
 
-      tasm::ForEachLepusValue(*arg0, [&arg1, &index](const auto& key,
-                                                     const auto& value) {
+      tasm::ForEachLepusValue(*arg0, [&arg1, &index, skip_compare](
+                                         const auto& key, const auto& value) {
         if (value.IsRefCounted() &&
             value.RefCounted()->GetRefType() == lepus::RefType::kSignal) {
           auto signal = fml::static_ref_ptr_cast<Signal>(value.RefCounted());
+          signal->MarkSkipCompare(skip_compare);
           signal->SetValue(arg1->GetProperty(index));
         } else {
           RenderWarning(
@@ -5143,7 +5167,17 @@ RENDERER_FUNCTION_CC(FiberCreateMemo) {
   CONVERT_ARG(arg1, 1);  // init value
 
   auto memo = fml::MakeRefCounted<Memo>(GET_TASM_POINTER()->GetSignalContext(),
-                                        LEPUS_CONTEXT(), *arg0, *arg1);
+                                        LEPUS_CONTEXT(), *arg1);
+
+  if (argc >= 3) {
+    CONVERT_ARG(arg2, 2);
+    if (auto function = arg2->GetProperty(BASE_STATIC_STRING(runtime::kEquals));
+        function.IsCallable()) {
+      memo->SetCustomEqualFunction(function);
+    }
+  }
+
+  memo->InitComputation(*arg0);
 
   RETURN(lepus::Value(memo));
 }
@@ -5160,6 +5194,21 @@ RENDERER_FUNCTION_CC(FiberUnTrack) {
   GET_TASM_POINTER()->GetSignalContext()->MarkUnTrack(false);
 
   RETURN(value);
+}
+
+RENDERER_FUNCTION_CC(FiberRunUpdates) {
+  TRACE_EVENT(LYNX_TRACE_CATEGORY, "FiberRunUpdates");
+  CHECK_ARGC_GE(FiberRunUpdates, 1);
+  CONVERT_ARG(arg0, 0);  // block
+
+  lepus::Value result;
+
+  GET_TASM_POINTER()->GetSignalContext()->RunUpdates(
+      [&result, arg0, context = LEPUS_CONTEXT()]() {
+        result = context->CallClosure(*arg0);
+      });
+
+  RETURN(result);
 }
 
 RENDERER_FUNCTION_CC(FiberCreateScope) {
@@ -5446,7 +5495,7 @@ RENDERER_FUNCTION_CC(AirCreatePage) {
   auto& manager = self->page_proxy()->element_manager();
   auto page = manager->CreateAirPage(arg1->Int32());
   const auto& entry = self->FindEntry(tasm::DEFAULT_ENTRY_NAME);
-  page->SetContext(self->context(tasm::DEFAULT_ENTRY_NAME));
+  page->SetContext(self->GetLepusContext(tasm::DEFAULT_ENTRY_NAME).get());
   page->SetRadon(entry->compile_options().radon_mode_ ==
                  CompileOptionRadonMode::RADON_MODE_RADON);
   page->SetParsedStyles(entry->GetComponentParsedStyles(kCard));

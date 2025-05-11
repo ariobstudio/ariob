@@ -2,24 +2,24 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-#import "LynxBackgroundManager.h"
-#import "LynxBackgroundImageLayerInfo.h"
-#import "LynxBackgroundInfo.h"
-#import "LynxBackgroundRenderer.h"
-#import "LynxBackgroundUtils.h"
-#import "LynxBasicShape.h"
-#import "LynxBoxShadowLayer.h"
-#import "LynxBoxShadowManager.h"
-#import "LynxColorUtils.h"
+#import <Lynx/LynxBackgroundImageLayerInfo.h>
+#import <Lynx/LynxBackgroundInfo.h>
+#import <Lynx/LynxBackgroundManager.h>
+#import <Lynx/LynxBackgroundRenderer.h>
+#import <Lynx/LynxBackgroundUtils.h>
+#import <Lynx/LynxBasicShape.h>
+#import <Lynx/LynxBoxShadowLayer.h>
+#import <Lynx/LynxBoxShadowManager.h>
+#import <Lynx/LynxColorUtils.h>
+#import <Lynx/LynxImageLoader.h>
+#import <Lynx/LynxImageProcessor.h>
+#import <Lynx/LynxService.h>
+#import <Lynx/LynxServiceImageProtocol.h>
+#import <Lynx/LynxSubErrorCode.h>
+#import <Lynx/LynxUI+Internal.h>
+#import <Lynx/LynxUnitUtils.h>
 #import "LynxConvertUtils.h"
-#import "LynxImageLoader.h"
-#import "LynxImageProcessor.h"
-#import "LynxService.h"
-#import "LynxServiceImageProtocol.h"
-#import "LynxSubErrorCode.h"
-#import "LynxUI+Internal.h"
 #import "LynxUIContext+Internal.h"
-#import "LynxUnitUtils.h"
 
 NSString* NSStringFromLynxBorderRadii(LynxBorderRadii* radii) {
   return [NSString
@@ -220,6 +220,9 @@ const LynxBorderRadii LynxBorderRadiiZero = {{0, 0}, {0, 0}, {0, 0}, {0, 0},
   }
   if (_borderLayer != nil) {
     _borderLayer.transform = transform;
+  }
+  if (_maskLayer) {
+    _maskLayer.transform = transform;
   }
 }
 
@@ -1213,6 +1216,13 @@ const LynxBorderRadii LynxBorderRadiiZero = {{0, 0}, {0, 0}, {0, 0}, {0, 0},
       _borderLayer.transform = transformWithSticky;
     }
 
+    if (_maskLayer) {
+      _maskLayer.transform = CATransform3DIdentity;
+      // All properties should set with the original frame size without UI transformation.
+      _maskLayer.frame = _ui.view.layer.frame;
+      _maskLayer.transform = transformWithSticky;
+    }
+
     if (!CATransform3DIsIdentity(transformWithSticky)) {
       _ui.view.layer.transform = transformWithSticky;
     }
@@ -1435,9 +1445,10 @@ const LynxBorderRadii LynxBorderRadiiZero = {{0, 0}, {0, 0}, {0, 0}, {0, 0},
 }
 
 - (void)setFilters:(nullable NSArray*)array {
-  _backgroundLayer.filters = array;
-  _borderLayer.filters = array;
-  _outlineLayer.filters = array;
+  if (!_opacityView) {
+    [self autoAddOpacityViewWithOpacity:_opacity];
+  }
+  _opacityView.layer.filters = array;
 }
 
 #pragma mark getter

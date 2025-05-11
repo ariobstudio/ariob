@@ -128,10 +128,6 @@ class LynxRuntime final {
   void SetRecordId(int64_t record_id) { record_id_ = record_id; }
 #endif
 
-  // print js console log
-  // level: log, warn, error, info, debug
-  void ConsoleLogWithLevel(const std::string& level, const std::string& msg);
-
   void I18nResourceChanged(const std::string& msg);
 
   bool TryToDestroy();

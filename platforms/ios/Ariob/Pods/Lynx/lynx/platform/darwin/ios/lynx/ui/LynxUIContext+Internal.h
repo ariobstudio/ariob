@@ -2,8 +2,9 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
+#import <Lynx/LUIConfig.h>
+#import <Lynx/LynxUIContext.h>
 #import "LynxScrollFluency.h"
-#import "LynxUIContext.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -13,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) BOOL fixNewImageDownSampling;
 @property(nonatomic, strong, readwrite) LynxScrollFluency *fluencyInnerListener;
 
+- (void)setUIConfig:(id<LUIConfig>)config;
 - (void)setDefaultOverflowVisible:(BOOL)enable;
 - (void)setDefaultImplicitAnimation:(BOOL)enable;
 - (void)setEnableTextRefactor:(BOOL)enable;

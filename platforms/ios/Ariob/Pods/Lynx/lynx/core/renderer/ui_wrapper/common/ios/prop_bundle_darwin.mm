@@ -14,9 +14,9 @@
 
 // TODO(chenyouhui): Remove GestureDetector from prop_bundle completely
 #ifdef OS_IOS
-#import "LynxGestureDetectorDarwin.h"
+#import <Lynx/LynxGestureDetectorDarwin.h>
 #endif
-#import "LynxLog.h"
+#import <Lynx/LynxLog.h>
 
 namespace lynx {
 namespace tasm {

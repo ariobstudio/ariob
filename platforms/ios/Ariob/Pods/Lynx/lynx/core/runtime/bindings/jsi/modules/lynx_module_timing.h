@@ -10,6 +10,8 @@
 #include <memory>
 #include <string>
 
+#include "base/trace/native/trace_event.h"
+
 namespace lynx {
 namespace piper {
 
@@ -100,15 +102,16 @@ class NativeModuleInfoCollector {
   uint64_t GetCallbackInvokeDuration() const;
   void SetNetworkRequestInfo(const NetworkRequestInfo& info);
   NetworkRequestInfo GetNetworkRequestInfo() const;
-  std::string GetFirstArg();
   // Some NativeModules depend on the Collector to calculate their metrics,
   // Collector's sample may break it. Use this to bypass the sample.
   void ForceEnable() { enable_ = true; }
+  uint64_t FlowId() { return flow_id_; }
 
  private:
   NativeModuleInfo timing_;
   std::weak_ptr<ModuleDelegate> delegate_;
   bool enable_ = false;
+  uint64_t flow_id_ = TRACE_FLOW_ID();
 };
 
 using NativeModuleInfoCollectorPtr =

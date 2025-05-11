@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "core/services/event_report/event_tracker_platform_impl.h"
+#include "core/shared_data/lynx_white_board.h"
 
 namespace lynx {
 namespace shell {
@@ -77,8 +78,9 @@ LynxShellBuilder& LynxShellBuilder::SetWhiteBoard(
 
 LynxShellBuilder& LynxShellBuilder::SetEnableElementManagerVsyncMonitor(
     bool enable_element_manager_vsync_monitor) {
-  this->element_manager_vsync_monitor_ =
-      enable_element_manager_vsync_monitor ? VSyncMonitor::Create() : nullptr;
+  this->element_manager_vsync_monitor_ = enable_element_manager_vsync_monitor
+                                             ? base::VSyncMonitor::Create()
+                                             : nullptr;
   return *this;
 }
 
@@ -162,6 +164,12 @@ LynxShellBuilder& LynxShellBuilder::SetPropBundleCreator(
   return *this;
 }
 
+LynxShellBuilder& LynxShellBuilder::SetForceLayoutOnBackgroundThread(
+    bool force_layout_on_background_thread) {
+  this->force_layout_on_background_thread_ = force_layout_on_background_thread;
+  return *this;
+}
+
 LynxShell* LynxShellBuilder::build() {
   TRACE_EVENT(LYNX_TRACE_CATEGORY, "LynxShell::Create");
 
@@ -171,6 +179,7 @@ LynxShell* LynxShellBuilder::build() {
   }
 
   LynxShell* shell = new LynxShell(this->strategy_, this->shell_option_);
+
   shell->facade_actor_ = std::make_shared<LynxActor<NativeFacade>>(
       std::move(this->native_facade_), shell->runners_.GetUITaskRunner(),
       shell->instance_id_);
@@ -204,8 +213,18 @@ LynxShell* LynxShellBuilder::build() {
   }
 
   // create layout actor
-  auto layout_mediator = std::make_unique<lynx::shell::LayoutMediator>(
-      shell->tasm_operation_queue_);
+  std::unique_ptr<LayoutMediator> layout_mediator;
+
+  if (force_layout_on_background_thread_) {
+    shell->layout_result_manager_ = std::make_shared<LayoutResultManager>();
+
+    layout_mediator = std::make_unique<lynx::shell::LayoutMediator>(
+        shell->layout_result_manager_);
+  } else {
+    layout_mediator = std::make_unique<lynx::shell::LayoutMediator>(
+        shell->tasm_operation_queue_);
+  }
+
   shell->layout_mediator_ = layout_mediator.get();
   if (layout_context_) {
     layout_context_->SetLynxShell(shell);
@@ -219,7 +238,7 @@ LynxShell* LynxShellBuilder::build() {
   TRACE_EVENT_BEGIN(LYNX_TRACE_CATEGORY,
                     "LynxShell::Create::CreateEngineActor");
   // create engine actor
-  auto vsync_monitor = VSyncMonitor::Create();
+  auto vsync_monitor = base::VSyncMonitor::Create();
   auto tasm_mediator = std::make_unique<TasmMediator>(
       shell->facade_actor_, shell->card_cached_data_mgr_, vsync_monitor,
       shell->layout_actor_, std::move(tasm_platform_invoker_),
@@ -322,14 +341,14 @@ std::unique_ptr<lynx::shell::LynxEngine> LynxShellBuilder::CreateLynxEngine(
   auto tasm = std::make_shared<lynx::tasm::TemplateAssembler>(
       *tasm_mediator, std::move(element_manager), instance_id);
   tasm->SetEnableLayoutOnly(this->enable_layout_only_);
-  tasm->Init(runners.GetTASMTaskRunner());
   if (this->loader_ != nullptr) {
     tasm->SetLazyBundleLoader(this->loader_);
   }
 
-  if (this->white_board_ != nullptr) {
-    tasm->SetWhiteBoard(this->white_board_);
+  if (this->white_board_ == nullptr) {
+    this->white_board_ = std::make_shared<tasm::WhiteBoard>();
   }
+  tasm->SetWhiteBoard(this->white_board_);
 
   if (!this->locale_.empty()) {
     tasm->SetLocale(this->locale_);

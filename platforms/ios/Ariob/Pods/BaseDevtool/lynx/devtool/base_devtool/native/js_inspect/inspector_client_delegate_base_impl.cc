@@ -131,6 +131,15 @@ void InspectorClientDelegateBaseImpl::SetBreakpointCached(
   if (script_manager == nullptr) {
     return;
   }
+
+  const std::string &pause_on_exceptions_state =
+      script_manager->GetPauseOnExceptionsState();
+  if (!pause_on_exceptions_state.empty()) {
+    auto pause_on_exceptions_mes =
+        GenMessageSetPauseOnExceptions(pause_on_exceptions_state);
+    DispatchMessage(pause_on_exceptions_mes, instance_id);
+  }
+
   auto &breakpoint = script_manager->GetBreakpoints();
   if (breakpoint.empty()) {
     return;
@@ -204,6 +213,9 @@ void InspectorClientDelegateBaseImpl::CacheBreakpointsByRequestMessage(
   } else if (method == kMethodDebuggerRemoveBreakpoint) {
     script_manager->RemoveBreakpoint(
         message[kKeyParams][kKeyBreakpointId].GetString());
+  } else if (method == kMethodDebuggerSetPauseOnExceptions) {
+    script_manager->SetPauseOnExceptionsState(
+        message[kKeyParams][kKeyState].GetString());
   } else if (method == kMethodDebuggerEnable) {
     if (!script_manager->GetBreakpointsActive()) {
       script_manager->SetBreakpointsActive(true);
@@ -230,16 +242,22 @@ void InspectorClientDelegateBaseImpl::RecordDebuggingInstanceID(
   }
 }
 
-void InspectorClientDelegateBaseImpl::AddEngineTypeParam(
+bool InspectorClientDelegateBaseImpl::AddEngineTypeParam(
     rapidjson::Document &message) {
-  if (message.HasMember(kKeyResult) &&
-      message[kKeyResult].HasMember(kKeyDebuggerId) &&
-      vm_type_ != kKeyEngineLepus) {
-    message[kKeyResult].AddMember(
-        rapidjson::Value(kKeyEngineType, message.GetAllocator()),
-        rapidjson::Value(vm_type_, message.GetAllocator()),
-        message.GetAllocator());
+  if (vm_type_ == kKeyEngineLepus) {
+    return false;
   }
+  if (!message.HasMember(kKeyResult)) {
+    return false;
+  }
+  if (!message[kKeyResult].HasMember(kKeyDebuggerId)) {
+    return false;
+  }
+  message[kKeyResult].AddMember(
+      rapidjson::Value(kKeyEngineType, message.GetAllocator()),
+      rapidjson::Value(vm_type_, message.GetAllocator()),
+      message.GetAllocator());
+  return true;
 }
 
 std::string InspectorClientDelegateBaseImpl::GenSimpleMessage(
@@ -293,6 +311,24 @@ std::string InspectorClientDelegateBaseImpl::GenMessageSetBreakpointsActive(
   rapidjson::Document params(rapidjson::kObjectType);
   params.AddMember(rapidjson::Value(kKeyActive, params.GetAllocator()),
                    rapidjson::Value(active), params.GetAllocator());
+  content.AddMember(rapidjson::Value(kKeyParams, content.GetAllocator()),
+                    params, content.GetAllocator());
+  return base::ToJson(content);
+}
+
+std::string InspectorClientDelegateBaseImpl::GenMessageSetPauseOnExceptions(
+    const std::string &state, int message_id) {
+  rapidjson::Document content(rapidjson::kObjectType);
+  content.AddMember(rapidjson::Value(kKeyId, content.GetAllocator()),
+                    rapidjson::Value(message_id), content.GetAllocator());
+  content.AddMember(rapidjson::Value(kKeyMethod, content.GetAllocator()),
+                    rapidjson::Value(kMethodDebuggerSetPauseOnExceptions,
+                                     content.GetAllocator()),
+                    content.GetAllocator());
+  rapidjson::Document params(rapidjson::kObjectType);
+  params.AddMember(rapidjson::Value(kKeyState, params.GetAllocator()),
+                   rapidjson::Value(state, params.GetAllocator()),
+                   params.GetAllocator());
   content.AddMember(rapidjson::Value(kKeyParams, content.GetAllocator()),
                     params, content.GetAllocator());
   return base::ToJson(content);

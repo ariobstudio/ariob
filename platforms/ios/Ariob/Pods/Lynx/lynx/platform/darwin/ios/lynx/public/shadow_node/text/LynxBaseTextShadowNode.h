@@ -1,11 +1,13 @@
 // Copyright 2019 The Lynx Authors. All rights reserved.
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
+#ifndef PLATFORM_DARWIN_IOS_LYNX_PUBLIC_SHADOW_NODE_TEXT_LYNXBASETEXTSHADOWNODE_H_
+#define PLATFORM_DARWIN_IOS_LYNX_PUBLIC_SHADOW_NODE_TEXT_LYNXBASETEXTSHADOWNODE_H_
 
 #import <Foundation/Foundation.h>
-#import "LynxConverter.h"
-#import "LynxShadowNode.h"
-#import "LynxTextStyle.h"
+#import <Lynx/LynxConverter.h>
+#import <Lynx/LynxShadowNode.h>
+#import <Lynx/LynxTextStyle.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -31,8 +33,11 @@ extern NSAttributedStringKey const LynxVerticalAlignKey;
                            (nullable NSDictionary<NSAttributedStringKey, id>*)baseTextAttribute
                               withTextMaxLength:(NSInteger)textMaxLength
                                   withDirection:(NSWritingDirection)direction;
+- (void)alignHiddenNativeLayoutNode:(NSSet*)alignedNodeSignSet alignContext:(AlignContext*)ctx;
 
 - (void)markStyleDirty;
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif  // PLATFORM_DARWIN_IOS_LYNX_PUBLIC_SHADOW_NODE_TEXT_LYNXBASETEXTSHADOWNODE_H_

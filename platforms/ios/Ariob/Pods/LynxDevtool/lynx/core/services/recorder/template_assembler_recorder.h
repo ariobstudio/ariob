@@ -64,6 +64,7 @@ class TemplateAssemblerRecorder {
                                               std::vector<uint8_t>& source,
                                               bool sync, int32_t callback_id,
                                               int64_t record_id);
+  static void RecordSwitchEngineFromUIThread(bool attach, int64_t record_id);
 
  private:
   static void ProcessUpdatePageOption(

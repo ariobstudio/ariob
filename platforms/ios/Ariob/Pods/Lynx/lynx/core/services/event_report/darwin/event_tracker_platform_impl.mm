@@ -4,8 +4,8 @@
 
 #include "core/services/event_report/event_tracker_platform_impl.h"
 
-#import "LynxEventReporter.h"
-#import "LynxLog.h"
+#import <Lynx/LynxEventReporter.h>
+#import <Lynx/LynxLog.h>
 
 namespace lynx {
 namespace tasm {

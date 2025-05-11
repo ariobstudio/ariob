@@ -82,19 +82,22 @@ class FiberElement : public Element, public SelectorItem {
   struct ActionParam {
     ActionParam(Action type, FiberElement* parent,
                 const fml::RefPtr<FiberElement>& child, int from,
-                FiberElement* ref_node, bool is_fixed = false)
+                FiberElement* ref_node, bool is_fixed = false,
+                bool has_z_index = false)
         : type_(type),
           parent_(parent),
           child_(child),
           index_(from),
           ref_node_(ref_node),
-          is_fixed_(is_fixed) {}
+          is_fixed_(is_fixed),
+          has_z_index_(has_z_index) {}
     Action type_;
     FiberElement* parent_;  // do not add parent's refcount
     fml::RefPtr<FiberElement> child_;
     int index_;
     FiberElement* ref_node_;
     bool is_fixed_;
+    bool has_z_index_;
   };
 
   struct InheritedProperty {
@@ -230,10 +233,7 @@ class FiberElement : public Element, public SelectorItem {
   // data model and mark the element as created by the inspector.
   void ResetDataModel() { data_model_.reset(); }
 
-  virtual bool CanBeLayoutOnly() const override {
-    return can_be_layout_only_ && config_enable_layout_only_ &&
-           has_layout_only_props_ && overflow_ == OVERFLOW_XY;
-  }
+  virtual bool CanBeLayoutOnly() const override;
 
   void MarkCanBeLayoutOnly(bool flag) { can_be_layout_only_ = flag; }
 
@@ -520,11 +520,15 @@ class FiberElement : public Element, public SelectorItem {
     MarkRequireFlush();
   }
 
+  void ResetAllDirtyBits() { dirty_ = 0; }
+
   bool StyleDirty() const { return dirty_ & kDirtyStyle; }
 
   bool AttrDirty() const { return dirty_ & kDirtyAttr; }
 
   void MarkPropsDirty() { MarkDirty(kDirtyForceUpdate); }
+
+  void TraversalInsertFixedElementOfTree();
 
   template <typename F>
   void ApplyFunctionRecursive(F&& func) {
@@ -549,7 +553,8 @@ class FiberElement : public Element, public SelectorItem {
 
   void MarkRefreshCSSStyles() { MarkDirty(kDirtyRefreshCSSVariables); }
 
-  void ConsumeStyle(const StyleMap& styles, StyleMap* inherit_styles) override;
+  void ConsumeStyle(const StyleMap& styles,
+                    const StyleMap* inherit_styles) override;
 
   void AddDataset(const base::String& key, const lepus::Value& value);
   void SetDataset(const lepus::Value& data_set);
@@ -630,6 +635,8 @@ class FiberElement : public Element, public SelectorItem {
   void HandleLayoutTask(base::MoveOnlyClosure<void> operation) override;
 
   void HandleDelayTask(base::MoveOnlyClosure<void> operation) override;
+
+  void HandleBeforeFlushActionsTask(base::MoveOnlyClosure<void> operation);
 
   void HandleKeyframePropsChange(bool need_animation_props);
 
@@ -825,11 +832,25 @@ class FiberElement : public Element, public SelectorItem {
   }
 
  protected:
+  bool need_handle_fixed_ = false;
+
   FiberElement(const FiberElement& element, bool clone_resolved_props);
 
   void ConsumeStyleInternal(
-      const StyleMap& styles, StyleMap* inherit_styles,
+      const StyleMap& styles, const StyleMap* inherit_styles,
       std::function<bool(CSSPropertyID, const tasm::CSSValue&)> should_skip);
+
+  bool ConsumeAllAttributes();
+
+  void PerformElementContainerCreateOrUpdate(bool need_update);
+
+  bool IsNewlyCreated() const { return dirty_ & kDirtyCreated; }
+
+  bool ShouldProcessParallelTasks() {
+    return parallel_flush_ ||
+           resolve_status_ == AsyncResolveStatus::kSyncResolving;
+  }
+  ParallelFlushReturn CreateParallelTaskHandler();
 
   void CacheStyleFromAttributes(CSSPropertyID id, CSSValue&& value);
   void CacheStyleFromAttributes(CSSPropertyID id, const lepus::Value& value);
@@ -1016,8 +1037,6 @@ class FiberElement : public Element, public SelectorItem {
 
   mutable FiberElement* render_root_element_{nullptr};
 
-  NodeManager* node_manager_;
-
   std::vector<ActionParam> action_param_list_;
 
   AttrUMap updated_attr_map_;
@@ -1033,9 +1052,9 @@ class FiberElement : public Element, public SelectorItem {
 
   std::list<base::closure> parallel_reduce_tasks_ = {};
 
-  // Internal timeout in threaded element flush mode to enable force running on
-  // thread-pool in unittests
-  int32_t task_wait_timeout_{0};
+  // Need extra list to record tasks that need to be invoked before flush
+  // actions
+  std::list<base::closure> parallel_before_flush_action_tasks_ = {};
 
   bool has_font_size_{false};
 

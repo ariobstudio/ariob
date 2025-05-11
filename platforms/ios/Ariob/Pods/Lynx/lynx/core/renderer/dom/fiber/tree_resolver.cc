@@ -194,7 +194,9 @@ void TreeResolver::AttachChildToTargetContainerRecursive(FiberElement* parent,
 
   DCHECK(!ref || !ref->is_wrapper());
   if (!child->is_wrapper()) {
-    parent->InsertLayoutNode(child, ref);
+    parent->HandleFlushActionsLayoutTask([parent, child, ref]() mutable {
+      parent->InsertLayoutNode(child, ref);
+    });
     return;
   }
 
@@ -222,7 +224,8 @@ FiberElement* TreeResolver::FindTheRealParent(FiberElement* node) {
 void TreeResolver::RemoveChildRecursively(FiberElement* parent,
                                           FiberElement* child) {
   if (!child->is_wrapper()) {
-    parent->RemoveLayoutNode(child);
+    parent->HandleFlushActionsLayoutTask(
+        [parent, child]() mutable { parent->RemoveLayoutNode(child); });
   } else {
     auto* grand = child->first_render_child();
     while (grand) {

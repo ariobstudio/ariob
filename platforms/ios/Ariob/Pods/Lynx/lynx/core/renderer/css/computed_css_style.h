@@ -373,6 +373,7 @@ class ComputedCSSStyle {
   V(XAppRegion)                          \
   V(XHandleSize)                         \
   V(XHandleColor)
+
 #define GETTER_STYLE_STRING(name) lepus_value name##ToLepus();
   FOREACH_PLATFORM_PROPERTY(GETTER_STYLE_STRING)
 #undef GET_WITH_STRING

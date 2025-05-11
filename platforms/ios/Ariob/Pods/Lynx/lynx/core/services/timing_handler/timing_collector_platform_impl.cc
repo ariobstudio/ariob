@@ -16,17 +16,20 @@ void TimingCollectorPlatformImpl::MarkTiming(
 void TimingCollectorPlatformImpl::SetTiming(const tasm::PipelineID& pipeline_id,
                                             const std::string& timing_key,
                                             uint64_t us_timestamp) const {
-  TRACE_EVENT_INSTANT(
-      LYNX_TRACE_CATEGORY, nullptr,
-      [&pipeline_id, &timing_key,
-       us_timestamp](lynx::perfetto::EventContext ctx) {
-        ctx.event()->set_name("Timing::Mark." + timing_key);
-        ctx.event()->add_debug_annotations("timing_key", timing_key);
-        ctx.event()->add_debug_annotations("pipeline_id", pipeline_id);
-        ctx.event()->add_debug_annotations("timestamp",
-                                           std::to_string(us_timestamp));
-      });
   if (timing_actor_) {
+    TRACE_EVENT_INSTANT(
+        LYNX_TRACE_CATEGORY, nullptr,
+        [&pipeline_id, &timing_key, us_timestamp,
+         instance_id =
+             timing_actor_->GetInstanceId()](lynx::perfetto::EventContext ctx) {
+          ctx.event()->set_name("Timing::Mark." + timing_key);
+          ctx.event()->add_debug_annotations("timing_key", timing_key);
+          ctx.event()->add_debug_annotations("pipeline_id", pipeline_id);
+          ctx.event()->add_debug_annotations("timestamp",
+                                             std::to_string(us_timestamp));
+          ctx.event()->add_debug_annotations("instance_id",
+                                             std::to_string(instance_id));
+        });
     timing_actor_->Act([timing_key, us_timestamp,
                         pipeline_id](auto& timing_handler) {
       std::string mutable_timing_key(timing_key);

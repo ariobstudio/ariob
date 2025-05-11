@@ -112,6 +112,14 @@ class NativeFacade {
         std::move(call_back));
   }
 
+  virtual void OnEventCapture(long target_id, bool is_catch,
+                              int64_t event_id) = 0;
+
+  virtual void OnEventBubble(long target_id, bool is_catch,
+                             int64_t event_id) = 0;
+
+  virtual void OnEventFire(long target_id, bool is_stop, int64_t event_id) = 0;
+
  protected:
   PlatformCallBackManager call_back_manager_;
 };

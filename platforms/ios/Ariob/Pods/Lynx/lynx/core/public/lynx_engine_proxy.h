@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/include/closure.h"
 #include "core/public/list_data.h"
 #include "core/public/pub_value.h"
 
@@ -17,6 +18,8 @@ namespace shell {
 class LynxEngineProxy {
  public:
   virtual ~LynxEngineProxy() = default;
+
+  virtual void DispatchTaskToLynxEngine(base::closure task) = 0;
 
   // Event
   virtual bool SendTouchEvent(const std::string& name, int32_t tag, float x,
@@ -39,6 +42,14 @@ class LynxEngineProxy {
 
   virtual void OnPseudoStatusChanged(int32_t id, int32_t pre_status,
                                      int32_t current_status) = 0;
+
+  virtual void StartEventGenerate(const pub::Value& event_params) = 0;
+
+  virtual void StartEventCapture(int64_t event_id) = 0;
+
+  virtual void StartEventBubble(int64_t event_id) = 0;
+
+  virtual void StartEventFire(bool is_stop, int64_t event_id) = 0;
 
   // List
   // TODO(chenyouhui): Split the list interface into its own public API.

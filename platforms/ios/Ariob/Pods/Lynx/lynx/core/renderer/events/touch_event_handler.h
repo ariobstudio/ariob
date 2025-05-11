@@ -8,6 +8,7 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "base/include/vector.h"
@@ -96,6 +97,23 @@ enum class EventResult : int {
   kStopImmediatePropagation = 0x2
 };
 
+using ResponseChainVector = base::InlineVector<Element *, 16>;
+using EventOpsVector = base::InlineVector<EventOperation, 2>;
+
+typedef EventHandler *(*FindEventHandler)(const EventMap &map,
+                                          const std::string &event_name);
+
+typedef base::InlineVector<EventHandler *, 4> (*GetEventHandlers)(
+    Element *cur_target, const std::string &event_name, bool global_bind_event);
+
+typedef EventOpsVector (*PushGlobalBindOperation)(const std::string &event_name,
+                                                  Element *cur_target,
+                                                  Element *target);
+
+typedef EventOpsVector (*GetGlobalBindOperations)(
+    const std::string &event_name, Element *cur_target, Element *target,
+    const std::set<std::string> &global_bind_targets);
+
 class TouchEventHandler {
  public:
   TouchEventHandler(NodeManager *node_manager,
@@ -136,6 +154,16 @@ class TouchEventHandler {
   void HandleGestureEvent(TemplateAssembler *tasm, const base::String &name,
                           int tag, int gesture_id, const lepus::Value &params);
 
+  void StartEventGenerate(TemplateAssembler *tasm, const std::string &page_name,
+                          const lepus::Value &event_params);
+
+  void StartEventCapture(TemplateAssembler *tasm, int64_t event_id);
+
+  void StartEventBubble(TemplateAssembler *tasm, int64_t event_id);
+
+  void StartEventFire(TemplateAssembler *tasm, bool is_stop, int64_t event_id,
+                      bool is_propagation = true);
+
  private:
   struct EventContext {
     EventType event_type;
@@ -144,6 +172,11 @@ class TouchEventHandler {
     EventOption option;
     std::function<lepus::Value(Element *, Element *, bool is_js_event)>
         get_event_params;
+    int32_t target_sign;
+    int64_t event_timestamp;
+    int64_t event_id;
+    std::unordered_map<int64_t, ResponseChainVector> event_chain_map;
+    std::unordered_map<int64_t, EventOpsVector> event_ops_map;
 
     EventContext(const EventContext &info) = delete;
     EventContext &operator=(const EventContext &info) = delete;
@@ -151,13 +184,13 @@ class TouchEventHandler {
     EventContext &operator=(EventContext &&info) noexcept = default;
   };
 
-  using ResponseChainVector = base::InlineVector<Element *, 16>;
-  using EventOpsVector = base::InlineVector<EventOperation, 2>;
-
   ResponseChainVector GenerateResponseChain(int tag, const EventOption &option);
   ResponseChainVector GenerateResponseChain(PageProxy *proxy,
                                             Element *component_element,
                                             const EventOption &option);
+
+  void HandleGlobalBindAndTriggerEvent(TemplateAssembler *tasm,
+                                       int64_t event_id);
 
   void FireTouchEvent(const std::string &page_name, const EventHandler *handler,
                       const Element *target, const Element *current_target,
@@ -260,6 +293,13 @@ class TouchEventHandler {
 
   // for new gesture in fiber
   lepus::Value gesture_manager_;
+
+  std::unordered_map<int64_t, EventContext> event_queue_;
+
+  static FindEventHandler find_event_f_;
+  static GetEventHandlers get_handlers_f_;
+  static PushGlobalBindOperation push_global_bind_operation_f_;
+  static GetGlobalBindOperations get_global_bind_operations_f_;
 
 #if ENABLE_LEPUSNG_WORKLET
  public:

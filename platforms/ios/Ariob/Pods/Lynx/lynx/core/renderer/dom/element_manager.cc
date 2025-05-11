@@ -12,6 +12,7 @@
 #include "base/include/log/logging.h"
 #include "base/trace/native/trace_event.h"
 #include "core/base/lynx_trace_categories.h"
+#include "core/base/threading/vsync_monitor.h"
 #include "core/renderer/css/computed_css_style.h"
 #include "core/renderer/css/css_color.h"
 #include "core/renderer/css/css_selector_constants.h"
@@ -38,7 +39,6 @@
 #include "core/renderer/utils/lynx_env.h"
 #include "core/services/recorder/recorder_controller.h"
 #include "core/services/timing_handler/timing_constants.h"
-#include "core/shell/common/vsync_monitor.h"
 #include "core/shell/layout_mediator.h"
 #include "core/value_wrapper/value_impl_lepus.h"
 
@@ -146,7 +146,7 @@ ElementManager::ElementManager(
     std::unique_ptr<PaintingCtxPlatformImpl> platform_painting_context,
     Delegate *delegate, const LynxEnvConfig &lynx_env_config,
     int32_t instance_id,
-    const std::shared_ptr<shell::VSyncMonitor> &vsync_monitor,
+    const std::shared_ptr<base::VSyncMonitor> &vsync_monitor,
     const bool enable_diff_without_layout)
     : node_manager_(new NodeManager),
       air_node_manager_(new AirNodeManager),
@@ -905,8 +905,15 @@ void ElementManager::PauseAllAnimations() {
 
 void ElementManager::ResumeAllAnimations() {
   LOGI("Call ElementManager::ResumeAllAnimations.");
+  if (animations_paused_ == false) {
+    return;
+  }
   animations_paused_ = false;
-  // TODO(wangyifei.20010605): Can't pause running animations, fix later.
+  // Resume running Animations.
+  if (element_vsync_proxy_) {
+    element_vsync_proxy_->RequestNextFrame();
+  }
+  // Resume waiting animations.
   for (const auto &ele : paused_animation_element_set_) {
     ele->SetDataToNativeKeyframeAnimator(true);
   }

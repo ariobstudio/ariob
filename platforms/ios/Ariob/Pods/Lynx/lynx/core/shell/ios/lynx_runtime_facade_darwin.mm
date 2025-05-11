@@ -2,8 +2,8 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-#import "LynxError.h"
-#import "LynxSubErrorCode.h"
+#import <Lynx/LynxError.h>
+#import <Lynx/LynxSubErrorCode.h>
 
 #include "core/shell/ios/lynx_runtime_facade_darwin.h"
 

@@ -34,8 +34,8 @@ class InspectorLepusObserver {
       const std::shared_ptr<devtool::InspectorClientNG>& client) = 0;
   virtual void OnContextDestroyed(const std::string& name) = 0;
 
-  virtual void OnConsoleMessage(const std::string& level,
-                                const std::string& msg) = 0;
+  virtual void OnConsoleEvent(const std::string& func_name,
+                              const std::string& args) = 0;
 };
 
 }  // namespace lepus

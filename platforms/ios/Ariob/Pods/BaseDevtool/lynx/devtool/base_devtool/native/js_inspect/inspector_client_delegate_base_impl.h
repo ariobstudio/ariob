@@ -104,7 +104,7 @@ class BASE_EXPORT InspectorClientDelegateBaseImpl
                                  int instance_id);
 
   // Add "engineType" parameter to the response of "Debugger.enable" message.
-  void AddEngineTypeParam(rapidjson::Document& message);
+  bool AddEngineTypeParam(rapidjson::Document& message);
 
   // Generate a simple CDP message which only has "method" and "id".
   std::string GenSimpleMessage(const std::string& method, int message_id = 0);
@@ -113,6 +113,8 @@ class BASE_EXPORT InspectorClientDelegateBaseImpl
                                            int line, int column,
                                            int message_id = 0);
   std::string GenMessageSetBreakpointsActive(bool active, int message_id = 0);
+  std::string GenMessageSetPauseOnExceptions(const std::string& state,
+                                             int message_id = 0);
   rapidjson::Document GenTargetInfo(const std::string& target_id,
                                     const std::string& title);
   std::string GenMessageTargetCreated(const std::string& target_id,

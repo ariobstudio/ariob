@@ -43,12 +43,11 @@ void NativeModuleInfoCollector::EndCallFunc(uint64_t start_time) {
   TRACE_EVENT_INSTANT(
       LYNX_TRACE_CATEGORY_JSB, "JSBTiming::jsb_func_call_end",
       [this](lynx::perfetto::EventContext ctx) {
-        ctx.event()->add_debug_annotations("first_arg",
-                                           timing_.method_first_arg_name_);
         ctx.event()->add_debug_annotations(
             "timestamp", std::to_string(timing_.jsb_func_call_end_));
         ctx.event()->add_debug_annotations(
             "jsb_func_call.duration", std::to_string(timing_.jsb_func_call_));
+        ctx.event()->add_flow_ids(flow_id_);
       });
 }
 
@@ -61,12 +60,11 @@ void NativeModuleInfoCollector::EndFuncParamsConvert(uint64_t start_time) {
   TRACE_EVENT_INSTANT(
       LYNX_TRACE_CATEGORY_JSB, "JSBTiming::jsb_func_convert_params_end",
       [this, end](lynx::perfetto::EventContext ctx) {
-        ctx.event()->add_debug_annotations("first_arg",
-                                           timing_.method_first_arg_name_);
         ctx.event()->add_debug_annotations("timestamp", std::to_string(end));
         ctx.event()->add_debug_annotations(
             "jsb_func_convert_params.duration",
             std::to_string(timing_.jsb_func_convert_params_));
+        ctx.event()->add_flow_ids(flow_id_);
       });
 }
 
@@ -79,12 +77,11 @@ void NativeModuleInfoCollector::EndPlatformMethodInvoke(uint64_t start_time) {
   TRACE_EVENT_INSTANT(
       LYNX_TRACE_CATEGORY_JSB, "JSBTiming::jsb_func_platform_method_end",
       [this, end](lynx::perfetto::EventContext ctx) {
-        ctx.event()->add_debug_annotations("first_arg",
-                                           timing_.method_first_arg_name_);
         ctx.event()->add_debug_annotations("timestamp", std::to_string(end));
         ctx.event()->add_debug_annotations(
             "jsb_func_platform_method.duration",
             std::to_string(timing_.jsb_func_platform_method_));
+        ctx.event()->add_flow_ids(flow_id_);
       });
 }
 
@@ -97,11 +94,10 @@ void NativeModuleInfoCollector::CallbackThreadSwitchStart() {
   TRACE_EVENT_INSTANT(
       LYNX_TRACE_CATEGORY_JSB, "JSBTiming::jsb_callback_thread_switch_start",
       [this](lynx::perfetto::EventContext ctx) {
-        ctx.event()->add_debug_annotations("first_arg",
-                                           timing_.method_first_arg_name_);
         ctx.event()->add_debug_annotations(
             "timestamp",
             std::to_string(timing_.jsb_callback_thread_switch_start_));
+        ctx.event()->add_flow_ids(flow_id_);
       });
 }
 
@@ -116,12 +112,11 @@ void NativeModuleInfoCollector::EndCallbackInvoke(uint64_t convert_params_time,
   TRACE_EVENT_INSTANT(
       LYNX_TRACE_CATEGORY_JSB, "JSBTiming::jsb_callback_invoke_end",
       [this, end](lynx::perfetto::EventContext ctx) {
-        ctx.event()->add_debug_annotations("first_arg",
-                                           timing_.method_first_arg_name_);
         ctx.event()->add_debug_annotations("timestamp", std::to_string(end));
         ctx.event()->add_debug_annotations(
             "jsb_callback_invoke.duration",
             std::to_string(timing_.jsb_callback_invoke_));
+        ctx.event()->add_flow_ids(flow_id_);
       });
 }
 
@@ -137,13 +132,12 @@ void NativeModuleInfoCollector::EndCallCallback(uint64_t switch_end_time,
   TRACE_EVENT_INSTANT(
       LYNX_TRACE_CATEGORY_JSB, "JSBTiming::jsb_callback_call_end",
       [this](lynx::perfetto::EventContext ctx) {
-        ctx.event()->add_debug_annotations("first_arg",
-                                           timing_.method_first_arg_name_);
         ctx.event()->add_debug_annotations(
             "timestamp", std::to_string(timing_.jsb_callback_call_end_));
         ctx.event()->add_debug_annotations(
             "jsb_callback_call.duration",
             std::to_string(timing_.jsb_callback_call_));
+        ctx.event()->add_flow_ids(flow_id_);
       });
 }
 
@@ -176,10 +170,6 @@ NetworkRequestInfo NativeModuleInfoCollector::GetNetworkRequestInfo() const {
   return timing_.network_request_info_;
 }
 
-std::string NativeModuleInfoCollector::GetFirstArg() {
-  return timing_.method_first_arg_name_;
-}
-
 // ModuleCallback & LynxModule
 // ModuleCallback and LynxModule jointly hold NativeModuleInfoCollector.
 // NativeModuleInfoCollector will destruct When both a and b are released.
@@ -193,8 +183,7 @@ NativeModuleInfoCollector::~NativeModuleInfoCollector() {
   }
   TRACE_EVENT(LYNX_TRACE_CATEGORY_JSB, "JSBTiming::Flush",
               [this](lynx::perfetto::EventContext ctx) {
-                ctx.event()->add_debug_annotations(
-                    "first_arg", timing_.method_first_arg_name_);
+                ctx.event()->add_terminating_flow_ids(flow_id_);
               });
   // Calculate timing data
   timing_.jsb_callback_thread_switch_waiting_ =

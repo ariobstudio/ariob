@@ -74,6 +74,15 @@ class NativeFacadeEmptyImpl : public NativeFacade, NativeFacadeReporter {
                               piper::ApiCallBack callback) override {}
 
   virtual void FlushJSBTiming(piper::NativeModuleInfo timing) override {}
+
+  virtual void OnEventCapture(long target_id, bool is_catch,
+                              int64_t event_id) override {}
+
+  virtual void OnEventBubble(long target_id, bool is_catch,
+                             int64_t event_id) override {}
+
+  virtual void OnEventFire(long target_id, bool is_stop,
+                           int64_t event_id) override {}
 };
 
 }  // namespace shell

@@ -41,11 +41,13 @@ void ModuleCallback::Invoke(Runtime* runtime,
   uint64_t convert_params_start = base::CurrentSystemTimeMilliseconds();
   TRACE_EVENT_INSTANT(
       LYNX_TRACE_CATEGORY_JSB, "JSBTiming::jsb_callback_convert_params_start",
-      [first_arg = timing_collector_->GetFirstArg(),
-       convert_params_start](lynx::perfetto::EventContext ctx) {
-        ctx.event()->add_debug_annotations("first_arg", first_arg);
+      [convert_params_start,
+       timing_collector = timing_collector_](lynx::perfetto::EventContext ctx) {
         ctx.event()->add_debug_annotations(
             "timestamp", std::to_string(convert_params_start));
+        if (timing_collector != nullptr) {
+          ctx.event()->add_flow_ids(timing_collector->FlowId());
+        }
       });
   size_t size = static_cast<size_t>(args_->Length());
   piper::Value values[size];
@@ -55,14 +57,16 @@ void ModuleCallback::Invoke(Runtime* runtime,
   uint64_t convert_params_end = base::CurrentSystemTimeMilliseconds();
   TRACE_EVENT_INSTANT(
       LYNX_TRACE_CATEGORY_JSB, "JSBTiming::jsb_callback_convert_params_end",
-      [first_arg = timing_collector_->GetFirstArg(), convert_params_start,
-       convert_params_end](lynx::perfetto::EventContext ctx) {
-        ctx.event()->add_debug_annotations("first_arg", first_arg);
+      [convert_params_start, convert_params_end,
+       timing_collector = timing_collector_](lynx::perfetto::EventContext ctx) {
         ctx.event()->add_debug_annotations("timestamp",
                                            std::to_string(convert_params_end));
         ctx.event()->add_debug_annotations(
             "jsb_callback_convert_params",
             std::to_string(convert_params_end - convert_params_start));
+        if (timing_collector != nullptr) {
+          ctx.event()->add_flow_ids(timing_collector->FlowId());
+        }
       });
   TRACE_EVENT_END(LYNX_TRACE_CATEGORY_JSB);
 #if ENABLE_TESTBENCH_RECORDER
@@ -75,11 +79,13 @@ void ModuleCallback::Invoke(Runtime* runtime,
   uint64_t invoke_js_callback_start = base::CurrentSystemTimeMilliseconds();
   TRACE_EVENT_INSTANT(
       LYNX_TRACE_CATEGORY_JSB, "JSBTiming::jsb_callback_invoke_start",
-      [first_arg = timing_collector_->GetFirstArg(),
-       convert_params_end](lynx::perfetto::EventContext ctx) {
+      [convert_params_end,
+       timing_collector = timing_collector_](lynx::perfetto::EventContext ctx) {
         ctx.event()->add_debug_annotations("timestamp",
                                            std::to_string(convert_params_end));
-        ctx.event()->add_debug_annotations("first_arg", first_arg);
+        if (timing_collector != nullptr) {
+          ctx.event()->add_flow_ids(timing_collector->FlowId());
+        }
       });
   holder->function_.call(*runtime, values, size);
 

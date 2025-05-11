@@ -7,10 +7,9 @@
 #include <utility>
 #include <vector>
 
+#include "core/base/threading/vsync_monitor.h"
 #include "core/services/event_report/event_tracker_platform_impl.h"
 #include "core/services/timing_handler/timing_mediator.h"
-#include "core/shell/common/vsync_monitor.h"
-#include "core/shell/lynx_runtime_actor_holder.h"
 #include "core/shell/lynx_shell.h"
 #include "core/shell/runtime_mediator.h"
 
@@ -39,8 +38,8 @@ InitRuntimeStandaloneResult InitRuntimeStandalone(
   auto native_runtime_facade =
       std::make_shared<lynx::shell::LynxActor<lynx::shell::NativeFacade>>(
           std::move(native_facade_runtime), js_task_runner, instance_id, true);
-  std::shared_ptr<VSyncMonitor> vsync_monitor =
-      lynx::shell::VSyncMonitor::Create();
+  std::shared_ptr<base::VSyncMonitor> vsync_monitor =
+      base::VSyncMonitor::Create();
 
   auto timing_mediator =
       std::make_unique<lynx::tasm::timing::TimingMediator>(instance_id);
@@ -64,16 +63,16 @@ InitRuntimeStandaloneResult InitRuntimeStandalone(
   auto delegate = std::make_unique<RuntimeMediator>(
       native_runtime_facade, nullptr, timing_actor, nullptr, js_task_runner,
       std::move(external_resource_loader));
-  delegate->set_vsync_monitor(vsync_monitor);
   delegate->SetPropBundleCreator(prop_bundle_creator);
   delegate->SetWhiteBoardDelegate(white_board_delegate);
+  auto* delegate_raw_ptr = delegate.get();
 
   auto runtime = std::make_unique<runtime::LynxRuntime>(
       group_id, instance_id, std::move(delegate), enable_user_bytecode,
       bytecode_source_url, enable_js_group_thread);
   auto runtime_actor = std::make_shared<LynxActor<runtime::LynxRuntime>>(
       std::move(runtime), js_task_runner, instance_id, true);
-  vsync_monitor->set_runtime_actor(runtime_actor);
+  delegate_raw_ptr->set_vsync_monitor(vsync_monitor, runtime_actor);
   timing_mediator_raw_ptr->SetRuntimeActor(runtime_actor);
 
   on_runtime_actor_created(runtime_actor, native_runtime_facade);
@@ -94,26 +93,6 @@ InitRuntimeStandaloneResult InitRuntimeStandalone(
 
   return {runtime_actor, timing_actor, native_runtime_facade,
           white_board_delegate};
-}
-
-void TriggerDestroyRuntime(
-    const std::shared_ptr<LynxActor<runtime::LynxRuntime>>& runtime_actor,
-    std::string js_group_thread_name) {
-  auto instance_id = runtime_actor->GetInstanceId();
-  auto runtime = runtime_actor->Impl();
-  if (runtime->TryToDestroy()) {
-    runtime_actor->Act([instance_id](auto& runtime) {
-      runtime = nullptr;
-      tasm::report::FeatureCounter::Instance()->ClearAndReport(instance_id);
-    });
-  } else {
-    // Hold LynxRuntime. It will be released when destroyed callback be
-    // handled in LynxRuntime::CallJSCallback() or the delayed release
-    // task time out.
-    auto holder = LynxRuntimeActorHolder::GetInstance();
-    holder->Hold(runtime_actor, js_group_thread_name);
-    holder->PostDelayedRelease(instance_id, js_group_thread_name);
-  }
 }
 
 }  // namespace shell

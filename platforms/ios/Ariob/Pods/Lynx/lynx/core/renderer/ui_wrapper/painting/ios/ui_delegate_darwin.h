@@ -5,10 +5,11 @@
 #ifndef CORE_RENDERER_UI_WRAPPER_PAINTING_IOS_UI_DELEGATE_DARWIN_H_
 #define CORE_RENDERER_UI_WRAPPER_PAINTING_IOS_UI_DELEGATE_DARWIN_H_
 
+#import <Lynx/LynxShadowNodeOwner.h>
+#import <Lynx/LynxUIOwner.h>
+
 #include <memory>
 
-#import "LynxShadowNodeOwner.h"
-#import "LynxUIOwner.h"
 #include "core/public/ui_delegate.h"
 
 namespace lynx {

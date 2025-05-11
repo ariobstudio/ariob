@@ -65,8 +65,10 @@ void DefaultListAdapter::OnDataSetChanged() {
 // generated and the pair <operation-id, ItemHolder> is added to a map.
 bool DefaultListAdapter::BindItemHolder(ItemHolder* item_holder, int index,
                                         bool preload_section /* = false */) {
-  TRACE_EVENT(LYNX_TRACE_CATEGORY, "DefaultListAdapter::BindItemHolder",
-              "index", index);
+  TRACE_EVENT(LYNX_TRACE_CATEGORY, "ListAdapter::BindItemHolder",
+              [this, item_holder](lynx::perfetto::EventContext ctx) {
+                UpdateTraceDebugInfo(ctx.event(), item_holder);
+              });
   if (!list_element_ || !item_holder || index != item_holder->index() ||
       (preload_section && item_holder->virtual_dom_preloaded())) {
     return false;
@@ -175,6 +177,10 @@ void DefaultListAdapter::OnFinishBindItemHolder(Element* component,
 // Recycle ItemHolder. It will invoked list's EnqueueComponent() to recycle
 // component bound with ItemHolder and remove platform view from parent.
 void DefaultListAdapter::RecycleItemHolder(ItemHolder* item_holder) {
+  TRACE_EVENT(LYNX_TRACE_CATEGORY, "ListAdapter::RecycleItemHolder",
+              [this, item_holder](lynx::perfetto::EventContext ctx) {
+                UpdateTraceDebugInfo(ctx.event(), item_holder);
+              });
   if (!list_element_ || !list_container_ || !item_holder ||
       !item_holder->element()) {
     return;
@@ -188,8 +194,6 @@ void DefaultListAdapter::RecycleItemHolder(ItemHolder* item_holder) {
   if (list_container_->list_event_manager()) {
     list_container_->list_event_manager()->OnViewDetach(item_holder);
   }
-  TRACE_EVENT(LYNX_TRACE_CATEGORY, "DefaultListAdapter::RecycleItemHolder",
-              "index", item_holder->index());
   int32_t comp_id = item_holder->element()->impl_id();
   list_node->EnqueueComponent(comp_id);
   list_element_->element_manager()
@@ -202,6 +206,16 @@ void DefaultListAdapter::RecycleItemHolder(ItemHolder* item_holder) {
   item_holder->SetElement(nullptr);
   list_element_->painting_context()->FlushImmediately();
 }
+
+#if ENABLE_TRACE_PERFETTO
+void DefaultListAdapter::UpdateTraceDebugInfo(TraceEvent* event,
+                                              ItemHolder* item_holder) const {
+  ListAdapter::UpdateTraceDebugInfo(event, item_holder);
+  auto* adapter_type_info = event->add_debug_annotations();
+  adapter_type_info->set_name("adapter_type");
+  adapter_type_info->set_string_value("default");
+}
+#endif
 
 }  // namespace tasm
 }  // namespace lynx

@@ -1,3 +1,28 @@
+// Inspired by S.js by Adam Haile, https://github.com/adamhaile/S
+/**
+The MIT License (MIT)
+
+Copyright (c) 2017 Adam Haile
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 // Copyright 2024 The Lynx Authors. All rights reserved.
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
@@ -32,17 +57,32 @@ Computation::Computation(SignalContext* signal_context_ptr,
     SetScopeType(ScopeType::kPureComputation);
   }
 
+  if (memo_ != nullptr) {
+    SetState(ScopeState::kStateNone);
+  } else {
+    SetState(ScopeState::kStateStale);
+  }
+
   scope->AdoptComputation(fml::RefPtr<Computation>(this));
 
   signal_context()->UpdateComputation(this);
-
-  SetState(ScopeState::kStateNone);
 }
 
-Computation::~Computation() {}
+Computation::~Computation() {
+  for (auto signal : signal_list_) {
+    if (signal == nullptr) {
+      continue;
+    }
+    signal->CleanComputation(this);
+  }
+  signal_list_.clear();
+}
 
 void Computation::CleanUp() {
   for (auto signal : signal_list_) {
+    if (signal == nullptr) {
+      continue;
+    }
     signal->CleanComputation(this);
   }
   signal_list_.clear();
@@ -67,7 +107,20 @@ void Computation::LookUpstream(Computation* ignore) {
   }
 
   for (auto source : signal_list_) {
-    source->LookUpstream(ignore);
+    if (source->GetRefType() == lepus::RefType::kMemo) {
+      auto* memo = static_cast<Memo*>(source);
+      auto* computation = memo->GetComputation();
+      if (computation == nullptr) {
+        continue;
+      }
+      if (computation->GetState() == ScopeState::kStateStale) {
+        if (computation != ignore) {
+          signal_context_->RunComputation(computation);
+        }
+      } else {
+        memo->LookUpstream(ignore);
+      }
+    }
   }
 }
 
@@ -91,6 +144,8 @@ void Computation::Invoke(int32_t time) {
     SetUpdatedTime(time);
   }
 }
+
+void Computation::RemoveSignal(Signal* signal) { signal_list_.remove(signal); }
 
 }  // namespace tasm
 }  // namespace lynx

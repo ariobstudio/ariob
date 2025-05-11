@@ -6,7 +6,6 @@
 #include "base/include/log/logging.h"
 #include "core/renderer/utils/lynx_env.h"
 #include "core/runtime/bindings/jsi/console.h"
-#include "core/runtime/bindings/jsi/fetch/body_native.h"
 #include "core/runtime/common/utils.h"
 #include "core/runtime/piper/js/runtime_manager.h"
 
@@ -98,7 +97,6 @@ std::shared_ptr<piper::App> JSExecutor::createNativeAppInstance(
         *js_runtime_, module_manager_testBench_.get()->bindingPtr);
   }
 #endif
-  BodyNative::RegisterBodyNative(*js_runtime_);
   return piper::App::Create(rt_id, js_runtime_, delegate, exception_handler_,
                             std::move(nativeModuleProxy),
                             std::move(api_handler), group_id_);

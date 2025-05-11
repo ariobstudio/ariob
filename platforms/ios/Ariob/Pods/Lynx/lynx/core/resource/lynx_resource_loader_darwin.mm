@@ -3,11 +3,11 @@
 // LICENSE file in the root directory of this source tree.
 
 #include "core/resource/lynx_resource_loader_darwin.h"
-#import "LynxEnv.h"
-#import "LynxError.h"
-#import "LynxLog.h"
-#import "LynxService.h"
-#import "LynxSubErrorCode.h"
+#import <Lynx/LynxEnv.h>
+#import <Lynx/LynxError.h>
+#import <Lynx/LynxLog.h>
+#import <Lynx/LynxService.h>
+#import <Lynx/LynxSubErrorCode.h>
 #import "LynxTemplateBundle+Converter.h"
 #include "base/trace/native/trace_event.h"
 #include "core/base/lynx_trace_categories.h"

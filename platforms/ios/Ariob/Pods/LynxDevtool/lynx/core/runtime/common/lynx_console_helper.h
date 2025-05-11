@@ -8,6 +8,7 @@
 namespace lynx {
 namespace piper {
 
+constexpr int CONSOLE_UNKNOWN = -99;
 constexpr int CONSOLE_LOG_VERBOSE = -1;
 constexpr int CONSOLE_LOG_INFO = 0;
 constexpr int CONSOLE_LOG_WARNING = 1;

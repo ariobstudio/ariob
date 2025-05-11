@@ -13,8 +13,8 @@
 namespace lynx {
 namespace devtool {
 
-static int32_t GetLevelNumByStr(const std::string &level) {
-  static base::NoDestructor<std::unordered_map<std::string, int>> level_map(
+static int32_t GetFuncNameByStr(const std::string &func_name) {
+  static base::NoDestructor<std::unordered_map<std::string, int>> names_map(
       {{piper::LepusConsoleAlog, piper::CONSOLE_LOG_ALOG},
        {piper::LepusConsoleDebug, piper::CONSOLE_LOG_INFO},
        {piper::LepusConsoleError, piper::CONSOLE_LOG_ERROR},
@@ -22,7 +22,11 @@ static int32_t GetLevelNumByStr(const std::string &level) {
        {piper::LepusConsoleLog, piper::CONSOLE_LOG_LOG},
        {piper::LepusConsoleReport, piper::CONSOLE_LOG_REPORT},
        {piper::LepusConsoleWarn, piper::CONSOLE_LOG_WARNING}});
-  return (*level_map)[level];
+  auto maybe_name = names_map->find(func_name);
+  if (maybe_name == names_map->end()) {
+    return piper::CONSOLE_UNKNOWN;
+  }
+  return maybe_name->second;
 }
 
 InspectorLepusObserverImpl::InspectorLepusObserverImpl(
@@ -68,16 +72,20 @@ void InspectorLepusObserverImpl::OnContextDestroyed(const std::string &name) {
   }
 }
 
-void InspectorLepusObserverImpl::OnConsoleMessage(const std::string &level,
-                                                  const std::string &msg) {
+void InspectorLepusObserverImpl::OnConsoleEvent(const std::string &level,
+                                                const std::string &args) {
   if (need_post_console_) {
     auto sp = mediator_ptr_.lock();
     if (sp != nullptr) {
-      int32_t level_num = GetLevelNumByStr(level);
+      int32_t level_num = GetFuncNameByStr(level);
+      // TODO: support other console event.
+      if (level_num == piper::CONSOLE_UNKNOWN) {
+        return;
+      }
       auto ts = std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now().time_since_epoch())
                     .count();
-      sp->SendLogEntryAddedEvent({msg, level_num, static_cast<int64_t>(ts)});
+      sp->SendLogEntryAddedEvent({args, level_num, static_cast<int64_t>(ts)});
     }
   }
 }

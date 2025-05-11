@@ -3,9 +3,9 @@
 // LICENSE file in the root directory of this source tree.
 
 #include "core/renderer/utils/ios/text_utils_ios.h"
+#import <Lynx/LynxTextUtils.h>
+#import <Lynx/LynxUnitUtils.h>
 #import "LynxTemplateData+Converter.h"
-#import "LynxTextUtils.h"
-#import "LynxUnitUtils.h"
 #include "core/renderer/utils/base/tasm_constants.h"
 #include "core/renderer/utils/value_utils.h"
 #include "core/value_wrapper/value_impl_lepus.h"

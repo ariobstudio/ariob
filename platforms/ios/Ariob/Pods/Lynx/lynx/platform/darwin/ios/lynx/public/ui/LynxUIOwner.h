@@ -3,11 +3,12 @@
 // LICENSE file in the root directory of this source tree.
 
 #import <Foundation/Foundation.h>
-#import "LynxForegroundProtocol.h"
-#import "LynxModule.h"
-#import "LynxUI.h"
-#import "LynxUIContext.h"
-#import "LynxUIMethodProcessor.h"
+#import <Lynx/LUIConfig.h>
+#import <Lynx/LynxForegroundProtocol.h>
+#import <Lynx/LynxModule.h>
+#import <Lynx/LynxUI.h>
+#import <Lynx/LynxUIContext.h>
+#import <Lynx/LynxUIMethodProcessor.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -53,7 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
                        templateRender:(nullable LynxTemplateRender*)templateRender
                     componentRegistry:(LynxComponentScopeRegistry*)registry
                         screenMetrics:(LynxScreenMetrics*)screenMetrics
-                         errorHandler:(id<LUIErrorHandling> _Nullable)errorHandler;
+                         errorHandler:(id<LUIErrorHandling> _Nullable)errorHandler
+                             uiConfig:(id<LUIConfig> _Nullable)uiConfig;
 
 - (LynxUI*)findUIBySign:(NSInteger)sign;
 - (LynxUI*)findUIByComponentId:(NSString*)componentId;

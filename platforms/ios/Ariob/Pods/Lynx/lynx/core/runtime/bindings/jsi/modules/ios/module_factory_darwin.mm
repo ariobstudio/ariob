@@ -3,11 +3,11 @@
 // LICENSE file in the root directory of this source tree.
 
 #include "core/runtime/bindings/jsi/modules/ios/module_factory_darwin.h"
-#import "LynxContext.h"
-#import "LynxContextModule.h"
-#import "LynxLog.h"
+#import <Lynx/LynxContext.h>
+#import <Lynx/LynxContextModule.h>
+#import <Lynx/LynxLog.h>
+#include <Lynx/LynxThreadSafeDictionary.h>
 #include "core/runtime/bindings/jsi/interceptor/ios/request_interceptor_darwin.h"
-#include "lynx/platform/darwin/common/lynx/public/utils/thread_safe_dictionary/LynxThreadSafeDictionary.h"
 
 #include <string>
 #include <unordered_map>

@@ -17,7 +17,7 @@ namespace base {
 class WorkThreadExecutor {
  public:
   WorkThreadExecutor();
-  ~WorkThreadExecutor();
+  virtual ~WorkThreadExecutor();
 
   void submit(std::function<void()> task);
   void shutdown();
@@ -29,7 +29,6 @@ class WorkThreadExecutor {
   std::unique_ptr<std::thread> worker;
   std::queue<std::function<void()>> tasks;
   std::mutex task_mtx;
-  std::mutex worker_mtx;
   std::condition_variable cond;
 };
 

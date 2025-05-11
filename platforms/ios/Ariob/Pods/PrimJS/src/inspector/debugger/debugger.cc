@@ -1542,7 +1542,7 @@ void HandleEnable(DebuggerParams *debugger_options) {
 
     bool is_already_enabled = false;
     bool is_paused = false;
-    info->breakpoints_is_active = 1;
+    info->breakpoints_is_active_before = info->breakpoints_is_active = 1;
     if (view_id != -1) {
       // get if session is enabled and if session is paused
       GetSessionState(ctx, view_id, &is_already_enabled, &is_paused);
@@ -1590,8 +1590,6 @@ void HandleSkipAllPauses(DebuggerParams *debugger_options) {
     int32_t is_skip = LEPUS_VALUE_GET_BOOL(params_skip);
     if (!ctx->rt->gc_enable) LEPUS_FreeValue(ctx, params);
     if (is_skip) {
-      info->breakpoints_is_active_before = info->breakpoints_is_active;
-      info->exception_breakpoint_before = info->exception_breakpoint;
       info->breakpoints_is_active = 0;
       info->exception_breakpoint = 0;
     } else {
@@ -1890,9 +1888,9 @@ void HandleSetPauseOnExceptions(DebuggerParams *debugger_options) {
     }
     if (state) {
       if (strcmp("uncaught", state) == 0 || strcmp("all", state) == 0) {
-        info->exception_breakpoint = 1;
+        info->exception_breakpoint_before = info->exception_breakpoint = 1;
       } else if (strcmp("none", state) == 0) {
-        info->exception_breakpoint = 0;
+        info->exception_breakpoint_before = info->exception_breakpoint = 0;
       }
       if (!ctx->rt->gc_enable) LEPUS_FreeCString(ctx, state);
 

@@ -23,6 +23,7 @@
 #include "core/runtime/vm/lepus/function.h"
 #include "core/runtime/vm/lepus/lepus_value.h"
 #include "core/runtime/vm/lepus/quick_context_pool.h"
+#include "core/template_bundle/template_codec/binary_decoder/parallel_parse_task_scheduler.h"
 #include "core/template_bundle/template_codec/compile_options.h"
 #include "core/template_bundle/template_codec/header_ext_info.h"
 #include "core/template_bundle/template_codec/moulds.h"
@@ -36,30 +37,10 @@ class LepusChunkManager {
       std::unordered_map<std::string, std::shared_ptr<lepus::ContextBundle>>;
 
   std::optional<std::shared_ptr<lepus::ContextBundle>> GetLepusChunk(
-      const std::string &chunk_key) {
-    std::lock_guard<std::mutex> g_lock(lepus_chunk_mutex_);
-    decoded_lepus_chunks_.emplace(chunk_key);
-    auto iter = lepus_chunk_map_.find(chunk_key);
-    if (iter != lepus_chunk_map_.end()) {
-      return iter->second;
-    } else {
-      return std::nullopt;
-    }
-  }
-
-  bool IsLepusChunkDecoded(const std::string &chunk_path) {
-    std::lock_guard<std::mutex> g_lock(lepus_chunk_mutex_);
-    if (decoded_lepus_chunks_.find(chunk_path) != decoded_lepus_chunks_.end()) {
-      return true;
-    }
-    return false;
-  }
-
+      const std::string &chunk_key);
+  bool IsLepusChunkDecoded(const std::string &chunk_path);
   void AddLepusChunk(const std::string &chunk_key,
-                     std::shared_ptr<lepus::ContextBundle> bundle) {
-    std::lock_guard<std::mutex> g_lock(lepus_chunk_mutex_);
-    lepus_chunk_map_.emplace(chunk_key, std::move(bundle));
-  }
+                     std::shared_ptr<lepus::ContextBundle> bundle);
 
   std::atomic_bool GetStopThread() const { return stop_thread_; }
   void SetThreadStopFlag(bool stop_signal) { stop_thread_ = stop_signal; }
@@ -83,13 +64,6 @@ class LynxTemplateBundle final {
   LynxTemplateBundle()
       : css_style_manager_(std::make_shared<CSSStyleSheetManager>(nullptr)),
         lepus_chunk_manager_(std::make_shared<LepusChunkManager>()){};
-
-  inline lepus::Value GetExtraInfo() {
-    if (page_configs_) {
-      return page_configs_->GetExtraInfo();
-    }
-    return lepus::Value();
-  }
 
   const piper::JsBundle &GetJsBundle() const { return js_bundle_; }
   piper::JsBundle &GetJsBundle() { return js_bundle_; }
@@ -133,46 +107,26 @@ class LynxTemplateBundle final {
 
   bool is_lepusng_binary() { return is_lepusng_binary_; }
 
-  bool ShouldReuseLepusContext() const {
-    // the lepus context of dynamic component in FiberArch should reuse the
-    // context in card
-    return !IsCard() && compile_options_.enable_fiber_arch_;
-  }
+  bool ShouldReuseLepusContext() const;
 
-  bool PrepareLepusContext(int32_t count) {
-    if (!quick_context_pool_ || count <= 0) {
-      return false;
-    }
-
-    // a maximum of 20 contexts can be created in a single task
-    constexpr int32_t kOnePatchMaxSize = 20;
-    quick_context_pool_->FillPool(std::min(kOnePatchMaxSize, count));
-
-    use_context_pool_ = true;
-
-    return true;
-  }
+  lepus::Value GetExtraInfo();
+  bool PrepareLepusContext(int32_t count);
 
   bool EnableUseContextPool() const { return use_context_pool_; }
 
-  void SetEnableVMAutoGenerate(bool enable) {
-    if (quick_context_pool_) {
-      quick_context_pool_->SetEnableAutoGenerate(enable);
-    }
-  }
+  void SetEnableVMAutoGenerate(bool enable);
 
-  void AddCustomSection(const std::string &key, const lepus::Value &value) {
-    if (!custom_sections_.IsTable()) {
-      custom_sections_ = lepus::Value{lepus::Dictionary::Create()};
-    }
-    custom_sections_.SetProperty(key, value);
-  }
+  void AddCustomSection(const std::string &key, const lepus::Value &value);
 
-  lepus::Value GetCustomSection(const std::string &key) {
-    return custom_sections_.GetProperty(key);
-  }
+  lepus::Value GetCustomSection(const std::string &key);
+
+  void GreedyConstructElements();
+
+  std::optional<Elements> TryGetElements(const std::string &key);
 
  private:
+  void EnsureParseTaskScheduler();
+
   // header info.
   uint32_t total_size_{0};
   bool is_lepusng_binary_{false};
@@ -253,9 +207,12 @@ class LynxTemplateBundle final {
   uint64_t decode_start_timestamp_{0};
   uint64_t decode_end_timestamp_{0};
 
+  std::shared_ptr<ParallelParseTaskScheduler> task_schedular_{nullptr};
+
   friend class LynxBinaryReader;
   friend class TemplateAssembler;
   friend class TemplateEntry;
+  friend class LynxTemplateBundleConverter;
 };
 }  // namespace tasm
 }  // namespace lynx

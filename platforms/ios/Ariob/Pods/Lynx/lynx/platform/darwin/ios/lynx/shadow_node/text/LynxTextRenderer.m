@@ -2,18 +2,18 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-#import "LynxTextRenderer.h"
 #import <CoreText/CoreText.h>
-#import "LynxBaseTextShadowNode.h"
-#import "LynxBaselineShiftLayoutManager.h"
-#import "LynxEnv.h"
-#import "LynxLog.h"
-#import "LynxTextLayoutManager.h"
-#import "LynxTextRendererCache.h"
-#import "LynxTextShadowNode.h"
-#import "LynxTextUtils.h"
-#import "LynxTraceEvent.h"
-#import "LynxTraceEventWrapper.h"
+#import <Lynx/LynxBaseTextShadowNode.h>
+#import <Lynx/LynxBaselineShiftLayoutManager.h>
+#import <Lynx/LynxEnv.h>
+#import <Lynx/LynxLog.h>
+#import <Lynx/LynxTextLayoutManager.h>
+#import <Lynx/LynxTextRenderer.h>
+#import <Lynx/LynxTextRendererCache.h>
+#import <Lynx/LynxTextShadowNode.h>
+#import <Lynx/LynxTextUtils.h>
+#import <Lynx/LynxTraceEvent.h>
+#import <Lynx/LynxTraceEventWrapper.h>
 #import "base/include/compiler_specific.h"
 
 @implementation LynxTextAttachmentInfo
@@ -74,6 +74,14 @@
   }
   LYNX_TRACE_END_SECTION(LYNX_TRACE_CATEGORY_WRAPPER)
   return self;
+}
+
+- (void)dealloc {
+  if ([LynxEnv.sharedInstance enableTextStorageDeallocFix]) {
+    for (NSLayoutManager *manager in [_textStorage layoutManagers]) {
+      [_textStorage removeLayoutManager:manager];
+    }
+  }
 }
 
 - (void)ensureTextRenderLayout {
@@ -614,8 +622,9 @@
     }
     glyphIndex = NSMaxRange(actualGlyphRange);
   }
-  CGRect lastLineRect = [_layoutManager lineFragmentRectForGlyphAtIndex:lastLineGlyphRange.location
-                                                         effectiveRange:NULL];
+  CGRect lastLineRect =
+      [_layoutManager lineFragmentUsedRectForGlyphAtIndex:lastLineGlyphRange.location
+                                           effectiveRange:NULL];
   [glyphLocationArray addObject:@(lastLineRect.origin.x)];
   [glyphLocationArray addObject:@(lastLineRect.origin.x + lastLineRect.size.width)];
   [glyphLocationArray sortUsingSelector:@selector(compare:)];

@@ -463,7 +463,7 @@ std::optional<piper::Array> jsArrayFromJavaOnlyArray(JNIEnv* env, jobject array,
         base::android::ScopedLocalJavaRef<jobject> piper_data =
             Java_JavaOnlyArray_getPiperData(env, array, i);
         auto js_object_opt = base::android::PiperData::jsObjectFromPiperData(
-            env, rt, std::move(piper_data));
+            env, rt, piper_data.Get());
         if (!js_object_opt) {
           return std::optional<piper::Array>();
         }

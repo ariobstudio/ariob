@@ -77,4 +77,4 @@ struct LazyBundleLifecycleOption {
 }  // namespace tasm
 }  // namespace lynx
 
-#endif  //  CORE_RESOURCE_LAZY_BUNDLE_LAZY_BUNDLE_LIFECYCLE_OPTION_H_
+#endif  // CORE_RESOURCE_LAZY_BUNDLE_LAZY_BUNDLE_LIFECYCLE_OPTION_H_

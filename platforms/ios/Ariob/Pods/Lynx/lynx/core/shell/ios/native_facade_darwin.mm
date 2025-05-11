@@ -3,12 +3,12 @@
 // LICENSE file in the root directory of this source tree.
 
 #import "core/shell/ios/native_facade_darwin.h"
-#import "LynxError.h"
-#import "LynxLog.h"
-#import "LynxPerformance.h"
+#import <Lynx/LynxError.h>
+#import <Lynx/LynxLog.h>
+#import <Lynx/LynxPerformance.h>
+#import <Lynx/LynxTemplateBundle.h>
+#import <Lynx/LynxTheme.h>
 #import "LynxTemplateBundle+Converter.h"
-#import "LynxTemplateBundle.h"
-#import "LynxTheme.h"
 
 #include "base/include/float_comparison.h"
 #include "base/include/string/string_utils.h"
@@ -217,6 +217,21 @@ void NativeFacadeDarwin::OnReceiveMessageEvent(runtime::MessageEvent event) {
   } else {
     // TODO(songshourui.null): impl this after UIContext is supported.
   }
+}
+
+void NativeFacadeDarwin::OnEventCapture(long target_id, bool is_catch, int64_t event_id) {
+  __strong id<TemplateRenderCallbackProtocol> render = _render;
+  [render onEventCapture:target_id withEventCatch:is_catch andEventID:event_id];
+}
+
+void NativeFacadeDarwin::OnEventBubble(long target_id, bool is_catch, int64_t event_id) {
+  __strong id<TemplateRenderCallbackProtocol> render = _render;
+  [render onEventBubble:target_id withEventCatch:is_catch andEventID:event_id];
+}
+
+void NativeFacadeDarwin::OnEventFire(long target_id, bool is_stop, int64_t event_id) {
+  __strong id<TemplateRenderCallbackProtocol> render = _render;
+  [render onEventFire:target_id withEventStop:is_stop andEventID:event_id];
 }
 
 }  // namespace shell

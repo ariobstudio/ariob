@@ -1,29 +1,31 @@
 // Copyright 2019 The Lynx Authors. All rights reserved.
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
+#ifndef PLATFORM_DARWIN_IOS_LYNX_PUBLIC_LYNXVIEW_H_
+#define PLATFORM_DARWIN_IOS_LYNX_PUBLIC_LYNXVIEW_H_
 
 #import <UIKit/UIKit.h>
 
-#import "JSModule.h"
-#import "LUIBodyView.h"
-#import "LynxConfigInfo.h"
-#import "LynxExtraTiming.h"
-#import "LynxGenericResourceFetcher.h"
+#import <Lynx/JSModule.h>
+#import <Lynx/LUIBodyView.h>
+#import <Lynx/LynxConfigInfo.h>
+#import <Lynx/LynxExtraTiming.h>
+#import <Lynx/LynxGenericResourceFetcher.h>
+#import <Lynx/LynxLifecycleDispatcher.h>
+#import <Lynx/LynxLoadMeta.h>
+#import <Lynx/LynxMediaResourceFetcher.h>
+#import <Lynx/LynxPerformance.h>
+#import <Lynx/LynxScrollListener.h>
+#import <Lynx/LynxTemplateData.h>
+#import <Lynx/LynxTheme.h>
+#import <Lynx/LynxTouchEvent.h>
+#import <Lynx/LynxUIListProtocol.h>
+#import <Lynx/LynxUpdateMeta.h>
+#import <Lynx/LynxViewBuilder.h>
+#import <Lynx/LynxViewClient.h>
+#import <Lynx/LynxViewClientV2.h>
+#import <Lynx/LynxViewEnum.h>
 #import "LynxImageFetcher.h"
-#import "LynxLifecycleDispatcher.h"
-#import "LynxLoadMeta.h"
-#import "LynxMediaResourceFetcher.h"
-#import "LynxPerformance.h"
-#import "LynxScrollListener.h"
-#import "LynxTemplateData.h"
-#import "LynxTheme.h"
-#import "LynxTouchEvent.h"
-#import "LynxUIListProtocol.h"
-#import "LynxUpdateMeta.h"
-#import "LynxViewBuilder.h"
-#import "LynxViewClient.h"
-#import "LynxViewClientV2.h"
-#import "LynxViewEnum.h"
 
 @class LynxTemplateRender;
 @class LynxContext;
@@ -325,13 +327,25 @@
 
 - (float)rootHeight;
 
-#pragma mark - Timing
+#pragma mark - Timing & Report
 
 - (void)setExtraTiming:(LynxExtraTiming* _Nonnull)timing;
 
 - (nullable NSDictionary*)getAllTimingInfo;
 
 - (void)setExtraTimingWithDictionary:(NSDictionary* _Nonnull)timing;
+
+/// Set whether to enable fluency metics collection.
+///
+/// @param enabledBySampling Whether to enable fluency metics collection.
+/// Pass LynxBooleanOptionUnset to use the default behavior, i.e. the env value
+/// of `ENABLE_FLUENCY_TRACE`(injected via the LynxTrailService).
+/// Pass LynxBooleanOptionTrue to enable fluency metrics collection.
+/// Pass LynxBooleanOptionFalse to disable fluency metrics collection.
+///
+/// @note This method is only effective when PageConfig is not configured with
+/// kEnableLynxScrollFluency.
+- (void)setFluencyTracerEnabled:(LynxBooleanOption)enabledBySampling;
 
 /// Put parameters for reporting events, overriding old values if the parameters already
 /// exist.
@@ -471,3 +485,5 @@
 - (nonnull LynxConfigInfo*)lynxConfigInfo;
 
 @end
+
+#endif  // PLATFORM_DARWIN_IOS_LYNX_PUBLIC_LYNXVIEW_H_

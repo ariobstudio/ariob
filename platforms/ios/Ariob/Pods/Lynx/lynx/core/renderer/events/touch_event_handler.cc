@@ -598,7 +598,7 @@ void TouchEventHandler::HandleJSCallbackLepusEvent(const int64_t callback_id,
 #endif
 }
 
-TouchEventHandler::ResponseChainVector TouchEventHandler::GenerateResponseChain(
+ResponseChainVector TouchEventHandler::GenerateResponseChain(
     int tag, const EventOption &option) {
   // Should always return variable chain to make NRVO work.
   ResponseChainVector chain;
@@ -630,7 +630,7 @@ TouchEventHandler::ResponseChainVector TouchEventHandler::GenerateResponseChain(
   return chain;
 }
 
-TouchEventHandler::ResponseChainVector TouchEventHandler::GenerateResponseChain(
+ResponseChainVector TouchEventHandler::GenerateResponseChain(
     PageProxy *proxy, Element *component, const EventOption &option) {
   // Should always return variable chain to make NRVO work.
   ResponseChainVector chain;
@@ -800,15 +800,23 @@ lepus_value TouchEventHandler::GetTouchEventParam(const base::String &handler,
                     current_target, is_js_event));
   // keep detail reserved, no parameter passed now.
   auto detail = lepus::Dictionary::Create();
-  float detail_x, detail_y;
-  detail_x = detail_y = __FLT_MAX__;
-  // You should no longer use detail because it has been moved.
+  float detail_x = 0.f, detail_y = 0.f;
+
+  ElementManager *manager = target->element_manager();
+  bool enable_multi_touch_params_compatible =
+      manager ? manager->GetEnableMultiTouchParamsCompatible() : false;
 
   // if touch_cancel, current_touches will be cleaned after send_event_function
   // is called, because GetTouchEventParam is called in loop
   if (handler == EVENT_TOUCH_CANCEL) {
-    dict.get()->SetValue(kChangedTouches, current_touches_);
-    dict.get()->SetValue(kTouches, lepus::CArray::Create());
+    if (enable_multi_touch_params_compatible) {
+      dict.get()->SetValue(kChangedTouches,
+                           lepus::Value::Clone(current_touches_));
+      dict.get()->SetValue(kTouches, lepus::Value::Clone(current_touches_));
+    } else {
+      dict.get()->SetValue(kChangedTouches, current_touches_);
+      dict.get()->SetValue(kTouches, lepus::CArray::Create());
+    }
     return lepus_value(std::move(dict));
   }
 
@@ -823,6 +831,7 @@ lepus_value TouchEventHandler::GetTouchEventParam(const base::String &handler,
 
   // store touches in params
   auto changed_touches = lepus::CArray::Create();
+  auto touches_with_deleted = lepus::CArray::Create();
   const float layouts_unit_per_px =
       current_target->element_manager()->GetLynxEnvConfig().LayoutsUnitPerPx();
   for (const auto &ui_events : *(params.Table())) {
@@ -842,7 +851,7 @@ lepus_value TouchEventHandler::GetTouchEventParam(const base::String &handler,
         float x = event_info->get(5).Number();
         float y = event_info->get(6).Number();
 
-        if (detail_x == __FLT_MAX__ && detail_y == __FLT_MAX__) {
+        if (identifier == 0) {
           detail_x = page_x / layouts_unit_per_px;
           detail_y = page_y / layouts_unit_per_px;
         }
@@ -868,6 +877,7 @@ lepus_value TouchEventHandler::GetTouchEventParam(const base::String &handler,
               identifier) {
             ui_in_current_touches = true;
             if (handler == EVENT_TOUCH_END) {
+              touches_with_deleted->set(j, touch_value);
               touches->Erase(static_cast<uint32_t>(j));
               break;
             }
@@ -888,7 +898,16 @@ lepus_value TouchEventHandler::GetTouchEventParam(const base::String &handler,
   dict.get()->SetValue(kChangedTouches, std::move(changed_touches));
   // if not using clone, in further process, current_touches_ will be turned to
   // readonly.
-  dict.get()->SetValue(kTouches, lepus::Value::Clone(current_touches_));
+  if (enable_multi_touch_params_compatible && handler == EVENT_TOUCH_END) {
+    if (touches_with_deleted->size() != 0) {
+      touches_with_deleted->push_back(lepus::Value::Clone(current_touches_));
+      dict.get()->SetValue(kTouches, std::move(touches_with_deleted));
+    } else {
+      dict.get()->SetValue(kTouches, lepus::Value::Clone(current_touches_));
+    }
+  } else {
+    dict.get()->SetValue(kTouches, lepus::Value::Clone(current_touches_));
+  }
   return lepus_value(std::move(dict));
 }
 
@@ -1003,44 +1022,6 @@ bool TouchEventHandler::HandleEventInternal(
     return false;
   }
 
-  const auto &find_event_f =
-      [](const EventMap &map, const std::string &event_name) -> EventHandler * {
-    auto find_iter = map.find(event_name);
-    if (find_iter == map.end()) {
-      return nullptr;
-    }
-    return (*find_iter).second.get();
-  };
-
-  const auto &get_handler_f =
-      [&find_event_f](
-          Element *cur_target, const std::string &event_name,
-          bool global_bind_event) -> base::InlineVector<EventHandler *, 4> {
-    base::InlineVector<EventHandler *, 4> res;
-    if (global_bind_event) {
-      // Find the event handler in the global bind event map
-      auto *global_event_handler =
-          find_event_f(cur_target->global_bind_event_map(), event_name);
-      if (global_event_handler) {
-        res.push_back(global_event_handler);
-      }
-    } else {
-      // Find the event handler in the event map
-      auto *js_event_handler =
-          find_event_f(cur_target->event_map(), event_name);
-      if (js_event_handler) {
-        res.push_back(js_event_handler);
-      }
-      // Find the event handler in the lepus event map
-      auto *lepus_event_handler =
-          find_event_f(cur_target->lepus_event_map(), event_name);
-      if (lepus_event_handler) {
-        res.push_back(lepus_event_handler);
-      }
-    }
-    return res;
-  };
-
   Element *target = *response_chain.begin();
   if (!option.lepus_event_) {
     for (const auto &current_target : response_chain) {
@@ -1050,35 +1031,6 @@ bool TouchEventHandler::HandleEventInternal(
     }
   }
 
-  const auto &push_global_bind_operation = [&event_name, &operation,
-                                            &get_handler_f](Element *cur_target,
-                                                            Element *target) {
-    auto handlers = get_handler_f(cur_target, event_name, true);
-    for (auto handler : handlers) {
-      // Need to copy rather than ref because the handler may be a null pointer
-      if (handler != nullptr) {
-        operation.emplace_back(handler, target, cur_target, false);
-      }
-    }
-  };
-
-  const auto &handle_global_bind_target =
-      [&push_global_bind_operation](
-          Element *cur_target, Element *target,
-          const std::set<std::string> &global_bind_targets) {
-        for (const auto &id_selector : global_bind_targets) {
-          // if set not empty, means the target should have not empty id,
-          // when data_model is null pointer or element id is empty, then not
-          // send event
-          if (target->data_model() == nullptr ||
-              target->data_model()->idSelector().empty()) {
-            continue;
-          }
-          if (id_selector == target->data_model()->idSelector().str()) {
-            push_global_bind_operation(cur_target, target);
-          }
-        }
-      };
   ElementManager *manager = target->element_manager();
   if (manager->GetGlobalBindElementIds(event_name).size() > 0) {
     for (const auto &id : manager->GetGlobalBindElementIds(event_name)) {
@@ -1086,15 +1038,21 @@ bool TouchEventHandler::HandleEventInternal(
       auto set = cur_target->GlobalBindTarget();
       if (set.empty()) {
         // if set is empty, means the target is all other elements
-        push_global_bind_operation(cur_target, target);
+        operation.append(
+            std::move(TouchEventHandler::push_global_bind_operation_f_(
+                event_name, cur_target, target)));
       } else {
         if (set.size() > 0) {
           if (option.bubbles_) {
             for (const auto &target : response_chain) {
-              handle_global_bind_target(cur_target, target, set);
+              operation.append(
+                  std::move(TouchEventHandler::get_global_bind_operations_f_(
+                      event_name, cur_target, target, set)));
             }
           } else {
-            handle_global_bind_target(cur_target, target, set);
+            operation.append(
+                std::move(TouchEventHandler::get_global_bind_operations_f_(
+                    event_name, cur_target, target, set)));
           }
         }
       }
@@ -1109,7 +1067,8 @@ bool TouchEventHandler::HandleEventInternal(
          ++iter) {
       cur_target = *iter;
       if (cur_target == nullptr) break;
-      auto handlers = get_handler_f(cur_target, event_name, false);
+      auto handlers =
+          TouchEventHandler::get_handlers_f_(cur_target, event_name, false);
       bool need_break = false;
       for (auto handler : handlers) {
         // Need to copy rather than ref because the handler may be a null
@@ -1138,7 +1097,8 @@ bool TouchEventHandler::HandleEventInternal(
   if (!capture) {
     for (auto *cur_target : response_chain) {
       if (cur_target == nullptr) break;
-      auto handlers = get_handler_f(cur_target, event_name, false);
+      auto handlers =
+          TouchEventHandler::get_handlers_f_(cur_target, event_name, false);
       bool need_break = false;
       for (auto handler : handlers) {
         // Need to copy rather than ref because the handler may be a null
@@ -1382,6 +1342,446 @@ EventResult TouchEventHandler::FireElementWorklet(
   }
   return result;
 }
+
+void TouchEventHandler::StartEventGenerate(TemplateAssembler *tasm,
+                                           const std::string &page_name,
+                                           const lepus::Value &event_params) {
+  if (!event_params.IsArrayOrJSArray() || event_params.GetLength() < 6) {
+    return;
+  }
+  const std::string &event_name = event_params.GetProperty(0).StdString();
+  EventType event_type =
+      static_cast<EventType>(event_params.GetProperty(1).Number());
+  int32_t target_sign = event_params.GetProperty(2).Number();
+  int64_t event_timestamp = event_params.GetProperty(3).Number();
+  int64_t event_id = event_params.GetProperty(4).Number();
+  const lepus::Value &event_detail = event_params.GetProperty(5);
+
+  if (event_type == EventType::kTouch) {
+    if (!event_detail.IsArrayOrJSArray()) {
+      return;
+    }
+    bool is_multi_finger = event_detail.GetProperty(0).Bool();
+    lepus::Value ui_touch_map;
+    float client_x = 0, client_y = 0, page_x = 0, page_y = 0, view_x = 0,
+          view_y = 0;
+    if (is_multi_finger) {
+      if (event_detail.GetLength() >= 2) {
+        ui_touch_map = event_detail.GetProperty(1);
+      }
+    } else {
+      if (event_detail.GetLength() >= 7) {
+        client_x = event_detail.GetProperty(1).Number();
+        client_y = event_detail.GetProperty(2).Number();
+        page_x = event_detail.GetProperty(3).Number();
+        page_y = event_detail.GetProperty(4).Number();
+        view_x = event_detail.GetProperty(5).Number();
+        view_y = event_detail.GetProperty(6).Number();
+      }
+    }
+
+    EventInfo event_info =
+        is_multi_finger ? EventInfo(ui_touch_map, event_timestamp)
+                        : EventInfo(target_sign, view_x, view_y, client_x,
+                                    client_y, page_x, page_y, event_timestamp);
+    EventContext event_context = {
+        .event_type = event_type,
+        .event_name = event_name,
+        .page_name = page_name,
+        .option = {.bubbles_ = true,
+                   .composed_ = true,
+                   .capture_phase_ = true,
+                   .lepus_event_ = false,
+                   .from_frontend_ = false},
+        .get_event_params =
+            [this, &event_name, &event_info](
+                Element *target, Element *current_target, bool is_js_event) {
+              return GetTouchEventParam(event_name, target, current_target,
+                                        event_info, is_js_event);
+            },
+        .target_sign = target_sign,
+        .event_timestamp = event_timestamp,
+        .event_id = event_id};
+
+    if (is_multi_finger) {
+      for (auto &event : *event_info.params.Table()) {
+        int target_sign = std::stoi(event.first.str());
+        const auto &event_chain =
+            GenerateResponseChain(target_sign, event_context.option);
+        event_context.event_chain_map.insert_or_assign(target_sign,
+                                                       std::move(event_chain));
+      }
+    } else {
+      const auto &event_chain =
+          GenerateResponseChain(target_sign, event_context.option);
+      event_context.event_chain_map.insert_or_assign(target_sign,
+                                                     std::move(event_chain));
+    }
+    event_queue_.insert_or_assign(event_id, std::move(event_context));
+  }
+
+  HandleGlobalBindAndTriggerEvent(tasm, event_id);
+}
+
+void TouchEventHandler::HandleGlobalBindAndTriggerEvent(TemplateAssembler *tasm,
+                                                        int64_t event_id) {
+  const auto &item = event_queue_.find(event_id);
+  if (item == event_queue_.end()) {
+    return;
+  }
+
+  EventContext &event_context = item->second;
+  for (const auto &pair : event_context.event_chain_map) {
+    const std::string &event_name = event_context.event_name;
+    const EventOption &event_option = event_context.option;
+    int64_t target_sign = pair.first;
+    const ResponseChainVector &event_chain = pair.second;
+    if (event_chain.empty()) {
+      continue;
+    }
+
+    EventOpsVector event_ops;
+    Element *target = *event_chain.begin();
+    if (!event_option.lepus_event_) {
+      for (const auto &current_target : event_chain) {
+        if (current_target && current_target->EnableTriggerGlobalEvent()) {
+          event_ops.emplace_back(nullptr, target, current_target, true);
+        }
+      }
+    }
+
+    ElementManager *manager = target->element_manager();
+    if (manager->GetGlobalBindElementIds(event_name).size() > 0) {
+      for (const auto &id : manager->GetGlobalBindElementIds(event_name)) {
+        Element *cur_target = node_manager_->Get(id);
+        const auto &set = cur_target->GlobalBindTarget();
+        if (set.empty()) {
+          // if set is empty, means the target is all other elements
+          event_ops.append(
+              std::move(TouchEventHandler::push_global_bind_operation_f_(
+                  event_name, cur_target, target)));
+        } else {
+          if (set.size() > 0) {
+            if (event_option.bubbles_) {
+              for (const auto &target : event_chain) {
+                event_ops.append(
+                    std::move(TouchEventHandler::get_global_bind_operations_f_(
+                        event_name, cur_target, target, set)));
+              }
+            } else {
+              event_ops.append(
+                  std::move(TouchEventHandler::get_global_bind_operations_f_(
+                      event_name, cur_target, target, set)));
+            }
+          }
+        }
+      }
+    }
+    event_context.event_ops_map.insert_or_assign(target_sign, event_ops);
+  }
+
+  StartEventFire(tasm, false, event_id, false);
+}
+
+void TouchEventHandler::StartEventCapture(TemplateAssembler *tasm,
+                                          int64_t event_id) {
+  const auto &item = event_queue_.find(event_id);
+  if (item == event_queue_.end()) {
+    return;
+  }
+
+  EventContext &event_context = item->second;
+  const std::string &event_name = event_context.event_name;
+  const EventOption &event_option = event_context.option;
+  base::InlineVector<std::pair<int64_t, bool>, 2> target_catch_vec;
+  for (const auto &pair : event_context.event_chain_map) {
+    int64_t target_sign = pair.first;
+    const ResponseChainVector &event_chain = pair.second;
+    if (event_chain.empty()) {
+      continue;
+    }
+
+    EventOpsVector event_ops;
+    Element *target = *event_chain.begin();
+    bool capture = false;
+    if (event_option.capture_phase_) {
+      Element *cur_target = nullptr;
+      for (auto iter = event_chain.rbegin(); iter != event_chain.rend();
+           ++iter) {
+        cur_target = *iter;
+        if (cur_target == nullptr) {
+          break;
+        }
+
+        auto handlers =
+            TouchEventHandler::get_handlers_f_(cur_target, event_name, false);
+        bool need_break = false;
+        for (auto handler : handlers) {
+          // Need to copy rather than ref because the handler may be a null
+          // pointer
+          if (!handler) {
+            continue;
+          }
+          if (handler->IsCaptureCatchEvent()) {
+            event_ops.emplace_back(handler, target, cur_target, false);
+            capture = true;
+            // Set need_break to true to exit the outer loop
+            need_break = true;
+          } else if (handler->IsCaptureBindEvent()) {
+            event_ops.emplace_back(handler, target, cur_target, false);
+          }
+        }
+        if (need_break) {
+          // Exit the outer loop if need_break is true
+          break;
+        }
+      }
+    }
+    if (auto it = event_context.event_ops_map.find(target_sign);
+        it != event_context.event_ops_map.end()) {
+      (it->second).append(event_ops);
+    } else {
+      event_context.event_ops_map[target_sign] = event_ops;
+    }
+    target_catch_vec.push_back(std::make_pair(target_sign, capture));
+  }
+
+  for (const auto &pair : target_catch_vec) {
+    tasm->OnEventCapture(pair.first, pair.second, event_id);
+  }
+}
+
+void TouchEventHandler::StartEventBubble(TemplateAssembler *tasm,
+                                         int64_t event_id) {
+  const auto &item = event_queue_.find(event_id);
+  if (item == event_queue_.end()) {
+    return;
+  }
+
+  EventContext &event_context = item->second;
+  const std::string &event_name = event_context.event_name;
+  const EventOption &event_option = event_context.option;
+  base::InlineVector<std::pair<int64_t, bool>, 2> target_catch_vec;
+  for (const auto &pair : event_context.event_chain_map) {
+    int64_t target_sign = pair.first;
+    const ResponseChainVector &event_chain = pair.second;
+    if (event_chain.empty()) {
+      continue;
+    }
+
+    EventOpsVector event_ops;
+    Element *target = *event_chain.begin();
+    bool bubble = false;
+    if (event_option.bubbles_) {
+      for (auto *cur_target : event_chain) {
+        if (cur_target == nullptr) {
+          break;
+        }
+
+        auto handlers =
+            TouchEventHandler::get_handlers_f_(cur_target, event_name, false);
+        bool need_break = false;
+        for (auto handler : handlers) {
+          // Need to copy rather than ref because the handler may be a null
+          // pointer
+          if (!handler) {
+            continue;
+          }
+          if (handler->IsCatchEvent()) {
+            event_ops.emplace_back(handler, target, cur_target, false);
+            bubble = true;
+            // Set need_break to true to exit the outer loop
+            need_break = true;
+          } else if (handler->IsBindEvent()) {
+            event_ops.emplace_back(handler, target, cur_target, false);
+            if (!event_option.bubbles_) {
+              // Set need_break to true to exit the outer loop
+              need_break = true;
+            }
+          }
+        }
+        if (need_break) {
+          // Exit the outer loop if need_break is true
+          break;
+        }
+      }
+    }
+    if (auto it = event_context.event_ops_map.find(target_sign);
+        it != event_context.event_ops_map.end()) {
+      (it->second).append(event_ops);
+    } else {
+      event_context.event_ops_map[target_sign] = event_ops;
+    }
+    target_catch_vec.push_back(std::make_pair(target_sign, bubble));
+  }
+
+  for (const auto &pair : target_catch_vec) {
+    tasm->OnEventBubble(pair.first, pair.second, event_id);
+  }
+}
+
+void TouchEventHandler::StartEventFire(TemplateAssembler *tasm, bool is_stop,
+                                       int64_t event_id, bool is_propagation) {
+  const auto &item = event_queue_.find(event_id);
+  if (item == event_queue_.end()) {
+    return;
+  }
+
+  EventContext &event_context = item->second;
+  const std::string &event_name = event_context.event_name;
+  if (!is_stop) {
+    for (const auto &pair : event_context.event_ops_map) {
+      int64_t target_sign = pair.first;
+      const EventOpsVector &event_ops = pair.second;
+      bool stop_immediate_propagation = false;
+      const EventOperation *stop_propagation_op = nullptr;
+
+      if (event_name == EVENT_TOUCH_START) {
+        long_press_consumed_ = false;
+      }
+      if (event_name == EVENT_LONG_PRESS && !event_ops.empty()) {
+        long_press_consumed_ = true;
+      }
+      if (event_name == EVENT_TAP && long_press_consumed_) {
+        continue;
+      }
+
+      for (const auto &op : event_ops) {
+        bool is_js_event = true;
+        // js global event handler is nullptr
+        if (op.handler_) {
+          is_js_event = op.handler_->is_js_event();
+        }
+        const lepus_value &params = event_context.get_event_params(
+            op.target_, op.current_target_, is_js_event);
+        if (op.global_event_) {
+          SendGlobalEvent(event_context.event_type, event_context.event_name,
+                          params);
+        } else {
+          // trigger jsb event
+          if (op.handler_->is_piper_event()) {
+            TriggerLepusBridgesAsync(event_context.event_type, tasm,
+                                     event_context.event_name,
+                                     *(op.handler_->piper_event_vec()));
+            continue;
+          }
+
+          if (stop_immediate_propagation ||
+              (stop_propagation_op &&
+               !stop_propagation_op->IsSameTargetAndEventPhase(op))) {
+            is_stop = true;
+            continue;
+          }
+
+          if (!is_js_event && use_lepus_ng_) {
+            EventResult result = FireElementWorklet(
+                event_context, op.current_target_->ParentComponentIdString(),
+                op.current_target_->ParentComponentEntryName(), tasm,
+                op.handler_, params, op.current_target_->impl_id());
+            if (result == EventResult::kStopImmediatePropagation) {
+              // If stopImmediatePropagation() is invoked during one such call,
+              // no remaining listeners will be called, either on that element
+              // or any other element.
+              stop_immediate_propagation = true;
+            } else if (result == EventResult::kStopPropagation) {
+              // stopPropagation() prevents further propagation of the current
+              // event in the capturing and bubbling phases. stop_propagation_op
+              // = &op;
+              stop_propagation_op = &op;
+            }
+            continue;
+          }
+
+          if (!tasm->page_proxy()->element_manager()->IsAirModeFiberEnabled()) {
+            FireEvent(event_context.event_type, event_context.page_name,
+                      op.handler_, op.target_, op.current_target_, params);
+          }
+        }
+      }
+      if (is_propagation) {
+        tasm->OnEventFire(target_sign, is_stop, event_id);
+      }
+    }
+  }
+
+  if (is_propagation) {
+    event_queue_.erase(item);
+  }
+}
+
+FindEventHandler TouchEventHandler::find_event_f_ =
+    [](const EventMap &event_map,
+       const std::string &event_name) -> EventHandler * {
+  auto it = event_map.find(event_name);
+  if (it == event_map.end()) {
+    return nullptr;
+  }
+  return (it->second).get();
+};
+
+GetEventHandlers TouchEventHandler::get_handlers_f_ =
+    [](Element *cur_target, const std::string &event_name,
+       bool global_bind_event) -> base::InlineVector<EventHandler *, 4> {
+  base::InlineVector<EventHandler *, 4> res;
+  if (global_bind_event) {
+    // Find the event handler in the global bind event map
+    auto *global_event_handler = TouchEventHandler::find_event_f_(
+        cur_target->global_bind_event_map(), event_name);
+    if (global_event_handler) {
+      res.push_back(global_event_handler);
+    }
+  } else {
+    // Find the event handler in the event map
+    auto *js_event_handler =
+        TouchEventHandler::find_event_f_(cur_target->event_map(), event_name);
+    if (js_event_handler) {
+      res.push_back(js_event_handler);
+    }
+    // Find the event handler in the lepus event map
+    auto *lepus_event_handler = TouchEventHandler::find_event_f_(
+        cur_target->lepus_event_map(), event_name);
+    if (lepus_event_handler) {
+      res.push_back(lepus_event_handler);
+    }
+  }
+  return res;
+};
+
+PushGlobalBindOperation TouchEventHandler::push_global_bind_operation_f_ =
+    [](const std::string &event_name, Element *cur_target,
+       Element *target) -> EventOpsVector {
+  auto handlers =
+      TouchEventHandler::get_handlers_f_(cur_target, event_name, true);
+  EventOpsVector res;
+  for (auto handler : handlers) {
+    // Need to copy rather than ref because the handler may be a null
+    // pointer
+    if (handler != nullptr) {
+      res.emplace_back(handler, target, cur_target, false);
+    }
+  }
+  return res;
+};
+
+GetGlobalBindOperations TouchEventHandler::get_global_bind_operations_f_ =
+    [](const std::string &event_name, Element *cur_target, Element *target,
+       const std::set<std::string> &global_bind_targets) -> EventOpsVector {
+  EventOpsVector res;
+  for (const auto &id_selector : global_bind_targets) {
+    // if set not empty, means the target should have not empty id,
+    // when data_model is null pointer or element id is empty, then not
+    // send event
+    if (target->data_model() == nullptr ||
+        target->data_model()->idSelector().empty()) {
+      continue;
+    }
+    if (id_selector == target->data_model()->idSelector().str()) {
+      res.append(std::move(TouchEventHandler::push_global_bind_operation_f_(
+          event_name, cur_target, target)));
+    }
+  }
+  return res;
+};
 
 }  // namespace tasm
 }  // namespace lynx

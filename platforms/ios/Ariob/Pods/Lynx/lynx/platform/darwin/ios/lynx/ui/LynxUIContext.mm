@@ -2,28 +2,28 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-#import "LynxUIContext.h"
-#import "LUIErrorHandling.h"
+#import <Lynx/LUIErrorHandling.h>
+#import <Lynx/LynxEnv.h>
+#import <Lynx/LynxError.h>
+#import <Lynx/LynxEventHandler.h>
+#import <Lynx/LynxGlobalObserver.h>
+#import <Lynx/LynxResourceServiceFetcher.h>
+#import <Lynx/LynxRootUI.h>
+#import <Lynx/LynxService.h>
+#import <Lynx/LynxServiceDevToolProtocol.h>
+#import <Lynx/LynxSubErrorCode.h>
+#import <Lynx/LynxUIContext.h>
+#import <Lynx/LynxUIOwner.h>
+#import <Lynx/LynxUIReportInfoDelegate.h>
+#import <Lynx/LynxView+Internal.h>
 #import "LynxContext+Internal.h"
-#import "LynxEnv.h"
-#import "LynxError.h"
-#import "LynxEventHandler.h"
-#import "LynxGlobalObserver.h"
-#import "LynxResourceServiceFetcher.h"
-#import "LynxRootUI.h"
 #import "LynxScrollFluency.h"
-#import "LynxService.h"
-#import "LynxServiceDevToolProtocol.h"
-#import "LynxSubErrorCode.h"
 #import "LynxTemplateRender+Internal.h"
 #import "LynxTouchHandler+Internal.h"
 #import "LynxUIContext+Internal.h"
 #import "LynxUIExposure+Internal.h"
 #import "LynxUIIntersectionObserver.h"
-#import "LynxUIOwner.h"
 #import "LynxUIRendererProtocol.h"
-#import "LynxUIReportInfoDelegate.h"
-#import "LynxView+Internal.h"
 
 @implementation LynxUIContext {
   BOOL _isDev;
@@ -200,6 +200,40 @@
 }
 
 #pragma mark - Page configs
+
+- (void)setUIConfig:(id<LUIConfig>)config {
+  [self setDefaultOverflowVisible:config.defaultOverflowVisible];
+  [self setEnableTextRefactor:config.enableTextRefactor];
+  [self setEnableTextOverflow:config.enableTextOverflow];
+  [self setEnableNewClipMode:config.enableNewClipMode];
+  [self setDefaultImplicitAnimation:config.globalImplicit];
+  [self setEnableEventRefactor:config.enableEventRefactor];
+  [self setEnableA11yIDMutationObserver:config.enableA11yIDMutationObserver];
+  [self setEnableEventThrough:config.enableEventThrough];
+  [self setEnableBackgroundShapeLayer:config.enableBackgroundShapeLayer];
+  [self setEnableExposureUIMargin:config.enableExposureUIMargin];
+  [self setEnableTextLanguageAlignment:config.enableTextLanguageAlignment];
+  [self setEnableXTextLayoutReused:config.enableXTextLayoutReused];
+  [self setEnableFiberArch:config.enableFiberArch];
+  [self setEnableNewGesture:config.enableNewGesture];
+  [self setCSSAlignWithLegacyW3c:config.CSSAlignWithLegacyW3C];
+  [self setTargetSdkVersion:config.targetSdkVersion];
+
+  self.imageMonitorEnabled = config.imageMonitorEnabled;
+  self.devtoolEnabled = config.devtoolEnabled;
+  self.fixNewImageDownSampling = config.fixNewImageDownSampling;
+  // If EnableLynxFluency is configured, Lynx will determine whether to enable fluency
+  // metics based on this probability when creating a LynxView.
+  [self.fluencyInnerListener setPageConfigProbability:config.fluencyPageConfigProbability];
+
+  [self setEnableTextLayerRender:config.enableTextLayerRenderer];
+
+  [self setEnableTextNonContiguousLayout:config.enableTextNonContiguousLayout];
+  [self setEnableImageDownsampling:config.enableImageDownsampling];
+  [self setEnableNewImage:config.enableNewImage];
+  [self setTrailUseNewImage:config.trailUseNewImage];
+  [self setLogBoxImageSizeWarningThreshold:config.logBoxImageSizeWarningThreshold];
+}
 
 - (void)setDefaultOverflowVisible:(BOOL)enable {
   _defaultOverflowVisible = enable;

@@ -21,6 +21,7 @@
 #include "core/services/feature_count/global_feature_counter.h"
 #include "core/services/recorder/recorder_controller.h"
 #include "core/services/timing_handler/timing_constants_deprecated.h"
+#include "core/shell/lynx_runtime_actor_holder.h"
 #include "core/shell/runtime_mediator.h"
 #include "core/shell/runtime_standalone_helper.h"
 #include "core/shell/tasm_operation_queue_async.h"
@@ -173,11 +174,10 @@ void LynxShell::Destroy() {
 }
 
 void LynxShell::InitRuntimeWithRuntimeDisabled(
-    std::shared_ptr<VSyncMonitor> vsync_monitor) {
+    std::shared_ptr<base::VSyncMonitor> vsync_monitor) {
   DCHECK(!enable_runtime_);
   runtime_actor_ = std::make_shared<LynxActor<runtime::LynxRuntime>>(
       nullptr, nullptr, instance_id_, enable_runtime_);
-  vsync_monitor->set_runtime_actor(runtime_actor_);
   tasm_mediator_->SetRuntimeActor(runtime_actor_);
   layout_mediator_->SetRuntimeActor(runtime_actor_);
   timing_mediator_->SetRuntimeActor(runtime_actor_);
@@ -204,8 +204,8 @@ void LynxShell::InitRuntime(
   tasm::recorder::LynxViewInitRecorder::GetInstance().RecordThreadStrategy(
       static_cast<int32_t>(current_strategy_), record_id, enable_runtime_);
 #endif
-  std::shared_ptr<VSyncMonitor> vsync_monitor =
-      lynx::shell::VSyncMonitor::Create();
+  std::shared_ptr<base::VSyncMonitor> vsync_monitor =
+      base::VSyncMonitor::Create();
   if (!enable_runtime_) {
     InitRuntimeWithRuntimeDisabled(vsync_monitor);
     return;
@@ -218,15 +218,15 @@ void LynxShell::InitRuntime(
   auto delegate = std::make_unique<RuntimeMediator>(
       facade_actor_, engine_actor_, timing_actor_, card_cached_data_mgr_,
       js_task_runner, std::move(external_resource_loader));
-  delegate->set_vsync_monitor(vsync_monitor);
   delegate->SetPropBundleCreator(prop_bundle_creator_);
+  auto* delegate_raw_ptr = delegate.get();
   tasm_mediator_->SetPropBundleCreator(prop_bundle_creator_);
   auto runtime = std::make_unique<runtime::LynxRuntime>(
       group_id, instance_id_, std::move(delegate), enable_user_code_cache,
       code_cache_source_url, enable_js_group_thread_);
   runtime_actor_ = std::make_shared<LynxActor<runtime::LynxRuntime>>(
       std::move(runtime), js_task_runner, instance_id_, enable_runtime_);
-  vsync_monitor->set_runtime_actor(runtime_actor_);
+  delegate_raw_ptr->set_vsync_monitor(vsync_monitor, runtime_actor_);
 
   ConsumeModuleFactory(module_manager.get());
   OnRuntimeCreate();
@@ -296,6 +296,26 @@ void LynxShell::StartJsRuntime() {
   if (!is_destroyed_ && start_js_runtime_task_ != nullptr) {
     TRACE_EVENT(LYNX_TRACE_CATEGORY, "LynxShell::StartJsRuntime");
     runtime_actor_->ActAsync(std::move(start_js_runtime_task_));
+  }
+}
+
+void LynxShell::TriggerDestroyRuntime(
+    const std::shared_ptr<LynxActor<runtime::LynxRuntime>>& runtime_actor,
+    std::string js_group_thread_name) {
+  auto instance_id = runtime_actor->GetInstanceId();
+  auto runtime = runtime_actor->Impl();
+  if (runtime->TryToDestroy()) {
+    runtime_actor->Act([instance_id](auto& runtime) {
+      runtime = nullptr;
+      tasm::report::FeatureCounter::Instance()->ClearAndReport(instance_id);
+    });
+  } else {
+    // Hold LynxRuntime. It will be released when destroyed callback be
+    // handled in LynxRuntime::CallJSCallback() or the delayed release
+    // task time out.
+    auto holder = LynxRuntimeActorHolder::GetInstance();
+    holder->Hold(runtime_actor, js_group_thread_name);
+    holder->PostDelayedRelease(instance_id, js_group_thread_name);
   }
 }
 
@@ -456,6 +476,7 @@ void LynxShell::LoadSSRData(
 void LynxShell::UpdateDataByParsedData(
     const std::shared_ptr<tasm::TemplateData>& data) {
   tasm::PipelineOptions pipeline_options;
+  pipeline_options.pipeline_origin = tasm::timing::kUpdateTriggeredByNative;
   OnPipelineStart(pipeline_options.pipeline_id,
                   pipeline_options.pipeline_origin,
                   pipeline_options.pipeline_start_timestamp);
@@ -477,17 +498,18 @@ void LynxShell::UpdateMetaData(const std::shared_ptr<tasm::TemplateData>& data,
       data, global_props, reinterpret_cast<int64_t>(this));
 #endif
   tasm::PipelineOptions pipeline_options;
+  pipeline_options.pipeline_origin = tasm::timing::kUpdateTriggeredByNative;
   OnPipelineStart(pipeline_options.pipeline_id,
                   pipeline_options.pipeline_origin,
                   pipeline_options.pipeline_start_timestamp);
   ThreadModeAutoSwitch auto_switch(thread_mode_manager_);
   EnsureTemplateDataThreadSafe(data);
-  EnsureGlobalPropsThreadSafe(global_props);
+  auto global_props_thread_safe = EnsureGlobalPropsThreadSafe(global_props);
   auto order = ui_operation_queue_->UpdateNativeUpdateDataOrder();
   engine_actor_->Act(
-      [data, global_props, order,
+      [data, global_props_thread_safe, order,
        pipeline_options = std::move(pipeline_options)](auto& engine) {
-        engine->UpdateMetaData(data, global_props, order,
+        engine->UpdateMetaData(data, global_props_thread_safe, order,
                                std::move(pipeline_options));
       });
 }
@@ -495,6 +517,7 @@ void LynxShell::UpdateMetaData(const std::shared_ptr<tasm::TemplateData>& data,
 void LynxShell::ResetDataByParsedData(
     const std::shared_ptr<tasm::TemplateData>& data) {
   tasm::PipelineOptions pipeline_options;
+  pipeline_options.pipeline_origin = tasm::timing::kUpdateTriggeredByNative;
   OnPipelineStart(pipeline_options.pipeline_id,
                   pipeline_options.pipeline_origin,
                   pipeline_options.pipeline_start_timestamp);
@@ -553,8 +576,7 @@ void LynxShell::ReloadTemplate(const std::shared_ptr<tasm::TemplateData>& data,
                                const lepus::Value& global_props) {
   tasm::PipelineOptions pipeline_options;
   pipeline_options.need_timestamps = true;
-  // TODO(kechenglong): should find a better pipeline_origin name?
-  pipeline_options.pipeline_origin = tasm::timing::kReloadBundle;
+  pipeline_options.pipeline_origin = tasm::timing::kReloadBundleFromNative;
   OnPipelineStart(pipeline_options.pipeline_id,
                   pipeline_options.pipeline_origin,
                   pipeline_options.pipeline_start_timestamp);
@@ -572,6 +594,7 @@ void LynxShell::ReloadTemplate(const std::shared_ptr<tasm::TemplateData>& data,
 
 void LynxShell::UpdateConfig(const lepus::Value& config) {
   tasm::PipelineOptions pipeline_options;
+  pipeline_options.pipeline_origin = tasm::timing::kUpdateTriggeredByNative;
   OnPipelineStart(pipeline_options.pipeline_id,
                   pipeline_options.pipeline_origin,
                   pipeline_options.pipeline_start_timestamp);
@@ -583,6 +606,7 @@ void LynxShell::UpdateConfig(const lepus::Value& config) {
 
 void LynxShell::UpdateGlobalProps(const lepus::Value& global_props) {
   tasm::PipelineOptions pipeline_options;
+  pipeline_options.pipeline_origin = tasm::timing::kUpdateGlobalProps;
   OnPipelineStart(pipeline_options.pipeline_id,
                   pipeline_options.pipeline_origin,
                   pipeline_options.pipeline_start_timestamp);
@@ -642,13 +666,13 @@ void LynxShell::SetPlatformConfig(std::string platform_config_json_string) {
 }
 
 void LynxShell::SyncFetchLayoutResult() {
-  engine_actor_->Act([](auto& engine) { engine->SyncFetchLayoutResult(); });
-}
+  if (layout_result_manager_ == nullptr) {
+    engine_actor_->Act([](auto& engine) { engine->SyncFetchLayoutResult(); });
+    return;
+  }
 
-void LynxShell::LayoutImmediatelyWithUpdatedViewport(float width,
-                                                     int32_t width_mode,
-                                                     float height,
-                                                     int32_t height_mode) {
+  // TODO(klaxxi): Merge the similar logic with that in method
+  // LayoutImmediatelyWithUpdatedViewport.
   DCHECK(runners_.GetUITaskRunner()->RunsTasksOnCurrentThread());
   DCHECK(runners_.GetTASMTaskRunner()->RunsTasksOnCurrentThread());
   DCHECK(!runners_.GetLayoutTaskRunner()->RunsTasksOnCurrentThread());
@@ -658,16 +682,68 @@ void LynxShell::LayoutImmediatelyWithUpdatedViewport(float width,
 
   auto ui_loop = runners_.GetUITaskRunner()->GetLoop();
 
-  // TODO(heshan): Merge with the similar logic of EngineThreadSwitch
-  layout_runner->Bind(ui_loop);
-  tasm_operation_queue_->SetAppendPendingTaskNeededDuringFlush(true);
+  // First, consume all potentially pending onLayoutAfter tasks,
+  // as ResumeLayout does not necessarily retrigger the layout afterward,
+  // also ensuring proper sequencing.
+  layout_result_manager_->RunOnLayoutAfterTasks();
 
+  // Second, pause the layout to prevent multiple layout triggers
+  // while consuming pending tasks in the layout queue.
+  layout_actor_->Impl()->PauseLayout();
+
+  // Third, bind the layout queue to the current thread and
+  // clear all pending tasks in the layout queue.
+  layout_runner->Bind(ui_loop, true);
+
+  // Fourth, resume the layout.
+  // If there is a pending layout, it will be retriggered here.
+  layout_actor_->Impl()->ResumeLayout();
+
+  // Fifth, rebind the layout queue to the background thread.
+  layout_runner->UnBind();
+
+  layout_loop->PostTask(
+      [layout_runner, layout_loop]() { layout_runner->Bind(layout_loop); },
+      fml::TimePoint::Now(), fml::TaskSourceGrade::kEmergency);
+}
+
+void LynxShell::LayoutImmediatelyWithUpdatedViewport(float width,
+                                                     int32_t width_mode,
+                                                     float height,
+                                                     int32_t height_mode) {
+  DCHECK(layout_result_manager_ != nullptr);
+
+  DCHECK(runners_.GetUITaskRunner()->RunsTasksOnCurrentThread());
+  DCHECK(runners_.GetTASMTaskRunner()->RunsTasksOnCurrentThread());
+  DCHECK(!runners_.GetLayoutTaskRunner()->RunsTasksOnCurrentThread());
+
+  auto layout_runner = runners_.GetLayoutTaskRunner();
+  auto layout_loop = layout_runner->GetLoop();
+
+  auto ui_loop = runners_.GetUITaskRunner()->GetLoop();
+
+  // First, consume all potentially pending onLayoutAfter tasks,
+  // as ResumeLayout does not necessarily retrigger the layout afterward,
+  // also ensuring proper sequencing.
+  layout_result_manager_->RunOnLayoutAfterTasks();
+
+  // Second, pause the layout, as a layout must always be retriggered
+  // after updateViewport, making any layout triggered while consuming
+  // pending tasks in the layout queue redundant.
+  layout_actor_->Impl()->PauseLayout();
+
+  // Third, bind the layout queue to the current thread and
+  // clear all pending tasks in the layout queue.
+  layout_runner->Bind(ui_loop, true);
+
+  // Fourth, update the viewport and resume the layout,
+  // which will retrigger the layout here.
   UpdateViewport(width, width_mode, height, height_mode);
 
-  TriggerLayout();
+  layout_actor_->Impl()->ResumeLayout();
 
+  // Fifth, rebind the layout queue to the background thread.
   layout_runner->UnBind();
-  tasm_operation_queue_->SetAppendPendingTaskNeededDuringFlush(false);
 
   layout_loop->PostTask(
       [layout_runner, layout_loop]() { layout_runner->Bind(layout_loop); },
@@ -929,6 +1005,10 @@ void LynxShell::RunOnTasmThread(std::function<void(void)>&& task) {
 }
 
 void LynxShell::AttachEngineToUIThread() {
+#if ENABLE_TESTBENCH_RECORDER
+  tasm::recorder::TemplateAssemblerRecorder::RecordSwitchEngineFromUIThread(
+      true, reinterpret_cast<int64_t>(this));
+#endif
   if (engine_thread_switch_) {
     switch (current_strategy_) {
       case base::ThreadStrategyForRendering::MOST_ON_TASM:
@@ -946,6 +1026,10 @@ void LynxShell::AttachEngineToUIThread() {
 }
 
 void LynxShell::DetachEngineFromUIThread() {
+#if ENABLE_TESTBENCH_RECORDER
+  tasm::recorder::TemplateAssemblerRecorder::RecordSwitchEngineFromUIThread(
+      false, reinterpret_cast<int64_t>(this));
+#endif
   if (engine_thread_switch_) {
     switch (current_strategy_) {
       case base::ThreadStrategyForRendering::ALL_ON_UI:
@@ -984,6 +1068,7 @@ void LynxShell::EnsureTemplateDataThreadSafe(
     const std::shared_ptr<tasm::TemplateData>& template_data) {
   // need clone template data if consumed by tasm thread
   if (template_data != nullptr && !(engine_actor_->CanRunNow())) {
+    LOGI("EnsureTemplateDataThreadSafe CloneValue." << this);
     template_data->CloneValue();
   }
 }
@@ -993,6 +1078,7 @@ lepus::Value LynxShell::EnsureGlobalPropsThreadSafe(
   // need clone global props if consumed by tasm thread
   TRACE_EVENT(LYNX_TRACE_CATEGORY, "LynxShell::EnsureGlobalPropsThreadSafe");
   if (!(engine_actor_->CanRunNow())) {
+    LOGI("EnsureGlobalPropsThreadSafe CloneValue." << this);
     return lynx::lepus::Value::Clone(global_props);
   } else {
     return global_props;

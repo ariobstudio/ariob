@@ -5,6 +5,9 @@
 #include "quickjs/include/quickjs_queue.h"
 #ifndef _WIN32
 #include <sys/mman.h>
+#if defined(ANDROID) || defined(__ANDROID__)
+#include <android/log.h>
+#endif
 
 #ifdef ENABLE_GC_DEBUG_TOOLS
 #define DCHECK(condition) \
@@ -108,7 +111,11 @@ void Queue::ResizeQueue() {
   }
 
   if (queue && munmap(queue, size * sizeof(queue[0])) != 0) {
-    abort();
+#if defined(ANDROID) || defined(__ANDROID__)
+    __android_log_print(ANDROID_LOG_ERROR, "PRIMJS_ALLOCATE",
+                        "munmap failed! queue: %p, size: %zu\n", queue,
+                        size * sizeof(queue[0]));
+#endif
   }
   size = new_size;
   queue = new_queue;

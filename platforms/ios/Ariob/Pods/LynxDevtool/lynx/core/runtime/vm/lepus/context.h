@@ -62,8 +62,8 @@ class Context {
    public:
     virtual const std::string& TargetSdkVersion() = 0;
     virtual void ReportError(base::LynxError error) = 0;
-    virtual void PrintMsgToJS(const std::string& level,
-                              const std::string& msg) = 0;
+    virtual void OnBTSConsoleEvent(const std::string& func_name,
+                                   const std::string& args) = 0;
     virtual void ReportGCTimingEvent(const char* start, const char* end) = 0;
 
     virtual fml::RefPtr<fml::TaskRunner> GetLepusTimedTaskRunner() = 0;
@@ -190,7 +190,7 @@ class Context {
       int32_t err_code = error::E_MTS_RUNTIME_ERROR,
       base::LynxErrorLevel error_level = base::LynxErrorLevel::Error);
 
-  void PrintMsgToJS(const std::string& level, const std::string& msg);
+  void OnBTSConsoleEvent(const std::string& func_name, const std::string& args);
 
   virtual void RegisterLepusVerion() = 0;
 

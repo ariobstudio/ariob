@@ -2,18 +2,18 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-#import "LynxShadowNodeOwner.h"
-#import "LynxComponentRegistry.h"
-#import "LynxDefines.h"
-#import "LynxEnv.h"
-#import "LynxEventReporter.h"
-#import "LynxKeyframeAnimator.h"
-#import "LynxNativeLayoutNode.h"
-#import "LynxPropsProcessor.h"
-#import "LynxService.h"
-#import "LynxThreadSafeDictionary.h"
-#import "LynxTraceEvent.h"
-#import "LynxTraceEventWrapper.h"
+#import <Lynx/LynxComponentRegistry.h>
+#import <Lynx/LynxDefines.h>
+#import <Lynx/LynxEnv.h>
+#import <Lynx/LynxEventReporter.h>
+#import <Lynx/LynxKeyframeAnimator.h>
+#import <Lynx/LynxNativeLayoutNode.h>
+#import <Lynx/LynxPropsProcessor.h>
+#import <Lynx/LynxService.h>
+#import <Lynx/LynxShadowNodeOwner.h>
+#import <Lynx/LynxThreadSafeDictionary.h>
+#import <Lynx/LynxTraceEvent.h>
+#import <Lynx/LynxTraceEventWrapper.h>
 
 @implementation LynxShadowNodeOwner {
   __weak LynxUIOwner* _uiOwner;
@@ -21,6 +21,7 @@
   // Record tags that use shadownode.
   NSMutableSet<NSString*>* _tagSet;
   LynxComponentScopeRegistry* _componentRegistry;
+  LynxLayoutNodeManager* _layoutNodeManager;
   BOOL _destroyed;
   id<LynxShadowNodeDelegate> _delegate;
   float _rootWidth;
@@ -55,8 +56,8 @@ LYNX_NOT_IMPLEMENTED(-(instancetype)init)
   _delegate = delegate;
 }
 
-- (void)setLayoutNodeManager:(void*)layoutNodeManagerPtr {
-  _layoutNodeManagerPtr = layoutNodeManagerPtr;
+- (void)initLayoutNodeManager:(void*)layoutNodeManagerPtr {
+  _layoutNodeManager = [[LynxLayoutNodeManager alloc] initWithNativePtr:layoutNodeManagerPtr];
 }
 
 - (NSInteger)createNodeWithSign:(NSInteger)sign
@@ -83,7 +84,7 @@ LYNX_NOT_IMPLEMENTED(-(instancetype)init)
     }
     [node setUIOperation:_uiOwner];
     [node setDelegate:_delegate];
-    [node setLayoutNodeManagerPtr:_layoutNodeManagerPtr];
+    [node setLayoutNodeManager:_layoutNodeManager];
     [_nodeHolder setObject:node forKey:[NSNumber numberWithInteger:sign]];
     // update props for shadow node
     for (NSString* key in props) {

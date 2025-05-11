@@ -276,6 +276,8 @@ NSInteger const ECLynxNativeModulesCommonAuthorizationError = 90105;
 NSInteger const ECLynxNativeModulesCommonSystemAuthorizationError = 90106;
 // The value returned by module method is invalid
 NSInteger const ECLynxNativeModulesCommonReturnError = 90107;
+// Use deprecated NativeModule API.
+NSInteger const ECLynxNativeModulesCommonDeprecated = 90108;
 
 
 // Behavior: Network
@@ -684,6 +686,8 @@ NSInteger const ECLynxExceptionJNI = 990200;
 			return [[LynxSubErrorCodeMetaData alloc] initWithLevel:ELynxLevelError fixSuggestion:@"Please file an issue to Lynx to help address it." consumer:@[]];
 		case ECLynxNativeModulesCommonReturnError:
 			return [[LynxSubErrorCodeMetaData alloc] initWithLevel:ELynxLevelError fixSuggestion:@"Please file an issue to Lynx to help address it." consumer:@[]];
+		case ECLynxNativeModulesCommonDeprecated:
+			return [[LynxSubErrorCodeMetaData alloc] initWithLevel:ELynxLevelWarn fixSuggestion:@"Please migrate deprecated api as soon as possible." consumer:@[]];
 		case ECLynxNativeModulesNetworkBadResponse:
 			return [[LynxSubErrorCodeMetaData alloc] initWithLevel:ELynxLevelError fixSuggestion:@"Check if the server's response body is correct; Check if client unexpectedly consumes http response body using network request interceptor; You can use request's url and log id to track down the problem." consumer:@[@(ELynxConsumerFrontEnd)]];
 		case ECLynxNativeModulesCustomError:

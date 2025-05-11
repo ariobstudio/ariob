@@ -3,8 +3,8 @@
 // LICENSE file in the root directory of this source tree.
 
 #import <Foundation/Foundation.h>
-#import "LynxEventTargetSpan.h"
-#import "LynxTextLayoutSpec.h"
+#import <Lynx/LynxEventTargetSpan.h>
+#import <Lynx/LynxTextLayoutSpec.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -31,7 +31,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly) NSTextStorage *textStorage;
 
 @property(nonatomic, readonly) NSArray<LynxEventTargetSpan *> *subSpan;
-@property(nonatomic, strong, nullable) UIColor *selectionColor;
 
 @property(nonatomic, strong, nullable) NSArray<LynxTextAttachmentInfo *> *attachments;
 @property(nonatomic) CGFloat baseline;

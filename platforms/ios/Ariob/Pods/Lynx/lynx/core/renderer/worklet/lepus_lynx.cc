@@ -103,7 +103,8 @@ void LepusLynx::RemoveTimedTask(uint32_t task_id) {
 
 void LepusLynx::EnsureTimeTaskInvoker() {
   if (timer_ == nullptr) {
-    timer_ = std::make_unique<base::TimedTaskManager>();
+    timer_ = std::make_unique<base::TimedTaskManager>(
+        true, tasm_->GetLepusTimedTaskRunner());
   }
 }
 

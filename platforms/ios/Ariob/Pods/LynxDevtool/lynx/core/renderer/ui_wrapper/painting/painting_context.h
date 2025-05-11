@@ -209,7 +209,8 @@ class PaintingContext {
   void UpdateContentOffsetForListContainer(int32_t container_id,
                                            float content_size, float delta_x,
                                            float delta_y,
-                                           bool is_init_scroll_offset);
+                                           bool is_init_scroll_offset,
+                                           bool from_layout);
 
   void FinishLayoutOperation(const PipelineOptions& options);
   void SetTimingCollectorPlatform(

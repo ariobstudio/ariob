@@ -184,8 +184,6 @@ class TemplateAssembler final
                                const PipelineOptions& pipeline_options) = 0;
     virtual void OnGlobalPropsUpdated(const lepus::Value& props) = 0;
     virtual void OnLifecycleEvent(const lepus::Value& args) = 0;
-    virtual void PrintMsgToJS(const std::string& level,
-                              const std::string& msg) = 0;
     virtual void OnI18nResourceChanged(const std::string& res) = 0;
     virtual void RequestVsync(
         uintptr_t id,
@@ -215,6 +213,15 @@ class TemplateAssembler final
     virtual void OnCardConfigDataChanged(const lepus::Value& data) = 0;
 
     virtual fml::RefPtr<fml::TaskRunner> GetLepusTimedTaskRunner() = 0;
+
+    virtual void OnEventCapture(long target_id, bool is_catch,
+                                int64_t event_id) = 0;
+
+    virtual void OnEventBubble(long target_id, bool is_catch,
+                               int64_t event_id) = 0;
+
+    virtual void OnEventFire(long target_id, bool is_stop,
+                             int64_t event_id) = 0;
   };
 
   class Scope {
@@ -234,8 +241,6 @@ class TemplateAssembler final
   TemplateAssembler(Delegate& delegate, std::unique_ptr<ElementManager> client,
                     int32_t instance_id);
   ~TemplateAssembler() override;
-
-  void Init(fml::RefPtr<fml::TaskRunner> tasm_runner);
 
   void LoadTemplate(const std::string& url, std::vector<uint8_t> source,
                     const std::shared_ptr<TemplateData>& template_data,
@@ -282,7 +287,6 @@ class TemplateAssembler final
       LazyBundleLoader::CallBackInfo callback_info,
       PipelineOptions& pipeline_options);
 
-  void ReportRuntimeReady();
   void ReportError(int32_t error_code, const std::string& msg,
                    base::LynxErrorLevel level = base::LynxErrorLevel::Error);
   void ReportError(base::LynxError error) override;
@@ -290,8 +294,6 @@ class TemplateAssembler final
   void ReportGCTimingEvent(const char* start, const char* end) override;
 
   fml::RefPtr<fml::TaskRunner> GetLepusTimedTaskRunner() override;
-
-  void ExecuteDataProcessor(TemplateData& data);
 
   void UpdateGlobalProps(const lepus::Value& data, bool need_render,
                          PipelineOptions& pipeline_options);
@@ -305,6 +307,20 @@ class TemplateAssembler final
 
   void OnPseudoStatusChanged(int32_t id, uint32_t pre_status,
                              uint32_t current_status);
+
+  void StartEventGenerate(const lepus::Value& event_params);
+
+  void StartEventCapture(int64_t event_id);
+
+  void StartEventBubble(int64_t event_id);
+
+  void StartEventFire(bool is_stop, int64_t event_id);
+
+  void OnEventCapture(long target_id, bool is_catch, int64_t event_id);
+
+  void OnEventBubble(long target_id, bool is_catch, int64_t event_id);
+
+  void OnEventFire(long target_id, bool is_stop, int64_t event_id);
 
   // Just send `onLazyBundleEvent` globalEvent.
   // for history version compatibility, not to break.
@@ -333,8 +349,6 @@ class TemplateAssembler final
   int64_t GetRecordID() const;
 #endif
 
-  TemplateData GenerateTemplateDataPostedToJs(const TemplateData& value);
-
   void UpdateMetaData(const std::shared_ptr<TemplateData>& template_data,
                       const lepus::Value& global_props,
                       UpdatePageOption& update_page_option,
@@ -354,11 +368,8 @@ class TemplateAssembler final
   }
 
   PageProxy* page_proxy() { return &page_proxy_; }
-  lepus::Context* context(const std::string entry_name) {
-    return FindEntry(entry_name)->GetVm().get();
-  }
 
-  const std::shared_ptr<lepus::Context>& getLepusContext(
+  const std::shared_ptr<lepus::Context>& GetLepusContext(
       const std::string& entry_name) {
     const auto& entry = FindEntry(entry_name);
     return entry->GetVm();
@@ -376,11 +387,6 @@ class TemplateAssembler final
   std::unordered_map<int, std::shared_ptr<DynamicComponentMould>>&
   lazy_bundle_moulds(const std::string& entry_name) {
     return FindEntry(entry_name)->lazy_bundle_moulds();
-  }
-
-  const std::unordered_map<std::string, int>& component_name_to_id(
-      const std::string& entry_name) {
-    return FindEntry(entry_name)->component_name_to_id();
   }
 
   std::shared_ptr<CSSStyleSheetManager> style_sheet_manager(
@@ -457,8 +463,6 @@ class TemplateAssembler final
 
   SignalContext* GetSignalContext() { return &signal_context_; }
 
-  // TODO: make this protected
- public:
   void SetPageConfig(const std::shared_ptr<PageConfig>& config) override;
 
   void SetEnableLayoutOnly(bool enable_layout_only) {
@@ -617,9 +621,8 @@ class TemplateAssembler final
 
   const std::string& TargetSdkVersion() override { return target_sdk_version_; }
 
-  // print js console log
-  // level: log, warn, error, info, debug
-  void PrintMsgToJS(const std::string& level, const std::string& msg) override;
+  void OnBTSConsoleEvent(const std::string& func_name,
+                         const std::string& args) override;
 
   bool UseLepusNG();
 
@@ -649,8 +652,6 @@ class TemplateAssembler final
   bool LoadTemplateForSSRRuntime(std::vector<uint8_t> source);
 
   struct Themed& Themed() override;
-
-  void SetThemed(const Themed::PageTransMaps& page_trans_maps);
 
   // For fiber
   void CallLepusMethod(const std::string& method_name, lepus::Value args,
@@ -700,6 +701,8 @@ class TemplateAssembler final
   friend class TemplateBinaryReaderSSR;
   friend class TemplateEntry;
 
+  void ExecuteDataProcessor(TemplateData& data);
+
   bool EnableDataProcessorOnJs() {
     // TODO(songshourui.null): Currently, JS DataProcessor is only supported in
     // fiber mode. Support for JS DataProcessor in all scenarios will be added
@@ -710,6 +713,8 @@ class TemplateAssembler final
 
   void DidComponentLoaded(
       const std::shared_ptr<TemplateEntry>& component_entry);
+
+  TemplateData GenerateTemplateDataPostedToJs(const TemplateData& value);
 
   // Build TemplateEntry for lazy bundle
   bool BuildComponentEntryInternal(
@@ -780,8 +785,6 @@ class TemplateAssembler final
   void EnsureTouchEventHandler();
 
   void EnsureAirTouchEventHandler();
-
-  void SetPageConfigRadonMode() const;
 
   // Insert data inplace to parameter, return if the page data should be read
   // only.

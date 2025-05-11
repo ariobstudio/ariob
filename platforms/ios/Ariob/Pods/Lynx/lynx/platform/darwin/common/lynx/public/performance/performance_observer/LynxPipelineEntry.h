@@ -19,6 +19,6 @@
 @property(nonatomic, strong) NSNumber* layoutUiOperationExecuteStart;
 @property(nonatomic, strong) NSNumber* layoutUiOperationExecuteEnd;
 @property(nonatomic, strong) NSNumber* paintEnd;
-@property(nonatomic, strong) NSDictionary* frameworkPipelineTiming;
+@property(nonatomic, strong) NSDictionary* frameworkRenderingTiming;
 - (instancetype)initWithDictionary:(NSDictionary*)dictionary;
 @end

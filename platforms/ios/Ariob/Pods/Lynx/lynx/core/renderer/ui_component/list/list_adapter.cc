@@ -368,7 +368,7 @@ void ListAdapter::UpdateLayoutInfoToItemHolder(Element* list_item,
 }
 
 #if ENABLE_TRACE_PERFETTO
-void ListAdapter::UpdateTraceDebugInfo(TraceEvent* event) {
+void ListAdapter::UpdateTraceDebugInfo(TraceEvent* event) const {
   // item-key
   auto* item_keys = event->add_debug_annotations();
   item_keys->set_name("item-keys");
@@ -469,6 +469,19 @@ void ListAdapter::UpdateTraceDebugInfo(TraceEvent* event) {
     estimated_sizes_px_str += std::to_string(value) + "\n";
   }
   estimated_sizes_px->set_string_value(estimated_sizes_px_str);
+}
+
+void ListAdapter::UpdateTraceDebugInfo(TraceEvent* event,
+                                       ItemHolder* item_holder) const {
+  if (item_holder) {
+    auto* index_info = event->add_debug_annotations();
+    index_info->set_name("index");
+    index_info->set_string_value(std::to_string(item_holder->index()));
+
+    auto* item_key_info = event->add_debug_annotations();
+    item_key_info->set_name("item-key");
+    item_key_info->set_string_value(item_holder->item_key());
+  }
 }
 #endif
 

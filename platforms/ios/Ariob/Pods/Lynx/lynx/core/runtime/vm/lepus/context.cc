@@ -411,14 +411,15 @@ void Context::ReportError(const std::string& exception_info, int32_t err_code,
 #endif
 }
 
-void Context::PrintMsgToJS(const std::string& level, const std::string& msg) {
+void Context::OnBTSConsoleEvent(const std::string& func_name,
+                                const std::string& args) {
   EnsureDelegate();
 
   if (!delegate_) {
     return;
   }
 
-  delegate_->PrintMsgToJS(level, msg);
+  delegate_->OnBTSConsoleEvent(func_name, args);
 }
 
 void Context::InitInspector(

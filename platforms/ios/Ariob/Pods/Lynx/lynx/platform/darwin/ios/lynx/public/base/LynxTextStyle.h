@@ -3,8 +3,8 @@
 // LICENSE file in the root directory of this source tree.
 
 #import <Foundation/Foundation.h>
-#import "LynxBackgroundManager.h"
-#import "LynxCSSType.h"
+#import <Lynx/LynxBackgroundManager.h>
+#import <Lynx/LynxCSSType.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -66,7 +66,6 @@ extern NSAttributedStringKey const LynxWordBreakKey;
 @property(nonatomic, assign) CGFloat textIndent;
 @property(nonatomic, assign) CGFloat textStrokeWidth;
 @property(nonatomic, strong) UIColor* textStrokeColor;
-@property(nonatomic, strong) UIColor* selectionColor;
 @property(nonatomic, assign) BOOL isAutoFontSize;
 @property(nonatomic, assign) CGFloat autoFontSizeMaxSize;
 @property(nonatomic, assign) CGFloat autoFontSizeMinSize;

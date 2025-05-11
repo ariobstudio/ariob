@@ -158,6 +158,15 @@ piper::Value ValueUtils::ConvertValueToPiperValue(piper::Runtime& rt,
       return piper::Value(buffer);
     } else if (value.IsNil()) {
       return piper::Value(nullptr);
+    } else if (value.IsTransfer()) {
+      auto transfer_value =
+          value.ParseTransferValue(std::make_shared<PiperValueFactory>(rt));
+      if (transfer_value && transfer_value->backend_type() ==
+                                ValueBackendType::ValueBackendTypePiper) {
+        return piper::Value(
+            rt, static_cast<const ValueImplPiper*>(transfer_value.get())
+                    ->backend_value());
+      }
     }
   }
   return piper::Value();

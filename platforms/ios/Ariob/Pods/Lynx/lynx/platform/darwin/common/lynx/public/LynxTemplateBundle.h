@@ -5,9 +5,11 @@
 #ifndef DARWIN_COMMON_LYNX_LYNX_TEMPLATE_BUNDLE_H_
 #define DARWIN_COMMON_LYNX_LYNX_TEMPLATE_BUNDLE_H_
 
-#import "LynxTemplateBundleOption.h"
+#import <Lynx/LynxTemplateBundleOption.h>
 
 @interface LynxTemplateBundle : NSObject
+
+@property(nonatomic, readonly, nullable) NSString* url;
 
 - (instancetype _Nullable)initWithTemplate:(nonnull NSData*)tem;
 - (instancetype _Nullable)initWithTemplate:(nonnull NSData*)tem

@@ -32,6 +32,9 @@ class GridLayoutManager : public LinearLayoutManager {
       list::LayoutDirection layout_direction) override;
   int GetTargetIndexForPreloadBuffer(
       int start_index, list::LayoutDirection layout_direction) override;
+#if ENABLE_TRACE_PERFETTO
+  void UpdateTraceDebugInfo(TraceEvent* event) const override;
+#endif
 
  private:
   // get the column size which the item holder occupies

@@ -77,6 +77,13 @@ class ListAdapter : public AdapterHelper::Delegate {
   // Handle diff remove and insert again.
   virtual void OnItemHolderReInsert(ItemHolder* item_holder) = 0;
 
+#if ENABLE_TRACE_PERFETTO
+  void UpdateTraceDebugInfo(TraceEvent* event) const;
+
+  virtual void UpdateTraceDebugInfo(TraceEvent* event,
+                                    ItemHolder* item_holder) const;
+#endif
+
  public:
   // Handle full data updated.
   virtual void OnDataSetChanged() = 0;
@@ -121,10 +128,6 @@ class ListAdapter : public AdapterHelper::Delegate {
   virtual bool IsRemoved(const ItemHolder* item_holder) = 0;
 
   virtual Element* GetListItemElement(const ItemHolder* item_holder) = 0;
-
-#if ENABLE_TRACE_PERFETTO
-  void UpdateTraceDebugInfo(TraceEvent* event);
-#endif
 
   bool UpdateDataSource(const lepus::Value& data_source);
 

@@ -490,5 +490,14 @@ float GridLayoutManager::LargestMainSizeInRowWithItemHolder(
   return largest_main_size;
 }
 
+#if ENABLE_TRACE_PERFETTO
+void GridLayoutManager::UpdateTraceDebugInfo(TraceEvent* event) const {
+  ListLayoutManager::UpdateTraceDebugInfo(event);
+  auto* list_type_info = event->add_debug_annotations();
+  list_type_info->set_name("list_type");
+  list_type_info->set_string_value("flow");
+}
+#endif
+
 }  // namespace tasm
 }  // namespace lynx

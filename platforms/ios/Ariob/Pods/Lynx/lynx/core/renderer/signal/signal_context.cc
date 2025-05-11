@@ -1,3 +1,28 @@
+// Inspired by S.js by Adam Haile, https://github.com/adamhaile/S
+/**
+The MIT License (MIT)
+
+Copyright (c) 2017 Adam Haile
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 // Copyright 2024 The Lynx Authors. All rights reserved.
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
@@ -6,6 +31,8 @@
 
 #include <utility>
 
+#include "base/trace/native/trace_event.h"
+#include "core/base/lynx_trace_categories.h"
 #include "core/renderer/signal/computation.h"
 #include "core/renderer/signal/scope.h"
 
@@ -33,11 +60,16 @@ void SignalContext::PushComputation(Computation* computation) {
 
 void SignalContext::PopComputation() { computation_stack_.pop_back(); }
 
+void SignalContext::MarkUnTrack(bool enable_un_track) {
+  if (enable_un_track) {
+    PushComputation(nullptr);
+  } else {
+    PopComputation();
+  }
+}
+
 Computation* SignalContext::GetTopComputation() {
   if (computation_stack_.empty()) {
-    return nullptr;
-  }
-  if (enable_un_track_) {
     return nullptr;
   }
   return computation_stack_.back();
@@ -65,7 +97,16 @@ void SignalContext::RunUpdates(std::function<void()>&& func) {
 }
 
 void SignalContext::CompleteUpdates(bool wait) {
+  TRACE_EVENT(LYNX_TRACE_CATEGORY, "SignalContext::CompleteUpdates");
+
   if (memo_computation_list_ptr_ != nullptr) {
+    TRACE_EVENT(LYNX_TRACE_CATEGORY, "SignalContext::CompleteUpdates::Updates",
+                [this](lynx::perfetto::EventContext ctx) {
+                  auto event = ctx.event();
+                  auto* tagInfo = event->add_debug_annotations();
+                  tagInfo->set_name("count");
+                  tagInfo->set_int_value(memo_computation_list_ptr_->size());
+                });
     auto u = memo_computation_list_ptr_;
     RunComputation(std::move(u));
     memo_computation_list_ptr_ = nullptr;
@@ -75,6 +116,15 @@ void SignalContext::CompleteUpdates(bool wait) {
     return;
   }
 
+  TRACE_EVENT(LYNX_TRACE_CATEGORY, "SignalContext::CompleteUpdates::Effects",
+              [this](lynx::perfetto::EventContext ctx) {
+                auto event = ctx.event();
+                auto* tagInfo = event->add_debug_annotations();
+                tagInfo->set_name("count");
+                tagInfo->set_int_value(pure_computation_list_ptr_ != nullptr
+                                           ? pure_computation_list_ptr_->size()
+                                           : 0);
+              });
   auto e = pure_computation_list_ptr_;
   pure_computation_list_ptr_ = nullptr;
 

@@ -8,6 +8,7 @@
 #include <atomic>
 #include <cstdint>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -110,7 +111,11 @@ class DebugRouterCore : public MessageTransceiverDelegate {
   DebugRouterCore(DebugRouterCore &&) = delete;
   DebugRouterCore &operator=(DebugRouterCore &&) = delete;
 
+  virtual ~DebugRouterCore();
+
  protected:
+  std::recursive_mutex slots_mutex_;
+  friend class MessageHandlerCore;
   std::unordered_map<int32_t, std::shared_ptr<core::NativeSlot> > slots_;
   std::string room_id_;
   std::string server_url_;
@@ -125,6 +130,8 @@ class DebugRouterCore : public MessageTransceiverDelegate {
 
  private:
   void Reconnect();
+  void Connect(const std::string &url, const std::string &room,
+               bool is_reconnect);
   std::atomic<ConnectionState> connection_state_;
   std::shared_ptr<MessageTransceiver> current_transceiver_;
   std::vector<std::shared_ptr<MessageTransceiver> > message_transceivers_;
@@ -132,9 +139,10 @@ class DebugRouterCore : public MessageTransceiverDelegate {
   std::unique_ptr<debugrouter::processor::Processor> processor_;
   std::vector<std::shared_ptr<core::DebugRouterStateListener> >
       state_listeners_;
-  int32_t retry_times_;
+  std::atomic<int> retry_times_;
   void TryToReconnect();
   void NotifyConnectStateByMessage(ConnectionState state);
+  std::string GetConnectionStateMsg(ConnectionState state);
   std::atomic<int32_t> usb_port_;
   std::atomic<int> handler_count_;
 };

@@ -3,8 +3,8 @@
 // LICENSE file in the root directory of this source tree.
 
 #include "core/base/darwin/logging_darwin.h"
-#import "LynxService.h"             // nogncheck
-#import "LynxServiceLogProtocol.h"  // nogncheck
+#import <Lynx/LynxService.h>             // nogncheck
+#import <Lynx/LynxServiceLogProtocol.h>  // nogncheck
 #include "base/include/log/alog_wrapper.h"
 
 namespace lynx {

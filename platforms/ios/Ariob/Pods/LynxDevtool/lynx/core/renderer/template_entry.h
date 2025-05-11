@@ -111,6 +111,9 @@ class TemplateEntry : public VmContextHolder, public CSSStyleSheetDelegate {
 
   void SetIsCard(bool is_card) { is_card_ = is_card; }
 
+  lepus::Value ElementFromBinary(const std::string& key, int64_t pid,
+                                 ElementManager* manager);
+
   const ElementTemplateInfo& GetElementTemplateInfo(const std::string& key);
 
   const std::shared_ptr<ParsedStyles>& GetParsedStyles(const std::string& key);

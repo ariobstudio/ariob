@@ -179,11 +179,12 @@ void PaintingContext::RemoveListItemPaintingNode(int32_t list_id,
 
 void PaintingContext::UpdateContentOffsetForListContainer(
     int32_t container_id, float content_size, float delta_x, float delta_y,
-    bool is_init_scroll_offset) {
+    bool is_init_scroll_offset, bool from_layout) {
   Enqueue([platform_ref = platform_impl_->GetPlatformRef(), container_id,
-           content_size, delta_x, delta_y, is_init_scroll_offset] {
+           content_size, delta_x, delta_y, is_init_scroll_offset, from_layout] {
     platform_ref->UpdateContentOffsetForListContainer(
-        container_id, content_size, delta_x, delta_y, is_init_scroll_offset);
+        container_id, content_size, delta_x, delta_y, is_init_scroll_offset,
+        from_layout);
   });
 }
 

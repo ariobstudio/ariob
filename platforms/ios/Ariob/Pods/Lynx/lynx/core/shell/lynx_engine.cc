@@ -7,6 +7,7 @@
 #include "base/include/string/string_utils.h"
 #include "base/trace/native/trace_event.h"
 #include "core/base/lynx_trace_categories.h"
+#include "core/base/threading/vsync_monitor.h"
 #include "core/renderer/dom/element.h"
 #include "core/renderer/dom/element_manager.h"
 #include "core/renderer/dom/lynx_get_ui_result.h"
@@ -17,7 +18,6 @@
 #include "core/runtime/common/jsi_object_wrapper.h"
 #include "core/services/long_task_timing/long_task_monitor.h"
 #include "core/shared_data/white_board_delegate.h"
-#include "core/shell/common/vsync_monitor.h"
 #include "core/shell/layout_mediator.h"
 #include "core/shell/tasm_mediator.h"
 #include "third_party/rapidjson/document.h"
@@ -266,6 +266,22 @@ void LynxEngine::SendGestureEvent(int tag, int gesture_id, std::string name,
 void LynxEngine::OnPseudoStatusChanged(int32_t id, int32_t pre_status,
                                        int32_t current_status) {
   tasm_->OnPseudoStatusChanged(id, pre_status, current_status);
+}
+
+void LynxEngine::StartEventGenerate(const lepus::Value& event_params) {
+  tasm_->StartEventGenerate(event_params);
+}
+
+void LynxEngine::StartEventCapture(int64_t event_id) {
+  tasm_->StartEventCapture(event_id);
+}
+
+void LynxEngine::StartEventBubble(int64_t event_id) {
+  tasm_->StartEventBubble(event_id);
+}
+
+void LynxEngine::StartEventFire(bool is_stop, int64_t event_id) {
+  tasm_->StartEventFire(is_stop, event_id);
 }
 
 void LynxEngine::SendBubbleEvent(const std::string& name, int32_t tag,

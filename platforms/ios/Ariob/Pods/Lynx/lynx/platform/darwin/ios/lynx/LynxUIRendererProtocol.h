@@ -1,9 +1,12 @@
 // Copyright 2024 The Lynx Authors. All rights reserved.
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
+#ifndef PLATFORM_DARWIN_IOS_LYNX_LYNXUIRENDERERPROTOCOL_H_
+#define PLATFORM_DARWIN_IOS_LYNX_LYNXUIRENDERERPROTOCOL_H_
 
 #import <Foundation/Foundation.h>
 
+#import <Lynx/LynxBooleanOption.h>
 #import "LynxTemplateRender+Protected.h"
 
 #include <objc/objc.h>
@@ -53,6 +56,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setPageConfig:(const std::shared_ptr<lynx::tasm::PageConfig> &)pageConfig
               context:(LynxContext *)context;
 
+- (void)setFluencyTracerEnabled:(LynxBooleanOption)enabledBySampling;
+
 - (BOOL)needPaintingContextProxy;
 
 - (void)onSetFrame:(CGRect)frame;
@@ -64,6 +69,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event;
 
 - (id<LynxEventTarget>)hitTestInEventHandler:(CGPoint)point withEvent:(UIEvent *)event;
+
+- (void)handleFocus:(id<LynxEventTarget>)target
+             onView:(UIView *)view
+      withContainer:(UIView *)container
+           andPoint:(CGPoint)point
+           andEvent:(UIEvent *)event;
 
 - (UIView *)eventHandlerRootView;
 
@@ -143,3 +154,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif  // PLATFORM_DARWIN_IOS_LYNX_LYNXUIRENDERERPROTOCOL_H_

@@ -13,12 +13,12 @@
 #include "core/public/lynx_resource_loader.h"
 
 #import <Foundation/Foundation.h>
-#import "LynxDynamicComponentFetcher.h"
+#import <Lynx/LynxDynamicComponentFetcher.h>
+#import <Lynx/LynxExternalResourceFetcherWrapper.h>
+#import <Lynx/LynxGenericResourceFetcher.h>
+#import <Lynx/LynxProviderRegistry.h>
+#import <Lynx/LynxTemplateResourceFetcher.h>
 #import "LynxErrorReceiverProtocol.h"
-#import "LynxExternalResourceFetcherWrapper.h"
-#import "LynxGenericResourceFetcher.h"
-#import "LynxProviderRegistry.h"
-#import "LynxTemplateResourceFetcher.h"
 
 @protocol TemplateRenderCallbackProtocol;
 

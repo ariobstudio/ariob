@@ -108,6 +108,14 @@ class InspectorClientDelegateImpl : public InspectorClientDelegateBaseImpl {
   void SetEnableConsoleInspect(int view_id);
   void SetEnableConsoleInspect(bool enable, int view_id);
 
+  // Update globalThis.currentDebugAppId in the following two cases:
+  // 1. When receiving a Debugger.enable message from the DevTool frontend,
+  // indicating that the LynxView is being debugged. Actually, we call
+  // UpdateCurrentDebugAppId when receiving the response to the Debugger.enable
+  // message from the JS engine.
+  // 2. When reloading the LynxView currently being debugged.
+  void UpdateCurrentDebugAppId(int view_id, int64_t runtime_id = kErrorViewID);
+
   std::string PrepareDispatchMessage(rapidjson::Document& message,
                                      int instance_id) override;
   std::string PrepareResponseMessage(const std::string& message,
@@ -115,9 +123,12 @@ class InspectorClientDelegateImpl : public InspectorClientDelegateBaseImpl {
   bool HandleMessageConsoleAPICalled(rapidjson::Document& message);
   bool HandleMessageConsoleAPICalledFromV8(rapidjson::Document& message);
   void HandleMessageConsoleAPICalledFromQuickjs(rapidjson::Document& message);
+  void HandleMessageConsoleAPICalledFromLepus(rapidjson::Document& message);
 
   std::string GenMessageCallFunctionOn(const std::string& object_id,
                                        int message_id = 0);
+  std::string GenMessageEvaluate(const std::string& expression,
+                                 int message_id = 0);
   void SendMessageContextDestroyed(int view_id, int context_id);
   void SendMessageContextCleared(int view_id);
   void SendMessageRemoveScripts(int view_id);

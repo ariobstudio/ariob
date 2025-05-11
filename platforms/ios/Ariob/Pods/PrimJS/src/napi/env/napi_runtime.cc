@@ -64,13 +64,20 @@ class WorkerThread {
     int ret = pthread_create(
         &thread_, &thread_attr,
         [](void* data) -> void* {
+#if defined(OS_IOS)
+          int ret = pthread_setname_np("napi_js_worker");
+          (void)ret;
+#endif
           static_cast<WorkerThread*>(data)->Run();
           return nullptr;
         },
         this);
     (void)ret;
     assert(ret == 0);
-
+#if defined(ANDROID) || defined(__ANDROID__)
+    ret = pthread_setname_np(thread_, "napi_js_worker");
+    (void)ret;
+#endif
     pthread_attr_destroy(&thread_attr);
 #endif
   }

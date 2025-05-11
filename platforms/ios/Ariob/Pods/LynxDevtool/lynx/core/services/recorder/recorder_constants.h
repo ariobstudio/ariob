@@ -104,6 +104,9 @@ constexpr const char* kFuncLoadComponentWithCallback =
 constexpr const char* kFuncUpdateFontScale = "updateFontScale";
 constexpr const char* kFontScale = "scale";
 constexpr const char* kFuncUpdateFontScaleType = "type";
+constexpr const char* kAttach = "attach";
+constexpr const char* kFuncSwitchEngineFromUIThread =
+    "switchEngineFromUIThread";
 
 }  // namespace recorder
 }  // namespace tasm

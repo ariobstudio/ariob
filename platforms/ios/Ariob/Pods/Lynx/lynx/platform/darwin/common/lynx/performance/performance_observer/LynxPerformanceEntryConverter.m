@@ -20,9 +20,6 @@
     if ([type isEqualToString:@"pipeline"] && [name isEqualToString:@"updateTriggeredByBts"]) {
         entry = [[LynxPipelineEntry alloc] initWithDictionary:dict];
     }
-    else if ([type isEqualToString:@"pipeline"] && [name isEqualToString:@"updateTriggeredByNts"]) {
-        entry = [[LynxPipelineEntry alloc] initWithDictionary:dict];
-    }
     else if ([type isEqualToString:@"pipeline"] && [name isEqualToString:@"updateTriggeredByNative"]) {
         entry = [[LynxPipelineEntry alloc] initWithDictionary:dict];
     }
@@ -41,7 +38,7 @@
     else if ([type isEqualToString:@"pipeline"] && [name isEqualToString:@"reloadBundleFromNative"]) {
         entry = [[LynxLoadBundleEntry alloc] initWithDictionary:dict];
     }
-    else if ([type isEqualToString:@"pipeline"] && [name isEqualToString:@"reloadBundleFromBackgroundRuntime"]) {
+    else if ([type isEqualToString:@"pipeline"] && [name isEqualToString:@"reloadBundleFromBts"]) {
         entry = [[LynxLoadBundleEntry alloc] initWithDictionary:dict];
     }
     else if ([type isEqualToString:@"init"] && [name isEqualToString:@"container"]) {

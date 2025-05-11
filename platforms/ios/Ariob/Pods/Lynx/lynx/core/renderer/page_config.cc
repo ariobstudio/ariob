@@ -9,6 +9,23 @@
 namespace lynx {
 namespace tasm {
 
+/**
+ * @name: pipelineSchedulerConfig
+ * @description: Scheduler config for pipeline, including
+ * enableParallelElement/list-framework batch render and other scheduler config
+ * @platform: Both
+ * @supportVersion: 3.1
+ */
+static constexpr const char* const kPipelineSchedulerConfig =
+    "pipelineSchedulerConfig";
+
+/**
+ * @name: enableNativeList
+ * @description: Indicates whether use c++ list.
+ * @supportVersion: 3.2
+ */
+static constexpr const char* const kEnableNativeList = "enableNativeList";
+
 const PageConfig::PageConfigMap<TernaryBool>& PageConfig::GetFuncBoolMap() {
   static const base::NoDestructor<const PageConfigMap<TernaryBool>>
       kPageConfigFuncBoolMap{
@@ -23,13 +40,27 @@ const PageConfig::PageConfigMap<TernaryBool>& PageConfig::GetFuncBoolMap() {
            {"enableUIOperationOptimize",
             {&PageConfig::SetEnableUIOperationOptimize,
              &PageConfig::GetEnableUIOperationOptimize}},
+           {kEnableNativeList,
+            {&PageConfig::SetEnableNativeList,
+             &PageConfig::GetEnableNativeList}},
            {"enableFiberElementForRadonDiff",
             {&PageConfig::SetEnableFiberElementForRadonDiff,
              &PageConfig::GetEnableFiberElementForRadonDiff}},
+           {"enableMicrotaskPromisePolyfill",
+            {&PageConfig::SetEnableMicrotaskPromisePolyfill,
+             &PageConfig::GetEnableMicrotaskPromisePolyfill}},
            {kEnableSignalAPI,
             {&PageConfig::SetEnableSignalAPI,
              &PageConfig::GetEnableSignalAPI}}}};
   return *kPageConfigFuncBoolMap;
+}
+
+const PageConfig::PageConfigMap<uint64_t>& PageConfig::GetFuncUint64Map() {
+  static const base::NoDestructor<const PageConfigMap<uint64_t>>
+      kPageConfigFuncUint64Map{{{kPipelineSchedulerConfig,
+                                 {&PageConfig::SetPipelineSchedulerConfig,
+                                  &PageConfig::GetPipelineSchedulerConfig}}}};
+  return *kPageConfigFuncUint64Map;
 }
 
 }  // namespace tasm

@@ -25,7 +25,9 @@ static std::string GetPrintStr(VMContext* context) {
   for (long i = 0; i < params_count; i++) {
     Value* v = context->GetParam(i);
     v->PrintValue(s);
-    s << " ";
+    if (i < params_count - 1) {
+      s << " ";
+    }
   }
   return s.str();
 }
@@ -35,43 +37,43 @@ Value Console_Log(VMContext* context) {
 #ifdef LEPUS_PC
   LOGE(msg);
 #endif
-  context->PrintMsgToJS("log", msg);
+  context->OnBTSConsoleEvent("log", msg);
   return Value();
 }
 
 Value Console_Warn(VMContext* context) {
   std::string msg = GetPrintStr(context);
-  context->PrintMsgToJS("warn", msg);
+  context->OnBTSConsoleEvent("warn", msg);
   return Value();
 }
 
 Value Console_Error(VMContext* context) {
   std::string msg = GetPrintStr(context);
-  context->PrintMsgToJS("error", msg);
+  context->OnBTSConsoleEvent("error", msg);
   return Value();
 }
 
 Value Console_Info(VMContext* context) {
   std::string msg = GetPrintStr(context);
-  context->PrintMsgToJS("info", msg);
+  context->OnBTSConsoleEvent("info", msg);
   return Value();
 }
 
 Value Console_Debug(VMContext* context) {
   std::string msg = GetPrintStr(context);
-  context->PrintMsgToJS("debug", msg);
+  context->OnBTSConsoleEvent("debug", msg);
   return Value();
 }
 
 Value Console_Report(VMContext* context) {
   std::string msg = GetPrintStr(context);
-  context->PrintMsgToJS("report", msg);
+  context->OnBTSConsoleEvent("report", msg);
   return Value();
 }
 
 Value Console_Alog(VMContext* context) {
   std::string msg = GetPrintStr(context);
-  context->PrintMsgToJS("alog", msg);
+  context->OnBTSConsoleEvent("alog", msg);
   return Value();
 }
 
@@ -80,6 +82,60 @@ Value Assert(VMContext* context) {
   Value* msg = context->GetParam(2);
   std::string s = "Assertion failed:" + msg->StdString();
   assert(condition->IsTrue() && s.c_str());
+  return Value();
+}
+
+Value Console_Count(VMContext* context) {
+  std::string msg = GetPrintStr(context);
+  context->OnBTSConsoleEvent("count", msg);
+  return Value();
+}
+
+Value Console_CountReset(VMContext* context) {
+  std::string msg = GetPrintStr(context);
+  context->OnBTSConsoleEvent("countReset", msg);
+  return Value();
+}
+
+Value Console_Group(VMContext* context) {
+  std::string msg = GetPrintStr(context);
+  context->OnBTSConsoleEvent("group", msg);
+  return Value();
+}
+
+Value Console_GroupCollapsed(VMContext* context) {
+  std::string msg = GetPrintStr(context);
+  context->OnBTSConsoleEvent("groupCollapsed", msg);
+  return Value();
+}
+
+Value Console_GroupEnd(VMContext* context) {
+  std::string msg = GetPrintStr(context);
+  context->OnBTSConsoleEvent("groupEnd", msg);
+  return Value();
+}
+
+Value Console_Time(VMContext* context) {
+  std::string msg = GetPrintStr(context);
+  context->OnBTSConsoleEvent("time", msg);
+  return Value();
+}
+
+Value Console_TimeLog(VMContext* context) {
+  std::string msg = GetPrintStr(context);
+  context->OnBTSConsoleEvent("timeLog", msg);
+  return Value();
+}
+
+Value Console_TimeEnd(VMContext* context) {
+  std::string msg = GetPrintStr(context);
+  context->OnBTSConsoleEvent("timeEnd", msg);
+  return Value();
+}
+
+Value Console_Table(VMContext* context) {
+  std::string msg = GetPrintStr(context);
+  context->OnBTSConsoleEvent("table", msg);
   return Value();
 }
 
@@ -93,6 +149,15 @@ void RegisterBaseAPI(Context* ctx) {
   RegisterTableFunction(ctx, table, "report", &Console_Report);
   RegisterTableFunction(ctx, table, "alog", &Console_Alog);
   RegisterTableFunction(ctx, table, "assert", &Assert);
+  RegisterTableFunction(ctx, table, "count", &Console_Count);
+  RegisterTableFunction(ctx, table, "countReset", &Console_CountReset);
+  RegisterTableFunction(ctx, table, "group", &Console_Group);
+  RegisterTableFunction(ctx, table, "groupCollapsed", &Console_GroupCollapsed);
+  RegisterTableFunction(ctx, table, "groupEnd", &Console_GroupEnd);
+  RegisterTableFunction(ctx, table, "time", &Console_Time);
+  RegisterTableFunction(ctx, table, "timeLog", &Console_TimeLog);
+  RegisterTableFunction(ctx, table, "timeEnd", &Console_TimeEnd);
+  RegisterTableFunction(ctx, table, "table", &Console_Table);
   RegisterFunctionTable(ctx, "console", std::move(table));
 }
 

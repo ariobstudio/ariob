@@ -6,6 +6,7 @@
 
 #include "base/trace/native/trace_event.h"
 #include "core/base/lynx_trace_categories.h"
+#include "core/renderer/dom/fiber/tree_resolver.h"
 #include "core/renderer/lynx_global_pool.h"
 #include "core/renderer/tasm/config.h"
 #include "core/renderer/tasm/i18n/i18n.h"
@@ -132,6 +133,11 @@ void TemplateEntry::SetTemplateBundle(LynxTemplateBundle template_bundle) {
   css_manager->CopyFrom(*template_bundle_.css_style_manager_);
   template_bundle_.css_style_manager_ = std::move(css_manager);
 
+  // CSSLazyImport should be false when preloading.
+  if (template_bundle_.page_configs_) {
+    template_bundle_.page_configs_->SetEnableCSSLazyImport(
+        TernaryBool::FALSE_VALUE);
+  }
   is_template_bundle_complete_ = true;
 }
 
@@ -198,7 +204,8 @@ bool TemplateEntry::InitWithPageConfigger(
   }
 
   SetEnableMicrotaskPromisePolyfill(
-      page_config->GetEnableMicrotaskPromisePolyfill());
+      page_config->GetEnableMicrotaskPromisePolyfill() ==
+      TernaryBool::TRUE_VALUE);
   return true;
 }
 
@@ -216,7 +223,7 @@ bool TemplateEntry::InitLepusContext(
 
   if (EnableReuseContext()) {
     // reuse lepus context
-    const auto& page_context = tasm->getLepusContext(DEFAULT_ENTRY_NAME);
+    const auto& page_context = tasm->GetLepusContext(DEFAULT_ENTRY_NAME);
     if (!(template_bundle_.is_lepusng_binary_ &&
           page_context->IsLepusNGContext())) {
       // only supported in lepusNG
@@ -323,6 +330,33 @@ void TemplateEntry::RegisterBuiltin(TemplateAssembler* assembler) {
       lepus::Value(static_cast<lepus::Context::Delegate*>(assembler)));
   vm_context_->RegisterCtxBuiltin(compile_options().arch_option_);
   return;
+}
+
+lepus::Value TemplateEntry::ElementFromBinary(const std::string& key,
+                                              int64_t pid,
+                                              ElementManager* manager) {
+  if (reader_) {
+    auto result = reader_->GetElementTemplateParseResult(key);
+    if (result.first != nullptr && result.first->exist_) {
+      // TODO(songshourui.null): It may be worth posting another async task to
+      // fix the issue where the subsequent `Element Template` cannot
+      // asynchronously create the `Element Tree` when the `Element Template` is
+      // reused.
+      template_bundle_.element_template_infos_[key] = result.first;
+      return TreeResolver::InitElementTree(std::move(result.second), pid,
+                                           manager, GetStyleSheetManager());
+    }
+  }
+
+  auto result = template_bundle_.TryGetElements(key);
+  if (result.has_value()) {
+    return TreeResolver::InitElementTree(std::move(*result), pid, manager,
+                                         GetStyleSheetManager());
+  }
+
+  auto& info = GetElementTemplateInfo(key);
+  return TreeResolver::InitElementTree(TreeResolver::FromTemplateInfo(info),
+                                       pid, manager, GetStyleSheetManager());
 }
 
 const ElementTemplateInfo& TemplateEntry::GetElementTemplateInfo(

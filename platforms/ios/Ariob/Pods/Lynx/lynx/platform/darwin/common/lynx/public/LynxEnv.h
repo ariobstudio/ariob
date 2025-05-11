@@ -5,7 +5,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <Foundation/Foundation.h>
 
-#import "LynxEnvKey.h"
+#import <Lynx/LynxEnvKey.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -132,6 +132,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)enableGenericResourceFetcher;
 
 - (BOOL)enableTextContainerOpt;
+
+- (BOOL)enableTextStorageDeallocFix;
 
 - (NSDictionary<NSString *, NSString *> *)cppEnvDebugDescription;
 

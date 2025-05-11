@@ -1,20 +1,20 @@
 // Copyright 2019 The Lynx Authors. All rights reserved.
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
-#import "LynxFontFaceManager.h"
 #import <CommonCrypto/CommonDigest.h>
 #include <CoreText/CTFontManager.h>
-#import "LUIBodyView.h"
-#import "LynxContext.h"
-#import "LynxEnv.h"
-#import "LynxLog.h"
-#import "LynxResourceResponseDataInfoProtocol.h"
-#import "LynxServiceResourceRequestParameters.h"
-#import "LynxSubErrorCode.h"
+#import <Lynx/LUIBodyView.h>
+#import <Lynx/LynxContext.h>
+#import <Lynx/LynxEnv.h>
+#import <Lynx/LynxFontFaceManager.h>
+#import <Lynx/LynxLog.h>
+#import <Lynx/LynxResourceResponseDataInfoProtocol.h>
+#import <Lynx/LynxServiceResourceRequestParameters.h>
+#import <Lynx/LynxSubErrorCode.h>
+#import <Lynx/LynxTraceEvent.h>
+#import <Lynx/LynxTraceEventWrapper.h>
+#import <Lynx/LynxView+Internal.h>
 #import "LynxTemplateRender+Internal.h"
-#import "LynxTraceEvent.h"
-#import "LynxTraceEventWrapper.h"
-#import "LynxView+Internal.h"
 
 typedef struct _LynxInnerFontInfo {
   BOOL isSystemFont, isBold, isItalic, isFontWeightBoldMatched, isItalicMatched;
@@ -430,7 +430,9 @@ typedef struct _LynxInnerFontInfo {
                                message:[NSString stringWithFormat:@"Font registration failed: %@",
                                                                   errorDescription]
                          fixSuggestion:LynxErrorSuggestionRefOfficialSite
-                                 level:LynxErrorLevelWarn];
+                                 level:LynxErrorLevelWarn
+                            customInfo:nil
+                          isLogBoxOnly:regResult];
       [lynxError addCustomInfo:newFontName forKey:@"font_name"];
       [self reportResourceError:lynxError withLynxView:lynxView resourceUrl:cacheKey];
       CFRelease(errorDescription);

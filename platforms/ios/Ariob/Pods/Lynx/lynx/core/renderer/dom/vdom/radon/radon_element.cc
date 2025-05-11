@@ -702,7 +702,7 @@ void RadonElement::OnPseudoStatusChanged(PseudoState prev_status,
 // in advance.
 // 3. Check every property to determine whether to intercept this update.
 void RadonElement::ConsumeStyle(const StyleMap& styles,
-                                StyleMap* inherit_styles) {
+                                const StyleMap* inherit_styles) {
   TRACE_EVENT(LYNX_TRACE_CATEGORY, "RadonElement::ConsumeStyle");
   if (styles.empty()) {
     return;
@@ -862,6 +862,12 @@ void RadonElement::UpdatePlatformNodeTag() {
       platform_node_tag_ = BASE_STATIC_STRING(list::kListContainer);
     }
   }
+}
+
+bool RadonElement::CanBeLayoutOnly() const {
+  return element_manager()->GetEnableLayoutOnly() && has_layout_only_props_ &&
+         overflow_ == OVERFLOW_XY &&
+         (!is_component() || enable_component_layout_only_);
 }
 
 }  // namespace tasm

@@ -120,7 +120,12 @@ void LynxUIOperationAsyncQueue::FlushOnTASMThread() {
 
 void LynxUIOperationAsyncQueue::FlushInterval() {
   TRACE_EVENT(LYNX_TRACE_CATEGORY,
-              tasm::timing::kTaskNameLynxUIOperationAsyncQueueFlush);
+              tasm::timing::kTaskNameLynxUIOperationAsyncQueueFlush,
+              [instance_id = instance_id_](lynx::perfetto::EventContext ctx) {
+                ctx.event()->add_debug_annotations("instance_id",
+                                                   std::to_string(instance_id));
+              });
+
   tasm::timing::LongTaskMonitor::Scope longTaskScope(
       instance_id_, tasm::timing::kUIOperationFlushTask,
       tasm::timing::kTaskNameLynxUIOperationAsyncQueueFlush);

@@ -59,8 +59,8 @@ class PaintingCtxPlatformRef {
   virtual void UpdateContentOffsetForListContainer(int32_t container_id,
                                                    float content_size,
                                                    float delta_x, float delta_y,
-                                                   bool is_init_scroll_offset) {
-  }
+                                                   bool is_init_scroll_offset,
+                                                   bool from_layout) {}
 
   virtual void SetNeedMarkDrawEndTiming(
       std::weak_ptr<shell::TimingCollectorPlatform> weak_timing_collector,

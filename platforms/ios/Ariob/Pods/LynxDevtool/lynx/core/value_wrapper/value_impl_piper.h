@@ -18,6 +18,37 @@
 namespace lynx {
 namespace pub {
 
+class ValueImplPiper;
+
+// (TODO:zhangqun.29) Currently, PiperValueFactory is only responsible for
+// providing runtime. ValueImplPiper does not have a corresponding constructor,
+// so the create method cannot be used. It will be supplemented later.
+class PiperValueFactory : public PubValueFactory {
+ public:
+  PiperValueFactory(piper::Runtime& rt) : rt_(rt){};
+  std::unique_ptr<Value> CreateArray() override { return nullptr; };
+  std::unique_ptr<Value> CreateMap() override { return nullptr; };
+  std::unique_ptr<Value> CreateBool(bool value) override { return nullptr; };
+  std::unique_ptr<Value> CreateNumber(double value) override {
+    return nullptr;
+  };
+  std::unique_ptr<Value> CreateString(const std::string& value) override {
+    return nullptr;
+  };
+  std::unique_ptr<Value> CreateArrayBuffer(std::unique_ptr<uint8_t[]> value,
+                                           size_t length) override {
+    return nullptr;
+  };
+  PubValueFactory::FactoryType GetFactoryType() const override {
+    return PubValueFactory::FactoryType::kPiper;
+  };
+  piper::Runtime* GetRuntime() { return &rt_; };
+  ~PiperValueFactory() override = default;
+
+ private:
+  piper::Runtime& rt_;
+};
+
 // piper value implementation
 class ValueImplPiper : public Value {
  public:

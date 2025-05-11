@@ -44,11 +44,7 @@ class RadonElement : public Element {
 
   bool is_component() const;
 
-  bool CanBeLayoutOnly() const override {
-    return config_enable_layout_only_ && has_layout_only_props_ &&
-           overflow_ == OVERFLOW_XY &&
-           (!is_component() || enable_component_layout_only_);
-  }
+  bool CanBeLayoutOnly() const override;
 
   bool InComponent() const override;
 
@@ -139,7 +135,7 @@ class RadonElement : public Element {
                              PseudoState current_status) override;
 
   void ConsumeStyle(const StyleMap& styles,
-                    StyleMap* inherit_styles = nullptr) override;
+                    const StyleMap* inherit_styles = nullptr) override;
 
   void OnPatchFinish(PipelineOptions& option) override;
 

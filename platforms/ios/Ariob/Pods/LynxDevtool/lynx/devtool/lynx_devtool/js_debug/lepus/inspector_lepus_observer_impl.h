@@ -40,8 +40,8 @@ class InspectorLepusObserverImpl : public lepus::InspectorLepusObserver {
       const std::shared_ptr<devtool::InspectorClientNG>& client) override;
   void OnContextDestroyed(const std::string& name) override;
 
-  void OnConsoleMessage(const std::string& level,
-                        const std::string& msg) override;
+  void OnConsoleEvent(const std::string& func_name,
+                      const std::string& args) override;
 
  private:
   std::weak_ptr<InspectorLepusDebuggerImpl> debugger_wp_;

@@ -38,6 +38,7 @@ enum class TernaryBool { TRUE_VALUE, FALSE_VALUE, UNDEFINE_VALUE };
 // 40 ~ 47 bit: Reserved for paint stage in Pixel Pipeline.
 // 48 ~ 63 bit: Flexible bits for extensibility.
 // TODO: Need to add a TS definition for PipelineSchedulerConfig.
+constexpr static uint64_t kEnableParallelParseElementTemplate = 1;
 constexpr static uint64_t kEnableListBatchRenderMask = 1 << 8;
 constexpr static uint64_t kEnableParallelElementMask = 1 << 16;
 constexpr static uint64_t kEnableListBatchRenderAsyncResolvePropertyMask =
@@ -100,8 +101,6 @@ class PageConfig final : public EntryConfig {
 
   ~PageConfig() override = default;
 
-  lepus::Value GetConfigToRuntime();
-
   void DecodePageConfigFromJsonStringWhileUndefined(
       const std::string& config_json_string) {
     rapidjson::Document doc;
@@ -122,6 +121,17 @@ class PageConfig final : public EntryConfig {
           }
         }
 
+        // if is a uint64
+        auto uint64_pair = GetFuncUint64Map().find(name);
+        if (uint64_pair != GetFuncUint64Map().end()) {
+          if (it->value.IsUint64()) {
+            const auto [setter, getter] = uint64_pair->second;
+            if ((this->*(getter))() == 0) {
+              (this->*(setter))(it->value.GetUint64());
+            }
+          }
+        }
+
         // TODO(nihao.royal) unify parameters of different types.
       }
     }
@@ -135,11 +145,18 @@ class PageConfig final : public EntryConfig {
     }
   }
 
+  void ForEachUint64Config(
+      const base::MoveOnlyClosure<uint64_t, const std::string&> func) {
+    for (const auto& [name, pair] : GetFuncUint64Map()) {
+      const auto [setter, getter] = pair;
+      (this->*(setter))(func(name));
+    }
+  }
+
   std::unordered_map<std::string, std::string> GetPageConfigMap() {
     std::unordered_map<std::string, std::string> map;
     map.insert({"page_flatten", page_flatten ? "true" : "false"});
     map.insert({"target_sdk_version", target_sdk_version_});
-    map.insert({"radon_mode", radon_mode_});
     map.insert({"enable_lepus_ng", enable_lepus_ng_ ? "true" : "false"});
     map.insert({"react_version", react_version_});
     map.insert({"enable_css_parser", enable_css_parser_ ? "true" : "false"});
@@ -483,10 +500,6 @@ class PageConfig final : public EntryConfig {
     lepus_version_ = lepus_version;
   }
   inline std::string GetLepusVersion() { return lepus_version_; }
-
-  inline void SetRadonMode(std::string radon_mode) { radon_mode_ = radon_mode; }
-
-  inline std::string GetRadonMode() { return radon_mode_; }
 
   inline void SetEnableLepusNG(bool enable_lepus_ng) {
     enable_lepus_ng_ = enable_lepus_ng;
@@ -865,6 +878,10 @@ class PageConfig final : public EntryConfig {
     enable_css_invalidation_ = enable;
   }
 
+  inline bool GetEnableParallelParseElementTemplate() {
+    return pipeline_scheduler_config_ & kEnableParallelParseElementTemplate;
+  }
+
   inline bool GetEnableParallelElement() const {
     return enable_parallel_element_;
   }
@@ -905,9 +922,11 @@ class PageConfig final : public EntryConfig {
     enable_data_processor_on_js_ = enable;
   }
 
-  inline bool GetEnableNativeList() const { return enable_native_list_; }
+  inline TernaryBool GetEnableNativeList() const { return enable_native_list_; }
 
-  inline void SetEnableNativeList(bool enable) { enable_native_list_ = enable; }
+  inline void SetEnableNativeList(TernaryBool enable) {
+    enable_native_list_ = enable;
+  }
 
   bool GetEnableMultiTouch() const { return enable_multi_touch_; }
 
@@ -917,6 +936,14 @@ class PageConfig final : public EntryConfig {
       report::FeatureCounter::Instance()->Count(
           report::LynxFeature::CPP_DISABLE_MULTI_TOUCH);
     }
+  }
+
+  bool GetEnableMultiTouchParamsCompatible() const {
+    return enable_multi_touch_params_compatible_;
+  }
+
+  void SetEnableMultiTouchParamsCompatible(bool enable) {
+    enable_multi_touch_params_compatible_ = enable;
   }
 
   bool GetEnableComponentAsyncDecode() const {
@@ -1022,6 +1049,12 @@ class PageConfig final : public EntryConfig {
 
   bool GetDisableQuickTracingGC() const { return disable_quick_tracing_gc_; }
 
+  void SetFixCSSImportRuleOrder(bool enable) {
+    fix_css_import_rule_order_ = enable;
+  }
+
+  bool GetFixCSSImportRuleOrder() const { return fix_css_import_rule_order_; }
+
   void SetEnableReloadLifecycle(bool enable) {
     enable_reload_lifecycle_ = enable;
   }
@@ -1078,11 +1111,11 @@ class PageConfig final : public EntryConfig {
     }
   }
 
-  bool GetEnableMicrotaskPromisePolyfill() const {
+  TernaryBool GetEnableMicrotaskPromisePolyfill() const {
     return enable_microtask_promise_polyfill_;
   }
 
-  void SetEnableMicrotaskPromisePolyfill(bool enable) {
+  void SetEnableMicrotaskPromisePolyfill(TernaryBool enable) {
     enable_microtask_promise_polyfill_ = enable;
   }
 
@@ -1182,7 +1215,6 @@ class PageConfig final : public EntryConfig {
   CSSParserConfigs css_parser_configs_;
   std::string target_sdk_version_;
   std::string lepus_version_;
-  std::string radon_mode_;
   bool enable_lepus_ng_{true};
   std::string tap_slop_{};
   bool default_overflow_visible_{false};
@@ -1315,6 +1347,9 @@ class PageConfig final : public EntryConfig {
   // enable support multi-finger events
   bool enable_multi_touch_{false};
 
+  // enable support multi-finger event parameter compatibility.
+  bool enable_multi_touch_params_compatible_{false};
+
   // enable air mode to detect removed keys in updating data from native
   bool enable_air_detect_removed_keys_when_update_data_{false};
 
@@ -1368,7 +1403,7 @@ class PageConfig final : public EntryConfig {
   bool enable_query_component_sync_{false};
 
   // Indicates whether use c++ list.
-  bool enable_native_list_{false};
+  TernaryBool enable_native_list_{TernaryBool::UNDEFINE_VALUE};
 
   // peferredFps
   std::string preferred_fps_ = "auto";
@@ -1384,14 +1419,14 @@ class PageConfig final : public EntryConfig {
   uint64_t pipeline_scheduler_config_{0};
 
   // enable microtask promise polyfill
-  bool enable_microtask_promise_polyfill_{false};
+  TernaryBool enable_microtask_promise_polyfill_{TernaryBool::UNDEFINE_VALUE};
 
   // disable tracing gc mode in quick context
   bool disable_quick_tracing_gc_{false};
 
-  TernaryBool enable_signal_api_{TernaryBool::UNDEFINE_VALUE};
+  bool fix_css_import_rule_order_{true};
 
-  lepus::Value config_to_runtime_;
+  TernaryBool enable_signal_api_{TernaryBool::UNDEFINE_VALUE};
 
   template <typename T>
   using PageConfigSetter = void (PageConfig::*)(T);
@@ -1406,6 +1441,8 @@ class PageConfig final : public EntryConfig {
   using PageConfigMap = std::unordered_map<std::string, PageConfigPair<T>>;
 
   static const PageConfigMap<TernaryBool>& GetFuncBoolMap();
+
+  static const PageConfigMap<uint64_t>& GetFuncUint64Map();
 };
 }  // namespace tasm
 }  // namespace lynx

@@ -101,6 +101,11 @@ void InspectorClientDelegateImpl::OnInspectorInited(
     int view_id, int64_t runtime_id, const std::string& group_id) {
   InsertViewIdToGroup(group_id, view_id);
   InsertRuntimeId(runtime_id, view_id);
+  if (debugging_instance_id_ == view_id) {
+    // Update currentDebugAppId if reloading the LynxView currently being
+    // debugged.
+    UpdateCurrentDebugAppId(view_id, runtime_id);
+  }
   SetEnableConsoleInspect(view_id);
 }
 
@@ -349,6 +354,24 @@ void InspectorClientDelegateImpl::SetEnableConsoleInspect(bool enable,
   }
 }
 
+void InspectorClientDelegateImpl::UpdateCurrentDebugAppId(int view_id,
+                                                          int64_t runtime_id) {
+  int64_t current_debug_app_id = kErrorViewID;
+  if (runtime_id != kErrorViewID) {
+    current_debug_app_id = runtime_id;
+  } else {
+    auto it = view_id_to_bundle_.find(view_id);
+    if (it != view_id_to_bundle_.end()) {
+      current_debug_app_id = it->second.runtime_id_;
+    }
+  }
+  std::ostringstream stream;
+  stream << kUpdateCurrentDebugAppIdScript << "\""
+         << std::to_string(current_debug_app_id) << "\"";
+  std::string evaluate_msg = GenMessageEvaluate(stream.str());
+  DispatchMessage(evaluate_msg, view_id);
+}
+
 std::string InspectorClientDelegateImpl::PrepareDispatchMessage(
     rapidjson::Document& message, int instance_id) {
   RemoveInvalidMembers(message);
@@ -406,7 +429,10 @@ std::string InspectorClientDelegateImpl::PrepareResponseMessage(
   CacheBreakpointsByResponseMessage(json_mes,
                                     GetScriptManagerByViewId(instance_id));
 
-  AddEngineTypeParam(json_mes);
+  if (AddEngineTypeParam(json_mes)) {
+    UpdateCurrentDebugAppId(instance_id);
+  }
+
   if (json_mes.HasMember(kKeyParams)) {
     json_mes[kKeyParams].AddMember(
         rapidjson::Value(kKeyViewId, json_mes.GetAllocator()),
@@ -430,6 +456,8 @@ bool InspectorClientDelegateImpl::HandleMessageConsoleAPICalled(
     return HandleMessageConsoleAPICalledFromV8(message);
   } else if (vm_type_ == kKeyEngineQuickjs) {
     HandleMessageConsoleAPICalledFromQuickjs(message);
+  } else if (vm_type_ == kKeyEngineLepus) {
+    HandleMessageConsoleAPICalledFromLepus(message);
   }
   return false;
 }
@@ -494,6 +522,19 @@ void InspectorClientDelegateImpl::HandleMessageConsoleAPICalledFromQuickjs(
   }
 }
 
+void InspectorClientDelegateImpl::HandleMessageConsoleAPICalledFromLepus(
+    rapidjson::Document& message) {
+  if (message.HasMember(kKeyParams)) {
+    message[kKeyParams].AddMember(
+        rapidjson::Value(kKeyConsoleTag, message.GetAllocator()),
+        rapidjson::Value(kKeyEngineLepus, message.GetAllocator()),
+        message.GetAllocator());
+    message[kKeyParams].AddMember(
+        rapidjson::Value(kKeyConsoleId, message.GetAllocator()),
+        rapidjson::Value(kDefaultViewID), message.GetAllocator());
+  }
+}
+
 std::string InspectorClientDelegateImpl::GenMessageCallFunctionOn(
     const std::string& object_id, int message_id) {
   rapidjson::Document document(rapidjson::kObjectType);
@@ -508,6 +549,24 @@ std::string InspectorClientDelegateImpl::GenMessageCallFunctionOn(
       params.GetAllocator());
   params.AddMember(rapidjson::Value(kKeyObjectId, params.GetAllocator()),
                    rapidjson::Value(object_id, params.GetAllocator()),
+                   params.GetAllocator());
+  document.AddMember(rapidjson::Value(kKeyParams, document.GetAllocator()),
+                     params, document.GetAllocator());
+  document.AddMember(rapidjson::Value(kKeyId, document.GetAllocator()),
+                     rapidjson::Value(message_id), document.GetAllocator());
+  return base::ToJson(document);
+}
+
+std::string InspectorClientDelegateImpl::GenMessageEvaluate(
+    const std::string& expression, int message_id) {
+  rapidjson::Document document(rapidjson::kObjectType);
+  document.AddMember(
+      rapidjson::Value(kKeyMethod, document.GetAllocator()),
+      rapidjson::Value(kMethodRuntimeEvaluate, document.GetAllocator()),
+      document.GetAllocator());
+  rapidjson::Document params(rapidjson::kObjectType);
+  params.AddMember(rapidjson::Value(kKeyExpression, params.GetAllocator()),
+                   rapidjson::Value(expression, params.GetAllocator()),
                    params.GetAllocator());
   document.AddMember(rapidjson::Value(kKeyParams, document.GetAllocator()),
                      params, document.GetAllocator());

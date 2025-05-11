@@ -56,6 +56,7 @@ extern "C" {
 #include <cstdlib>
 #if defined(ANDROID) || defined(__ANDROID__)
 #include <errno.h>
+#include <sys/syscall.h>
 #include <unistd.h>
 #endif
 
@@ -181,6 +182,8 @@ int64_t HEAP_TAG_INNER = 0;
 #endif
 
 // <primjs begin>
+
+static const int OUTER_HEAP_SIZE_LIMIT = 32 * MB;
 
 #if defined(ENABLE_PRIMJS_SNAPSHOT)
 static const int NUM_OF_TOS_STATES = 3;
@@ -1874,6 +1877,7 @@ LEPUSContext *LEPUS_NewContextRaw(LEPUSRuntime *rt) {
 
   ctx = static_cast<LEPUSContext *>(lepus_mallocz_rt(rt, sizeof(LEPUSContext)));
   if (!ctx) return NULL;
+  ctx->ptr_handles = rt->ptr_handles;
   ctx->class_proto = static_cast<LEPUSValue *>(
       lepus_malloc_rt(rt, sizeof(ctx->class_proto[0]) * rt->class_count));
   if (!ctx->class_proto) {
@@ -1962,7 +1966,6 @@ LEPUSContext *LEPUS_NewContext(LEPUSRuntime *rt) {
   ctx = LEPUS_NewContextRaw(rt);
   if (!ctx) return NULL;
 
-  ctx->ptr_handles = rt->ptr_handles;
   ctx->napi_scope = NULL;
 
   LEPUS_AddIntrinsicBaseObjects(ctx);
@@ -4585,6 +4588,12 @@ QJS_HIDE LEPUSValue JS_NewObjectFromShape(LEPUSContext *ctx, JSShape *sh,
   p->first_weak_ref = NULL;
   p->u.opaque = NULL;
   p->shape = sh;
+#ifdef ENABLE_QUICKJS_DEBUGGER
+  p->ctx = ctx;
+#if defined(ANDROID) || defined(__ANDROID__)
+  p->tid = get_tid();
+#endif
+#endif
   p->prop = static_cast<JSProperty *>(
       lepus_malloc(ctx, sizeof(JSProperty) * sh->prop_size));
   if (unlikely(!p->prop)) {
@@ -8838,6 +8847,11 @@ int JS_SetPropertyInternalImpl(LEPUSContext *ctx, LEPUSValueConst this_obj,
     }
   }
   p = LEPUS_VALUE_GET_OBJ(this_obj);
+
+#ifdef ENABLE_QUICKJS_DEBUGGER
+  CheckObjectCtx(ctx, val);
+#endif
+
 retry:
   prs = find_own_property(&pr, p, prop);
   if (prs) {
@@ -18489,6 +18503,10 @@ QJS_STATIC inline LEPUSValue JS_CallInternalTI(LEPUSContext *caller_ctx,
                                                LEPUSValue this_obj,
                                                LEPUSValue new_target, int argc,
                                                LEPUSValue *argv, int flags) {
+#ifdef ENABLE_QUICKJS_DEBUGGER
+  CheckObjectCtx(caller_ctx, func_obj);
+#endif
+
 #ifdef ENABLE_PRIMJS_SNAPSHOT
   if (caller_ctx->rt->use_primjs) {
     return entry(this_obj, new_target, func_obj, (address)caller_ctx, argc,
@@ -31525,6 +31543,12 @@ LEPUSValue js_create_function(LEPUSContext *ctx, JSFunctionDef *fd) {
   }
 
   b->stack_size = stack_size;
+#ifdef ENABLE_QUICKJS_DEBUGGER
+  b->ctx = ctx;
+#if defined(ANDROID) || defined(__ANDROID__)
+  b->tid = get_tid();
+#endif
+#endif
 
   if (fd->js_mode & JS_MODE_STRIP) {
     if (!is_gc) {
@@ -41253,7 +41277,7 @@ QJS_STATIC LEPUSValue js___date_clock(LEPUSContext *ctx,
 
 /* OS dependent. d = argv[0] is in ms from 1970. Return the difference
    between local time and UTC time 'd' in minutes */
-int getTimezoneOffset(int64_t time) {
+int getTimezoneOffset(int64_t time, int dst_mode) {
 #if defined(_WIN32)
   TIME_ZONE_INFORMATION tzi;
   memset(&tzi, 0, sizeof(tzi));
@@ -41295,7 +41319,14 @@ int getTimezoneOffset(int64_t time) {
   }
   ti = time;
   localtime_r(&ti, &tm);
-  return -tm.tm_gmtoff / 60;
+  double ret = -tm.tm_gmtoff / 60;
+  // judge timezone for dst
+  if (tm.tm_isdst && dst_mode == 2) {  // isn't dst in date parse
+    ret += 60;
+  } else if (!tm.tm_isdst && dst_mode == 1) {  // is dst in date parse
+    ret -= 60;
+  }
+  return ret;
 #endif
 }
 
@@ -50087,7 +50118,8 @@ QJS_STATIC double time_clip(double t) {
     return LEPUS_FLOAT64_NAN;
 }
 
-QJS_STATIC double set_date_fields(double fields[], int is_local) {
+QJS_STATIC double set_date_fields(double fields[], int is_local,
+                                  int dst_mode = 0) {
   int64_t y;
   double days, h, m1;
   volatile double d; /* enforce evaluation order */
@@ -50108,7 +50140,7 @@ QJS_STATIC double set_date_fields(double fields[], int is_local) {
   h = fields[3] * 3600000 + fields[4] * 60000 + fields[5] * 1000 + fields[6];
   d = days * 86400000;
   d += h;
-  if (is_local) d += getTimezoneOffset(d) * 60000;
+  if (is_local) d += getTimezoneOffset(d, dst_mode) * 60000;
   return time_clip(d);
 }
 
@@ -50466,6 +50498,10 @@ QJS_STATIC LEPUSValue js_Date_parse(LEPUSContext *ctx, LEPUSValueConst this_val,
 
   rv = LEPUS_NAN;
 
+  struct tm info {};
+  time_t t;
+  int dst_mode = 0;
+
   s = JS_ToString_RC(ctx, argv[0]);
   if (LEPUS_IsException(s)) return LEPUS_EXCEPTION;
 
@@ -50548,7 +50584,15 @@ QJS_STATIC LEPUSValue js_Date_parse(LEPUSContext *ctx, LEPUSValueConst this_val,
     }
   }
   for (i = 0; i < 7; i++) fields1[i] = fields[i];
-  d = set_date_fields(fields1, is_local) - tz * 60000;
+  info.tm_year = fields[0] - 1900;
+  info.tm_mon = fields[1];
+  info.tm_mday = fields[2];
+  info.tm_hour = fields[3];
+  info.tm_min = 0;
+  info.tm_isdst = 1;
+  t = mktime(&info);
+  dst_mode = info.tm_isdst == 1 ? 1 : 2;  // 1: dst, 2: no dst
+  d = set_date_fields(fields1, is_local, dst_mode) - tz * 60000;
   rv = __JS_NewFloat64(ctx, d);
 
 done:
@@ -56074,3 +56118,68 @@ void InitLynxTraceEnv(void *(*begin)(const char *), void (*end)(void *ptr)) {
   lynx_trace.InitEndPtr(end);
   return;
 }
+
+void SetObjectCtxCheckStatus(LEPUSContext *ctx, bool enable) {
+  ctx->object_ctx_check = enable;
+  return;
+}
+
+void UpdateOuterObjSize(LEPUSRuntime *rt, int size) {
+#ifdef ENABLE_COMPATIBLE_MM
+  if (rt->gc_enable) {
+    JSMallocState *s = &rt->malloc_state;
+    s->allocate_state.outer_heap_size += size;
+    if (s->allocate_state.outer_heap_size > OUTER_HEAP_SIZE_LIMIT) {
+      trig_gc(s, size, true);
+      s->allocate_state.outer_heap_size = 0;
+    }
+  }
+#endif
+}
+
+#ifdef ENABLE_QUICKJS_DEBUGGER
+#if defined(ANDROID) || defined(__ANDROID__)
+pid_t get_tid() { return syscall(SYS_gettid); }
+#endif
+
+void CheckObjectCtx(LEPUSContext *ctx, LEPUSValue obj) {
+  if (ctx->object_ctx_check) {
+    bool inconsistent_ctx =
+        (LEPUS_VALUE_IS_OBJECT(obj) &&
+         (LEPUS_VALUE_GET_OBJ(obj)->ctx) != ctx) ||
+        (LEPUS_VALUE_IS_FUNCTION_BYTECODE(obj) &&
+         static_cast<LEPUSFunctionBytecode *>(LEPUS_VALUE_GET_PTR(obj))->ctx !=
+             ctx);
+    if (inconsistent_ctx) {
+#if defined(ANDROID) || defined(__ANDROID__)
+      __android_log_print(ANDROID_LOG_FATAL, "PRIMJS_GC",
+                          "CheckObjectCtx failed because of inconsistent ctx. "
+                          "obj: %p, ori_ctx: %p, cur_ctx: %p\n",
+                          LEPUS_VALUE_GET_OBJ(obj),
+                          LEPUS_VALUE_GET_OBJ(obj)->ctx, ctx);
+#endif
+      abort();
+    }
+#if 0
+#if defined(ANDROID) || defined(__ANDROID__)
+    pid_t tid = get_tid();
+    bool inconsistent_tid =
+        (LEPUS_VALUE_IS_OBJECT(obj) &&
+         (LEPUS_VALUE_GET_OBJ(obj)->tid) != tid) ||
+        (LEPUS_VALUE_IS_FUNCTION_BYTECODE(obj) &&
+         static_cast<LEPUSFunctionBytecode *>(LEPUS_VALUE_GET_PTR(obj))->tid !=
+             tid);
+
+    if (inconsistent_tid) {
+      __android_log_print(ANDROID_LOG_FATAL, "PRIMJS_GC",
+                          "CheckObjectCtx failed, inconsistent_tid; obj: %p, "
+                          "ori_tid: %d, cur_tid: %d ctx: %p\n",
+                          LEPUS_VALUE_GET_OBJ(obj),
+                          (int)(LEPUS_VALUE_GET_OBJ(obj)->tid), (int)tid, ctx);
+      abort();
+    }
+#endif
+#endif
+  }
+}
+#endif

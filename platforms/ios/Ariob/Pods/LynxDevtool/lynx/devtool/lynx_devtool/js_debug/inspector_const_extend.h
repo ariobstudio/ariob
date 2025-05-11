@@ -23,6 +23,7 @@ constexpr char kKeyValue[] = "value";
 constexpr char kKeyStringType[] = "string";
 constexpr char kKeyFunctionDeclaration[] = "functionDeclaration";
 constexpr char kKeyObjectId[] = "objectId";
+constexpr char kKeyExpression[] = "expression";
 
 // parameters extended by ourselves
 constexpr char kKeyViewId[] = "viewId";
@@ -39,6 +40,7 @@ constexpr char kTargetLepusPrefix[] = "Main:";
 constexpr char kMethodDebuggerResume[] = "Debugger.resume";
 constexpr char kMethodDebuggerSetSkipAllPauses[] = "Debugger.setSkipAllPauses";
 constexpr char kMethodRuntimeCallFunctionOn[] = "Runtime.callFunctionOn";
+constexpr char kMethodRuntimeEvaluate[] = "Runtime.evaluate";
 
 // Events
 constexpr char kEventDebuggerScriptParsed[] = "Debugger.scriptParsed";
@@ -53,6 +55,8 @@ constexpr char kEventProfilerEnabled[] = "Profiler.enabled";
 
 constexpr char kStringifyObjectScript[] =
     "function stringify() {return JSON.stringify(this,null,'\t');}";
+constexpr char kUpdateCurrentDebugAppIdScript[] =
+    "globalThis.currentDebugAppId = ";
 
 }  // namespace devtool
 }  // namespace lynx

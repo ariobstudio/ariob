@@ -6,7 +6,7 @@
 
 #include "core/base/threading/task_runner_manufactor.h"
 // TODO(zhengsenyao): move lynx_env_darwin.mm out of //lynx/core/base/
-#import "LynxEnv.h"  // nogncheck
+#import <Lynx/LynxEnv.h>  // nogncheck
 
 namespace lynx {
 namespace tasm {

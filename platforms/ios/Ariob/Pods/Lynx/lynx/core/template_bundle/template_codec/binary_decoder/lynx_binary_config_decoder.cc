@@ -162,6 +162,8 @@ static constexpr const char* kEnableCSSLazyImport = "enableCSSLazyImport";
 static constexpr const char* kEnableNewAnimator = "enableNewAnimator";
 static constexpr const char* kDisableQuickTracingGC = "disableQuickTracingGC";
 
+static constexpr const char* kFixCSSImportRuleOrder = "fixCSSImportRuleOrder";
+
 /// Upload global feature switches in PageConfig with common data about lynx
 /// view. If you add a new  global feature switch, you should add it to report
 /// event.
@@ -241,6 +243,15 @@ static constexpr const char* const kEnableJSDataProcessor =
 static constexpr const char* const kEnableMultiTouch = "enableMultiTouch";
 
 /**
+ * @name: enableMultiTouchParamsCompatible
+ * @description: Enable support multi-finger event parameter compatibility
+ * @platform: Both
+ * @supportVersion: 3.2
+ **/
+static constexpr const char* const kEnableMultiTouchParamsCompatible =
+    "enableMultiTouchParamsCompatible";
+
+/**
  * @name: enableComponentAsyncDecode
  * @description: Enable dynamic components to be decoded in child threads before
  *they are delivered into tasm in async-loading.
@@ -274,23 +285,6 @@ static constexpr const char* const kEnableBindICU = "enableICU";
  **/
 static constexpr const char* const kEnableQueryComponentSync =
     "enableQueryComponentSync";
-
-/**
- * @name: pipelineSchedulerConfig
- * @description: Scheduler config for pipeline, including
- * enableParallelElement/list-framework batch render and other scheduler config
- * @platform: Both
- * @supportVersion: 3.1
- */
-static constexpr const char* const kPipelineSchedulerConfig =
-    "pipelineSchedulerConfig";
-
-/**
- * @name: enableNativeList
- * @description: Indicates whether use c++ list.
- * @supportVersion: 3.2
- */
-static constexpr const char* const kEnableNativeList = "enableNativeList";
 
 bool LynxBinaryConfigDecoder::DecodePageConfig(
     const std::string& config_str, std::shared_ptr<PageConfig>& page_config) {
@@ -382,6 +376,9 @@ bool LynxBinaryConfigDecoder::DecodePageConfig(
 
   if (doc.HasMember(kEnableFixedNew) && doc[kEnableFixedNew].IsBool()) {
     page_config.get()->SetEnableFixedNew(doc[kEnableFixedNew].GetBool());
+  } else {
+    page_config.get()->SetEnableFixedNew(
+        LynxEnv::GetInstance().EnableFixedNew());
   }
 
   if (doc.HasMember(kAbsoluteInContentBound) &&
@@ -763,6 +760,9 @@ bool LynxBinaryConfigDecoder::DecodePageConfig(
       doc[kEnableNewIntersectionObserver].IsBool()) {
     page_config->SetEnableNewIntersectionObserver(
         doc[kEnableNewIntersectionObserver].GetBool());
+  } else {
+    page_config->SetEnableNewIntersectionObserver(
+        LynxEnv::GetInstance().EnableNewIntersectionObserver());
   }
 
   if (doc.HasMember(kObserverFrameRate) && doc[kObserverFrameRate].IsInt()) {
@@ -838,10 +838,17 @@ bool LynxBinaryConfigDecoder::DecodePageConfig(
 
   if (doc.HasMember(kEnableMultiTouch) && doc[kEnableMultiTouch].IsBool()) {
     page_config->SetEnableMultiTouch(doc[kEnableMultiTouch].GetBool());
+  } else {
+    page_config->SetEnableMultiTouch(LynxEnv::GetInstance().EnableMultiTouch());
   }
 
-  if (doc.HasMember(kEnableNativeList) && doc[kEnableNativeList].IsBool()) {
-    page_config->SetEnableNativeList(doc[kEnableNativeList].GetBool());
+  if (doc.HasMember(kEnableMultiTouchParamsCompatible) &&
+      doc[kEnableMultiTouchParamsCompatible].IsBool()) {
+    page_config->SetEnableMultiTouchParamsCompatible(
+        doc[kEnableMultiTouchParamsCompatible].GetBool());
+  } else {
+    page_config->SetEnableMultiTouchParamsCompatible(
+        LynxEnv::GetInstance().EnableMultiTouch());
   }
 
   page_config->SetTargetSDKVersion(target_sdk_version_);
@@ -1053,6 +1060,14 @@ bool LynxBinaryConfigDecoder::DecodePageConfig(
     return TernaryBool::UNDEFINE_VALUE;
   });
 
+  page_config->ForEachUint64Config([&doc](const std::string& name) {
+    const char* const key = name.c_str();
+    if (doc.HasMember(key) && doc[key].IsUint64()) {
+      return doc[key].GetUint64();
+    }
+    return static_cast<uint64_t>(0);
+  });
+
   page_config->SetEnableElementAPITypeCheckThrowWarning(
       lynx::tasm::Config::IsHigherOrEqual(target_sdk_version_,
                                           LYNX_VERSION_2_16));
@@ -1071,17 +1086,13 @@ bool LynxBinaryConfigDecoder::DecodePageConfig(
         doc[kEnableQueryComponentSync].GetBool());
   }
 
-  if (doc.HasMember(kPipelineSchedulerConfig) &&
-      doc[kPipelineSchedulerConfig].IsUint64()) {
-    page_config->SetPipelineSchedulerConfig(
-        doc[kPipelineSchedulerConfig].GetUint64());
-  }
-
   // enableMicrotaskPromisePolyfill
   if (doc.HasMember(runtime::kEnableMicrotaskPromisePolyfill) &&
       doc[runtime::kEnableMicrotaskPromisePolyfill].IsBool()) {
     page_config->SetEnableMicrotaskPromisePolyfill(
-        doc[runtime::kEnableMicrotaskPromisePolyfill].GetBool());
+        doc[runtime::kEnableMicrotaskPromisePolyfill].GetBool()
+            ? TernaryBool::TRUE_VALUE
+            : TernaryBool::FALSE_VALUE);
   }
 
   // disableQuickTracingGC
@@ -1089,6 +1100,13 @@ bool LynxBinaryConfigDecoder::DecodePageConfig(
       doc[kDisableQuickTracingGC].IsBool()) {
     page_config->SetDisableQuickTracingGC(
         doc[kDisableQuickTracingGC].GetBool());
+  }
+
+  // fix css import rule order issue
+  if (doc.HasMember(kFixCSSImportRuleOrder) &&
+      doc[kFixCSSImportRuleOrder].IsBool()) {
+    page_config->SetFixCSSImportRuleOrder(
+        doc[kFixCSSImportRuleOrder].GetBool());
   }
 
   // enableSignalAPI

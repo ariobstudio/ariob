@@ -24,6 +24,7 @@ enum class ValueBackendType {
   ValueBackendTypeNapi,
 };
 
+class PubValueFactory;
 class Value;
 
 using ForeachMapFunc =
@@ -56,6 +57,9 @@ class Value {
   virtual bool IsArrayBuffer() const { return false; }
   virtual bool IsMap() const = 0;
   virtual bool IsFunction() const = 0;
+  // Transfer type: If a type is a transfer type, it must be parsed through
+  // ParseTransferValue
+  virtual bool IsTransfer() const { return false; };
 
   // Getter
   virtual bool Bool() const = 0;
@@ -148,6 +152,12 @@ class Value {
   };
   virtual std::unique_ptr<Value> Clone() const { return nullptr; }
 
+  // Transfer
+  virtual std::unique_ptr<pub::Value> ParseTransferValue(
+      std::shared_ptr<PubValueFactory> value_factory) const {
+    return nullptr;
+  }
+
  protected:
   explicit Value(ValueBackendType backend_type) : backend_type_(backend_type) {}
   ValueBackendType backend_type_;
@@ -160,6 +170,7 @@ class Value {
  */
 class PubValueFactory {
  public:
+  enum class FactoryType { kDefault, kPiper, kLepus, kJava, kDarwin, kCustom };
   virtual std::unique_ptr<Value> CreateArray() = 0;
   virtual std::unique_ptr<Value> CreateMap() = 0;
   virtual std::unique_ptr<Value> CreateBool(bool value) = 0;
@@ -167,6 +178,7 @@ class PubValueFactory {
   virtual std::unique_ptr<Value> CreateString(const std::string& value) = 0;
   virtual std::unique_ptr<Value> CreateArrayBuffer(
       std::unique_ptr<uint8_t[]> value, size_t length) = 0;
+  virtual FactoryType GetFactoryType() const { return FactoryType::kDefault; };
   virtual ~PubValueFactory() {}
 };
 

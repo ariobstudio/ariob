@@ -1,1 +1,1 @@
-../../../Lynx/lynx/core/shell/common/vsync_monitor.h
+../../../Lynx/lynx/core/base/threading/vsync_monitor.h

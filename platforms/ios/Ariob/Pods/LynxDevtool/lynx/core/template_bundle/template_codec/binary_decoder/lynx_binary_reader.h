@@ -70,6 +70,7 @@ class LynxBinaryReader : public LynxBinaryBaseTemplateReader {
   // element template
   bool DecodeElementTemplateSection() override;
   bool GreedyDecodeElementTemplateSection();
+  bool GreedyConstructElements();
 
   // custom sections
   bool DecodeCustomSectionsSection() override;

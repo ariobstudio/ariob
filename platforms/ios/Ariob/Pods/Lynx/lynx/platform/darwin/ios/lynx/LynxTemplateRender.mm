@@ -2,53 +2,53 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-#import "LynxTemplateRender.h"
-#import "JSModule.h"
+#import <Lynx/JSModule.h>
+#import <Lynx/LynxDebugger.h>
+#import <Lynx/LynxDevtool+Internal.h>
+#import <Lynx/LynxError.h>
+#import <Lynx/LynxEventReporter.h>
+#import <Lynx/LynxFontFaceManager.h>
+#import <Lynx/LynxLoadMeta.h>
+#import <Lynx/LynxLog.h>
+#import <Lynx/LynxPerformanceEntryConverter.h>
+#import <Lynx/LynxRootUI.h>
+#import <Lynx/LynxScreenMetrics.h>
+#import <Lynx/LynxService.h>
+#import <Lynx/LynxServiceExtensionProtocol.h>
+#import <Lynx/LynxSetModule.h>
+#import <Lynx/LynxSubErrorCode.h>
+#import <Lynx/LynxTemplateBundle.h>
+#import <Lynx/LynxTemplateData.h>
+#import <Lynx/LynxTemplateRender.h>
+#import <Lynx/LynxTheme.h>
+#import <Lynx/LynxTraceEvent.h>
+#import <Lynx/LynxView.h>
+#import <Lynx/LynxViewConfigProcessor.h>
 #import "LynxAccessibilityModule.h"
 #import "LynxBackgroundRuntime+Internal.h"
 #import "LynxCallStackUtil.h"
 #import "LynxConfig+Internal.h"
 #import "LynxContext+Internal.h"
-#import "LynxDebugger.h"
-#import "LynxDevtool+Internal.h"
 #import "LynxEngineProxy+Native.h"
 #import "LynxEnv+Internal.h"
-#import "LynxError.h"
-#import "LynxEventReporter.h"
 #import "LynxEventReporterUtils.h"
 #import "LynxExposureModule.h"
 #import "LynxFetchModule.h"
-#import "LynxFontFaceManager.h"
 #import "LynxGroup+Internal.h"
 #import "LynxIntersectionObserverModule.h"
-#import "LynxLoadMeta.h"
-#import "LynxLog.h"
-#import "LynxPerformanceEntryConverter.h"
 #import "LynxResourceModule.h"
-#import "LynxRootUI.h"
 #import "LynxSSRHelper.h"
-#import "LynxScreenMetrics.h"
-#import "LynxService.h"
-#import "LynxServiceExtensionProtocol.h"
-#import "LynxSetModule.h"
-#import "LynxSubErrorCode.h"
 #import "LynxTemplateBundle+Converter.h"
-#import "LynxTemplateBundle.h"
 #import "LynxTemplateData+Converter.h"
-#import "LynxTemplateData.h"
 #import "LynxTemplateRender+Protected.h"
 #import "LynxTextInfoModule.h"
-#import "LynxTheme.h"
 #import "LynxTimingConstants.h"
-#import "LynxTraceEvent.h"
 #import "LynxUIIntersectionObserver+Internal.h"
 #import "LynxUILayoutTick.h"
 #import "LynxUIMethodModule.h"
 #import "LynxUIRenderer.h"
 #import "LynxUIRendererProtocol.h"
-#import "LynxView.h"
 #import "LynxViewBuilder+Internal.h"
-#import "LynxViewConfigProcessor.h"
 #import "PaintingContextProxy.h"
 
 #include <functional>
@@ -1877,8 +1877,7 @@ LYNX_NOT_IMPLEMENTED(-(instancetype)initWithCoder : (NSCoder*)aDecoder)
 }
 
 - (void)runOnTasmThread:(dispatch_block_t)task {
-  std::function<void(void)> native_task = [task]() { task(); };
-  shell_->RunOnTasmThread(std::move(native_task));
+  [_lynxEngineProxy dispatchTaskToLynxEngine:task];
 }
 
 - (LynxGestureArenaManager*)getGestureArenaManager {
@@ -2029,6 +2028,10 @@ LYNX_NOT_IMPLEMENTED(-(instancetype)initWithCoder : (NSCoder*)aDecoder)
   }
 }
 
+- (void)setFluencyTracerEnabled:(LynxBooleanOption)enabledBySampling {
+  [_lynxUIRenderer setFluencyTracerEnabled:enabledBySampling];
+}
+
 - (void)putExtraParamsForReportingEvents:(NSDictionary<NSString*, id>*)params {
   [LynxEventReporter putExtraParams:params forInstanceId:self.instanceId];
 }
@@ -2071,7 +2074,7 @@ LYNX_NOT_IMPLEMENTED(-(instancetype)initWithCoder : (NSCoder*)aDecoder)
 }
 
 - (void)onFetchTemplateError:(NSError*)error {
-  NSString* error_msg = @"Error occurred when fetch template resource";
+  NSString* error_msg = @"Error occurred while fetching app bundle resource";
   LynxError* lynxError = [LynxError lynxErrorWithCode:ECLynxAppBundleLoadBadResponse
                                               message:error_msg];
   if (error) {
@@ -2499,6 +2502,17 @@ LYNX_NOT_IMPLEMENTED(-(instancetype)initWithCoder : (NSCoder*)aDecoder)
 
 - (id<LynxUIRendererProtocol>)lynxUIRenderer {
   return _lynxUIRenderer;
+}
+
+- (void)onEventCapture:(NSInteger)targetID
+        withEventCatch:(BOOL)isCatch
+            andEventID:(int64_t)eventID {
+}
+
+- (void)onEventBubble:(NSInteger)targetID withEventCatch:(BOOL)isCatch andEventID:(int64_t)eventID {
+}
+
+- (void)onEventFire:(NSInteger)targetID withEventStop:(BOOL)isStop andEventID:(int64_t)eventID {
 }
 
 @end

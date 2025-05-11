@@ -6,7 +6,7 @@
 #define CORE_RUNTIME_BINDINGS_JSI_MODULES_IOS_LYNX_MODULE_DARWIN_H_
 
 #import <Foundation/Foundation.h>
-#import "LynxModule.h"
+#import <Lynx/LynxModule.h>
 
 #include <memory>
 #include <optional>

@@ -33,7 +33,7 @@ static constexpr const char kCreateLynxStartPolyfill[] = "create_lynx_start";
 static constexpr const char kCreateLynxEndPolyfill[] = "create_lynx_end";
 static constexpr const char kResolveStartPolyfill[] = "dispatch_start";
 static constexpr const char kResolveEndPolyfill[] = "dispatch_end";
-static constexpr const char kReloadFromBackgroundPolyfill[] = "reload_from_ks";
+static constexpr const char kReloadBundleFromBtsPolyfill[] = "reload_from_js";
 static constexpr const char kLoadBundleStartPolyfill[] = "load_template_start";
 static constexpr const char kLoadBundleEndPolyfill[] = "load_template_end";
 static constexpr const char kDataProcessorStartPolyfill[] =
@@ -69,6 +69,7 @@ static constexpr const char kLoadCoreEndPolyfill[] = "load_core_end";
 static constexpr const char kPipelineStartPolyfill[] = "pipeline_start";
 static constexpr const char kPipelineEndPolyfill[] = "pipeline_end";
 // metric
+static constexpr const char kTTI[] = "tti";
 static constexpr const char kLynxTTIPolyfill[] = "lynx_tti";
 static constexpr const char kTotalTTIPolyfill[] = "total_tti";
 static constexpr const char kActualFMPPolyfill[] = "actual_fmp";
@@ -83,6 +84,8 @@ static constexpr const char kListRenderChildrenStart[] =
     "list_render_children_start";
 static constexpr const char kListRenderChildrenEnd[] =
     "list_render_children_end";
+static constexpr const char kListFullFillRenderChildrenEnd[] =
+    "list_full_fill_render_children_end";
 static constexpr const char kListPatchChangesStart[] =
     "list_patch_changes_start";
 static constexpr const char kListPatchChangesEnd[] = "list_patch_changes_end";
@@ -145,6 +148,8 @@ static constexpr const char* kUpdateTiming = "update_timing";
 static constexpr const char* kLoadTemplateToUpdateDrawEnd =
     "load_template_to_update_draw_end";
 static constexpr const char* kListRenderChildren = "list_render_children";
+static constexpr const char* kListFullFillRenderChildren =
+    "list_full_fill_render_children";
 static constexpr const char* kListPatchChanges = "list_patch_changes";
 static constexpr const char* kListDiffVdom = "list_diff_vdom";
 

@@ -23,7 +23,7 @@
         self.layoutUiOperationExecuteStart = dictionary[@"layoutUiOperationExecuteStart"] ?: @(-1);
         self.layoutUiOperationExecuteEnd = dictionary[@"layoutUiOperationExecuteEnd"] ?: @(-1);
         self.paintEnd = dictionary[@"paintEnd"] ?: @(-1);
-        self.frameworkPipelineTiming = dictionary[@"frameworkPipelineTiming"];
+        self.frameworkRenderingTiming = dictionary[@"frameworkRenderingTiming"];
     }
     return self;
 }

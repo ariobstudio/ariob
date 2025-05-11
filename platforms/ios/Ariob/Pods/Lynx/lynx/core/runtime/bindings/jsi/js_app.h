@@ -195,7 +195,6 @@ class App : public std::enable_shared_from_this<App> {
   std::shared_ptr<Runtime> GetRuntime();
   std::optional<lepus_value> ParseJSValueToLepusValue(
       const piper::Value& data, const std::string& component_id);
-  void ConsoleLogWithLevel(const std::string& level, const std::string& msg);
 
   void I18nResourceChanged(const std::string& msg);
 
@@ -338,6 +337,8 @@ class App : public std::enable_shared_from_this<App> {
   }
 
   void handleLoadAppFailed(std::string error_msg);
+
+  void OnBTSConsoleEvent(const lepus::Value& args);
 
   std::unique_ptr<runtime::AnimationFrameTaskHandler> animation_frame_handler_;
   bool has_paused_animation_frame_{false};

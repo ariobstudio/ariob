@@ -5,13 +5,13 @@
 #define CORE_RENDERER_UI_WRAPPER_PAINTING_IOS_PAINTING_CONTEXT_DARWIN_H_
 
 #import <Foundation/Foundation.h>
+#import <Lynx/LynxUIOwner.h>
 
 #import <atomic>
 #include <memory>
 #include <string>
 #include <vector>
 
-#import "LynxUIOwner.h"
 #include "core/public/prop_bundle.h"
 #include "core/renderer/ui_wrapper/painting/painting_context.h"
 #include "core/shell/dynamic_ui_operation_queue.h"
@@ -52,7 +52,8 @@ class PaintingContextDarwinRef : public PaintingCtxPlatformRef {
   void UpdateContentOffsetForListContainer(int32_t container_id,
                                            float content_size, float delta_x,
                                            float delta_y,
-                                           bool is_init_scroll_offset) override;
+                                           bool is_init_scroll_offset,
+                                           bool from_layout) override;
   void SetNeedMarkDrawEndTiming(
       std::weak_ptr<shell::TimingCollectorPlatform> weak_timing_collector,
       const tasm::PipelineID& pipeline_id) override;

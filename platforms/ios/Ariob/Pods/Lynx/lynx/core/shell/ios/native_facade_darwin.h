@@ -6,13 +6,13 @@
 #define CORE_SHELL_IOS_NATIVE_FACADE_DARWIN_H_
 
 #import <Foundation/Foundation.h>
+#import <Lynx/LynxView.h>
 
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-#import "LynxView.h"
 #include "core/shell/native_facade.h"
 #import "darwin/common/lynx/TemplateRenderCallbackProtocol.h"
 
@@ -74,6 +74,12 @@ class NativeFacadeDarwin : public NativeFacade {
   void OnTemplateBundleReady(tasm::LynxTemplateBundle bundle) override;
 
   virtual void OnReceiveMessageEvent(runtime::MessageEvent event) override;
+
+  void OnEventCapture(long target_id, bool is_catch, int64_t event_id) override;
+
+  void OnEventBubble(long target_id, bool is_catch, int64_t event_id) override;
+
+  void OnEventFire(long target_id, bool is_stop, int64_t event_id) override;
 
  private:
   __weak id<TemplateRenderCallbackProtocol> _render;

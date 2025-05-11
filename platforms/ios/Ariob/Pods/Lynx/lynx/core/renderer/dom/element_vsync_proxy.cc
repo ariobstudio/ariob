@@ -9,15 +9,17 @@
 
 #include "base/include/log/logging.h"
 #include "base/trace/native/trace_event.h"
+#include "core/base/lynx_trace_categories.h"
+#include "core/base/threading/vsync_monitor.h"
+#include "core/renderer/dom/element_manager.h"
 #include "core/services/long_task_timing/long_task_monitor.h"
-#include "core/shell/common/vsync_monitor.h"
 
 namespace lynx {
 namespace tasm {
 
 ElementVsyncProxy::ElementVsyncProxy(
     ElementManager *element_manager,
-    const std::shared_ptr<shell::VSyncMonitor> &vsync_monitor)
+    const std::shared_ptr<base::VSyncMonitor> &vsync_monitor)
     : element_manager_(element_manager), vsync_monitor_(vsync_monitor){};
 
 void ElementVsyncProxy::TickAllElement(fml::TimePoint &frame_time) {
@@ -49,12 +51,20 @@ void ElementVsyncProxy::SetPreferredFps(const std::string &preferred_fps) {
 
 // The first animation starts an infinite loop.
 void ElementVsyncProxy::RequestNextFrame() {
+  if (element_manager_->IsPause()) {
+    return;
+  }
   if (!has_requested_next_frame_ && vsync_monitor_) {
     std::weak_ptr<ElementVsyncProxy> weak_ptr{shared_from_this()};
     vsync_monitor_->ScheduleVSyncSecondaryCallback(
         reinterpret_cast<uintptr_t>(this),
-        [weak_ptr](int64_t frame_start, int64_t frame_end) {
-          TRACE_EVENT(LYNX_TRACE_CATEGORY, "ElementVsyncProxy::VsyncFrameTime");
+        [weak_ptr, instance_id = element_manager_->GetInstanceId()](
+            int64_t frame_start, int64_t frame_end) {
+          TRACE_EVENT(LYNX_TRACE_CATEGORY, "ElementVsyncProxy::VsyncFrameTime",
+                      [instance_id](lynx::perfetto::EventContext ctx) {
+                        ctx.event()->add_debug_annotations(
+                            "instance_id", std::to_string(instance_id));
+                      });
           // TODO(WUJINTIAN): Access animation vsync proxy and element manager
           // through engine actor, instead of accessing them directly.
           auto shared_ptr = weak_ptr.lock();

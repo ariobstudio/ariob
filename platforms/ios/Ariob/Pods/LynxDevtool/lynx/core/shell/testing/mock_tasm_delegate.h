@@ -64,6 +64,12 @@ class MockTasmDelegate : public TemplateAssembler::Delegate,
       const std::string& url,
       const tasm::PipelineOptions& pipeline_options) override;
   void OnGlobalPropsUpdated(const lepus::Value& props) override;
+  virtual void OnEventCapture(long target_id, bool is_catch,
+                              int64_t event_id) override;
+  virtual void OnEventBubble(long target_id, bool is_catch,
+                             int64_t event_id) override;
+  virtual void OnEventFire(long target_id, bool is_stop,
+                           int64_t event_id) override;
   virtual void CallJSApiCallback(piper::ApiCallBack callback) override;
   virtual void CallJSApiCallbackWithValue(piper::ApiCallBack callback,
                                           const lepus::Value& value,
@@ -88,8 +94,6 @@ class MockTasmDelegate : public TemplateAssembler::Delegate,
       tasm::TemplateData init_data,
       const tasm::PipelineOptions& pipeline_options) override;
   virtual void OnLifecycleEvent(const lepus::Value& args) override;
-  virtual void PrintMsgToJS(const std::string& level,
-                            const std::string& msg) override;
 
   virtual void SendAnimationEvent(const char* type, int tag,
                                   const lepus::Value& dict) override;

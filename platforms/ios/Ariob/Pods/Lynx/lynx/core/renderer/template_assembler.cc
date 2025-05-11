@@ -54,6 +54,7 @@
 #include "core/runtime/vm/lepus/tasks/lepus_raf_manager.h"
 #include "core/runtime/vm/lepus/vm_context.h"
 #include "core/services/event_report/event_tracker.h"
+#include "core/services/feature_count/global_feature_counter.h"
 #include "core/services/recorder/recorder_controller.h"
 #include "core/services/ssr/client/ssr_client_utils.h"
 #include "core/services/ssr/client/ssr_data_update_manager.h"
@@ -226,11 +227,6 @@ TemplateAssembler::~TemplateAssembler() {
   LOGI("TemplateAssembler::Release url:" << url_ << " this:" << this);
 };
 
-void TemplateAssembler::Init(fml::RefPtr<fml::TaskRunner> tasm_runner) {
-  TRACE_EVENT(LYNX_TRACE_CATEGORY, "TemplateAssembler::Init");
-  std::weak_ptr<TemplateAssembler> wp(shared_from_this());
-}
-
 void TemplateAssembler::UpdateGlobalProps(const lepus::Value& data,
                                           bool need_render,
                                           PipelineOptions& pipeline_options) {
@@ -309,7 +305,10 @@ void TemplateAssembler::UpdateGlobalPropsToContext(const lepus::Value& props) {
 
   ForEachEntry([&kGlobalPropsKey_str, &kSystemInfo_str,
                 &kTriggerReadyWhenReloadStr, &kPostDataBeforeUpdateLepusStr,
-                &props](const auto& entry) {
+                &props,
+                enable_signal_api =
+                    page_config_ ? page_config_->GetEnableSignalAPIBoolValue()
+                                 : false](const auto& entry) {
     auto context = entry->GetVm();
     if (context == nullptr) {
       return;
@@ -322,6 +321,8 @@ void TemplateAssembler::UpdateGlobalPropsToContext(const lepus::Value& props) {
       context->SetPropertyToLynx(kPostDataBeforeUpdateLepusStr,
                                  lepus::Value(true));
     }
+    context->SetPropertyToLynx(BASE_STATIC_STRING(kEnableSignalAPI),
+                               lepus::Value(enable_signal_api));
   });
 }
 
@@ -454,10 +455,6 @@ void TemplateAssembler::DidVMExecute() {
   // timing actions
   tasm::TimingCollector::Instance()->MarkFrameworkTiming(
       tasm::timing::kVmExecuteEnd);
-
-  // Radon info can be know only after Vm->Execute()
-  SetPageConfigRadonMode();
-
   // Ensure that only one page config is set
   if (!page_proxy_.HasSSRRadonPage()) {
     OnPageConfigDecoded(page_config_);
@@ -602,6 +599,20 @@ void TemplateAssembler::RenderTemplate(
     update_page_option.update_first_time = true;
     page_proxy_.UpdateInLoadTemplate(data.GetValue(), update_page_option,
                                      pipeline_options);
+  }
+
+  bool enable_parallel_element =
+      page_proxy()->element_manager()->GetEnableParallelElement();
+  bool enable_radon_fiber_arch =
+      page_proxy()->element_manager()->GetEnableFiberElementForRadonDiff();
+  if (EnableFiberArch() && !enable_parallel_element) {
+    report::GlobalFeatureCounter::Count(
+        report::LynxFeature::CPP_DISABLE_PARALLEL_FLUSH_FIBER_ARCH,
+        page_proxy()->element_manager()->GetInstanceId());
+  } else if (enable_radon_fiber_arch && !enable_parallel_element) {
+    report::GlobalFeatureCounter::Count(
+        report::LynxFeature::CPP_DISABLE_PARALLEL_FLUSH_FIBER_RADON_ARCH,
+        page_proxy()->element_manager()->GetInstanceId());
   }
 }
 
@@ -1406,13 +1417,6 @@ bool TemplateAssembler::BuildComponentEntryInternal(
   return true;
 }
 
-void TemplateAssembler::SetPageConfigRadonMode() const {
-  if (!page_config_) {
-    return;
-  }
-  page_config_->SetRadonMode("RadonDiff");
-}
-
 void TemplateAssembler::SetPageConfig(
     const std::shared_ptr<PageConfig>& config) {
   if (config) {
@@ -1880,6 +1884,75 @@ void TemplateAssembler::SendTouchEvent(const std::string& name,
         info.y, info.client_x, info.client_y, info.page_x, info.page_y);
   }
 #endif
+}
+
+void TemplateAssembler::StartEventGenerate(const lepus::Value& event_params) {
+  if (!template_loaded_ || destroyed()) {
+    LOGI(
+        "Lynx StartEventGenerate failed, template_loaded_=false or "
+        "destroyed=true"
+        << " this:" << this);
+    return;
+  }
+  if (!EnableLynxAir()) {
+    EnsureTouchEventHandler();
+    touch_event_handler_->StartEventGenerate(
+        this, FindEntry(DEFAULT_ENTRY_NAME)->GetName(), event_params);
+  }
+}
+
+void TemplateAssembler::StartEventCapture(int64_t event_id) {
+  if (!template_loaded_ || destroyed()) {
+    LOGI(
+        "Lynx StartEventCapture failed, template_loaded_=false or "
+        "destroyed=true"
+        << " this:" << this);
+    return;
+  }
+  if (!EnableLynxAir()) {
+    EnsureTouchEventHandler();
+    touch_event_handler_->StartEventCapture(this, event_id);
+  }
+}
+
+void TemplateAssembler::StartEventBubble(int64_t event_id) {
+  if (!template_loaded_ || destroyed()) {
+    LOGI(
+        "Lynx StartEventBubble failed, template_loaded_=false or destroyed=true"
+        << " this:" << this);
+    return;
+  }
+  if (!EnableLynxAir()) {
+    EnsureTouchEventHandler();
+    touch_event_handler_->StartEventBubble(this, event_id);
+  }
+}
+
+void TemplateAssembler::StartEventFire(bool is_stop, int64_t event_id) {
+  if (!template_loaded_ || destroyed()) {
+    LOGI("Lynx StartEventFire failed, template_loaded_=false or destroyed=true"
+         << " this:" << this);
+    return;
+  }
+  if (!EnableLynxAir()) {
+    EnsureTouchEventHandler();
+    touch_event_handler_->StartEventFire(this, is_stop, event_id);
+  }
+}
+
+void TemplateAssembler::OnEventCapture(long target_id, bool is_catch,
+                                       int64_t event_id) {
+  delegate_.OnEventCapture(target_id, is_catch, event_id);
+}
+
+void TemplateAssembler::OnEventBubble(long target_id, bool is_catch,
+                                      int64_t event_id) {
+  delegate_.OnEventBubble(target_id, is_catch, event_id);
+}
+
+void TemplateAssembler::OnEventFire(long target_id, bool is_stop,
+                                    int64_t event_id) {
+  delegate_.OnEventFire(target_id, is_stop, event_id);
 }
 
 TemplateData TemplateAssembler::GenerateTemplateDataPostedToJs(
@@ -2425,12 +2498,21 @@ void TemplateAssembler::OnDynamicJSSourcePrepared(
   delegate_.DispatchMessageEvent(std::move(event));
 }
 
-void TemplateAssembler::PrintMsgToJS(const std::string& level,
-                                     const std::string& msg) {
-  delegate_.PrintMsgToJS(level, msg);
+void TemplateAssembler::OnBTSConsoleEvent(const std::string& func_name,
+                                          const std::string& args) {
+  auto params = lepus::Dictionary::Create();
+  BASE_STATIC_STRING_DECL(kFuncName, "func_name");
+  BASE_STATIC_STRING_DECL(kParams, "params");
+  params->SetValue(kFuncName, func_name);
+  params->SetValue(kParams, args);
+  runtime::MessageEvent event(runtime::kMessageEventTypeOnBTSConsoleEvent,
+                              runtime::ContextProxy::Type::kCoreContext,
+                              runtime::ContextProxy::Type::kJSContext,
+                              lepus::Value(std::move(params)));
+  delegate_.DispatchMessageEvent(std::move(event));
   // Post msg to devtool when using LynxAir, which doesn't have js runtime.
   if (lepus_observer_ != nullptr) {
-    lepus_observer_->OnConsoleMessage(level, msg);
+    lepus_observer_->OnConsoleEvent(func_name, args);
   }
 }
 
@@ -2633,6 +2715,26 @@ void TemplateAssembler::FilterI18nResource(const lepus::Value& channel,
 void TemplateAssembler::OnPageConfigDecoded(
     const std::shared_ptr<PageConfig>& config) {
   delegate_.OnPageConfigDecoded(config);
+  if (!config->GetEnableMultiTouch()) {
+    report::GlobalFeatureCounter::Count(
+        report::LynxFeature::CPP_DISABLE_MULTI_TOUCH,
+        page_proxy()->element_manager()->GetInstanceId());
+  }
+  if (!config->GetEnableMultiTouchParamsCompatible()) {
+    report::GlobalFeatureCounter::Count(
+        report::LynxFeature::CPP_DISABLE_MULTI_TOUCH_PARAMS_COMPATIBLE,
+        page_proxy()->element_manager()->GetInstanceId());
+  }
+  if (!config->GetEnableTouchRefactor()) {
+    report::GlobalFeatureCounter::Count(
+        report::LynxFeature::OBJC_DISABLE_TOUCH_REFACTOR,
+        page_proxy()->element_manager()->GetInstanceId());
+  }
+  if (!config->GetEnableEventRefactor()) {
+    report::GlobalFeatureCounter::Count(
+        report::LynxFeature::CPP_DISABLE_EVENT_REFACTOR,
+        page_proxy()->element_manager()->GetInstanceId());
+  }
   report::EventTracker::UpdateGenericInfoByPageConfig(instance_id_, config);
 }
 
@@ -2937,11 +3039,6 @@ void TemplateAssembler::RenderPageWithSSRData(
 
 Themed& TemplateAssembler::Themed() { return page_proxy_.themed(); }
 
-void TemplateAssembler::SetThemed(
-    const Themed::PageTransMaps& page_trans_maps) {
-  Themed().ResetWithPageTransMaps(page_trans_maps);
-}
-
 // For fiber
 void TemplateAssembler::CallLepusMethod(const std::string& method_name,
                                         lepus::Value args,
@@ -2961,7 +3058,7 @@ void TemplateAssembler::CallLepusMethod(const std::string& method_name,
        << this << " url:" << url_ << " method name: " << method_name);
 
   const auto ret_value =
-      context(tasm::DEFAULT_ENTRY_NAME)->Call(method_name, args);
+      GetLepusContext(tasm::DEFAULT_ENTRY_NAME)->Call(method_name, args);
   if (callback.IsValid()) {
     delegate_.CallJSApiCallbackWithValue(callback, ret_value);
   }

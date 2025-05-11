@@ -12,7 +12,7 @@
 #include <unordered_map>
 #include <utility>
 
-#import "LynxThreadSafeDictionary.h"
+#import <Lynx/LynxThreadSafeDictionary.h>
 #include "core/public/jsb/native_module_factory.h"
 #include "core/runtime/bindings/jsi/modules/ios/lynx_module_darwin.h"
 #include "core/runtime/bindings/jsi/modules/lynx_module_manager.h"

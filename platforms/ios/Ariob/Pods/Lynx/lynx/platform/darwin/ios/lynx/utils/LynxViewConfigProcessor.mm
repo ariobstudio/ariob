@@ -2,8 +2,8 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-#import "LynxViewConfigProcessor.h"
-#import "LynxLog.h"
+#import <Lynx/LynxLog.h>
+#import <Lynx/LynxViewConfigProcessor.h>
 
 @implementation LynxViewConfigProcessor
 
@@ -38,6 +38,13 @@
   id bytecodeUrl = [dictionary objectForKey:KEY_LYNX_BYTECODE_URL];
   if ([bytecodeUrl isKindOfClass:NSString.class]) {
     lynxViewBuilder.bytecodeUrl = (NSString *)bytecodeUrl;
+  }
+
+  id enableVSyncAlignedMessageLoop =
+      [dictionary objectForKey:KEY_LYNX_ENABLE_VSYNC_ALIGNED_MESSAGE_LOOP];
+  if ([enableVSyncAlignedMessageLoop isKindOfClass:NSNumber.class]) {
+    lynxViewBuilder.enableVSyncAlignedMessageLoop =
+        [(NSNumber *)enableVSyncAlignedMessageLoop intValue] == 1;
   }
 }
 

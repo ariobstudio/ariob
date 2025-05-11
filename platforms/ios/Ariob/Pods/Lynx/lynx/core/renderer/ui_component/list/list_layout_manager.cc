@@ -213,11 +213,9 @@ void ListLayoutManager::ScrollToPosition(int index, float offset, int align,
     list_container_->UpdateScrollInfo(target_offset, smooth, false);
   } else {
     // scroll to index by layout, by initial-scroll-index
-    // is_scroll_to_position_ will block layout_complete event
-    is_scroll_to_position_ = true;
+    // is_non_smooth_scroll_ will block layout_complete event
+    is_non_smooth_scroll_ = true;
     OnLayoutChildren();
-    is_scroll_to_position_ = false;
-
     // Invalidate consumed index to avoid double calculation
     list_anchor_manager_->InvalidateScrollInfoPosition();
     float target_offset =
@@ -227,6 +225,7 @@ void ListLayoutManager::ScrollToPosition(int index, float offset, int align,
         align != static_cast<int>(list::ScrollingInfoAlignment::kTop)) {
       ScrollByInternal(target_offset, target_offset, false);
     }
+    is_non_smooth_scroll_ = false;
   }
 }
 
@@ -285,7 +284,7 @@ void ListLayoutManager::RecycleOffScreenItemHolders() {
 // Update content size and content offset and flush to platform by invoking
 // ListContainer::UpdateContentOffsetAndSizeToPlatform().
 void ListLayoutManager::FlushContentSizeAndOffsetToPlatform(
-    float content_offset_before_adjustment) {
+    float content_offset_before_adjustment, bool from_layout) {
   content_offset_ = ClampContentOffsetToEdge(content_offset_, content_size_);
   float delta_x = orientation_ == list::Orientation::kVertical
                       ? 0.f
@@ -297,7 +296,8 @@ void ListLayoutManager::FlushContentSizeAndOffsetToPlatform(
     list_container_->UpdateContentOffsetAndSizeToPlatform(
         content_size_, delta_x, delta_y,
         list_anchor_manager_->initial_scroll_index_status() ==
-            list::InitialScrollIndexStatus::kSet);
+            list::InitialScrollIndexStatus::kSet,
+        is_non_smooth_scroll_ || from_layout);
   }
   FlushScrollInfoToPlatformIfNeeded();
 }
@@ -338,7 +338,7 @@ void ListLayoutManager::SendLayoutCompleteEvent(float scroll_delta) {
   // StopInterceptListElementUpdated to ensure that the layout inside it goes
   // without blocking.
   ListEventManager* event_manager = list_container_->list_event_manager();
-  if (event_manager && !is_scroll_to_position_) {
+  if (event_manager && !is_non_smooth_scroll_) {
     event_manager->SendLayoutCompleteInfo();
   }
 }
@@ -526,6 +526,18 @@ bool ListLayoutManager::IsItemHolderNotSticky(
              list_orientation_helper_->GetDecoratedStart(item_holder),
              list_orientation_helper_->GetDecoratedEnd(item_holder));
 }
+
+#if ENABLE_TRACE_PERFETTO
+void ListLayoutManager::UpdateTraceDebugInfo(TraceEvent* event) const {
+  auto* content_size_info = event->add_debug_annotations();
+  content_size_info->set_name("content_size");
+  content_size_info->set_string_value(std::to_string(content_size_));
+
+  auto* content_offset_info = event->add_debug_annotations();
+  content_offset_info->set_name("content_offset");
+  content_offset_info->set_string_value(std::to_string(content_offset_));
+}
+#endif
 
 }  // namespace tasm
 }  // namespace lynx

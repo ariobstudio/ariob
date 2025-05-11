@@ -16,6 +16,7 @@
 #include "base/include/base_export.h"
 #include "base/include/lynx_actor.h"
 #include "core/base/threading/task_runner_manufactor.h"
+#include "core/base/threading/vsync_monitor.h"
 #include "core/inspector/observer/inspector_runtime_observer_ng.h"
 #include "core/public/lynx_resource_loader.h"
 #include "core/renderer/data/template_data.h"
@@ -26,7 +27,6 @@
 #include "core/runtime/vm/lepus/lepus_value.h"
 #include "core/services/timing_handler/timing_handler.h"
 #include "core/services/timing_handler/timing_mediator.h"
-#include "core/shell/common/vsync_monitor.h"
 #include "core/shell/dynamic_ui_operation_queue.h"
 #include "core/shell/engine_thread_switch.h"
 #include "core/shell/layout_mediator.h"
@@ -94,9 +94,13 @@ class LynxShell {
   virtual void AttachRuntime(
       std::weak_ptr<piper::LynxModuleManager> module_manager);
   void InitRuntimeWithRuntimeDisabled(
-      std::shared_ptr<VSyncMonitor> vsync_monitor);
+      std::shared_ptr<base::VSyncMonitor> vsync_monitor);
 
   void StartJsRuntime();
+
+  static void TriggerDestroyRuntime(
+      const std::shared_ptr<LynxActor<runtime::LynxRuntime>>& runtime_actor,
+      std::string js_group_thread_name);
 
   // TODO(heshan): will be deleted after ios platform ready
   void Destroy();
@@ -423,6 +427,8 @@ class LynxShell {
   // Managed by Runtime, only keep those before runtime create.
   std::vector<std::unique_ptr<lynx::piper::NativeModuleFactory>>
       module_factories_;
+
+  std::shared_ptr<LayoutResultManager> layout_result_manager_;
 
  private:
   std::weak_ptr<piper::JsBundleHolder> GetWeakJsBundleHolder();

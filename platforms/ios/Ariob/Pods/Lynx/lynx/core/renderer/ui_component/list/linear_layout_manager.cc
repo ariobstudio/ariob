@@ -18,8 +18,10 @@ LinearLayoutManager::LinearLayoutManager(ListContainerImpl* list_container_impl)
     : ListLayoutManager(list_container_impl) {}
 
 void LinearLayoutManager::OnBatchLayoutChildren() {
-  TRACE_EVENT(LYNX_TRACE_CATEGORY,
-              "LinearLayoutManager::OnBatchLayoutChildren");
+  TRACE_EVENT(LYNX_TRACE_CATEGORY, "OnBatchLayoutChildren",
+              [this](lynx::perfetto::EventContext ctx) {
+                UpdateTraceDebugInfo(ctx.event());
+              });
 
   OnPrepareForLayoutChildren();
 
@@ -58,7 +60,11 @@ void LinearLayoutManager::OnBatchLayoutChildren() {
 
 void LinearLayoutManager::OnLayoutChildren(
     bool is_component_finished /* = false */, int component_index /* = -1 */) {
-  TRACE_EVENT(LYNX_TRACE_CATEGORY, "LinearLayoutManager::OnLayoutChildren");
+  TRACE_EVENT(LYNX_TRACE_CATEGORY, "OnLayoutChildren",
+              [this](lynx::perfetto::EventContext ctx) {
+                UpdateTraceDebugInfo(ctx.event());
+              });
+
   if (!list_container_ || !list_children_helper_) {
     return;
   }
@@ -97,7 +103,7 @@ void LinearLayoutManager::OnLayoutChildrenInternal(
     // Reset content offset to 0.
     SetContentOffset(0.f);
     FlushContentSizeAndOffsetToPlatform(
-        layout_state.latest_updated_content_offset_);
+        layout_state.latest_updated_content_offset_, true);
     layout_state.latest_updated_content_offset_ = content_offset_;
     // Note: need update on screen children.
     list_children_helper_->UpdateOnScreenChildren(
@@ -120,7 +126,7 @@ void LinearLayoutManager::OnLayoutChildrenInternal(
   // step 2.5 Update sticky items
   UpdateStickyItemsAfterLayout(anchor_info);
   FlushContentSizeAndOffsetToPlatform(
-      layout_state.latest_updated_content_offset_);
+      layout_state.latest_updated_content_offset_, true);
   layout_state.latest_updated_content_offset_ = content_offset_;
 
   // The previous AdjustOffsetWithAnchor was called twice(the second one is
@@ -136,20 +142,21 @@ void LinearLayoutManager::OnLayoutChildrenInternal(
   if (enable_preload_section_) {
     PreloadSectionOnNextFrame();
   } else {
-    HandlePreloadIfNeeded(layout_state, anchor_info);
+    HandlePreloadIfNeeded(layout_state, anchor_info, true);
   }
   TRACE_EVENT_END(LYNX_TRACE_CATEGORY);
 }
 
 void LinearLayoutManager::HandlePreloadIfNeeded(
-    LayoutState& layout_state, ListAnchorManager::AnchorInfo& anchor_info) {
+    LayoutState& layout_state, ListAnchorManager::AnchorInfo& anchor_info,
+    bool from_layout) {
   if (ValidPreloadBufferCount() && Preload(layout_state)) {
     LayoutInvalidItemHolder(0);
     content_size_ = GetTargetContentSize();
     list_anchor_manager_->AdjustContentOffsetWithAnchor(anchor_info,
                                                         content_offset_);
     FlushContentSizeAndOffsetToPlatform(
-        layout_state.latest_updated_content_offset_);
+        layout_state.latest_updated_content_offset_, from_layout);
     layout_state.latest_updated_content_offset_ = content_offset_;
     // Note: need re-update on screen children after preload
     list_children_helper_->UpdateOnScreenChildren(
@@ -176,7 +183,10 @@ void LinearLayoutManager::OnLayoutAfter(LayoutState& layout_state) {
 
 void LinearLayoutManager::HandleLayoutOrScrollResult(LayoutState& layout_state,
                                                      bool is_layout) {
-  TRACE_EVENT(LYNX_TRACE_CATEGORY, "HandlePlatformOperation");
+  TRACE_EVENT(LYNX_TRACE_CATEGORY, "HandleLayoutOrScrollResult",
+              [this](lynx::perfetto::EventContext ctx) {
+                UpdateTraceDebugInfo(ctx.event());
+              });
   if (list_container_->enable_batch_render()) {
     ListLayoutManager::HandleLayoutOrScrollResult(is_layout);
   } else {
@@ -293,6 +303,10 @@ void LinearLayoutManager::FillWithAnchor(
  * or end.
  */
 bool LinearLayoutManager::Preload(LayoutState& layout_state) {
+  TRACE_EVENT(LYNX_TRACE_CATEGORY, "Preload",
+              [this](lynx::perfetto::EventContext ctx) {
+                UpdateTraceDebugInfo(ctx.event());
+              });
   const auto& on_screen_children = list_children_helper_->on_screen_children();
   layout_state.ResetPreloadIndex();
   list_children_helper_->ClearInPreloadChildren();
@@ -452,7 +466,10 @@ int LinearLayoutManager::GetTargetIndexForPreloadBuffer(
 void LinearLayoutManager::ScrollByInternal(float content_offset,
                                            float original_offset,
                                            bool from_platform) {
-  TRACE_EVENT(LYNX_TRACE_CATEGORY, "LinearLayoutManager::ScrollByInternal");
+  TRACE_EVENT(LYNX_TRACE_CATEGORY, "ScrollByInternal",
+              [this](lynx::perfetto::EventContext ctx) {
+                UpdateTraceDebugInfo(ctx.event());
+              });
   if (!list_container_ || !list_children_helper_) {
     return;
   }
@@ -495,7 +512,7 @@ void LinearLayoutManager::ScrollByInternal(float content_offset,
   list_anchor_manager_->AdjustContentOffsetWithAnchor(
       anchor_info, layout_state.latest_updated_content_offset_);
   FlushContentSizeAndOffsetToPlatform(
-      layout_state.latest_updated_content_offset_);
+      layout_state.latest_updated_content_offset_, false);
   layout_state.latest_updated_content_offset_ = content_offset_;
   TRACE_EVENT_END(LYNX_TRACE_CATEGORY);
 
@@ -508,7 +525,7 @@ void LinearLayoutManager::ScrollByInternal(float content_offset,
   TRACE_EVENT_BEGIN(LYNX_TRACE_CATEGORY, "HandlePreloadIfNeeded");
   list_children_helper_->UpdateOnScreenChildren(list_orientation_helper_.get(),
                                                 content_offset_);
-  HandlePreloadIfNeeded(layout_state, anchor_info);
+  HandlePreloadIfNeeded(layout_state, anchor_info, false);
   TRACE_EVENT_END(LYNX_TRACE_CATEGORY);
 
   // step 5. Handle scroll result.
@@ -887,6 +904,15 @@ void LinearLayoutManager::PreloadSection(LayoutState& layout_state) {
     }
   }
 }
+
+#if ENABLE_TRACE_PERFETTO
+void LinearLayoutManager::UpdateTraceDebugInfo(TraceEvent* event) const {
+  ListLayoutManager::UpdateTraceDebugInfo(event);
+  auto* list_type_info = event->add_debug_annotations();
+  list_type_info->set_name("list_type");
+  list_type_info->set_string_value("single");
+}
+#endif
 
 }  // namespace tasm
 }  // namespace lynx

@@ -45,7 +45,6 @@ class ListLayoutManager {
                                  float original_x, float original_y);
   void ScrollToPosition(int index, float offset, int align, bool smooth);
   void ScrollStopped();
-
   float GetWidth() const;
   float GetHeight() const;
   float GetHeightAfterPadding() const;
@@ -148,7 +147,7 @@ class ListLayoutManager {
   virtual bool ShouldRecycleItemHolder(ItemHolder* item_holder);
   void RecycleOffScreenItemHolders();
   void FlushContentSizeAndOffsetToPlatform(
-      float content_offset_before_adjustment);
+      float content_offset_before_adjustment, bool from_layout);
   void OnLayoutCompleted();
   void SendLayoutCompleteEvent(float scroll_delta);
   void SendScrollEvents(float scroll_delta, float original_offset,
@@ -166,6 +165,9 @@ class ListLayoutManager {
   void OnPrepareForLayoutChildren();
   void SendAnchorDebugInfo(ListAnchorManager::AnchorInfo& anchor_info);
   void HandleLayoutOrScrollResult(bool is_layout);
+#if ENABLE_TRACE_PERFETTO
+  virtual void UpdateTraceDebugInfo(TraceEvent* event) const;
+#endif
 
  private:
   bool UpdateStickyItemsInternal(int& layout_changed_position,
@@ -185,7 +187,7 @@ class ListLayoutManager {
   float cross_axis_gap_{0.f};
   int preload_buffer_count_{0};
   std::unique_ptr<ListAnchorManager> list_anchor_manager_;
-  bool is_scroll_to_position_{false};
+  bool is_non_smooth_scroll_{false};
   ListContainerImpl* list_container_{nullptr};
   ListChildrenHelper* list_children_helper_{nullptr};
   bool enable_preload_section_{false};

@@ -23,94 +23,6 @@ void UpdateStyleWithEnvConfig(starlight::ComputedCSSStyle& css_style,
 
 }  // namespace
 
-#define FOREACH_LAYOUT_PROPERTY(V)    \
-  V(Top, LAYOUT_ONLY)                 \
-  V(Left, LAYOUT_ONLY)                \
-  V(Right, LAYOUT_ONLY)               \
-  V(Bottom, LAYOUT_ONLY)              \
-  V(Width, LAYOUT_ONLY)               \
-  V(MaxWidth, LAYOUT_ONLY)            \
-  V(MinWidth, LAYOUT_ONLY)            \
-  V(Height, LAYOUT_ONLY)              \
-  V(MaxHeight, LAYOUT_ONLY)           \
-  V(MinHeight, LAYOUT_ONLY)           \
-  V(PaddingLeft, LAYOUT_ONLY)         \
-  V(PaddingRight, LAYOUT_ONLY)        \
-  V(PaddingTop, LAYOUT_ONLY)          \
-  V(PaddingBottom, LAYOUT_ONLY)       \
-  V(MarginLeft, LAYOUT_ONLY)          \
-  V(MarginRight, LAYOUT_ONLY)         \
-  V(MarginTop, LAYOUT_ONLY)           \
-  V(MarginBottom, LAYOUT_ONLY)        \
-  V(BorderLeftWidth, LAYOUT_WANTED)   \
-  V(BorderRightWidth, LAYOUT_WANTED)  \
-  V(BorderTopWidth, LAYOUT_WANTED)    \
-  V(BorderBottomWidth, LAYOUT_WANTED) \
-  V(FlexBasis, LAYOUT_ONLY)           \
-  V(FlexGrow, LAYOUT_ONLY)            \
-  V(FlexShrink, LAYOUT_ONLY)          \
-  V(LinearWeightSum, LAYOUT_ONLY)     \
-  V(LinearWeight, LAYOUT_ONLY)        \
-  V(AspectRatio, LAYOUT_ONLY)         \
-  V(RelativeId, LAYOUT_ONLY)          \
-  V(RelativeAlignTop, LAYOUT_ONLY)    \
-  V(RelativeAlignRight, LAYOUT_ONLY)  \
-  V(RelativeAlignBottom, LAYOUT_ONLY) \
-  V(RelativeAlignLeft, LAYOUT_ONLY)   \
-  V(RelativeTopOf, LAYOUT_ONLY)       \
-  V(RelativeRightOf, LAYOUT_ONLY)     \
-  V(RelativeBottomOf, LAYOUT_ONLY)    \
-  V(RelativeLeftOf, LAYOUT_ONLY)      \
-  V(RelativeLayoutOnce, LAYOUT_ONLY)  \
-  V(Order, LAYOUT_ONLY)               \
-  V(Flex, LAYOUT_ONLY)                \
-  V(BorderWidth, LAYOUT_WANTED)       \
-  V(Padding, LAYOUT_ONLY)             \
-  V(Margin, LAYOUT_ONLY)              \
-  V(Border, LAYOUT_WANTED)            \
-  V(BorderRight, LAYOUT_WANTED)       \
-  V(BorderLeft, LAYOUT_WANTED)        \
-  V(BorderTop, LAYOUT_WANTED)         \
-  V(BorderBottom, LAYOUT_WANTED)      \
-  V(Flex, LAYOUT_ONLY)                \
-  V(FlexDirection, LAYOUT_ONLY)       \
-  V(FlexWrap, LAYOUT_ONLY)            \
-  V(AlignItems, LAYOUT_ONLY)          \
-  V(AlignSelf, LAYOUT_ONLY)           \
-  V(AlignContent, LAYOUT_ONLY)        \
-  V(JustifyContent, LAYOUT_ONLY)      \
-  V(LinearOrientation, LAYOUT_ONLY)   \
-  V(LinearLayoutGravity, LAYOUT_ONLY) \
-  V(LinearGravity, LAYOUT_ONLY)       \
-  V(LinearCrossGravity, LAYOUT_ONLY)  \
-  V(RelativeCenter, LAYOUT_ONLY)      \
-  V(Position, LAYOUT_ONLY)            \
-  V(Display, LAYOUT_ONLY)             \
-  V(BoxSizing, LAYOUT_ONLY)           \
-  V(Content, LAYOUT_ONLY)             \
-  V(Direction, LAYOUT_WANTED)         \
-  V(GridTemplateColumns, LAYOUT_ONLY) \
-  V(GridTemplateRows, LAYOUT_ONLY)    \
-  V(GridAutoColumns, LAYOUT_ONLY)     \
-  V(GridAutoRows, LAYOUT_ONLY)        \
-  V(GridColumnSpan, LAYOUT_ONLY)      \
-  V(GridRowSpan, LAYOUT_ONLY)         \
-  V(GridColumnStart, LAYOUT_ONLY)     \
-  V(GridColumnEnd, LAYOUT_ONLY)       \
-  V(GridRowStart, LAYOUT_ONLY)        \
-  V(GridRowEnd, LAYOUT_ONLY)          \
-  V(GridColumnGap, LAYOUT_ONLY)       \
-  V(GridRowGap, LAYOUT_ONLY)          \
-  V(JustifyItems, LAYOUT_ONLY)        \
-  V(JustifySelf, LAYOUT_ONLY)         \
-  V(GridAutoFlow, LAYOUT_ONLY)        \
-  V(ListCrossAxisGap, LAYOUT_WANTED)  \
-  V(LinearDirection, LAYOUT_ONLY)     \
-  V(VerticalAlign, LAYOUT_WANTED)     \
-  V(Gap, LAYOUT_ONLY)                 \
-  V(ColumnGap, LAYOUT_ONLY)           \
-  V(RowGap, LAYOUT_ONLY)
-
 LayoutNode::LayoutNode(int id, const starlight::LayoutConfigs& layout_configs,
                        const tasm::LynxEnvConfig& envs,
                        const starlight::ComputedCSSStyle& init_style)
@@ -311,17 +223,17 @@ void LayoutNode::SetMeasureFunc(std::unique_ptr<MeasureFunc> measure_func) {
 }
 
 ConsumptionStatus LayoutNode::ConsumptionTest(CSSPropertyID id) {
-  static int kWantedProperty[kPropertyEnd];
-  static bool kIsInit = false;
-  if (!kIsInit) {
-    kIsInit = true;
-    std::fill(kWantedProperty, kWantedProperty + kPropertyEnd,
-              ConsumptionStatus::SKIP);
-#define DECLARE_WANTED_PROPERTY(name, type) \
-  kWantedProperty[kPropertyID##name] = type;
+  static const auto& kWantedProperty = []() -> const int(&)[kPropertyEnd] {
+    static int arr[kPropertyEnd];
+    std::fill(std::begin(arr), std::end(arr), ConsumptionStatus::SKIP);
+
+#define DECLARE_WANTED_PROPERTY(name, type) arr[kPropertyID##name] = type;
     FOREACH_LAYOUT_PROPERTY(DECLARE_WANTED_PROPERTY)
 #undef DECLARE_WANTED_PROPERTY
-  }
+
+    return arr;
+  }();
+
   return static_cast<ConsumptionStatus>(kWantedProperty[id]);
 }
 

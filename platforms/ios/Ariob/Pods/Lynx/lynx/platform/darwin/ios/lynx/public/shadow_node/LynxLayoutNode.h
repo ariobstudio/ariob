@@ -3,11 +3,12 @@
 // LICENSE file in the root directory of this source tree.
 
 #import <Foundation/Foundation.h>
+#import <Lynx/LynxComponent.h>
+#import <Lynx/LynxCustomMeasureDelegate.h>
+#import <Lynx/LynxLayoutNodeManager.h>
+#import <Lynx/LynxLayoutStyle.h>
+#import <Lynx/LynxMeasureDelegate.h>
 #import <UIKit/UIKit.h>
-#import "LynxComponent.h"
-#import "LynxCustomMeasureDelegate.h"
-#import "LynxLayoutStyle.h"
-#import "LynxMeasureDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, nullable) LynxLayoutStyle* style;
 @property(nonatomic, weak) id<LynxMeasureDelegate> measureDelegate;
 @property(nonatomic, weak) id<LynxCustomMeasureDelegate> customMeasureDelegate;
-@property(nonatomic, assign) void* layoutNodeManagerPtr;
+@property(nonatomic, assign) LynxLayoutNodeManager* layoutNodeManager;
 
 - (instancetype)initWithSign:(NSInteger)sign tagName:(NSString*)tagName;
 - (void)adoptNativeLayoutNode:(int64_t)ptr;

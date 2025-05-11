@@ -1,13 +1,16 @@
 // Copyright 2022 The Lynx Authors. All rights reserved.
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
+#ifndef PLATFORM_DARWIN_COMMON_LYNX_PUBLIC_LYNXTEMPLATERENDERPROTOCOL_H_
+#define PLATFORM_DARWIN_COMMON_LYNX_PUBLIC_LYNXTEMPLATERENDERPROTOCOL_H_
 
 #import <Foundation/Foundation.h>
 
-#import "JSModule.h"
-#import "LynxLoadMeta.h"
-#import "LynxTheme.h"
-#import "LynxViewEnum.h"
+#import <Lynx/JSModule.h>
+#import <Lynx/LynxBooleanOption.h>
+#import <Lynx/LynxLoadMeta.h>
+#import <Lynx/LynxTheme.h>
+#import <Lynx/LynxViewEnum.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -213,6 +216,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setExtraTiming:(LynxExtraTiming* _Nonnull)timing;
 
+- (void)setFluencyTracerEnabled:(LynxBooleanOption)enabled;
+
 /// Add extra parameters for reporting events, overriding old values if the parameters already
 /// exist.
 /// - Parameter params: common parameters for report events.
@@ -233,3 +238,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif  // PLATFORM_DARWIN_COMMON_LYNX_PUBLIC_LYNXTEMPLATERENDERPROTOCOL_H_

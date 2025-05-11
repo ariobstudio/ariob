@@ -82,9 +82,6 @@ Element::Element(const base::String& tag, ElementManager* manager,
   catalyzer_ = manager->catalyzer();
   config_flatten_ = manager->GetPageFlatten();
 
-  config_enable_layout_only_ = manager->GetEnableLayoutOnly();
-  enable_new_fixed_ = manager->GetEnableFixedNew();
-
   const auto& env_config = manager->GetLynxEnvConfig();
 
   platform_css_style_ = std::make_unique<starlight::ComputedCSSStyle>(
@@ -179,9 +176,7 @@ void Element::AttachToElementManager(
         element_manager_->GetEnableCSSLazyImport());
   }
   config_flatten_ = manager->GetPageFlatten();
-  config_enable_layout_only_ = manager->GetEnableLayoutOnly();
   catalyzer_ = manager->catalyzer();
-  enable_new_fixed_ = manager->GetEnableFixedNew();
 
   if (keep_element_id) {
     manager->ReuseElementID(id_);
@@ -432,6 +427,11 @@ void Element::ResetStyleInternal(CSSPropertyID css_id) {
 
 void Element::ResetCSSValue(CSSPropertyID css_id) {
   CheckDynamicUnit(css_id, CSSValue::Empty(), true);
+
+  if (css_id == kPropertyIDFontSize) {
+    // font-size has been reset to default value in WillResetCSSValue
+    return;
+  }
 
   bool is_layout_only = LayoutNode::IsLayoutOnly(css_id);
   bool need_layout = is_layout_only || LayoutNode::IsLayoutWanted(css_id);
@@ -827,10 +827,6 @@ void Element::HandlePseudoElement() {
 
 void Element::HandleCSSVariables(StyleMap& styles) {
   css_patching_.HandleCSSVariables(styles);
-}
-
-void Element::ResolvePseudoSelectors() {
-  css_patching_.ResolvePseudoSelectors();
 }
 
 void Element::ResolvePlaceHolder() { css_patching_.ResolvePlaceHolder(); }
@@ -1555,6 +1551,14 @@ bool Element::IsExtendedLayoutOnlyProps(CSSPropertyID css_id) {
       }());
 
   return (*kWantedProperty)[css_id];
+}
+
+bool Element::IsNewFixed() const {
+  return is_fixed_ && element_manager()->GetEnableFixedNew();
+}
+
+bool Element::GetEnableFixedNew() const {
+  return element_manager()->GetEnableFixedNew();
 }
 
 }  // namespace tasm

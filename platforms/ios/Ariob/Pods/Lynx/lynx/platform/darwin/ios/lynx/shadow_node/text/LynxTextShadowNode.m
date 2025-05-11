@@ -2,18 +2,18 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-#import "LynxTextShadowNode.h"
 #import <CoreText/CoreText.h>
-#import "LynxComponentRegistry.h"
-#import "LynxLog.h"
-#import "LynxNativeLayoutNode.h"
-#import "LynxPropsProcessor.h"
-#import "LynxRootUI.h"
-#import "LynxTemplateRender.h"
-#import "LynxTextRendererCache.h"
-#import "LynxTextUtils.h"
-#import "LynxTraceEvent.h"
-#import "LynxTraceEventWrapper.h"
+#import <Lynx/LynxComponentRegistry.h>
+#import <Lynx/LynxLog.h>
+#import <Lynx/LynxNativeLayoutNode.h>
+#import <Lynx/LynxPropsProcessor.h>
+#import <Lynx/LynxRootUI.h>
+#import <Lynx/LynxTemplateRender.h>
+#import <Lynx/LynxTextRendererCache.h>
+#import <Lynx/LynxTextShadowNode.h>
+#import <Lynx/LynxTextUtils.h>
+#import <Lynx/LynxTraceEvent.h>
+#import <Lynx/LynxTraceEventWrapper.h>
 
 // This is an adaptaion for one of the bug of line spacing in TextKit that
 // the last line will disappeare when both maxNumberOfLines and lineSpacing are set.
@@ -408,7 +408,6 @@ LYNX_REGISTER_SHADOW_NODE("text")
                                                                layoutSpec:spec];
   }
 
-  self.textRenderer.selectionColor = self.textStyle.selectionColor;
   CGSize size = self.textRenderer.size;
   CGFloat letterSpacing = self.textStyle.letterSpacing;
   if (!isnan(letterSpacing) && letterSpacing < 0) {
@@ -627,10 +626,11 @@ LYNX_REGISTER_SHADOW_NODE("text")
 }
 
 - (void)alignOneLine:(NSRange)characterRange
-            lineRect:(CGRect)rect
-       layoutManager:(NSLayoutManager *)layoutManager
-       textContainer:(NSTextContainer *)textContainer
-        AlignContext:(AlignContext *)ctx {
+             lineRect:(CGRect)rect
+        layoutManager:(NSLayoutManager *)layoutManager
+        textContainer:(NSTextContainer *)textContainer
+         alignContext:(AlignContext *)ctx
+    nativeNodeSignSet:(NSMutableSet *)nativeNodeSignSet {
   NSTextStorage *textStorage = self.textRenderer.textStorage;
   if (characterRange.location + characterRange.length > textStorage.length) {
     // Here the layout manager append ellipsis to text storage string.
@@ -640,44 +640,47 @@ LYNX_REGISTER_SHADOW_NODE("text")
     }
     characterRange.length = textStorage.length - characterRange.location;
   }
+  if (self.hasNonVirtualOffspring) {
+    [textStorage
+        enumerateAttribute:LynxInlineViewAttributedStringKey
+                   inRange:characterRange
+                   options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                usingBlock:^(LynxShadowNode *value, NSRange range, BOOL *_Nonnull stop) {
+                  if (value == nil || ![value isKindOfClass:[LynxNativeLayoutNode class]]) {
+                    return;
+                  }
 
-  [textStorage
-      enumerateAttribute:LynxInlineViewAttributedStringKey
-                 inRange:characterRange
-                 options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
-              usingBlock:^(LynxShadowNode *value, NSRange range, BOOL *_Nonnull stop) {
-                if (value == nil || ![value isKindOfClass:[LynxNativeLayoutNode class]]) {
-                  return;
-                }
+                  NSTextAttachment *attachment = [textStorage attribute:NSAttachmentAttributeName
+                                                                atIndex:range.location
+                                                         effectiveRange:nil];
+                  if (attachment) {
+                    CGFloat yOffsetToTop = 0;
+                    NSRange glyphRange = [layoutManager glyphRangeForCharacterRange:range
+                                                               actualCharacterRange:nil];
+                    CGRect glyphRect = [layoutManager boundingRectForGlyphRange:glyphRange
+                                                                inTextContainer:textContainer];
 
-                NSTextAttachment *attachment = [textStorage attribute:NSAttachmentAttributeName
-                                                              atIndex:range.location
-                                                       effectiveRange:nil];
-                if (attachment) {
-                  CGFloat yOffsetToTop = 0;
-                  NSRange glyphRange = [layoutManager glyphRangeForCharacterRange:range
-                                                             actualCharacterRange:nil];
-                  CGRect glyphRect = [layoutManager boundingRectForGlyphRange:glyphRange
-                                                              inTextContainer:textContainer];
+                    LynxNativeLayoutNode *child = (LynxNativeLayoutNode *)value;
+                    CGFloat yPosition =
+                        [layoutManager locationForGlyphAtIndex:glyphRange.location].y;
+                    yOffsetToTop = [self alignInlineNodeInVertical:child.shadowNodeStyle.valign
+                                                    withLineHeight:rect.size.height
+                                              withAttachmentHeight:attachment.bounds.size.height
+                                           withAttachmentYPosition:yPosition];
 
-                  LynxNativeLayoutNode *child = (LynxNativeLayoutNode *)value;
-                  CGFloat yPosition = [layoutManager locationForGlyphAtIndex:glyphRange.location].y;
-                  yOffsetToTop = [self alignInlineNodeInVertical:child.shadowNodeStyle.valign
-                                                  withLineHeight:rect.size.height
-                                            withAttachmentHeight:attachment.bounds.size.height
-                                         withAttachmentYPosition:yPosition];
+                    AlignParam *alignParam = [[AlignParam alloc] init];
+                    CGFloat leftOffset = glyphRect.origin.x + attachment.bounds.origin.x +
+                                         self.textRenderer.textContentOffsetX;
+                    CGFloat topOffset = self.enableTextRefactor
+                                            ? rect.origin.y + yOffsetToTop
+                                            : rect.origin.y + attachment.bounds.origin.y;
+                    [alignParam SetAlignOffsetWithLeft:leftOffset Top:topOffset];
 
-                  AlignParam *alignParam = [[AlignParam alloc] init];
-                  CGFloat leftOffset = glyphRect.origin.x + attachment.bounds.origin.x +
-                                       self.textRenderer.textContentOffsetX;
-                  CGFloat topOffset = self.enableTextRefactor
-                                          ? rect.origin.y + yOffsetToTop
-                                          : rect.origin.y + attachment.bounds.origin.y;
-                  [alignParam SetAlignOffsetWithLeft:leftOffset Top:topOffset];
-
-                  [child alignWithAlignParam:alignParam AlignContext:ctx];
-                }
-              }];
+                    [child alignWithAlignParam:alignParam AlignContext:ctx];
+                    [nativeNodeSignSet addObject:@(child.sign)];
+                  }
+                }];
+  }
   if (_isCalcVerticalAlignValue) {
     [textStorage
         enumerateAttribute:LynxInlineTextShadowNodeSignKey
@@ -725,23 +728,33 @@ LYNX_REGISTER_SHADOW_NODE("text")
 
 - (void)alignWithAlignParam:(AlignParam *)param AlignContext:(AlignContext *)ctx {
   LYNX_TRACE_SECTION(LYNX_TRACE_CATEGORY_WRAPPER, @"LynxTextShadowNode.align");
+  if (self.hasNonVirtualOffspring || self.isCalcVerticalAlignValue) {
+    NSTextStorage *textStorage = self.textRenderer.textStorage;
+    NSLayoutManager *layoutManager = textStorage.layoutManagers.firstObject;
+    NSRange glyphRange =
+        [layoutManager glyphRangeForCharacterRange:NSMakeRange(0, textStorage.length)
+                              actualCharacterRange:nil];
+    NSMutableSet *nativeNodeSignSet = [NSMutableSet new];
 
-  NSTextStorage *textStorage = self.textRenderer.textStorage;
-  NSLayoutManager *layoutManager = textStorage.layoutManagers.firstObject;
+    [layoutManager enumerateLineFragmentsForGlyphRange:glyphRange
+                                            usingBlock:^(CGRect rect, CGRect usedRect,
+                                                         NSTextContainer *_Nonnull textContainer,
+                                                         NSRange glyphRange, BOOL *_Nonnull stop) {
+                                              NSRange characterRange = [layoutManager
+                                                  characterRangeForGlyphRange:glyphRange
+                                                             actualGlyphRange:nil];
+                                              [self alignOneLine:characterRange
+                                                           lineRect:rect
+                                                      layoutManager:layoutManager
+                                                      textContainer:textContainer
+                                                       alignContext:ctx
+                                                  nativeNodeSignSet:nativeNodeSignSet];
+                                            }];
+    if (self.hasNonVirtualOffspring) {
+      [self alignHiddenNativeLayoutNode:nativeNodeSignSet alignContext:ctx];
+    }
+  }
 
-  [layoutManager enumerateLineFragmentsForGlyphRange:(NSRange){0, textStorage.length}
-                                          usingBlock:^(CGRect rect, CGRect usedRect,
-                                                       NSTextContainer *_Nonnull textContainer,
-                                                       NSRange glyphRange, BOOL *_Nonnull stop) {
-                                            NSRange character_range = [layoutManager
-                                                characterRangeForGlyphRange:glyphRange
-                                                           actualGlyphRange:nil];
-                                            [self alignOneLine:character_range
-                                                      lineRect:rect
-                                                 layoutManager:layoutManager
-                                                 textContainer:textContainer
-                                                  AlignContext:ctx];
-                                          }];
   LYNX_TRACE_END_SECTION(LYNX_TRACE_CATEGORY_WRAPPER)
 }
 

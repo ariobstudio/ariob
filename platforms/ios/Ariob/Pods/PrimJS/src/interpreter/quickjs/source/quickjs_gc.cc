@@ -838,6 +838,7 @@ bool switch_local_idx(struct malloc_state *m, size_t size) {
     if (m->gc_flag[i] == 1) {
       change_to_local_idx(m, i);
       m->gc_flag[i] = 0;
+#if defined(ANDROID) || defined(__ANDROID__)
       void *ptr = allocate(m, size);
       if (ptr) {
         gcfree(m, ptr);
@@ -845,17 +846,25 @@ bool switch_local_idx(struct malloc_state *m, size_t size) {
       } else {
         add_footprint_limit(m, size * 1.5);
       }
+#else
+      add_footprint_limit(m, size * 1.5);
+      return true;
+#endif
     }
   }
   return false;
 }
 
-void trig_gc(JSMallocState *s, size_t size) {
+void trig_gc(JSMallocState *s, size_t size, bool is_outer) {
   struct malloc_state *m = &s->allocate_state;
+  LEPUSRuntime *rt = static_cast<LEPUSRuntime *>(m->runtime);
+  if (is_outer) {
+    rt->gc->CollectGarbage(size);
+    return;
+  }
   if (switch_local_idx(m, size)) {
     return;
   }
-  LEPUSRuntime *rt = static_cast<LEPUSRuntime *>(m->runtime);
   // gc pause suppression mode
   if (rt->gc->GetGCPauseSuppressionMode() && rt->is_lepusng &&
       m->footprint < 240 * MB) {
@@ -1193,6 +1202,14 @@ void JS_FreeRuntime_GC(LEPUSRuntime *rt) {
 #endif
 
   /* free the atoms */
+#ifdef ENABLE_LEPUSNG
+  for (int i = 0; i < rt->atom_size; i++) {
+    JSAtomStruct *p = rt->atom_array[i];
+    if (!atom_is_free(p)) {
+      JS_FreeStringCache(rt, p);
+    }
+  }
+#endif
   rt->atom_size = 0;
   rt->atom_array = NULL;
   rt->atom_hash = NULL;
@@ -2691,6 +2708,12 @@ QJS_HIDE LEPUSValue JS_NewObjectFromShape_GC(LEPUSContext *ctx, JSShape *sh,
   p->u.opaque = NULL;
   p->shape = sh;
   p->prop = NULL;
+#ifdef ENABLE_QUICKJS_DEBUGGER
+  p->ctx = ctx;
+#if defined(ANDROID) || defined(__ANDROID__)
+  p->tid = get_tid();
+#endif
+#endif
 
   switch (class_id) {
     case JS_CLASS_OBJECT:
@@ -4784,6 +4807,11 @@ int JS_SetPropertyInternalImpl_GC(LEPUSContext *ctx, LEPUSValueConst this_obj,
     }
   }
   p = LEPUS_VALUE_GET_OBJ(this_obj);
+
+#ifdef ENABLE_QUICKJS_DEBUGGER
+  CheckObjectCtx(ctx, val);
+#endif
+
 retry:
   prs = find_own_property(&pr, p, prop);
   if (prs) {
@@ -27091,7 +27119,7 @@ static double time_clip(double t) {
     return LEPUS_FLOAT64_NAN;
 }
 
-static double set_date_fields(double fields[], int is_local) {
+static double set_date_fields(double fields[], int is_local, int dst_mode = 0) {
   int64_t y;
   double days, h, m1;
   volatile double d;
@@ -27112,7 +27140,7 @@ static double set_date_fields(double fields[], int is_local) {
   h = fields[3] * 3600000 + fields[4] * 60000 + fields[5] * 1000 + fields[6];
   d = days * 86400000;
   d += h;
-  if (is_local) d += getTimezoneOffset(d) * 60000;
+  if (is_local) d += getTimezoneOffset(d, dst_mode) * 60000;
   return time_clip(d);
 }
 
@@ -27465,6 +27493,9 @@ static LEPUSValue js_Date_parse(LEPUSContext *ctx, LEPUSValueConst this_val,
 
   rv = LEPUS_NAN;
   HandleScope func_scope(ctx, &rv, HANDLE_TYPE_LEPUS_VALUE);
+  struct tm info {};
+  time_t t;
+  int dst_mode = 0;
 
   s = JS_ToString_GC(ctx, argv[0]);
   if (LEPUS_IsException(s)) return LEPUS_EXCEPTION;
@@ -27549,7 +27580,15 @@ static LEPUSValue js_Date_parse(LEPUSContext *ctx, LEPUSValueConst this_val,
     }
   }
   for (i = 0; i < 7; i++) fields1[i] = fields[i];
-  d = set_date_fields(fields1, is_local) - tz * 60000;
+  info.tm_year = fields[0] - 1900;
+  info.tm_mon = fields[1];
+  info.tm_mday = fields[2];
+  info.tm_hour = fields[3];
+  info.tm_min = 0;
+  info.tm_isdst = 1;
+  t = mktime(&info);
+  dst_mode = info.tm_isdst == 1 ? 1 : 2;  // 1: dst, 2: no dst
+  d = set_date_fields(fields1, is_local, dst_mode) - tz * 60000;
   rv = __JS_NewFloat64(ctx, d);
 
 done:
@@ -31954,7 +31993,7 @@ void GarbageCollector::UpdateGCInfo(size_t heapsize_before, int64_t duration) {
           << "      \"survival_time\": "
           << (get_daytime() - rt_->init_time) / MS << ",\n"
           << "      \"timestamp\": " << get_daytime() << ",\n"
-          << "      \"rt_ptr\": " << rt_ << ",\n"
+          << "      \"rt_ptr\": \"" << rt_ << "\",\n"
           << "      \"total_mem\": " << total_mem / KB << ",\n";
   if (rt_->rt_info) {
     gc_info << "      \"rt_info\": \"" << rt_->rt_info << "\"\n";
@@ -33497,7 +33536,7 @@ char *LEPUS_GetGCTimingInfo(LEPUSContext *ctx, bool is_start) {
     memset(gc_info, 0, BUF_LEN);
     snprintf(gc_info, BUF_LEN,
              "{\n  \"gc_count\" : %zu,\n  \"gc_duration\" : %" PRIu64
-             ",\n  \"gc_heapsize\" : %zu,\n  \"rt_info\" : %s\n}\n",
+             ",\n  \"gc_heapsize\" : %zu,\n  \"rt_info\" : \"%s\"\n}\n",
              rt->gc_cnt, rt->gc->GetGCDuration() / MS,
              rt->malloc_state.allocate_state.footprint / KB, ctx->rt->rt_info);
     return gc_info;

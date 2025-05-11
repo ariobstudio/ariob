@@ -6,11 +6,11 @@
 #define CORE_SHELL_IOS_JS_PROXY_DARWIN_H_
 
 #import <Foundation/Foundation.h>
+#import <Lynx/LynxView.h>
 
 #include <memory>
 #include <string>
 
-#import "LynxView.h"
 #include "core/shell/lynx_runtime_proxy_impl.h"
 #include "core/shell/lynx_shell.h"
 

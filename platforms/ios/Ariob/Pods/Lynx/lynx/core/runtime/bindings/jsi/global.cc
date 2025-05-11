@@ -12,6 +12,7 @@
 #include "core/runtime/bindings/jsi/big_int/jsbi.h"
 #include "core/runtime/bindings/jsi/console.h"
 #include "core/runtime/bindings/jsi/system_info.h"
+#include "core/runtime/bindings/jsi/text_codec_helper.h"
 
 namespace lynx {
 namespace piper {
@@ -40,6 +41,10 @@ void Global::Init(std::shared_ptr<Runtime>& runtime,
   Object jsbi_obj =
       Object::createFromHostObject(*js_runtime_, std::make_shared<JSBI>());
   global.setProperty(*js_runtime_, "LynxJSBI", jsbi_obj);
+
+  Object text_codec_helper_obj = Object::createFromHostObject(
+      *js_runtime_, std::make_shared<TextCodecHelper>());
+  global.setProperty(*js_runtime_, "TextCodecHelper", text_codec_helper_obj);
 
   if (tasm::LynxEnv::GetInstance().IsDevToolEnabled()) {
     auto& group_id = js_runtime_->getGroupId();

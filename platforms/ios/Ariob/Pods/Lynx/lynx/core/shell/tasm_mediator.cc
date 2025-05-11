@@ -8,6 +8,7 @@
 
 #include "base/include/value/base_string.h"
 #include "base/trace/native/trace_event.h"
+#include "core/base/threading/vsync_monitor.h"
 #include "core/renderer/dom/lynx_get_ui_result.h"
 #include "core/renderer/utils/base/tasm_constants.h"
 #include "core/runtime/bindings/common/event/context_proxy.h"
@@ -16,7 +17,6 @@
 #include "core/runtime/vm/lepus/array.h"
 #include "core/runtime/vm/lepus/table.h"
 #include "core/runtime/vm/lepus/tasks/lepus_callback_manager.h"
-#include "core/shell/common/vsync_monitor.h"
 #include "core/shell/lynx_actor_specialization.h"
 
 namespace lynx {
@@ -25,7 +25,7 @@ namespace shell {
 TasmMediator::TasmMediator(
     const std::shared_ptr<LynxActor<NativeFacade>>& facade_actor,
     const std::shared_ptr<LynxCardCacheDataManager>& card_cached_data_mgr,
-    const std::shared_ptr<VSyncMonitor>& vsync_monitor,
+    const std::shared_ptr<base::VSyncMonitor>& vsync_monitor,
     const std::shared_ptr<LynxActor<tasm::LayoutContext>>& layout_actor,
     std::unique_ptr<TasmPlatformInvoker> tasm_platform_invoker,
     const std::shared_ptr<LynxActor<tasm::timing::TimingHandler>>& timing_actor)
@@ -107,10 +107,13 @@ void TasmMediator::RemovePlatformCallback(
 void TasmMediator::OnPageConfigDecoded(
     const std::shared_ptr<tasm::PageConfig>& config) {
   tasm_platform_invoker_->OnPageConfigDecoded(config);
-  timing_actor_->Act(
-      [enable_air = config->GetEnableLynxAir()](auto& timing_handler) mutable {
-        timing_handler->SetEnableAirStrictMode(enable_air);
-      });
+  // default enableAirStrictMode in timing_handler is false,
+  // avoid using post task to send duplicate false value
+  if (config->GetEnableLynxAir()) {
+    timing_actor_->Act([](auto& timing_handler) mutable {
+      timing_handler->SetEnableAirStrictMode(true);
+    });
+  }
 }
 
 void TasmMediator::SetTiming(tasm::Timing timing) {
@@ -319,13 +322,6 @@ void TasmMediator::OnDataUpdatedByNative(tasm::TemplateData data,
   card_cached_data_mgr_->AddCardCacheData(
       std::move(data), reset ? CacheDataType::RESET : CacheDataType::UPDATE);
   NotifyJSUpdatePageData();
-}
-
-void TasmMediator::PrintMsgToJS(const std::string& level,
-                                const std::string& msg) {
-  runtime_actor_->ActAsync([level, msg](auto& runtime) {
-    runtime->ConsoleLogWithLevel(level, msg);
-  });
 }
 
 void TasmMediator::OnI18nResourceChanged(const std::string& msg) {
@@ -583,6 +579,26 @@ void TasmMediator::OnGlobalPropsUpdated(const lepus::Value& props) {
       [props = lepus::Value::ShallowCopy(props)](auto& runtime) {
         runtime->OnGlobalPropsUpdated(props);
       });
+}
+
+void TasmMediator::OnEventCapture(long target_id, bool is_catch,
+                                  int64_t event_id) {
+  facade_actor_->Act([target_id, is_catch, event_id](auto& facade) {
+    facade->OnEventCapture(target_id, is_catch, event_id);
+  });
+}
+
+void TasmMediator::OnEventBubble(long target_id, bool is_catch,
+                                 int64_t event_id) {
+  facade_actor_->Act([target_id, is_catch, event_id](auto& facade) {
+    facade->OnEventBubble(target_id, is_catch, event_id);
+  });
+}
+
+void TasmMediator::OnEventFire(long target_id, bool is_stop, int64_t event_id) {
+  facade_actor_->Act([target_id, is_stop, event_id](auto& facade) {
+    facade->OnEventFire(target_id, is_stop, event_id);
+  });
 }
 
 }  // namespace shell

@@ -7,9 +7,11 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "core/renderer/utils/base/element_template_info.h"
 #include "core/template_bundle/lynx_template_bundle.h"
+#include "core/template_bundle/template_codec/binary_decoder/parallel_parse_task_scheduler.h"
 
 namespace lynx {
 namespace tasm {
@@ -66,6 +68,10 @@ class LynxBinaryLazyReaderDelegate : public LynxBinaryRecyclerDelegate {
 
   // lepus chunk
   virtual bool DecodeContextBundleInRender(const std::string& key) = 0;
+
+  // Get Element Template's parallel parsing result.
+  virtual ElementTemplateResult GetElementTemplateParseResult(
+      const std::string& key) = 0;
 };
 
 }  // namespace tasm

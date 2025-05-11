@@ -93,6 +93,7 @@ struct malloc_state {
   size_t footprint;
   size_t max_footprint;
   size_t footprint_limit;
+  size_t outer_heap_size;
   flag_t mflags;
 #if USE_LOCKS
   MLOCK_T mutex;

@@ -49,10 +49,6 @@ InitRuntimeStandaloneResult InitRuntimeStandalone(
     bool pending_js_task = false, bool enable_user_bytecode = false,
     const std::string& bytecode_source_url = "");
 
-void TriggerDestroyRuntime(
-    const std::shared_ptr<LynxActor<runtime::LynxRuntime>>& runtime_actor,
-    std::string js_group_thread_name);
-
 }  // namespace shell
 }  // namespace lynx
 

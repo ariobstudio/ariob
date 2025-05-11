@@ -16,6 +16,7 @@
 #include "core/template_bundle/template_codec/binary_decoder/lynx_binary_base_template_reader.h"
 #include "core/template_bundle/template_codec/binary_decoder/lynx_binary_lazy_reader_delegate.h"
 #include "core/template_bundle/template_codec/binary_decoder/lynx_binary_reader.h"
+#include "core/template_bundle/template_codec/binary_decoder/parallel_parse_task_scheduler.h"
 #include "core/template_bundle/template_codec/moulds.h"
 #include "core/template_bundle/template_codec/template_binary.h"
 
@@ -96,6 +97,9 @@ class TemplateBinaryReader : public LynxBinaryReader,
 
   // element template
   bool DecodeElementTemplateSection() override;
+  bool ParallelDecodeElementTemplate();
+  ElementTemplateResult GetElementTemplateParseResult(
+      const std::string& key) override;
 
   // lepus chunk
   bool DecodeLepusChunk() override;
@@ -111,6 +115,10 @@ class TemplateBinaryReader : public LynxBinaryReader,
                                                       size_t size);
 
   void CopyForCSSAsyncDecode(const TemplateBinaryReader& other);
+
+  void EnsureParallelParseTaskScheduler();
+
+  std::unique_ptr<ParallelParseTaskScheduler> task_schedular_{nullptr};
 };
 
 }  // namespace tasm

@@ -22,6 +22,8 @@ class LynxEngineProxyImpl : public LynxEngineProxy {
       : engine_actor_(actor) {}
   ~LynxEngineProxyImpl() = default;
 
+  void DispatchTaskToLynxEngine(base::closure task) override;
+
   bool SendTouchEvent(const std::string& name, int32_t tag, float x, float y,
                       float client_x, float client_y, float page_x,
                       float page_y, int64_t timestamp = 0) override;
@@ -41,6 +43,14 @@ class LynxEngineProxyImpl : public LynxEngineProxy {
 
   void OnPseudoStatusChanged(int32_t id, int32_t pre_status,
                              int32_t current_status) override;
+
+  void StartEventGenerate(const pub::Value& event_params) override;
+
+  void StartEventCapture(int64_t event_id) override;
+
+  void StartEventBubble(int64_t event_id) override;
+
+  void StartEventFire(bool is_stop, int64_t event_id) override;
 
   void ScrollByListContainer(int32_t tag, float x, float y, float original_x,
                              float original_y) override;

@@ -434,16 +434,8 @@ class AirElement {
 
   inline void MarkPlatformNodeDestroyedRecursively();
   bool HasPaintingNode() const { return has_painting_node_; }
-  /**
-   * + config_enable_layout_only_: 1. LynxViewBuilder.setEnableLayoutOnly, 2.
-   * PageConfig decode 'enableNewLayoutOnly'
-   *
-   * + has_layout_only_props_:
-   * SetAttribute、SetEventHandler、view+component
-   */
-  inline bool CanBeLayoutOnly() const {
-    return config_enable_layout_only_ && has_layout_only_props_;
-  }
+
+  bool CanBeLayoutOnly() const;
 
   void CheckHasAnimateProps(CSSPropertyID id);
 
@@ -491,9 +483,6 @@ class AirElement {
   bool has_painting_node_{false};
 
   Catalyzer* catalyzer_;
-
-  // config settings for enableLayoutOnly
-  bool config_enable_layout_only_{true};
 
   bool has_layout_only_props_{true};
 

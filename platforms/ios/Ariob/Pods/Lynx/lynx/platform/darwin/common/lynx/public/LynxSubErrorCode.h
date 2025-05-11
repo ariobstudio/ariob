@@ -278,6 +278,8 @@ FOUNDATION_EXPORT NSInteger const ECLynxNativeModulesCommonAuthorizationError;
 FOUNDATION_EXPORT NSInteger const ECLynxNativeModulesCommonSystemAuthorizationError;
 // The value returned by module method is invalid
 FOUNDATION_EXPORT NSInteger const ECLynxNativeModulesCommonReturnError;
+// Use deprecated NativeModule API.
+FOUNDATION_EXPORT NSInteger const ECLynxNativeModulesCommonDeprecated;
 
 
 // Behavior: Network

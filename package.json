@@ -8,7 +8,7 @@
   },
   "workspaces": [
     "apps/*",
-    "packages/*",
+    "platforms/*",
     "server/*"
   ],
   "scripts": {

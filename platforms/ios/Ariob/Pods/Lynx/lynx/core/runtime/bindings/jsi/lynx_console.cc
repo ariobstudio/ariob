@@ -141,6 +141,86 @@ Value Console::get(Runtime* rt, const PropNameID& name) {
           return piper::Value::undefined();
         });
   }
+
+  if (methodName == "count") {
+    return Function::createFromHostFunction(
+        *rt, PropNameID::forAscii(*rt, "count"), 0,
+        [this](Runtime& rt, const Value& thisVal, const Value* args,
+               size_t count) -> base::expected<Value, JSINativeException> {
+          return CallJSEngineConsole(&rt, args, count, "count");
+        });
+  }
+
+  if (methodName == "countReset") {
+    return Function::createFromHostFunction(
+        *rt, PropNameID::forAscii(*rt, "countReset"), 0,
+        [this](Runtime& rt, const Value& thisVal, const Value* args,
+               size_t count) -> base::expected<Value, JSINativeException> {
+          return CallJSEngineConsole(&rt, args, count, "countReset");
+        });
+  }
+
+  if (methodName == "group") {
+    return Function::createFromHostFunction(
+        *rt, PropNameID::forAscii(*rt, "group"), 0,
+        [this](Runtime& rt, const Value& thisVal, const Value* args,
+               size_t count) -> base::expected<Value, JSINativeException> {
+          return CallJSEngineConsole(&rt, args, count, "group");
+        });
+  }
+
+  if (methodName == "groupCollapsed") {
+    return Function::createFromHostFunction(
+        *rt, PropNameID::forAscii(*rt, "groupCollapsed"), 0,
+        [this](Runtime& rt, const Value& thisVal, const Value* args,
+               size_t count) -> base::expected<Value, JSINativeException> {
+          return CallJSEngineConsole(&rt, args, count, "groupCollapsed");
+        });
+  }
+
+  if (methodName == "groupEnd") {
+    return Function::createFromHostFunction(
+        *rt, PropNameID::forAscii(*rt, "groupEnd"), 0,
+        [this](Runtime& rt, const Value& thisVal, const Value* args,
+               size_t count) -> base::expected<Value, JSINativeException> {
+          return CallJSEngineConsole(&rt, args, count, "groupEnd");
+        });
+  }
+
+  if (methodName == "time") {
+    return Function::createFromHostFunction(
+        *rt, PropNameID::forAscii(*rt, "time"), 0,
+        [this](Runtime& rt, const Value& thisVal, const Value* args,
+               size_t count) -> base::expected<Value, JSINativeException> {
+          return CallJSEngineConsole(&rt, args, count, "time");
+        });
+  }
+
+  if (methodName == "timeLog") {
+    return Function::createFromHostFunction(
+        *rt, PropNameID::forAscii(*rt, "time"), 0,
+        [this](Runtime& rt, const Value& thisVal, const Value* args,
+               size_t count) -> base::expected<Value, JSINativeException> {
+          return CallJSEngineConsole(&rt, args, count, "timeLog");
+        });
+  }
+
+  if (methodName == "timeEnd") {
+    return Function::createFromHostFunction(
+        *rt, PropNameID::forAscii(*rt, "time"), 0,
+        [this](Runtime& rt, const Value& thisVal, const Value* args,
+               size_t count) -> base::expected<Value, JSINativeException> {
+          return CallJSEngineConsole(&rt, args, count, "timeEnd");
+        });
+  }
+  if (methodName == "table") {
+    return Function::createFromHostFunction(
+        *rt, PropNameID::forAscii(*rt, "table"), 0,
+        [this](Runtime& rt, const Value& thisVal, const Value* args,
+               size_t count) -> base::expected<Value, JSINativeException> {
+          return LogWithLevel(&rt, CONSOLE_LOG_INFO, args, count, "table");
+        });
+  }
   return piper::Value::undefined();
 }
 
@@ -158,6 +238,15 @@ std::vector<PropNameID> Console::getPropertyNames(Runtime& rt) {
   vec.push_back(piper::PropNameID::forUtf8(rt, "assert"));
   vec.push_back(piper::PropNameID::forUtf8(rt, "profile"));
   vec.push_back(piper::PropNameID::forUtf8(rt, "profileEnd"));
+  vec.push_back(piper::PropNameID::forUtf8(rt, "count"));
+  vec.push_back(piper::PropNameID::forUtf8(rt, "countReset"));
+  vec.push_back(piper::PropNameID::forUtf8(rt, "group"));
+  vec.push_back(piper::PropNameID::forUtf8(rt, "groupCollapsed"));
+  vec.push_back(piper::PropNameID::forUtf8(rt, "groupEnd"));
+  vec.push_back(piper::PropNameID::forUtf8(rt, "time"));
+  vec.push_back(piper::PropNameID::forUtf8(rt, "timeLog"));
+  vec.push_back(piper::PropNameID::forUtf8(rt, "timeEnd"));
+  vec.push_back(piper::PropNameID::forUtf8(rt, "table"));
   return vec;
 }
 
@@ -210,11 +299,10 @@ piper::Value Console::Assert(Runtime* rt, const int level, const Value* args,
   return piper::Value::undefined();
 }
 
-piper::Value Console::LogWithLevel(Runtime* rt, const int level,
-                                   const Value* args, size_t count,
-                                   const std::string& func_name) {
+piper::Value Console::CallJSEngineConsole(Runtime* rt, const Value* args,
+                                          size_t count,
+                                          const std::string& func_name) {
   Scope scope(*rt);
-
   bool is_devtool_enabled = tasm::LynxEnv::GetInstance().IsDevToolEnabled();
   if (count > 0) {
     if (is_devtool_enabled) {
@@ -234,6 +322,18 @@ piper::Value Console::LogWithLevel(Runtime* rt, const int level,
         }
       }
     }
+  }
+  return piper::Value::undefined();
+}
+
+piper::Value Console::LogWithLevel(Runtime* rt, const int level,
+                                   const Value* args, size_t count,
+                                   const std::string& func_name) {
+  Scope scope(*rt);
+
+  bool is_devtool_enabled = tasm::LynxEnv::GetInstance().IsDevToolEnabled();
+  if (count > 0) {
+    CallJSEngineConsole(rt, args, count, func_name);
 
     std::string msg;
     for (size_t i = 0; i < count; ++i) {

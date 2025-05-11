@@ -4,13 +4,15 @@
 
 #import "LynxUIRenderer.h"
 
+#import <Lynx/LUIConfigAdapter.h>
+#import <Lynx/LynxEventHandler.h>
+#import <Lynx/LynxFontFaceManager.h>
+#import <Lynx/LynxGenericResourceFetcher.h>
+#import <Lynx/LynxKeyboardEventDispatcher.h>
+#import <Lynx/LynxWeakProxy.h>
 #import "LynxContext+Internal.h"
 #import "LynxEnv+Internal.h"
 #import "LynxEventHandler+Internal.h"
-#import "LynxEventHandler.h"
-#import "LynxFontFaceManager.h"
-#import "LynxGenericResourceFetcher.h"
-#import "LynxKeyboardEventDispatcher.h"
 #import "LynxTemplateRender+Internal.h"
 #import "LynxTemplateRender+Protected.h"
 #import "LynxTouchHandler+Internal.h"
@@ -18,7 +20,6 @@
 #import "LynxUIExposure+Internal.h"
 #import "LynxUIIntersectionObserver+Internal.h"
 #import "LynxViewBuilder+Internal.h"
-#import "LynxWeakProxy.h"
 
 #include "core/renderer/ui_wrapper/painting/ios/ui_delegate_darwin.h"
 
@@ -133,55 +134,12 @@
 
   // Set config to LynxUIContext;
   LynxUIContext *uiContext = context.uiOwner.uiContext;
-  // TODO(renzhongyue): Add setPageConfig:(PageConfig) to a private extension of LynxUIContext.
-  // And add a init method to enable LynxUIOwner init with a PageConfig directly.
-  // Configs are not modifiable after initialization.
-  [uiContext setDefaultOverflowVisible:pageConfig->GetDefaultOverflowVisible()];
-  [uiContext setEnableTextRefactor:pageConfig->GetEnableTextRefactor()];
-  [uiContext setEnableTextOverflow:pageConfig->GetEnableTextOverflow()];
-  [uiContext setEnableNewClipMode:pageConfig->GetEnableNewClipMode()];
-  [uiContext setDefaultImplicitAnimation:pageConfig->GetGlobalImplicit()];
-  [uiContext setEnableEventRefactor:pageConfig->GetEnableEventRefactor()];
-  [uiContext setEnableA11yIDMutationObserver:pageConfig->GetEnableA11yIDMutationObserver()];
+  LUIConfigAdapter *configAdapter = [[LUIConfigAdapter alloc] initWithConfig:pageConfig.get()];
+  [uiContext setUIConfig:configAdapter];
+}
 
-  [uiContext setEnableEventThrough:pageConfig->GetEnableEventThrough()];
-  [uiContext setEnableBackgroundShapeLayer:pageConfig->GetEnableBackgroundShapeLayer()];
-  [uiContext setEnableExposureUIMargin:pageConfig->GetEnableExposureUIMargin()];
-  [uiContext setEnableTextLanguageAlignment:pageConfig->GetEnableTextLanguageAlignment()];
-  [uiContext setEnableXTextLayoutReused:pageConfig->GetEnableXTextLayoutReused()];
-  [uiContext setEnableFiberArch:pageConfig->GetEnableFiberArch()];
-  [uiContext setEnableNewGesture:pageConfig->GetEnableNewGesture()];
-  [uiContext setCSSAlignWithLegacyW3c:pageConfig->GetCSSAlignWithLegacyW3C()];
-  [uiContext
-      setTargetSdkVersion:[NSString
-                              stringWithUTF8String:pageConfig->GetTargetSDKVersion().c_str()]];
-
-  uiContext.imageMonitorEnabled =
-      [[LynxEnv sharedInstance] boolFromExternalEnv:LynxEnvEnableImageMonitor defaultValue:YES];
-  uiContext.devtoolEnabled = [[LynxEnv sharedInstance] devtoolEnabled];
-  uiContext.fixNewImageDownSampling =
-      [[LynxEnv sharedInstance] boolFromExternalEnv:LynxEnvFixNewImageDownSampling
-                                       defaultValue:YES];
-  // If EnableLynxFluency is configured, Lynx will determine whether to enable fluency
-  // metics based on this probability when creating a LynxView.
-  [[uiContext fluencyInnerListener]
-      setFluencyPageconfigProbability:pageConfig->GetEnableScrollFluencyMonitor()];
-  if (pageConfig->GetEnableTextLayerRender() == lynx::tasm::TernaryBool::UNDEFINE_VALUE) {
-    auto new_value = [[LynxEnv sharedInstance] boolFromExternalEnv:LynxEnvEnableTextLayerRender
-                                                      defaultValue:NO];
-    pageConfig->SetEnableTextLayerRender(new_value ? lynx::tasm::TernaryBool::TRUE_VALUE
-                                                   : lynx::tasm::TernaryBool::FALSE_VALUE);
-  }
-
-  [uiContext setEnableTextLayerRender:pageConfig->GetEnableTextLayerRender() ==
-                                      lynx::tasm::TernaryBool::TRUE_VALUE];
-
-  [uiContext setEnableTextNonContiguousLayout:pageConfig->GetEnableTextNonContiguousLayout()];
-  [uiContext setEnableImageDownsampling:pageConfig->GetEnableImageDownsampling()];
-  [uiContext setEnableNewImage:pageConfig->GetEnableNewImage()];
-  [uiContext
-      setTrailUseNewImage:pageConfig->GetTrailNewImage() == lynx::tasm::TernaryBool::TRUE_VALUE];
-  [uiContext setLogBoxImageSizeWarningThreshold:pageConfig->GetLogBoxImageSizeWarningThreshold()];
+- (void)setFluencyTracerEnabled:(LynxBooleanOption)enabledBySampling {
+  [_uiOwner.uiContext.fluencyInnerListener setEnabledBySampling:enabledBySampling];
 }
 
 - (BOOL)needPaintingContextProxy {
@@ -206,6 +164,18 @@
 
 - (id<LynxEventTarget>)hitTestInEventHandler:(CGPoint)point withEvent:(UIEvent *)event {
   return [_eventHandler hitTest:point withEvent:event];
+}
+
+- (void)handleFocus:(id<LynxEventTarget>)target
+             onView:(UIView *)view
+      withContainer:(UIView *)container
+           andPoint:(CGPoint)point
+           andEvent:(UIEvent *)event {
+  [_eventHandler handleFocus:target
+                      onView:view
+               withContainer:container
+                    andPoint:point
+                    andEvent:event];
 }
 
 - (UIView *)eventHandlerRootView {

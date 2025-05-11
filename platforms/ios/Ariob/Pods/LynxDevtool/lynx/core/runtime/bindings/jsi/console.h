@@ -37,6 +37,8 @@ class Console : public HostObject {
  private:
   piper::Value LogWithLevel(Runtime* rt, const int level, const Value* args,
                             size_t count, const std::string& func_name);
+  piper::Value CallJSEngineConsole(Runtime* rt, const Value* args, size_t count,
+                                   const std::string& func_name);
   piper::Value Assert(Runtime* rt, const int level, const Value* args,
                       size_t count, const std::string& func_name);
   static std::string LogObject_(Runtime* rt,

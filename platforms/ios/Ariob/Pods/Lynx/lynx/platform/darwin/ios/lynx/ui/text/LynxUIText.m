@@ -2,14 +2,14 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-#import "LynxUIText.h"
-#import "LynxComponentRegistry.h"
-#import "LynxEnv.h"
-#import "LynxPropsProcessor.h"
-#import "LynxUI+Internal.h"
-#import "LynxUIUnitUtils.h"
-#import "LynxUnitUtils.h"
-#import "LynxView+Internal.h"
+#import <Lynx/LynxComponentRegistry.h>
+#import <Lynx/LynxEnv.h>
+#import <Lynx/LynxPropsProcessor.h>
+#import <Lynx/LynxUI+Internal.h>
+#import <Lynx/LynxUIText.h>
+#import <Lynx/LynxUIUnitUtils.h>
+#import <Lynx/LynxUnitUtils.h>
+#import <Lynx/LynxView+Internal.h>
 
 @interface LynxUITextDrawParameter : NSObject
 
@@ -425,6 +425,8 @@ LYNX_UI_METHOD(getSelectedText) {
  * @param startY The y-coordinate of the start of the selected text relative to the text component
  * @param endX The x-coordinate of the end of the selected text relative to the text component
  * @param endY The y-coordinate of the end of the selected text relative to the text component
+ * @param showStartHandle Whether to show start handle
+ * @param showEndHandle Whether to show end handle
  * @return The bounding boxes of each line
  */
 LYNX_UI_METHOD(setTextSelection) {
@@ -432,15 +434,20 @@ LYNX_UI_METHOD(setTextSelection) {
   NSNumber *startY = [params objectForKey:@"startY"];
   NSNumber *endX = [params objectForKey:@"endX"];
   NSNumber *endY = [params objectForKey:@"endY"];
+  id showStartHandle = [params objectForKey:@"showStartHandle"];
+  id showEndHandle = [params objectForKey:@"showEndHandle"];
   if (!startX || !startY || !endX || !endY) {
     callback(kUIMethodParamInvalid, @"parameter is invalid");
     return;
   }
 
-  NSArray *boxes = [self.view setTextSelection:[startX floatValue]
-                                        startY:[startY floatValue]
-                                          endX:[endX floatValue]
-                                          endY:[endY floatValue]];
+  NSArray *boxes =
+      [self.view setTextSelection:[startX floatValue]
+                           startY:[startY floatValue]
+                             endX:[endX floatValue]
+                             endY:[endY floatValue]
+                  showStartHandle:showStartHandle == nil ? YES : [showStartHandle boolValue]
+                    showEndHandle:showEndHandle == nil ? YES : [showEndHandle boolValue]];
   if (boxes.count == 0) {
     callback(kUIMethodSuccess, @{});
   } else {

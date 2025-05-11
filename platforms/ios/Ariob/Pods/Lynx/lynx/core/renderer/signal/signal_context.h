@@ -1,3 +1,28 @@
+// Inspired by S.js by Adam Haile, https://github.com/adamhaile/S
+/**
+The MIT License (MIT)
+
+Copyright (c) 2017 Adam Haile
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 // Copyright 2024 The Lynx Authors. All rights reserved.
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
@@ -35,7 +60,7 @@ class SignalContext {
 
   Computation* GetTopComputation();
 
-  void MarkUnTrack(bool enable_un_track) { enable_un_track_ = enable_un_track; }
+  void MarkUnTrack(bool enable_un_track);
 
   void RunUpdates(std::function<void()>&& func);
 
@@ -61,8 +86,6 @@ class SignalContext {
   void EnsureMemoComputationList();
 
   bool IsScopeActiveComputation(BaseScope* scope);
-
-  bool enable_un_track_{false};
 
   int32_t exec_count_{0};
 

@@ -313,14 +313,13 @@ void LynxRuntime::CallJSCallback(
         LYNX_TRACE_CATEGORY_JSB, "JSBTiming::jsb_callback_thread_switch_end",
         [collector = callback->timing_collector_,
          callback_thread_switch_end](lynx::perfetto::EventContext ctx) {
-          ctx.event()->add_debug_annotations("first_arg",
-                                             collector->GetFirstArg());
           ctx.event()->add_debug_annotations(
               "timestamp", std::to_string(callback_thread_switch_end));
           ctx.event()->add_debug_annotations(
               "jsb_callback_thread_switch",
               std::to_string(callback_thread_switch_end -
                              collector->GetCallbackThreadSwitchStart()));
+          ctx.event()->add_flow_ids(collector->FlowId());
         });
   }
 
@@ -336,11 +335,14 @@ void LynxRuntime::CallJSCallback(
   if (callback->timing_collector_ != nullptr) {
     TRACE_EVENT_INSTANT(
         LYNX_TRACE_CATEGORY_JSB, "JSBTiming::jsb_callback_call_start",
-        [first_arg = callback->timing_collector_->GetFirstArg(),
-         callback_call_start_time](lynx::perfetto::EventContext ctx) {
-          ctx.event()->add_debug_annotations("first_arg", first_arg);
+        [callback_call_start_time,
+         timing_collector =
+             callback->timing_collector_](lynx::perfetto::EventContext ctx) {
           ctx.event()->add_debug_annotations(
               "timestamp", std::to_string(callback_call_start_time));
+          if (timing_collector != nullptr) {
+            ctx.event()->add_flow_ids(timing_collector->FlowId());
+          }
         });
   }
   js_executor_->invokeCallback(callback, &iterator->second);
@@ -543,8 +545,15 @@ void LynxRuntime::OnJSSourcePrepared(
     // bind icu for js env
     if (bundle.enable_bind_icu) {
 #if ENABLE_NAPI_BINDING
-      Napi::Env env = napi_environment_->proxy()->Env();
-      tasm::I18n::Bind(reinterpret_cast<intptr_t>(static_cast<napi_env>(env)));
+      if (group_id_ != PAGE_GROUP_ID) {
+        delegate_->OnErrorOccurred(base::LynxError(
+            error::E_BTS_RUNTIME_ERROR,
+            "enable_bind_icu is not supported in shared context env"));
+      } else {
+        Napi::Env env = napi_environment_->proxy()->Env();
+        tasm::I18n::Bind(
+            reinterpret_cast<intptr_t>(static_cast<napi_env>(env)));
+      }
 #endif
     }
     app_->loadApp(std::move(bundle), init_global_props_, dsl,
@@ -665,12 +674,6 @@ void LynxRuntime::EvaluateScriptStandalone(std::string url,
                 tasm::PackageInstanceDSL::STANDALONE,
                 tasm::PackageInstanceBundleModuleMode::RETURN_BY_FUNCTION_MODE,
                 std::move(url));
-}
-
-void LynxRuntime::ConsoleLogWithLevel(const std::string& level,
-                                      const std::string& msg) {
-  QueueOrExecTask(
-      [this, level, msg] { app_->ConsoleLogWithLevel(level, msg); });
 }
 
 void LynxRuntime::I18nResourceChanged(const std::string& msg) {

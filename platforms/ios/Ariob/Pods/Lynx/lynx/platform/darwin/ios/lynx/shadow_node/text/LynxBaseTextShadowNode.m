@@ -2,22 +2,21 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-#import "LynxBaseTextShadowNode.h"
-#import "LynxBoxShadowManager.h"
-#import "LynxConverter+NSShadow.h"
-#import "LynxConverter+UI.h"
-#import "LynxFontFaceManager.h"
-#import "LynxGradient.h"
-#import "LynxHtmlEscape.h"
-#import "LynxInlineTruncationShadowNode.h"
-#import "LynxLog.h"
-#import "LynxNativeLayoutNode.h"
-#import "LynxPropsProcessor.h"
-#import "LynxRawTextShadowNode.h"
-#import "LynxTextLayoutSpec.h"
-#import "LynxTextSelectionShadowNode.h"
-#import "LynxTextShadowNode.h"
-#import "LynxTextUtils.h"
+#import <Lynx/LynxBaseTextShadowNode.h>
+#import <Lynx/LynxBoxShadowManager.h>
+#import <Lynx/LynxConverter+NSShadow.h>
+#import <Lynx/LynxConverter+UI.h>
+#import <Lynx/LynxFontFaceManager.h>
+#import <Lynx/LynxGradient.h>
+#import <Lynx/LynxHtmlEscape.h>
+#import <Lynx/LynxInlineTruncationShadowNode.h>
+#import <Lynx/LynxLog.h>
+#import <Lynx/LynxNativeLayoutNode.h>
+#import <Lynx/LynxPropsProcessor.h>
+#import <Lynx/LynxRawTextShadowNode.h>
+#import <Lynx/LynxTextLayoutSpec.h>
+#import <Lynx/LynxTextShadowNode.h>
+#import <Lynx/LynxTextUtils.h>
 
 NSAttributedStringKey const LynxInlineViewAttributedStringKey =
     @"LynxInlineViewAttributedStringKey";
@@ -174,9 +173,6 @@ NSAttributedStringKey const LynxVerticalAlignKey = @"LynxVerticalAlignKey";
 
         _hasNonVirtualOffspring |= baseText.hasNonVirtualOffspring;
       }
-    } else if ([child isKindOfClass:[LynxTextSelectionShadowNode class]]) {
-      LynxTextSelectionShadowNode* selectionNode = (LynxTextSelectionShadowNode*)child;
-      self.textStyle.selectionColor = selectionNode.backgroundColor;
     } else {
       // process inline-view and inline-image
       if (textMaxLength != LynxNumberNotSet) {
@@ -317,6 +313,21 @@ NSAttributedStringKey const LynxVerticalAlignKey = @"LynxVerticalAlignKey";
     if ([child isVirtual]) {
       // only virtual child need parent to trigger this callback
       [child layoutDidStart];
+    }
+  }
+}
+
+- (void)alignHiddenNativeLayoutNode:(NSSet*)alignedNodeSignSet alignContext:(AlignContext*)ctx {
+  for (LynxShadowNode* child in self.children) {
+    if ([child isKindOfClass:LynxNativeLayoutNode.class]) {
+      if (![alignedNodeSignSet containsObject:@(child.sign)]) {
+        AlignParam* alignParam = [AlignParam new];
+        [alignParam SetAlignOffsetWithLeft:0.f Top:0.f];
+        [(LynxNativeLayoutNode*)child alignWithAlignParam:alignParam AlignContext:ctx];
+      }
+    } else if ([child isKindOfClass:LynxBaseTextShadowNode.class]) {
+      [(LynxBaseTextShadowNode*)child alignHiddenNativeLayoutNode:alignedNodeSignSet
+                                                     alignContext:ctx];
     }
   }
 }

@@ -131,6 +131,14 @@ class LynxEngine {
   void OnPseudoStatusChanged(int32_t id, int32_t pre_status,
                              int32_t current_status);
 
+  void StartEventGenerate(const lepus::Value& event_params);
+
+  void StartEventCapture(int64_t event_id);
+
+  void StartEventBubble(int64_t event_id);
+
+  void StartEventFire(bool is_stop, int64_t event_id);
+
   void SendBubbleEvent(const std::string& name, int32_t tag,
                        lepus::DictionaryPtr dict);
 

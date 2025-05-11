@@ -1,23 +1,20 @@
 // Copyright 2019 The Lynx Authors. All rights reserved.
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
+#ifndef PLATFORM_DARWIN_IOS_LYNX_PUBLIC_LYNXVIEWBUILDER_H_
+#define PLATFORM_DARWIN_IOS_LYNX_PUBLIC_LYNXVIEWBUILDER_H_
 
 #import <Foundation/Foundation.h>
 
-#import "LynxBackgroundRuntime.h"
-#import "LynxConfig.h"
-#import "LynxDynamicComponentFetcher.h"
-#import "LynxGenericResourceFetcher.h"
-#import "LynxGroup.h"
-#import "LynxMediaResourceFetcher.h"
-#import "LynxTemplateResourceFetcher.h"
-#import "LynxViewEnum.h"
-
-typedef NS_ENUM(NSInteger, LynxBooleanOption) {
-  LynxBooleanOptionUnset = 0,
-  LynxBooleanOptionTrue = 1,
-  LynxBooleanOptionFalse = 2,
-};
+#import <Lynx/LynxBackgroundRuntime.h>
+#import <Lynx/LynxBooleanOption.h>
+#import <Lynx/LynxConfig.h>
+#import <Lynx/LynxDynamicComponentFetcher.h>
+#import <Lynx/LynxGenericResourceFetcher.h>
+#import <Lynx/LynxGroup.h>
+#import <Lynx/LynxMediaResourceFetcher.h>
+#import <Lynx/LynxTemplateResourceFetcher.h>
+#import <Lynx/LynxViewEnum.h>
 
 @interface LynxViewBuilder : NSObject
 
@@ -118,3 +115,5 @@ typedef NS_ENUM(NSInteger, LynxBooleanOption) {
              withAliasName:(NSString* _Nonnull)aliasName;
 
 @end
+
+#endif  // PLATFORM_DARWIN_IOS_LYNX_PUBLIC_LYNXVIEWBUILDER_H_

@@ -103,6 +103,11 @@ class BatchListAdapter : public ListAdapter {
   // Handle diff remove and insert again.
   void OnItemHolderReInsert(ItemHolder* item_holder) override;
 
+#if ENABLE_TRACE_PERFETTO
+  void UpdateTraceDebugInfo(TraceEvent* event,
+                            ItemHolder* item_holder) const override;
+#endif
+
  public:
   // Handle full data updated.
   void OnDataSetChanged() override;

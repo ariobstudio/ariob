@@ -151,7 +151,7 @@ class Element : public lepus::RefCounted {
 
   // For style op
   BASE_EXPORT_FOR_DEVTOOL virtual void ConsumeStyle(
-      const StyleMap& styles, StyleMap* inherit_styles = nullptr) = 0;
+      const StyleMap& styles, const StyleMap* inherit_styles = nullptr) = 0;
 
   virtual void SetStyleInternal(CSSPropertyID id, const tasm::CSSValue& value,
                                 bool force_update = false);
@@ -229,8 +229,8 @@ class Element : public lepus::RefCounted {
   virtual const std::string& ParentComponentEntryName() const = 0;
 
   inline bool IsLayoutOnly() { return is_layout_only_; }
-  inline bool IsNewFixed() const { return is_fixed_ && enable_new_fixed_; }
-  inline bool GetEnableFixedNew() const { return enable_new_fixed_; }
+  bool IsNewFixed() const;
+  bool GetEnableFixedNew() const;
   inline bool is_virtual() { return is_virtual_; }
   virtual bool is_fixed_new() { return false; }
   BASE_EXPORT_FOR_DEVTOOL virtual bool GetPageElementEnabled() { return false; }
@@ -664,8 +664,6 @@ class Element : public lepus::RefCounted {
 
   void HandleCSSVariables(StyleMap& styles);
 
-  void ResolvePseudoSelectors();
-
   void ResolvePlaceHolder();
 
   // Callback before style resolving. Return false to skip style resolving.
@@ -732,8 +730,6 @@ class Element : public lepus::RefCounted {
   // TODO(songshourui.null): rename css_patching_ to style_resolver_;
   CSSPatching css_patching_;
 
-  // config settings for enableLayoutOnly
-  bool config_enable_layout_only_{true};
   bool has_layout_only_props_{true};
 
   // enable_component_layout_only_ & enable_extended_layout_only_opt_
@@ -741,8 +737,6 @@ class Element : public lepus::RefCounted {
   // But in Radon Arch, this switch should be get from page_config.
   bool enable_extended_layout_only_opt_{true};
   bool enable_component_layout_only_{true};
-
-  bool enable_new_fixed_{false};
 
   std::shared_ptr<PropBundle> prop_bundle_{nullptr};
   // just for unit test now.

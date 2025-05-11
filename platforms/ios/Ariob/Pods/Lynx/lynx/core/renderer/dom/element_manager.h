@@ -39,9 +39,9 @@
 #include "core/services/timing_handler/timing_handler.h"
 
 namespace lynx {
-namespace shell {
+namespace base {
 class VSyncMonitor;
-}  // namespace shell
+}  // namespace base
 namespace tasm {
 
 struct PseudoPlaceHolderStyles;
@@ -267,7 +267,7 @@ class ElementManager {
       std::unique_ptr<PaintingCtxPlatformImpl> platform_painting_context,
       Delegate *delegate, const LynxEnvConfig &lynx_env_config,
       int32_t instance_id = tasm::report::kUnknownInstanceId,
-      const std::shared_ptr<shell::VSyncMonitor> &vsync_monitor = nullptr,
+      const std::shared_ptr<base::VSyncMonitor> &vsync_monitor = nullptr,
       const bool enable_diff_without_layout = false);
 
   // avoid pImpl idiom type of compilation error when self inlclude
@@ -555,7 +555,7 @@ class ElementManager {
   bool GetEnableNativeListFromShell() const { return enable_native_list_; }
 
   bool GetEnableNativeListFromPageConfig() const {
-    return config_ && config_->GetEnableNativeList();
+    return config_ && config_->GetEnableNativeList() == TernaryBool::TRUE_VALUE;
   }
 
   bool GetEnableNewGesture() {
@@ -727,7 +727,11 @@ class ElementManager {
     return config_ ? config_->GetEnableReloadLifecycle() : false;
   }
 
-  std::shared_ptr<shell::VSyncMonitor> &vsync_monitor() {
+  bool GetEnableMultiTouchParamsCompatible() const {
+    return config_ ? config_->GetEnableMultiTouchParamsCompatible() : false;
+  }
+
+  std::shared_ptr<base::VSyncMonitor> &vsync_monitor() {
     return vsync_monitor_;
   }
 
@@ -1034,6 +1038,8 @@ class ElementManager {
    */
   void ClearExtremeParsedStyles();
 
+  inline int32_t GetTaskWaitTimeout() { return task_wait_timeout_; }
+
  protected:
   /**
    * call this function to request layout
@@ -1085,7 +1091,7 @@ class ElementManager {
   std::unordered_set<ElementContainer *> dirty_stacking_contexts_;
   LynxEnvConfig lynx_env_config_;
   Delegate *delegate_{nullptr};
-  std::shared_ptr<shell::VSyncMonitor> vsync_monitor_{nullptr};
+  std::shared_ptr<base::VSyncMonitor> vsync_monitor_{nullptr};
   std::unordered_map<base::String, int> node_type_recorder_;
   // <page>,<wrapper>,<none> is a special tag and must be COMMON.
   std::unordered_map<base::String, int32_t> node_info_recorder_{
@@ -1162,6 +1168,10 @@ class ElementManager {
   std::atomic_int element_count_{0};
   std::atomic_int layout_only_element_count_{0};
   std::atomic_int layout_only_transition_count_{0};
+
+  // Internal timeout in threaded element flush mode to enable force running on
+  // thread-pool in unittests
+  int32_t task_wait_timeout_{0};
 
   ALLOW_UNUSED_TYPE std::map<lynx::devtool::DevToolFunction,
                              std::function<void(const base::any &)>>

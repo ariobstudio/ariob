@@ -95,6 +95,9 @@ class LynxShellBuilder {
   LynxShellBuilder& SetTasmPlatformInvoker(
       std::unique_ptr<TasmPlatformInvoker> tasm_platform_invoker);
 
+  LynxShellBuilder& SetForceLayoutOnBackgroundThread(
+      bool force_layout_on_background_thread);
+
   LynxShell* build();
 
  private:
@@ -120,7 +123,7 @@ class LynxShellBuilder {
   tasm::LynxEnvConfig lynx_env_config_{0, 0, 1, 1};
   std::shared_ptr<lynx::tasm::LazyBundleLoader> loader_;
   std::shared_ptr<lynx::tasm::WhiteBoard> white_board_;
-  std::shared_ptr<lynx::shell::VSyncMonitor> element_manager_vsync_monitor_;
+  std::shared_ptr<lynx::base::VSyncMonitor> element_manager_vsync_monitor_;
   bool enable_new_animator_{false};
   bool enable_native_list_{false};
   bool enable_layout_only_{true};
@@ -150,6 +153,8 @@ class LynxShellBuilder {
   ShellOption shell_option_;
 
   std::unique_ptr<TasmPlatformInvoker> tasm_platform_invoker_;
+
+  bool force_layout_on_background_thread_{false};
 };
 
 }  // namespace shell

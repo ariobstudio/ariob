@@ -23,6 +23,8 @@ class RawTextElement : public FiberElement {
   bool is_raw_text() const override { return true; }
   void SetText(const lepus::Value& text);
 
+  ParallelFlushReturn PrepareForCreateOrUpdate() override;
+
   constexpr const static char kRawTextTag[] = "raw-text";
   constexpr const static char kTextAttr[] = "text";
 

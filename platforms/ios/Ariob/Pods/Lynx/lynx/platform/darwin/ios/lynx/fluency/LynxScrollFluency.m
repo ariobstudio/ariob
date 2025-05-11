@@ -31,8 +31,12 @@
   [_fluencyMonitor stopWithScrollInfo:info];
 }
 
-- (void)setFluencyPageconfigProbability:(CGFloat)probability {
-  [_fluencyMonitor setFluencyPageconfigProbability:probability];
+- (void)setEnabledBySampling:(LynxBooleanOption)enabledBySampling {
+  [_fluencyMonitor setEnabledBySampling:enabledBySampling];
+}
+
+- (void)setPageConfigProbability:(CGFloat)probability {
+  [_fluencyMonitor setPageConfigProbability:probability];
 }
 
 - (BOOL)shouldSendAllScrollEvent {

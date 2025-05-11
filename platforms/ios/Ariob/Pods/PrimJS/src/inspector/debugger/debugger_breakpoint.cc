@@ -703,7 +703,8 @@ void HandleSetBreakpointActive(DebuggerParams *debugger_options) {
   int32_t is_active = LEPUS_VALUE_GET_BOOL(active);
   if (!ctx->rt->gc_enable) LEPUS_FreeValue(ctx, params);
 
-  info->breakpoints_is_active = is_active ? 1 : 0;
+  info->breakpoints_is_active_before = info->breakpoints_is_active =
+      is_active ? 1 : 0;
 
   LEPUSValue result = LEPUS_NewObject(ctx);
   if (LEPUS_IsException(result)) {
@@ -981,7 +982,7 @@ void HandleContinueToLocation(DebuggerParams *debugger_options) {
   const char *url = GetScriptURLByScriptId(ctx, script_id);
 
   // set brekapoint active is 1
-  info->breakpoints_is_active = 1;
+  info->breakpoints_is_active_before = info->breakpoints_is_active = 1;
 
   // add this new breakpoint to the info->breakpoints, set specific_condition
   // true

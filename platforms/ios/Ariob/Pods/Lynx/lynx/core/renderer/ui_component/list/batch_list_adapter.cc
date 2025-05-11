@@ -59,8 +59,10 @@ void BatchListAdapter::OnDataSetChanged() {
 
 bool BatchListAdapter::BindItemHolder(ItemHolder* item_holder, int index,
                                       bool preload_section /* = false */) {
-  TRACE_EVENT(LYNX_TRACE_CATEGORY, "BatchListAdapter::BindItemHolder", "index",
-              index);
+  TRACE_EVENT(LYNX_TRACE_CATEGORY, "ListAdapter::BindItemHolder",
+              [this, item_holder](lynx::perfetto::EventContext ctx) {
+                UpdateTraceDebugInfo(ctx.event(), item_holder);
+              });
   if (!item_holder || index != item_holder->index() || preload_section) {
     // Note: not supports preload section when using component cache.
     return false;
@@ -120,6 +122,10 @@ int64_t BatchListAdapter::BindItemHolderInternal(
                    << "enqueue component before rendering with item_key = "
                    << item_key << ", index = " << index);
         RecycleItemHolder(item_holder);
+        if (list_container_->list_children_helper()) {
+          list_container_->list_children_helper()->EraseFromLastBindingChildren(
+              item_holder);
+        }
       }
       // Mark status kInBinding.
       (it->second).status_ = list::ItemStatus::kInBinding;
@@ -269,8 +275,10 @@ int BatchListAdapter::OnFinishValidBind(const std::string& item_key,
 }
 
 void BatchListAdapter::RecycleItemHolder(ItemHolder* item_holder) {
-  TRACE_EVENT(LYNX_TRACE_CATEGORY, "BatchListAdapter::RecycleItemHolder",
-              "index", item_holder->index());
+  TRACE_EVENT(LYNX_TRACE_CATEGORY, "ListAdapter::BindItemHolder",
+              [this, item_holder](lynx::perfetto::EventContext ctx) {
+                UpdateTraceDebugInfo(ctx.event(), item_holder);
+              });
   ListNode* list_node = nullptr;
   if (!item_holder || !list_element_ ||
       !(list_node = list_element_->GetListNode())) {
@@ -327,6 +335,16 @@ void BatchListAdapter::MarkItemStatus(const std::string& item_key,
   }
   (it->second).status_ = item_status;
 }
+
+#if ENABLE_TRACE_PERFETTO
+void BatchListAdapter::UpdateTraceDebugInfo(TraceEvent* event,
+                                            ItemHolder* item_holder) const {
+  ListAdapter::UpdateTraceDebugInfo(event, item_holder);
+  auto* adapter_type_info = event->add_debug_annotations();
+  adapter_type_info->set_name("adapter_type");
+  adapter_type_info->set_string_value("batch");
+}
+#endif
 
 }  // namespace tasm
 }  // namespace lynx

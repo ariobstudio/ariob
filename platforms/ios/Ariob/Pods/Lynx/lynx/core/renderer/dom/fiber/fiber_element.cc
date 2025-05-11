@@ -60,10 +60,7 @@ FiberElement::FiberElement(ElementManager *manager, const base::String &tag)
 
 FiberElement::FiberElement(ElementManager *manager, const base::String &tag,
                            int32_t css_id)
-    : Element(tag, manager),
-      dirty_(kDirtyCreated),
-      node_manager_(manager ? manager->node_manager() : nullptr),
-      css_id_(css_id) {
+    : Element(tag, manager), dirty_(kDirtyCreated), css_id_(css_id) {
   css_patching_.SetEnableFiberArch(true);
   InitLayoutBundle();
   SetAttributeHolder(std::make_shared<AttributeHolder>(this));
@@ -148,8 +145,6 @@ void FiberElement::AttachToElementManager(
     bool keep_element_id) {
   Element::AttachToElementManager(manager, style_manager, keep_element_id);
 
-  node_manager_ = manager->node_manager();
-
   const auto &env_config = manager->GetLynxEnvConfig();
   if (platform_css_style_ == nullptr) {
     platform_css_style_ = std::make_unique<starlight::ComputedCSSStyle>(
@@ -205,7 +200,7 @@ FiberElement::~FiberElement() {
     element_manager()->NotifyElementDestroy(this);
     DestroyPlatformNode();
     element_manager()->DestroyLayoutNode(impl_id());
-    node_manager_->Erase(id_);
+    element_manager()->node_manager()->Erase(id_);
   }
 }
 
@@ -522,7 +517,8 @@ void FiberElement::RemoveNode(const fml::RefPtr<Element> &raw_child,
   // removed from element tree here
   if (has_to_store_insert_remove_actions_) {
     action_param_list_.emplace_back(Action::kRemoveChildAct, this, child, index,
-                                    nullptr, child->is_fixed_);
+                                    nullptr, child->is_fixed_,
+                                    child->ZIndex() != 0);
   }
 
   // take care: NotifyNodeRemoved after removeAction inserted!
@@ -553,12 +549,36 @@ void FiberElement::RemovedFrom(FiberElement *insertion_point) {
   // they may be inserted to difference parent in UI/layout tree instead of dom
   // parent If the removed node's parent is the insertion_point, no need to do
   // any special action
+
+  if (LynxEnv::GetInstance().GetBoolEnv(
+          LynxEnv::Key::FIX_FIBER_REMOVE_TWICE_BUG, true)) {
+    if (IsDetached()) {
+      return;
+    }
+
+    if (!action_param_list_.empty()) {
+      auto iter = action_param_list_.begin();
+      while (iter != action_param_list_.end()) {
+        if (iter->type_ == Action::kRemoveIntergenerationAct ||
+            (iter->type_ == Action::kRemoveChildAct &&
+             (iter->is_fixed_ || iter->has_z_index_))) {
+          iter->type_ = Action::kRemoveIntergenerationAct;
+          insertion_point->action_param_list_.emplace_back(std::move(*iter));
+          iter = action_param_list_.erase(iter);
+        } else {
+          ++iter;
+        }
+      }
+    }
+  }
+
   if ((parent() != insertion_point) && (ZIndex() != 0 || is_fixed_)) {
     insertion_point->action_param_list_.emplace_back(
         Action::kRemoveIntergenerationAct, insertion_point,
         fml::RefPtr<FiberElement>(this), 0, nullptr, is_fixed_);
     MarkDirty(kDirtyReAttachContainer);
   }
+
   MarkDetached();
 }
 
@@ -852,6 +872,15 @@ void FiberElement::HandleDelayTask(base::MoveOnlyClosure<void> operation) {
   }
 }
 
+void FiberElement::HandleBeforeFlushActionsTask(
+    base::MoveOnlyClosure<void> operation) {
+  if (this->parallel_flush_) {
+    parallel_before_flush_action_tasks_.emplace_back(std::move(operation));
+  } else {
+    operation();
+  }
+}
+
 ParallelFlushReturn FiberElement::PrepareForCreateOrUpdate() {
   TRACE_EVENT(LYNX_TRACE_CATEGORY, "FiberElement::PrepareForCreateOrUpdate",
               [this](lynx::perfetto::EventContext ctx) {
@@ -860,27 +889,7 @@ ParallelFlushReturn FiberElement::PrepareForCreateOrUpdate() {
   bool need_update = false;
 
   // Need process attributes first.
-  if (dirty_ & kDirtyAttr) {
-    TRACE_EVENT(LYNX_TRACE_CATEGORY, "FiberElement::HandleAttr",
-                [this](lynx::perfetto::EventContext ctx) {
-                  UpdateTraceDebugInfo(ctx.event());
-                });
-    for (const auto &attr : updated_attr_map_) {
-      SetAttributeInternal(attr.first, attr.second);
-      need_update = true;
-    }
-    for (const auto &attr : reset_attr_vec_) {
-      ResetAttribute(attr);
-      need_update = true;
-    }
-    if (updated_attr_map_.size() > 0) {
-      PropsUpdateFinish();
-    }
-
-    updated_attr_map_.clear();
-    reset_attr_vec_.clear();
-    dirty_ &= ~kDirtyAttr;
-  }
+  need_update = ConsumeAllAttributes();
 
   // If it's the first flush of the element and parsed_styles_map_ is empty, we
   // can take the fast path, directly using parsed_styles_map_ as the updated
@@ -1002,7 +1011,7 @@ ParallelFlushReturn FiberElement::PrepareForCreateOrUpdate() {
   if (should_consume_trans_styles_in_advance) {
     has_transition_props_ |= ResetTransitionStylesInAdvance(reset_style_ids);
   }
-  auto update_map =
+  auto &update_map =
       force_use_current_parsed_style_map ? parsed_styles_map_ : parsed_styles;
   if (should_consume_trans_styles_in_advance) {
     has_transition_props_ |= ConsumeTransitionStylesInAdvance(update_map);
@@ -1309,54 +1318,20 @@ ParallelFlushReturn FiberElement::PrepareForCreateOrUpdate() {
     }
   }
 
-  // actions
-  if (dirty_ & kDirtyCreated) {
-    TRACE_EVENT(LYNX_TRACE_CATEGORY, "FiberElement::HandleCreate",
-                [this](lynx::perfetto::EventContext ctx) {
-                  UpdateTraceDebugInfo(ctx.event());
-                });
-    // FIXME(linxs): FlushProps can be optimized, for example can we just
-    // create viewElement,imageElement,textElement.. directly?
-    FlushProps();
-    dirty_ &= ~kDirtyCreated;
-  } else if (need_update || dirty_ & kDirtyForceUpdate) {
-    if (prop_bundle_) {
-      TriggerElementUpdate();
-    }
-    HandleDelayTask([this]() { element_container()->StyleChanged(); });
-  }
+  // Commit Create or Update UI Ops
+  PerformElementContainerCreateOrUpdate(need_update);
 
+  // update to layout node
   UpdateLayoutNodeByBundle();
 
-  dirty_ &= ~kDirtyForceUpdate;
   ResetPropBundle();
 
-  // Remaining Layout Task should be returned to be executed in threaded flush
-  // or sync resolving(i.e. PageElement) scenario
-  if (this->parallel_flush_ ||
-      this->resolve_status_ == AsyncResolveStatus::kSyncResolving) {
-    this->parallel_flush_ = false;
-    this->UpdateResolveStatus(AsyncResolveStatus::kResolved);
-    return [this]() {
-      TRACE_EVENT(LYNX_TRACE_CATEGORY,
-                  "FiberElement::HandleParallelReduceTasks");
-      for (const auto &task : parallel_reduce_tasks_) {
-        task();
-      }
-      parallel_reduce_tasks_.clear();
-      // Executing task in parallel_reduce_tasks_ may produce prop_bundle_,
-      // need to consume newly created prop_bundle_
-      if (prop_bundle_) {
-        TriggerElementUpdate();
-        UpdateLayoutNodeByBundle();
-        ResetPropBundle();
-      }
-      this->UpdateResolveStatus(AsyncResolveStatus::kUpdated);
-      VerifyKeyframePropsChangedHandling();
-    };
+  if (ShouldProcessParallelTasks()) {
+    return CreateParallelTaskHandler();
   }
 
   VerifyKeyframePropsChangedHandling();
+
   UpdateInheritedProperty();
 
   return []() {};
@@ -1437,6 +1412,10 @@ void FiberElement::FlushSelf() {
               [this](lynx::perfetto::EventContext ctx) {
                 UpdateTraceDebugInfo(ctx.event());
               });
+  for (const auto &task : parallel_before_flush_action_tasks_) {
+    task();
+  }
+  parallel_before_flush_action_tasks_.clear();
 
   if ((dirty_ & ~kDirtyTree) != 0) {
     // create or update Platform Op
@@ -1524,8 +1503,9 @@ void FiberElement::ParallelFlushAsRoot() {
 
   while (!task_queue.empty()) {
     TRACE_EVENT(LYNX_TRACE_CATEGORY, "FiberElement::ConsumeParallelTask");
-    if (task_queue.front().get()->GetFuture().wait_for(std::chrono::seconds(
-            task_wait_timeout_)) == std::future_status::ready) {
+    if (task_queue.front().get()->GetFuture().wait_for(
+            std::chrono::seconds(element_manager()->GetTaskWaitTimeout())) ==
+        std::future_status::ready) {
       TRACE_EVENT(LYNX_TRACE_CATEGORY, "FiberElement::ConsumeLeftIter");
       task_queue.front().get()->GetFuture().get()();
       task_queue.pop_front();
@@ -1682,7 +1662,11 @@ void FiberElement::PrepareAndGenerateChildrenActions() {
           if (!child->is_fixed_ || GetEnableFixedNew()) {
             this->HandleInsertChildAction(child.get(), -1, nullptr);
           } else {
-            InsertFixedElement(child.get(), nullptr);
+            if (IsFiberArch()) {
+              InsertFixedElement(child.get(), nullptr);
+            } else {
+              need_handle_fixed_ = true;
+            }
           }
         }
       }
@@ -1697,7 +1681,11 @@ void FiberElement::PrepareAndGenerateChildrenActions() {
                                     static_cast<int>(param.index_),
                                     param.ref_node_);
           } else {
-            InsertFixedElement(param.child_.get(), param.ref_node_);
+            if (IsFiberArch()) {
+              InsertFixedElement(param.child_.get(), param.ref_node_);
+            } else {
+              need_handle_fixed_ = true;
+            }
           }
         } break;
 
@@ -1983,7 +1971,7 @@ ElementChildrenArray FiberElement::GetChildren() {
 // in advance.
 // 3. Check every property to determine whether to intercept this update.
 void FiberElement::ConsumeStyle(const StyleMap &styles,
-                                StyleMap *inherit_styles) {
+                                const StyleMap *inherit_styles) {
   TRACE_EVENT(LYNX_TRACE_CATEGORY, "FiberElement::ConsumeStyle",
               [this](lynx::perfetto::EventContext ctx) {
                 UpdateTraceDebugInfo(ctx.event());
@@ -2015,7 +2003,7 @@ void FiberElement::ConsumeStyle(const StyleMap &styles,
 }
 
 void FiberElement::ConsumeStyleInternal(
-    const StyleMap &styles, StyleMap *inherit_styles,
+    const StyleMap &styles, const StyleMap *inherit_styles,
     std::function<bool(CSSPropertyID, const tasm::CSSValue &)> should_skip) {
   TRACE_EVENT(LYNX_TRACE_CATEGORY, "FiberElement::ConsumeStyle",
               [this](lynx::perfetto::EventContext ctx) {
@@ -2029,7 +2017,8 @@ void FiberElement::ConsumeStyleInternal(
   // Handle font-size first. Other css may use this to calc rem or em.
   SetFontSize();
 
-  inherited_styles_.reserve(styles.size() + updated_inherited_styles_.size());
+  inherited_styles_.reserve(styles.size() +
+                            (inherit_styles ? inherit_styles->size() : 0));
 
   auto consume_func = [this, should_skip = std::move(should_skip)](
                           const StyleMap &styles, bool process_inherit) {
@@ -2087,6 +2076,74 @@ void FiberElement::ConsumeStyleInternal(
   }
 
   consume_func(styles, false);
+}
+
+bool FiberElement::ConsumeAllAttributes() {
+  bool need_update = false;
+  if (dirty_ & kDirtyAttr) {
+    TRACE_EVENT(LYNX_TRACE_CATEGORY, "FiberElement::HandleAttr",
+                [this](lynx::perfetto::EventContext ctx) {
+                  UpdateTraceDebugInfo(ctx.event());
+                });
+    for (const auto &attr : updated_attr_map_) {
+      SetAttributeInternal(attr.first, attr.second);
+      need_update = true;
+    }
+    for (const auto &attr : reset_attr_vec_) {
+      ResetAttribute(attr);
+      need_update = true;
+    }
+    if (updated_attr_map_.size() > 0) {
+      PropsUpdateFinish();
+    }
+
+    updated_attr_map_.clear();
+    reset_attr_vec_.clear();
+    dirty_ &= ~kDirtyAttr;
+  }
+  return need_update;
+}
+
+void FiberElement::PerformElementContainerCreateOrUpdate(bool need_update) {
+  if (dirty_ & kDirtyCreated) {
+    TRACE_EVENT(LYNX_TRACE_CATEGORY, "FiberElement::HandleCreate",
+                [this](lynx::perfetto::EventContext ctx) {
+                  UpdateTraceDebugInfo(ctx.event());
+                });
+    // FIXME(linxs): FlushProps can be optimized, for example can we just
+    // create viewElement,imageElement,textElement.. directly?
+    FlushProps();
+    dirty_ &= ~kDirtyCreated;
+  } else if (need_update || dirty_ & kDirtyForceUpdate) {
+    if (prop_bundle_) {
+      TriggerElementUpdate();
+    }
+    HandleDelayTask([this]() { element_container()->StyleChanged(); });
+  }
+  dirty_ &= ~kDirtyForceUpdate;
+}
+
+ParallelFlushReturn FiberElement::CreateParallelTaskHandler() {
+  // Remaining Layout Task should be returned to be executed in threaded flush
+  // or sync resolving(i.e. PageElement) scenario
+  this->parallel_flush_ = false;
+  this->UpdateResolveStatus(AsyncResolveStatus::kResolved);
+  return [this]() {
+    TRACE_EVENT(LYNX_TRACE_CATEGORY, "FiberElement::HandleParallelReduceTasks");
+    for (const auto &task : parallel_reduce_tasks_) {
+      task();
+    }
+    parallel_reduce_tasks_.clear();
+    // Executing task in parallel_reduce_tasks_ may produce prop_bundle_,
+    // need to consume newly created prop_bundle_
+    if (prop_bundle_) {
+      TriggerElementUpdate();
+      UpdateLayoutNodeByBundle();
+      ResetPropBundle();
+    }
+    this->UpdateResolveStatus(AsyncResolveStatus::kUpdated);
+    VerifyKeyframePropsChangedHandling();
+  };
 }
 
 void FiberElement::CacheStyleFromAttributes(CSSPropertyID id,
@@ -2400,7 +2457,9 @@ void FiberElement::FlushProps() {
             return radon_element->TendToFlatten();
           }
         };
-    platform_is_flatten = painting_context()->IsFlatten(std::move(func));
+    if (!is_virtual_) {
+      platform_is_flatten = painting_context()->IsFlatten(std::move(func));
+    }
     bool is_layout_only = CanBeLayoutOnly() || is_virtual_;
     is_layout_only_ = is_layout_only;
     // native layer don't flatten.
@@ -2414,6 +2473,9 @@ void FiberElement::FlushProps() {
 void FiberElement::RecursivelyMarkChildrenCSSVariableDirty(
     const lepus::Value &css_variable_updated) {
   for (const auto &child : scoped_children_) {
+    if (child->is_raw_text()) {
+      continue;
+    }
     lepus::Value css_variable_updated_merged = css_variable_updated;
     // first, merge changing_css_variables with element's css_variable,
     // element's css_variable is with high priority.
@@ -2642,6 +2704,7 @@ void FiberElement::SetFontSize() {
     }
 
     PreparePropBundleIfNeed();
+
     prop_bundle_->SetProps(
         CSSProperty::GetPropertyName(CSSPropertyID::kPropertyIDFontSize)
             .c_str(),
@@ -2665,8 +2728,15 @@ void FiberElement::ResetFontSize() {
   auto font_size = element_manager()->GetLynxEnvConfig().PageDefaultFontSize();
   auto root_font_size = is_page() ? font_size : GetFontSize();
 
-  SetFontSizeForAllElement(font_size, root_font_size);
-  UpdateLayoutNodeFontSize(font_size, root_font_size);
+  if (font_size != GetFontSize()) {
+    SetFontSizeForAllElement(font_size, root_font_size);
+    PreparePropBundleIfNeed();
+    prop_bundle_->SetProps(
+        CSSProperty::GetPropertyName(CSSPropertyID::kPropertyIDFontSize)
+            .c_str(),
+        font_size);
+    UpdateLayoutNodeFontSize(font_size, root_font_size);
+  }
 }
 
 Element *FiberElement::Sibling(int offset) const {
@@ -2790,7 +2860,10 @@ void FiberElement::DoFullCSSResolving() {
       // invalidate self.
       MarkStyleDirty(false);
     }
-    RecursivelyMarkChildrenCSSVariableDirty(css_var_table);
+    HandleBeforeFlushActionsTask(
+        [this, css_var_table_clone = lepus::Value::Clone(css_var_table)]() {
+          RecursivelyMarkChildrenCSSVariableDirty(css_var_table_clone);
+        });
   }
 }
 
@@ -3032,14 +3105,43 @@ void FiberElement::ConvertToInlineElement() {
   }
 }
 
+void FiberElement::TraversalInsertFixedElementOfTree() {
+  if (!is_page() && need_handle_fixed_) {
+    HandleSelfFixedChange();
+    need_handle_fixed_ = false;
+  }
+  for (auto child : scoped_children_) {
+    child->TraversalInsertFixedElementOfTree();
+  }
+}
+
 void FiberElement::HandleSelfFixedChange() {
-  if (!fixed_changed_ || !render_parent_ || GetEnableFixedNew()) {
+  // 1. If enableFixedNew is `true`, return directly.
+  if (GetEnableFixedNew()) {
     return;
   }
+  // 2. When Using NoDiff, if the element's fixed status is not changed or the
+  // element don't have its render_parnet_, return directly.
+  // 3. When Using RadonDiff, if the element is not fixed and its fixed status
+  // is not changed, return directly.
+  bool early_return_condition = false;
+  if (IsFiberArch()) {
+    early_return_condition = !fixed_changed_ || !render_parent_;
+  } else if (IsRadonArch()) {
+    early_return_condition = !is_fixed_ && !fixed_changed_;
+  }
+  if (early_return_condition) {
+    return;
+  }
+
   if (is_fixed_) {
     // non-fixed to fixed
     auto *parent = render_parent_;
-    parent->HandleRemoveChildAction(this);
+    if (!IsFiberArch() && !parent) {
+      parent = element_manager()->GetPageElement();
+    } else if (parent) {
+      parent->HandleRemoveChildAction(this);
+    }
     parent->InsertFixedElement(this, next_render_sibling_);
   } else {
     // fixed to non-fixed
@@ -3200,6 +3302,9 @@ std::optional<CSSValue> FiberElement::GetElementStyle(
 
 void FiberElement::UpdateDynamicElementStyle(uint32_t style,
                                              bool force_update) {
+  if (is_raw_text()) {
+    return;
+  }
   bool inner_force_update = false || force_update;
 
   if ((dynamic_style_flags_ > 0 || inner_force_update) && !is_wrapper()) {
@@ -3445,6 +3550,11 @@ void FiberElement::AsyncResolveSubtreeProperty() {
       element_manager()->ParallelTasks().emplace_back(std::move(task_info_ptr));
     });
   }
+}
+
+bool FiberElement::CanBeLayoutOnly() const {
+  return can_be_layout_only_ && element_manager()->GetEnableLayoutOnly() &&
+         has_layout_only_props_ && overflow_ == OVERFLOW_XY;
 }
 
 #if ENABLE_TRACE_PERFETTO

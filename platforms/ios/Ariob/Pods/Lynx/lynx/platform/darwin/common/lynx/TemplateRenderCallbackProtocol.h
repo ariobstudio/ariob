@@ -6,8 +6,8 @@
 #define DARWIN_COMMON_LYNX_TEMPLATERENDERCALLBACKPROTOCOL_H_
 
 #import <Foundation/Foundation.h>
+#import <Lynx/LynxTemplateBundle.h>
 #import "LynxErrorReceiverProtocol.h"
-#import "LynxTemplateBundle.h"
 #include "core/renderer/page_config.h"
 
 namespace lynx {
@@ -144,6 +144,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)onReloadTemplate:(const std::vector<uint8_t> &)data
                  withURL:(const std::string &)url
                 initData:(const std::shared_ptr<lynx::tasm::TemplateData> &)init_data;
+
+- (void)onEventCapture:(NSInteger)targetID withEventCatch:(BOOL)isCatch andEventID:(int64_t)eventID;
+
+- (void)onEventBubble:(NSInteger)targetID withEventCatch:(BOOL)isCatch andEventID:(int64_t)eventID;
+
+- (void)onEventFire:(NSInteger)targetID withEventStop:(BOOL)isStop andEventID:(int64_t)eventID;
 
 @end
 

@@ -71,6 +71,8 @@ constexpr const char kMessageEventSubscribeSessionStorage[] =
     "__SubscribeSessionStorage";
 constexpr const char kMessageEventUnSubscribeSessionStorage[] =
     "__UnSubscribeSessionStorage";
+constexpr const char kMessageEventTypeOnBTSConsoleEvent[] =
+    "__OnBTSConsoleEvent";
 
 /**
  * @name: enableMicrotaskPromisePolyfill

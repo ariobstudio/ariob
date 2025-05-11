@@ -1,45 +1,46 @@
 // Copyright 2019 The Lynx Authors. All rights reserved.
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
-#import "LynxUIOwner.h"
-#import "LUIErrorHandling.h"
-#import "LynxBaseInspectorOwner.h"
-#import "LynxComponentRegistry.h"
+#import <Lynx/LUIErrorHandling.h>
+#import <Lynx/LynxBaseInspectorOwner.h>
+#import <Lynx/LynxComponentRegistry.h>
+#import <Lynx/LynxEnv.h>
+#import <Lynx/LynxEventHandler.h>
+#import <Lynx/LynxEventReporter.h>
+#import <Lynx/LynxFontFaceManager.h>
+#import <Lynx/LynxGestureDetectorDarwin.h>
+#import <Lynx/LynxGlobalObserver.h>
+#import <Lynx/LynxPropsProcessor.h>
+#import <Lynx/LynxRootUI.h>
+#import <Lynx/LynxService.h>
+#import <Lynx/LynxShadowNodeOwner.h>
+#import <Lynx/LynxTraceEvent.h>
+#import <Lynx/LynxTraceEventWrapper.h>
+#import <Lynx/LynxUI+Internal.h>
+#import <Lynx/LynxUICollection.h>
+#import <Lynx/LynxUIComponent.h>
+#import <Lynx/LynxUIContext.h>
+#import <Lynx/LynxUIExposure.h>
+#import <Lynx/LynxUIImage.h>
+#import <Lynx/LynxUIListContainer.h>
+#import <Lynx/LynxUIListLight.h>
+#import <Lynx/LynxUIMethodProcessor.h>
+#import <Lynx/LynxUIOwner.h>
+#import <Lynx/LynxUIText.h>
+#import <Lynx/LynxUIUnitUtils.h>
+#import <Lynx/LynxView+Internal.h>
+#import <Lynx/LynxViewInternal.h>
+#import <Lynx/LynxWeakProxy.h>
+#import <Lynx/UIView+Lynx.h>
 #import "LynxEnv+Internal.h"
-#import "LynxEnv.h"
-#import "LynxEventHandler.h"
-#import "LynxEventReporter.h"
 #import "LynxFeatureCounter.h"
-#import "LynxFontFaceManager.h"
 #import "LynxGestureArenaManager.h"
-#import "LynxGestureDetectorDarwin.h"
-#import "LynxGlobalObserver.h"
-#import "LynxPropsProcessor.h"
-#import "LynxRootUI.h"
-#import "LynxService.h"
-#import "LynxShadowNodeOwner.h"
 #import "LynxTemplateRender+Internal.h"
-#import "LynxTraceEvent.h"
-#import "LynxTraceEventWrapper.h"
-#import "LynxUI+Internal.h"
 #import "LynxUI+Private.h"
-#import "LynxUICollection.h"
-#import "LynxUIComponent.h"
-#import "LynxUIContext.h"
-#import "LynxUIExposure.h"
-#import "LynxUIImage.h"
+#import "LynxUIContext+Internal.h"
 #import "LynxUIIntersectionObserver.h"
-#import "LynxUIListContainer.h"
-#import "LynxUIListLight.h"
-#import "LynxUIMethodProcessor.h"
 #import "LynxUIOwner+Accessibility.h"
 #import "LynxUIOwner+Private.h"
-#import "LynxUIText.h"
-#import "LynxUIUnitUtils.h"
-#import "LynxView+Internal.h"
-#import "LynxViewInternal.h"
-#import "LynxWeakProxy.h"
-#import "UIView+Lynx.h"
 
 // TODO(zhengsenyao): For white-screen problem investigation of preLayout, remove it later.
 // constant defined in LynxContext.m
@@ -131,7 +132,8 @@ extern NSString* const kDefaultComponentID;
                        templateRender:(LynxTemplateRender*)templateRender
                     componentRegistry:(LynxComponentScopeRegistry*)registry
                         screenMetrics:(LynxScreenMetrics*)screenMetrics
-                         errorHandler:(id<LUIErrorHandling>)errorHandler {
+                         errorHandler:(id<LUIErrorHandling>)errorHandler
+                             uiConfig:(id<LUIConfig> _Nullable)uiConfig {
   LYNX_TRACE_SECTION(LYNX_TRACE_CATEGORY_WRAPPER, @"LynxUIOwner init")
   self = [super init];
   if (self) {
@@ -169,6 +171,9 @@ extern NSString* const kDefaultComponentID;
              object:nil];
 
     [self listenAccessibilityFocused];
+    if (uiConfig) {
+      [_uiContext setUIConfig:uiConfig];
+    }
   }
   LYNX_TRACE_END_SECTION(LYNX_TRACE_CATEGORY_WRAPPER)
   return self;
@@ -182,7 +187,8 @@ extern NSString* const kDefaultComponentID;
                       templateRender:templateRender
                    componentRegistry:registry
                        screenMetrics:screenMetrics
-                        errorHandler:containerView];
+                        errorHandler:containerView
+                            uiConfig:nil];
 }
 
 #pragma mark - A11y

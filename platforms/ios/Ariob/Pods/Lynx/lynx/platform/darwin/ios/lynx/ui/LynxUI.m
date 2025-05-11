@@ -2,58 +2,58 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-#import "LynxUI.h"
-#import "AbsLynxUIScroller.h"
-#import "LynxAnimationTransformRotation.h"
-#import "LynxBackgroundDrawable.h"
-#import "LynxBackgroundUtils.h"
-#import "LynxBaseGestureHandler.h"
-#import "LynxBasicShape.h"
-#import "LynxBoxShadowManager.h"
-#import "LynxCSSType.h"
-#import "LynxColorUtils.h"
-#import "LynxContext.h"
-#import "LynxConverter+LynxCSSType.h"
-#import "LynxConverter+Transform.h"
-#import "LynxConverter+UI.h"
-#import "LynxEvent.h"
+#import <Lynx/AbsLynxUIScroller.h>
+#import <Lynx/LynxAnimationTransformRotation.h>
+#import <Lynx/LynxBackgroundDrawable.h>
+#import <Lynx/LynxBackgroundUtils.h>
+#import <Lynx/LynxBaseGestureHandler.h>
+#import <Lynx/LynxBasicShape.h>
+#import <Lynx/LynxBoxShadowManager.h>
+#import <Lynx/LynxCSSType.h>
+#import <Lynx/LynxColorUtils.h>
+#import <Lynx/LynxContext.h>
+#import <Lynx/LynxConverter+LynxCSSType.h>
+#import <Lynx/LynxConverter+Transform.h>
+#import <Lynx/LynxConverter+UI.h>
+#import <Lynx/LynxEvent.h>
+#import <Lynx/LynxGestureArenaMember.h>
+#import <Lynx/LynxGestureDetectorDarwin.h>
+#import <Lynx/LynxGlobalObserver.h>
+#import <Lynx/LynxHeroTransition.h>
+#import <Lynx/LynxKeyframeAnimator.h>
+#import <Lynx/LynxLayoutAnimationManager.h>
+#import <Lynx/LynxLog.h>
+#import <Lynx/LynxPropsProcessor.h>
+#import <Lynx/LynxRootUI.h>
+#import <Lynx/LynxService.h>
+#import <Lynx/LynxServiceSystemInvokeProtocol.h>
+#import <Lynx/LynxSizeValue.h>
+#import <Lynx/LynxTransformOriginRaw.h>
+#import <Lynx/LynxTransformRaw.h>
+#import <Lynx/LynxTransitionAnimationManager.h>
+#import <Lynx/LynxUI+Accessibility.h>
+#import <Lynx/LynxUI+Internal.h>
+#import <Lynx/LynxUI.h>
+#import <Lynx/LynxUICollection.h>
+#import <Lynx/LynxUIListContainer.h>
+#import <Lynx/LynxUIMethodProcessor.h>
+#import <Lynx/LynxUIScroller.h>
+#import <Lynx/LynxUIUnitUtils.h>
+#import <Lynx/LynxUnitUtils.h>
+#import <Lynx/LynxVersion.h>
+#import <Lynx/LynxVersionUtils.h>
+#import <Lynx/LynxView+Internal.h>
+#import <Lynx/LynxView.h>
+#import <Lynx/UIView+Lynx.h>
 #import "LynxEventHandler+Internal.h"
 #import "LynxFeatureCounter.h"
 #import "LynxFilterUtil.h"
 #import "LynxGestureArenaManager.h"
-#import "LynxGestureArenaMember.h"
-#import "LynxGestureDetectorDarwin.h"
-#import "LynxGlobalObserver.h"
-#import "LynxHeroTransition.h"
-#import "LynxKeyframeAnimator.h"
-#import "LynxLayoutAnimationManager.h"
-#import "LynxLog.h"
-#import "LynxPropsProcessor.h"
-#import "LynxRootUI.h"
-#import "LynxService.h"
-#import "LynxServiceSystemInvokeProtocol.h"
-#import "LynxSizeValue.h"
 #import "LynxTemplateRender+Internal.h"
-#import "LynxTransformOriginRaw.h"
-#import "LynxTransformRaw.h"
-#import "LynxTransitionAnimationManager.h"
-#import "LynxUI+Accessibility.h"
 #import "LynxUI+Gesture.h"
-#import "LynxUI+Internal.h"
 #import "LynxUI+Private.h"
-#import "LynxUICollection.h"
 #import "LynxUIContext+Internal.h"
 #import "LynxUIIntersectionObserver.h"
-#import "LynxUIListContainer.h"
-#import "LynxUIMethodProcessor.h"
-#import "LynxUIScroller.h"
-#import "LynxUIUnitUtils.h"
-#import "LynxUnitUtils.h"
-#import "LynxVersion.h"
-#import "LynxVersionUtils.h"
-#import "LynxView+Internal.h"
-#import "LynxView.h"
-#import "UIView+Lynx.h"
 
 static const short OVERFLOW_X_VAL = 0x01;
 static const short OVERFLOW_Y_VAL = 0x02;
@@ -1009,12 +1009,27 @@ short const OVERFLOW_HIDDEN_VAL = 0x00;
 
 - (CGRect)getRelativeBoundingClientRect:(NSDictionary*)params {
   NSString* relativeID = [params objectForKey:@"relativeTo"];
+  BOOL iOSEnableAnimationProps = [params objectForKey:@"iOSEnableAnimationProps"];
+  if ([[params objectForKey:@"relativeTo"] isEqualToString:@"screen"]) {
+    if (iOSEnableAnimationProps) {
+      CALayer* layer = self.view.layer.presentationLayer ?: self.view.layer.modelLayer;
+      return [layer convertRect:layer.bounds toLayer:nil];
+    } else {
+      return [self.view convertRect:self.view.bounds toView:nil];
+    }
+  }
   LynxUI* relativeUI =
       [self getRelativeUI:relativeID] ?: [self.context.uiOwner uiWithIdSelector:relativeID];
-  if ([[params objectForKey:@"relativeTo"] isEqualToString:@"screen"]) {
-    return [self.view convertRect:self.view.bounds toView:nil];
-  } else if (relativeUI != nil) {
-    CGRect rect = [self.view convertRect:self.view.bounds toView:relativeUI.view];
+  if (relativeUI != nil) {
+    CGRect rect = CGRectZero;
+    if (iOSEnableAnimationProps) {
+      CALayer* layer = self.view.layer.presentationLayer ?: self.view.layer.modelLayer;
+      CALayer* relativeLayer =
+          relativeUI.view.layer.presentationLayer ?: relativeUI.view.layer.modelLayer;
+      rect = [layer convertRect:layer.bounds toLayer:relativeLayer];
+    } else {
+      rect = [self.view convertRect:self.view.bounds toView:relativeUI.view];
+    }
     if ([relativeUI.view isKindOfClass:[UIScrollView class]]) {
       rect.origin.x -= ((UIScrollView*)relativeUI.view).contentOffset.x;
       rect.origin.y -= ((UIScrollView*)relativeUI.view).contentOffset.y;
@@ -1025,7 +1040,13 @@ short const OVERFLOW_HIDDEN_VAL = 0x00;
     if (rootView == NULL) {
       return CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     }
-    return [self.view convertRect:self.view.bounds toView:rootView];
+    if (iOSEnableAnimationProps) {
+      CALayer* layer = self.view.layer.presentationLayer ?: self.view.layer.modelLayer;
+      CALayer* rootLayer = rootView.layer.presentationLayer ?: rootView.layer.modelLayer;
+      return [layer convertRect:layer.bounds toLayer:rootLayer];
+    } else {
+      return [self.view convertRect:self.view.bounds toView:rootView];
+    }
   }
 }
 
@@ -2957,14 +2978,12 @@ LYNX_PROP_SETTER("filter", setFilter, NSArray*) {
   id filter = [self getFilterWithType:_filter_type];
   if (filter) {
     [self.nodeReadyBlockArray addObject:^(LynxUI* ui) {
-      ui.view.layer.filters = @[ filter ];
+      [ui.backgroundManager setFilters:@[ filter ]];
     }];
-    [_backgroundManager setFilters:@[ filter ]];
   } else {
     [self.nodeReadyBlockArray addObject:^(LynxUI* ui) {
-      ui.view.layer.filters = nil;
+      [ui.backgroundManager setFilters:nil];
     }];
-    [_backgroundManager setFilters:nil];
   }
 }
 

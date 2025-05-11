@@ -5,9 +5,9 @@
 #ifndef CORE_SHELL_IOS_LYNX_RUNTIME_FACADE_DARWIN_H_
 #define CORE_SHELL_IOS_LYNX_RUNTIME_FACADE_DARWIN_H_
 
-#import "LynxBackgroundRuntime.h"
-#import "LynxError.h"
-#import "LynxProviderRegistry.h"
+#import <Lynx/LynxBackgroundRuntime.h>
+#import <Lynx/LynxError.h>
+#import <Lynx/LynxProviderRegistry.h>
 
 #include <memory>
 #include <string>

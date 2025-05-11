@@ -2,7 +2,7 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-#import "LynxEventHandler.h"
+#import <Lynx/LynxEventHandler.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,6 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setLongPressDuration:(int32_t)value;
 - (void)dispatchPanEvent:(UIPanGestureRecognizer *)sender;
 - (void)needCheckConsumeSlideEvent;
+- (void)handleFocus:(id<LynxEventTarget>)target
+             onView:(UIView *)view
+      withContainer:(UIView *)container
+           andPoint:(CGPoint)point
+           andEvent:(UIEvent *)event;
 
 - (id<LynxEventTarget>)hitTestInner:(CGPoint)point withEvent:(nullable UIEvent *)event;
 - (NSInteger)checkCanRespondTapOrClick:(id<LynxEventTarget>)ui withSet:(NSSet *)set;

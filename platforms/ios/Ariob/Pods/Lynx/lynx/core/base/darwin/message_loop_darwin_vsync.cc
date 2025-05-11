@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "base/include/timer/time_utils.h"
 #include "core/base/threading/task_runner_manufactor.h"
 
 namespace lynx {
@@ -12,7 +13,7 @@ namespace base {
 namespace darwin {
 // TODO(huangweiwu): this class will merge with android vsync loop.
 MessageLoopDarwinVSync::MessageLoopDarwinVSync() {
-  vsync_monitor_ = std::make_shared<shell::VSyncMonitorIOS>(true, false);
+  vsync_monitor_ = std::make_shared<base::VSyncMonitorIOS>(true, false);
   // Will be removed after refactoring VSyncMonitor.
   vsync_monitor_->BindToCurrentThread();
   vsync_monitor_->Init();

@@ -20,21 +20,16 @@ class PropBundleStyleWriter {
                                 starlight::ComputedCSSStyle* style);
 
  private:
-  static constexpr CSSPropertyID kPlatformIDs[] = {
-#define DECLARE_STYLE_ID(name) tasm::CSSPropertyID::kPropertyID##name,
-      FOREACH_PLATFORM_PROPERTY(DECLARE_STYLE_ID)};
-#undef DECLARE_STYLE_ID
+#define DECLARE_STYLE_WRITER(name)            \
+  static void Write##name(PropBundle* bundle, \
+                          starlight::ComputedCSSStyle* style);
+  FOREACH_PLATFORM_PROPERTY(DECLARE_STYLE_WRITER);
+#undef DECLARE_STYLE_WRITER
 
   static void DefaultWriterFunc(PropBundle* bundle, CSSPropertyID id,
                                 starlight::ComputedCSSStyle* style);
 
-  static constexpr std::array<WriterFunc, kPropertyEnd> kWriter = [] {
-    std::array<WriterFunc, kPropertyEnd> writer = {nullptr};
-    for (CSSPropertyID id : kPlatformIDs) {
-      writer[id] = &DefaultWriterFunc;
-    }
-    return writer;
-  }();
+  static const std::array<WriterFunc, kPropertyEnd>& GetWriter();
 };
 
 }  // namespace tasm

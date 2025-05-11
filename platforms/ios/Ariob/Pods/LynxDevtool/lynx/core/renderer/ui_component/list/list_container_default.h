@@ -25,7 +25,7 @@ class ListContainerDefault : public ListContainer::Delegate {
                             const PipelineOptions& option) override {}
   void FinishBindItemHolders(const std::vector<Element*>& list_items,
                              const PipelineOptions& options) override {}
-  void OnLayoutChildren() override {}
+  void OnLayoutChildren(const PipelineOptions& options) override {}
   void ScrollByPlatformContainer(float content_offset_x, float content_offset_y,
                                  float original_x, float original_y) override {}
   void ScrollToPosition(int index, float offset, int align,
@@ -39,8 +39,8 @@ class ListContainerDefault : public ListContainer::Delegate {
                           const lepus::Value& value) override {}
   void PropsUpdateFinish() override {}
   void OnListItemLayoutUpdated(Element* component) override {}
-  void UpdateBatchRenderStrategy(list::BatchRenderStrategy strategy) {}
-  list::BatchRenderStrategy GetBatchRenderStrategy() {
+  void UpdateBatchRenderStrategy(list::BatchRenderStrategy strategy) override {}
+  list::BatchRenderStrategy GetBatchRenderStrategy() override {
     return list::BatchRenderStrategy::kDefault;
   }
 

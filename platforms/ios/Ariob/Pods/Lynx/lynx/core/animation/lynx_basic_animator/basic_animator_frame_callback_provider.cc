@@ -6,17 +6,17 @@
 
 #include <utility>
 
-#include "core/shell/common/vsync_monitor.h"
+#include "core/base/threading/vsync_monitor.h"
 
 namespace lynx {
 namespace animation {
 namespace basic {
 
-std::shared_ptr<shell::VSyncMonitor>
+std::shared_ptr<base::VSyncMonitor>
 BasicAnimatorFrameCallbackProvider::GetVSyncMonitor() {
-  thread_local std::shared_ptr<shell::VSyncMonitor> local_vsync_monitor_;
+  thread_local std::shared_ptr<base::VSyncMonitor> local_vsync_monitor_;
   if (!vsync_monitor_) {
-    local_vsync_monitor_ = shell::VSyncMonitor::Create();
+    local_vsync_monitor_ = base::VSyncMonitor::Create();
     local_vsync_monitor_->BindToCurrentThread();
     local_vsync_monitor_->Init();
     vsync_monitor_ = local_vsync_monitor_;

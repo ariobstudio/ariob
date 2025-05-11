@@ -15,6 +15,7 @@
 #include "base/include/vector.h"
 #include "core/public/pipeline_option.h"
 #include "core/services/timing_handler/timing.h"
+#include "core/services/timing_handler/timing_constants.h"
 #include "core/services/timing_handler/timing_handler_delegate.h"
 #include "core/services/timing_handler/timing_info_ng.h"
 
@@ -64,6 +65,10 @@ class TimingHandlerNg {
     timing_info_.SetEnableEngineCallback(enable_engine_callback);
   };
 
+  inline void SetEnableBackgroundRuntime(bool enable_background_runtime) {
+    timing_info_.SetEnableBackgroundRuntime(enable_background_runtime);
+  }
+
  private:
   // Internal storage and delegate for timing information.
   TimingInfoNg timing_info_;
@@ -73,6 +78,9 @@ class TimingHandlerNg {
   std::unordered_map<PipelineID, PipelineOrigin> pipeline_id_to_origin_map_;
 
   std::unordered_set<TimingFlag> has_dispatched_timing_flags_;
+  bool is_background_runtime_ready_ = false;
+  base::InlineVector<std::unique_ptr<lynx::pub::Value>, 3>
+      pending_dispatched_performance_entries_;
 
   // Internal methods for processing timing information.
   void ProcessPipelineTiming(const TimestampKey &timing_key,
@@ -93,17 +101,20 @@ class TimingHandlerNg {
       const TimestampKey &current_key);
   void DispatchMetricFcpEntryIfNeeded(const TimestampKey &current_key,
                                       const PipelineID &pipeline_id);
-  void DispatchMetricTtiEntryIfNeeded(const TimestampKey &current_key,
-                                      const PipelineID &pipeline_id);
   void DispatchMetricFmpEntryIfNeeded(const TimestampKey &current_key,
                                       const PipelineID &pipeline_id);
   void DispatchLoadBundleEntryIfNeeded(const TimestampKey &current_key,
                                        const PipelineID &pipeline_id);
   void DispatchPipelineEntryIfNeeded(const TimestampKey &current_key,
                                      const PipelineID &pipeline_id);
+  // Send all pending performance entries. Note that the pending queue will be
+  // cleared after flushing.
+  void FlushPendingPerformanceEntries();
 
   // Internal methods for checking which pipeline type.
   bool IsLoadBundlePipeline(const PipelineID &pipeline_id) const;
+  bool ReadyToDispatch() const;
+  void SendPerformanceEntry(std::unique_ptr<lynx::pub::Value> entry);
 };
 }  // namespace timing
 }  // namespace tasm
