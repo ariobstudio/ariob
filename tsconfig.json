@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@core/*": ["packages/core/src/*"],
+      "@packages/*": ["packages/*/src"],
+      "@apps/*": ["apps/*/src"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist", ".turbo"]
+}
