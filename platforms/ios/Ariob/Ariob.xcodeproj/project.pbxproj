@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		101A443F2DD33DC400E233B7 /* main.lynx.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 10FE12DA2D87F5790092961B /* main.lynx.bundle */; };
+		101A44422DD34ADD00E233B7 /* main.lynx.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 101A44402DD34ABE00E233B7 /* main.lynx.bundle */; };
 		2B5015C11E8DAAE76262AEFB /* libPods-Ariob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18DF23D473B478DE779CDB7C /* libPods-Ariob.a */; };
 /* End PBXBuildFile section */
 
@@ -29,10 +29,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		101A44402DD34ABE00E233B7 /* main.lynx.bundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = main.lynx.bundle; sourceTree = "<group>"; };
 		10305DAD2D87ED200021DD5A /* Ariob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ariob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10305DC82D87ED230021DD5A /* AriobTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AriobTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		10305DD22D87ED230021DD5A /* AriobUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AriobUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		10FE12DA2D87F5790092961B /* main.lynx.bundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = main.lynx.bundle; sourceTree = "<group>"; };
 		18DF23D473B478DE779CDB7C /* libPods-Ariob.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Ariob.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		55671280303B1509CF209C94 /* Pods-Ariob.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ariob.release.xcconfig"; path = "Target Support Files/Pods-Ariob/Pods-Ariob.release.xcconfig"; sourceTree = "<group>"; };
 		5AFFBF0E735E78936CAE018D /* Pods-Ariob.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ariob.debug.xcconfig"; path = "Target Support Files/Pods-Ariob/Pods-Ariob.debug.xcconfig"; sourceTree = "<group>"; };
@@ -98,13 +98,13 @@
 		10305DA42D87ED200021DD5A = {
 			isa = PBXGroup;
 			children = (
-				10FE12DA2D87F5790092961B /* main.lynx.bundle */,
 				10305DAF2D87ED200021DD5A /* Ariob */,
 				10305DCB2D87ED230021DD5A /* AriobTests */,
 				10305DD52D87ED230021DD5A /* AriobUITests */,
 				10305DAE2D87ED200021DD5A /* Products */,
 				D6B14ADC0200603460039318 /* Pods */,
 				7421C64929A36A780FDFF852 /* Frameworks */,
+				101A44402DD34ABE00E233B7 /* main.lynx.bundle */,
 			);
 			sourceTree = "<group>";
 		};
@@ -253,7 +253,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				101A443F2DD33DC400E233B7 /* main.lynx.bundle in Resources */,
+				101A44422DD34ADD00E233B7 /* main.lynx.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
