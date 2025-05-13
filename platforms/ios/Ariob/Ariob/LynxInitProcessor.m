@@ -44,6 +44,7 @@ static LynxInitProcessor *_instance = nil;
   // register global JS module
   [globalConfig registerModule:ExplorerModule.class];
   [globalConfig registerModule:NativeWebCryptoModule.class];
+  [globalConfig registerModule:NativeLocalStorageModule.class];
 
   // prepare global config
   [[LynxEnv sharedInstance] prepareConfig:globalConfig];

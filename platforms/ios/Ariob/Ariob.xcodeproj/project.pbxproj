@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		10FE12DB2D87F5790092961B /* main.lynx.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 10FE12DA2D87F5790092961B /* main.lynx.bundle */; };
+		101A443F2DD33DC400E233B7 /* main.lynx.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 10FE12DA2D87F5790092961B /* main.lynx.bundle */; };
 		2B5015C11E8DAAE76262AEFB /* libPods-Ariob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18DF23D473B478DE779CDB7C /* libPods-Ariob.a */; };
 /* End PBXBuildFile section */
 
@@ -253,7 +253,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				10FE12DB2D87F5790092961B /* main.lynx.bundle in Resources */,
+				101A443F2DD33DC400E233B7 /* main.lynx.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

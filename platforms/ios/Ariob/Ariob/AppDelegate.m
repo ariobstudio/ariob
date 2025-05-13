@@ -9,8 +9,9 @@
 #import "TasmDispatcher.h"
 
 NSString *const LOCAL_URL_PREFIX = @"file://lynx?local://";
-NSString *const HOMEPAGE_URL = @"file://lynx?local://main.lynx.bundle?fullscreen=true";
-NSString *const APP_URL = @"http://10.0.0.246:3000/main.lynx.bundle?fullscreen=true";
+NSString *const BUILD_APP_URL = @"file://lynx?local://main.lynx.bundle?fullscreen=true";
+NSString *const DEV_APP_URL = @"http://10.0.0.246:3000/main.lynx.bundle?fullscreen=true";
+NSString *const PROD_APP_URL = @"https://app.ariob.org/main.lynx.bundle?fullscreen=true";
 
 @interface AppDelegate ()
 
@@ -37,7 +38,7 @@ NSString *const APP_URL = @"http://10.0.0.246:3000/main.lynx.bundle?fullscreen=t
     });
   }];
 
-  [[TasmDispatcher sharedInstance] openTargetUrl:APP_URL];
+  [[TasmDispatcher sharedInstance] openTargetUrl:PROD_APP_URL];
   return YES;
 }
 

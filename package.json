@@ -8,16 +8,13 @@
   },
   "workspaces": [
     "apps/*",
-    "platforms/*",
-    "server/*"
+    "platforms/*"
   ],
   "scripts": {
     "dev": "turbo run dev",
+    "dev:andromeda": "turbo run dev --filter=andromeda",
     "build": "turbo run build",
-    "lint": "turbo run lint",
-    "test": "turbo run test",
-    "format": "turbo run format",
-    "clean": "turbo run clean"
+    "build:andromeda": "turbo run build --filter=andromeda"
   },
   "packageManager": "pnpm@8.15.4",
   "devDependencies": {

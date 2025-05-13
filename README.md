@@ -1,22 +1,30 @@
 # Ariob - Cross-platform Decentralized Platform
 
 This monorepo contains the Ariob platform, built with React and LynxJS. The project consists of:
-- `core` package - The main application code and business logic
-- `web` package - A container that displays the core bundle in a web browser
+- `apps/ariob` - The main application code and business logic
+- `platforms/` - Platform-specific implementations:
+  - `web/` - Web container for displaying the core bundle
+  - `android/` - Android native implementation
+  - `ios/` - iOS native implementation
+- `server/` - Backend services
 
 ## Project Structure
 
 ```
 ariob/
-├── packages/
-│   ├── web/        # Web container for displaying the core bundle
-│   └── core/       # Core application code with the main business logic
+├── apps/
+│   └── ariob/     # Core application code with the main business logic
+├── platforms/
+│   ├── web/       # Web container for displaying the core bundle
+│   ├── android/   # Android native implementation
+│   └── ios/       # iOS native implementation
+└── server/        # Backend services
 ```
 
 ## Prerequisites
 
 - Node.js >= 18
-- pnpm >= 10.4.1
+- pnpm >= 8.15.4
 - LynxExplorer App (for mobile development)
 
 ## Getting Started
@@ -34,76 +42,41 @@ cd ariob
 pnpm install
 ```
 
-3. **Important**: The core package must be built first before running the web package:
+3. Start development:
 
 ```bash
-# Use our convenience command to build core and run web in one step
-pnpm dev:all
+# Start all services in development mode
+pnpm dev
 
-# Or do it step by step:
-# Build the core bundle first
-pnpm build:core
-
-# Then start the web development server
-pnpm dev:web
+# Or start specific services:
+pnpm dev --filter=ariob    # Core application
+pnpm dev --filter=web      # Web platform
+pnpm dev --filter=android  # Android platform
+pnpm dev --filter=ios      # iOS platform
+pnpm dev --filter=server   # Backend services
 ```
-
-## Correct Development Workflow
-
-1. Make changes to the core package
-2. For the easiest workflow, use the convenience command:
-   ```bash
-   pnpm dev:all  # Builds core bundle then starts web server
-   ```
-3. Or do it step by step:
-   - Build the core bundle: `pnpm build:core`
-   - Run the web development server: `pnpm dev:web`
-4. Or to develop for mobile devices:
-   - Run `pnpm dev:core`
-   - Scan the QR code with LynxExplorer App
 
 ## Available Commands
 
 ### Development
 
-
 ```bash
-pnpm start       # Alias for pnpm start:web
-# or specifically
-pnpm start:web
+pnpm dev          # Start all services in development mode
 ```
-
-**Important**: Always build the core bundle first before running the web server:
-
-```bash
-# First, build the core bundle
-pnpm build:core
-
-# Then start the web development server
-pnpm dev:web
-```
-
-For continuous development of the core package on a physical device:
-
-```bash
-pnpm dev:core
-```
-
-Scan the QR code displayed in the terminal with your LynxExplorer App.
 
 ### Building
 
-Build both core and web applications:
+Build all applications:
 
 ```bash
 pnpm build
 ```
 
-Or build them separately:
+Or build specific services:
 
 ```bash
-pnpm build:core  # Build the core bundle first
-pnpm build:web   # Then build the web container
+pnpm build --filter=ariob    # Build core application
+pnpm build --filter=web      # Build web platform
 ```
 
 ### Other Commands
@@ -111,28 +84,29 @@ pnpm build:web   # Then build the web container
 Clean build artifacts:
 
 ```bash
-pnpm clean       # Clean both web and core
-pnpm clean:web   # Clean only web
-pnpm clean:core  # Clean only core
+pnpm clean        # Clean all services
 ```
 
 Run tests:
 
 ```bash
-pnpm test        # Test both web and core
-pnpm test:web    # Test only web
-pnpm test:core   # Test only core
+pnpm test         # Test all services
 ```
 
 Format code:
 
 ```bash
-pnpm --filter web run format    # Format web code
-pnpm --filter core run format   # Format core code
+pnpm format       # Format all code
+```
+
+Lint code:
+
+```bash
+pnpm lint         # Lint all code
 ```
 
 ## Core Application Development
 
 The core application is built with ReactLynx and uses RSpeedy for development. This is where the main application code and business logic reside.
 
-You can start editing the core application by modifying files in `packages/core/src/`. When developing for mobile devices, run `pnpm dev:core` and scan the QR code with your LynxExplorer App to see the changes in real-time.
+You can start editing the core application by modifying files in `apps/ariob/src/`. When developing for mobile devices, run the appropriate platform-specific development command and scan the QR code with your LynxExplorer App to see the changes in real-time.
