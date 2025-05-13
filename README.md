@@ -1,24 +1,22 @@
 # Ariob - Cross-platform Decentralized Platform
 
 This monorepo contains the Ariob platform, built with React and LynxJS. The project consists of:
-- `apps/ariob` - The main application code and business logic
+- `apps/andromeda` - The main application code and business logic
 - `platforms/` - Platform-specific implementations:
   - `web/` - Web container for displaying the core bundle
   - `android/` - Android native implementation
   - `ios/` - iOS native implementation
-- `server/` - Backend services
 
 ## Project Structure
 
 ```
 ariob/
 ├── apps/
-│   └── ariob/     # Core application code with the main business logic
-├── platforms/
-│   ├── web/       # Web container for displaying the core bundle
-│   ├── android/   # Android native implementation
-│   └── ios/       # iOS native implementation
-└── server/        # Backend services
+│   └── andromeda/ # Core application code with the main business logic
+└── platforms/
+    ├── web/       # Web container for displaying the core bundle
+    ├── android/   # Android native implementation
+    └── ios/       # iOS native implementation
 ```
 
 ## Prerequisites
@@ -49,11 +47,7 @@ pnpm install
 pnpm dev
 
 # Or start specific services:
-pnpm dev --filter=ariob    # Core application
-pnpm dev --filter=web      # Web platform
-pnpm dev --filter=android  # Android platform
-pnpm dev --filter=ios      # iOS platform
-pnpm dev --filter=server   # Backend services
+pnpm dev:andromeda  # Core application
 ```
 
 ## Available Commands
@@ -61,7 +55,8 @@ pnpm dev --filter=server   # Backend services
 ### Development
 
 ```bash
-pnpm dev          # Start all services in development mode
+pnpm dev           # Start all services in development mode
+pnpm dev:andromeda # Start core application development
 ```
 
 ### Building
@@ -75,8 +70,7 @@ pnpm build
 Or build specific services:
 
 ```bash
-pnpm build --filter=ariob    # Build core application
-pnpm build --filter=web      # Build web platform
+pnpm build:andromeda  # Build core application
 ```
 
 ### Other Commands
@@ -109,4 +103,4 @@ pnpm lint         # Lint all code
 
 The core application is built with ReactLynx and uses RSpeedy for development. This is where the main application code and business logic reside.
 
-You can start editing the core application by modifying files in `apps/ariob/src/`. When developing for mobile devices, run the appropriate platform-specific development command and scan the QR code with your LynxExplorer App to see the changes in real-time.
+You can start editing the core application by modifying files in `apps/andromeda/src/`. When developing for mobile devices, run the appropriate platform-specific development command (Coming Soon). 
