@@ -13,10 +13,15 @@ import { Input } from '@/components/ui/input';
 import { useAuth } from '@/gun/hooks/useAuth';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 
-const ErrorAlert = (error) => {
+interface ErrorAlertProps {
+  error: string;
+  errorType?: string | null;
+}
+
+const ErrorAlert = ({ error, errorType }: ErrorAlertProps) => {
   return (
     <Alert variant="destructive">
-      <AlertTitle>Error</AlertTitle>
+      <AlertTitle>{errorType || 'Error'}</AlertTitle>
       <AlertDescription>{error}</AlertDescription>
     </Alert>
   );
@@ -26,8 +31,10 @@ export const AuthForm: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [alias, setAlias] = useState('');
   const [passphrase, setPassphrase] = useState('');
+  const [localError, setLocalError] = useState<string | null>(null);
+  const [localErrorType, setLocalErrorType] = useState<string | null>(null);
 
-  const { login, signup, isLoading, error } = useAuth();
+  const { user, isLoading, error, errorType, isAuthenticated, signup, login, logout } = useAuth();
 
   const handleInput = (e: any) => {
     const value = e.detail?.value ?? '';
@@ -36,14 +43,19 @@ export const AuthForm: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
+      setLocalError(null);
+      setLocalErrorType(null);
+      
       if (isLogin) {
-        await login(alias);
-        console.log('login success');
+        // This assumes login expects a JSON string as keyPair
+        const keyPair = alias; // In a real app, this should be properly handled
+        await login(keyPair);
       } else {
         await signup(alias);
-        console.log('signup success');
       }
     } catch (err) {
+      setLocalError(err instanceof Error ? err.message : 'Unknown error');
+      setLocalErrorType('UNKNOWN_ERROR');
       console.error('Auth error:', err);
     }
   };
@@ -68,7 +80,12 @@ export const AuthForm: React.FC = () => {
           required
         />
 
-        {error && <ErrorAlert error={error || 'Unknown error'} />}
+        {(error || localError) && (
+          <ErrorAlert 
+            error={error || localError || 'Unknown error'} 
+            errorType={errorType || localErrorType}
+          />
+        )}
       </CardContent>
 
       <CardFooter className="flex justify-between items-center">

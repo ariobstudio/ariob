@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 // Hook for authentication
 export function useAuth() {
-  const { user, isLoading, error, signup, logout, checkAuth } =
+  const { user, isLoading, error, errorType, signup, login, logout, checkAuth } =
     useAuthStore();
 
   // Check auth status on mount
@@ -15,8 +15,10 @@ export function useAuth() {
     user,
     isLoading,
     error,
+    errorType,
     isAuthenticated: !!user,
     signup,
+    login,
     logout,
   };
 }

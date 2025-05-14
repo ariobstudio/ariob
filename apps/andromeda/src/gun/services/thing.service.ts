@@ -1,10 +1,21 @@
 import gun from '@/gun/core/gun';
+import { AppError, createDatabaseError, handleZodError } from '@/gun/schema/errors';
 import { Thing } from '@/gun/schema/thing.schema';
+import { Result, ok, err, ResultAsync, fromPromise, okAsync, errAsync } from 'neverthrow';
 import { z } from 'zod';
 
 // Utility function to create a soul path
 export const makeSoul = (prefix: string, id: string): string => {
   return `${prefix}/${id}`;
+};
+
+// Helper function to validate with Zod schema and handle errors
+const validateSchema = <T>(schema: any, data: any): Result<T, AppError> => {
+  try {
+    return ok(schema.parse(data));
+  } catch (error) {
+    return err(handleZodError(error));
+  }
 };
 
 // Thing service factory - returns a set of functions for working with a specific thing type
@@ -18,7 +29,7 @@ export const createThingService = <
   // Create a new thing
   const create = async (
     data: Omit<T, 'id' | 'createdAt' | 'soul' | 'version'>,
-  ): Promise<T> => {
+  ): Promise<Result<T, AppError>> => {
     const id = crypto.randomUUID();
     const timestamp = Date.now();
 
@@ -31,128 +42,151 @@ export const createThingService = <
       ...data,
     } as unknown as T;
 
-    // Validate with schema
-    const validatedThing = schema.parse(thing);
-
-    // Save to Gun
-    return new Promise((resolve, reject) => {
-      gun.get(validatedThing.soul).put(validatedThing, (ack) => {
-        if (ack.err) {
-          reject(new Error(ack.err));
-        } else {
-          resolve(validatedThing);
-        }
+    // Validate with schema and then save
+    return validateSchema<T>(schema, thing)
+      .asyncAndThen((validatedThing) => {
+        // Save to Gun
+        return fromPromise(
+          new Promise<T>((resolve, reject) => {
+            gun.get(validatedThing.soul).put(validatedThing, (ack) => {
+              if (ack.err) {
+                reject(createDatabaseError(ack.err));
+              } else {
+                resolve(validatedThing);
+              }
+            });
+          }),
+          handleZodError
+        );
       });
-    });
   };
 
   // Get a thing by ID
-  const get = async (id: string): Promise<T | null> => {
-    return new Promise((resolve) => {
-      gun.get(makeSoul(soulPrefix, id)).once((data) => {
-        if (!data) {
-          resolve(null);
-          return;
-        }
+  const get = async (id: string): Promise<Result<T | null, AppError>> => {
+    return fromPromise(
+      new Promise<T | null>((resolve, reject) => {
+        gun.get(makeSoul(soulPrefix, id)).once((data) => {
+          if (!data) {
+            resolve(null);
+            return;
+          }
 
-        try {
-          // Validate data against schema
-          const validatedThing = schema.parse(data);
-          resolve(validatedThing);
-        } catch (error) {
-          console.error('Invalid data retrieved:', error);
-          resolve(null);
-        }
-      });
-    });
+          const validationResult = validateSchema<T>(schema, data);
+          if (validationResult.isOk()) {
+            resolve(validationResult.value);
+          } else {
+            console.error('Invalid data retrieved:', validationResult.error);
+            resolve(null);
+          }
+        });
+      }),
+      handleZodError
+    );
   };
 
   // Update a thing
   const update = async (
     id: string,
     updates: Partial<Omit<T, 'id' | 'createdAt' | 'soul' | 'version'>>,
-  ): Promise<T | null> => {
-    const thing = await get(id);
+  ): Promise<Result<T | null, AppError>> => {
+    const thingResult = await get(id);
 
-    if (!thing) {
-      return null;
-    }
+    return thingResult.asyncAndThen((thing) => {
+      if (!thing) {
+        return okAsync<T | null, AppError>(null);
+      }
 
-    const updatedThing: T = {
-      ...thing,
-      ...updates,
-      updatedAt: Date.now(),
-      version: (thing.version || 0) + 1,
-    };
+      const updatedThing: T = {
+        ...thing,
+        ...updates,
+        updatedAt: Date.now(),
+        version: (thing.version || 0) + 1,
+      };
 
-    // Validate
-    const validatedThing = schema.parse(updatedThing);
-
-    // Save to Gun
-    return new Promise((resolve, reject) => {
-      gun.get(makeSoul(soulPrefix, id)).put(validatedThing, (ack) => {
-        if (ack.err) {
-          reject(new Error(ack.err));
-        } else {
-          resolve(validatedThing);
-        }
-      });
+      // Validate and save
+      return validateSchema<T>(schema, updatedThing)
+        .asyncAndThen((validatedThing) => {
+          // Save to Gun
+          return fromPromise(
+            new Promise<T>((resolve, reject) => {
+              gun.get(makeSoul(soulPrefix, id)).put(validatedThing, (ack) => {
+                if (ack.err) {
+                  reject(createDatabaseError(ack.err));
+                } else {
+                  resolve(validatedThing);
+                }
+              });
+            }),
+            handleZodError
+          );
+        });
     });
   };
 
   // Delete a thing
-  const remove = async (id: string): Promise<boolean> => {
-    return new Promise((resolve) => {
-      gun.get(makeSoul(soulPrefix, id)).put(null, (ack) => {
-        resolve(!ack.err);
-      });
-    });
+  const remove = async (id: string): Promise<Result<boolean, AppError>> => {
+    return fromPromise(
+      new Promise<boolean>((resolve, reject) => {
+        gun.get(makeSoul(soulPrefix, id)).put(null, (ack) => {
+          if (ack.err) {
+            reject(createDatabaseError(ack.err));
+          } else {
+            resolve(true);
+          }
+        });
+      }),
+      handleZodError
+    );
   };
 
   // List all things
-  const list = async (): Promise<T[]> => {
-    return new Promise((resolve) => {
-      const items: T[] = [];
+  const list = async (): Promise<Result<T[], AppError>> => {
+    return fromPromise(
+      new Promise<T[]>((resolve, reject) => {
+        const items: T[] = [];
 
-      gun
-        .get(soulPrefix)
-        .map()
-        .once((data: any, key: string) => {
-          if (!data || !data.id) return;
+        gun
+          .get(soulPrefix)
+          .map()
+          .once((data: any, key: string) => {
+            if (!data || !data.id) return;
 
-          try {
-            const validatedThing = schema.parse(data);
-            items.push(validatedThing);
-          } catch (error) {
-            console.error('Invalid data encountered:', error);
-          }
-        });
+            const validationResult = validateSchema<T>(schema, data);
+            if (validationResult.isOk()) {
+              items.push(validationResult.value);
+            } else {
+              console.error('Invalid data encountered:', validationResult.error);
+            }
+          });
 
-      // Gun doesn't have a callback for "done", so we use a timeout
-      setTimeout(() => resolve(items), 500);
-    });
+        // Gun doesn't have a callback for "done", so we use a timeout
+        setTimeout(() => resolve(items), 500);
+      }),
+      handleZodError
+    );
   };
 
   // Subscribe to a thing (real-time updates)
   const subscribe = (
     id: string,
-    callback: (data: T | null) => void,
+    callback: (result: Result<T | null, AppError>) => void,
   ): (() => void) => {
     const soul = makeSoul(soulPrefix, id);
 
     gun.get(soul).on((data) => {
       if (!data) {
-        callback(null);
+        callback(ok(null));
         return;
       }
 
-      try {
-        const validatedThing = schema.parse(data);
-        callback(validatedThing);
-      } catch (error) {
-        console.error('Invalid data in subscription:', error);
-        callback(null);
-      }
+      const validationResult = validateSchema<T>(schema, data);
+      validationResult.match(
+        (validData) => callback(ok(validData)),
+        (error) => {
+          console.error('Invalid data in subscription:', error);
+          callback(err(error));
+        }
+      );
     });
 
     // Return unsubscribe function
