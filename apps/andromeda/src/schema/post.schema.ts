@@ -1,21 +1,20 @@
-import { ContentThingSchema } from '@/gun/schema/thing.schema';
-// src/gun/schema/examples/post.schema.ts
+import { ContentThingSchema, Thing } from '@ariob/core';
 import { z } from 'zod';
 
+/**
+ * Post Schema
+ *
+ * Extends ContentThingSchema to represent a post
+ */
 export const PostSchema = ContentThingSchema.extend({
   schema: z.literal('post'),
-  title: z.string().min(1).max(300),
-  body: z.string().min(1).max(50000),
-  topic: z.string().min(1).max(100),
-  url: z.string().url().optional(),
-  domain: z.string().optional(),
-  isNSFW: z.boolean().default(false),
-  isLocked: z.boolean().default(false),
-
-  // Post stats
-  commentCount: z.number().default(0),
-  upvotes: z.number().default(0),
-  downvotes: z.number().default(0),
+  title: z.string().min(1).max(100),
+  content: z.string().min(1).max(10000),
+  likes: z.number().default(0),
+  tags: z.array(z.string()).default([]),
 });
 
+/**
+ * Post type
+ */
 export type Post = z.infer<typeof PostSchema>;

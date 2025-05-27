@@ -72,9 +72,11 @@ function Button({ className, variant, size, icon, ...props }: ButtonProps) {
           size={size}
         />
       )}
-      <text className={cn(textVariants({ variant, size, className }))}>
-        {props.children}
-      </text>
+      {props.children && (
+        <text className={cn(textVariants({ variant, size, className }))}>
+          {props.children}
+        </text>
+      )}
     </view>
   );
 }

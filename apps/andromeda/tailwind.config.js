@@ -75,10 +75,10 @@ export default {
         'caret-blink': 'caret-blink 1.25s ease-out infinite',
       },
       spacing: {
-        'safe-top': 'calc(env(safe-area-inset-top) + 4rem)',
-        'safe-bottom': 'calc(env(safe-area-inset-bottom) + 1rem)',
-        'safe-left': 'calc(env(safe-area-inset-left) + 1rem)',
-        'safe-right': 'calc(env(safe-area-inset-right) + 1rem)',
+        'safe-top': 'calc(env(safe-area-inset-top))',
+        'safe-bottom': 'calc(env(safe-area-inset-bottom))',
+        'safe-left': 'calc(env(safe-area-inset-left))',
+        'safe-right': 'calc(env(safe-area-inset-right))',
       },
       transitionTimingFunction: {
         DEFAULT: 'cubic-bezier(0.4,0,0.2,1)',
