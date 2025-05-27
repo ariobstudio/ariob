@@ -100,3 +100,7 @@ packages/ios/Ariob/Pods
 pnpm-lock.yaml
 packages/core/pnpm-lock.yaml
 packages/web/pnpm-lock.yaml
+
+.cursorrules
+.cursor/
+.roo/
