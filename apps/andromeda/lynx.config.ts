@@ -18,4 +18,12 @@ export default defineConfig({
       defaultDisplayLinear: false,
     }),
   ],
+  environments: {
+    web: {
+      output: {
+        assetPrefix: '/',
+      },
+    },
+    lynx: {},
+  },
 });

@@ -1,244 +1,527 @@
-# Gun Services Module
+# Gun Services
+
+Business logic layer for Gun.js with type-safe operations and error handling.
 
 ## Overview
 
-The Services module contains business logic for decentralized identity management, authentication, and secure storage. All services use the `neverthrow` Result pattern for robust error handling and follow a simplified, security-first approach.
+Services provide a clean, functional interface for working with Gun.js data. They handle:
 
-## Services
+- **Type-safe CRUD operations** with Zod validation
+- **Real-time subscriptions** with automatic cleanup
+- **Error handling** using Result types
+- **User-scoped data** for authenticated operations
+- **Soul generation** for consistent Gun.js paths
 
-- **[AccountService](#accountservice)** - Multi-account management and authentication
-- **[WhoService](#whoservice)** - User identity and profile management  
-- **[SecureStorageService](#securestorageservice)** - Encrypted storage with integrity verification
+## Core Services
 
-## AccountService
+### Thing Service
 
-Manages multiple user accounts with secure credential storage and seamless switching.
-
-### Key Features
-- Create new accounts with unique key pairs
-- Import/export accounts for backup and recovery
-- Secure account switching with proper isolation
-- Encrypted credential storage
-- Account metadata management
-
-### Basic Usage
+The `make` function creates a type-safe service for any schema:
 
 ```typescript
-import { AccountService } from '@ariob/core/gun/services';
+import { make, ThingSchema } from '@ariob/core';
+import { z } from 'zod';
 
-// Create a new account
-const createResult = await AccountService.createAccount({
-  alias: 'my-username'
+// Define your schema
+const TodoSchema = ThingSchema.extend({
+  text: z.string(),
+  completed: z.boolean().default(false),
+  priority: z.enum(['low', 'medium', 'high']).default('medium'),
 });
 
-if (createResult.isOk()) {
-  const account = createResult.value;
-  console.log('Account created:', account.alias);
+// Create the service
+const todoService = make(TodoSchema, 'todos');
+
+// Use the service
+const result = await todoService.create({
+  text: 'Build an awesome app',
+  completed: false,
+  priority: 'high',
+});
+
+result.match(
+  (todo) => console.log('Created todo:', todo.id),
+  (error) => console.error('Failed:', error.message)
+);
+```
+
+### Who Service
+
+Authentication service supporting multiple auth methods:
+
+```typescript
+import { who } from '@ariob/core';
+
+// Keypair authentication (recommended)
+const result = await who.signup({
+  method: 'keypair',
+  alias: 'alice',
+  // Keys are auto-generated if not provided
+});
+
+// Mnemonic authentication
+const result = await who.signup({
+  method: 'mnemonic',
+  alias: 'bob',
+  passphrase: 'optional-extra-security',
+});
+
+// Traditional authentication
+const result = await who.signup({
+  method: 'traditional',
+  alias: 'charlie',
+  passphrase: 'secure-password-123',
+});
+
+// Check current user
+const currentUser = who.current();
+console.log('Logged in as:', currentUser?.alias);
+```
+
+## Service API
+
+### Creating Services
+
+```typescript
+import { make, ServiceOptions } from '@ariob/core';
+
+// Basic service
+const publicService = make(schema, 'prefix');
+
+// User-scoped service (data stored under authenticated user)
+const privateService = make(schema, 'private-prefix', {
+  userScoped: true,
+});
+```
+
+### Service Methods
+
+All services implement the `ThingService<T>` interface:
+
+```typescript
+interface ThingService<T> {
+  // Create a new entity
+  create(data: Omit<T, 'id' | 'soul' | 'createdAt' | 'schema' | 'createdBy'>): Promise<Result<T, AppError>>;
   
-  // Switch to the new account
-  const switchResult = await AccountService.switchAccount(account.id);
-  if (switchResult.isOk()) {
-    console.log('Switched to account:', switchResult.value.alias);
+  // Get entity by ID
+  get(id: string): Promise<Result<T | null, AppError>>;
+  
+  // Update entity
+  update(id: string, updates: Partial<T>): Promise<Result<T | null, AppError>>;
+  
+  // Remove entity
+  remove(id: string): Promise<Result<boolean, AppError>>;
+  
+  // List all entities
+  list(): Promise<Result<T[], AppError>>;
+  
+  // Watch entity for real-time updates
+  watch(id: string, callback: (result: Result<T | null, AppError>) => void): () => void;
+  
+  // Clean up all subscriptions
+  cleanup(): void;
+  
+  // Get Gun.js soul path
+  soul(id: string): string;
+}
+```
+
+## Complete Examples
+
+### Task Management System
+
+```typescript
+import { make, ThingSchema, who } from '@ariob/core';
+import { z } from 'zod';
+
+// Task schema with relationships
+const TaskSchema = ThingSchema.extend({
+  title: z.string(),
+  description: z.string().optional(),
+  status: z.enum(['todo', 'in-progress', 'done']).default('todo'),
+  assignedTo: z.string().optional(), // User's public key
+  projectId: z.string().optional(),
+  dueDate: z.number().optional(),
+  tags: z.array(z.string()).default([]),
+  priority: z.enum(['low', 'medium', 'high', 'urgent']).default('medium'),
+});
+
+type Task = z.infer<typeof TaskSchema>;
+
+// Create services
+const taskService = make(TaskSchema, 'tasks');
+const myTasksService = make(TaskSchema, 'my-tasks', { userScoped: true });
+
+// Task creation with validation
+async function createTask(input: {
+  title: string;
+  description?: string;
+  assignedTo?: string;
+  dueDate?: Date;
+  priority?: Task['priority'];
+}) {
+  const result = await taskService.create({
+    title: input.title,
+    description: input.description,
+    assignedTo: input.assignedTo,
+    dueDate: input.dueDate?.getTime(),
+    priority: input.priority || 'medium',
+    status: 'todo',
+    tags: [],
+  });
+
+  return result.match(
+    (task) => {
+      console.log('Task created:', task.id);
+      return task;
+    },
+    (error) => {
+      console.error('Failed to create task:', error);
+      throw error;
+    }
+  );
+}
+
+// Real-time task monitoring
+function watchTask(taskId: string) {
+  const unsubscribe = taskService.watch(taskId, (result) => {
+    result.match(
+      (task) => {
+        if (task) {
+          console.log('Task updated:', task.status);
+          updateUI(task);
+        } else {
+          console.log('Task deleted');
+          removeFromUI(taskId);
+        }
+      },
+      (error) => console.error('Watch error:', error)
+    );
+  });
+
+  // Clean up when done
+  return unsubscribe;
+}
+
+// Bulk operations
+async function assignTasksToUser(taskIds: string[], userId: string) {
+  const results = await Promise.all(
+    taskIds.map(id => 
+      taskService.update(id, { 
+        assignedTo: userId,
+        status: 'in-progress' 
+      })
+    )
+  );
+
+  const succeeded = results.filter(r => r.isOk()).length;
+  console.log(`Assigned ${succeeded}/${taskIds.length} tasks`);
+}
+```
+
+### Collaborative Document System
+
+```typescript
+import { make, ContentThingSchema, who } from '@ariob/core';
+import { z } from 'zod';
+
+// Document schema with versioning
+const DocumentSchema = ContentThingSchema.extend({
+  content: z.string(),
+  format: z.enum(['markdown', 'html', 'plain']).default('markdown'),
+  collaborators: z.array(z.string()).default([]),
+  revisions: z.array(z.object({
+    content: z.string(),
+    editedBy: z.string(),
+    timestamp: z.number(),
+  })).default([]),
+  locked: z.boolean().default(false),
+  lockedBy: z.string().optional(),
+});
+
+type Document = z.infer<typeof DocumentSchema>;
+
+const docService = make(DocumentSchema, 'docs');
+
+// Collaborative editing with conflict detection
+class DocumentEditor {
+  private currentDoc: Document | null = null;
+  private unsubscribe: (() => void) | null = null;
+
+  async open(docId: string) {
+    // Get initial document
+    const result = await docService.get(docId);
+    if (result.isErr()) throw result.error;
+    
+    this.currentDoc = result.value;
+    
+    // Watch for changes
+    this.unsubscribe = docService.watch(docId, (result) => {
+      result.match(
+        (doc) => {
+          if (doc) {
+            this.handleRemoteUpdate(doc);
+          }
+        },
+        (error) => console.error('Watch error:', error)
+      );
+    });
+  }
+
+  async save(content: string) {
+    if (!this.currentDoc) return;
+
+    const user = who.current();
+    if (!user) throw new Error('Must be authenticated');
+
+    // Check if locked by another user
+    if (this.currentDoc.locked && this.currentDoc.lockedBy !== user.pub) {
+      throw new Error('Document is locked by another user');
+    }
+
+    // Save revision
+    const revision = {
+      content: this.currentDoc.content,
+      editedBy: user.pub,
+      timestamp: Date.now(),
+    };
+
+    const result = await docService.update(this.currentDoc.id, {
+      content,
+      revisions: [...this.currentDoc.revisions, revision],
+      updatedAt: Date.now(),
+    });
+
+    if (result.isErr()) throw result.error;
+  }
+
+  async lock() {
+    if (!this.currentDoc) return;
+    
+    const user = who.current();
+    if (!user) throw new Error('Must be authenticated');
+
+    await docService.update(this.currentDoc.id, {
+      locked: true,
+      lockedBy: user.pub,
+    });
+  }
+
+  async unlock() {
+    if (!this.currentDoc) return;
+    
+    await docService.update(this.currentDoc.id, {
+      locked: false,
+      lockedBy: undefined,
+    });
+  }
+
+  private handleRemoteUpdate(doc: Document) {
+    // Handle conflict resolution
+    if (this.currentDoc && doc.updatedAt! > this.currentDoc.updatedAt!) {
+      console.log('Document updated by another user');
+      // Implement your conflict resolution strategy
+      this.currentDoc = doc;
+      this.notifyUI(doc);
+    }
+  }
+
+  close() {
+    this.unsubscribe?.();
+    this.currentDoc = null;
   }
 }
 ```
 
-## WhoService
-
-Simple, secure service for user identity and profile management with real-time Gun synchronization.
-
-### Key Features
-- Secure account creation (signup) with key pair generation
-- Authentication with encrypted credential storage
-- Profile management with validation
-- Real-time synchronization via Gun's built-in CRDT capabilities
-- Public profile data only (private keys never stored in database)
-
-### Authentication
+### Private User Data
 
 ```typescript
-import { who } from '@ariob/core/gun/services';
+import { make, ThingSchema, who } from '@ariob/core';
+import { z } from 'zod';
 
-// Create new account
-const signupResult = await who.signup({
-  alias: 'my-username',
-  passphrase: 'secure-passphrase' // optional
+// Settings schema
+const SettingsSchema = ThingSchema.extend({
+  theme: z.enum(['light', 'dark', 'auto']).default('auto'),
+  notifications: z.object({
+    email: z.boolean().default(true),
+    push: z.boolean().default(true),
+    sound: z.boolean().default(true),
+  }),
+  privacy: z.object({
+    profileVisible: z.boolean().default(true),
+    showOnlineStatus: z.boolean().default(true),
+  }),
+  language: z.string().default('en'),
 });
 
-if (signupResult.isOk()) {
-  const user = signupResult.value;
-  console.log('Account created:', user.alias);
-}
+// User-scoped service - data only accessible by authenticated user
+const settingsService = make(SettingsSchema, 'settings', {
+  userScoped: true,
+});
 
-// Login with credentials
-const credentials = who.getCredentials(); // Get from secure storage
-if (credentials) {
-  const loginResult = await who.login(JSON.stringify(credentials));
-  if (loginResult.isOk()) {
-    console.log('Logged in as:', loginResult.value.alias);
+// Settings manager
+class UserSettings {
+  private static SETTINGS_ID = 'default';
+
+  static async load() {
+    const result = await settingsService.get(this.SETTINGS_ID);
+    
+    if (result.isOk() && result.value) {
+      return result.value;
+    }
+
+    // Create default settings
+    return this.createDefaults();
+  }
+
+  static async save(updates: Partial<z.infer<typeof SettingsSchema>>) {
+    const current = await this.load();
+    
+    const result = await settingsService.update(this.SETTINGS_ID, {
+      ...updates,
+      updatedAt: Date.now(),
+    });
+
+    if (result.isErr()) {
+      // If update failed, might need to create
+      if (result.error.type === 'NOT_FOUND') {
+        return this.createDefaults(updates);
+      }
+      throw result.error;
+    }
+
+    return result.value;
+  }
+
+  private static async createDefaults(overrides?: Partial<z.infer<typeof SettingsSchema>>) {
+    const result = await settingsService.create({
+      theme: 'auto',
+      notifications: {
+        email: true,
+        push: true,
+        sound: true,
+      },
+      privacy: {
+        profileVisible: true,
+        showOnlineStatus: true,
+      },
+      language: 'en',
+      ...overrides,
+    });
+
+    if (result.isErr()) throw result.error;
+    return result.value;
   }
 }
 
-// Check authentication status
-const currentUser = await who.current();
-if (currentUser.isOk() && currentUser.value) {
-  console.log('Currently authenticated as:', currentUser.value.alias);
+// Usage in ReactLynx component
+function SettingsScreen() {
+  const { user } = useWho();
+  const [settings, setSettings] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (user) {
+      UserSettings.load().then(s => {
+        setSettings(s);
+        setLoading(false);
+      });
+    }
+  }, [user]);
+
+  const updateTheme = async (theme: 'light' | 'dark' | 'auto') => {
+    const updated = await UserSettings.save({ theme });
+    setSettings(updated);
+  };
+
+  if (!user) return <text>Please login to access settings</text>;
+  if (loading) return <text>Loading settings...</text>;
+
+  return (
+    <view className="settings">
+      <text className="title">Settings</text>
+      
+      <view className="setting-group">
+        <text>Theme</text>
+        <select 
+          value={settings.theme}
+          onChange={(e) => updateTheme(e.target.value)}
+        >
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="auto">Auto</option>
+        </select>
+      </view>
+    </view>
+  );
 }
 ```
-
-### Profile Management
-
-```typescript
-// Update profile
-const updateResult = await who.update({
-  displayName: 'John Doe',
-  bio: 'Software developer',
-  location: 'San Francisco',
-  website: 'https://johndoe.dev'
-});
-
-if (updateResult.isOk()) {
-  console.log('Profile updated:', updateResult.value);
-}
-
-// Get profile data
-const profile = await who.get(publicKey);
-if (profile.isOk() && profile.value) {
-  console.log('Profile:', profile.value);
-}
-
-// Logout
-who.logout();
-```
-
-### Security Features
-
-- **Private Key Protection**: Private keys never stored in profile schema
-- **Public Profile Data**: Only safe, public information stored in Gun database
-- **Credential Export**: Secure backup/restore functionality
-- **Real-time Sync**: Automatic synchronization via Gun's CRDT capabilities
-
-## SecureStorageService
-
-Provides encrypted storage for sensitive data with integrity verification and session management.
-
-### Key Features
-- AES-GCM encryption for all sensitive data
-- SHA-256 integrity verification
-- Session timeout and auto-logout
-- Device-specific encryption keys
-- Recovery information storage
-
-### Basic Usage
-
-```typescript
-import { secureStorage } from '@ariob/core/gun/services';
-
-// Store encrypted data
-const storeResult = await secureStorage.storeEncrypted(
-  'user-preferences',
-  { theme: 'dark', language: 'en' }
-);
-
-if (storeResult.isOk()) {
-  console.log('Data stored securely');
-}
-
-// Retrieve encrypted data
-const retrieveResult = await secureStorage.retrieveEncrypted<UserPreferences>(
-  'user-preferences'
-);
-
-if (retrieveResult.isOk() && retrieveResult.value) {
-  const preferences = retrieveResult.value;
-  console.log('User preferences:', preferences);
-}
-```
-
-### Session Management
-
-```typescript
-// Configure session security
-secureStorage.setSessionConfig({
-  sessionTimeout: 8 * 60 * 60 * 1000, // 8 hours
-  autoLogoutEnabled: true,
-  rememberSession: true
-});
-
-// Set session event handlers
-secureStorage.setSessionHandlers({
-  onSessionExpired: () => {
-    console.log('Session expired, logging out...');
-    who.logout();
-  },
-  onSessionWarning: () => {
-    console.log('Session expiring soon...');
-  }
-});
-
-// Check session status
-const sessionStatus = secureStorage.getSessionStatus();
-console.log('Session active:', sessionStatus.isActive);
-
-// Extend session
-secureStorage.extendSession();
-```
-
-## Architecture Principles
-
-### 1. Security First
-- Private keys never stored in database schemas
-- All sensitive data encrypted before storage
-- Separation of public and private data
-- Device-specific encryption keys
-
-### 2. Simplicity
-- Minimal, focused APIs
-- No over-engineering or unnecessary complexity
-- Clear separation of concerns
-- Easy to understand and maintain
-
-### 3. Gun Integration
-- Leverages Gun's built-in CRDT for conflict resolution
-- Real-time synchronization without custom sync services
-- Uses Gun's native authentication and encryption
-- Follows Gun's decentralized principles
 
 ## Error Handling
 
-All services use the `neverthrow` Result pattern:
+All service methods return `Result` types for explicit error handling:
 
 ```typescript
-import { Result, ok, err } from 'neverthrow';
+// Handle specific error types
+const result = await service.create(data);
 
-const result = await who.signup({ alias: 'username' });
+result.match(
+  (item) => {
+    console.log('Success:', item);
+  },
+  (error) => {
+    switch (error.type) {
+      case 'VALIDATION_ERROR':
+        console.error('Invalid data:', error.details);
+        break;
+      case 'AUTH_ERROR':
+        console.error('Authentication required');
+        break;
+      case 'NETWORK_ERROR':
+        console.error('Connection failed');
+        break;
+      default:
+        console.error('Unknown error:', error.message);
+    }
+  }
+);
 
-if (result.isOk()) {
-  const user = result.value;
-  console.log('Success:', user);
-} else {
-  const error = result.error;
-  console.error('Error:', error.message);
+// Or use unwrap with try/catch
+try {
+  const item = (await service.create(data)).unwrap();
+  console.log('Created:', item);
+} catch (error) {
+  console.error('Failed:', error);
 }
 ```
 
-## Testing
+## Best Practices
 
-### Unit Testing
+1. **Define schemas first** - Let your data model drive the implementation
+2. **Use Result types** - Handle errors explicitly, don't ignore them
+3. **Clean up subscriptions** - Always call the unsubscribe function
+4. **Check authentication** - Verify user is logged in for user-scoped services
+5. **Validate inputs** - Let Zod handle validation automatically
+6. **Use TypeScript** - Get full type safety and auto-completion
 
+## Performance Tips
+
+1. **Batch operations** when possible:
 ```typescript
-describe('WhoService', () => {
-  it('should create account successfully', async () => {
-    const result = await who.signup({
-      alias: 'testuser'
-    });
-    
-    expect(result.isOk()).toBe(true);
-    if (result.isOk()) {
-      expect(result.value.alias).toBe('testuser');
-      expect(result.value.pub).toBeDefined();
-      expect(result.value.priv).toBeUndefined(); // Private key not in profile
-    }
-  });
-});
+// Instead of multiple individual updates
+const results = await Promise.all(
+  ids.map(id => service.update(id, data))
+);
 ```
+
+2. **Use watch selectively** - Only subscribe to data you're actively displaying
+3. **Clean up unused services** - Call `service.cleanup()` when done
+4. **Limit list operations** - Gun.js loads all data, so paginate in your UI
+
+## Security Considerations
+
+1. **User-scoped data** is only accessible by the authenticated user
+2. **Public data** is readable by anyone but writable only by authenticated users
+3. **Validate all inputs** - Schemas provide first-line defense
+4. **Don't store sensitive data unencrypted** - Use SEA for encryption
+5. **Check ownership** before allowing updates

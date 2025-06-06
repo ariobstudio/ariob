@@ -1,361 +1,508 @@
-# Gun Core Module
+# Gun Core
+
+Core Gun.js configuration and initialization for decentralized data synchronization.
 
 ## Overview
 
-The Core module provides the foundational Gun.js configuration, peer connections, and TypeScript type definitions for the entire decentralized identity system.
+The core module provides:
 
-## Files
+- **Gun.js instance** configured for optimal performance
+- **SEA (Security, Encryption, Authorization)** for cryptographic operations
+- **Cross-platform compatibility** for ReactLynx applications
+- **Real-time synchronization** across peers
+- **Offline-first capabilities** with automatic sync
 
-- `gun.ts` - Main Gun instance configuration and SEA integration
-- `types.ts` - TypeScript type definitions for Gun and SEA
+## Gun.js Basics
 
-## Gun Instance Configuration
+Gun is a decentralized, real-time, offline-first database that:
+
+- **Syncs automatically** between all connected peers
+- **Works offline** and syncs when connection returns
+- **Provides cryptography** through the SEA module
+- **Scales horizontally** without central servers
+
+## Configuration
 
 ### Basic Setup
 
 ```typescript
-import { gun, sea } from '@ariob/core/gun/core';
+import { gun, sea } from '@ariob/core';
 
-// Gun instance is pre-configured with:
-// - SEA (Security, Encryption, Authorization) module
-// - AXE conflict resolution algorithm
-// - Peer connections to the decentralized network
-// - WebRTC and WebSocket transports
+// Gun instance is pre-configured and ready to use
+gun.get('test').put({ hello: 'world' });
 
-console.log('Gun instance:', gun);
-console.log('SEA cryptography:', sea);
-```
-
-### Peer Connections
-
-The Gun instance is configured with multiple peer connections for redundancy:
-
-```typescript
-// Default peer configuration includes:
-// - Local relay server (if available)
-// - Public Gun relay servers
-// - WebRTC for direct peer-to-peer connections
-
-// Monitor peer connections
-gun.on('hi', (peer) => {
-  console.log('Connected to peer:', peer);
-});
-
-gun.on('bye', (peer) => {
-  console.log('Disconnected from peer:', peer);
-});
-
-// Add custom peers
-gun.opt({
-  peers: ['https://your-custom-relay.com/gun'],
-  localStorage:  , // Disabled in favor of native storage
-  radisk: false, // Disabled for security
-});
-```
-
-## SEA Integration
-
-### Cryptographic Operations
-
-Gun SEA provides all cryptographic functionality:
-
-```typescript
-import { sea } from '@ariob/core/gun/core';
-
-// Generate key pairs
+// SEA is available for cryptographic operations
 const keyPair = await sea.pair();
-console.log('Generated key pair:', {
-  pub: keyPair.pub,     // Public key
-  priv: keyPair.priv,   // Private key (keep secret!)
-  epub: keyPair.epub,   // Elliptic public key
-  epriv: keyPair.epriv, // Elliptic private key (keep secret!)
-});
-
-// Encrypt data
-const encryptedData = await sea.encrypt('sensitive data', keyPair);
-console.log('Encrypted:', encryptedData);
-
-// Decrypt data
-const decryptedData = await sea.decrypt(encryptedData, keyPair);
-console.log('Decrypted:', decryptedData);
-
-// Create digital signatures
-const signature = await sea.sign('message to sign', keyPair);
-console.log('Signature:', signature);
-
-// Verify signatures
-const isValid = await sea.verify(signature, keyPair.pub);
-console.log('Valid signature:', isValid);
-
-// Generate key derivation (for passwords/hashing)
-const derived = await sea.work('password', 'salt');
-console.log('Derived key:', derived);
+const encrypted = await sea.encrypt('secret', keyPair);
 ```
 
-## Type Definitions
-
-### Core Types
-
-```typescript
-import type { 
-  GunInstance, 
-  GunNode, 
-  GunUser, 
-  SeaInstance, 
-  KeyPair 
-} from '@ariob/core/gun/core/types';
-
-// Gun instance type
-const gunInstance: GunInstance = gun;
-
-// User authentication type
-const user: GunUser = gun.user();
-
-// SEA instance type
-const seaInstance: SeaInstance = sea;
-
-// Key pair structure
-const keyPair: KeyPair = {
-  pub: 'public-key-string',
-  priv: 'private-key-string',
-  epub: 'elliptic-public-key',
-  epriv: 'elliptic-private-key'
-};
-```
-
-### Authentication Types
-
-```typescript
-import type { AuthResult, UserCredentials } from '@ariob/core/gun/core/types';
-
-// Authentication result type
-interface AuthResult {
-  ack: number;
-  get: string;
-  gun: GunInstance;
-  put: any;
-  root: any;
-  soul: string;
-  err?: string;
-}
-
-// User credentials for login
-interface UserCredentials {
-  pub: string;
-  priv: string;
-  epub: string;
-  epriv: string;
-}
-```
-
-## Configuration Options
-
-### Custom Gun Configuration
+### Custom Configuration
 
 ```typescript
 import Gun from 'gun';
 import 'gun/sea';
-import 'gun/axe';
 
 // Create custom Gun instance
-const customGun = Gun({
-  peers: ['wss://your-relay.com/gun'],
-  localStorage: false,
-  radisk: false,
-  axe: true, // Enable conflict resolution
+const customGun = new Gun({
+  peers: [
+    'https://gun-relay1.example.com/gun',
+    'https://gun-relay2.example.com/gun',
+  ],
+  localStorage: false, // Disable for server-side
+  radisk: true,       // Enable Radix storage engine
+  multicast: true,    // Enable local network discovery
 });
-
-// Configure SEA options
-customGun.SEA = Gun.SEA;
 ```
 
-### Environment-Specific Setup
+## Core Concepts
+
+### Souls (Unique IDs)
+
+Every piece of data in Gun has a "soul" - a unique identifier:
 
 ```typescript
-// Development configuration
-if (process.env.NODE_ENV === 'development') {
-  gun.opt({
-    peers: ['http://localhost:8765/gun'],
-    localStorage: false,
+// Souls are paths to data
+gun.get('users').get('alice').put({ name: 'Alice' });
+// Soul: users/alice
+
+// Generate unique souls
+import { nanoid } from 'nanoid';
+const id = nanoid();
+gun.get(`posts/${id}`).put({ title: 'My Post' });
+```
+
+### Graph Structure
+
+Gun stores data as a graph:
+
+```typescript
+// Create relationships
+const post = gun.get('posts/123');
+const author = gun.get('users/alice');
+
+// Link post to author
+post.get('author').put(author);
+
+// Link author to posts
+author.get('posts').set(post);
+```
+
+### Real-time Subscriptions
+
+```typescript
+// Subscribe to changes
+gun.get('chat/messages').on((data, key) => {
+  console.log('New message:', data);
+});
+
+// Subscribe once
+gun.get('users/alice').once((data) => {
+  console.log('User data:', data);
+});
+
+// Map over items
+gun.get('todos').map().on((todo, id) => {
+  console.log(`Todo ${id}:`, todo);
+});
+```
+
+## SEA (Security, Encryption, Authorization)
+
+### Key Pair Generation
+
+```typescript
+import { sea } from '@ariob/core';
+
+// Generate a new key pair
+const pair = await sea.pair();
+console.log('Public key:', pair.pub);
+console.log('Private key:', pair.priv);
+
+// Generate from mnemonic
+const mnemonic = 'brave ocean feed ...'; // 12-word phrase
+const seed = await sea.work(mnemonic, 'optional-salt');
+const pair2 = await sea.pair(seed);
+```
+
+### Encryption/Decryption
+
+```typescript
+// Symmetric encryption (shared secret)
+const secret = 'shared-secret-key';
+const encrypted = await sea.encrypt('Hello World', secret);
+const decrypted = await sea.decrypt(encrypted, secret);
+
+// Asymmetric encryption (public key)
+const alice = await sea.pair();
+const bob = await sea.pair();
+
+// Bob encrypts for Alice (using her public key)
+const secret = await sea.secret(bob, alice.pub);
+const encrypted2 = await sea.encrypt('Secret message', secret);
+
+// Alice decrypts (using her key pair)
+const secret2 = await sea.secret(alice, bob.pub);
+const decrypted2 = await sea.decrypt(encrypted2, secret2);
+```
+
+### Digital Signatures
+
+```typescript
+// Sign data
+const pair = await sea.pair();
+const data = { message: 'Hello', timestamp: Date.now() };
+const signature = await sea.sign(data, pair);
+
+// Verify signature
+const verification = await sea.verify(signature, pair.pub);
+console.log('Valid:', verification === data);
+```
+
+## User Authentication
+
+Gun provides built-in user authentication:
+
+```typescript
+import { gun } from '@ariob/core';
+
+// Create user
+const user = gun.user();
+user.create('alice', 'password', (ack) => {
+  if (ack.err) {
+    console.error('Signup failed:', ack.err);
+  } else {
+    console.log('User created!');
+  }
+});
+
+// Login
+user.auth('alice', 'password', (ack) => {
+  if (ack.err) {
+    console.error('Login failed:', ack.err);
+  } else {
+    console.log('Logged in!');
+    console.log('Public key:', user.is.pub);
+  }
+});
+
+// Store user data
+user.get('profile').put({
+  name: 'Alice',
+  bio: 'Decentralized app developer',
+});
+
+// Logout
+user.leave();
+```
+
+## ReactLynx Integration
+
+### Real-time Hook
+
+```typescript
+import { useEffect, useState } from '@lynx-js/react';
+import { gun } from '@ariob/core';
+
+function useGunData(path: string) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const ref = gun.get(path);
+    
+    // Subscribe to changes
+    const off = ref.on((data) => {
+      setData(data);
+      setLoading(false);
+    });
+
+    // Cleanup
+    return () => {
+      off();
+    };
+  }, [path]);
+
+  return { data, loading };
+}
+
+// Usage in component
+function MessageDisplay() {
+  const { data: message, loading } = useGunData('messages/latest');
+
+  if (loading) return <text>Loading...</text>;
+  
+  return (
+    <view className="message">
+      <text>{message?.text || 'No message'}</text>
+      <text className="timestamp">
+        {new Date(message?.timestamp).toLocaleString()}
+      </text>
+    </view>
+  );
+}
+```
+
+### Collaborative Editor
+
+```typescript
+import { gun } from '@ariob/core';
+import { useState, useEffect, useCallback } from '@lynx-js/react';
+
+function CollaborativeEditor({ documentId }: { documentId: string }) {
+  const [content, setContent] = useState('');
+  const [lastUpdate, setLastUpdate] = useState(0);
+  const docRef = gun.get(`docs/${documentId}`);
+
+  // Subscribe to changes
+  useEffect(() => {
+    const off = docRef.on((data) => {
+      if (data && data.content && data.timestamp > lastUpdate) {
+        setContent(data.content);
+        setLastUpdate(data.timestamp);
+      }
+    });
+
+    return () => off();
+  }, [documentId, lastUpdate]);
+
+  // Debounced save
+  const saveContent = useCallback(
+    debounce((newContent: string) => {
+      docRef.put({
+        content: newContent,
+        timestamp: Date.now(),
+        editor: gun.user().is?.pub || 'anonymous',
+      });
+    }, 500),
+    [documentId]
+  );
+
+  return (
+    <view className="editor">
+      <textarea
+        value={content}
+        onChange={(e) => {
+          setContent(e.target.value);
+          saveContent(e.target.value);
+        }}
+        className="editor-input"
+        placeholder="Start typing..."
+      />
+      <text className="status">
+        Last updated: {new Date(lastUpdate).toLocaleString()}
+      </text>
+    </view>
+  );
+}
+```
+
+## Advanced Patterns
+
+### Pagination
+
+```typescript
+// Paginate large lists
+async function paginate(path: string, limit: number, offset: number) {
+  const items: any[] = [];
+  let count = 0;
+
+  return new Promise((resolve) => {
+    gun.get(path).map().once((data, key) => {
+      if (count >= offset && items.length < limit) {
+        items.push({ ...data, id: key });
+      }
+      count++;
+      
+      if (items.length >= limit) {
+        resolve(items);
+      }
+    });
+
+    // Timeout to resolve with partial results
+    setTimeout(() => resolve(items), 1000);
   });
 }
 
-// Production configuration
-if (process.env.NODE_ENV === 'production') {
-  gun.opt({
-    peers: [
-      'wss://relay1.example.com/gun',
-      'wss://relay2.example.com/gun',
-    ],
-    localStorage: false,
-    radisk: false,
+// Usage
+const page1 = await paginate('posts', 10, 0);
+const page2 = await paginate('posts', 10, 10);
+```
+
+### Conflict Resolution
+
+Gun uses CRDTs (Conflict-free Replicated Data Types) for automatic conflict resolution:
+
+```typescript
+// Gun automatically merges concurrent updates
+const task = gun.get('tasks/123');
+
+// User A updates
+task.put({ title: 'Updated by A', updatedAt: Date.now() });
+
+// User B updates simultaneously
+task.put({ description: 'Updated by B', updatedAt: Date.now() });
+
+// Result: Both updates are merged
+// { title: 'Updated by A', description: 'Updated by B', updatedAt: <later timestamp> }
+```
+
+### Offline Queue
+
+```typescript
+class OfflineQueue {
+  private queue: Array<() => Promise<void>> = [];
+  private online = navigator.onLine;
+
+  constructor() {
+    window.addEventListener('online', () => {
+      this.online = true;
+      this.flush();
+    });
+
+    window.addEventListener('offline', () => {
+      this.online = false;
+    });
+  }
+
+  async add(operation: () => Promise<void>) {
+    if (this.online) {
+      await operation();
+    } else {
+      this.queue.push(operation);
+    }
+  }
+
+  async flush() {
+    while (this.queue.length > 0) {
+      const operation = this.queue.shift()!;
+      try {
+        await operation();
+      } catch (error) {
+        console.error('Failed to sync:', error);
+        this.queue.unshift(operation); // Retry later
+        break;
+      }
+    }
+  }
+}
+
+// Usage
+const queue = new OfflineQueue();
+
+async function saveData(data: any) {
+  await queue.add(async () => {
+    gun.get('data').put(data);
   });
 }
 ```
 
-## Advanced Usage
+## Performance Best Practices
 
-### Custom Event Handlers
+1. **Use `.once()` for single reads** instead of `.on()` when you don't need updates
+2. **Limit `.map()` operations** on large datasets
+3. **Debounce rapid updates** to reduce network traffic
+4. **Clean up subscriptions** to prevent memory leaks
+5. **Use soul paths efficiently** - shorter paths are faster
+
+## Security Considerations
+
+1. **Never expose private keys** in client-side code
+2. **Validate all data** before storing
+3. **Use encryption** for sensitive data
+4. **Implement access control** at the application level
+5. **Be aware of public data** - anything not encrypted is readable by all peers
+
+## Debugging
+
+### Enable Debug Logging
 
 ```typescript
-// Network state monitoring
-gun.on('auth', (user) => {
-  console.log('User authenticated:', user);
+// Enable Gun debug logs
+localStorage.setItem('gun/log', 'true');
+
+// Custom logging
+gun.on('out', function(msg) {
+  console.log('Gun OUT:', msg);
 });
 
-gun.on('out', (message) => {
-  console.log('Outgoing message:', message);
-});
-
-gun.on('in', (message) => {
-  console.log('Incoming message:', message);
-});
-
-// Error handling
-gun.on('error', (error) => {
-  console.error('Gun error:', error);
+gun.on('in', function(msg) {
+  console.log('Gun IN:', msg);
 });
 ```
 
-### Performance Monitoring
+### Inspect Data
 
 ```typescript
-// Monitor sync performance
-let syncCount = 0;
-gun.on('hi', () => syncCount++);
-
-setInterval(() => {
-  console.log('Active peer connections:', syncCount);
-  syncCount = 0;
-}, 10000);
-
-// Monitor data flow
-let dataIn = 0;
-let dataOut = 0;
-
-gun.on('in', (message) => {
-  dataIn += JSON.stringify(message).length;
+// View raw data
+gun.get('users/alice').once((data, key) => {
+  console.log('Raw data:', data);
+  console.log('Soul:', key);
 });
 
-gun.on('out', (message) => {
-  dataOut += JSON.stringify(message).length;
-});
+// Check peers
+console.log('Connected peers:', gun._.opt.peers);
+
+// Check if user is authenticated
+console.log('Authenticated:', gun.user().is);
 ```
 
-### Security Hardening
+## Common Issues
+
+### Data Not Syncing
 
 ```typescript
-// Disable potential security risks
-gun.opt({
-  localStorage: false,  // Use native storage instead
-  radisk: false,        // Disable disk caching
-  file: false,          // Disable file system access
+// Ensure peers are configured
+const gun = new Gun({
+  peers: ['https://your-relay.com/gun'],
 });
 
-// Validate peer connections
+// Check connection
 gun.on('hi', (peer) => {
-  if (!peer.includes('trusted-domain.com')) {
-    console.warn('Untrusted peer connection:', peer);
+  console.log('Connected to peer:', peer);
+});
+```
+
+### Authentication Errors
+
+```typescript
+// Handle auth errors properly
+user.auth(alias, pass, (ack) => {
+  if (ack.err) {
+    if (ack.err.includes('Wrong user')) {
+      console.error('User not found');
+    } else if (ack.err.includes('Wrong password')) {
+      console.error('Invalid password');
+    }
   }
 });
 ```
 
-## Best Practices
+### Memory Leaks
 
-### 1. Connection Management
 ```typescript
-// Always handle connection states
-gun.on('hi', (peer) => {
-  // Connection established
-  updateNetworkStatus(true);
-});
+// Always clean up subscriptions
+const subscriptions = new Set<() => void>();
 
-gun.on('bye', (peer) => {
-  // Connection lost
-  updateNetworkStatus(false);
-});
-```
-
-### 2. Error Handling
-```typescript
-// Wrap Gun operations in try-catch
-try {
-  const result = await gun.user().get('profile').once();
-  return result;
-} catch (error) {
-  console.error('Gun operation failed:', error);
-  throw error;
+function subscribe(path: string, callback: (data: any) => void) {
+  const off = gun.get(path).on(callback);
+  subscriptions.add(off);
+  return off;
 }
-```
 
-### 3. Resource Cleanup
-```typescript
-// Clean up listeners when components unmount
+function cleanup() {
+  subscriptions.forEach(off => off());
+  subscriptions.clear();
+}
+
+// Clean up on unmount
 useEffect(() => {
-  const unsubscribe = gun.user().get('profile').on(callback);
-  
-  return () => {
-    unsubscribe(); // Clean up listener
-  };
+  return cleanup;
 }, []);
 ```
 
-### 4. Type Safety
-```typescript
-// Always use TypeScript types
-import type { GunInstance } from '@ariob/core/gun/core/types';
+## Resources
 
-function processGunData(gunInstance: GunInstance) {
-  // Type-safe Gun operations
-  return gunInstance.user().get('profile');
-}
-```
-
-## Troubleshooting
-
-### Common Issues
-
-**Peer Connection Failures**
-```typescript
-// Debug peer connections
-gun.opt({ peers: [] }); // Clear all peers
-gun.opt({ peers: ['http://localhost:8765/gun'] }); // Add single peer
-```
-
-**SEA Authentication Issues**
-```typescript
-// Verify SEA is loaded
-if (!gun.SEA) {
-  console.error('SEA module not loaded');
-}
-
-// Check key pair validity
-const isValidKey = gun.SEA.verify && typeof gun.SEA.verify === 'function';
-```
-
-**Memory Leaks**
-```typescript
-// Properly unsubscribe from Gun listeners
-const ref = gun.get('data').on(callback);
-// Later...
-ref.off(); // Unsubscribe
-```
-
-## API Reference
-
-### gun (GunInstance)
-- `gun.get(key)` - Get a reference to data
-- `gun.put(data)` - Store data
-- `gun.user()` - Get user context
-- `gun.on(event, callback)` - Listen to events
-- `gun.opt(options)` - Configure Gun instance
-
-### sea (SeaInstance)
-- `sea.pair()` - Generate key pair
-- `sea.encrypt(data, key)` - Encrypt data
-- `sea.decrypt(data, key)` - Decrypt data
-- `sea.sign(data, key)` - Create signature
-- `sea.verify(signature, publicKey)` - Verify signature
-- `sea.work(data, salt)` - Key derivation
-
-For more detailed API documentation, see the [Gun.js documentation](https://gun.eco/docs/). 
+- [Gun.js Documentation](https://gun.eco/docs/)
+- [SEA Documentation](https://gun.eco/docs/SEA)
+- [Gun.js GitHub](https://github.com/amark/gun)
+- [Community Chat](https://chat.gun.eco/) 

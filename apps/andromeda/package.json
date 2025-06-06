@@ -16,6 +16,8 @@
   "dependencies": {
     "@ariob/core": "workspace:*",
     "@lynx-js/react": "^0.109.0",
+    "@lynx-js/websocket": "^0.0.4",
+    "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.0",
     "@testing-library/jest-dom": "^6.6.3",
     "class-variance-authority": "^0.7.1",

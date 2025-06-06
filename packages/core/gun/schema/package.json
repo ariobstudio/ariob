@@ -1,0 +1,66 @@
+{
+  "name": "@core/gun/schema",
+  "version": "1.0.0",
+  "description": "Core data schemas, type definitions, and error handling for Gun.js integration",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": {
+      "import": "./index.ts",
+      "require": "./index.ts",
+      "types": "./index.ts"
+    },
+    "./errors": {
+      "import": "./errors.ts",
+      "require": "./errors.ts",
+      "types": "./errors.ts"
+    },
+    "./thing": {
+      "import": "./thing.schema.ts",
+      "require": "./thing.schema.ts",
+      "types": "./thing.schema.ts"
+    },
+    "./who": {
+      "import": "./who.schema.ts",
+      "require": "./who.schema.ts",
+      "types": "./who.schema.ts"
+    }
+  },
+  "files": [
+    "*.ts",
+    "README.md"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "jest"
+  },
+  "keywords": [
+    "gun",
+    "schema",
+    "validation",
+    "zod",
+    "decentralized",
+    "types"
+  ],
+  "dependencies": {
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "gun": "^0.2020.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ariob/ariob.git",
+    "directory": "packages/core/gun/schema"
+  },
+  "bugs": {
+    "url": "https://github.com/ariob/ariob/issues"
+  },
+  "homepage": "https://github.com/ariob/ariob/tree/main/packages/core/gun/schema#readme",
+  "license": "MIT"
+} 

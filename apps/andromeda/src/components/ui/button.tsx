@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Icon } from './icon';
 
 const buttonVariants = cva(
-  "flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  'flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
   {
     variants: {
       variant: {
@@ -17,10 +17,10 @@ const buttonVariants = cva(
         link: 'text-primary',
       },
       size: {
-        default: 'h-9 px-4 py-2',
-        sm: 'h-8 rounded-md gap-1.5 px-3',
-        lg: 'h-10 rounded-md px-6',
-        icon: 'size-9',
+        default: 'h-10 px-4 py-4',
+        sm: 'h-8 rounded-lg gap-1.5 px-3',
+        lg: 'h-10 rounded-lg px-6 py-6',
+        icon: 'h-10 w-10',
       },
     },
     defaultVariants: {
@@ -43,12 +43,13 @@ const textVariants = cva('', {
     size: {
       default: 'text-sm',
       sm: 'text-xs',
-      lg: 'text-base',
+      lg: 'text-lg',
       icon: 'text-sm',
     },
   },
   defaultVariants: {
     variant: 'default',
+    size: 'default',
   },
 });
 
@@ -65,13 +66,7 @@ function Button({ className, variant, size, icon, ...props }: ButtonProps) {
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     >
-      {icon && (
-        <Icon
-          className={cn(textVariants({ variant }))}
-          name={icon}
-          size={size}
-        />
-      )}
+      {icon && <Icon className={cn(textVariants({ variant }))} name={icon} />}
       {props.children && (
         <text className={cn(textVariants({ variant, size, className }))}>
           {props.children}

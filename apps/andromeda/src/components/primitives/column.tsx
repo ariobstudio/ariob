@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { type VariantProps, cva } from 'class-variance-authority';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -41,7 +41,7 @@ const columnVariants = cva('flex flex-col', {
     },
   },
   defaultVariants: {
-    gap: 'md',
+    spacing: 'md',
     align: 'stretch',
     justify: 'start',
     width: 'auto',

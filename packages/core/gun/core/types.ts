@@ -18,7 +18,8 @@ export interface GunChain<T = any> {
 
 export interface GunUser extends GunChain<any> {
   create: (
-    pair: KeyPair,
+    pair: KeyPair | string,
+    passphrase?: string,
     callback?: (ack: any) => void,
   ) => GunUser;
   auth: (

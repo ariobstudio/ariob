@@ -1,9 +1,7 @@
-import { defineConfig } from "@rsbuild/core";
-import { pluginReact } from "@rsbuild/plugin-react";
-import path from "path";
-import { fileURLToPath } from "url";
-
-// Create dirname equivalent for ESM
+import { defineConfig } from '@rsbuild/core';
+import { pluginReact } from '@rsbuild/plugin-react';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -14,9 +12,10 @@ export default defineConfig({
       {
         name: path.join(
           __dirname,
-          "../",
-          "core",
-          "dist",
+          '../../apps/',
+          // Please replace this with your actual Lynx project name
+          'andromeda',
+          'dist',
         ),
       },
     ],

@@ -1,20 +1,18 @@
-import Gun from '../gun.js';
-import '../sea.js';
+import Gun from '../gun';
+import SEA from '../sea';
 import { GunInstance } from './types';
 
 // Configure Gun options
 const gunOptions = {
   peers: [
-    'https://gun-manhattan.herokuapp.com/gun',
+    'ws://gun-manhattan.herokuapp.com/gun',
     // Add your own peers here
   ],
-  localStorage: false, // Set to true to enable localStorage persistence
+  localStorage: true, // Set to true to enable localStorage persistence
   //   radisk: true,        // Enable radisk storage
-  axe: true, // Enable AXE for conflict resolution
 };
-
 const gun: GunInstance = Gun(gunOptions) as GunInstance;
-const sea = Gun.SEA;
+const sea = SEA;
 gun.state = Gun.state;
 
 export { gun, sea };

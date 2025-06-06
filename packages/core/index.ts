@@ -1,27 +1,23 @@
 // Core Gun exports
-export * from './gun/core/gun';
+export { gun, sea } from './gun/core/gun';
 export type { GunInstance, SEA, KeyPair, GunUser, GunChain } from './gun/core/types';
 
 // Schema exports
-export type { AppError } from './gun/schema/errors';
-export { ErrorType, make as makeError, validate, auth, db, notFound, permission, network, unknown, fromZod, fromGun } from './gun/schema/errors';
 export * from './gun/schema/thing.schema';
 export * from './gun/schema/who.schema';
+export * from './gun/schema/errors';
 
 // Service exports
-export * from './gun/services/account.service';
-export * from './gun/services/secure-storage.service';
-export * from './gun/services/thing.service';
-export * from './gun/services/who.service';
+export { make, soul } from './gun/services/thing.service';
+export { who } from './gun/services/who.service';
+export type { ThingService, ServiceOptions } from './gun/services/thing.service';
 
 // State exports
-export * from './gun/state/auth.store';
-export * from './gun/state/multi-auth.store';
-export * from './gun/state/thing.store';
+export { createThingStore } from './gun/state/thing.store';
+export { useWhoStore } from './gun/state/who.store';
+export type { ThingStore } from './gun/state/thing.store';
+export type { WhoStore } from './gun/state/who.store';
 
 // Hook exports
-export * from './gun/hooks/useAuth';
-export * from './gun/hooks/useMultiAuth';
-export * from './gun/hooks/useRealTime';
-export * from './gun/hooks/useThing';
-export * from './gun/hooks/useThingList'; 
+export { useThing } from './gun/hooks/useThing';
+export { useWho } from './gun/hooks/useWho';

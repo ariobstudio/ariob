@@ -1,15 +1,40 @@
 import * as React from 'react';
-import { Column, Row, List, ListItem, Scrollable } from './index';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Column, List, ListItem, Row, Scrollable } from './index';
 
 // Example data for demonstrations
 const sampleItems = [
-  { id: '1', title: 'First Item', subtitle: 'This is the first item', description: 'Some additional details about the first item' },
-  { id: '2', title: 'Second Item', subtitle: 'This is the second item', description: 'Some additional details about the second item' },
-  { id: '3', title: 'Third Item', subtitle: 'This is the third item', description: 'Some additional details about the third item' },
-  { id: '4', title: 'Fourth Item', subtitle: 'This is the fourth item', description: 'Some additional details about the fourth item' },
-  { id: '5', title: 'Fifth Item', subtitle: 'This is the fifth item', description: 'Some additional details about the fifth item' },
+  {
+    id: '1',
+    title: 'First Item',
+    subtitle: 'This is the first item',
+    description: 'Some additional details about the first item',
+  },
+  {
+    id: '2',
+    title: 'Second Item',
+    subtitle: 'This is the second item',
+    description: 'Some additional details about the second item',
+  },
+  {
+    id: '3',
+    title: 'Third Item',
+    subtitle: 'This is the third item',
+    description: 'Some additional details about the third item',
+  },
+  {
+    id: '4',
+    title: 'Fourth Item',
+    subtitle: 'This is the fourth item',
+    description: 'Some additional details about the fourth item',
+  },
+  {
+    id: '5',
+    title: 'Fifth Item',
+    subtitle: 'This is the fifth item',
+    description: 'Some additional details about the fifth item',
+  },
 ];
 
 // Example 1: Basic Column and Row Layout
@@ -25,7 +50,7 @@ export function BasicLayoutExample() {
             <text className="font-medium">Header Section</text>
             <Button size="sm">Action</Button>
           </Row>
-          
+
           <Row spacing="md" wrap="wrap">
             <view className="bg-primary/10 p-4 rounded-lg flex-1 min-w-48">
               <text className="text-center">Item 1</text>
@@ -51,22 +76,22 @@ export function ScrollableExample() {
         <CardTitle>Scrollable Content Example</CardTitle>
       </CardHeader>
       <CardContent>
-        <Scrollable 
-          direction="vertical" 
-          height="screen" 
-          padding="md" 
+        <Scrollable
+          direction="vertical"
+          height="screen"
+          padding="md"
           spacing="sm"
           className="max-h-64 border border-border rounded-lg"
         >
           {Array.from({ length: 20 }, (_, i) => (
-            <view 
-              key={i} 
+            <view
+              key={i}
               className="bg-muted/50 p-3 rounded border-l-4 border-primary"
             >
               <text className="font-medium">Scrollable Item {i + 1}</text>
               <text className="text-sm text-muted-foreground">
-                This is content inside a scrollable container. 
-                You can scroll vertically to see more items.
+                This is content inside a scrollable container. You can scroll
+                vertically to see more items.
               </text>
             </view>
           ))}
@@ -80,32 +105,35 @@ export function ScrollableExample() {
 export function PerformantListExample() {
   const [selectedItem, setSelectedItem] = React.useState<string | null>(null);
 
-  const handleItemPress = React.useCallback((item: typeof sampleItems[0]) => {
+  const handleItemPress = React.useCallback((item: (typeof sampleItems)[0]) => {
     setSelectedItem(item.id);
   }, []);
 
-  const renderItem = React.useCallback((item: typeof sampleItems[0], index: number) => (
-    <ListItem
-      variant="bordered"
-      size="md"
-      selected={selectedItem === item.id}
-      title={item.title}
-      subtitle={item.subtitle}
-      description={item.description}
-      leftElement={
-        <view className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
-          <text className="text-xs font-bold text-primary">{index + 1}</text>
-        </view>
-      }
-      rightElement={
-        selectedItem === item.id ? (
-          <view className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-            <text className="text-xs text-white">✓</text>
+  const renderItem = React.useCallback(
+    (item: (typeof sampleItems)[0], index: number) => (
+      <ListItem
+        variant="bordered"
+        size="md"
+        selected={selectedItem === item.id}
+        title={item.title}
+        subtitle={item.subtitle}
+        description={item.description}
+        leftElement={
+          <view className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+            <text className="text-xs font-bold text-primary">{index + 1}</text>
           </view>
-        ) : null
-      }
-    />
-  ), [selectedItem]);
+        }
+        rightElement={
+          selectedItem === item.id ? (
+            <view className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+              <text className="text-xs text-white">✓</text>
+            </view>
+          ) : null
+        }
+      />
+    ),
+    [selectedItem],
+  );
 
   return (
     <Card>
@@ -123,13 +151,17 @@ export function PerformantListExample() {
           onItemPress={handleItemPress}
           headerComponent={
             <view className="bg-muted/30 p-3 border-b border-border">
-              <text className="font-medium text-center">Select an item below</text>
+              <text className="font-medium text-center">
+                Select an item below
+              </text>
             </view>
           }
           footerComponent={
             <view className="bg-muted/30 p-3 border-t border-border">
               <text className="text-sm text-muted-foreground text-center">
-                {selectedItem ? `Selected: ${selectedItem}` : 'No item selected'}
+                {selectedItem
+                  ? `Selected: ${selectedItem}`
+                  : 'No item selected'}
               </text>
             </view>
           }
@@ -142,12 +174,12 @@ export function PerformantListExample() {
 // Example 4: List with Children (Manual ListItems)
 export function ManualListExample() {
   const [activeStates, setActiveStates] = React.useState<boolean[]>(
-    Array(5).fill(false)
+    Array(5).fill(false),
   );
 
   const toggleState = React.useCallback((index: number) => {
-    setActiveStates(prev => 
-      prev.map((state, i) => i === index ? !state : state)
+    setActiveStates((prev) =>
+      prev.map((state, i) => (i === index ? !state : state)),
     );
   }, []);
 
@@ -168,13 +200,15 @@ export function ManualListExample() {
               subtitle={item.subtitle}
               onPress={() => toggleState(index)}
               leftElement={
-                <view className={`w-3 h-3 rounded-full ${
-                  activeStates[index] ? 'bg-green-500' : 'bg-gray-300'
-                }`} />
+                <view
+                  className={`w-3 h-3 rounded-full ${
+                    activeStates[index] ? 'bg-green-500' : 'bg-gray-300'
+                  }`}
+                />
               }
               rightElement={
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   size="sm"
                   bindtap={() => toggleState(index)}
                 >
@@ -207,7 +241,9 @@ export function ComplexLayoutExample() {
               </text>
             </Column>
             <Row spacing="sm">
-              <Button variant="outline" size="sm">Settings</Button>
+              <Button variant="outline" size="sm">
+                Settings
+              </Button>
               <Button size="sm">New Item</Button>
             </Row>
           </Row>
@@ -215,7 +251,7 @@ export function ComplexLayoutExample() {
           {/* Stats row */}
           <Row spacing="md">
             {['Users', 'Revenue', 'Orders'].map((stat, index) => (
-              <view 
+              <view
                 key={stat}
                 className="flex-1 bg-gradient-to-br from-primary/10 to-primary/5 p-4 rounded-lg border"
               >
@@ -233,23 +269,27 @@ export function ComplexLayoutExample() {
             <Column spacing="sm" className="w-64">
               <text className="font-medium">Quick Actions</text>
               <List variant="bordered">
-                {['Create User', 'Generate Report', 'Export Data'].map((action) => (
-                  <ListItem
-                    key={action}
-                    variant="ghost"
-                    size="sm"
-                    title={action}
-                    rightElement={<text className="text-xs text-muted-foreground">→</text>}
-                  />
-                ))}
+                {['Create User', 'Generate Report', 'Export Data'].map(
+                  (action) => (
+                    <ListItem
+                      key={action}
+                      variant="ghost"
+                      size="sm"
+                      title={action}
+                      rightElement={
+                        <text className="text-xs text-muted-foreground">→</text>
+                      }
+                    />
+                  ),
+                )}
               </List>
             </Column>
 
             {/* Main content */}
             <Column spacing="sm" className="flex-1">
               <text className="font-medium">Recent Activity</text>
-              <Scrollable 
-                direction="vertical" 
+              <Scrollable
+                direction="vertical"
                 className="max-h-64 border rounded-lg"
                 padding="sm"
               >
@@ -273,4 +313,4 @@ export function ComplexLayoutExample() {
       </CardContent>
     </Card>
   );
-} 
+}

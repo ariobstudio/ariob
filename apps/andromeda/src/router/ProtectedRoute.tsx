@@ -1,4 +1,4 @@
-import { useAuth } from '@ariob/core';
+import { useWho } from '@ariob/core';
 import React from 'react';
 import { Navigate } from 'react-router';
 
@@ -11,7 +11,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   redirectTo = '/auth/login',
 }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useWho();
 
   // Show loading state while checking auth
   if (isLoading) {

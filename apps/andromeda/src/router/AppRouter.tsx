@@ -8,6 +8,7 @@ import { OnboardingPage } from '@/pages/OnboardingPage';
 import { NotFound } from './NotFound';
 import { ProtectedRoute } from './ProtectedRoute';
 import { PublicRoute } from './PublicRoute';
+import { LoginScreen } from '@/components/LoginScreen';
 
 export const AppRouter = () => {
   return (
@@ -21,6 +22,15 @@ export const AppRouter = () => {
         element={
           <PublicRoute>
             <OnboardingPage />
+          </PublicRoute>
+        }
+      />
+      {/* Login Page - Public */}
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <LoginScreen />
           </PublicRoute>
         }
       />

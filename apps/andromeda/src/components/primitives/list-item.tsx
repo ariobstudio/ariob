@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { type VariantProps, cva } from 'class-variance-authority';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -113,33 +113,35 @@ function ListItem({
             {leftElement}
           </view>
         )}
-        
-        <view 
-          data-slot="list-item-content" 
+
+        <view
+          data-slot="list-item-content"
           className={cn(
-            "flex-1 min-w-0",
-            direction === 'column' ? 'flex flex-col gap-1' : 'flex flex-col gap-0.5'
+            'flex-1 min-w-0',
+            direction === 'column'
+              ? 'flex flex-col gap-1'
+              : 'flex flex-col gap-0.5',
           )}
         >
           {title && (
-            <text 
-              data-slot="list-item-title" 
+            <text
+              data-slot="list-item-title"
               className="font-medium text-foreground truncate"
             >
               {title}
             </text>
           )}
           {subtitle && (
-            <text 
-              data-slot="list-item-subtitle" 
+            <text
+              data-slot="list-item-subtitle"
               className="text-sm text-muted-foreground truncate"
             >
               {subtitle}
             </text>
           )}
           {description && (
-            <text 
-              data-slot="list-item-description" 
+            <text
+              data-slot="list-item-description"
               className="text-xs text-muted-foreground line-clamp-2"
             >
               {description}
@@ -179,7 +181,7 @@ function ListItem({
           {leftElement}
         </view>
       )}
-      
+
       <view data-slot="list-item-content" className="flex-1 min-w-0">
         {children}
       </view>
@@ -193,4 +195,4 @@ function ListItem({
   );
 }
 
-export { ListItem, listItemVariants }; 
+export { ListItem, listItemVariants };

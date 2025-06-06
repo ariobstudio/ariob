@@ -3,43 +3,77 @@ import * as Err from '../schema/errors';
 import { Thing } from '../schema/thing.schema';
 import { Result, ok, err } from 'neverthrow';
 import { z } from 'zod';
+import { who } from './who.service';
 
 // Make soul path from prefix and id
 export const soul = (prefix: string, id: string): string => `${prefix}/${id}`;
 
-// Validate data with schema
-const check = <T>(schema: any, data: any): Result<T, Err.AppError> => {
-  try {
-    return ok(schema.parse(data));
-  } catch (error) {
-    return err(Err.fromZod(error));
-  }
-};
+export interface ServiceOptions {
+  userScoped?: boolean;
+}
+
+export interface ThingService<T extends Thing> {
+  create: (data: Omit<T, 'id' | 'createdAt' | 'soul' | 'schema' | 'createdBy'>) => Promise<Result<T, Err.AppError>>;
+  get: (id: string) => Promise<Result<T | null, Err.AppError>>;
+  update: (id: string, updates: Partial<Omit<T, 'id' | 'createdAt' | 'soul' | 'schema'>>) => Promise<Result<T | null, Err.AppError>>;
+  remove: (id: string) => Promise<Result<boolean, Err.AppError>>;
+  list: () => Promise<Result<T[], Err.AppError>>;
+  watch: (id: string, callback: (result: Result<T | null, Err.AppError>) => void) => () => void;
+  cleanup: () => void;
+  soul: (id: string) => string;
+}
 
 // Create thing service factory
 export const make = <T extends Thing, TSchema extends z.ZodType<T>>(
   schema: TSchema,
   prefix: string,
-) => {
-  // Define service methods
-  const prep = (data: Omit<T, 'id' | 'createdAt' | 'soul' | 'version'>): T => {
-    const id = sea.random(32)
+  options: ServiceOptions = {}
+): ThingService<T> => {
+  
+  const subscriptions = new Map<string, () => void>();
+  const schemaType = extractSchemaType(schema) || prefix;
+
+  // Get the appropriate gun reference
+  const getGunRef = () => {
+    if (options?.userScoped) {
+      const me = who.instance();
+      if (!me?.is) throw new Error('Authentication required for user-scoped operations');
+      return me;
+    }
+    return gun;
+  };
+
+  // Validate data with schema
+  const validate = (data: unknown): Result<T, Err.AppError> => {
+    try {
+      return ok(schema.parse(data));
+    } catch (error) {
+      return err(Err.fromZod(error));
+    }
+  };
+
+  // Prepare new thing with defaults
+  const prep = (input: Omit<T, 'id' | 'createdAt' | 'soul' | 'schema' | 'createdBy'>): T => {
+    const id = sea.random(16);
     const now = Date.now();
+    const current = who.current();
     
     return {
       id,
+      soul: soul(prefix, id),
+      schema: schemaType,
       createdAt: now,
       updatedAt: now,
-      soul: soul(prefix, id),
-      version: 1,
-      ...data,
-    } as unknown as T;
+      ...(options.userScoped && current?.pub && { createdBy: current.pub }),
+      ...input,
+    } as T;
   };
   
   // Save thing to database
   const save = (thing: T): Promise<Result<T, Err.AppError>> => {
     return new Promise((resolve) => {
-      gun.get(thing.soul).put(thing, (ack) => {
+      const gunRef = getGunRef();
+      gunRef.get(thing.soul).put(thing, (ack: any) => {
         if (ack.err) {
           resolve(err(Err.db(ack.err)));
         } else {
@@ -50,127 +84,131 @@ export const make = <T extends Thing, TSchema extends z.ZodType<T>>(
   };
   
   // Create a new thing
-  const create = async (data: Omit<T, 'id' | 'createdAt' | 'soul' | 'version'>): Promise<Result<T, Err.AppError>> => {
-    const thing = prep(data);
-    const valid = check<T>(schema, thing);
-    
-    if (valid.isErr()) {
-      return valid;
+  const create: ThingService<T>['create'] = async (input) => {
+    try {
+      const prepared = prep(input);
+      const validated = validate(prepared);
+      
+      if (validated.isErr()) return validated;
+      return await save(validated.value);
+    } catch (error: any) {
+      return err(Err.auth(error.message));
     }
-    
-    return save(valid.value);
   };
 
   // Get a thing by ID
-  const get = (id: string): Promise<Result<T | null, Err.AppError>> => {
+  const get: ThingService<T>['get'] = (id) => {
     return new Promise((resolve) => {
-      gun.get(soul(prefix, id)).once((data) => {
-        if (!data) {
-          resolve(ok(null));
-          return;
-        }
-
-        const valid = check<T>(schema, data);
-        if (valid.isErr()) {
-          console.error('Invalid data:', valid.error);
-          resolve(ok(null));
-          return;
-        }
-        
-        resolve(ok(valid.value));
-      });
+      try {
+        const gunRef = getGunRef();
+        gunRef.get(soul(prefix, id)).once((data: any) => {
+          if (!data) {
+            resolve(ok(null));
+            return;
+          }
+          resolve(validate(data));
+        });
+      } catch (error: any) {
+        resolve(err(Err.auth(error.message)));
+      }
     });
   };
 
   // Update a thing
-  const update = async (
-    id: string,
-    updates: Partial<Omit<T, 'id' | 'createdAt' | 'soul' | 'version'>>,
-  ): Promise<Result<T | null, Err.AppError>> => {
-    const result = await get(id);
-    
-    if (result.isErr()) {
-      return result;
-    }
-    
-    const thing = result.value;
-    if (!thing) {
-      return ok(null);
-    }
+  const update: ThingService<T>['update'] = async (id, updates) => {
+    try {
+      const existing = await get(id);
+      if (existing.isErr()) return existing;
+      if (!existing.value) return ok(null);
 
-    const updated = {
-      ...thing,
-      ...updates,
-      updatedAt: Date.now(),
-      version: (thing.version || 0) + 1,
-    };
+      const updated = {
+        ...existing.value,
+        ...updates,
+        updatedAt: Date.now(),
+      };
 
-    const valid = check<T>(schema, updated);
-    if (valid.isErr()) {
-      return valid;
+      const validated = validate(updated);
+      if (validated.isErr()) return validated;
+      
+      return await save(validated.value);
+    } catch (error: any) {
+      return err(Err.auth(error.message));
     }
-    
-    return save(valid.value);
   };
 
   // Delete a thing
-  const remove = (id: string): Promise<Result<boolean, Err.AppError>> => {
+  const remove: ThingService<T>['remove'] = (id) => {
     return new Promise((resolve) => {
-      gun.get(soul(prefix, id)).put(null, (ack) => {
-        if (ack.err) {
-          resolve(err(Err.db(ack.err)));
-        } else {
-          resolve(ok(true));
-        }
-      });
+      try {
+        const gunRef = getGunRef();
+        gunRef.get(soul(prefix, id)).put(null, (ack: any) => {
+          if (ack.err) {
+            resolve(err(Err.db(ack.err)));
+          } else {
+            resolve(ok(true));
+          }
+        });
+      } catch (error: any) {
+        resolve(err(Err.auth(error.message)));
+      }
     });
   };
 
   // List all things
-  const list = (): Promise<Result<T[], Err.AppError>> => {
+  const list: ThingService<T>['list'] = () => {
     return new Promise((resolve) => {
-      const items: T[] = [];
+      try {
+        const items: T[] = [];
+        const gunRef = getGunRef();
 
-      gun
-        .get(prefix)
-        .map()
-        .once((data: any) => {
-          if (!data || !data.id) return;
-
-          const valid = check<T>(schema, data);
-          if (valid.isOk()) {
-            items.push(valid.value);
+        gunRef.get(prefix).map().once((data: any) => {
+          if (data) {
+            const validated = validate(data);
+            if (validated.isOk()) {
+              items.push(validated.value);
+            }
           }
         });
 
-      // Gun doesn't have a "done" callback, so use timeout
-      setTimeout(() => resolve(ok(items)), 500);
+        // Gun doesn't have a "done" callback, so use timeout
+        setTimeout(() => resolve(ok(items)), 300);
+      } catch (error: any) {
+        resolve(err(Err.auth(error.message)));
+      }
     });
   };
 
   // Subscribe to a thing (real-time updates)
-  const watch = (
-    id: string,
-    callback: (result: Result<T | null, Err.AppError>) => void,
-  ): (() => void) => {
-    const path = soul(prefix, id);
+  const watch: ThingService<T>['watch'] = (id, callback) => {
+    try {
+      const gunRef = getGunRef();
+      const path = soul(prefix, id);
 
-    gun.get(path).on((data) => {
-      if (!data) {
-        callback(ok(null));
-        return;
-      }
+      gunRef.get(path).on((data: any) => {
+        if (!data) {
+          callback(ok(null));
+          return;
+        }
+        callback(validate(data));
+      });
 
-      const valid = check<T>(schema, data);
-      if (valid.isOk()) {
-        callback(ok(valid.value));
-      } else {
-        callback(err(valid.error));
-      }
-    });
+      const unsubscribe = () => gunRef.get(path).off();
+      subscriptions.set(path, unsubscribe);
+      
+      return () => {
+        unsubscribe();
+        subscriptions.delete(path);
+      };
+    } catch (error: any) {
+      callback(err(Err.auth(error.message)));
+      return () => {};
+    }
+  };
 
-    // Return unsubscribe function
-    return () => gun.get(path).off();
+  // Cleanup all subscriptions
+  const cleanup = () => {
+    subscriptions.forEach(unsubscribe => unsubscribe());
+    subscriptions.clear();
   };
 
   // Return service functions
@@ -181,6 +219,15 @@ export const make = <T extends Thing, TSchema extends z.ZodType<T>>(
     remove,
     list,
     watch,
+    cleanup,
     soul: (id: string) => soul(prefix, id),
   };
+};
+
+// Extract schema type from Zod schema
+const extractSchemaType = (schema: z.ZodType<any>): string | null => {
+  if (schema instanceof z.ZodObject && schema.shape.schema instanceof z.ZodLiteral) {
+    return schema.shape.schema.value;
+  }
+  return null;
 };

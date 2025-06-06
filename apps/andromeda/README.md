@@ -1,36 +1,174 @@
-# Andromeda - Ariob Frontend App
+# 🌌 Andromeda - Ariob Frontend Application
 
-This is the main frontend application for Ariob, built with ReactLynx and bootstrapped with `create-rspeedy`.
+<div align="center">
 
-## Features
+[![ReactLynx](https://img.shields.io/badge/ReactLynx-FF6B6B?style=for-the-badge&logo=react&logoColor=white)](https://lynx-js.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Gun.js](https://img.shields.io/badge/Gun.js-2C3E50?style=for-the-badge&logo=javascript&logoColor=white)](https://gun.eco/)
+[![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
 
-- 🔐 **Authentication System** - Multi-method authentication (password, passkey)
-- 🔑 **Key Management** - Secure key generation and import
-- 🎨 **Modern UI** - Built with Lynx React components and custom UI library
-- 🌙 **Theme Support** - Light/dark theme switching
-- 📱 **Cross-Platform** - Runs on mobile and web via Lynx
+The main frontend application for Ariob - a decentralized, cross-platform application built with ReactLynx.
 
-## Getting Started
+</div>
 
-First, install the dependencies:
+## 📋 Table of Contents
+
+- [Overview](#-overview)
+- [Features](#-features)
+- [Quick Start](#-quick-start)
+- [Project Structure](#-project-structure)
+- [Development](#-development)
+- [Testing](#-testing)
+- [Architecture](#-architecture)
+- [Scripts](#-scripts)
+- [Troubleshooting](#-troubleshooting)
+
+## 🎯 Overview
+
+Andromeda is the core frontend application of the Ariob platform, bootstrapped with `create-rspeedy` and built on ReactLynx for cross-platform compatibility. It provides a modern, responsive interface for decentralized identity and data management.
+
+## ✨ Features
+
+### Core Functionality
+- 🔐 **Multi-Method Authentication**
+  - Password-based authentication
+  - Passkey support
+  - Keypair generation and import
+  - Mnemonic phrase support
+  
+- 🔑 **Key Management**
+  - Secure key generation
+  - Import/Export functionality
+  - Session persistence
+  
+- 📝 **Content Management**
+  - Real-time data synchronization
+  - User-scoped private data
+  - Public content sharing
+
+### Technical Features
+- 🎨 **Modern UI/UX**
+  - Custom component library
+  - Light/Dark theme support
+  - Responsive design
+  - Smooth animations
+  
+- 🏗️ **Architecture**
+  - Type-safe with TypeScript
+  - Functional error handling
+  - Schema-first design
+  - Real-time state management
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js >= 18.0.0
+- pnpm >= 8.15.4
+- LynxExplorer App (for mobile testing)
+
+### Installation
 
 ```bash
+# From the project root
+pnpm install
+
+# Or from this directory
+cd apps/andromeda
 pnpm install
 ```
 
-Then, run the development server:
+### Development
 
 ```bash
-pnpm run dev
+# Start the development server
+pnpm dev
+
+# The terminal will display a QR code
+# Scan with LynxExplorer App for mobile testing
 ```
 
-Scan the QRCode in the terminal with your LynxExplorer App to see the result.
+## 📁 Project Structure
 
-You can start editing the page by modifying `src/App.tsx`. The page auto-updates as you edit the file.
+```
+andromeda/
+├── src/
+│   ├── components/          # React components
+│   │   ├── auth/           # Authentication components
+│   │   ├── posts/          # Post-related components
+│   │   ├── primitives/     # Base UI primitives
+│   │   └── ui/             # Reusable UI components
+│   ├── hooks/              # Custom React hooks
+│   ├── layouts/            # Layout components
+│   ├── lib/                # Utility libraries
+│   ├── pages/              # Page components
+│   │   └── auth/           # Authentication pages
+│   ├── router/             # Routing configuration
+│   ├── schema/             # Data schemas (Zod)
+│   ├── services/           # Business logic & API
+│   ├── styles/             # Global styles
+│   ├── test/               # Test configuration
+│   │   └── __tests__/      # Test files
+│   ├── App.tsx             # Main app component
+│   └── main.tsx            # Entry point
+├── public/                 # Static assets
+├── index.html              # HTML template
+├── package.json
+├── tsconfig.json           # TypeScript config
+├── vite.config.ts          # Vite configuration
+└── vitest.config.ts        # Test configuration
+```
 
-## Testing
+## 💻 Development
 
-The project uses Vitest with Lynx React Testing Library for component testing.
+### Key Technologies
+
+- **Framework**: ReactLynx (React for cross-platform)
+- **Build Tool**: Vite with RSpeedy
+- **State Management**: Zustand + @ariob/core
+- **Routing**: React Router v6
+- **Styling**: Lynx React components + Custom UI
+- **Testing**: Vitest + Lynx React Testing Library
+- **Type Safety**: TypeScript + Zod schemas
+
+### Working with Components
+
+```typescript
+// Example component using Lynx React
+import { View, Text } from '@lynx-js/react';
+import { useAuth } from '@ariob/core';
+
+export const UserProfile = () => {
+  const { user, isLoading } = useAuth();
+  
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+  
+  return (
+    <View className="user-profile">
+      <Text className="welcome">Welcome, {user?.alias}!</Text>
+    </View>
+  );
+};
+```
+
+### Using the Core Package
+
+The app integrates with `@ariob/core` for all backend functionality:
+
+```typescript
+import { useWho, useThing, make } from '@ariob/core';
+
+// Authentication
+const { signup, login, logout } = useWho();
+
+// Data management
+const notesService = make(NoteSchema, 'notes');
+const { items, create, update } = useThing(notesService);
+```
+
+## 🧪 Testing
 
 ### Running Tests
 
@@ -38,51 +176,143 @@ The project uses Vitest with Lynx React Testing Library for component testing.
 # Run all tests
 pnpm test
 
-# Run tests in watch mode
+# Watch mode for development
 pnpm test:watch
 
-# Run tests once
+# Run tests once (CI mode)
 pnpm test:run
 
-# Run tests with UI
+# Interactive UI mode
 pnpm test:ui
 
-# Run tests with coverage
+# Coverage report
 pnpm test:coverage
 ```
 
 ### Writing Tests
 
-See `src/test/README.md` for comprehensive testing documentation and examples.
+```typescript
+// src/components/__tests__/MyComponent.test.tsx
+import { expect, test } from 'vitest';
+import { render } from '@lynx-js/react/testing-library';
+import { MyComponent } from '../MyComponent';
 
-## Project Structure
-
-```
-src/
-├── components/          # React components
-│   ├── auth/           # Authentication components
-│   ├── posts/          # Post-related components
-│   └── ui/             # Reusable UI components
-├── hooks/              # Custom React hooks
-├── lib/                # Utility libraries
-├── schema/             # Data schemas
-├── services/           # API services
-├── styles/             # Global styles
-└── test/               # Testing utilities and setup
+test('renders correctly', async () => {
+  const { findByText } = render(<MyComponent />);
+  
+  const element = await findByText('Expected text');
+  expect(element).toBeInTheDocument();
+});
 ```
 
-## Core Dependencies
+See [src/test/README.md](src/test/README.md) for comprehensive testing documentation.
 
-- **@lynx-js/react** - Lynx React framework
-- **@ariob/core** - Core Ariob functionality (auth, data)
-- **react-router** - Client-side routing
-- **neverthrow** - Functional error handling
+## 🏗️ Architecture
 
-## Development
+### Component Architecture
 
-The app integrates with the `@ariob/core` package for authentication and data management. See the core package documentation for API details.
+```
+components/
+├── primitives/     # Base building blocks (buttons, inputs)
+├── ui/             # Composed UI components
+├── auth/           # Authentication-specific components
+└── posts/          # Feature-specific components
+```
 
-## Learn More
+### State Management
 
-- [Lynx React Documentation](https://lynx-js.github.io/lynx/docs/react)
+- **Global State**: Zustand stores from `@ariob/core`
+- **Local State**: React hooks (useState, useReducer)
+- **Server State**: Real-time Gun.js synchronization
+
+### Data Flow
+
+```
+User Action → Component → Hook → Service → Gun.js → State Update → UI Update
+```
+
+## 📜 Scripts
+
+| Script | Description |
+|--------|-------------|
+| `pnpm dev` | Start development server |
+| `pnpm build` | Build for production |
+| `pnpm preview` | Preview production build |
+| `pnpm test` | Run tests |
+| `pnpm test:watch` | Run tests in watch mode |
+| `pnpm test:ui` | Run tests with UI |
+| `pnpm test:coverage` | Generate coverage report |
+| `pnpm lint` | Run ESLint |
+| `pnpm typecheck` | Run TypeScript compiler |
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file in the app directory:
+
+```env
+# API endpoints (optional)
+VITE_GUN_RELAY_URL=http://localhost:8765/gun
+
+# Feature flags
+VITE_ENABLE_DEBUG=false
+```
+
+### TypeScript Configuration
+
+The app uses a strict TypeScript configuration. Key settings:
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2020",
+    "module": "ESNext",
+    "jsx": "react-jsx"
+  }
+}
+```
+
+## ❓ Troubleshooting
+
+### Common Issues
+
+**1. LynxExplorer Connection Issues**
+- Ensure your device is on the same network
+- Check firewall settings
+- Try restarting the dev server
+
+**2. Build Errors**
+- Clear node_modules: `rm -rf node_modules && pnpm install`
+- Clear build cache: `pnpm clean`
+- Check TypeScript errors: `pnpm typecheck`
+
+**3. Test Failures**
+- Update snapshots: `pnpm test -- -u`
+- Check test environment setup in `src/test/setup.ts`
+- Ensure mocks are properly configured
+
+### Debug Mode
+
+Enable debug logging:
+
+```typescript
+// In your component or service
+import { enableDebug } from '@/lib/debug';
+
+enableDebug(true);
+```
+
+## 📚 Resources
+
+- [ReactLynx Documentation](https://lynx-js.github.io/lynx/docs/react)
 - [Ariob Core Package](../../packages/core/README.md)
+- [Gun.js Documentation](https://gun.eco/docs/)
+- [Vite Documentation](https://vitejs.dev/)
+
+---
+
+<div align="center">
+Part of the <a href="../../README.md">Ariob Platform</a>
+</div>

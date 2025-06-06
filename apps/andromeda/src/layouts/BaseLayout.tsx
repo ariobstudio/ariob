@@ -24,21 +24,20 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({
 
   return (
     <page
-      className={withTheme(
-        'bg-background text-foreground',
-        'dark bg-background text-foreground',
+      className={cn(
+        withTheme(
+          'bg-background text-foreground',
+          'dark bg-background text-foreground',
+        ),
+        className,
       )}
     >
-      <view
-        className={cn(
-          'flex flex-col h-full',
-          'pt-safe-top pb-safe-bottom px-4', // Lynx safe area support
-          className,
-        )}
-      >
+      <view className={cn('flex flex-col h-full', className)}>
         {/* Header */}
         {showHeader && header && (
-          <Row width='full' className="flex-shrink-0 z-50">{header}</Row>
+          <Row width="full" className="flex-shrink-0 z-50">
+            {header}
+          </Row>
         )}
 
         {/* Main Content */}

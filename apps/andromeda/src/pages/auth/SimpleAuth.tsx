@@ -1,12 +1,18 @@
-import { useAuth } from '@ariob/core';
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Column, Row } from '@/components/primitives';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { useWho } from '@ariob/core';
+import React, { useState } from 'react';
 
 export const SimpleAuth: React.FC = () => {
-  const { login, signup, isLoading } = useAuth();
+  const { login, signup, isLoading } = useWho();
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [alias, setAlias] = useState('');
   const [password, setPassword] = useState('');
@@ -37,12 +43,14 @@ export const SimpleAuth: React.FC = () => {
       <CardHeader>
         <CardTitle>{isLoginMode ? 'Welcome Back' : 'Create Account'}</CardTitle>
         <CardDescription>
-          {isLoginMode ? 'Sign in to your account' : 'Sign up for a new account'}
+          {isLoginMode
+            ? 'Sign in to your account'
+            : 'Sign up for a new account'}
         </CardDescription>
       </CardHeader>
-      <CardContent className='flex-col'>
-        <Column spacing="md" align="center" className='pb-2'>
-          <Row width='full'>
+      <CardContent className="flex-col">
+        <Column spacing="md" align="center" className="pb-2">
+          <Row width="full">
             <Input
               type="text"
               placeholder="Enter your username"
@@ -52,8 +60,8 @@ export const SimpleAuth: React.FC = () => {
               required
             />
           </Row>
-          
-          <Row width='full'>
+
+          <Row width="full">
             <Input
               type="password"
               placeholder="Enter your password"
@@ -64,17 +72,16 @@ export const SimpleAuth: React.FC = () => {
             />
           </Row>
 
-          <Button
-            className='w-auto'
-            bindtap={handleAuth}
-          >
-            {isLoading ? 'Loading...' : (isLoginMode ? 'Sign In' : 'Sign Up')}
+          <Button className="w-auto" bindtap={handleAuth}>
+            {isLoading ? 'Loading...' : isLoginMode ? 'Sign In' : 'Sign Up'}
           </Button>
         </Column>
 
         <Row spacing="md" justify="center">
           <text className="text-sm text-muted-foreground">
-            {isLoginMode ? "Don't have an account?" : 'Already have an account?'}
+            {isLoginMode
+              ? "Don't have an account?"
+              : 'Already have an account?'}
           </text>
           <Button
             variant="link"
@@ -87,4 +94,4 @@ export const SimpleAuth: React.FC = () => {
       </CardContent>
     </Card>
   );
-}; 
+};

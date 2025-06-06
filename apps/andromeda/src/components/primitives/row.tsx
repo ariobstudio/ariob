@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { type VariantProps, cva } from 'class-variance-authority';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -47,7 +47,7 @@ const rowVariants = cva('flex flex-row', {
     },
   },
   defaultVariants: {
-    gap: 'md',
+    spacing: 'md',
     align: 'center',
     justify: 'start',
     wrap: 'nowrap',
@@ -74,7 +74,15 @@ function Row({
     <view
       data-slot="row"
       className={cn(
-        rowVariants({ spacing, align, justify, wrap, width, height, className }),
+        rowVariants({
+          spacing,
+          align,
+          justify,
+          wrap,
+          width,
+          height,
+          className,
+        }),
       )}
     >
       {props.children}

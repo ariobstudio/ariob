@@ -1,14 +1,15 @@
-import { useAuth } from '@ariob/core';
+import { useWho } from '@ariob/core';
 import React, { useEffect, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 export const HomePage: React.FC = () => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useWho();
   const navigate = useNavigate();
-
+  console.log('isAuthenticated', isAuthenticated);
+  console.log('isLoading', isLoading);
   if (!isLoading) {
-    console.log('isnt loading', !isLoading); 
     if (isAuthenticated) {
+      console.log('navigating to dashboard');
       navigate('/dashboard');
     } else {
       navigate('/onboarding');

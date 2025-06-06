@@ -1,27 +1,90 @@
-# Testing Setup for Andromeda
+# 🧪 Testing Guide for Andromeda
 
-This directory contains the testing configuration and utilities for the Andromeda app using the Lynx React Testing Library.
+<div align="center">
 
-## Overview
+[![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
+[![Testing Library](https://img.shields.io/badge/Testing%20Library-E33332?style=for-the-badge&logo=testing-library&logoColor=white)](https://testing-library.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
-The testing setup uses:
-- **Vitest** as the test runner
-- **@lynx-js/react/testing-library** for component testing
-- **@testing-library/jest-dom** for additional matchers
-- **jsdom** as the test environment
+Comprehensive testing setup and guidelines for the Andromeda application.
 
-## Configuration
+</div>
 
-### Vitest Config (`vitest.config.ts`)
+## 📋 Table of Contents
+
+- [Overview](#-overview)
+- [Quick Start](#-quick-start)
+- [Configuration](#-configuration)
+- [Writing Tests](#-writing-tests)
+- [Mocking Strategies](#-mocking-strategies)
+- [Running Tests](#-running-tests)
+- [Best Practices](#-best-practices)
+- [Troubleshooting](#-troubleshooting)
+- [Examples](#-examples)
+
+## 🎯 Overview
+
+The Andromeda testing setup provides a robust foundation for unit and integration testing using:
+
+- **⚡ Vitest** - Fast, ESM-first test runner
+- **🎭 @lynx-js/react/testing-library** - Lynx-optimized testing utilities
+- **✅ @testing-library/jest-dom** - Custom matchers for DOM assertions
+- **🌐 jsdom** - DOM implementation for Node.js
+- **📸 Snapshot Testing** - Component structure verification
+
+## 🚀 Quick Start
+
+### Basic Test Structure
+
 ```typescript
-import { defineConfig, mergeConfig } from 'vitest/config'
-import { createVitestConfig } from '@lynx-js/react/testing-library/vitest-config'
-import * as path from 'path'
+import '@testing-library/jest-dom';
+import { expect, test, describe } from 'vitest';
+import { render } from '@lynx-js/react/testing-library';
+import { YourComponent } from '../YourComponent';
 
-const defaultConfig = await createVitestConfig()
+describe('YourComponent', () => {
+  test('renders correctly', async () => {
+    const { findByText } = render(<YourComponent />);
+    
+    const element = await findByText('Expected Text');
+    expect(element).toBeInTheDocument();
+  });
+});
+```
+
+### Running Your First Test
+
+```bash
+# Run all tests
+pnpm test
+
+# Run in watch mode (recommended for development)
+pnpm test:watch
+
+# Run a specific test file
+pnpm test src/components/auth/__tests__/Login.test.tsx
+```
+
+## ⚙️ Configuration
+
+### Vitest Configuration (`vitest.config.ts`)
+
+```typescript
+import { defineConfig, mergeConfig } from 'vitest/config';
+import { createVitestConfig } from '@lynx-js/react/testing-library/vitest-config';
+import * as path from 'path';
+
+const defaultConfig = await createVitestConfig();
+
 const config = defineConfig({
   test: {
     setupFiles: ['./src/test/setup.ts'],
+    environment: 'jsdom',
+    globals: true,
+    coverage: {
+      reporter: ['text', 'json', 'html'],
+      exclude: ['node_modules/', 'src/test/'],
+    },
   },
   resolve: {
     alias: {
@@ -29,184 +92,498 @@ const config = defineConfig({
       '@ariob/core': path.resolve(__dirname, '../../packages/core'),
     },
   },
-})
+});
 
-export default mergeConfig(defaultConfig, config)
+export default mergeConfig(defaultConfig, config);
 ```
 
 ### Test Setup (`setup.ts`)
-```typescript
-import '@testing-library/jest-dom'
-// Global test setup for Lynx React testing library
-```
-
-## Writing Tests
-
-### Basic Test Structure
 
 ```typescript
-import '@testing-library/jest-dom'
-import { expect, test, vi } from 'vitest'
-import { render, getQueriesForElement } from '@lynx-js/react/testing-library'
+import '@testing-library/jest-dom';
+import { vi } from 'vitest';
 
-test('Component Test', async () => {
-  render(<YourComponent />)
-  
-  const { findByText } = getQueriesForElement(elementTree.root!)
-  
-  const element = await findByText('Expected Text')
-  expect(element).toBeInTheDocument()
-})
+// Global test setup
+global.ResizeObserver = vi.fn().mockImplementation(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}));
+
+// Mock environment variables if needed
+process.env.VITE_API_URL = 'http://test.local';
 ```
+
+## 📝 Writing Tests
 
 ### Key Differences from Standard React Testing
 
-1. **Import from Lynx**: Use `@lynx-js/react/testing-library` instead of `@testing-library/react`
-2. **Element Tree**: Access rendered elements via `elementTree.root!`
-3. **Lynx Components**: Use Lynx components (`<view>`, `<text>`, `<image>`) for simple tests
-4. **Async Queries**: Prefer `findByText` over `getByText` for better async handling
+1. **Import from Lynx**
+   ```typescript
+   // ❌ Wrong
+   import { render } from '@testing-library/react';
+   
+   // ✅ Correct
+   import { render } from '@lynx-js/react/testing-library';
+   ```
 
-### Testing Lynx Components
+2. **Access Element Tree**
+   ```typescript
+   const { findByText, elementTree } = render(<Component />);
+   const { getByText } = getQueriesForElement(elementTree.root!);
+   ```
+
+3. **Use Lynx Components**
+   ```typescript
+   import { View, Text } from '@lynx-js/react';
+   
+   const TestComponent = () => (
+     <View>
+       <Text>Hello Lynx</Text>
+     </View>
+   );
+   ```
+
+4. **Prefer Async Queries**
+   ```typescript
+   // ❌ May fail with async rendering
+   const element = getByText('Loading...');
+   
+   // ✅ Better for async content
+   const element = await findByText('Loaded!');
+   ```
+
+### Testing Patterns
+
+#### Component Testing
 
 ```typescript
-const TestComponent = () => {
-  return (
-    <view>
-      <text>Hello World</text>
-      <view>
-        <text>Nested Content</text>
-      </view>
-    </view>
-  )
-}
-
-test('Lynx Component', async () => {
-  render(<TestComponent />)
+describe('UserProfile', () => {
+  test('displays user information', async () => {
+    const mockUser = {
+      alias: 'testuser',
+      displayName: 'Test User',
+    };
+    
+    const { findByText } = render(
+      <UserProfile user={mockUser} />
+    );
+    
+    expect(await findByText('Test User')).toBeInTheDocument();
+    expect(await findByText('@testuser')).toBeInTheDocument();
+  });
   
-  const { findByText } = getQueriesForElement(elementTree.root!)
-  
-  const hello = await findByText('Hello World')
-  const nested = await findByText('Nested Content')
-  
-  expect(hello).toBeInTheDocument()
-  expect(nested).toBeInTheDocument()
-  
-  // Snapshot testing
-  expect(elementTree.root).toMatchSnapshot()
-})
+  test('shows loading state', () => {
+    const { getByText } = render(
+      <UserProfile user={null} isLoading={true} />
+    );
+    
+    expect(getByText('Loading...')).toBeInTheDocument();
+  });
+});
 ```
 
-### Mocking UI Components
-
-When testing components that use complex UI libraries, mock them to avoid parsing issues:
+#### Hook Testing
 
 ```typescript
-// Mock UI components
+import { renderHook, act } from '@lynx-js/react/testing-library';
+import { useCounter } from '../useCounter';
+
+test('useCounter hook', () => {
+  const { result } = renderHook(() => useCounter());
+  
+  expect(result.current.count).toBe(0);
+  
+  act(() => {
+    result.current.increment();
+  });
+  
+  expect(result.current.count).toBe(1);
+});
+```
+
+#### Snapshot Testing
+
+```typescript
+test('matches snapshot', () => {
+  const { elementTree } = render(<Component />);
+  expect(elementTree.root).toMatchSnapshot();
+});
+```
+
+## 🎭 Mocking Strategies
+
+### Mock UI Components
+
+```typescript
+// Mock complex UI components to avoid parsing issues
 vi.mock('@/components/ui/button', () => ({
   Button: ({ children, onClick, ...props }: any) => (
     <button onClick={onClick} {...props}>{children}</button>
   ),
-}))
+}));
 
 vi.mock('@/components/ui/card', () => ({
-  Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  CardHeader: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  CardTitle: ({ children, ...props }: any) => <h2 {...props}>{children}</h2>,
-}))
+  Card: ({ children, ...props }: any) => (
+    <div data-testid="card" {...props}>{children}</div>
+  ),
+  CardContent: ({ children }: any) => (
+    <div data-testid="card-content">{children}</div>
+  ),
+  CardHeader: ({ children }: any) => (
+    <div data-testid="card-header">{children}</div>
+  ),
+}));
 ```
 
-### Mocking Hooks and Services
+### Mock Hooks
 
 ```typescript
 // Mock custom hooks
 vi.mock('@/hooks/useTheme', () => ({
   useTheme: () => ({
-    withTheme: (dark: string, light: string) => light,
-    currentTheme: 'Light',
+    theme: 'light',
     setTheme: vi.fn(),
+    withTheme: (dark: string, light: string) => light,
   }),
-}))
+}));
 
-// Mock core services
+// Mock authentication
 vi.mock('@ariob/core', () => ({
-  useAuth: () => ({
-    user: null,
+  useWho: () => ({
+    user: { alias: 'testuser', pub: 'test-pub-key' },
+    isAuthenticated: true,
     isLoading: false,
     error: null,
-    isAuthenticated: false,
     login: vi.fn(),
     logout: vi.fn(),
+    signup: vi.fn(),
   }),
-}))
+}));
+```
 
-// Mock router
-const mockNavigate = vi.fn()
+### Mock Router
+
+```typescript
+const mockNavigate = vi.fn();
+const mockLocation = { pathname: '/' };
+
 vi.mock('react-router', async () => {
-  const actual = await vi.importActual('react-router')
+  const actual = await vi.importActual('react-router');
   return {
     ...actual,
     useNavigate: () => mockNavigate,
-  }
-})
+    useLocation: () => mockLocation,
+    useParams: () => ({ id: 'test-id' }),
+  };
+});
 ```
 
-## Running Tests
+### Mock Services
+
+```typescript
+// Mock service calls
+vi.mock('@/services/api', () => ({
+  api: {
+    get: vi.fn().mockResolvedValue({ data: [] }),
+    post: vi.fn().mockResolvedValue({ data: { id: '123' } }),
+    put: vi.fn().mockResolvedValue({ data: { success: true } }),
+    delete: vi.fn().mockResolvedValue({ data: { deleted: true } }),
+  },
+}));
+```
+
+## 🏃 Running Tests
+
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `pnpm test` | Run all tests |
+| `pnpm test:watch` | Run tests in watch mode |
+| `pnpm test:run` | Run tests once (CI mode) |
+| `pnpm test:ui` | Open Vitest UI |
+| `pnpm test:coverage` | Generate coverage report |
+
+### Options
 
 ```bash
-# Run all tests
-pnpm test
-
-# Run tests in watch mode
-pnpm test:watch
-
-# Run tests once
-pnpm test:run
-
 # Run specific test file
-pnpm test:run src/components/auth/__tests__/basic.test.tsx
+pnpm test path/to/test.tsx
 
-# Run tests with UI
-pnpm test:ui
+# Run tests matching pattern
+pnpm test --grep "auth"
 
-# Run tests with coverage
-pnpm test:coverage
+# Update snapshots
+pnpm test -u
+
+# Run with reporter
+pnpm test --reporter=verbose
+
+# Debug mode
+pnpm test --inspect-brk
 ```
 
-## Best Practices
+## ✅ Best Practices
 
-1. **Start Simple**: Begin with basic Lynx components before testing complex UI
-2. **Mock Dependencies**: Mock external dependencies and complex UI components
-3. **Use Async Queries**: Prefer `findByText` over `getByText` for better reliability
-4. **Snapshot Testing**: Use snapshots to verify component structure
-5. **Test Behavior**: Focus on user interactions and component behavior
-6. **Organize Tests**: Group related tests in describe blocks
-7. **Clear Test Names**: Use descriptive test names that explain what is being tested
+### 1. Test Organization
 
-## Troubleshooting
+```
+src/
+├── components/
+│   ├── auth/
+│   │   ├── Login.tsx
+│   │   └── __tests__/
+│   │       ├── Login.test.tsx
+│   │       └── Login.snapshot.test.tsx
+│   └── shared/
+│       └── __tests__/
+└── hooks/
+    └── __tests__/
+```
+
+### 2. Test Naming
+
+```typescript
+// ✅ Good: Descriptive test names
+describe('LoginForm', () => {
+  test('displays error message when credentials are invalid', () => {});
+  test('disables submit button while loading', () => {});
+  test('redirects to dashboard after successful login', () => {});
+});
+
+// ❌ Bad: Vague test names
+describe('Login', () => {
+  test('works', () => {});
+  test('error', () => {});
+});
+```
+
+### 3. Test Structure (AAA Pattern)
+
+```typescript
+test('user can submit form', async () => {
+  // Arrange
+  const onSubmit = vi.fn();
+  const { getByRole, getByLabelText } = render(
+    <Form onSubmit={onSubmit} />
+  );
+  
+  // Act
+  await userEvent.type(getByLabelText('Email'), 'test@example.com');
+  await userEvent.click(getByRole('button', { name: 'Submit' }));
+  
+  // Assert
+  expect(onSubmit).toHaveBeenCalledWith({
+    email: 'test@example.com'
+  });
+});
+```
+
+### 4. Async Testing
+
+```typescript
+// ✅ Good: Wait for async operations
+test('loads user data', async () => {
+  const { findByText } = render(<UserProfile userId="123" />);
+  
+  // Wait for data to load
+  const userName = await findByText('John Doe');
+  expect(userName).toBeInTheDocument();
+});
+
+// ❌ Bad: Not waiting for async
+test('loads user data', () => {
+  const { getByText } = render(<UserProfile userId="123" />);
+  
+  // This might fail!
+  expect(getByText('John Doe')).toBeInTheDocument();
+});
+```
+
+### 5. Mock Cleanup
+
+```typescript
+// Clean up mocks after each test
+afterEach(() => {
+  vi.clearAllMocks();
+});
+
+// Reset mocks if needed
+afterAll(() => {
+  vi.resetAllMocks();
+});
+```
+
+## ❓ Troubleshooting
 
 ### Common Issues
 
-1. **"Invalid hook call"**: Usually caused by React version mismatches. Ensure all React imports come from `@lynx-js/react`
-2. **"Cannot find module"**: Check path aliases in `vitest.config.ts`
-3. **"Expected ';', '}' or <eof>"**: Usually caused by JSON parsing issues. Mock the problematic components
-4. **"Cannot read properties of null"**: Ensure `elementTree.root!` is used correctly
+<details>
+<summary><strong>"Invalid hook call" error</strong></summary>
+
+**Cause:** React version mismatch
+
+**Solution:**
+```typescript
+// Ensure all React imports come from @lynx-js/react
+import React from '@lynx-js/react';
+```
+</details>
+
+<details>
+<summary><strong>"Cannot find module" error</strong></summary>
+
+**Cause:** Path alias not configured
+
+**Solution:** Check `vitest.config.ts` for proper alias configuration:
+```typescript
+resolve: {
+  alias: {
+    '@': path.resolve(__dirname, './src'),
+  },
+}
+```
+</details>
+
+<details>
+<summary><strong>"Expected ';', '}' or <eof>" error</strong></summary>
+
+**Cause:** JSON/CSS parsing issues with complex components
+
+**Solution:** Mock the problematic component:
+```typescript
+vi.mock('@/components/ComplexComponent', () => ({
+  default: () => <div>Mocked Component</div>,
+}));
+```
+</details>
+
+<details>
+<summary><strong>"Cannot read properties of null" error</strong></summary>
+
+**Cause:** Trying to access elementTree before render
+
+**Solution:**
+```typescript
+const { elementTree } = render(<Component />);
+// Use elementTree.root! with non-null assertion
+const queries = getQueriesForElement(elementTree.root!);
+```
+</details>
 
 ### Debug Tips
 
-1. Use `console.log(elementTree.root)` to inspect the rendered structure
-2. Add `--reporter=verbose` to see detailed test output
-3. Use `expect(elementTree.root).toMatchSnapshot()` to see the actual structure
-4. Check the vitest config for proper path resolution
+1. **Inspect rendered output**
+   ```typescript
+   const { elementTree } = render(<Component />);
+   console.log(elementTree.root);
+   ```
 
-## Examples
+2. **Use debug function**
+   ```typescript
+   const { debug } = render(<Component />);
+   debug(); // Prints the DOM tree
+   ```
 
-See the test files in `src/components/auth/__tests__/` for working examples:
-- `basic.test.tsx` - Simple Lynx component testing
-- `simple.test.tsx` - Basic testing setup verification
+3. **Check test environment**
+   ```typescript
+   console.log(process.env.NODE_ENV); // Should be 'test'
+   ```
 
-## Resources
+4. **Enable verbose logging**
+   ```bash
+   pnpm test --reporter=verbose
+   ```
 
-- [Lynx React Documentation](https://lynx-js.github.io/lynx/docs/react)
+## 💡 Examples
+
+### Complete Test File Example
+
+```typescript
+import '@testing-library/jest-dom';
+import { expect, test, describe, vi, beforeEach } from 'vitest';
+import { render, fireEvent, waitFor } from '@lynx-js/react/testing-library';
+import { LoginForm } from '../LoginForm';
+
+// Mock dependencies
+vi.mock('@ariob/core', () => ({
+  useWho: () => ({
+    login: vi.fn().mockResolvedValue({ 
+      isOk: () => true, 
+      value: { alias: 'testuser' } 
+    }),
+    isLoading: false,
+    error: null,
+  }),
+}));
+
+const mockNavigate = vi.fn();
+vi.mock('react-router', () => ({
+  useNavigate: () => mockNavigate,
+}));
+
+describe('LoginForm', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+  
+  test('renders login form fields', () => {
+    const { getByLabelText, getByRole } = render(<LoginForm />);
+    
+    expect(getByLabelText('Username')).toBeInTheDocument();
+    expect(getByLabelText('Password')).toBeInTheDocument();
+    expect(getByRole('button', { name: 'Login' })).toBeInTheDocument();
+  });
+  
+  test('submits form with valid data', async () => {
+    const { getByLabelText, getByRole } = render(<LoginForm />);
+    const { login } = useWho();
+    
+    // Fill form
+    fireEvent.change(getByLabelText('Username'), {
+      target: { value: 'testuser' },
+    });
+    fireEvent.change(getByLabelText('Password'), {
+      target: { value: 'password123' },
+    });
+    
+    // Submit
+    fireEvent.click(getByRole('button', { name: 'Login' }));
+    
+    // Verify
+    await waitFor(() => {
+      expect(login).toHaveBeenCalledWith({
+        method: 'traditional',
+        alias: 'testuser',
+        passphrase: 'password123',
+      });
+      expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
+    });
+  });
+  
+  test('displays validation errors', async () => {
+    const { getByRole, findByText } = render(<LoginForm />);
+    
+    // Submit empty form
+    fireEvent.click(getByRole('button', { name: 'Login' }));
+    
+    // Check errors
+    expect(await findByText('Username is required')).toBeInTheDocument();
+    expect(await findByText('Password is required')).toBeInTheDocument();
+  });
+});
+```
+
+## 📚 Resources
+
 - [Vitest Documentation](https://vitest.dev/)
-- [Testing Library Documentation](https://testing-library.com/) 
+- [Testing Library Documentation](https://testing-library.com/)
+- [Lynx React Testing Guide](https://lynx-js.github.io/lynx/docs/react/testing)
+- [Jest DOM Matchers](https://github.com/testing-library/jest-dom)
+
+---
+
+<div align="center">
+Part of the <a href="../../README.md">Andromeda Application</a>
+</div> 
