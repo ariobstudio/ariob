@@ -12,17 +12,12 @@ import { useWho } from '@ariob/core';
 import React from 'react';
 import { useNavigate } from 'react-router';
 
-export const DashboardPage: React.FC = () => {
+const Page: React.FC = () => {
   const { user, logout } = useWho();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    navigate('/onboarding');
-    // try {
-    //   await logout();
-    // } catch (error) {
-    //   console.error('Logout error:', error);
-    // }
+    navigate('/');
   };
 
   return (
@@ -59,7 +54,7 @@ export const DashboardPage: React.FC = () => {
               </text>
             </view>
 
-            <Button className="w-full" variant="outline" bindtap={handleLogout}>
+            <Button className="w-full" variant="outline" onClick={handleLogout}>
               Sign Out
             </Button>
           </CardContent>
@@ -68,3 +63,5 @@ export const DashboardPage: React.FC = () => {
     </BaseLayout>
   );
 };
+
+export default Page;

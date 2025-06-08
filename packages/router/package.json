@@ -1,0 +1,20 @@
+{
+  "name": "@ariob/router",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "types": "index.ts",
+  "dependencies": {
+    "chokidar": "^3.5.3"
+  },
+  "devDependencies": {
+    "@rsbuild/core": "^1.0.0",
+    "@types/node": "^20.0.0",
+    "react-router": "^6.0.0",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "@rsbuild/core": "^1.0.0",
+    "react": "^18.0.0",
+    "react-router": "^6.0.0"
+  }
+}

@@ -1,5 +1,6 @@
 import { defineConfig } from '@lynx-js/rspeedy';
 
+import { reactRouterPlugin } from '@ariob/router';
 import { pluginQRCode } from '@lynx-js/qrcode-rsbuild-plugin';
 import { pluginReactLynx } from '@lynx-js/react-rsbuild-plugin';
 import { pluginSass } from '@rsbuild/plugin-sass';
@@ -16,6 +17,12 @@ export default defineConfig({
     pluginReactLynx({
       enableCSSInheritance: true,
       defaultDisplayLinear: false,
+    }),
+    reactRouterPlugin({
+      root: './src/pages',
+      output: './src/generated/_routes.tsx',
+      srcAlias: '@/',
+      layoutFilename: '_layout.tsx',
     }),
   ],
   environments: {

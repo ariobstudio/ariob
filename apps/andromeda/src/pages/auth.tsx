@@ -8,16 +8,10 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { TextArea } from '@/components/ui/textarea';
 import { useWho } from '@ariob/core';
 import React, { useState } from 'react';
 
-/**
- * Login Screen Component
- *
- * Demonstrates multi-auth support with keypair, mnemonic, and traditional methods
- */
-export const LoginScreen: React.FC = () => {
+const Page: React.FC = () => {
   const { signup, login, isLoading, error } = useWho();
   const [alias, setAlias] = useState('');
   const [passphrase, setPassphrase] = useState('');
@@ -75,17 +69,19 @@ export const LoginScreen: React.FC = () => {
         console.log('Authentication successful:', user.alias);
       },
       (error) => {
-        alert(`Authentication failed: ${error.message}`);
+        console.error('Authentication error:', error);
       },
     );
   };
 
   return (
+    <view className="flex flex-col items-center justify-center min-h-screen p-6 space-y-8">
+
     <Column
       height="full"
       justify="center"
       align="center"
-      className="p-6 bg-gray-50"
+      className="p-6"
     >
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader>
@@ -107,8 +103,7 @@ export const LoginScreen: React.FC = () => {
                     <Button
                       key={method}
                       variant={authMethod === method ? 'default' : 'outline'}
-                      bindtap={() => setAuthMethod(method)}
-                      className="flex-1"
+                      onClick={() => setAuthMethod(method)}
                     >
                       {method.charAt(0).toUpperCase() + method.slice(1)}
                     </Button>
@@ -177,10 +172,9 @@ export const LoginScreen: React.FC = () => {
 
             {/* Submit Button */}
             <Button
-              bindtap={handleAuth}
+              onClick={handleAuth}
               variant="default"
               size="lg"
-              className={`w-full ${isLoading ? 'opacity-50' : ''}`}
             >
               {isLoading ? 'Processing...' : isSignup ? 'Sign Up' : 'Login'}
             </Button>
@@ -215,5 +209,9 @@ export const LoginScreen: React.FC = () => {
         </CardContent>
       </Card>
     </Column>
+    </view>
+
   );
 };
+
+export default Page;

@@ -26,8 +26,8 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({
     <page
       className={cn(
         withTheme(
-          'bg-background text-foreground',
-          'dark bg-background text-foreground',
+          'bg-background text-foreground pt-safe-top',
+          'dark bg-background text-foreground pt-safe-top',
         ),
         className,
       )}

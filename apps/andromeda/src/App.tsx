@@ -1,6 +1,6 @@
-import { AppRouter } from '@/router';
+import { FileRouter } from '@/router/FileRouter';
 
 // Main App wrapper that provides router context
 export function App() {
-  return <AppRouter />;
+  return <FileRouter />;
 }

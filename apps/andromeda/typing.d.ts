@@ -5,6 +5,33 @@ declare module '*.png?inline';
 declare namespace JSX {
   interface IntrinsicElements {
     input: any;
+    view: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
+      bindtap?: (event?: any) => void;
+      bindlongpress?: (event?: any) => void;
+      bindtouchstart?: (event?: any) => void;
+      bindtouchmove?: (event?: any) => void;
+      bindtouchend?: (event?: any) => void;
+      bindtouchcancel?: (event?: any) => void;
+    };
+    text: React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> & {
+      bindtap?: (event?: any) => void;
+    };
+    image: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> & {
+      bindtap?: (event?: any) => void;
+      binderror?: (event?: any) => void;
+      bindload?: (event?: any) => void;
+    };
+    scrollview: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
+      bindscroll?: (event?: any) => void;
+      bindscrolltolower?: (event?: any) => void;
+      bindscrolltoupper?: (event?: any) => void;
+      scrollX?: boolean;
+      scrollY?: boolean;
+      scrollTop?: number;
+      scrollLeft?: number;
+      scrollIntoView?: string;
+      scrollWithAnimation?: boolean;
+    };
   }
 }
 

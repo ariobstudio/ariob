@@ -22,7 +22,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "34DB2E1F-10F4-4266-973C-731E3BDFFB38"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Ariob/TasmDispatcher.m"
@@ -70,7 +70,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "2FDED9BB-C84A-45F7-A088-D2957FCEB50D"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Ariob/AppDelegate.m"
@@ -86,7 +86,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "3418936A-0DB7-426E-8BAC-364E12E0DFE0"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Ariob/AppDelegate.m"
@@ -140,9 +140,9 @@
             filePath = "Ariob/modules/NativeWebCryptoModule.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "736"
-            endingLineNumber = "736"
-            landmarkName = "textEncode(text:)"
+            startingLineNumber = "764"
+            endingLineNumber = "764"
+            landmarkName = "importKey(format:keyData:algorithm:extractable:keyUsages:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -156,9 +156,9 @@
             filePath = "Ariob/modules/NativeWebCryptoModule.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "738"
-            endingLineNumber = "738"
-            landmarkName = "textEncode(text:)"
+            startingLineNumber = "766"
+            endingLineNumber = "766"
+            landmarkName = "importKey(format:keyData:algorithm:extractable:keyUsages:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -172,10 +172,26 @@
             filePath = "Ariob/modules/NativeWebCryptoModule.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "739"
-            endingLineNumber = "739"
-            landmarkName = "textEncode(text:)"
+            startingLineNumber = "767"
+            endingLineNumber = "767"
+            landmarkName = "importKey(format:keyData:algorithm:extractable:keyUsages:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E25109FD-3293-4B12-8596-6E151003F45C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Ariob/modules/NativeWebCryptoModule.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "363"
+            endingLineNumber = "363"
+            landmarkName = "NativeWebCryptoModule"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -57,6 +57,7 @@ interface ButtonProps
   extends React.ComponentProps<'view'>,
     VariantProps<typeof buttonVariants> {
   icon?: keyof typeof lucideGlyphs;
+  onClick?: () => void;
 }
 
 function Button({ className, variant, size, icon, ...props }: ButtonProps) {
@@ -64,6 +65,8 @@ function Button({ className, variant, size, icon, ...props }: ButtonProps) {
     <view
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
+      // @ts-ignore
+      bindtap={props.onClick}
       {...props}
     >
       {icon && <Icon className={cn(textVariants({ variant }))} name={icon} />}

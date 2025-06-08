@@ -36,7 +36,7 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
     @objc public static var methodLookup: [String: String] {
         return [
             // Core Web Crypto API methods
-            "digest": NSStringFromSelector(#selector(digest(options:data:))),
+            "digest": NSStringFromSelector(#selector(digest(algorithm:data:))),
             "generateKey": NSStringFromSelector(#selector(generateKey(algorithm:extractable:keyUsages:))),
             "exportKey": NSStringFromSelector(#selector(exportKey(format:key:))),
             "importKey": NSStringFromSelector(#selector(importKey(format:keyData:algorithm:extractable:keyUsages:))),
@@ -126,15 +126,15 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
      - Returns: The decoded binary data or nil if decoding failed
      */
     private func base64urlDecode(_ string: String) -> Data? {
-        return try? {
-            var base64 = string
-            base64 = base64.replacingOccurrences(of: "-", with: "+")
-                .replacingOccurrences(of: "_", with: "/")
-            // Add padding if needed
-            let padding = base64.count % 4
-            if padding > 0 { base64 += String(repeating: "=", count: 4 - padding) }
-            return Data(base64Encoded: base64)
-        }()
+        var base64 = string
+        base64 = base64.replacingOccurrences(of: "-", with: "+")
+                       .replacingOccurrences(of: "_", with: "/")
+        // Add padding if needed
+        let padding = base64.count % 4
+        if padding > 0 {
+            base64 += String(repeating: "=", count: 4 - padding)
+        }
+        return Data(base64Encoded: base64)
     }
     
     /**
@@ -157,22 +157,104 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
         return Data(base64Encoded: string)
     }
 
-    // MARK: - Error JSON Conversion
+    // MARK: - Error Handling
     
     /**
-     Creates a JSON error response.
+     Web Crypto API error types mapped from DOMException
+     */
+    enum WebCryptoError: Error {
+        case syntaxError(String)
+        case invalidAccessError(String)
+        case notSupportedError(String)
+        case operationError(String)
+        case dataError(String)
+        
+        var message: String {
+            switch self {
+            case .syntaxError(let msg): return msg
+            case .invalidAccessError(let msg): return msg
+            case .notSupportedError(let msg): return msg
+            case .operationError(let msg): return msg
+            case .dataError(let msg): return msg
+            }
+        }
+        
+        var name: String {
+            switch self {
+            case .syntaxError: return "SyntaxError"
+            case .invalidAccessError: return "InvalidAccessError"
+            case .notSupportedError: return "NotSupportedError"
+            case .operationError: return "OperationError"
+            case .dataError: return "DataError"
+            }
+        }
+    }
+    
+    /**
+     Creates a JSON error response matching Web Crypto API error format.
      
-     - Parameter message: The error message
+     - Parameter error: The WebCryptoError to convert
      - Returns: JSON string containing the error details
      */
-    private func errorToJSON(_ message: String) -> String {
-        let errorDict: [String: Any] = ["error": true, "message": message]
-        print("NativeWebCryptoModule Error: \(message)") // Log natively
+    private func errorToJSON(_ error: WebCryptoError) -> String {
+        let errorDict: [String: Any] = [
+            "error": true,
+            "name": error.name,
+            "message": error.message
+        ]
+        print("NativeWebCryptoModule Error: \(error.name) - \(error.message)")
         do {
             let data = try JSONSerialization.data(withJSONObject: errorDict)
-            return String(data: data, encoding: .utf8) ?? "{\"error\": true, \"message\": \"Unknown serialization error\"}"
+            return String(data: data, encoding: .utf8) ?? "{\"error\": true, \"name\": \"Error\", \"message\": \"Unknown serialization error\"}"
         } catch {
-            return "{\"error\": true, \"message\": \"Failed to serialize error object\"}"
+            return "{\"error\": true, \"name\": \"Error\", \"message\": \"Failed to serialize error object\"}"
+        }
+    }
+    
+    /**
+     Legacy error helper for backward compatibility
+     */
+    private func errorToJSON(_ message: String) -> String {
+        return errorToJSON(.operationError(message))
+    }
+
+    // MARK: - Key Usage Validation
+    
+    /**
+     Validates key usage according to Web Crypto API specifications.
+     
+     - Parameters:
+        - keyUsages: Array of requested key usages
+        - algorithm: Algorithm name
+        - keyType: "public", "private", or "secret"
+     - Throws: WebCryptoError if validation fails
+     */
+    private func validateKeyUsages(_ keyUsages: [String], algorithm: String, keyType: String) throws {
+        let validUsages: Set<String>
+        
+        switch algorithm.uppercased() {
+        case "ECDSA":
+            validUsages = keyType == "private" ? ["sign"] : ["verify"]
+        case "ECDH":
+            validUsages = keyType == "private" ? ["deriveKey", "deriveBits"] : []
+        case "AES-GCM":
+            validUsages = ["encrypt", "decrypt", "wrapKey", "unwrapKey"]
+        case "PBKDF2":
+            validUsages = ["deriveKey", "deriveBits"]
+        default:
+            throw WebCryptoError.notSupportedError("Unsupported algorithm: \(algorithm)")
+        }
+        
+        // For secret keys, empty keyUsages is a SyntaxError
+        if keyType == "secret" && keyUsages.isEmpty {
+            throw WebCryptoError.syntaxError("Secret keys must specify at least one usage")
+        }
+        
+        // Check all requested usages are valid
+        for usage in keyUsages {
+            if !validUsages.contains(usage) {
+                throw WebCryptoError.syntaxError("Invalid key usage '\(usage)' for \(algorithm) \(keyType) key")
+            }
         }
     }
 
@@ -192,11 +274,15 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
         let pubData = privateKey.publicKey.x963Representation
         guard pubData.count == 65, pubData[0] == 0x04 else { return nil }
         return [
-            "kty": "EC", "crv": "P-256", "alg": "ES256",
+            "kty": "EC",
+            "crv": "P-256",
+            "alg": "ES256",
+            "use": "sig",
             "d": base64urlEncode(privData),
             "x": base64urlEncode(pubData.subdata(in: 1..<33)),
             "y": base64urlEncode(pubData.subdata(in: 33..<65)),
-            "key_ops": keyOps, "ext": extractable
+            "key_ops": keyOps,
+            "ext": extractable
         ]
     }
     
@@ -213,10 +299,14 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
         let pubData = publicKey.x963Representation
         guard pubData.count == 65, pubData[0] == 0x04 else { return nil }
         return [
-            "kty": "EC", "crv": "P-256", "alg": "ES256",
+            "kty": "EC",
+            "crv": "P-256",
+            "alg": "ES256",
+            "use": "sig",
             "x": base64urlEncode(pubData.subdata(in: 1..<33)),
             "y": base64urlEncode(pubData.subdata(in: 33..<65)),
-            "key_ops": keyOps, "ext": extractable
+            "key_ops": keyOps,
+            "ext": extractable
         ]
     }
     
@@ -234,11 +324,15 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
         let pubData = privateKey.publicKey.x963Representation
         guard pubData.count == 65, pubData[0] == 0x04 else { return nil }
         return [
-            "kty": "EC", "crv": "P-256", "alg": "ECDH-ES",
+            "kty": "EC",
+            "crv": "P-256",
+            "alg": "ECDH-ES",
+            "use": "enc",
             "d": base64urlEncode(privData),
             "x": base64urlEncode(pubData.subdata(in: 1..<33)),
             "y": base64urlEncode(pubData.subdata(in: 33..<65)),
-            "key_ops": keyOps, "ext": extractable
+            "key_ops": keyOps,
+            "ext": extractable
         ]
     }
     
@@ -255,27 +349,18 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
         let pubData = publicKey.x963Representation
         guard pubData.count == 65, pubData[0] == 0x04 else { return nil }
         return [
-            "kty": "EC", "crv": "P-256", "alg": "ECDH-ES",
+            "kty": "EC",
+            "crv": "P-256",
+            "alg": "ECDH-ES",
+            "use": "enc",
             "x": base64urlEncode(pubData.subdata(in: 1..<33)),
             "y": base64urlEncode(pubData.subdata(in: 33..<65)),
-            "key_ops": keyOps, "ext": extractable
+            "key_ops": keyOps,
+            "ext": extractable
         ]
     }
 
     // MARK: - AES Key Helper
-    
-    /**
-     Normalizes an AES key to a valid length.
-     Ensures the key is 128, 192, or 256 bits by hashing if necessary.
-     
-     - Parameter keyData: The input key data
-     - Returns: Normalized key data
-     */
-    private func normalizeAESKey(keyData: Data) -> Data {
-        let keyBitSize = keyData.count * 8
-        if [128, 192, 256].contains(keyBitSize) { return keyData }
-        return Data(SHA256.hash(data: keyData)) // Hash to 256 bits if not standard size
-    }
     
     /**
      Creates a symmetric key from a JWK.
@@ -287,7 +372,12 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
         guard let kty = jwk["kty"] as? String, kty == "oct",
               let kBase64url = jwk["k"] as? String,
               let keyData = base64urlDecode(kBase64url) else { return nil }
-        return SymmetricKey(data: normalizeAESKey(keyData: keyData))
+        
+        // Validate key length for AES
+        let keyBitSize = keyData.count * 8
+        guard [128, 192, 256].contains(keyBitSize) else { return nil }
+        
+        return SymmetricKey(data: keyData)
     }
 
     // MARK: - Web Crypto API Methods Implementation
@@ -318,7 +408,6 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
         }
         return text // Return decoded text, not JSON
     }
-
     /**
      Generates cryptographically secure random values.
      
@@ -326,11 +415,25 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
      - Returns: Base64 encoded random bytes or error JSON if generation fails
      */
     @objc func getRandomValues(length: Int) -> String {
-        guard length > 0 else { return errorToJSON("Length must be positive") }
+        guard length > 0 else {
+            return errorToJSON(.dataError("Length must be positive"))
+        }
+        
+        // Web Crypto API has a limit of 65536 bytes
+        guard length <= 65536 else {
+            return errorToJSON(.dataError("Length must not exceed 65536 bytes"))
+        }
+        
         var data = Data(count: length)
-        let result = data.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, length, $0.baseAddress!) }
-        guard result == errSecSuccess else { return errorToJSON("Failed to generate random bytes") }
-        return base64Encode(data) // Standard Base64
+        let result = data.withUnsafeMutableBytes {
+            SecRandomCopyBytes(kSecRandomDefault, length, $0.baseAddress!)
+        }
+        
+        guard result == errSecSuccess else {
+            return errorToJSON(.operationError("Failed to generate random bytes"))
+        }
+        
+        return base64Encode(data)
     }
 
     /**
@@ -338,24 +441,38 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
      Supports SHA-256, SHA-384, and SHA-512 algorithms.
      
      - Parameters:
-        - options: JSON string containing algorithm name
+        - algorithm: JSON string containing algorithm name or object
         - data: Base64 encoded data to hash
      - Returns: Base64 encoded hash or error JSON if operation fails
      */
-    @objc func digest(options: String, data: String) -> String {
-        guard let optionsDict = parseJSONDictionary(options),
-              let algorithmName = optionsDict["name"] as? String,
-              let inputData = base64Decode(data) else {
-            return errorToJSON("Invalid parameters for digest")
+    @objc func digest(algorithm: String, data: String) -> String {
+        // Handle both string algorithm names and algorithm objects
+        let algorithmName: String
+        if let algoDict = parseJSONDictionary(algorithm),
+           let name = algoDict["name"] as? String {
+            algorithmName = name
+        } else {
+            // Assume it's a plain algorithm name string
+            algorithmName = algorithm
         }
+        
+        guard let inputData = base64Decode(data) else {
+            return errorToJSON(.dataError("Invalid base64 data"))
+        }
+        
         let hash: Data
         switch algorithmName.uppercased() {
-            case "SHA-256": hash = Data(SHA256.hash(data: inputData))
-            case "SHA-384": hash = Data(SHA384.hash(data: inputData))
-            case "SHA-512": hash = Data(SHA512.hash(data: inputData))
-            default: return errorToJSON("Unsupported digest algorithm: \(algorithmName)")
+        case "SHA-256":
+            hash = Data(SHA256.hash(data: inputData))
+        case "SHA-384":
+            hash = Data(SHA384.hash(data: inputData))
+        case "SHA-512":
+            hash = Data(SHA512.hash(data: inputData))
+        default:
+            return errorToJSON(.notSupportedError("Unsupported digest algorithm: \(algorithmName)"))
         }
-        return base64Encode(hash) // Standard base64 hash
+        
+        return base64Encode(hash)
     }
 
     /**
@@ -372,51 +489,86 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
         guard let algorithmDict = parseJSONDictionary(algorithm),
               let algorithmName = algorithmDict["name"] as? String,
               let keyUsagesArray = parseJSONArray(keyUsages) else {
-            return errorToJSON("Invalid parameters for key generation")
+            return errorToJSON(.dataError("Invalid parameters for key generation"))
         }
+        
         let resultDict: Any
         do {
             switch algorithmName.uppercased() {
             case "ECDSA":
-                guard let namedCurve = algorithmDict["namedCurve"] as? String, namedCurve.uppercased() == "P-256" else {
-                    return errorToJSON("Only P-256 curve is supported for ECDSA")
+                guard let namedCurve = algorithmDict["namedCurve"] as? String,
+                      namedCurve.uppercased() == "P-256" else {
+                    return errorToJSON(.notSupportedError("Only P-256 curve is supported for ECDSA"))
                 }
+                
+                // Validate key usages
+                let privateUsages = keyUsagesArray.filter { $0 == "sign" }
+                let publicUsages = keyUsagesArray.filter { $0 == "verify" }
+                
+                try validateKeyUsages(privateUsages, algorithm: "ECDSA", keyType: "private")
+                try validateKeyUsages(publicUsages, algorithm: "ECDSA", keyType: "public")
+                
                 let privateKey = P256.Signing.PrivateKey()
-                guard let privateJWK = createECJWK(privateKey: privateKey, keyOps: keyUsagesArray.filter { $0 == "sign" }, extractable: extractable),
-                      let publicJWK = createECJWK(publicKey: privateKey.publicKey, keyOps: keyUsagesArray.filter { $0 == "verify" }, extractable: true) else {
-                    return errorToJSON("Failed to create ECDSA JWKs")
+                guard let privateJWK = createECJWK(privateKey: privateKey, keyOps: privateUsages, extractable: extractable),
+                      let publicJWK = createECJWK(publicKey: privateKey.publicKey, keyOps: publicUsages, extractable: true) else {
+                    return errorToJSON(.operationError("Failed to create ECDSA JWKs"))
                 }
                 resultDict = ["privateKey": privateJWK, "publicKey": publicJWK]
+                
             case "ECDH":
-                guard let namedCurve = algorithmDict["namedCurve"] as? String, namedCurve.uppercased() == "P-256" else {
-                    return errorToJSON("Only P-256 curve is supported for ECDH")
+                guard let namedCurve = algorithmDict["namedCurve"] as? String,
+                      namedCurve.uppercased() == "P-256" else {
+                    return errorToJSON(.notSupportedError("Only P-256 curve is supported for ECDH"))
                 }
-                let privateKey = P256.KeyAgreement.PrivateKey()
+                
+                // Validate key usages
                 let allowedOps = keyUsagesArray.filter { $0 == "deriveKey" || $0 == "deriveBits" }
+                try validateKeyUsages(allowedOps, algorithm: "ECDH", keyType: "private")
+                
+                let privateKey = P256.KeyAgreement.PrivateKey()
                 guard let privateJWK = createECDHJWK(privateKey: privateKey, keyOps: allowedOps, extractable: extractable),
                       let publicJWK = createECDHJWK(publicKey: privateKey.publicKey, keyOps: [], extractable: true) else {
-                     return errorToJSON("Failed to create ECDH JWKs")
+                    return errorToJSON(.operationError("Failed to create ECDH JWKs"))
                 }
                 resultDict = ["privateKey": privateJWK, "publicKey": publicJWK]
+                
             case "AES-GCM":
                 let keySize = (algorithmDict["length"] as? Int) ?? 256
-                guard [128, 192, 256].contains(keySize) else { return errorToJSON("AES key size must be 128, 192, or 256 bits") }
+                guard [128, 192, 256].contains(keySize) else {
+                    return errorToJSON(.dataError("AES key size must be 128, 192, or 256 bits"))
+                }
+                
+                // Validate key usages
+                try validateKeyUsages(keyUsagesArray, algorithm: "AES-GCM", keyType: "secret")
+                
                 let keyBytes = keySize / 8
                 var keyData = Data(count: keyBytes)
-                let status = keyData.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, keyBytes, $0.baseAddress!) }
-                guard status == errSecSuccess else { return errorToJSON("Failed to generate secure random key for AES") }
-                resultDict = [ // Return the JWK itself for symmetric keys
-                    "kty": "oct", "k": base64urlEncode(keyData), "alg": "A\(keySize)GCM",
-                    "ext": extractable, "key_ops": keyUsagesArray
+                let status = keyData.withUnsafeMutableBytes {
+                    SecRandomCopyBytes(kSecRandomDefault, keyBytes, $0.baseAddress!)
+                }
+                guard status == errSecSuccess else {
+                    return errorToJSON(.operationError("Failed to generate secure random key for AES"))
+                }
+                
+                resultDict = [
+                    "kty": "oct",
+                    "k": base64urlEncode(keyData),
+                    "alg": "A\(keySize)GCM",
+                    "ext": extractable,
+                    "key_ops": keyUsagesArray
                 ]
+                
             default:
-                return errorToJSON("Unsupported algorithm for generateKey: \(algorithmName)")
+                return errorToJSON(.notSupportedError("Unsupported algorithm for generateKey: \(algorithmName)"))
             }
+            
             // Serialize result and return
             let resultData = try JSONSerialization.data(withJSONObject: resultDict)
-            return String(data: resultData, encoding: .utf8) ?? errorToJSON("Failed to serialize result")
+            return String(data: resultData, encoding: .utf8) ?? errorToJSON(.operationError("Failed to serialize result"))
+        } catch let error as WebCryptoError {
+            return errorToJSON(error)
         } catch {
-            return errorToJSON("Error during key generation: \(error.localizedDescription)")
+            return errorToJSON(.operationError("Error during key generation: \(error.localizedDescription)"))
         }
     }
 
@@ -430,30 +582,61 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
      - Returns: Exported key in the requested format or error JSON if export fails
      */
     @objc func exportKey(format: String, key: String) -> String {
-        guard let keyDict = parseJSONDictionary(key), let kty = keyDict["kty"] as? String else {
-            return errorToJSON("Invalid key format for export (not valid JWK)")
+        guard let keyDict = parseJSONDictionary(key),
+              let kty = keyDict["kty"] as? String else {
+            return errorToJSON(.dataError("Invalid key format for export"))
         }
-        let isPublicKey = keyDict["d"] == nil
-        if !isPublicKey, let extractable = keyDict["ext"] as? Bool, !extractable {
-             return errorToJSON("Key is not extractable")
+        
+        // Check if key is extractable
+        let isPrivateKey = keyDict["d"] != nil
+        if let extractable = keyDict["ext"] as? Bool, !extractable {
+            return errorToJSON(.invalidAccessError("Key is not extractable"))
         }
+        
         switch format.lowercased() {
         case "jwk":
-             guard let data = try? JSONSerialization.data(withJSONObject: keyDict), let str = String(data: data, encoding: .utf8) else {
-                 return errorToJSON("Failed to re-serialize JWK for export")
-             }
-             return str
+            guard let data = try? JSONSerialization.data(withJSONObject: keyDict),
+                  let str = String(data: data, encoding: .utf8) else {
+                return errorToJSON(.operationError("Failed to serialize JWK for export"))
+            }
+            return str
+            
         case "raw":
-             if kty == "oct" {
-                guard let kBase64url = keyDict["k"] as? String, let keyData = base64urlDecode(kBase64url) else {
-                    return errorToJSON("Invalid 'oct' key material for raw export")
+            if kty == "oct" {
+                // Symmetric key raw export
+                guard let kBase64url = keyDict["k"] as? String,
+                      let keyData = base64urlDecode(kBase64url) else {
+                    return errorToJSON(.dataError("Invalid symmetric key data"))
                 }
-                return base64Encode(keyData) // Standard Base64 for raw symmetric key bytes
-             } else {
-                return errorToJSON("Raw export format only supported for 'oct' keys")
-             }
+                return base64Encode(keyData)
+            } else if kty == "EC" {
+                // EC public key raw export (only public keys can be exported as raw)
+                guard !isPrivateKey,
+                      let xBase64url = keyDict["x"] as? String,
+                      let yBase64url = keyDict["y"] as? String,
+                      let xData = base64urlDecode(xBase64url),
+                      let yData = base64urlDecode(yBase64url) else {
+                    return errorToJSON(.notSupportedError("Raw format only supported for public EC keys"))
+                }
+                // Return uncompressed point format (0x04 || x || y)
+                var rawData = Data([0x04])
+                rawData.append(xData)
+                rawData.append(yData)
+                return base64Encode(rawData)
+            } else {
+                return errorToJSON(.notSupportedError("Raw export not supported for this key type"))
+            }
+            
+        case "spki":
+            // SubjectPublicKeyInfo format for public keys
+            return errorToJSON(.notSupportedError("SPKI export format not yet implemented"))
+            
+        case "pkcs8":
+            // PKCS#8 format for private keys
+            return errorToJSON(.notSupportedError("PKCS8 export format not yet implemented"))
+            
         default:
-            return errorToJSON("Unsupported export format: \(format)")
+            return errorToJSON(.notSupportedError("Unsupported export format: \(format)"))
         }
     }
 
@@ -473,71 +656,149 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
         guard let algorithmDict = parseJSONDictionary(algorithm),
               let algorithmName = algorithmDict["name"] as? String,
               let keyUsagesArray = parseJSONArray(keyUsages) else {
-            return errorToJSON("Invalid parameters for key import")
+            return errorToJSON(.dataError("Invalid parameters for key import"))
         }
+        
         var importedJWK: [String: Any]? = nil
+        
         do {
             switch format.lowercased() {
             case "jwk":
-                guard var jwk = parseJSONDictionary(keyDataString), let kty = jwk["kty"] as? String else {
-                    return errorToJSON("Invalid JWK data for import")
+                guard var jwk = parseJSONDictionary(keyDataString),
+                      let kty = jwk["kty"] as? String else {
+                    return errorToJSON(.dataError("Invalid JWK data"))
                 }
-                // Basic validation and setting 'alg' based on expected type
+                
+                // Validate and set algorithm-specific properties
                 switch algorithmName.uppercased() {
-                    case "ECDSA":
-                        guard kty == "EC", let crv = jwk["crv"] as? String, crv == "P-256", jwk["x"] != nil, jwk["y"] != nil else {
-                            return errorToJSON("JWK is not a valid P-256 EC key for ECDSA")
-                        }
-                        jwk["alg"] = "ES256"
-                    case "ECDH":
-                        guard kty == "EC", let crv = jwk["crv"] as? String, crv == "P-256", jwk["x"] != nil, jwk["y"] != nil else {
-                            return errorToJSON("JWK is not a valid P-256 EC key for ECDH")
-                        }
-                        jwk["alg"] = "ECDH-ES"
-                    case "AES-GCM":
-                        guard kty == "oct", let kBase64url = jwk["k"] as? String, let kData = base64urlDecode(kBase64url) else {
-                            return errorToJSON("JWK is not a valid octet key for AES-GCM")
-                        }
-                        let keySize = normalizeAESKey(keyData: kData).count * 8
-                        guard [128, 192, 256].contains(keySize) else { return errorToJSON("Imported AES key material has invalid size") }
-                        jwk["alg"] = "A\(keySize)GCM"
-                    case "PBKDF2": return errorToJSON("JWK import not supported for PBKDF2 base key (use 'raw')")
-                    default: return errorToJSON("Unsupported algorithm for JWK import: \(algorithmName)")
+                case "ECDSA":
+                    guard kty == "EC",
+                          let crv = jwk["crv"] as? String, crv == "P-256",
+                          jwk["x"] != nil, jwk["y"] != nil else {
+                        return errorToJSON(.dataError("Invalid EC key for ECDSA"))
+                    }
+                    
+                    let keyType = jwk["d"] != nil ? "private" : "public"
+                    try validateKeyUsages(keyUsagesArray, algorithm: "ECDSA", keyType: keyType)
+                    
+                    jwk["alg"] = "ES256"
+                    jwk["use"] = "sig"
+                    
+                case "ECDH":
+                    guard kty == "EC",
+                          let crv = jwk["crv"] as? String, crv == "P-256",
+                          jwk["x"] != nil, jwk["y"] != nil else {
+                        return errorToJSON(.dataError("Invalid EC key for ECDH"))
+                    }
+                    
+                    let keyType = jwk["d"] != nil ? "private" : "public"
+                    try validateKeyUsages(keyUsagesArray, algorithm: "ECDH", keyType: keyType)
+                    
+                    jwk["alg"] = "ECDH-ES"
+                    jwk["use"] = "enc"
+                    
+                case "AES-GCM":
+                    guard kty == "oct",
+                          let kBase64url = jwk["k"] as? String,
+                          let kData = base64urlDecode(kBase64url) else {
+                        return errorToJSON(.dataError("Invalid symmetric key for AES-GCM"))
+                    }
+                    
+                    let keySize = kData.count * 8
+                    guard [128, 192, 256].contains(keySize) else {
+                        return errorToJSON(.dataError("Invalid AES key size: \(keySize) bits"))
+                    }
+                    
+                    try validateKeyUsages(keyUsagesArray, algorithm: "AES-GCM", keyType: "secret")
+                    
+                    jwk["alg"] = "A\(keySize)GCM"
+                    
+                case "PBKDF2":
+                    return errorToJSON(.notSupportedError("JWK import not supported for PBKDF2"))
+                    
+                default:
+                    return errorToJSON(.notSupportedError("Unsupported algorithm: \(algorithmName)"))
                 }
+                
                 jwk["ext"] = extractable
                 jwk["key_ops"] = keyUsagesArray
                 importedJWK = jwk
+                
             case "raw":
-                guard let rawData = base64Decode(keyDataString) else { // Standard Base64 raw data
-                    return errorToJSON("Invalid raw key data (not Base64)")
+                guard let rawData = base64Decode(keyDataString) else {
+                    return errorToJSON(.dataError("Invalid base64 data"))
                 }
+                
                 switch algorithmName.uppercased() {
-                    case "AES-GCM":
-                        let normalizedKey = normalizeAESKey(keyData: rawData)
-                        let keyBitSize = normalizedKey.count * 8
-                        guard [128, 192, 256].contains(keyBitSize) else { return errorToJSON("Raw AES key data has invalid size") }
-                        importedJWK = [
-                           "kty": "oct", "k": base64urlEncode(normalizedKey), "alg": "A\(keyBitSize)GCM",
-                           "ext": extractable, "key_ops": keyUsagesArray
-                        ]
-                    case "PBKDF2":
-                         // Return placeholder indicating raw data for PBKDF2 password
-                         importedJWK = [
-                             "kty": "PBKDF2-RAW", // Custom identifier
-                             "rawData": base64Encode(rawData), // Store raw data encoded
-                             "ext": false, "key_ops": keyUsagesArray // Must contain "deriveBits"/"deriveKey"
-                         ]
-                    default: return errorToJSON("Raw import not supported for algorithm: \(algorithmName)")
+                case "AES-GCM":
+                    let keyBitSize = rawData.count * 8
+                    guard [128, 192, 256].contains(keyBitSize) else {
+                        return errorToJSON(.dataError("Invalid AES key size: \(keyBitSize) bits"))
+                    }
+                    
+                    try validateKeyUsages(keyUsagesArray, algorithm: "AES-GCM", keyType: "secret")
+                    
+                    importedJWK = [
+                        "kty": "oct",
+                        "k": base64urlEncode(rawData),
+                        "alg": "A\(keyBitSize)GCM",
+                        "ext": extractable,
+                        "key_ops": keyUsagesArray
+                    ]
+                    
+                case "PBKDF2":
+                    // Store raw password data for PBKDF2
+                    importedJWK = [
+                        "kty": "PBKDF2-RAW",
+                        "rawData": base64Encode(rawData),
+                        "ext": false,
+                        "key_ops": keyUsagesArray
+                    ]
+                    
+                case "ECDSA", "ECDH":
+                    // Raw import for EC public keys (uncompressed point format)
+                    guard rawData.count == 65, rawData[0] == 0x04 else {
+                        return errorToJSON(.dataError("Invalid raw EC public key format"))
+                    }
+                    
+                    let x = rawData.subdata(in: 1..<33)
+                    let y = rawData.subdata(in: 33..<65)
+                    
+                    try validateKeyUsages(keyUsagesArray, algorithm: algorithmName, keyType: "public")
+                    
+                    importedJWK = [
+                        "kty": "EC",
+                        "crv": "P-256",
+                        "x": base64urlEncode(x),
+                        "y": base64urlEncode(y),
+                        "alg": algorithmName == "ECDSA" ? "ES256" : "ECDH-ES",
+                        "use": algorithmName == "ECDSA" ? "sig" : "enc",
+                        "ext": extractable,
+                        "key_ops": keyUsagesArray
+                    ]
+                    
+                default:
+                    return errorToJSON(.notSupportedError("Raw import not supported for: \(algorithmName)"))
                 }
+                
+            case "spki", "pkcs8":
+                return errorToJSON(.notSupportedError("\(format) import format not yet implemented"))
+                
             default:
-                return errorToJSON("Unsupported import format: \(format)")
+                return errorToJSON(.notSupportedError("Unsupported import format: \(format)"))
             }
-
-            guard let finalJWK = importedJWK else { return errorToJSON("Internal error during key import") }
+            
+            guard let finalJWK = importedJWK else {
+                return errorToJSON(.operationError("Failed to import key"))
+            }
+            
             let resultData = try JSONSerialization.data(withJSONObject: finalJWK)
-            return String(data: resultData, encoding: .utf8) ?? errorToJSON("Failed to serialize imported key")
+            return String(data: resultData, encoding: .utf8) ?? errorToJSON(.operationError("Failed to serialize imported key"))
+            
+        } catch let error as WebCryptoError {
+            return errorToJSON(error)
         } catch {
-             return errorToJSON("Error during key import: \(error.localizedDescription)")
+            return errorToJSON(.operationError("Import error: \(error.localizedDescription)"))
         }
     }
 
@@ -553,16 +814,37 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
      */
     @objc func sign(algorithm: String, key: String, data: String) -> String {
         guard let algorithmDict = parseJSONDictionary(algorithm),
-              let algorithmName = algorithmDict["name"] as? String, algorithmName.uppercased() == "ECDSA",
-              let keyJWK = parseJSONDictionary(key),
-              let inputData = base64Decode(data),
-              let dBase64url = keyJWK["d"] as? String, let dData = base64urlDecode(dBase64url)
-        else { return errorToJSON("Invalid parameters for sign") }
+              let algorithmName = algorithmDict["name"] as? String,
+              algorithmName.uppercased() == "ECDSA" else {
+            return errorToJSON(.notSupportedError("Only ECDSA signing is supported"))
+        }
+        
+        guard let keyJWK = parseJSONDictionary(key),
+              let keyOps = keyJWK["key_ops"] as? [String],
+              keyOps.contains("sign") else {
+            return errorToJSON(.invalidAccessError("Key does not have 'sign' usage"))
+        }
+        
+        guard let inputData = base64Decode(data),
+              let dBase64url = keyJWK["d"] as? String,
+              let dData = base64urlDecode(dBase64url) else {
+            return errorToJSON(.dataError("Invalid signing parameters"))
+        }
+        
+        // Verify hash algorithm
+        if let hashDict = algorithmDict["hash"] as? [String: Any],
+           let hashName = hashDict["name"] as? String,
+           hashName.uppercased() != "SHA-256" {
+            return errorToJSON(.notSupportedError("Only SHA-256 hash is supported with ECDSA"))
+        }
+        
         do {
             let privateKey = try P256.Signing.PrivateKey(rawRepresentation: dData)
-            let signature = try privateKey.signature(for: inputData) // CryptoKit handles digest
-            return base64Encode(signature.derRepresentation) // Standard Base64 DER signature
-        } catch { return errorToJSON("Signing failed: \(error.localizedDescription)") }
+            let signature = try privateKey.signature(for: inputData)
+            return base64Encode(signature.derRepresentation)
+        } catch {
+            return errorToJSON(.operationError("Signing failed: \(error.localizedDescription)"))
+        }
     }
 
     /**
@@ -577,33 +859,49 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
      - Returns: String "true" or "false" indicating verification result
      */
     @objc func verify(algorithm: String, key: String, signature: String, data: String) -> String {
-         guard let algorithmDict = parseJSONDictionary(algorithm),
-               let algoName = algorithmDict["name"] as? String, algoName.uppercased() == "ECDSA",
-               let keyJWK = parseJSONDictionary(key),
-               let inputData = base64Decode(data),
-               let sigData = base64Decode(signature),
-               let xBase64url = keyJWK["x"] as? String, let yBase64url = keyJWK["y"] as? String,
-               let xData = base64urlDecode(xBase64url), let yData = base64urlDecode(yBase64url)
-         else { return errorToJSON("Invalid parameters for verify") }
-         do {
-             var publicKeyRaw = Data([0x04]); publicKeyRaw.append(xData); publicKeyRaw.append(yData)
-             let publicKey = try P256.Signing.PublicKey(x963Representation: publicKeyRaw)
-             let ecdsaSignature = try P256.Signing.ECDSASignature(derRepresentation: sigData)
-             let isValid = publicKey.isValidSignature(ecdsaSignature, for: inputData)
-             return isValid ? "true" : "false" // Return "true" or "false" string
-         } catch {
-              // Errors during crypto validation (bad sig format, etc.) should also result in "false"
-              print("NativeWebCryptoModule Verify Error: \(error)")
-              return "false"
-         }
-     }
+        guard let algorithmDict = parseJSONDictionary(algorithm),
+              let algorithmName = algorithmDict["name"] as? String,
+              algorithmName.uppercased() == "ECDSA" else {
+            return errorToJSON(.notSupportedError("Only ECDSA verification is supported"))
+        }
+        
+        guard let keyJWK = parseJSONDictionary(key) else {
+            return errorToJSON(.dataError("Invalid key format"))
+        }
+        
+        // Check key usage if present
+        if let keyOps = keyJWK["key_ops"] as? [String], !keyOps.isEmpty && !keyOps.contains("verify") {
+            return errorToJSON(.invalidAccessError("Key does not have 'verify' usage"))
+        }
+        
+        guard let inputData = base64Decode(data),
+              let sigData = base64Decode(signature),
+              let xBase64url = keyJWK["x"] as? String,
+              let yBase64url = keyJWK["y"] as? String,
+              let xData = base64urlDecode(xBase64url),
+              let yData = base64urlDecode(yBase64url) else {
+            return "false" // Invalid parameters result in failed verification
+        }
+        
+        do {
+            var publicKeyRaw = Data([0x04])
+            publicKeyRaw.append(xData)
+            publicKeyRaw.append(yData)
+            
+            let publicKey = try P256.Signing.PublicKey(x963Representation: publicKeyRaw)
+            let ecdsaSignature = try P256.Signing.ECDSASignature(derRepresentation: sigData)
+            let isValid = publicKey.isValidSignature(ecdsaSignature, for: inputData)
+            
+            return isValid ? "true" : "false"
+        } catch {
+            // Any error in verification process results in false
+            return "false"
+        }
+    }
 
     /**
      Encrypts data using the specified algorithm and key.
      Currently supports AES-GCM.
-     
-     This is an optimized version that reduces memory operations and
-     avoids unnecessary validation to improve performance.
      
      - Parameters:
         - algorithm: JSON string with algorithm parameters
@@ -612,31 +910,52 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
      - Returns: Base64 encoded encrypted data or error JSON if encryption fails
      */
     @objc func encrypt(algorithm: String, key: String, data: String) -> String {
-        // Fast path validation with early returns
         guard let algorithmDict = parseJSONDictionary(algorithm),
-              algorithmDict["name"] as? String == "AES-GCM",
-              let keyJWK = parseJSONDictionary(key),
-              let inputData = base64Decode(data),
+              let algorithmName = algorithmDict["name"] as? String,
+              algorithmName.uppercased() == "AES-GCM" else {
+            return errorToJSON(.notSupportedError("Only AES-GCM encryption is supported"))
+        }
+        
+        guard let keyJWK = parseJSONDictionary(key),
+              let keyOps = keyJWK["key_ops"] as? [String],
+              keyOps.contains("encrypt") else {
+            return errorToJSON(.invalidAccessError("Key does not have 'encrypt' usage"))
+        }
+        
+        guard let inputData = base64Decode(data),
               let ivBase64 = algorithmDict["iv"] as? String,
               let iv = base64Decode(ivBase64),
-              let symmetricKey = createSymmetricKeyFromJWK(jwk: keyJWK)
-        else { return errorToJSON("Invalid parameters for encrypt") }
+              let symmetricKey = createSymmetricKeyFromJWK(jwk: keyJWK) else {
+            return errorToJSON(.dataError("Invalid encryption parameters"))
+        }
         
-        // Only process AAD if present - avoid unnecessary operations
+        // Validate IV length (must be exactly 12 bytes for SEA.js compatibility)
+        guard iv.count == 12 else {
+            return errorToJSON(.dataError("IV must be exactly 12 bytes for AES-GCM"))
+        }
+        
+        // Process additional authenticated data if present
         let aad = (algorithmDict["additionalData"] as? String).flatMap { base64Decode($0) }
         
+        // Validate tag length if specified
+        if let tagLength = algorithmDict["tagLength"] as? Int,
+           tagLength != 128 {
+            return errorToJSON(.notSupportedError("Only 128-bit authentication tags are supported"))
+        }
+        
         do {
-            // Create nonce once
             let nonce = try AES.GCM.Nonce(data: iv)
-            
-            // Encrypt in a single operation - more efficient
             let sealedBox = try AES.GCM.seal(inputData, using: symmetricKey, nonce: nonce,
                                              authenticating: aad ?? Data())
             
-            // Combine ciphertext and tag in one operation to avoid extra allocations
-            return base64Encode(sealedBox.ciphertext + sealedBox.tag)
+            // Combine ciphertext and tag as expected by SEA.js
+            var combined = Data()
+            combined.append(sealedBox.ciphertext)
+            combined.append(sealedBox.tag)
+            
+            return base64Encode(combined)
         } catch {
-            return errorToJSON("Encryption failed: \(error.localizedDescription)")
+            return errorToJSON(.operationError("Encryption failed: \(error.localizedDescription)"))
         }
     }
 
@@ -644,47 +963,55 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
      Decrypts data using the specified algorithm and key.
      Currently supports AES-GCM.
      
-     This is an optimized version that reduces memory operations,
-     minimizes error handling, and returns empty string on any failure.
-     
      - Parameters:
         - algorithm: JSON string with algorithm parameters
         - key: JSON string containing the key
         - data: Base64 encoded encrypted data
-     - Returns: Base64 encoded decrypted data or empty string on failure
+     - Returns: Base64 encoded decrypted data or error JSON if decryption fails
      */
     @objc func decrypt(algorithm: String, key: String, data: String) -> String {
-        // Skip detailed validation for performance - we'll catch errors in the try block
         guard let algorithmDict = parseJSONDictionary(algorithm),
-              algorithmDict["name"] as? String == "AES-GCM",
-              let keyJWK = parseJSONDictionary(key),
-              let encryptedDataWithTag = base64Decode(data),
+              let algorithmName = algorithmDict["name"] as? String,
+              algorithmName.uppercased() == "AES-GCM" else {
+            return errorToJSON(.notSupportedError("Only AES-GCM decryption is supported"))
+        }
+        
+        guard let keyJWK = parseJSONDictionary(key),
+              let keyOps = keyJWK["key_ops"] as? [String],
+              keyOps.contains("decrypt") else {
+            return errorToJSON(.invalidAccessError("Key does not have 'decrypt' usage"))
+        }
+        
+        guard let encryptedDataWithTag = base64Decode(data),
               let ivBase64 = algorithmDict["iv"] as? String,
               let iv = base64Decode(ivBase64),
               let symmetricKey = createSymmetricKeyFromJWK(jwk: keyJWK),
-              encryptedDataWithTag.count >= 16 // Minimum size for AES-GCM tag
-        else { return "" } // Fast fail with empty string for any validation issues
+              encryptedDataWithTag.count >= 16 else {
+            return errorToJSON(.dataError("Invalid decryption parameters"))
+        }
         
-        // Only process AAD if present
+        // Validate IV length
+        guard iv.count == 12 else {
+            return errorToJSON(.dataError("IV must be exactly 12 bytes for AES-GCM"))
+        }
+        
+        // Process additional authenticated data if present
         let aad = (algorithmDict["additionalData"] as? String).flatMap { base64Decode($0) }
         
         do {
-            // Split ciphertext and tag efficiently
-            let tagLength = 16 // AES-GCM standard
+            // Split ciphertext and tag (tag is always last 16 bytes)
+            let tagLength = 16
             let ciphertext = encryptedDataWithTag.dropLast(tagLength)
             let tag = encryptedDataWithTag.suffix(tagLength)
             
-            // Create nonce once
             let nonce = try AES.GCM.Nonce(data: iv)
-            
-            // Create sealedBox and decrypt in minimal steps
             let sealedBox = try AES.GCM.SealedBox(nonce: nonce, ciphertext: ciphertext, tag: tag)
-            let decryptedData = try AES.GCM.open(sealedBox, using: symmetricKey, authenticating: aad ?? Data())
+            let decryptedData = try AES.GCM.open(sealedBox, using: symmetricKey,
+                                                authenticating: aad ?? Data())
             
             return base64Encode(decryptedData)
         } catch {
-            // Minimal error handling - just return empty string
-            return ""
+            return errorToJSON(.operationError("Decryption failed"))
         }
     }
 
@@ -701,97 +1028,166 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
     @objc func deriveBits(algorithm: String, baseKey: String, length: Int) -> String {
         guard let algoDict = parseJSONDictionary(algorithm),
               let algoName = algoDict["name"] as? String else {
-            return errorToJSON("Invalid algorithm parameters for deriveBits")
+            return errorToJSON(.dataError("Invalid algorithm parameters"))
         }
-        guard length > 0, length % 8 == 0 else { return errorToJSON("deriveBits length must be positive multiple of 8") }
+        
+        guard length > 0, length % 8 == 0 else {
+            return errorToJSON(.dataError("Length must be positive multiple of 8"))
+        }
+        
         let derivedKeyLengthBytes = length / 8
-
+        
         switch algoName.uppercased() {
         case "PBKDF2":
-            // Base key is password/secret - expect raw base64 string or imported placeholder
-            var passwordData: Data? = nil
-            if let baseKeyJWK = parseJSONDictionary(baseKey),
-               baseKeyJWK["kty"] as? String == "PBKDF2-RAW",
-               let pwdB64 = baseKeyJWK["rawData"] as? String {
-                passwordData = base64Decode(pwdB64)
-            } else if let directPwdData = base64Decode(baseKey) { // Fallback: treat baseKey as raw b64 password
-                 passwordData = directPwdData
-            }
-            guard let finalPasswordData = passwordData else { return errorToJSON("Invalid base key for PBKDF2") }
-            return deriveBitsPBKDF2(passwordData: finalPasswordData, algoDict: algoDict, derivedKeyLengthBytes: derivedKeyLengthBytes)
-
+            return deriveBitsPBKDF2(baseKey: baseKey, algoDict: algoDict,
+                                   derivedKeyLengthBytes: derivedKeyLengthBytes)
+            
         case "ECDH":
-            // Base key = local private key JWK; algoDict["public"] = peer public key JWK
-            guard let privateKeyJWK = parseJSONDictionary(baseKey),
-                  let dBase64url = privateKeyJWK["d"] as? String, let privateKeyData = base64urlDecode(dBase64url),
-                  let peerPublicKeyJWK = algoDict["public"] as? [String: Any],
-                  let xBase64url = peerPublicKeyJWK["x"] as? String, let yBase64url = peerPublicKeyJWK["y"] as? String,
-                  let xData = base64urlDecode(xBase64url), let yData = base64urlDecode(yBase64url) else {
-                return errorToJSON("Invalid private or public key JWK for ECDH deriveBits")
-            }
-            do {
-                var peerPublicKeyRaw = Data([0x04]); peerPublicKeyRaw.append(xData); peerPublicKeyRaw.append(yData)
-                let localPrivateKey = try P256.KeyAgreement.PrivateKey(rawRepresentation: privateKeyData)
-                let peerPublicKey = try P256.KeyAgreement.PublicKey(x963Representation: peerPublicKeyRaw)
-                let sharedSecret = try localPrivateKey.sharedSecretFromKeyAgreement(with: peerPublicKey)
-
-                // Derive the requested number of bytes using HKDF-SHA256
-                let derivedKey = sharedSecret.hkdfDerivedSymmetricKey(
-                    using: SHA256.self, salt: Data(), sharedInfo: Data(), outputByteCount: derivedKeyLengthBytes
-                )
-                // Return derived bytes as BASE64URL to match SEA.js expectations
-                return derivedKey.withUnsafeBytes { base64urlEncode(Data($0)) }
-            } catch {
-                return errorToJSON("ECDH key agreement/derivation failed: \(error.localizedDescription)")
-            }
-
+            return deriveBitsECDH(baseKey: baseKey, algoDict: algoDict,
+                                 derivedKeyLengthBytes: derivedKeyLengthBytes)
+            
+        case "HKDF":
+            return errorToJSON(.notSupportedError("HKDF not yet implemented"))
+            
         default:
-            return errorToJSON("Unsupported derivation algorithm: \(algoName)")
+            return errorToJSON(.notSupportedError("Unsupported derivation algorithm: \(algoName)"))
         }
     }
 
     /**
      Helper function for PBKDF2 key derivation.
-     Uses CommonCrypto for efficient password-based key derivation.
      
      - Parameters:
-        - passwordData: Password bytes
+        - baseKey: Base key string (password)
         - algoDict: Algorithm parameters
         - derivedKeyLengthBytes: Desired output length in bytes
      - Returns: Base64 encoded derived key or error JSON if derivation fails
      */
-    private func deriveBitsPBKDF2(passwordData: Data, algoDict: [String: Any], derivedKeyLengthBytes: Int) -> String {
-        guard let saltBase64 = algoDict["salt"] as? String, let saltData = base64Decode(saltBase64) else {
-              return errorToJSON("Missing or invalid salt for PBKDF2")
+    private func deriveBitsPBKDF2(baseKey: String, algoDict: [String: Any],
+                                 derivedKeyLengthBytes: Int) -> String {
+        // Extract password data
+        var passwordData: Data? = nil
+        if let baseKeyJWK = parseJSONDictionary(baseKey),
+           baseKeyJWK["kty"] as? String == "PBKDF2-RAW",
+           let pwdB64 = baseKeyJWK["rawData"] as? String {
+            passwordData = base64Decode(pwdB64)
+        } else if let directPwdData = base64Decode(baseKey) {
+            passwordData = directPwdData
         }
-        let iterations = algoDict["iterations"] as? Int ?? 100000 // Default from sea.js
-        guard iterations > 0 else { return errorToJSON("PBKDF2 iterations must be positive") }
+        
+        guard let finalPasswordData = passwordData else {
+            return errorToJSON(.dataError("Invalid base key for PBKDF2"))
+        }
+        
+        // Extract salt
+        guard let saltBase64 = algoDict["salt"] as? String,
+              let saltData = base64Decode(saltBase64) else {
+            return errorToJSON(.dataError("Missing or invalid salt for PBKDF2"))
+        }
+        
+        // SEA.js requires 64-byte salts
+        guard saltData.count == 64 else {
+            return errorToJSON(.dataError("Salt must be exactly 64 bytes for SEA.js compatibility"))
+        }
+        
+        // Extract iterations (default 100000 for SEA.js)
+        let iterations = algoDict["iterations"] as? Int ?? 100000
+        guard iterations > 0 else {
+            return errorToJSON(.dataError("Iterations must be positive"))
+        }
+        
+        // Extract hash algorithm
         let hashAlgoName = ((algoDict["hash"] as? [String: Any])?["name"] as? String)?.uppercased() ?? "SHA-256"
         let prf: CCPseudoRandomAlgorithm
+        
         switch hashAlgoName {
-            case "SHA-256": prf = CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA256)
-            case "SHA-384": prf = CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA384)
-            case "SHA-512": prf = CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA512)
-            default: return errorToJSON("Unsupported hash for PBKDF2: \(hashAlgoName)")
+        case "SHA-256":
+            prf = CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA256)
+        case "SHA-384":
+            prf = CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA384)
+        case "SHA-512":
+            prf = CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA512)
+        default:
+            return errorToJSON(.notSupportedError("Unsupported hash for PBKDF2: \(hashAlgoName)"))
         }
+        
         var derivedKey = Data(count: derivedKeyLengthBytes)
         let derivationStatus = derivedKey.withUnsafeMutableBytes { derivedKeyBytes in
-            passwordData.withUnsafeBytes { passwordBytes in
+            finalPasswordData.withUnsafeBytes { passwordBytes in
                 saltData.withUnsafeBytes { saltBytes in
                     CCKeyDerivationPBKDF(
-                       CCPBKDFAlgorithm(kCCPBKDF2),
-                       passwordBytes.baseAddress?.assumingMemoryBound(to: Int8.self), passwordData.count,
-                       saltBytes.baseAddress?.assumingMemoryBound(to: UInt8.self), saltData.count,
-                       prf, UInt32(iterations),
-                       derivedKeyBytes.baseAddress?.assumingMemoryBound(to: UInt8.self), derivedKeyLengthBytes
+                        CCPBKDFAlgorithm(kCCPBKDF2),
+                        passwordBytes.baseAddress?.assumingMemoryBound(to: Int8.self),
+                        finalPasswordData.count,
+                        saltBytes.baseAddress?.assumingMemoryBound(to: UInt8.self),
+                        saltData.count,
+                        prf,
+                        UInt32(iterations),
+                        derivedKeyBytes.baseAddress?.assumingMemoryBound(to: UInt8.self),
+                        derivedKeyLengthBytes
                     )
                 }
             }
         }
-        if derivationStatus == kCCSuccess {
-            return base64Encode(derivedKey) // Standard Base64 output for derived key bytes
-        } else {
-            return errorToJSON("PBKDF2 derivation failed (status \(derivationStatus))")
+        
+        guard derivationStatus == kCCSuccess else {
+            return errorToJSON(.operationError("PBKDF2 derivation failed"))
+        }
+        
+        return base64Encode(derivedKey)
+    }
+    
+    /**
+     Helper function for ECDH key derivation.
+     
+     - Parameters:
+        - baseKey: Base key string (local private key)
+        - algoDict: Algorithm parameters including peer public key
+        - derivedKeyLengthBytes: Desired output length in bytes
+     - Returns: Base64URL encoded derived key or error JSON if derivation fails
+     */
+    private func deriveBitsECDH(baseKey: String, algoDict: [String: Any],
+                               derivedKeyLengthBytes: Int) -> String {
+        // Extract local private key
+        guard let privateKeyJWK = parseJSONDictionary(baseKey),
+              let keyOps = privateKeyJWK["key_ops"] as? [String],
+              (keyOps.contains("deriveBits") || keyOps.contains("deriveKey")),
+              let dBase64url = privateKeyJWK["d"] as? String,
+              let privateKeyData = base64urlDecode(dBase64url) else {
+            return errorToJSON(.invalidAccessError("Invalid private key for ECDH"))
+        }
+        
+        // Extract peer's public key
+        guard let peerPublicKeyJWK = algoDict["public"] as? [String: Any],
+              let xBase64url = peerPublicKeyJWK["x"] as? String,
+              let yBase64url = peerPublicKeyJWK["y"] as? String,
+              let xData = base64urlDecode(xBase64url),
+              let yData = base64urlDecode(yBase64url) else {
+            return errorToJSON(.dataError("Invalid public key in algorithm parameters"))
+        }
+        
+        do {
+            // Reconstruct public key in uncompressed format
+            var peerPublicKeyRaw = Data([0x04])
+            peerPublicKeyRaw.append(xData)
+            peerPublicKeyRaw.append(yData)
+            
+            let localPrivateKey = try P256.KeyAgreement.PrivateKey(rawRepresentation: privateKeyData)
+            let peerPublicKey = try P256.KeyAgreement.PublicKey(x963Representation: peerPublicKeyRaw)
+            let sharedSecret = try localPrivateKey.sharedSecretFromKeyAgreement(with: peerPublicKey)
+            
+            // Derive key material using HKDF-SHA256
+            let derivedKey = sharedSecret.hkdfDerivedSymmetricKey(
+                using: SHA256.self,
+                salt: Data(),
+                sharedInfo: Data(),
+                outputByteCount: derivedKeyLengthBytes
+            )
+            
+            // Return as Base64URL to match SEA.js expectations
+            return derivedKey.withUnsafeBytes { base64urlEncode(Data($0)) }
+        } catch {
+            return errorToJSON(.operationError("ECDH key agreement failed: \(error.localizedDescription)"))
         }
     }
     
@@ -807,166 +1203,95 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
         - keyUsages: JSON array of allowed key operations
      - Returns: JSON string containing the derived key or error JSON if derivation fails
      */
-    @objc func deriveKey(algorithm: String, baseKey: String, derivedKeyType: String, extractable: Bool, keyUsages: String) -> String {
-        // 1. Parse Input Parameters
+    @objc func deriveKey(algorithm: String, baseKey: String, derivedKeyType: String,
+                        extractable: Bool, keyUsages: String) -> String {
         guard let algoDict = parseJSONDictionary(algorithm),
               let algoName = algoDict["name"] as? String,
-              let baseKeyJWK = parseJSONDictionary(baseKey),
               let derivedKeyAlgoDict = parseJSONDictionary(derivedKeyType),
               let derivedKeyAlgoName = derivedKeyAlgoDict["name"] as? String,
-              let targetKeyUsages = parseJSONArray(keyUsages)
-        else {
-            return errorToJSON("Invalid parameters for deriveKey")
+              let targetKeyUsages = parseJSONArray(keyUsages) else {
+            return errorToJSON(.dataError("Invalid parameters for deriveKey"))
         }
-
-        // 2. Select Derivation Algorithm
-        switch algoName.uppercased() {
-        case "ECDH":
-            // a. Extract local private key from baseKeyJWK
-            guard baseKeyJWK["kty"] as? String == "EC",
-                  let dBase64url = baseKeyJWK["d"] as? String,
-                  let privateKeyData = base64urlDecode(dBase64url) else {
-                return errorToJSON("Invalid baseKey (private key) format for ECDH deriveKey")
+        
+        // Determine target key parameters
+        let targetKeyLengthBits: Int
+        let targetKeyAlg: String
+        
+        switch derivedKeyAlgoName.uppercased() {
+        case "AES-GCM":
+            guard let length = derivedKeyAlgoDict["length"] as? Int,
+                  [128, 192, 256].contains(length) else {
+                return errorToJSON(.dataError("Invalid or missing 'length' for AES-GCM"))
             }
-
-            // b. Extract peer's public key from algoDict["public"]
-            guard let peerPublicKeyJWK = algoDict["public"] as? [String: Any],
-                  peerPublicKeyJWK["kty"] as? String == "EC",
-                  let xBase64url = peerPublicKeyJWK["x"] as? String, let xData = base64urlDecode(xBase64url),
-                  let yBase64url = peerPublicKeyJWK["y"] as? String, let yData = base64urlDecode(yBase64url) else {
-                return errorToJSON("Invalid peer public key format in algorithm parameters for ECDH deriveKey")
-            }
-
-            // c. Determine target key length and algorithm
-            let targetKeyLengthBits: Int
-            let targetKeyAlg: String // JWK 'alg' value for the derived key
-            switch derivedKeyAlgoName.uppercased() {
-            case "AES-GCM":
-                guard let length = derivedKeyAlgoDict["length"] as? Int, [128, 192, 256].contains(length) else {
-                    return errorToJSON("Invalid or missing 'length' for AES-GCM derivedKeyType")
-                }
-                targetKeyLengthBits = length
-                targetKeyAlg = "A\(length)GCM"
-            default:
-                return errorToJSON("Unsupported derivedKeyType algorithm: \(derivedKeyAlgoName)")
-            }
-            let targetKeyLengthBytes = targetKeyLengthBits / 8
-
-            // d. Perform ECDH and KDF (HKDF)
+            targetKeyLengthBits = length
+            targetKeyAlg = "A\(length)GCM"
+            
+            // Validate key usages for AES
             do {
-                var peerPublicKeyRaw = Data([0x04]); peerPublicKeyRaw.append(xData); peerPublicKeyRaw.append(yData)
-                let localPrivateKey = try P256.KeyAgreement.PrivateKey(rawRepresentation: privateKeyData)
-                let peerPublicKey = try P256.KeyAgreement.PublicKey(x963Representation: peerPublicKeyRaw)
-                let sharedSecret = try localPrivateKey.sharedSecretFromKeyAgreement(with: peerPublicKey)
-
-                // Use HKDF-SHA256 to derive the symmetric key from the shared secret
-                let derivedSymmetricKey = sharedSecret.hkdfDerivedSymmetricKey(
-                    using: SHA256.self,
-                    salt: Data(), // Standard deriveKey typically doesn't use salt unless specified
-                    sharedInfo: Data(), // Or could include context like algorithm IDs
-                    outputByteCount: targetKeyLengthBytes
-                )
-
-                // e. Construct the JWK for the derived symmetric key
-                let derivedKeyJWK: [String: Any] = derivedSymmetricKey.withUnsafeBytes { keyBytesPtr in
-                    let keyData = Data(keyBytesPtr)
-                    return [
-                        "kty": "oct",
-                        "k": base64urlEncode(keyData), // Base64URL encode the raw key bytes
-                        "alg": targetKeyAlg,
-                        "ext": extractable,
-                        "key_ops": targetKeyUsages
-                    ]
-                }
-
-                // f. Serialize and return the derived key's JWK
-                let resultData = try JSONSerialization.data(withJSONObject: derivedKeyJWK)
-                return String(data: resultData, encoding: .utf8) ?? errorToJSON("Failed to serialize derived key JWK")
-
+                try validateKeyUsages(targetKeyUsages, algorithm: "AES-GCM", keyType: "secret")
+            } catch let error as WebCryptoError {
+                return errorToJSON(error)
             } catch {
-                return errorToJSON("ECDH key derivation failed: \(error.localizedDescription)")
+                return errorToJSON(.operationError("Key usage validation failed"))
             }
-
-        case "PBKDF2":
-             // --- PBKDF2 Specific Logic ---
-             // a. Base key is password - expect raw base64 string or imported placeholder
-             var passwordData: Data? = nil
-             if baseKeyJWK["kty"] as? String == "PBKDF2-RAW", let pwdB64 = baseKeyJWK["rawData"] as? String {
-                 passwordData = base64Decode(pwdB64)
-             } else if let directPwdData = base64Decode(baseKey) { // baseKey might be the raw b64 password string itself
-                 passwordData = directPwdData
-             }
-             guard let finalPasswordData = passwordData else { return errorToJSON("Invalid base key for PBKDF2 deriveKey") }
-
-             // b. Extract PBKDF2 params (salt, iterations, hash) from algoDict
-             guard let saltBase64 = algoDict["salt"] as? String, let saltData = base64Decode(saltBase64) else {
-                 return errorToJSON("Missing or invalid salt for PBKDF2 deriveKey")
-             }
-             let iterations = algoDict["iterations"] as? Int ?? 100000
-             guard iterations > 0 else { return errorToJSON("PBKDF2 iterations must be positive") }
-             let hashAlgoName = ((algoDict["hash"] as? [String: Any])?["name"] as? String)?.uppercased() ?? "SHA-256"
-             let prf: CCPseudoRandomAlgorithm
-             switch hashAlgoName {
-                 case "SHA-256": prf = CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA256)
-                 case "SHA-384": prf = CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA384)
-                 case "SHA-512": prf = CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA512)
-                 default: return errorToJSON("Unsupported hash for PBKDF2: \(hashAlgoName)")
-             }
-
-             // c. Determine target key length and algorithm
-             let targetKeyLengthBits: Int
-             let targetKeyAlg: String
-             switch derivedKeyAlgoName.uppercased() {
-             case "AES-GCM":
-                 guard let length = derivedKeyAlgoDict["length"] as? Int, [128, 192, 256].contains(length) else {
-                     return errorToJSON("Invalid or missing 'length' for AES-GCM derivedKeyType in PBKDF2")
-                 }
-                 targetKeyLengthBits = length
-                 targetKeyAlg = "A\(length)GCM"
-             default:
-                 return errorToJSON("Unsupported derivedKeyType algorithm for PBKDF2: \(derivedKeyAlgoName)")
-             }
-             let targetKeyLengthBytes = targetKeyLengthBits / 8
-
-             // d. Perform PBKDF2 derivation using CommonCrypto
-             var derivedKeyData = Data(count: targetKeyLengthBytes)
-             let derivationStatus = derivedKeyData.withUnsafeMutableBytes { derivedKeyBytes in
-                 finalPasswordData.withUnsafeBytes { passwordBytes in
-                     saltData.withUnsafeBytes { saltBytes in
-                         CCKeyDerivationPBKDF(
-                             CCPBKDFAlgorithm(kCCPBKDF2),
-                             passwordBytes.baseAddress?.assumingMemoryBound(to: Int8.self), finalPasswordData.count,
-                             saltBytes.baseAddress?.assumingMemoryBound(to: UInt8.self), saltData.count,
-                             prf, UInt32(iterations),
-                             derivedKeyBytes.baseAddress?.assumingMemoryBound(to: UInt8.self), targetKeyLengthBytes
-                         )
-                     }
-                 }
-             }
-
-             guard derivationStatus == kCCSuccess else {
-                 return errorToJSON("PBKDF2 derivation failed (status \(derivationStatus))")
-             }
-
-             // e. Construct the JWK for the derived symmetric key
-             let derivedKeyJWK: [String: Any] = [
-                 "kty": "oct",
-                 "k": base64urlEncode(derivedKeyData), // Base64URL encode the raw key bytes
-                 "alg": targetKeyAlg, // Algorithm for the derived key itself
-                 "ext": extractable,
-                 "key_ops": targetKeyUsages
-             ]
-
-             // f. Serialize and return the derived key's JWK
-             do {
-                 let resultData = try JSONSerialization.data(withJSONObject: derivedKeyJWK)
-                 return String(data: resultData, encoding: .utf8) ?? errorToJSON("Failed to serialize derived key JWK")
-             } catch {
-                  return errorToJSON("Error serializing derived key JWK: \(error.localizedDescription)")
-             }
-
+            
         default:
-            return errorToJSON("Unsupported derivation algorithm: \(algoName)")
+            return errorToJSON(.notSupportedError("Unsupported derived key type: \(derivedKeyAlgoName)"))
+        }
+        
+        let targetKeyLengthBytes = targetKeyLengthBits / 8
+        
+        // Derive the raw key material
+        let derivedBitsResult = deriveBits(algorithm: algorithm, baseKey: baseKey,
+                                          length: targetKeyLengthBits)
+        
+        // Check if deriveBits succeeded
+        if let errorDict = parseJSONDictionary(derivedBitsResult),
+           errorDict["error"] as? Bool == true {
+            return derivedBitsResult // Pass through the error
+        }
+        
+        guard let derivedKeyData = base64Decode(derivedBitsResult) else {
+            // For ECDH, the result might be Base64URL encoded
+            guard let derivedKeyData = base64urlDecode(derivedBitsResult) else {
+                return errorToJSON(.operationError("Failed to decode derived key material"))
+            }
+            
+            // Re-encode as standard Base64 for consistency
+            return constructDerivedKey(keyData: derivedKeyData, algorithm: targetKeyAlg,
+                                     extractable: extractable, keyUsages: targetKeyUsages)
+        }
+        
+        return constructDerivedKey(keyData: derivedKeyData, algorithm: targetKeyAlg,
+                                 extractable: extractable, keyUsages: targetKeyUsages)
+    }
+    
+    /**
+     Helper to construct a JWK for a derived key.
+     
+     - Parameters:
+        - keyData: Raw key data
+        - algorithm: JWK algorithm identifier
+        - extractable: Whether the key is extractable
+        - keyUsages: Array of key usages
+     - Returns: JSON string containing the JWK or error JSON
+     */
+    private func constructDerivedKey(keyData: Data, algorithm: String,
+                                   extractable: Bool, keyUsages: [String]) -> String {
+        let derivedKeyJWK: [String: Any] = [
+            "kty": "oct",
+            "k": base64urlEncode(keyData),
+            "alg": algorithm,
+            "ext": extractable,
+            "key_ops": keyUsages
+        ]
+        
+        do {
+            let resultData = try JSONSerialization.data(withJSONObject: derivedKeyJWK)
+            return String(data: resultData, encoding: .utf8) ??
+                   errorToJSON(.operationError("Failed to serialize derived key"))
+        } catch {
+            return errorToJSON(.operationError("Error serializing derived key: \(error.localizedDescription)"))
         }
     }
 }

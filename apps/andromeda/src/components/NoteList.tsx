@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
 import { useThing } from '@ariob/core';
-import { useNotesStore } from '../services/note.service';
+import React, { useEffect } from 'react';
 import type { Note } from '../schema/note.schema';
+import { useNotesStore } from '../services/note.service';
 
 /**
  * Note List Component
- * 
+ *
  * Displays a list of notes with real-time updates
  */
 export const NoteList: React.FC = () => {
@@ -34,10 +34,12 @@ export const NoteList: React.FC = () => {
   return (
     <view className="flex-1 p-4">
       <text className="text-2xl font-bold mb-4">My Notes</text>
-      
+
       {items.length === 0 ? (
         <view className="text-center py-8">
-          <text className="text-gray-500">No notes yet. Create your first note!</text>
+          <text className="text-gray-500">
+            No notes yet. Create your first note!
+          </text>
         </view>
       ) : (
         <view className="space-y-2">
@@ -52,7 +54,7 @@ export const NoteList: React.FC = () => {
 
 /**
  * Note Item Component
- * 
+ *
  * Individual note with real-time updates
  */
 const NoteItem: React.FC<{ noteId: string }> = ({ noteId }) => {
@@ -72,7 +74,7 @@ const NoteItem: React.FC<{ noteId: string }> = ({ noteId }) => {
   };
 
   return (
-    <view 
+    <view
       className={`p-4 rounded-lg shadow-sm ${
         typedNote.pinned ? 'bg-yellow-50' : 'bg-white'
       }`}
@@ -81,7 +83,9 @@ const NoteItem: React.FC<{ noteId: string }> = ({ noteId }) => {
       <view className="flex-row justify-between items-start">
         <view className="flex-1">
           {typedNote.title && (
-            <text className="text-lg font-semibold mb-1">{typedNote.title}</text>
+            <text className="text-lg font-semibold mb-1">
+              {typedNote.title}
+            </text>
           )}
           {typedNote.body && (
             <text className="text-gray-700">{typedNote.body}</text>
@@ -96,26 +100,21 @@ const NoteItem: React.FC<{ noteId: string }> = ({ noteId }) => {
             </view>
           )}
         </view>
-        
+
         <view className="flex-row space-x-2">
-          <view 
-            bindtap={handleTogglePin}
-            className="p-2"
-          >
+          <view bindtap={handleTogglePin} className="p-2">
             <text>{typedNote.pinned ? '📌' : '📍'}</text>
           </view>
-          <view 
-            bindtap={handleDelete}
-            className="p-2"
-          >
+          <view bindtap={handleDelete} className="p-2">
             <text>🗑️</text>
           </view>
         </view>
       </view>
-      
+
       <text className="text-xs text-gray-500 mt-2">
-        Updated: {new Date(typedNote.updatedAt || typedNote.createdAt).toLocaleString()}
+        Updated:{' '}
+        {new Date(typedNote.updatedAt || typedNote.createdAt).toLocaleString()}
       </text>
     </view>
   );
-}; 
+};

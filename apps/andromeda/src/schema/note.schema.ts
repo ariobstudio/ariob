@@ -1,9 +1,9 @@
-import { z } from 'zod';
 import { ContentThingSchema } from '@ariob/core';
+import { z } from 'zod';
 
 /**
  * Note Schema
- * 
+ *
  * Example of extending the base ContentThingSchema for a note-taking app
  */
 export const NoteSchema = ContentThingSchema.extend({
@@ -13,4 +13,4 @@ export const NoteSchema = ContentThingSchema.extend({
   attachments: z.array(z.string()).default([]),
 });
 
-export type Note = z.infer<typeof NoteSchema>; 
+export type Note = z.infer<typeof NoteSchema>;
