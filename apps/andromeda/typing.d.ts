@@ -41,9 +41,9 @@ declare const NativeModules: {
     // Core Web Crypto API methods
     digest(options: string, data: string): Promise<string | null>;
     generateKey(
-      algorithm: string,
+      algorithm: object,
       extractable: boolean,
-      keyUsages: string,
+      keyUsages: string[],
     ): Promise<string | null>;
     exportKey(format: string, key: string): Promise<string | null>;
     importKey(

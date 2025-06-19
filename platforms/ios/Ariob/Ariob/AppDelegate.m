@@ -10,7 +10,7 @@
 
 NSString *const LOCAL_URL_PREFIX = @"file://";
 NSString *const HOMEPAGE_URL = @"file://main.lynx.bundle?fullscreen=true";
-NSString *const APP_URL = @"http://10.0.0.13:3000/main.lynx.bundle?fullscreen=true";
+NSString *const APP_URL = @"http://10.0.0.246:3000/main.lynx.bundle?fullscreen=true";
 
 @interface AppDelegate ()
 
