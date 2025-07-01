@@ -38,57 +38,21 @@ declare namespace JSX {
 // @ts-ignore
 declare const NativeModules: {
   NativeWebCryptoModule: {
-    // Core Web Crypto API methods
-    digest(options: string, data: string): Promise<string | null>;
-    generateKey(
-      algorithm: object,
-      extractable: boolean,
-      keyUsages: string[],
-    ): Promise<string | null>;
-    exportKey(format: string, key: string): Promise<string | null>;
-    importKey(
-      format: string,
-      keyData: string,
-      algorithm: string,
-      extractable: boolean,
-      keyUsages: string,
-    ): Promise<string | null>;
-    sign(algorithm: string, key: string, data: string): Promise<string | null>;
-    verify(
-      algorithm: string,
-      key: string,
-      signature: string,
-      data: string,
-    ): Promise<boolean>;
-    encrypt(
-      algorithm: string,
-      key: string,
-      data: string,
-    ): Promise<string | null>;
-    decrypt(
-      algorithm: string,
-      key: string,
-      data: string,
-    ): Promise<string | null>;
-    deriveBits(
-      algorithm: string,
-      key: string,
-      length: number,
-    ): Promise<string | null>;
-    deriveKey(
-      algorithm: string,
-      baseKey: string,
-      derivedKeyAlgorithm: string,
-      extractable: boolean,
-      keyUsages: string,
-    ): Promise<string | null>;
-
-    // TextEncoder/TextDecoder equivalents
-    textEncode(text: string): Promise<string>;
-    textDecode(data: string): Promise<string>;
-
-    // Random values generator
-    getRandomValues(length: number): Promise<string>;
+    digest(algorithm: Record<string, any>, data: Uint8Array): ArrayBuffer | null;
+    generateKey(algorithm: Record<string, any>, extractable: boolean, keyUsages: string[]): any | null;
+    exportKey(format: 'jwk'|'raw', key: Record<string, any>): Record<string, any> | ArrayBuffer | null;
+    importKey(format:'jwk'|'raw', keyData:any, algorithm:Record<string,any>,
+              extractable:boolean, keyUsages:string[]): Record<string,any> | null;
+    sign(algorithm:Record<string,any>, key:Record<string,any>, data:Uint8Array): ArrayBuffer | null;
+    verify(algorithm:Record<string,any>, key:Record<string,any>, signature:Uint8Array, data:Uint8Array): boolean;
+    encrypt(algorithm:Record<string,any>, key:Record<string,any>, data:Uint8Array): ArrayBuffer | null;
+    decrypt(algorithm:Record<string,any>, key:Record<string,any>, data:Uint8Array): ArrayBuffer | null;
+    deriveBits(algorithm:Record<string,any>, baseKey:Record<string,any>, length:number): ArrayBuffer | null;
+    deriveKey(algorithm:Record<string,any>, baseKey:Record<string,any>, derivedKeyType:Record<string,any>,
+              extractable:boolean, keyUsages:string[]): Record<string,any> | null;
+    textEncode(text:string): Uint8Array;
+    textDecode(data:Uint8Array): string;
+    getRandomValues(length:number): Uint8Array | null;
   };
   ExplorerModule: {
     openScan(): void;

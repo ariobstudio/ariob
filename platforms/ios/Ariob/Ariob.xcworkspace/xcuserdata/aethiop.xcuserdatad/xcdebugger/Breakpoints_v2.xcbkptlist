@@ -130,5 +130,97 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1154B58A-BC07-472A-81B7-DC909B8FD153"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Ariob/modules/NativeWebCryptoModule.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
+            landmarkName = "NativeWebCryptoModule"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "24395536-B924-40A3-A6F7-8C9C6ACC6FF1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Ariob/modules/NativeWebCryptoModule.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
+            landmarkName = "encrypt(_:key:data:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "24395536-B924-40A3-A6F7-8C9C6ACC6FF1 - 17d2f5702796c1eb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Ariob.NativeWebCryptoModule.encrypt(_: __C.NSDictionary, key: __C.NSDictionary, data: __C.NSData) -&gt; Swift.Optional&lt;__C.NSData&gt;"
+                  moduleName = "Ariob.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aethiop/Documents/Dev/ariob/platforms/ios/Ariob/Ariob/modules/NativeWebCryptoModule.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "209"
+                  endingLineNumber = "209">
+               </Location>
+               <Location
+                  uuid = "24395536-B924-40A3-A6F7-8C9C6ACC6FF1 - 7e0e6c6ac331a0bc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.NSData) -&gt; Swift.Array&lt;Swift.UInt8&gt; in Ariob.NativeWebCryptoModule.encrypt(_: __C.NSDictionary, key: __C.NSDictionary, data: __C.NSData) -&gt; Swift.Optional&lt;__C.NSData&gt;"
+                  moduleName = "Ariob.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aethiop/Documents/Dev/ariob/platforms/ios/Ariob/Ariob/modules/NativeWebCryptoModule.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "209"
+                  endingLineNumber = "209">
+               </Location>
+               <Location
+                  uuid = "24395536-B924-40A3-A6F7-8C9C6ACC6FF1 - b498255eb437bd91"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Ariob.NativeWebCryptoModule.encrypt(_: __C.NSDictionary, key: __C.NSDictionary, data: Any) -&gt; Swift.Optional&lt;__C.NSData&gt;"
+                  moduleName = "Ariob.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aethiop/Documents/Dev/ariob/platforms/ios/Ariob/Ariob/modules/NativeWebCryptoModule.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "209"
+                  endingLineNumber = "209">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "71227A1B-7F10-4E42-923A-88E8665DBA27"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Ariob/modules/NativeWebCryptoModule.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "204"
+            endingLineNumber = "204"
+            landmarkName = "NativeWebCryptoModule"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

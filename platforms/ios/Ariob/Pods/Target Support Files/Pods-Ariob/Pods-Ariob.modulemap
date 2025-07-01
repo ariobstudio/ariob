@@ -1,0 +1,6 @@
+module Pods_Ariob {
+  umbrella header "Pods-Ariob-umbrella.h"
+
+  export *
+  module * { export * }
+}

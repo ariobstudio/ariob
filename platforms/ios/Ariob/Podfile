@@ -21,6 +21,7 @@ target 'Ariob' do
       'Http',
       'Devtool',
   ]
+  pod 'CryptoSwift'
 
   pod 'DebugRouter', '5.0.8'
 

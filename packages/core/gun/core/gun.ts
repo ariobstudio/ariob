@@ -1,4 +1,5 @@
 import Gun from '../gun.js';
+import '../crypto.js';
 import SEA from '../sea.js';
 
 import { GunInstance } from './types';

@@ -97,10 +97,12 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/CryptoSwift/CryptoSwift.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Lynx/LynxResources.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/LynxDevtool/LynxDebugResources.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/CryptoSwift/CryptoSwift.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Lynx/LynxResources.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/LynxDevtool/LynxDebugResources.bundle"
 fi

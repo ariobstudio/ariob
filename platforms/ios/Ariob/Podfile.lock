@@ -4,6 +4,7 @@ PODS:
   - BaseDevtool/framework (3.2.0):
     - DebugRouter (>= 5.0.8)
     - Lynx (= 3.2.0)
+  - CryptoSwift (1.8.4)
   - DebugRouter (5.0.8):
     - DebugRouter/Framework (= 5.0.8)
     - DebugRouter/Native (= 5.0.8)
@@ -106,6 +107,7 @@ PODS:
   - SocketRocket (0.6.0)
 
 DEPENDENCIES:
+  - CryptoSwift
   - DebugRouter (= 5.0.8)
   - Lynx/Framework (= 3.2.0)
   - Lynx/Replay (= 3.2.0)
@@ -121,6 +123,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - BaseDevtool
+    - CryptoSwift
     - DebugRouter
     - libwebp
     - Lynx
@@ -133,6 +136,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   BaseDevtool: a54c656d1cb2460e4e239d3d49091c690c7b1a6f
+  CryptoSwift: e64e11850ede528a02a0f3e768cec8e9d92ecb90
   DebugRouter: 06c65abcbd5c9b0df45a2b241f9073c18e6ab18d
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   Lynx: 1d2177abebf26c57cde7b2e0161b849e7c0a2370
@@ -143,6 +147,6 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: 295a6573c512f54ad2dd58098e64e17dcf008499
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
 
-PODFILE CHECKSUM: e0de9c387110433af5dede33b22f515aa399a25e
+PODFILE CHECKSUM: 945290db400ee6ece75bd655b7e0d4f4a5123b0b
 
 COCOAPODS: 1.16.2

@@ -51,12 +51,9 @@
   ;USE(function(module){
     var u;
     if(u+''== typeof btoa){
-      // if(u+'' == typeof Buffer){
-      //   try{ global.Buffer = USE("buffer", 1).Buffer }catch(e){ console.log("Please `npm install buffer` or add it to your package.json !") }
-      // }
-      const { Crypto } = require('./native-crypto');
-      global.btoa = Crypto.textEncode;
-      global.atob = Crypto.textDecode;
+      if(u+'' == typeof Buffer){
+        try{ global.Buffer = USE("buffer", 1).Buffer }catch(e){ console.log("Please `npm install buffer` or add it to your package.json !") }
+      }
     }
   })(USE, './base64');
 
@@ -188,9 +185,8 @@
       api.TextDecoder = SEA.window.TextDecoder;
       api.random = (len) => api.Buffer.from(api.crypto.getRandomValues(new Uint8Array(api.Buffer.alloc(len))));
     }
-    const { Crypto } = require('./native-crypto');
     const { TextEncoder, TextDecoder } = require('./text-encoding');
-    api.crypto = api.subtle = Crypto;
+    api.crypto = api.subtle = globalThis.crypto.subtle;
     api.TextEncoder = TextEncoder;
     api.TextDecoder = TextDecoder;
     api.random = (len) => api.Buffer.from(api.crypto.getRandomValues(new Uint8Array(api.Buffer.alloc(len))));
@@ -562,7 +558,7 @@
     const importGen = async (key, salt, opt) => {
       //const combo = shim.Buffer.concat([shim.Buffer.from(key, 'utf8'), salt || shim.random(8)]).toString('utf8') // old
       opt = opt || {};
-      const combo = key + (salt || shim.random(8)).toString('utf8'); // new
+      const combo = key + (salt || shim.random(8)); // new
       const hash = shim.Buffer.from(await sha256hash(combo), 'binary')
       
       const jwkKey = S.keyToJwk(hash)      

@@ -1,3 +1,4 @@
 ${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-resources.sh
+${PODS_CONFIGURATION_BUILD_DIR}/CryptoSwift/CryptoSwift.bundle
 ${PODS_CONFIGURATION_BUILD_DIR}/Lynx/LynxResources.bundle
 ${PODS_CONFIGURATION_BUILD_DIR}/LynxDevtool/LynxDebugResources.bundle

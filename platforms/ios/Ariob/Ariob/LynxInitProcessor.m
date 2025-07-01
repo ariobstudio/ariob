@@ -40,7 +40,6 @@ static LynxInitProcessor *_instance = nil;
   LynxEnv *env = [LynxEnv sharedInstance];
   // init global config
   LynxConfig *globalConfig = [[LynxConfig alloc] initWithProvider:[NetworkLynxProvider new]];
-
   // register global JS module
   [globalConfig registerModule:ExplorerModule.class];
   [globalConfig registerModule:NativeWebCryptoModule.class];
