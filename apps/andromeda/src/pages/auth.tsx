@@ -10,6 +10,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useWho } from '@ariob/core';
 import React, { useState } from 'react';
+import crypto from 'crypto';
 
 const Page: React.FC = () => {
   const { signup, login, isLoading, error } = useWho();
@@ -21,6 +22,9 @@ const Page: React.FC = () => {
   >('keypair');
   const [isSignup, setIsSignup] = useState(true);
 
+  const showCrypto = () => {
+    console.log(crypto);
+  }
   const handleAuth = async () => {
     if (!alias.trim()) {
       alert('Please enter an alias');
@@ -172,7 +176,7 @@ const Page: React.FC = () => {
 
             {/* Submit Button */}
             <Button
-              onClick={handleAuth}
+              onClick={showCrypto}
               variant="default"
               size="lg"
             >

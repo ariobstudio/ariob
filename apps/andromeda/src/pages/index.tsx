@@ -4,6 +4,7 @@ import { useTheme } from '@/hooks/useTheme';
 import { BaseLayout } from '@/layouts/BaseLayout';
 import { useWho } from '@ariob/core';
 import { useNavigate } from 'react-router';
+import crypto from 'crypto';
 
 import onboardingDark from '@/assets/illustration-dark.png';
 import onboardingLight from '@/assets/illustration-light.png';
@@ -13,7 +14,6 @@ const IndexPage = () => {
   const { withTheme, currentTheme, setTheme } = useTheme();
   const onboaringImage = withTheme(onboardingLight, onboardingDark);
   const navigate = useNavigate();
-
   const handleThemeToggle = () => {
     setTheme(currentTheme === 'Light' ? 'Dark' : 'Light');
   };

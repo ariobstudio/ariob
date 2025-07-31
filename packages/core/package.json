@@ -10,7 +10,13 @@
   },
   "dependencies": {
     "@lynx-js/websocket": "^0.0.4",
+    "@peculiar/webcrypto": "^1.5.0",
+    "asmcrypto": "0.0.1-security",
+    "buffer": "^6.0.3",
+    "crypto-js": "^4.2.0",
+    "elliptic": "^6.6.1",
     "neverthrow": "^8.2.0",
+    "webcrypto-liner": "^1.4.3",
     "zod": "^3.24.4",
     "zustand": "^5.0.4"
   },

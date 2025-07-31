@@ -21,7 +21,7 @@ import java.util.TimeZone
 class BundleLoader(private val context: Context) {
     companion object {
         private const val TAG = "BundleLoader"
-        private const val REMOTE_BUNDLE_URL = "http://10.0.0.13:3000/main.lynx.bundle?fullscreen=true"
+        private const val REMOTE_BUNDLE_URL = "http://10.0.0.246:3000/main.lynx.bundle?fullscreen=true"
         private const val LOCAL_BUNDLE_PATH = "main.lynx.bundle"
         private const val CACHE_BUNDLE_FILENAME = "cached_bundle.lynx"
         

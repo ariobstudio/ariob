@@ -9,8 +9,9 @@ import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.facebook.imagepipeline.memory.PoolConfig
 import com.facebook.imagepipeline.memory.PoolFactory
 import com.lynx.devtoolwrapper.LynxDevtoolGlobalHelper
-import com.lynx.explorer.modules.NativeWebCryptoModule
 import com.lynx.service.devtool.LynxDevToolService
+import com.ariobstudio.ariob.modules.NativeWebCryptoModule
+import com.ariobstudio.ariob.input.AriobInput
 import com.lynx.service.image.LynxImageService
 import com.lynx.service.log.LynxLogService
 import com.lynx.tasm.LynxEnv
