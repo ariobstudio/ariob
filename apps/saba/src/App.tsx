@@ -21,14 +21,24 @@ const GEMMA3_MODEL_CONFIG: MLModelConfiguration = {
 export function App(props: {
   onRender?: () => void
 }) {
-  // ML Hook
+  // Check for native module availability following Lynx patterns
+  const isNativeAvailable = (() => {
+    try {
+      const nativeModules = (globalThis as any).NativeModules
+      return !!(nativeModules?.NativeMLXModule)
+    } catch {
+      return false
+    }
+  })()
+
+  // ML Hook - only initialize if native modules are available
   const {
     isReady,
     error: mlError,
     loadModel,
     chat,
     isModelLoaded
-  } = useML({ autoInit: true })
+  } = useML({ autoInit: isNativeAvailable })
 
   // State
   const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -38,19 +48,18 @@ export function App(props: {
   const [isGenerating, setIsGenerating] = useState<boolean>(false)
   const [appError, setAppError] = useState<string | null>(null)
   const [hasAttemptedLoad, setHasAttemptedLoad] = useState<boolean>(false)
-  const isNativeAvailable = typeof (globalThis as any).NativeMLXModule !== 'undefined'
 
   useEffect(() => {
     console.info('Lynx Chat App with Gemma3 MLX')
     props.onRender?.()
   }, [])
 
-  // Load model on app start
+  // Load model on app start (only if native modules are available)
   useEffect(() => {
-    if (isReady && !hasAttemptedLoad && !isModelLoadingState) {
+    if (isReady && !hasAttemptedLoad && !isModelLoadingState && isNativeAvailable) {
       loadGemma3Model()
     }
-  }, [isReady, hasAttemptedLoad, isModelLoadingState])
+  }, [isReady, hasAttemptedLoad, isModelLoadingState, isNativeAvailable])
 
   const loadGemma3Model = useCallback(async () => {
     try {
@@ -158,8 +167,8 @@ export function App(props: {
     sendMessage()
   }, [sendMessage])
 
-  // Render loading state
-  if (!isReady || isModelLoadingState) {
+  // Show loading state when initializing or loading model (but only if native modules are available)
+  if ((!isReady && isNativeAvailable) || isModelLoadingState) {
     return (
       <view style={{
         flex: 1,
@@ -191,7 +200,7 @@ export function App(props: {
             textAlign: 'center',
             marginBottom: 10
           }}>
-            {isModelLoadingState ? 'Loading Gemma3 Model...' : 'Initializing ML...'}
+            {isModelLoadingState ? 'Loading Gemma3 Model...' : 'Initializing ML Runtime...'}
           </text>
 
           <view style={{
@@ -250,8 +259,66 @@ export function App(props: {
     )
   }
 
-  // Render error state
-  if (mlError || appError || !isNativeAvailable) {
+  // Show initialization screen if ML isn't ready and no native modules
+  if (!isReady && !isNativeAvailable) {
+    return (
+      <view style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f8fafc',
+        padding: 20
+      }}>
+        <text style={{
+          fontSize: 24,
+          fontWeight: 'bold',
+          color: '#1e293b',
+          marginBottom: 20
+        }}>
+          🤖 Lynx Chat
+        </text>
+
+        <view style={{
+          backgroundColor: '#fffbea',
+          padding: 20,
+          borderRadius: 16,
+          borderWidth: 1,
+          borderColor: '#fef08a',
+          marginBottom: 20,
+          minWidth: 200,
+          alignItems: 'center'
+        }}>
+          <text style={{
+            fontSize: 16,
+            color: '#92400e',
+            textAlign: 'center',
+            marginBottom: 10
+          }}>
+            Checking for ML Runtime...
+          </text>
+
+          <view style={{
+            backgroundColor: '#f59e0b',
+            height: 4,
+            width: 120,
+            borderRadius: 2,
+            opacity: 0.7
+          }} />
+        </view>
+
+        <text style={{
+          fontSize: 14,
+          color: '#64748b',
+          textAlign: 'center'
+        }}>
+          Please ensure this app is running in a Lynx runtime environment
+        </text>
+      </view>
+    )
+  }
+
+  // Render error state or native module missing state
+  if (mlError || appError || (!isNativeAvailable && isReady)) {
     return (
       <view style={{
         flex: 1,
