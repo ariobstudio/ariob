@@ -4,6 +4,7 @@
 
 #ifndef SRC_GC_TRACE_GC_H_
 #define SRC_GC_TRACE_GC_H_
+#include <string>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -63,6 +64,19 @@ class PtrHandles {
   LEPUSRuntime *rt_;
   void InitialHandles();
   void ResizeHandles();
+};
+
+class CheckTools {
+ public:
+  CheckTools();
+  ~CheckTools();
+  bool PushTid(int tid);
+  bool IsValidTid(int tid);
+
+ private:
+  int tid_idx;
+  int tid_size;
+  int *tids;
 };
 
 class HandleScope {
@@ -136,6 +150,11 @@ class NAPIHandleScope {
   napi_func *reset_napi_env;
 };
 
+class GCObserver {
+ public:
+  virtual ~GCObserver() = default;
+  virtual void OnGC(std::string mem_info) = 0;
+};
 #ifdef USE_PRIMJS_NAPI
 #include "primjs_napi_undefs.h"
 #endif

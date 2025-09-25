@@ -1,0 +1,3 @@
+- you're using Lynx next time
+- https://lynxjs.org/llms.txt
+- Use Context7 to fetch documents

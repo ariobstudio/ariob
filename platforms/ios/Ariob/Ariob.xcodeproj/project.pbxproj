@@ -7,8 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		101A44422DD34ADD00E233B7 /* main.lynx.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 101A44402DD34ABE00E233B7 /* main.lynx.bundle */; };
-		2B5015C11E8DAAE76262AEFB /* libPods-Ariob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18DF23D473B478DE779CDB7C /* libPods-Ariob.a */; };
+		10388F542E827FD8000C60D5 /* MLX in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F532E827FD8000C60D5 /* MLX */; };
+		10388F562E827FD8000C60D5 /* MLXFFT in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F552E827FD8000C60D5 /* MLXFFT */; };
+		10388F582E827FD8000C60D5 /* MLXFast in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F572E827FD8000C60D5 /* MLXFast */; };
+		10388F5A2E827FD8000C60D5 /* MLXLinalg in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F592E827FD8000C60D5 /* MLXLinalg */; };
+		10388F5C2E827FD8000C60D5 /* MLXNN in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F5B2E827FD8000C60D5 /* MLXNN */; };
+		10388F5E2E827FD8000C60D5 /* MLXOptimizers in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F5D2E827FD8000C60D5 /* MLXOptimizers */; };
+		10388F602E827FD8000C60D5 /* MLXRandom in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F5F2E827FD8000C60D5 /* MLXRandom */; };
+		10388F632E827FEF000C60D5 /* Transformers in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F622E827FEF000C60D5 /* Transformers */; };
+		6F148728A60139101E9E3F03 /* Pods_Ariob.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D51851F6916D16CD63E012 /* Pods_Ariob.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,13 +36,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		101A44402DD34ABE00E233B7 /* main.lynx.bundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = main.lynx.bundle; sourceTree = "<group>"; };
 		10305DAD2D87ED200021DD5A /* Ariob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ariob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10305DC82D87ED230021DD5A /* AriobTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AriobTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		10305DD22D87ED230021DD5A /* AriobUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AriobUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		18DF23D473B478DE779CDB7C /* libPods-Ariob.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Ariob.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		55671280303B1509CF209C94 /* Pods-Ariob.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ariob.release.xcconfig"; path = "Target Support Files/Pods-Ariob/Pods-Ariob.release.xcconfig"; sourceTree = "<group>"; };
-		5AFFBF0E735E78936CAE018D /* Pods-Ariob.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ariob.debug.xcconfig"; path = "Target Support Files/Pods-Ariob/Pods-Ariob.debug.xcconfig"; sourceTree = "<group>"; };
+		5ED6BC6FC911B74322F37C01 /* Pods-Ariob.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ariob.debug.xcconfig"; path = "Target Support Files/Pods-Ariob/Pods-Ariob.debug.xcconfig"; sourceTree = "<group>"; };
+		6FFF62F7494665901159AECA /* Pods-Ariob.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ariob.release.xcconfig"; path = "Target Support Files/Pods-Ariob/Pods-Ariob.release.xcconfig"; sourceTree = "<group>"; };
+		D7D51851F6916D16CD63E012 /* Pods_Ariob.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ariob.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -74,7 +80,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B5015C11E8DAAE76262AEFB /* libPods-Ariob.a in Frameworks */,
+				10388F5C2E827FD8000C60D5 /* MLXNN in Frameworks */,
+				10388F5A2E827FD8000C60D5 /* MLXLinalg in Frameworks */,
+				10388F542E827FD8000C60D5 /* MLX in Frameworks */,
+				10388F602E827FD8000C60D5 /* MLXRandom in Frameworks */,
+				6F148728A60139101E9E3F03 /* Pods_Ariob.framework in Frameworks */,
+				10388F5E2E827FD8000C60D5 /* MLXOptimizers in Frameworks */,
+				10388F632E827FEF000C60D5 /* Transformers in Frameworks */,
+				10388F582E827FD8000C60D5 /* MLXFast in Frameworks */,
+				10388F562E827FD8000C60D5 /* MLXFFT in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,9 +116,8 @@
 				10305DCB2D87ED230021DD5A /* AriobTests */,
 				10305DD52D87ED230021DD5A /* AriobUITests */,
 				10305DAE2D87ED200021DD5A /* Products */,
-				D6B14ADC0200603460039318 /* Pods */,
-				7421C64929A36A780FDFF852 /* Frameworks */,
-				101A44402DD34ABE00E233B7 /* main.lynx.bundle */,
+				C7E080B3BE97D78CFB6029F7 /* Pods */,
+				48FF5FE51EE715B11C62B935 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -118,19 +131,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7421C64929A36A780FDFF852 /* Frameworks */ = {
+		48FF5FE51EE715B11C62B935 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				18DF23D473B478DE779CDB7C /* libPods-Ariob.a */,
+				D7D51851F6916D16CD63E012 /* Pods_Ariob.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D6B14ADC0200603460039318 /* Pods */ = {
+		C7E080B3BE97D78CFB6029F7 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5AFFBF0E735E78936CAE018D /* Pods-Ariob.debug.xcconfig */,
-				55671280303B1509CF209C94 /* Pods-Ariob.release.xcconfig */,
+				5ED6BC6FC911B74322F37C01 /* Pods-Ariob.debug.xcconfig */,
+				6FFF62F7494665901159AECA /* Pods-Ariob.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -142,11 +155,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 10305DDB2D87ED230021DD5A /* Build configuration list for PBXNativeTarget "Ariob" */;
 			buildPhases = (
-				6141F731BF6DDD11ED1C5A24 /* [CP] Check Pods Manifest.lock */,
+				1E76367A75206712AAE397C3 /* [CP] Check Pods Manifest.lock */,
 				10305DA92D87ED200021DD5A /* Sources */,
 				10305DAA2D87ED200021DD5A /* Frameworks */,
 				10305DAB2D87ED200021DD5A /* Resources */,
-				630DD57A25E535E9668CEBF7 /* [CP] Copy Pods Resources */,
+				4BC3B9830A0BD57CC1267C4D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -208,8 +221,8 @@
 		10305DA52D87ED200021DD5A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = NO;
-				LastUpgradeCheck = 1620;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					10305DAC2D87ED200021DD5A = {
 						CreatedOnToolsVersion = 16.2;
@@ -235,6 +248,8 @@
 			mainGroup = 10305DA42D87ED200021DD5A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */,
+				10388F612E827FEF000C60D5 /* XCRemoteSwiftPackageReference "swift-transformers" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 10305DAE2D87ED200021DD5A /* Products */;
@@ -253,7 +268,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				101A44422DD34ADD00E233B7 /* main.lynx.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,7 +288,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6141F731BF6DDD11ED1C5A24 /* [CP] Check Pods Manifest.lock */ = {
+		1E76367A75206712AAE397C3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -296,21 +310,25 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		630DD57A25E535E9668CEBF7 /* [CP] Copy Pods Resources */ = {
+		4BC3B9830A0BD57CC1267C4D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Copy Pods Resources";
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -355,7 +373,7 @@
 /* Begin XCBuildConfiguration section */
 		10305DDC2D87ED230021DD5A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5AFFBF0E735E78936CAE018D /* Pods-Ariob.debug.xcconfig */;
+			baseConfigurationReference = 5ED6BC6FC911B74322F37C01 /* Pods-Ariob.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -364,7 +382,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = G5Q4DZX2NT;
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Ariob/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -372,11 +390,13 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = ariobstudio.Ariob;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -390,7 +410,7 @@
 		};
 		10305DDD2D87ED230021DD5A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55671280303B1509CF209C94 /* Pods-Ariob.release.xcconfig */;
+			baseConfigurationReference = 6FFF62F7494665901159AECA /* Pods-Ariob.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -399,7 +419,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = G5Q4DZX2NT;
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Ariob/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -407,11 +427,13 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = ariobstudio.Ariob;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -458,6 +480,8 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = G5Q4DZX2NT;
+				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -475,12 +499,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 			};
 			name = Debug;
 		};
@@ -520,6 +546,8 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = G5Q4DZX2NT;
+				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -531,11 +559,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -546,9 +577,8 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = G5Q4DZX2NT;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ariobstudio.AriobTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -564,9 +594,8 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = G5Q4DZX2NT;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ariobstudio.AriobTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -581,7 +610,6 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = G5Q4DZX2NT;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ariobstudio.AriobUITests;
@@ -597,7 +625,6 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = G5Q4DZX2NT;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ariobstudio.AriobUITests;
@@ -648,6 +675,68 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ml-explore/mlx-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.25.6;
+			};
+		};
+		10388F612E827FEF000C60D5 /* XCRemoteSwiftPackageReference "swift-transformers" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/huggingface/swift-transformers";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.24;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		10388F532E827FD8000C60D5 /* MLX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLX;
+		};
+		10388F552E827FD8000C60D5 /* MLXFFT */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXFFT;
+		};
+		10388F572E827FD8000C60D5 /* MLXFast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXFast;
+		};
+		10388F592E827FD8000C60D5 /* MLXLinalg */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXLinalg;
+		};
+		10388F5B2E827FD8000C60D5 /* MLXNN */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXNN;
+		};
+		10388F5D2E827FD8000C60D5 /* MLXOptimizers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXOptimizers;
+		};
+		10388F5F2E827FD8000C60D5 /* MLXRandom */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXRandom;
+		};
+		10388F622E827FEF000C60D5 /* Transformers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F612E827FEF000C60D5 /* XCRemoteSwiftPackageReference "swift-transformers" */;
+			productName = Transformers;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 10305DA52D87ED200021DD5A /* Project object */;
 }

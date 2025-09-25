@@ -1,31 +1,44 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
 source 'https://cdn.cocoapods.org/'
 
-platform :ios, 18.2
+# Support iOS 10+ for CocoaPods dependencies
+# MLX Swift packages (iOS 16+) are handled separately via SPM in Xcode
+platform :ios, '10.0'
 
 target 'Ariob' do
-  # Comment the next line if you don't want to use dynamic frameworks
-  # use_frameworks!
-  pod 'Lynx', '3.2.0', :subspecs => [
-    'Framework',
-    'Replay',
+  # Use dynamic frameworks
+  use_frameworks!
+
+  pod 'Lynx', '3.4.1', :subspecs => [
+      'Framework',
   ]
 
-  pod 'PrimJS', '2.12.0', :subspecs => ['quickjs', 'napi']
+  pod 'PrimJS', '2.14.0-rc.1', :subspecs => ['quickjs', 'napi']
 
   # integrate image-service, log-service, and http-service
-  pod 'LynxService', '3.2.0', :subspecs => [
+  pod 'LynxService', '3.4.1', :subspecs => [
       'Image',
       'Log',
       'Http',
-      'Devtool',
   ]
-  pod 'CryptoSwift'
-
-  pod 'DebugRouter', '5.0.8'
 
   # ImageService
   pod 'SDWebImage','5.15.5'
   pod 'SDWebImageWebPCoder', '0.11.0'
+
+  pod 'XElement', '3.4.1'
+
+  # Note: MLX and Transformers are handled via Swift Package Manager in Xcode
+  # This allows iOS 16+ ML features while keeping iOS 10+ compatibility for core functionality
+
+  post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        # All CocoaPods dependencies use iOS 10.0
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
+        config.build_settings['ENABLE_BITCODE'] = 'NO'
+        config.build_settings['SWIFT_VERSION'] = '5.5'
+      end
+    end
+  end
 end

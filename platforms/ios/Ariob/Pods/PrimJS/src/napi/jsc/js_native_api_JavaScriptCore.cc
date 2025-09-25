@@ -47,14 +47,22 @@ class JSString {
     other._string = nullptr;
   }
 
+  static size_t GetJSCharLength(const JSChar* string) {
+    size_t length = 0;
+    while (*string != '\0') {
+      length++;
+      string++;
+    }
+    return length;
+  }
+
   explicit JSString(const char* string, size_t length = NAPI_AUTO_LENGTH)
       : _string{CreateUTF8(string, length)} {}
 
   explicit JSString(const JSChar* string, size_t length = NAPI_AUTO_LENGTH)
       : _string{JSStringCreateWithCharacters(
-            string, length == NAPI_AUTO_LENGTH
-                        ? std::char_traits<JSChar>::length(string)
-                        : length)} {}
+            string,
+            length == NAPI_AUTO_LENGTH ? GetJSCharLength(string) : length)} {}
 
   ~JSString() {
     if (_string != nullptr) {

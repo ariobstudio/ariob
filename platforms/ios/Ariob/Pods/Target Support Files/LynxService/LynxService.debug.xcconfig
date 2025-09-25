@@ -1,9 +1,10 @@
 CLANG_CXX_LANGUAGE_STANDARD = gnu++17
 CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO
 CONFIGURATION_BUILD_DIR = ${PODS_CONFIGURATION_BUILD_DIR}/LynxService
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 ENABLE_TRACE_PERFETTO=0                                       OS_IOS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/LynxService" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/BaseDevtool" "${PODS_ROOT}/Headers/Public/DebugRouter" "${PODS_ROOT}/Headers/Public/Lynx" "${PODS_ROOT}/Headers/Public/LynxDevtool" "${PODS_ROOT}/Headers/Public/LynxService" "${PODS_ROOT}/Headers/Public/PrimJS" "${PODS_ROOT}/Headers/Public/SDWebImage" "${PODS_ROOT}/Headers/Public/SDWebImageWebPCoder" "${PODS_ROOT}/Headers/Public/SocketRocket" "${PODS_ROOT}/Headers/Public/libwebp"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/Lynx" "${PODS_CONFIGURATION_BUILD_DIR}/PrimJS" "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage" "${PODS_CONFIGURATION_BUILD_DIR}/SDWebImageWebPCoder" "${PODS_CONFIGURATION_BUILD_DIR}/libwebp"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 ENABLE_TRACE_PERFETTO=0                                       NDEBUG=1                                       OS_IOS=1
 OTHER_CPLUSPLUSFLAGS = -fno-aligned-allocation -fno-c++-static-destructors
+OTHER_LDFLAGS = $(inherited) -framework "AudioToolbox" -framework "ImageIO" -framework "JavaScriptCore" -framework "Lynx" -framework "NaturalLanguage" -framework "SDWebImage" -framework "SDWebImageWebPCoder" -framework "UIKit" -framework "WebKit"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_DEVELOPMENT_LANGUAGE = ${DEVELOPMENT_LANGUAGE}

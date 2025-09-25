@@ -122,6 +122,7 @@ size_t get_del_cnt(void *runtime, void *ptr);
 #endif
 
 #define __exception __attribute__((warn_unused_result))
+using address_t = uintptr_t;
 
 enum JS_CLASS_ID {
   /* classid tag        */ /* union usage   | properties */
@@ -285,12 +286,11 @@ typedef struct QJSDebuggerCallbacks2 {
                                    int32_t protocol_type);
   void (*get_session_state)(LEPUSContext *ctx, int32_t view_id,
                             bool *is_already_enabled, bool *is_paused);
-  void (*console_api_called_ntfy_with_rid)(LEPUSContext *ctx, LEPUSValue *msg);
   void (*get_session_enable_state)(LEPUSContext *ctx, int32_t view_id,
                                    int32_t protocol_type, bool *ret);
   void (*get_console_stack_trace)(LEPUSContext *ctx, LEPUSValue *ret);
   void (*on_console_message)(LEPUSContext *ctx, LEPUSValue console_message,
-                             int32_t);
+                             const char *);
 } QJSDebuggerCallbacks2;
 #endif
 
@@ -307,6 +307,7 @@ typedef struct SettingsOption {
 class GlobalHandles;
 class GarbageCollector;
 class PtrHandles;
+class CheckTools;
 class ByteThreadPool;
 class NAPIHandleScope;
 
@@ -402,7 +403,7 @@ struct LEPUSRuntime {
   struct list_head string_list; /* list of JSString.link */
 #endif
   // <Primjs end>
-  void (*update_gc_info)(const char *, int);
+  void (*update_gc_info)(LEPUSContext *, const char *, int);
   char gc_info_start_[BUF_LEN];
   char gc_info_end_[BUF_LEN];
   int64_t init_time;
@@ -422,6 +423,8 @@ struct LEPUSRuntime {
   SettingsOption settings_option;
   // Primjs end
   JSMallocState malloc_state;
+  void *gc_observer;
+  int gc_depth;
 #ifdef ENABLE_TRACING_GC
   LEPUSObject *boilerplateArg0;
   LEPUSObject *boilerplateArg1;
@@ -794,6 +797,7 @@ struct LEPUSContext {
   bool gc_enable;
   bool is_lepusng;
   bool object_ctx_check;
+  CheckTools *check_tools;
 };
 
 typedef union JSFloat64Union {
@@ -900,9 +904,11 @@ enum class EntryMode { INTERPRETER, BASELINE };
 #define JIT_THRESHOLD 6
 
 // <primjs end>
+enum {
+  GC_INFO_THREADHOLD_MB = 0xFF000000,
+};
 
 // settings key opt
-
 enum {
   PRIMJS_SNAPSHOT_ENABLE = 0b000000001,
   JSON_OPT_DISABLE = 0b000000010,
@@ -974,11 +980,9 @@ typedef struct LEPUSFunctionBytecode {
   // <Primjs begin>
   struct list_head gc_link;
   uint32_t function_id;  // for lepusNG debugger encode
-#ifdef ENABLE_QUICKJS_DEBUGGER
+#ifdef ENABLE_CHECK_TOOLS
   LEPUSContext *ctx;
-#if defined(ANDROID) || defined(__ANDROID__)
   pid_t tid;
-#endif
 #endif
   // <Primjs end>
   struct {
@@ -1353,11 +1357,9 @@ struct LEPUSObject {
     JSRegExp regexp;        /* JS_CLASS_REGEXP: 8/16 bytes */
     LEPUSValue object_data; /* for JS_SetObjectData(): 8/16/16 bytes */
   } u;
-#ifdef ENABLE_QUICKJS_DEBUGGER
+#ifdef ENABLE_CHECK_TOOLS
   LEPUSContext *ctx;
-#if defined(ANDROID) || defined(__ANDROID__)
   pid_t tid;
-#endif
 #endif
   /* byte sizes: 40/48/72 */
 };
@@ -1829,6 +1831,10 @@ QJS_HIDE JSProperty *add_property(LEPUSContext *ctx, LEPUSObject *p,
                                   JSAtom prop, int prop_flags);
 QJS_HIDE JSProperty *add_property_gc(LEPUSContext *ctx, LEPUSObject *p,
                                      JSAtom prop, int prop_flags);
+QJS_HIDE void prim_WriteBarrierNoStore(LEPUSValue value, LEPUSContext *ctx);
+QJS_HIDE void prim_HeapObjStoreLEPUSValue(void *fieldAddr, LEPUSValue value);
+QJS_HIDE void prim_HeapObjStorePtr(void *dstObj, address_t offset, void *value);
+QJS_HIDE LEPUSValue js_get_length(LEPUSContext *ctx, LEPUSValueConst obj);
 QJS_HIDE LEPUSValue prim_js_op_eval(LEPUSContext *ctx, int scope_idx,
                                     LEPUSValue op1);
 QJS_HIDE LEPUSValue prim_js_op_eval_gc(LEPUSContext *ctx, int scope_idx,
@@ -2006,7 +2012,7 @@ LEPUSValue js_dynamic_import(LEPUSContext *ctx, LEPUSValueConst specifier);
 #ifdef __cplusplus
 }
 #endif
-
+void set_mark_func(LEPUSRuntime *rt, LEPUSValueConst val, uint64_t trace_tool);
 /* <rc begin> */
 static __attribute__((unused)) int JS_DefineProperty_RC(
     LEPUSContext *ctx, LEPUSValueConst this_obj, JSAtom prop,
@@ -2018,7 +2024,7 @@ static __attribute__((unused)) int JS_DefinePropertyValue_RC(
 static __attribute__((unused)) void JS_MarkValue_RC(LEPUSRuntime *rt,
                                                     LEPUSValueConst val,
                                                     LEPUS_MarkFunc *mark_func,
-                                                    int local_idx = -1);
+                                                    uint64_t trace_tool = 0);
 static __attribute__((unused)) int JS_ToBoolFree_RC(LEPUSContext *ctx,
                                                     LEPUSValue val);
 static __attribute__((unused)) int JS_IsInstanceOf_RC(LEPUSContext *ctx,
@@ -2035,8 +2041,9 @@ LEPUSValue JS_GetSeparableStringContentNotDup_GC(LEPUSContext *ctx,
 QJS_HIDE int set_array_length_gc(LEPUSContext *ctx, LEPUSObject *p,
                                  JSProperty *prop, LEPUSValue val, int flags);
 bool gc_enabled();
-LEPUSRuntime *JS_NewRuntime_GC();
-LEPUSRuntime *JS_NewRuntime2_GC(const LEPUSMallocFunctions *mf, void *opaque);
+LEPUSRuntime *JS_NewRuntime_GC(uint32_t mode);
+LEPUSRuntime *JS_NewRuntime2_GC(const LEPUSMallocFunctions *mf, void *opaque,
+                                uint32_t mode);
 void JS_FreeRuntime_GC(LEPUSRuntime *rt);
 void JS_FreeRuntimeForEffect(LEPUSRuntime *rt);
 LEPUSContext *JS_NewContext_GC(LEPUSRuntime *rt);
@@ -3218,11 +3225,8 @@ void SetObjectCtxCheckStatus(LEPUSContext *ctx, bool enable);
 
 void trig_gc(JSMallocState *s, size_t size, bool is_outer = false);
 
-#ifdef ENABLE_QUICKJS_DEBUGGER
-#if defined(ANDROID) || defined(__ANDROID__)
+#ifdef ENABLE_CHECK_TOOLS
 QJS_HIDE pid_t get_tid();
-#endif
-QJS_HIDE void CheckObjectCtx(LEPUSContext *ctx, LEPUSValue obj);
 #endif
 
 #endif  // SRC_INTERPRETER_QUICKJS_INCLUDE_QUICKJS_INNER_H_

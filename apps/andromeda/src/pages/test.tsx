@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { sea } from '@ariob/core';
-import { Column, Row} from '@/components/primitives';
+import { Column, Row, Scrollable} from '@/components/primitives';
 
 interface TestResult {
     step: string;
@@ -162,7 +162,7 @@ const TestPage: React.FC = () => {
 
     return (
         <Column className="min-h-screen p-6 bg-gray-50" align="center" justify="start">
-            <Column className="w-full max-w-4xl space-y-6">
+            <Scrollable className="w-full max-w-4xl space-y-6">
                 <Column className="text-center space-y-2">
                     <text className="text-3xl font-bold text-gray-800">SEA Cryptography Tests</text>
                     <text className="text-gray-600">Testing Security, Encryption, and Authentication features</text>
@@ -251,7 +251,7 @@ const TestPage: React.FC = () => {
                         <text className="text-sm text-gray-700">8. Exchange encrypted data using shared secrets</text>
                     </Column>
                 </Column>
-            </Column>
+            </Scrollable>
         </Column>
     );
 };

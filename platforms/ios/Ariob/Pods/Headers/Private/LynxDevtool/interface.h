@@ -1,1 +1,0 @@
-../../../LynxDevtool/lynx/devtool/js_inspect/quickjs/quickjs_internal/interface.h

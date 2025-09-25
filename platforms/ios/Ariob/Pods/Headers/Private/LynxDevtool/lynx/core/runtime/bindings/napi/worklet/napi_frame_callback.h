@@ -1,1 +1,0 @@
-../../../../../../../../../LynxDevtool/lynx/core/runtime/bindings/napi/worklet/napi_frame_callback.h

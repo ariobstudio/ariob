@@ -51,9 +51,11 @@
   ;USE(function(module){
     var u;
     if(u+''== typeof btoa){
-      if(u+'' == typeof Buffer){
-        try{ global.Buffer = USE("buffer", 1).Buffer }catch(e){ console.log("Please `npm install buffer` or add it to your package.json !") }
-      }
+      // if(u+'' == typeof Buffer){
+      //   try{ global.Buffer = require("buffer").Buffer }catch(e){ console.log("Please `npm install buffer` or add it to your package.json !") }
+      // }
+      globalThis.btoa = function(data){ return Buffer.from(data, "binary").toString("base64") };
+      globalThis.atob = function(data){ return Buffer.from(data, "base64").toString("binary") };
     }
   })(USE, './base64');
 
@@ -77,23 +79,7 @@
         ).join('')
       }
       if (enc === 'base64') {
-        // Use synchronous base64 encoding
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-        let result = '';
-        let i = 0;
-        
-        while (i < this.length) {
-          const a = this[i++];
-          const b = i < this.length ? this[i++] : 0;
-          const c = i < this.length ? this[i++] : 0;
-          
-          result += chars[a >> 2];
-          result += chars[((a & 3) << 4) | (b >> 4)];
-          result += i - 2 < this.length ? chars[((b & 15) << 2) | (c >> 6)] : '=';
-          result += i - 1 < this.length ? chars[c & 63] : '=';
-        }
-        
-        return result;
+        return btoa(this)
       }
     }
     module.exports = SeaArray;
@@ -119,7 +105,6 @@
           throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
         }
         const input = arguments[0]
-        console.log('input', input)
         let buf
         if (typeof input === 'string') {
           const enc = arguments[1] || 'utf8'
@@ -196,40 +181,41 @@
       JSON.stringifyAsync(v,function(err, raw){ err? rej(err) : res(raw) },r,s);
     })}
 
-
+    if(SEA.window){
+      api.crypto = SEA.window.crypto || SEA.window.msCrypto
+      api.subtle = (api.crypto||o).subtle || (api.crypto||o).webkitSubtle;
+      api.TextEncoder = SEA.window.TextEncoder;
+      api.TextDecoder = SEA.window.TextDecoder;
+      api.random = (len) => api.Buffer.from(api.crypto.getRandomValues(new Uint8Array(api.Buffer.alloc(len))));
+    }
     api.crypto = globalThis.crypto;
     api.subtle = (api.crypto||o).subtle || (api.crypto||o).webkitSubtle;
     api.TextEncoder = globalThis.TextEncoder;
     api.TextDecoder = globalThis.TextDecoder;
-    api.random = async (len) => {
-      console.log('[SEA.random] Generating random bytes, length:', len);
-      const arr = new Uint8Array(len);
-      console.log('[SEA.random] Created Uint8Array:', arr.length, 'bytes');
-      const result = await api.crypto.getRandomValues(arr);
-      console.log('[SEA.random] getRandomValues result:', result.length, 'bytes, first few:', Array.from(result.slice(0, 5)));
-      return api.Buffer.from(result);
-    };
-  
-    if(!api.TextDecoder) {
-      const { TextEncoder, TextDecoder } = require('./text-encoding');
-      api.TextDecoder = TextDecoder;
-      api.TextEncoder = TextEncoder;
-    }
-    if(!api.crypto)
-    {
-      try
-      {
-      Object.assign(api, {
-        crypto,
-        random: (len) => api.Buffer.from(crypto.randomBytes(len))
-      });      
-      const { Crypto: WebCrypto } = USE('@peculiar/webcrypto', 1);
-      api.ossl = api.subtle = new WebCrypto({directory: 'ossl'}).subtle // ECDH
-    }
-    catch(e){
-      console.log("Please `npm install @peculiar/webcrypto` or add it to your package.json !");
-      }
-    }
+    
+    api.random = (len) => api.Buffer.from(api.crypto.getRandomValues(new Uint8Array(api.Buffer.alloc(len))));
+
+    // if(!api.TextDecoder)
+    // {
+    //   const { TextEncoder, TextDecoder } = require('./lib/text-encoding');
+    //   api.TextDecoder = TextDecoder;
+    //   api.TextEncoder = TextEncoder;
+    // }
+    // if(!api.crypto)
+    // {
+    //   try
+    //   {
+    //   var crypto = USE('crypto', 1);
+    //   Object.assign(api, {
+    //     crypto,
+    //     random: (len) => api.Buffer.from(crypto.randomBytes(len))
+    //   });      
+    //   const { Crypto: WebCrypto } = USE('@peculiar/webcrypto', 1);
+    //   api.ossl = api.subtle = new WebCrypto({directory: 'ossl'}).subtle // ECDH
+    // }
+    // catch(e){
+    //   console.log("Please `npm install @peculiar/webcrypto` or add it to your package.json !");
+    // }}
 
     module.exports = api
   })(USE, './shim');
@@ -245,7 +231,6 @@
     };
     s.ecdh = {name: 'ECDH', namedCurve: 'P-256'};
 
-    // This creates Web Cryptography API compliant JWK for sign/verify purposes
     s.jwk = function(pub, d){  // d === priv
       pub = pub.split('.');
       var x = pub[0], y = pub[1];
@@ -254,40 +239,46 @@
       if(d){ jwk.d = d }
       return jwk;
     };
-    
+    var objToUint8Array = function(obj) {
+      if(obj && typeof obj.length === 'number') {
+          var arr = new Uint8Array(obj.length);
+          for(var i = 0; i < obj.length; i++) {
+              arr[i] = obj[i] || 0;
+          }
+          return arr;
+      }
+      return obj;
+    };
+
+    var uint8ToBase64 = function(arr) {
+      var binary = '';
+      var bytes = new Uint8Array(arr);
+      for(var i = 0; i < bytes.byteLength; i++) {
+          binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary);
+    };
+
     s.keyToJwk = function(keyBytes) {
-      console.log('[SEA.keyToJwk] Input keyBytes type:', typeof keyBytes, 'length:', keyBytes?.length);
-      console.log('[SEA.keyToJwk] keyBytes:', keyBytes);
+      // Convert object back to Uint8Array if needed
+      var bytes = objToUint8Array ? objToUint8Array(keyBytes) : keyBytes;
       
-      // Handle different types of input and ensure proper base64 encoding
-      let keyB64;
-      if (typeof keyBytes === 'string') {
-        console.log('[SEA.keyToJwk] Input is string, using as-is');
-        // If already a string, assume it's base64
-        keyB64 = keyBytes;
-      } else if (keyBytes && typeof keyBytes.toString === 'function') {
-        console.log('[SEA.keyToJwk] Using toString("base64")');
-        // For Buffer-like objects, ensure we get base64
-        keyB64 = keyBytes.toString('base64');
-      } else if (keyBytes instanceof Uint8Array || keyBytes instanceof ArrayBuffer) {
-        console.log('[SEA.keyToJwk] Converting typed array to base64');
-        // For typed arrays, convert to base64
-        const bytes = keyBytes instanceof ArrayBuffer ? new Uint8Array(keyBytes) : keyBytes;
-        keyB64 = btoa(String.fromCharCode.apply(null, bytes));
+      var keyB64;
+      if(bytes && bytes.buffer) {
+          keyB64 = uint8ToBase64(bytes);
+      } else if(typeof keyBytes === 'string') {
+          keyB64 = keyBytes;
       } else {
-        throw new Error('Invalid key type for keyToJwk');
+          var arr = new Uint8Array(keyBytes.length || 0);
+          for(var i = 0; i < arr.length; i++) {
+              arr[i] = keyBytes[i] || 0;
+          }
+          keyB64 = uint8ToBase64(arr);
       }
       
-      console.log('[SEA.keyToJwk] Base64 key:', keyB64);
-      
-      // Convert to URL-safe base64 for JWK
-      const k = keyB64.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '');
-      console.log('[SEA.keyToJwk] URL-safe base64:', k);
-      
-      const jwk = { kty: 'oct', k: k, ext: false, alg: 'A256GCM' };
-      console.log('[SEA.keyToJwk] Final JWK:', jwk);
-      return jwk;
-    }
+      var k = keyB64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      return { kty: 'oct', k: k, ext: false, alg: 'A256GCM' };
+  };
 
     s.recall = {
       validity: 12 * 60 * 60, // internally in seconds : 12 hours
@@ -306,41 +297,12 @@
     SEA.opt = s;
     module.exports = s
   })(USE, './settings');
-  ;USE(function(module){
-    function arrayBufferToBase64(buffer) {
-      const base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-      const uint8Array = new Uint8Array(buffer);
-      let result = "";
-      let i = 0;
-      while (i < uint8Array.length) {
-        const byte1 = uint8Array[i];
-        const byte2 = uint8Array[i + 1];
-        const byte3 = uint8Array[i + 2];
-    
-        const char1 = base64Chars.charAt(byte1 >> 2);
-        const char2 = base64Chars.charAt(((byte1 & 0x03) << 4) | (byte2 >> 4));
-        const char3 = base64Chars.charAt(((byte2 & 0x0F) << 2) | (byte3 >> 6));
-        const char4 = base64Chars.charAt(byte3 & 0x3F);
-    
-        result += char1 + char2 + char3 + char4;
-        i += 3;
-      }
-      if (uint8Array.length % 3 === 1) {
-        result = result.substring(0, result.length - 2) + "==";
-      } else if (uint8Array.length % 3 === 2) {
-        result = result.substring(0, result.length - 1) + "=";
-      }
-      return result;
-    }
-    module.exports = arrayBufferToBase64;
-  })(USE, './array');
 
   ;USE(function(module){
     var shim = USE('./shim');
-    var arrayBufferToBase64 = USE('./array');
     module.exports = async function(d, o){
       var t = (typeof d == 'string')? d : await shim.stringify(d);
-      var hash = await shim.subtle.digest({name: o||'SHA-256'}, globalThis.TextCodecHelper.encode(t));
+      var hash = await shim.subtle.digest({name: o||'SHA-256'}, new shim.TextEncoder().encode(t));
       return shim.Buffer.from(hash);
     }
   })(USE, './sha256');
@@ -375,11 +337,11 @@
         return rsha;
       }
       salt = salt || shim.random(9);
-      var key = await (shim.ossl || shim.subtle).importKey('raw', globalThis.TextCodecHelper.encode(data), {name: opt.name || 'PBKDF2'}, false, ['deriveBits']);
+      var key = await (shim.ossl || shim.subtle).importKey('raw', new shim.TextEncoder().encode(data), {name: opt.name || 'PBKDF2'}, false, ['deriveBits']);
       var work = await (shim.ossl || shim.subtle).deriveBits({
         name: opt.name || 'PBKDF2',
         iterations: opt.iterations || S.pbkdf2.iter,
-        salt: globalThis.TextCodecHelper.encode(opt.salt || salt),
+        salt: new shim.TextEncoder().encode(opt.salt || salt),
         hash: opt.hash || S.pbkdf2.hash,
       }, key, opt.length || (S.pbkdf2.ks * 8))
       data = shim.random(data.length)  // Erase data in case of passphrase
@@ -479,59 +441,29 @@
     var u;
 
     SEA.sign = SEA.sign || (async (data, pair, cb, opt) => { try {
-      console.log('[SEA.sign] Starting sign process');
-      console.log('[SEA.sign] data:', data);
-      console.log('[SEA.sign] pair:', pair);
-      console.log('[SEA.sign] opt:', opt);
-      
       opt = opt || {};
       if(!(pair||opt).priv){
-        console.log('[SEA.sign] No private key found, trying SEA.I');
         if(!SEA.I){ throw 'No signing key.' }
         pair = await SEA.I(null, {what: data, how: 'sign', why: opt.why});
       }
       if(u === data){ throw '`undefined` not allowed.' }
       var json = await S.parse(data);
-      console.log('[SEA.sign] Parsed JSON:', json);
-      
       var check = opt.check = opt.check || json;
       if(SEA.verify && (SEA.opt.check(check) || (check && check.s && check.m))
       && u !== await SEA.verify(check, pair)){ // don't sign if we already signed it.
-        console.log('[SEA.sign] Data already signed, returning existing signature');
         var r = await S.parse(check);
         if(!opt.raw){ r = 'SEA' + await shim.stringify(r) }
         if(cb){ try{ cb(r) }catch(e){console.log(e)} }
         return r;
       }
-      
       var pub = pair.pub;
       var priv = pair.priv;
-      console.log('[SEA.sign] Using pub:', pub);
-      console.log('[SEA.sign] Using priv:', priv);
-      
       var jwk = S.jwk(pub, priv);
-      console.log('[SEA.sign] Created JWK:', jwk);
-      
       var hash = await sha(json);
-      console.log('[SEA.sign] SHA hash:', hash);
-      
       var sig = await (shim.ossl || shim.subtle).importKey('jwk', jwk, {name: 'ECDSA', namedCurve: 'P-256'}, false, ['sign'])
-      .then((key) => {
-        console.log('[SEA.sign] Imported signing key, now signing...');
-        return (shim.ossl || shim.subtle).sign({name: 'ECDSA', hash: {name: 'SHA-256'}}, key, new Uint8Array(hash));
-      }) // privateKey scope doesn't leak out from here!
-      
-      console.log('[SEA.sign] Raw signature:', sig);
-      
-      // Convert signature ArrayBuffer to base64 string
-      var sigBase64 = shim.Buffer.from(sig).toString(opt.encode || 'base64');
-      console.log('[SEA.sign] Base64 signature:', sigBase64);
-      
-      var r = {m: json, s: sigBase64}
-      console.log('[SEA.sign] Result object:', r);
-      
+      .then((key) => (shim.ossl || shim.subtle).sign({name: 'ECDSA', hash: {name: 'SHA-256'}}, key, new Uint8Array(hash))) // privateKey scope doesn't leak out from here!
+      var r = {m: json, s: shim.Buffer.from(sig, 'binary').toString(opt.encode || 'base64')}
       if(!opt.raw){ r = 'SEA' + await shim.stringify(r) }
-      console.log('[SEA.sign] Final result:', r);
 
       if(cb){ try{ cb(r) }catch(e){console.log(e)} }
       return r;
@@ -568,6 +500,8 @@
       var buf, sig, check, tmp; try{
         buf = shim.Buffer.from(json.s, opt.encode || 'base64'); // NEW DEFAULT!
         sig = new Uint8Array(buf);
+        console.log('[SEA.verify] About to call verify with shim.subtle type:', typeof (shim.ossl || shim.subtle).verify);
+        console.log('[SEA.verify] Using shim.ossl:', !!shim.ossl, 'shim.subtle:', !!shim.subtle);
         check = await (shim.ossl || shim.subtle).verify({name: 'ECDSA', hash: {name: 'SHA-256'}}, key, sig, new Uint8Array(hash));
         if(!check){ throw "Signature did not match." }
       }catch(e){
@@ -604,7 +538,7 @@
       var tmp = data||'';
       data = SEA.opt.unpack(data) || data;
       var json = await S.parse(data), pub = pair.pub || pair, key = await SEA.opt.slow_leak(pub);
-      var hash = (f <= SEA.opt.fallback)? shim.Buffer.from(await shim.subtle.digest({name: 'SHA-256'}, globalThis.TextCodecHelper.encode(await S.parse(json.m)))) : await sha(json.m); // this line is old bad buggy code but necessary for old compatibility.
+      var hash = (f <= SEA.opt.fallback)? shim.Buffer.from(await shim.subtle.digest({name: 'SHA-256'}, new shim.TextEncoder().encode(await S.parse(json.m)))) : await sha(json.m); // this line is old bad buggy code but necessary for old compatibility.
       var buf; var sig; var check; try{
         buf = shim.Buffer.from(json.s, opt.encode || 'base64') // NEW DEFAULT!
         sig = new Uint8Array(buf)
@@ -635,7 +569,7 @@
     const importGen = async (key, salt, opt) => {
       //const combo = shim.Buffer.concat([shim.Buffer.from(key, 'utf8'), salt || shim.random(8)]).toString('utf8') // old
       opt = opt || {};
-      const combo = key + (salt || shim.random(8)); // new
+      const combo = key + (salt || shim.random(8)).toString('utf8'); // new
       const hash = shim.Buffer.from(await sha256hash(combo), 'binary')
       
       const jwkKey = S.keyToJwk(hash)      
@@ -661,10 +595,10 @@
         key = pair.epriv || pair;
       }
       var msg = (typeof data == 'string')? data : await shim.stringify(data);
-      var rand = {s: await shim.random(9), iv: await shim.random(15)}; // consider making this 9 and 15 or 18 or 12 to reduce == padding.
+      var rand = {s: shim.random(9), iv: shim.random(15)}; // consider making this 9 and 15 or 18 or 12 to reduce == padding.
       var ct = await aeskey(key, rand.s, opt).then((aes) => (/*shim.ossl ||*/ shim.subtle).encrypt({ // Keeping the AES key scope as private as possible...
         name: opt.name || 'AES-GCM', iv: new Uint8Array(rand.iv)
-      }, aes, globalThis.TextCodecHelper.encode(msg)));
+      }, aes, new shim.TextEncoder().encode(msg)));
       var r = {
         ct: shim.Buffer.from(ct, 'binary').toString(opt.encode || 'base64'),
         iv: rand.iv.toString(opt.encode || 'base64'),
@@ -714,21 +648,7 @@
           return await SEA.decrypt(data, pair, cb, opt);
         }
       }
-      // Convert ArrayBuffer to string properly
-      var decoded;
-      if (ct instanceof ArrayBuffer || ct instanceof Uint8Array) {
-        // Use TextDecoder if available, otherwise fall back to manual conversion
-        if (globalThis.TextDecoder) {
-          decoded = new globalThis.TextDecoder().decode(ct);
-        } else {
-          const bytes = ct instanceof ArrayBuffer ? new Uint8Array(ct) : ct;
-          decoded = Array.from(bytes, byte => String.fromCharCode(byte)).join('');
-        }
-      } else {
-        // ct might already be a string
-        decoded = ct;
-      }
-      var r = await S.parse(decoded);
+      var r = await S.parse(new shim.TextDecoder('utf8').decode(ct));
       if(cb){ try{ cb(r) }catch(e){console.log(e)} }
       return r;
     } catch(e) { 
@@ -971,7 +891,7 @@
   })(USE, './user');
 
   ;USE(function(module){
-    var u, Gun = require('./gun');
+    var u, Gun = (''+u != typeof GUN)? (GUN||{chain:{}}) : require('./gun');
     Gun.chain.then = function(cb, opt){
       var gun = this, p = (new Promise(function(res, rej){
         gun.once(res, opt);

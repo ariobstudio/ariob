@@ -9,6 +9,7 @@
 
 import Foundation
 
+
 @objcMembers
 public final class NativeLocalStorageModule: NSObject, LynxModule {
 

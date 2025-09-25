@@ -1,0 +1,26 @@
+{
+  "name": "@ariob/ml",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.ts",
+  "types": "index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./client": "./client/index.ts",
+    "./hooks": "./hooks/index.ts",
+    "./stores": "./stores/index.ts",
+    "./types": "./types/index.ts"
+  },
+  "dependencies": {
+    "neverthrow": "^8.2.0",
+    "zustand": "^5.0.4",
+    "zod": "^3.24.4"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.20",
+    "typescript": "^5.8.3"
+  }
+}

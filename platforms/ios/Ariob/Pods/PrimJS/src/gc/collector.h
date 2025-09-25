@@ -78,6 +78,7 @@ class GarbageCollector {
   void AddGCDuration(int64_t gc_time) { total_duration += gc_time; }
   int64_t GetGCDuration() { return total_duration; }
   int js_ref_count;
+  void UpdateGCInfo(size_t heapsize_before, int64_t duration);
 
  private:
   // gc
@@ -88,7 +89,6 @@ class GarbageCollector {
 #endif
   void UpdateFootprintLimit(size_t size) noexcept;
   void UpdateNGFootprintLimit(size_t size) noexcept;
-  void UpdateGCInfo(size_t heapsize_before, int64_t duration);
 
   // field
   LEPUSRuntime *rt_;

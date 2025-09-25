@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1600"
+   LastUpgradeVersion = "2600"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "01CBDCF992C9B6CE8A813DF8429879C3"
-               BuildableName = "libPrimJS.a"
+               BuildableName = "PrimJS.framework"
                BlueprintName = "PrimJS"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

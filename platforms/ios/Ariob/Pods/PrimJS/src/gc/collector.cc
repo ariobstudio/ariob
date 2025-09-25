@@ -146,6 +146,9 @@ void Finalizer::DoFinalizer2(void *ptr) noexcept {
 void Visitor::VisitLEPUSLepusRef(void *ptr, int local_idx) noexcept {
   LEPUSLepusRef *pref = reinterpret_cast<LEPUSLepusRef *>(ptr);
   PushObjLEPUSValue(pref->lepus_val, local_idx);
+  if (rt_->js_callbacks_.ref_counted_obj_visitor)
+    rt_->js_callbacks_.ref_counted_obj_visitor(rt_, pref->p, local_idx,
+                                               pref->tag, set_mark_func);
 }
 
 void Visitor::VisitJSVarRef(void *ptr, int local_idx) noexcept {
@@ -153,9 +156,7 @@ void Visitor::VisitJSVarRef(void *ptr, int local_idx) noexcept {
   free_var_ref
   */
   JSVarRef *var_ref = static_cast<JSVarRef *>(ptr);
-  if (var_ref->is_detached) {
-    PushObjLEPUSValue(var_ref->value, local_idx);
-  }
+  PushObjLEPUSValue(*var_ref->pvalue, local_idx);
 }
 
 void Visitor::VisitRootLEPUSValue(LEPUSValue *val, int local_idx) noexcept {
