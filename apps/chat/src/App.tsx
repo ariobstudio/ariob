@@ -518,9 +518,10 @@ export const App = () => {
   };
 
   const MessageBubble = ({ message, palette }: MessageBubbleProps) => {
-    const content = message.pending && !message.content ? 'Thinking…' : message.content || '';
+    const isThinking = message.pending && !message.content;
+    const content = message.content || '';
     const alignmentClass = message.role === 'user' ? 'self-end' : 'self-start';
-    const bubbleStateClass = message.pending ? 'animate-pulse border-border' : '';
+    const bubbleStateClass = message.pending ? 'border-border' : '';
 
     return (
       <view
@@ -545,12 +546,34 @@ export const App = () => {
             </text>
           ) : null}
         </view>
-        <text
-          className={`whitespace-pre-wrap text-sm leading-relaxed ${palette.text}`}
-          aria-live={message.pending ? 'polite' : 'off'}
-        >
-          {content}
-        </text>
+
+        {/* Main Content */}
+        {isThinking ? (
+          <view className="flex items-center gap-2 py-2">
+            <Icon
+              name="loader-circle"
+              className={`h-4 w-4 ${palette.text} opacity-70`}
+              style={{ animation: 'spin 1s linear infinite' }}
+            />
+            <Icon
+              name="loader-circle"
+              className={`h-4 w-4 ${palette.text} opacity-50`}
+              style={{ animation: 'spin 1s linear infinite', animationDelay: '0.15s' }}
+            />
+            <Icon
+              name="loader-circle"
+              className={`h-4 w-4 ${palette.text} opacity-30`}
+              style={{ animation: 'spin 1s linear infinite', animationDelay: '0.3s' }}
+            />
+          </view>
+        ) : (
+          <text
+            className={`whitespace-pre-wrap text-sm leading-relaxed ${palette.text}`}
+            aria-live={message.pending ? 'polite' : 'off'}
+          >
+            {content}
+          </text>
+        )}
       </view>
     );
   };
@@ -589,7 +612,7 @@ export const App = () => {
   return (
     <page className={
       withTheme("bg-background", "dark bg-background")
-    } style={{ height: '100%', width: '100%', paddingTop: 'env(safe-area-inset-top)' }}>
+    } style={{ height: '100%', width: '100%', paddingTop: '7%', paddingBottom: '4%' }}>
       <view className="flex h-full flex-col bg-background text-foreground">
         <view className={`flex-shrink-0 px-5 py-4 ${headerSurfaceClass}`}>
           <view className="flex flex-col gap-3">
@@ -602,7 +625,8 @@ export const App = () => {
                 >
                   <Icon
                     name={statusIcon}
-                    className={`text-xs ${statusTextColor} ${isStreamingOrGenerating || loadingModelName ? 'animate-spin' : ''}`}
+                    className={`text-xs ${statusTextColor}`}
+                    style={isStreamingOrGenerating || loadingModelName ? { animation: 'spin 1s linear infinite' } : undefined}
                   />
                   <text className={`text-xs font-medium ${statusTextColor}`}>{statusLabel}</text>
                 </view>
@@ -630,26 +654,18 @@ export const App = () => {
 
             {/* Model Selection - Clean and Minimal */}
             <view className="space-y-2">
-              <view className={`flex items-center justify-between gap-3 p-3 rounded-lg transition-colors ${
-                loadingModelName
-                  ? 'border border-accent bg-accent'
-                  : 'border border-border bg-card'
-              }`}>
+              <view className="flex items-center justify-between gap-3 p-3 rounded-lg border border-border bg-card transition-colors">
                 <view className="flex items-center gap-2.5 flex-1 min-w-0">
                   <Icon
-                    name={loadingModelName ? 'loader-circle' : 'cpu'}
-                    className={`text-base flex-shrink-0 ${
-                      loadingModelName
-                        ? 'text-accent-foreground animate-spin'
-                        : 'text-muted-foreground'
-                    }`}
+                    name="cpu"
+                    className="text-base flex-shrink-0 text-muted-foreground"
                   />
                   <view className="flex-1 min-w-0">
                     <text className="text-xs font-medium text-muted-foreground block">
-                      {loadingModelName ? 'Loading...' : 'Model'}
+                      Model
                     </text>
                     <text className="text-sm font-semibold text-foreground block truncate">
-                      {loadingModelName || selectedModel || 'Select a model'}
+                      {selectedModel || 'Select a model'}
                     </text>
                   </view>
                 </view>
@@ -660,7 +676,6 @@ export const App = () => {
                   aria-label="Select model"
                   className={`text-muted-foreground flex-shrink-0 ${showModelSelector ? 'rotate-180' : ''} transition-transform`}
                   bindtap={handleToggleModelSelector}
-                  disabled={Boolean(loadingModelName)}
                 />
               </view>
 
@@ -701,7 +716,7 @@ export const App = () => {
 
         <view
           id="composer-panel"
-          className="flex-shrink-0 border-t border-border bg-background px-4 py-3.5 pb-safe-bottom backdrop-blur-xl"
+          className="flex-shrink-0 bg-background px-4 py-3.5 pb-safe-bottom backdrop-blur-xl"
         >
           {errorMessage ? (
             <Alert variant="destructive" className="mb-2.5 border-destructive bg-destructive">

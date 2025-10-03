@@ -1005,38 +1005,38 @@ extension Array where Element == ChatMessage {
 final class MLXChatService: @unchecked Sendable {
 
     /// Default model name used when none specified.
-    static let defaultModelName: String = "smolLM:135m"
+    static let defaultModelName: String = "Qwen 3"
 
     /// Registry of available models with their configurations.
     let availableModels: [LMModel] = [
         LMModel(
-            name: "qwen3:0.6b",
+            name: "Qwen 3",
             configuration: LLMRegistry.qwen3_0_6b_4bit,
             type: .llm),
         LMModel(
-            name: "gemma3:1b",
+            name: "Gemma 3",
             configuration: ModelConfiguration(
                 id: "mlx-community/gemma-3-1b-it-qat-4bit",
                 extraEOSTokens: ["<end_of_turn>"],
             ),
             type: .llm),
         LMModel(
-            name: "deepseek-r1:1.5b",
+            name: "DeepSeek R1",
             configuration: ModelConfiguration(
                 id: "mlx-community/DeepSeek-R1-Distill-Qwen-1.5B-4bit"),
             type: .llm),
         LMModel(
-            name: "qwen3-thinking:1b",
+            name: "Qwen3 Thinking (2)",
             configuration: ModelConfiguration(
                 id: "lmstudio-community/Qwen3-4B-Thinking-2507-MLX-4bit"),
             type: .llm),
         LMModel(
-            name: "llama-3.2:0.7b",
+            name: "Llama 3.2",
             configuration: ModelConfiguration(
                 id: "mlx-community/Llama-3.2-3B-Instruct-uncensored-6bit"),
             type: .llm),
         LMModel(
-            name: "gemma2b:0.8b",
+            name: "Gemma 2",
             configuration: ModelConfiguration(
                 id: "mitkox/gemma-2b-dpo-uncensored-4bit"),
             type: .llm),
