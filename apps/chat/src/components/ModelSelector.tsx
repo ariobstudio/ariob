@@ -1,5 +1,5 @@
 import { useCallback, useState } from '@lynx-js/react';
-import { Icon, useTheme } from '@ariob/ui';
+import { Icon } from '@ariob/ui';
 import { useModels, type NativeAIModelInfo } from '@ariob/ai';
 
 interface ModelSelectorProps {
@@ -17,7 +17,6 @@ export function ModelSelector({ onModelSelect, className }: ModelSelectorProps) 
     loadModel,
   } = useModels({ autoLoadFirst: true });
 
-  const { withTheme } = useTheme();
   const [loadingModel, setLoadingModel] = useState<string | null>(null);
 
   const handleModelTap = useCallback(
@@ -87,18 +86,31 @@ export function ModelSelector({ onModelSelect, className }: ModelSelectorProps) 
           const isLoaded = loadedModelNames.includes(model.name);
           const isLoadingThisModel = loadingModel === model.name;
 
-          const cardClass = withTheme(
-            isLoadingThisModel
-              ? 'border-yellow-200 bg-yellow-50'
-              : isSelected
-                ? 'border-primary bg-primary'
-                : 'border-border bg-card hover:bg-accent',
-            isLoadingThisModel
-              ? 'border-yellow-700 bg-yellow-950'
-              : isSelected
-                ? 'border-primary bg-primary'
-                : 'border-border bg-card hover:bg-accent'
-          );
+          const cardClass = isLoadingThisModel
+            ? 'border-accent bg-accent'
+            : isSelected
+              ? 'border-primary bg-primary'
+              : 'border-border bg-card hover:bg-accent';
+
+          const iconColor = isLoadingThisModel
+            ? 'text-accent-foreground'
+            : isSelected
+              ? 'text-primary-foreground'
+              : 'text-muted-foreground';
+
+          const titleColor = isLoadingThisModel
+            ? 'text-accent-foreground'
+            : isSelected
+              ? 'text-primary-foreground'
+              : 'text-foreground';
+
+          const subtitleColor = isLoadingThisModel
+            ? 'text-accent-foreground/70'
+            : isSelected
+              ? 'text-primary-foreground/70'
+              : 'text-muted-foreground';
+
+          const dotColor = isSelected ? 'bg-primary-foreground' : 'bg-primary';
 
           return (
             <view
@@ -109,27 +121,18 @@ export function ModelSelector({ onModelSelect, className }: ModelSelectorProps) 
               <view className="flex flex-col items-center gap-2 text-center">
                 <Icon
                   name={isLoadingThisModel ? 'loader-circle' : isSelected ? 'circle-check' : 'brain'}
-                  className={`h-6 w-6 ${
-                    isLoadingThisModel 
-                      ? withTheme('text-yellow-600 animate-spin', 'text-yellow-400 animate-spin')
-                      : isSelected 
-                        ? 'text-primary' 
-                        : 'text-muted-foreground'
-                  }`}
+                  className={`h-6 w-6 ${iconColor} ${isLoadingThisModel ? 'animate-spin' : ''}`}
                 />
                 <view className="w-full">
-                  <text className="text-xs font-medium text-foreground line-clamp-2">
+                  <text className={`text-xs font-medium line-clamp-2 ${titleColor}`}>
                     {model.name}
                   </text>
-                  <text className="text-[10px] text-muted-foreground mt-1">
+                  <text className={`text-[10px] mt-1 ${subtitleColor}`}>
                     {isLoadingThisModel ? 'Loading...' : getModelSize(model)}
                   </text>
                 </view>
                 {isLoaded && !isLoadingThisModel && (
-                  <view className={withTheme(
-                    'h-1.5 w-1.5 rounded-full bg-green-500',
-                    'h-1.5 w-1.5 rounded-full bg-green-400'
-                  )} />
+                  <view className={`h-1.5 w-1.5 rounded-full ${dotColor}`} />
                 )}
               </view>
             </view>

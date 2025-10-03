@@ -6,7 +6,24 @@ interface ThemeState {
   currentTheme: Theme;
   setTheme: (theme: Theme) => void;
   withTheme: <T>(light: T, dark: T) => T;
+  isDarkMode: () => boolean;
 }
+
+const applyThemeClass = (theme: Theme) => {
+  // @ts-ignore lynx is provided by runtime
+  if (typeof lynx === 'undefined') return;
+
+  const isDark = theme === 'Dark' || (theme === 'Auto' && lynx.__globalProps?.theme === 'Dark');
+
+  // @ts-ignore lynx is provided by runtime
+  lynx
+    .createSelectorQuery()
+    .select('page')
+    .setNativeProps({
+      className: isDark ? 'dark bg-background' : 'bg-background',
+    })
+    .exec();
+};
 
 export const useTheme = create<ThemeState>((set, get) => ({
   currentTheme: 'Auto',
@@ -18,6 +35,7 @@ export const useTheme = create<ThemeState>((set, get) => ({
     }
 
     set({ currentTheme: theme });
+    applyThemeClass(theme);
     NativeModules.ExplorerModule.saveThemePreferences('preferredTheme', theme);
   },
 
@@ -30,5 +48,15 @@ export const useTheme = create<ThemeState>((set, get) => ({
     // @ts-ignore lynx is provided by runtime
     const systemTheme = typeof lynx !== 'undefined' && lynx.__globalProps?.theme;
     return systemTheme === 'Dark' ? dark : light;
+  },
+
+  isDarkMode: (): boolean => {
+    const { currentTheme } = get();
+    if (currentTheme !== 'Auto') {
+      return currentTheme === 'Dark';
+    }
+    // @ts-ignore lynx is provided by runtime
+    const systemTheme = typeof lynx !== 'undefined' && lynx.__globalProps?.theme;
+    return systemTheme === 'Dark';
   },
 }));

@@ -11,18 +11,18 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary shadow-xs',
-        destructive: 'bg-destructive shadow-xs',
-        outline: 'border border-border bg-background shadow-xs',
-        secondary: 'bg-secondary shadow-xs',
-        ghost: '',
-        link: 'text-primary',
+        default: 'bg-primary text-primary-foreground shadow-xs',
+        destructive: 'bg-destructive text-destructive-foreground shadow-xs',
+        outline: 'border border-border bg-background text-foreground shadow-xs',
+        secondary: 'bg-secondary text-secondary-foreground shadow-xs',
+        ghost: 'text-foreground',
+        link: 'text-primary underline-offset-4',
       },
       size: {
-        default: 'h-10 px-4 py-4',
-        sm: 'h-8 rounded-lg gap-1.5 px-3',
-        lg: 'h-10 rounded-lg px-6 py-6',
-        icon: 'h-10 w-10',
+        default: 'h-11 min-w-11 px-4',
+        sm: 'h-9 min-w-9 rounded-lg gap-1.5 px-3',
+        lg: 'h-12 min-w-12 rounded-lg px-6',
+        icon: 'h-11 w-11 min-w-11',
       },
     },
     defaultVariants: {

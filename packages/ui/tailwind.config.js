@@ -66,15 +66,25 @@ export const tailwindBaseConfig = {
           '0%,70%,100%': { opacity: '1' },
           '20%,50%': { opacity: '0' },
         },
+        spin: {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(360deg)' },
+        },
+        pulse: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.5' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'caret-blink': 'caret-blink 1.25s ease-out infinite',
+        spin: 'spin 1s linear infinite',
+        pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       spacing: {
         'safe-top': 'calc(env(safe-area-inset-top))',
-        'safe-bottom': 'calc(env(safe-area-inset-bottom)) - 1rem',
+        'safe-bottom': 'calc(env(safe-area-inset-bottom)) - 2rem',
         'safe-left': 'calc(env(safe-area-inset-left))',
         'safe-right': 'calc(env(safe-area-inset-right))',
       },

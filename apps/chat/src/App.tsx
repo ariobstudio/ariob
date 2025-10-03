@@ -139,7 +139,13 @@ export const App = () => {
     });
   };
 
-  const { withTheme } = useTheme();
+  const { currentTheme, setTheme, withTheme } = useTheme();
+
+  // Theme toggle handler
+  const handleToggleTheme = useCallback(() => {
+    const nextTheme = currentTheme === 'Light' ? 'Dark' : currentTheme === 'Dark' ? 'Auto' : 'Light';
+    setTheme(nextTheme);
+  }, [currentTheme, setTheme]);
 
   // Simple toggle for model selector - runs on background thread (default, which is fine for state updates)
   const handleToggleModelSelector = useCallback(() => {
@@ -198,13 +204,14 @@ export const App = () => {
     [selectModel, loadedModels, loadModel],
   );
 
-  // Input handler - properly captures value from Lynx input event
-  // Keep this stable without dependencies to prevent re-binding on every render (Lynx best practice)
+  // Input value binding - runs on BACKGROUND THREAD (default)
+  // Per Lynx architecture: bindinput handlers run on background thread
+  // State updates are automatically batched and sent to main thread for rendering
   const handlePromptInput = useCallback((event: any) => {
-      const value = event?.detail?.value ?? '';
-      setPrompt(value);
+    const value = event?.detail?.value ?? '';
+    setPrompt(value);
     // Clear error when user starts typing
-        setErrorMessage(null);
+    setErrorMessage(null);
   }, []);
 
   // Simplified send message handler with comprehensive logging
@@ -341,18 +348,11 @@ export const App = () => {
     [],
   );
 
-  const composerBaseOffset = withTheme(32, 28);
+  const composerBaseOffset = 32;
   const composerInset = composerBaseOffset;
 
-  const headerSurfaceClass = withTheme(
-    'bg-card border-b border-border backdrop-blur-md',
-    'bg-card border-b border-border backdrop-blur-xl'
-  );
-
-  const chatSurfaceClass = withTheme(
-    'bg-background backdrop-blur-lg',
-    'bg-background backdrop-blur-2xl'
-  );
+  const headerSurfaceClass = 'bg-card border-b border-border backdrop-blur-md';
+  const chatSurfaceClass = 'bg-background backdrop-blur-lg';
 
   const streamSnapshot = useNativeAIStream({
     onStarted: (event) => {
@@ -431,8 +431,10 @@ export const App = () => {
 
   // Model selector shows when toggled
 
+  const isStreamingOrGenerating = isGenerating || streamSnapshot.pending;
+
   const statusLabel = useMemo(() => {
-    if (isGenerating || streamSnapshot.pending) {
+    if (isStreamingOrGenerating) {
       return 'Thinking';
     }
     if (loadingModelName) {
@@ -448,7 +450,7 @@ export const App = () => {
       return 'Selected';
     }
     return 'Select Model';
-  }, [isGenerating, loadingModelName, listError, selectedModelLoaded, selectedModel, streamSnapshot.pending]);
+  }, [isStreamingOrGenerating, loadingModelName, listError, selectedModelLoaded, selectedModel]);
 
   const canSend = useMemo(() => {
     if (!prompt.trim()) {
@@ -457,17 +459,16 @@ export const App = () => {
     if (!selectedModel) {
       return false;
     }
-    if (isGenerating || Boolean(loadingModelName) || streamSnapshot.pending) {
+    if (isStreamingOrGenerating || Boolean(loadingModelName)) {
       return false;
     }
     return selectedModelLoaded;
   }, [
     prompt,
     selectedModel,
-    isGenerating,
+    isStreamingOrGenerating,
     loadingModelName,
     selectedModelLoaded,
-    streamSnapshot.pending,
   ]);
 
   type RolePalette = {
@@ -488,31 +489,19 @@ export const App = () => {
     switch (role) {
       case 'user':
         return {
-          bubble: withTheme(
-            'bg-primary text-primary-foreground border border-primary shadow-[var(--shadow-lg)]',
-            'bg-accent text-accent-foreground border border-accent shadow-[var(--shadow-lg)]'
-          ),
-          text: withTheme('text-primary-foreground', 'text-accent-foreground'),
-          label: withTheme('text-primary-foreground', 'text-accent-foreground'),
-          avatar: withTheme(
-            'bg-primary-foreground text-primary-foreground shadow-[var(--shadow-xs)]',
-            'bg-accent-foreground text-accent-foreground shadow-[var(--shadow-xs)]'
-          ),
+          bubble: 'bg-primary text-primary-foreground border border-primary shadow-[var(--shadow-lg)]',
+          text: 'text-primary-foreground',
+          label: 'text-primary-foreground',
+          avatar: 'bg-primary-foreground text-primary shadow-[var(--shadow-xs)]',
           icon: 'user',
           title: 'You',
         };
       case 'assistant':
         return {
-          bubble: withTheme(
-            'bg-secondary text-secondary-foreground border border-border shadow-[var(--shadow-md)]',
-            'bg-secondary text-secondary-foreground border border-border shadow-[var(--shadow-md)] backdrop-blur-xl'
-          ),
+          bubble: 'bg-secondary text-secondary-foreground border border-border shadow-[var(--shadow-md)]',
           label: 'text-secondary-foreground',
           text: 'text-secondary-foreground',
-          avatar: withTheme(
-            'bg-secondary-foreground text-secondary-foreground shadow-[var(--shadow-xs)]',
-            'bg-secondary-foreground text-secondary-foreground shadow-[var(--shadow-xs)]'
-          ),
+          avatar: 'bg-muted text-muted-foreground shadow-[var(--shadow-xs)]',
           icon: 'bot',
           title: 'Assistant',
         };
@@ -521,7 +510,7 @@ export const App = () => {
           bubble: 'bg-muted text-muted-foreground border border-border shadow-[var(--shadow-sm)]',
           text: 'text-muted-foreground',
           label: 'text-muted-foreground',
-          avatar: 'bg-muted-foreground text-muted-foreground shadow-[var(--shadow-xs)]',
+          avatar: 'bg-muted-foreground text-muted shadow-[var(--shadow-xs)]',
           icon: 'shield',
           title: 'System',
         };
@@ -566,9 +555,8 @@ export const App = () => {
     );
   };
 
-  const isStreaming = streamSnapshot.pending;
   let statusIcon: LucideName = 'circle';
-  if (isGenerating || isStreaming) {
+  if (isStreamingOrGenerating) {
     statusIcon = 'loader-circle';
   } else if (loadingModelName) {
     statusIcon = 'loader-circle';
@@ -582,25 +570,26 @@ export const App = () => {
     statusIcon = 'circle';
   }
 
-  const statusTone = withTheme(
-    loadingModelName
-      ? 'bg-yellow-50 border border-yellow-200 text-yellow-700'
-      : selectedModelLoaded
-        ? 'bg-green-50 border border-green-200 text-green-700'
-        : selectedModel
-          ? 'bg-blue-50 border border-blue-200 text-blue-700'
-        : 'bg-secondary border border-border text-muted-foreground',
-    loadingModelName
-      ? 'bg-yellow-900 border border-yellow-700 text-yellow-300'
-      : selectedModelLoaded
-        ? 'bg-green-900 border border-green-700 text-green-300'
-        : selectedModel
-          ? 'bg-blue-900 border border-blue-700 text-blue-300'
-        : 'bg-secondary border border-border text-muted-foreground'
-  );
+  const statusBadgeBg = loadingModelName
+    ? 'bg-accent border border-accent'
+    : selectedModelLoaded
+      ? 'bg-primary border border-primary'
+      : selectedModel
+        ? 'bg-secondary border border-secondary'
+        : 'bg-muted border border-border';
+
+  const statusTextColor = loadingModelName
+    ? 'text-accent-foreground'
+    : selectedModelLoaded
+      ? 'text-primary-foreground'
+      : selectedModel
+        ? 'text-secondary-foreground'
+        : 'text-muted-foreground';
 
   return (
-    <page className="bg-background" style={{ height: '100%', width: '100%', paddingTop: '2.5rem'}}>
+    <page className={
+      withTheme("bg-background", "dark bg-background")
+    } style={{ height: '100%', width: '100%', paddingTop: 'env(safe-area-inset-top)' }}>
       <view className="flex h-full flex-col bg-background text-foreground">
         <view className={`flex-shrink-0 px-5 py-4 ${headerSurfaceClass}`}>
           <view className="flex flex-col gap-3">
@@ -609,39 +598,49 @@ export const App = () => {
               <view className="flex items-center gap-2.5">
                 <text className="text-lg font-semibold text-foreground">Chat</text>
                 <view
-                  className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${statusTone}`}
+                  className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 ${statusBadgeBg}`}
                 >
                   <Icon
                     name={statusIcon}
-                    className={`text-xs ${isGenerating || isStreaming || loadingModelName ? 'animate-spin' : ''}`}
+                    className={`text-xs ${statusTextColor} ${isStreamingOrGenerating || loadingModelName ? 'animate-spin' : ''}`}
                   />
-                  <text>{statusLabel}</text>
+                  <text className={`text-xs font-medium ${statusTextColor}`}>{statusLabel}</text>
                 </view>
               </view>
+              <view className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="default"
+                  icon={currentTheme === 'Light' ? 'sun' : currentTheme === 'Dark' ? 'moon' : 'monitor'}
+                  aria-label="Toggle theme"
+                  className="text-muted-foreground hover:text-foreground"
+                  bindtap={handleToggleTheme}
+                />
                 <view main-thread:bindtap={handleResetConversationMainThread}>
                   <Button
-                  variant="ghost"
-                  size="sm"
+                    variant="ghost"
+                    size="default"
                     icon="trash-2"
                     aria-label="Clear conversation"
-                  className="text-muted-foreground hover:text-destructive"
-                />
+                    className="text-muted-foreground hover:text-destructive"
+                  />
+                </view>
               </view>
             </view>
 
             {/* Model Selection - Clean and Minimal */}
             <view className="space-y-2">
               <view className={`flex items-center justify-between gap-3 p-3 rounded-lg transition-colors ${
-                loadingModelName 
-                  ? withTheme('border border-yellow-200 bg-yellow-50', 'border border-yellow-800 bg-yellow-950')
+                loadingModelName
+                  ? 'border border-accent bg-accent'
                   : 'border border-border bg-card'
               }`}>
                 <view className="flex items-center gap-2.5 flex-1 min-w-0">
-                  <Icon 
-                    name={loadingModelName ? 'loader-circle' : 'cpu'} 
+                  <Icon
+                    name={loadingModelName ? 'loader-circle' : 'cpu'}
                     className={`text-base flex-shrink-0 ${
-                      loadingModelName 
-                        ? withTheme('text-yellow-600 animate-spin', 'text-yellow-400 animate-spin')
+                      loadingModelName
+                        ? 'text-accent-foreground animate-spin'
                         : 'text-muted-foreground'
                     }`}
                   />
@@ -656,7 +655,7 @@ export const App = () => {
                 </view>
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="default"
                   icon="chevron-down"
                   aria-label="Select model"
                   className={`text-muted-foreground flex-shrink-0 ${showModelSelector ? 'rotate-180' : ''} transition-transform`}
@@ -710,8 +709,8 @@ export const App = () => {
             </Alert>
           ) : null}
 
-          <view className="flex w-full max-w-2xl items-center gap-2.5 rounded-xl border border-border bg-card px-3.5 py-2.5">
-            <view className="flex-1 pb-2">
+          <view className="flex w-full max-w-2xl items-center gap-2.5 rounded-xl border border-border bg-card px-3.5 pt-2.5 pb-3">
+            <view className="flex-1">
               <Input
                 id="chat-input"
                 ref={inputRef}
@@ -722,18 +721,19 @@ export const App = () => {
                   : loadingModelName
                     ? 'Loading model...'
                     : 'Select a model first'}
+                show-soft-input-on-focus
                 bindinput={handlePromptInput}
                 bindconfirm={handleSendMessage}
                 bindkeydown={handlePromptKeydown}
-                disabled={isGenerating || isStreaming}
+                disabled={isStreamingOrGenerating}
               />
             </view>
             <Button
               variant={canSend ? 'default' : 'ghost'}
               size="icon"
-              icon={isStreaming ? 'loader-circle' : 'send'}
+              icon={isStreamingOrGenerating ? 'loader-circle' : 'send'}
               disabled={!canSend}
-              className={`flex-shrink-0 h-8 w-8 ${isStreaming ? 'animate-spin' : ''} ${!canSend ? 'opacity-40' : ''}`}
+              className={`flex-shrink-0 h-8 w-8 ${isStreamingOrGenerating ? 'animate-spin' : ''} ${!canSend ? 'opacity-40' : ''}`}
               bindtap={handleSendMessage}
             />
           </view>
