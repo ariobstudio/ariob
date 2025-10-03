@@ -9,6 +9,8 @@
 #import "DemoGenericResourceFetcher.h"
 #import "DemoMediaResourceFetcher.h"
 #import "DemoTemplateResourceFetcher.h"
+#import "LynxExplorerInput.h"
+#import "LynxSettingManager.h"
 #import "UIHelper.h"
 
 const NSString *const kParamHiddenNav = @"hidden_nav";
@@ -86,6 +88,8 @@ NSString *const kBackButtonImageDark = @"back_dark";
   } else {
     screenSize = screenFrame.size;
   }
+  LynxThreadStrategyForRender threadStrategy =
+      [LynxSettingManager sharedDataHandler].threadStrategy;
 
   LynxView *lynxView = [[LynxView alloc] initWithBuilderBlock:^(LynxViewBuilder *builder) {
     builder.config =
@@ -93,11 +97,14 @@ NSString *const kBackButtonImageDark = @"back_dark";
     builder.screenSize = screenSize;
     builder.fontScale = 1.0;
     builder.fetcher = nil;
+    // for homepage only
+    [builder.config registerUI:LynxExplorerInput.class withName:@"explorer-input"];
     // Add fetchers
     builder.enableGenericResourceFetcher = true;
     builder.genericResourceFetcher = [[DemoGenericResourceFetcher alloc] init];
     builder.templateResourceFetcher = [[DemoTemplateResourceFetcher alloc] init];
     builder.mediaResourceFetcher = [[DemoMediaResourceFetcher alloc] init];
+    [builder setThreadStrategyForRender:threadStrategy];
   }];
   lynxView.preferredLayoutWidth = screenSize.width;
   [lynxView setExtraTiming:extraTiming];
@@ -121,7 +128,6 @@ NSString *const kBackButtonImageDark = @"back_dark";
   [globalProps updateBool:[self isNotchScreen] forKey:@"isNotchScreen"];
   [globalProps updateDouble:screenHeight forKey:@"screenHeight"];
   [globalProps updateDouble:screenWidth forKey:@"screenWidth"];
-  [globalProps updateObject:@"iOS" forKey:@"platform"];
   NSString *theme = @"Light";
   if ([UIScreen mainScreen].traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
     theme = @"Dark";
@@ -272,7 +278,7 @@ NSString *const kBackButtonImageDark = @"back_dark";
       }
       break;
     case UIGestureRecognizerStateChanged: {
-      if (self.previousViewControllerView) {
+      if (self.previousViewControllerView && translation.x >= 0) {
         CGRect previousFrame = self.previousViewControllerView.frame;
         previousFrame.size.width = self.view.bounds.size.width * progress;
         self.previousViewControllerView.frame = previousFrame;
@@ -285,8 +291,12 @@ NSString *const kBackButtonImageDark = @"back_dark";
     }
     case UIGestureRecognizerStateEnded: {
       if (self.previousViewControllerView) {
-        if (progress > 0.5) {
-          [UIView animateWithDuration:0.3
+        // get velocity of gesture
+        CGPoint velocity = [gesture velocityInView:self.view];
+        CGFloat flingVelocity = 1000;
+
+        if (velocity.x >= flingVelocity || progress > 0.5) {
+          [UIView animateWithDuration:0.15
               animations:^{
                 CGRect previousFrame = self.previousViewControllerView.frame;
                 previousFrame.size.width = self.view.bounds.size.width;
@@ -300,7 +310,7 @@ NSString *const kBackButtonImageDark = @"back_dark";
                 [self.navigationController popViewControllerAnimated:NO];
               }];
         } else {
-          [UIView animateWithDuration:0.3
+          [UIView animateWithDuration:0.15
               animations:^{
                 CGRect previousFrame = self.previousViewControllerView.frame;
                 previousFrame.size.width = 0;

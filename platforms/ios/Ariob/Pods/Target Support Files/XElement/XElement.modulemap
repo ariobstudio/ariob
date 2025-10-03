@@ -1,6 +1,0 @@
-framework module XElement {
-  umbrella header "XElement-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -1,0 +1,10 @@
+{
+  "name": "@ariob/ai",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.ts",
+  "types": "index.ts",
+  "peerDependencies": {
+    "@lynx-js/react": "^0.114.0"
+  }
+}

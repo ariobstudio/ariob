@@ -4,41 +4,52 @@ source 'https://cdn.cocoapods.org/'
 # Support iOS 10+ for CocoaPods dependencies
 # MLX Swift packages (iOS 16+) are handled separately via SPM in Xcode
 platform :ios, '10.0'
-
+install!'cocoapods',:deterministic_uuids=>false,
+                    :lock_pod_sources=>false,
+                    :generate_multiple_pod_projects => true,
+                    :incremental_installation=>true,
+                    :warn_for_multiple_pod_sources => false
 target 'Ariob' do
   # Use dynamic frameworks
-  use_frameworks!
+  # use_frameworks!
+  
 
-  pod 'Lynx', '3.4.1', :subspecs => [
+  pod 'Lynx', '3.4.1-dev', :subspecs => [
       'Framework',
   ]
 
   pod 'PrimJS', '2.14.0-rc.1', :subspecs => ['quickjs', 'napi']
 
   # integrate image-service, log-service, and http-service
-  pod 'LynxService', '3.4.1', :subspecs => [
+  pod 'LynxService', '3.4.1-dev', :subspecs => [
       'Image',
       'Log',
       'Http',
+      'Devtool',
   ]
 
+  pod 'LynxDevtool', '3.4.1-dev', :subspecs => [
+    'Framework',
+    'LynxRecorder',
+  ]
   # ImageService
   pod 'SDWebImage','5.15.5'
   pod 'SDWebImageWebPCoder', '0.11.0'
 
-  pod 'XElement', '3.4.1'
+  pod 'XElement', '3.4.1-dev'
+  pod 'DebugRouter', '5.0.13'
 
   # Note: MLX and Transformers are handled via Swift Package Manager in Xcode
   # This allows iOS 16+ ML features while keeping iOS 10+ compatibility for core functionality
 
-  post_install do |installer|
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        # All CocoaPods dependencies use iOS 10.0
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
-        config.build_settings['ENABLE_BITCODE'] = 'NO'
-        config.build_settings['SWIFT_VERSION'] = '5.5'
-      end
-    end
-  end
+  # post_install do |installer|
+  #   installer.pods_project.targets.each do |target|
+  #     target.build_configurations.each do |config|
+  #       # All CocoaPods dependencies use iOS 10.0
+  #       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
+  #       config.build_settings['ENABLE_BITCODE'] = 'NO'
+  #       config.build_settings['SWIFT_VERSION'] = '6'
+  #     end
+  #   end
+  # end
 end

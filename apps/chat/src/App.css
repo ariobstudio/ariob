@@ -1,0 +1,314 @@
+/* Brana Editor Styles */
+
+:root {
+  --brana-bg: #ffffff;
+  --brana-text: #333333;
+  --brana-secondary: #666666;
+  --brana-border: #dddddd;
+  --brana-toolbar-bg: #f5f5f5;
+  --brana-selection: rgba(0, 120, 255, 0.2);
+  --brana-link: #2e6ef7;
+  --brana-quote: #cccccc;
+  --safe-area-top: env(safe-area-inset-top);
+  --safe-area-bottom: env(safe-area-inset-bottom);
+}
+
+/* Editor Container */
+.brana-editor {
+  width: 100%;
+  height: 100%;
+  background-color: var(--brana-bg);
+  padding-top: calc(env(safe-area-inset-top));
+  padding-bottom: calc(env(safe-area-inset-bottom));
+}
+
+.brana-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Scrollable Content */
+.brana-scroll {
+  width: 100%;
+  height: 100%;
+  background-color: var(--brana-bg);
+}
+
+.brana-content {
+  width: 100%;
+  padding: 16px;
+  padding-bottom: 100px;
+  min-height: 200px;
+  z-index: 1;
+  position: relative;
+}
+
+/* Block Layout */
+.brana-row {
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 24px;
+  margin-bottom: 4px;
+}
+
+.brana-marker {
+  width: 32px;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2px;
+}
+
+.brana-block-content {
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.brana-line {
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  min-height: 24px;
+  line-height: 24px;
+}
+
+/* Block Type Specific Styles */
+.brana-h1 {
+  margin-top: 16px;
+  margin-bottom: 12px;
+}
+
+.brana-h1 text {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.brana-h2 {
+  margin-top: 14px;
+  margin-bottom: 10px;
+}
+
+.brana-h2 text {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.brana-h3 {
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+.brana-h3 text {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.brana-blockquote {
+  padding-left: 12px;
+}
+
+.brana-blockquote text {
+  font-style: italic;
+  color: var(--brana-secondary);
+}
+
+.brana-p text {
+  font-size: 16px;
+  color: var(--brana-text);
+}
+
+/* Ensure all text is visible */
+text {
+  color: var(--brana-text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.brana-line text {
+  color: var(--brana-text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Cursor animation */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* List Markers */
+.brana-bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--brana-text);
+  margin-top: 6px;
+}
+
+.brana-number {
+  font-size: 16px;
+  color: var(--brana-secondary);
+}
+
+.brana-checkbox {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--brana-text);
+  border-radius: 3px;
+  background-color: transparent;
+}
+
+.brana-checked {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--brana-link);
+  border-radius: 3px;
+  background-color: var(--brana-link);
+}
+
+.brana-quote {
+  width: 4px;
+  height: 100%;
+  background-color: var(--brana-quote);
+  margin-right: 8px;
+}
+
+.brana-spacer {
+  width: 12px;
+}
+
+/* Placeholder Text */
+.brana-placeholder {
+  font-size: 16px;
+  color: #999999;
+  font-style: italic;
+  padding: 0;
+  margin: 0;
+}
+
+/* IME Textarea */
+.brana-ime {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  font-size: 16px;
+  padding: 16px;
+  padding-left: 48px;
+  line-height: 24px;
+  background-color: transparent;
+  color: transparent;
+  caret-color: transparent;
+  border: none;
+  outline: none;
+  z-index: 2;
+}
+
+/* Toolbar */
+.brana-toolbar {
+  background-color: var(--brana-toolbar-bg);
+  border-top: 1px solid var(--brana-border);
+  padding: 12px 8px;
+  width: 100%;
+  z-index: 100;
+  height: auto;
+  min-height: 60px;
+}
+
+.brana-toolbar-content {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  height: auto;
+  gap: 4px;
+}
+
+.brana-tool {
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  margin: 2px;
+  flex-shrink: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--brana-border);
+}
+
+.brana-tool:active {
+  background-color: rgba(0, 120, 255, 0.2);
+}
+
+.brana-tool-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--brana-text);
+  text-align: center;
+}
+
+.brana-tool-bold {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--brana-text);
+  text-align: center;
+}
+
+.brana-tool-italic {
+  font-size: 18px;
+  font-style: italic;
+  color: var(--brana-text);
+  text-align: center;
+}
+
+.brana-tool-strike {
+  font-size: 18px;
+  text-decoration: line-through;
+  color: var(--brana-text);
+  text-align: center;
+}
+
+.brana-divider {
+  width: 2px;
+  height: 30px;
+  background-color: var(--brana-border);
+  margin: 0 4px;
+  border-radius: 1px;
+}
+
+/* Link Input */
+.brana-link-input {
+  flex: 1;
+  height: 36px;
+  font-size: 16px;
+  padding: 0 12px;
+  background-color: white;
+  border: 1px solid var(--brana-border);
+  border-radius: 6px;
+  margin: 0 8px;
+}
+
+.brana-button-row {
+  flex-direction: row;
+  padding: 0 8px;
+}
+
+.brana-button {
+  width: 40px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background-color: var(--brana-link);
+  margin: 0 4px;
+}
+
+.brana-button-text {
+  font-size: 20px;
+  color: white;
+}

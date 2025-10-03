@@ -15,7 +15,36 @@
 		10388F5E2E827FD8000C60D5 /* MLXOptimizers in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F5D2E827FD8000C60D5 /* MLXOptimizers */; };
 		10388F602E827FD8000C60D5 /* MLXRandom in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F5F2E827FD8000C60D5 /* MLXRandom */; };
 		10388F632E827FEF000C60D5 /* Transformers in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F622E827FEF000C60D5 /* Transformers */; };
-		6F148728A60139101E9E3F03 /* Pods_Ariob.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D51851F6916D16CD63E012 /* Pods_Ariob.framework */; };
+		106113F42E8F9BFF00F6DBCC /* Resource in Resources */ = {isa = PBXBuildFile; fileRef = 106113F32E8F9BFF00F6DBCC /* Resource */; };
+		10ADBC752E89DA4D00F4CDCD /* MLXEmbedders in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADBC742E89DA4D00F4CDCD /* MLXEmbedders */; };
+		10ADBC772E89DA4D00F4CDCD /* MLXLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADBC762E89DA4D00F4CDCD /* MLXLLM */; };
+		10ADBC792E89DA4D00F4CDCD /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADBC782E89DA4D00F4CDCD /* MLXLMCommon */; };
+		10ADBC7B2E89DA4D00F4CDCD /* MLXMNIST in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADBC7A2E89DA4D00F4CDCD /* MLXMNIST */; };
+		10ADBC7D2E89DA4D00F4CDCD /* MLXVLM in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADBC7C2E89DA4D00F4CDCD /* MLXVLM */; };
+		10ADC1592E8E519800F4CDCD /* MLXEmbedders in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1582E8E519800F4CDCD /* MLXEmbedders */; };
+		10ADC15B2E8E519800F4CDCD /* MLXLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC15A2E8E519800F4CDCD /* MLXLLM */; };
+		10ADC15D2E8E519800F4CDCD /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC15C2E8E519800F4CDCD /* MLXLMCommon */; };
+		10ADC15F2E8E519800F4CDCD /* MLXMNIST in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC15E2E8E519800F4CDCD /* MLXMNIST */; };
+		10ADC1612E8E519800F4CDCD /* MLXVLM in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1602E8E519800F4CDCD /* MLXVLM */; };
+		10ADC1632E8E519800F4CDCD /* StableDiffusion in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1622E8E519800F4CDCD /* StableDiffusion */; };
+		10ADC1822E8E5FB000F4CDCD /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1812E8E5FB000F4CDCD /* OrderedCollections */; };
+		10ADC1992E8E61DC00F4CDCD /* ComplexModule in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1982E8E61DC00F4CDCD /* ComplexModule */; };
+		10ADC19B2E8E61DC00F4CDCD /* Numerics in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC19A2E8E61DC00F4CDCD /* Numerics */; };
+		10ADC19D2E8E61DC00F4CDCD /* RealModule in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC19C2E8E61DC00F4CDCD /* RealModule */; };
+		10ADC1A52E8E631100F4CDCD /* ComplexModule in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1A42E8E631100F4CDCD /* ComplexModule */; };
+		10ADC1A72E8E631100F4CDCD /* Numerics in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1A62E8E631100F4CDCD /* Numerics */; };
+		10ADC1A92E8E631100F4CDCD /* RealModule in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1A82E8E631100F4CDCD /* RealModule */; };
+		10ADC1AB2E8E633100F4CDCD /* BasicContainers in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1AA2E8E633100F4CDCD /* BasicContainers */; };
+		10ADC1AD2E8E633100F4CDCD /* BitCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1AC2E8E633100F4CDCD /* BitCollections */; };
+		10ADC1AF2E8E633100F4CDCD /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1AE2E8E633100F4CDCD /* Collections */; };
+		10ADC1B12E8E633100F4CDCD /* ContainersPreview in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1B02E8E633100F4CDCD /* ContainersPreview */; };
+		10ADC1B32E8E633100F4CDCD /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1B22E8E633100F4CDCD /* DequeModule */; };
+		10ADC1B52E8E633100F4CDCD /* HashTreeCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1B42E8E633100F4CDCD /* HashTreeCollections */; };
+		10ADC1B72E8E633100F4CDCD /* HeapModule in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1B62E8E633100F4CDCD /* HeapModule */; };
+		10ADC1B92E8E633100F4CDCD /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1B82E8E633100F4CDCD /* OrderedCollections */; };
+		10ADC1BB2E8E633100F4CDCD /* TrailingElementsModule in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1BA2E8E633100F4CDCD /* TrailingElementsModule */; };
+		10ADC1BD2E8E633100F4CDCD /* _RopeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADC1BC2E8E633100F4CDCD /* _RopeModule */; };
+		148B7F5FFC7AC915D5361BDE /* libPods-Ariob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 867A598EBB7C462EE96A4A74 /* libPods-Ariob.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,13 +68,14 @@
 		10305DAD2D87ED200021DD5A /* Ariob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ariob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10305DC82D87ED230021DD5A /* AriobTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AriobTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		10305DD22D87ED230021DD5A /* AriobUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AriobUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		106113F32E8F9BFF00F6DBCC /* Resource */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resource; path = Ariob/Resource; sourceTree = "<group>"; };
 		5ED6BC6FC911B74322F37C01 /* Pods-Ariob.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ariob.debug.xcconfig"; path = "Target Support Files/Pods-Ariob/Pods-Ariob.debug.xcconfig"; sourceTree = "<group>"; };
 		6FFF62F7494665901159AECA /* Pods-Ariob.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ariob.release.xcconfig"; path = "Target Support Files/Pods-Ariob/Pods-Ariob.release.xcconfig"; sourceTree = "<group>"; };
-		D7D51851F6916D16CD63E012 /* Pods_Ariob.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ariob.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		867A598EBB7C462EE96A4A74 /* libPods-Ariob.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Ariob.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		10305DDA2D87ED230021DD5A /* Exceptions for "Ariob" folder in "Ariob" target */ = {
+		106113F02E8E705D00F6DBCC /* Exceptions for "Ariob" folder in "Ariob" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -58,7 +88,7 @@
 		10305DAF2D87ED200021DD5A /* Ariob */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				10305DDA2D87ED230021DD5A /* Exceptions for "Ariob" folder in "Ariob" target */,
+				106113F02E8E705D00F6DBCC /* Exceptions for "Ariob" folder in "Ariob" target */,
 			);
 			path = Ariob;
 			sourceTree = "<group>";
@@ -80,15 +110,43 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10ADC15F2E8E519800F4CDCD /* MLXMNIST in Frameworks */,
+				10ADC1B12E8E633100F4CDCD /* ContainersPreview in Frameworks */,
 				10388F5C2E827FD8000C60D5 /* MLXNN in Frameworks */,
 				10388F5A2E827FD8000C60D5 /* MLXLinalg in Frameworks */,
 				10388F542E827FD8000C60D5 /* MLX in Frameworks */,
+				10ADC1B92E8E633100F4CDCD /* OrderedCollections in Frameworks */,
+				10ADC1B32E8E633100F4CDCD /* DequeModule in Frameworks */,
+				10ADC1BB2E8E633100F4CDCD /* TrailingElementsModule in Frameworks */,
+				10ADC1BD2E8E633100F4CDCD /* _RopeModule in Frameworks */,
+				10ADC19B2E8E61DC00F4CDCD /* Numerics in Frameworks */,
 				10388F602E827FD8000C60D5 /* MLXRandom in Frameworks */,
-				6F148728A60139101E9E3F03 /* Pods_Ariob.framework in Frameworks */,
+				10ADC1822E8E5FB000F4CDCD /* OrderedCollections in Frameworks */,
+				10ADC15D2E8E519800F4CDCD /* MLXLMCommon in Frameworks */,
+				10ADC1A72E8E631100F4CDCD /* Numerics in Frameworks */,
+				10ADBC7B2E89DA4D00F4CDCD /* MLXMNIST in Frameworks */,
+				10ADC1612E8E519800F4CDCD /* MLXVLM in Frameworks */,
+				10ADBC752E89DA4D00F4CDCD /* MLXEmbedders in Frameworks */,
+				10ADC1AF2E8E633100F4CDCD /* Collections in Frameworks */,
+				10ADC1B52E8E633100F4CDCD /* HashTreeCollections in Frameworks */,
+				10ADC1632E8E519800F4CDCD /* StableDiffusion in Frameworks */,
+				10ADC1992E8E61DC00F4CDCD /* ComplexModule in Frameworks */,
 				10388F5E2E827FD8000C60D5 /* MLXOptimizers in Frameworks */,
 				10388F632E827FEF000C60D5 /* Transformers in Frameworks */,
+				10ADC1B72E8E633100F4CDCD /* HeapModule in Frameworks */,
 				10388F582E827FD8000C60D5 /* MLXFast in Frameworks */,
+				10ADC1A92E8E631100F4CDCD /* RealModule in Frameworks */,
 				10388F562E827FD8000C60D5 /* MLXFFT in Frameworks */,
+				10ADC1AB2E8E633100F4CDCD /* BasicContainers in Frameworks */,
+				10ADBC7D2E89DA4D00F4CDCD /* MLXVLM in Frameworks */,
+				10ADBC772E89DA4D00F4CDCD /* MLXLLM in Frameworks */,
+				10ADC1AD2E8E633100F4CDCD /* BitCollections in Frameworks */,
+				10ADC15B2E8E519800F4CDCD /* MLXLLM in Frameworks */,
+				10ADC1A52E8E631100F4CDCD /* ComplexModule in Frameworks */,
+				10ADC19D2E8E61DC00F4CDCD /* RealModule in Frameworks */,
+				10ADBC792E89DA4D00F4CDCD /* MLXLMCommon in Frameworks */,
+				148B7F5FFC7AC915D5361BDE /* libPods-Ariob.a in Frameworks */,
+				10ADC1592E8E519800F4CDCD /* MLXEmbedders in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +170,7 @@
 		10305DA42D87ED200021DD5A = {
 			isa = PBXGroup;
 			children = (
+				106113F32E8F9BFF00F6DBCC /* Resource */,
 				10305DAF2D87ED200021DD5A /* Ariob */,
 				10305DCB2D87ED230021DD5A /* AriobTests */,
 				10305DD52D87ED230021DD5A /* AriobUITests */,
@@ -134,7 +193,7 @@
 		48FF5FE51EE715B11C62B935 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D7D51851F6916D16CD63E012 /* Pods_Ariob.framework */,
+				867A598EBB7C462EE96A4A74 /* libPods-Ariob.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -159,11 +218,38 @@
 				10305DA92D87ED200021DD5A /* Sources */,
 				10305DAA2D87ED200021DD5A /* Frameworks */,
 				10305DAB2D87ED200021DD5A /* Resources */,
-				4BC3B9830A0BD57CC1267C4D /* [CP] Embed Pods Frameworks */,
+				59BAD85D67A71E6AFCD87F19 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				10ADC19F2E8E629700F4CDCD /* PBXTargetDependency */,
+				10ADC1A12E8E629700F4CDCD /* PBXTargetDependency */,
+				10ADC1A32E8E629700F4CDCD /* PBXTargetDependency */,
+				10ADC1842E8E613D00F4CDCD /* PBXTargetDependency */,
+				10ADC1862E8E613D00F4CDCD /* PBXTargetDependency */,
+				10ADC1882E8E613D00F4CDCD /* PBXTargetDependency */,
+				10ADC18A2E8E613D00F4CDCD /* PBXTargetDependency */,
+				10ADC18C2E8E613D00F4CDCD /* PBXTargetDependency */,
+				10ADC18E2E8E613D00F4CDCD /* PBXTargetDependency */,
+				10ADC1902E8E613D00F4CDCD /* PBXTargetDependency */,
+				10ADC1922E8E613D00F4CDCD /* PBXTargetDependency */,
+				10ADC1942E8E613D00F4CDCD /* PBXTargetDependency */,
+				10ADC1962E8E613D00F4CDCD /* PBXTargetDependency */,
+				10ADC1652E8E51C800F4CDCD /* PBXTargetDependency */,
+				10ADC1672E8E51C800F4CDCD /* PBXTargetDependency */,
+				10ADC1692E8E51C800F4CDCD /* PBXTargetDependency */,
+				10ADC16B2E8E51C800F4CDCD /* PBXTargetDependency */,
+				10ADC16D2E8E51C800F4CDCD /* PBXTargetDependency */,
+				10ADC16F2E8E51C800F4CDCD /* PBXTargetDependency */,
+				10ADC1712E8E51C800F4CDCD /* PBXTargetDependency */,
+				10ADC1732E8E51C800F4CDCD /* PBXTargetDependency */,
+				10ADC1752E8E51C800F4CDCD /* PBXTargetDependency */,
+				10ADC1772E8E51C800F4CDCD /* PBXTargetDependency */,
+				10ADC1792E8E51C800F4CDCD /* PBXTargetDependency */,
+				10ADC17B2E8E51C800F4CDCD /* PBXTargetDependency */,
+				10ADC17D2E8E51C800F4CDCD /* PBXTargetDependency */,
+				10ADC17F2E8E51C800F4CDCD /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				10305DAF2D87ED200021DD5A /* Ariob */,
@@ -250,6 +336,9 @@
 			packageReferences = (
 				10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */,
 				10388F612E827FEF000C60D5 /* XCRemoteSwiftPackageReference "swift-transformers" */,
+				10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
+				10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */,
+				10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 10305DAE2D87ED200021DD5A /* Products */;
@@ -268,6 +357,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				106113F42E8F9BFF00F6DBCC /* Resource in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,25 +400,25 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4BC3B9830A0BD57CC1267C4D /* [CP] Embed Pods Frameworks */ = {
+		59BAD85D67A71E6AFCD87F19 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			inputPaths = (
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ariob/Pods-Ariob-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -367,6 +457,114 @@
 			isa = PBXTargetDependency;
 			target = 10305DAC2D87ED200021DD5A /* Ariob */;
 			targetProxy = 10305DD32D87ED230021DD5A /* PBXContainerItemProxy */;
+		};
+		10ADC1652E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1642E8E51C800F4CDCD /* MLX */;
+		};
+		10ADC1672E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1662E8E51C800F4CDCD /* MLXFFT */;
+		};
+		10ADC1692E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1682E8E51C800F4CDCD /* MLXFast */;
+		};
+		10ADC16B2E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC16A2E8E51C800F4CDCD /* MLXLinalg */;
+		};
+		10ADC16D2E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC16C2E8E51C800F4CDCD /* MLXNN */;
+		};
+		10ADC16F2E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC16E2E8E51C800F4CDCD /* MLXOptimizers */;
+		};
+		10ADC1712E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1702E8E51C800F4CDCD /* MLXRandom */;
+		};
+		10ADC1732E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1722E8E51C800F4CDCD /* Transformers */;
+		};
+		10ADC1752E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1742E8E51C800F4CDCD /* MLXEmbedders */;
+		};
+		10ADC1772E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1762E8E51C800F4CDCD /* MLXLLM */;
+		};
+		10ADC1792E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1782E8E51C800F4CDCD /* MLXLMCommon */;
+		};
+		10ADC17B2E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC17A2E8E51C800F4CDCD /* MLXMNIST */;
+		};
+		10ADC17D2E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC17C2E8E51C800F4CDCD /* MLXVLM */;
+		};
+		10ADC17F2E8E51C800F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC17E2E8E51C800F4CDCD /* StableDiffusion */;
+		};
+		10ADC1842E8E613D00F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1832E8E613D00F4CDCD /* BasicContainers */;
+		};
+		10ADC1862E8E613D00F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1852E8E613D00F4CDCD /* BitCollections */;
+		};
+		10ADC1882E8E613D00F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1872E8E613D00F4CDCD /* Collections */;
+		};
+		10ADC18A2E8E613D00F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1892E8E613D00F4CDCD /* ContainersPreview */;
+		};
+		10ADC18C2E8E613D00F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC18B2E8E613D00F4CDCD /* DequeModule */;
+		};
+		10ADC18E2E8E613D00F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC18D2E8E613D00F4CDCD /* HashTreeCollections */;
+		};
+		10ADC1902E8E613D00F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC18F2E8E613D00F4CDCD /* HeapModule */;
+		};
+		10ADC1922E8E613D00F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1912E8E613D00F4CDCD /* OrderedCollections */;
+		};
+		10ADC1942E8E613D00F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1932E8E613D00F4CDCD /* TrailingElementsModule */;
+		};
+		10ADC1962E8E613D00F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1952E8E613D00F4CDCD /* _RopeModule */;
+		};
+		10ADC19F2E8E629700F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC19E2E8E629700F4CDCD /* ComplexModule */;
+		};
+		10ADC1A12E8E629700F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1A02E8E629700F4CDCD /* Numerics */;
+		};
+		10ADC1A32E8E629700F4CDCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 10ADC1A22E8E629700F4CDCD /* RealModule */;
 		};
 /* End PBXTargetDependency section */
 
@@ -481,7 +679,9 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = G5Q4DZX2NT;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_ON_DEMAND_RESOURCES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -547,8 +747,10 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = G5Q4DZX2NT;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_ON_DEMAND_RESOURCES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -693,6 +895,30 @@
 				minimumVersion = 0.1.24;
 			};
 		};
+		10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ml-explore/mlx-swift-examples.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.25.7;
+			};
+		};
+		10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
+		10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-numerics.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -735,6 +961,281 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 10388F612E827FEF000C60D5 /* XCRemoteSwiftPackageReference "swift-transformers" */;
 			productName = Transformers;
+		};
+		10ADBC742E89DA4D00F4CDCD /* MLXEmbedders */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXEmbedders;
+		};
+		10ADBC762E89DA4D00F4CDCD /* MLXLLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXLLM;
+		};
+		10ADBC782E89DA4D00F4CDCD /* MLXLMCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXLMCommon;
+		};
+		10ADBC7A2E89DA4D00F4CDCD /* MLXMNIST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXMNIST;
+		};
+		10ADBC7C2E89DA4D00F4CDCD /* MLXVLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXVLM;
+		};
+		10ADC1582E8E519800F4CDCD /* MLXEmbedders */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXEmbedders;
+		};
+		10ADC15A2E8E519800F4CDCD /* MLXLLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXLLM;
+		};
+		10ADC15C2E8E519800F4CDCD /* MLXLMCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXLMCommon;
+		};
+		10ADC15E2E8E519800F4CDCD /* MLXMNIST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXMNIST;
+		};
+		10ADC1602E8E519800F4CDCD /* MLXVLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXVLM;
+		};
+		10ADC1622E8E519800F4CDCD /* StableDiffusion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = StableDiffusion;
+		};
+		10ADC1642E8E51C800F4CDCD /* MLX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLX;
+		};
+		10ADC1662E8E51C800F4CDCD /* MLXFFT */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXFFT;
+		};
+		10ADC1682E8E51C800F4CDCD /* MLXFast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXFast;
+		};
+		10ADC16A2E8E51C800F4CDCD /* MLXLinalg */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXLinalg;
+		};
+		10ADC16C2E8E51C800F4CDCD /* MLXNN */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXNN;
+		};
+		10ADC16E2E8E51C800F4CDCD /* MLXOptimizers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXOptimizers;
+		};
+		10ADC1702E8E51C800F4CDCD /* MLXRandom */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLXRandom;
+		};
+		10ADC1722E8E51C800F4CDCD /* Transformers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10388F612E827FEF000C60D5 /* XCRemoteSwiftPackageReference "swift-transformers" */;
+			productName = Transformers;
+		};
+		10ADC1742E8E51C800F4CDCD /* MLXEmbedders */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXEmbedders;
+		};
+		10ADC1762E8E51C800F4CDCD /* MLXLLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXLLM;
+		};
+		10ADC1782E8E51C800F4CDCD /* MLXLMCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXLMCommon;
+		};
+		10ADC17A2E8E51C800F4CDCD /* MLXMNIST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXMNIST;
+		};
+		10ADC17C2E8E51C800F4CDCD /* MLXVLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXVLM;
+		};
+		10ADC17E2E8E51C800F4CDCD /* StableDiffusion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = StableDiffusion;
+		};
+		10ADC1812E8E5FB000F4CDCD /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
+		};
+		10ADC1832E8E613D00F4CDCD /* BasicContainers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = BasicContainers;
+		};
+		10ADC1852E8E613D00F4CDCD /* BitCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = BitCollections;
+		};
+		10ADC1872E8E613D00F4CDCD /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = Collections;
+		};
+		10ADC1892E8E613D00F4CDCD /* ContainersPreview */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = ContainersPreview;
+		};
+		10ADC18B2E8E613D00F4CDCD /* DequeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = DequeModule;
+		};
+		10ADC18D2E8E613D00F4CDCD /* HashTreeCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = HashTreeCollections;
+		};
+		10ADC18F2E8E613D00F4CDCD /* HeapModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = HeapModule;
+		};
+		10ADC1912E8E613D00F4CDCD /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
+		};
+		10ADC1932E8E613D00F4CDCD /* TrailingElementsModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = TrailingElementsModule;
+		};
+		10ADC1952E8E613D00F4CDCD /* _RopeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = _RopeModule;
+		};
+		10ADC1982E8E61DC00F4CDCD /* ComplexModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = ComplexModule;
+		};
+		10ADC19A2E8E61DC00F4CDCD /* Numerics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = Numerics;
+		};
+		10ADC19C2E8E61DC00F4CDCD /* RealModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = RealModule;
+		};
+		10ADC19E2E8E629700F4CDCD /* ComplexModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = ComplexModule;
+		};
+		10ADC1A02E8E629700F4CDCD /* Numerics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = Numerics;
+		};
+		10ADC1A22E8E629700F4CDCD /* RealModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = RealModule;
+		};
+		10ADC1A42E8E631100F4CDCD /* ComplexModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = ComplexModule;
+		};
+		10ADC1A62E8E631100F4CDCD /* Numerics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = Numerics;
+		};
+		10ADC1A82E8E631100F4CDCD /* RealModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = RealModule;
+		};
+		10ADC1AA2E8E633100F4CDCD /* BasicContainers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = BasicContainers;
+		};
+		10ADC1AC2E8E633100F4CDCD /* BitCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = BitCollections;
+		};
+		10ADC1AE2E8E633100F4CDCD /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = Collections;
+		};
+		10ADC1B02E8E633100F4CDCD /* ContainersPreview */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = ContainersPreview;
+		};
+		10ADC1B22E8E633100F4CDCD /* DequeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = DequeModule;
+		};
+		10ADC1B42E8E633100F4CDCD /* HashTreeCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = HashTreeCollections;
+		};
+		10ADC1B62E8E633100F4CDCD /* HeapModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = HeapModule;
+		};
+		10ADC1B82E8E633100F4CDCD /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
+		};
+		10ADC1BA2E8E633100F4CDCD /* TrailingElementsModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = TrailingElementsModule;
+		};
+		10ADC1BC2E8E633100F4CDCD /* _RopeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = _RopeModule;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

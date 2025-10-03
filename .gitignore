@@ -11,6 +11,7 @@ out/
 .next/
 .nuxt/
 .output/
+.build/
 
 # Cache files
 .turbo
@@ -93,14 +94,16 @@ packages/core/gun/temp/
 packages/core/node_modules
 
 # iOS Pod files
-packages/ios/Ariob/Podfile.lock
-packages/ios/Ariob/Pods
+platforms/ios/Ariob/Podfile.lock
+platforms/ios/Ariob/Pods/
+platforms/ios/Ariob/build
+platforms/ios/Ariob/DerivedData
 
 # pnpm lock files
 pnpm-lock.yaml
-packages/core/pnpm-lock.yaml
-packages/web/pnpm-lock.yaml
 
 .cursorrules
 .cursor/
 .roo/
+.claude/
+.vscode/

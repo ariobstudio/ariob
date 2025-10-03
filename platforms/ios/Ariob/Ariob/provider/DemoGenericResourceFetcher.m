@@ -5,9 +5,40 @@
 #import "DemoGenericResourceFetcher.h"
 
 @implementation DemoGenericResourceFetcher
++ (NSString*)resolveLocalAssetPath:(NSString*)urlString {
+  if ([urlString containsString:@"static/font/"] ||
+      [urlString containsString:@"static/images/"] ||
+      [urlString containsString:@"static/icons/"]) {
+
+    NSString* filename = [urlString lastPathComponent];
+
+    NSString* resourcesPath = [[NSBundle mainBundle] resourcePath];
+    NSString* fullPath = [[[resourcesPath stringByAppendingPathComponent:@"Resource"]
+                           stringByAppendingPathComponent:@"icons"]
+                           stringByAppendingPathComponent:filename];
+
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:fullPath]) {
+      return fullPath;
+    }
+  }
+
+  return nil;
+}
 
 - (dispatch_block_t)fetchResource:(LynxResourceRequest*)request
                        onComplete:(LynxGenericResourceCompletionBlock)callback {
+  NSString* localPath = [DemoGenericResourceFetcher resolveLocalAssetPath:request.url];
+  if (localPath) {
+    NSData* data = [NSData dataWithContentsOfFile:localPath];
+    if (data) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        callback(data, nil);
+      });
+      return nil;
+    }
+  }
+
   NSURL* url = [NSURL URLWithString:request.url];
   NSURLRequest* urlRequest = [NSURLRequest requestWithURL:url
                                               cachePolicy:NSURLRequestReloadIgnoringCacheData

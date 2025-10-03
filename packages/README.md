@@ -27,6 +27,34 @@ The foundational package for Ariob applications, providing:
 npm install @ariob/core
 ```
 
+### [@ariob/ui](./ui/) 
+
+Reusable component library, layout primitives, and Tailwind tooling shared across Ariob apps.
+
+- 🎨 **Unified styling** - Cards, buttons, inputs, alerts, and layout primitives
+- ⚙️ **Shared tooling** - Exported Tailwind & PostCSS config for all apps
+- 🎯 **Design tokens** - CSS variable palette for light/dark theming
+- 🧾 **Lucide icons** - Central glyph atlas + icon helpers
+- 📦 **Tree-shake friendly** - Side-effect free ESM exports
+
+```bash
+npm install @ariob/ui
+```
+
+### [@ariob/router](./router/) 
+
+TanStack Router code generator that converts `/src/pages` into a fully-typed route tree.
+
+- 🗂️ **File-system routing** - Layouts, dynamic segments, and catch-alls supported out of the box
+- 🔁 **Live regeneration** - Watches the filesystem and rewrites `_routes.tsx` on change
+- 🛠️ **Rsbuild plugin** - Drop-in integration for Rspeedy/Lynx projects
+- 📐 **Type-safe output** - Emits router type augmentation for TanStack Router
+- 🧭 **Memory history** - Configured for Lynx native runtime by default
+
+```bash
+npm install @ariob/router
+```
+
 ## 🏗️ Package Structure
 
 ```
@@ -163,6 +191,8 @@ When contributing to packages:
 ## 📚 Resources
 
 - [Core Package Documentation](./core/README.md)
+- [UI Package Documentation](./ui/README.md)
+- [Router Plugin Documentation](./router/README.md)
 - [Main Project README](../README.md)
 - [TypeScript Guidelines](../.cursor/rules/)
 
