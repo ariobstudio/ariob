@@ -1,1 +1,0 @@
-../../../../../../LynxDevtool/lynx/core/style/transition_data.h

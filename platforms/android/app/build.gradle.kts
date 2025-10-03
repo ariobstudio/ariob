@@ -95,5 +95,5 @@ dependencies {
     implementation ("org.lynxsdk.lynx:lynx-service-devtool:3.2.0")
 
     implementation ("org.bouncycastle:bcprov-jdk15on:1.70")
-    implementation ("androidx.appcompat:appcompact:1.7.0")
+    implementation ("androidx.appcompat:appcompat:1.7.0")
 }

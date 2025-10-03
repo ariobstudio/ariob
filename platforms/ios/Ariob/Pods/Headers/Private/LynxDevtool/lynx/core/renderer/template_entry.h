@@ -1,1 +1,0 @@
-../../../../../../LynxDevtool/lynx/core/renderer/template_entry.h

@@ -1139,11 +1139,17 @@ napi_value Error::Create(napi_env env, const char* message, size_t length,
   napi_value str;
   napi_status status =
       NAPI_ENV_CALL(create_string_utf8, env, message, length, &str);
-  CheckStatus(env, status, "failed to call napi_create_string_utf8");
+  if (status != napi_ok) {
+    // failed to call napi_create_string_utf8
+    return nullptr;
+  }
 
   napi_value error;
   status = create_error(env, nullptr, str, &error);
-  CheckStatus(env, status, "failed to call napi_create_error");
+  if (status != napi_ok) {
+    // failed to call napi_create_error
+    return nullptr;
+  }
 
   return error;
 }

@@ -1,11 +1,3 @@
-//
-//  LynxInitProcessor.m
-//  Ariob
-//
-//  Created by Natnael Teferi on 3/16/25.
-//
-
-
 // Copyright 2024 The Lynx Authors. All rights reserved.
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
@@ -13,10 +5,12 @@
 #import "LynxInitProcessor.h"
 #import <Lynx/LynxConfig.h>
 #import <Lynx/LynxEnv.h>
+#import <Lynx/LynxService.h>
+#import <Lynx/LynxServiceDevToolProtocol.h>
 #import <SDWebImage/SDWebImage.h>
 #import <SDWebImageWebPCoder/SDWebImageWebPCoder.h>
-#import "NetworkLynxProvider.h"
 #import "ExplorerModule.h"
+#import "TemplateProvider.h"
 #import "Ariob-Swift.h"
 
 @implementation LynxInitProcessor
@@ -38,16 +32,26 @@ static LynxInitProcessor *_instance = nil;
 
 - (void)setupLynxEnv {
   LynxEnv *env = [LynxEnv sharedInstance];
+
+  // set devtool preset values
+  [env setLynxDebugEnabled:YES];
+//  [LynxService(LynxServiceDevToolProtocol) setLogBoxPresetValue:YES];
+
   // init global config
-  LynxConfig *globalConfig = [[LynxConfig alloc] initWithProvider:[NetworkLynxProvider new]];
+  LynxConfig *globalConfig = [[LynxConfig alloc] initWithProvider:[TemplateProvider new]];
 
   // register global JS module
   [globalConfig registerModule:ExplorerModule.class];
   [globalConfig registerModule:NativeWebCryptoModule.class];
   [globalConfig registerModule:NativeLocalStorageModule.class];
 
+  // Only register A module on iOS 16+ due to MLX Swift Package requirements
+  if (@available(iOS 16.0, *)) {
+    [globalConfig registerModule:NativeAIModule.class];
+  }
+
   // prepare global config
-  [[LynxEnv sharedInstance] prepareConfig:globalConfig];
+  [env prepareConfig:globalConfig];
 }
 
 - (void)setupLynxService {

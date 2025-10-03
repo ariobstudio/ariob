@@ -54,7 +54,7 @@ extern "C" {
 
 #include <cstdint>
 #include <cstdlib>
-#if defined(ANDROID) || defined(__ANDROID__)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(OS_IOS)
 #include <errno.h>
 #include <sys/syscall.h>
 #include <unistd.h>
@@ -285,70 +285,73 @@ static __attribute__((unused)) void JS_DumpShapes(LEPUSRuntime *rt);
 
 QJS_STATIC void js_array_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_array_mark(LEPUSRuntime *rt, LEPUSValueConst val,
-                              LEPUS_MarkFunc *mark_func, int local_idx = -1);
+                              LEPUS_MarkFunc *mark_func,
+                              uint64_t trace_tool = 0);
 QJS_STATIC void js_object_data_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_object_data_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                     LEPUS_MarkFunc *mark_func,
-                                    int local_idx = -1);
+                                    uint64_t trace_tool = 0);
 QJS_STATIC void js_bytecode_function_finalizer(LEPUSRuntime *rt,
                                                LEPUSValue val);
 QJS_STATIC void js_bytecode_function_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                           LEPUS_MarkFunc *mark_func,
-                                          int local_idx = -1);
+                                          uint64_t trace_tool = 0);
 QJS_STATIC void js_bound_function_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_bound_function_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                        LEPUS_MarkFunc *mark_func,
-                                       int local_idx = -1);
+                                       uint64_t trace_tool = 0);
 QJS_STATIC void js_for_in_iterator_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_for_in_iterator_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                         LEPUS_MarkFunc *mark_func,
-                                        int local_idx = -1);
+                                        uint64_t trace_tool = 0);
 QJS_STATIC void js_regexp_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_array_buffer_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_typed_array_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_typed_array_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                     LEPUS_MarkFunc *mark_func,
-                                    int local_idx = -1);
+                                    uint64_t trace_tool = 0);
 QJS_STATIC void js_proxy_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_proxy_mark(LEPUSRuntime *rt, LEPUSValueConst val,
-                              LEPUS_MarkFunc *mark_func, int local_idx = -1);
+                              LEPUS_MarkFunc *mark_func,
+                              uint64_t trace_tool = 0);
 QJS_STATIC void js_map_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_map_mark(LEPUSRuntime *rt, LEPUSValueConst val,
-                            LEPUS_MarkFunc *mark_func, int local_idx = -1);
+                            LEPUS_MarkFunc *mark_func, uint64_t trace_tool = 0);
 QJS_STATIC void js_map_iterator_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_map_iterator_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                      LEPUS_MarkFunc *mark_func,
-                                     int local_idx = -1);
+                                     uint64_t trace_tool = 0);
 QJS_STATIC void js_array_iterator_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_array_iterator_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                        LEPUS_MarkFunc *mark_func,
-                                       int local_idx = -1);
+                                       uint64_t trace_tool = 0);
 QJS_STATIC void js_regexp_string_iterator_finalizer(LEPUSRuntime *rt,
                                                     LEPUSValue val);
 QJS_STATIC void js_regexp_string_iterator_mark(LEPUSRuntime *rt,
                                                LEPUSValueConst val,
                                                LEPUS_MarkFunc *mark_func,
-                                               int local_idx = -1);
+                                               uint64_t trace_tool = 0);
 QJS_STATIC void js_generator_finalizer(LEPUSRuntime *rt, LEPUSValue obj);
 QJS_STATIC void js_generator_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                   LEPUS_MarkFunc *mark_func,
-                                  int local_idx = -1);
+                                  uint64_t trace_tool = 0);
 QJS_STATIC void js_weakref_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_finalizationRegistry_finalizer(LEPUSRuntime *rt,
                                                   LEPUSValue val);
 QJS_STATIC void js_finalizationRegistry_mark(LEPUSRuntime *rt,
                                              LEPUSValueConst val,
                                              LEPUS_MarkFunc *mark_func,
-                                             int local_idx = -1);
+                                             uint64_t trace_tool = 0);
 QJS_STATIC void js_promise_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_promise_mark(LEPUSRuntime *rt, LEPUSValueConst val,
-                                LEPUS_MarkFunc *mark_func, int local_idx = -1);
+                                LEPUS_MarkFunc *mark_func,
+                                uint64_t trace_tool = 0);
 QJS_STATIC void js_promise_resolve_function_finalizer(LEPUSRuntime *rt,
                                                       LEPUSValue val);
 QJS_STATIC void js_promise_resolve_function_mark(LEPUSRuntime *rt,
                                                  LEPUSValueConst val,
                                                  LEPUS_MarkFunc *mark_func,
-                                                 int local_idx = -1);
+                                                 uint64_t trace_tool = 0);
 QJS_STATIC LEPUSValue js_promise_resolve_function_call(
     LEPUSContext *ctx, LEPUSValueConst func_obj, LEPUSValueConst this_val,
     int argc, LEPUSValueConst *argv, int flags);
@@ -423,7 +426,7 @@ QJS_STATIC void js_async_function_resolve_finalizer(LEPUSRuntime *rt,
 QJS_STATIC void js_async_function_resolve_mark(LEPUSRuntime *rt,
                                                LEPUSValueConst val,
                                                LEPUS_MarkFunc *mark_func,
-                                               int local_idx = -1);
+                                               uint64_t trace_tool = 0);
 QJS_STATIC void js_free_module_def(LEPUSContext *ctx, LEPUSModuleDef *m);
 QJS_STATIC LEPUSValue js_new_promise_capability(LEPUSContext *ctx,
                                                 LEPUSValue *resolving_funcs,
@@ -445,7 +448,8 @@ QJS_STATIC int JS_GetOwnPropertyInternal(LEPUSContext *ctx,
                                          LEPUSObject *p, JSAtom prop);
 QJS_STATIC void js_free_desc(LEPUSContext *ctx, LEPUSPropertyDescriptor *desc);
 QJS_STATIC void async_func_mark(LEPUSRuntime *rt, JSAsyncFunctionState *s,
-                                LEPUS_MarkFunc *mark_func, int local_idx = -1);
+                                LEPUS_MarkFunc *mark_func,
+                                uint64_t trace_tool = 0);
 QJS_STATIC void JS_AddIntrinsicBasicObjects(LEPUSContext *ctx);
 QJS_STATIC void js_free_shape(LEPUSRuntime *rt, JSShape *sh);
 QJS_STATIC void js_free_shape_null(LEPUSRuntime *rt, JSShape *sh);
@@ -466,7 +470,7 @@ QJS_STATIC LEPUSValue JS_CreateAsyncFromSyncIterator(LEPUSContext *ctx,
 QJS_STATIC void js_c_function_data_finalizer(LEPUSRuntime *rt, LEPUSValue val);
 QJS_STATIC void js_c_function_data_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                         LEPUS_MarkFunc *mark_func,
-                                        int local_idx = -1);
+                                        uint64_t trace_tool = 0);
 QJS_STATIC LEPUSValue js_c_function_data_call(LEPUSContext *ctx,
                                               LEPUSValueConst func_obj,
                                               LEPUSValueConst this_val,
@@ -574,7 +578,6 @@ static _Atomic LEPUSClassID js_class_id_alloc = JS_CLASS_INIT_COUNT;
   V(script_fail_parse_ntfy_with_view_id) \
   V(set_session_enable_state)            \
   V(get_session_state)                   \
-  V(console_api_called_ntfy_with_rid)    \
   V(get_session_enable_state)            \
   V(get_console_stack_trace)             \
   V(on_console_message)
@@ -969,7 +972,7 @@ LEPUSRuntime *LEPUS_NewRuntime2(const LEPUSMallocFunctions *mf, void *opaque,
                                 uint32_t mode) {
 #ifdef ENABLE_COMPATIBLE_MM
   if (gc_enabled()) {
-    return JS_NewRuntime2_GC(mf, opaque);
+    return JS_NewRuntime2_GC(mf, opaque, mode);
   }
 #endif
   (void)mode;
@@ -1227,7 +1230,7 @@ LEPUSRuntime *LEPUS_NewRuntime(void) {
   settingsFlag = GetSettingsFlag();
 #ifdef ENABLE_COMPATIBLE_MM
   if (gc_enabled() == TRUE) {
-    return JS_NewRuntime_GC();
+    return JS_NewRuntime_GC(0);
   }
 #endif
   return LEPUS_NewRuntime2(&def_malloc_funcs, NULL, 0);
@@ -1237,7 +1240,7 @@ LEPUSRuntime *LEPUS_NewRuntimeWithMode(uint32_t mode) {
   settingsFlag = GetSettingsFlag();
 #ifdef ENABLE_COMPATIBLE_MM
   if (gc_enabled() == TRUE) {
-    return JS_NewRuntime_GC();
+    return JS_NewRuntime_GC(mode);
   }
 #endif
   return LEPUS_NewRuntime2(&def_malloc_funcs, NULL, mode);
@@ -2088,6 +2091,10 @@ void LEPUS_FreeContext(LEPUSContext *ctx) {
   list_del(&ctx->link);
 
   lepus_free(ctx, ctx->lynx_target_sdk_version);
+
+  if (ctx->object_ctx_check && ctx->check_tools) {
+    delete ctx->check_tools;
+  }
 
   ctx->fg_ctx->ctx = nullptr;
   free_finalization_registry_context(ctx->rt, ctx->fg_ctx);
@@ -4588,11 +4595,14 @@ QJS_HIDE LEPUSValue JS_NewObjectFromShape(LEPUSContext *ctx, JSShape *sh,
   p->first_weak_ref = NULL;
   p->u.opaque = NULL;
   p->shape = sh;
-#ifdef ENABLE_QUICKJS_DEBUGGER
-  p->ctx = ctx;
-#if defined(ANDROID) || defined(__ANDROID__)
-  p->tid = get_tid();
-#endif
+#ifdef ENABLE_CHECK_TOOLS
+  if (ctx->object_ctx_check) {
+    p->ctx = ctx;
+    p->tid = get_tid();
+  } else {
+    p->ctx = nullptr;
+    p->tid = 0;
+  }
 #endif
   p->prop = static_cast<JSProperty *>(
       lepus_malloc(ctx, sizeof(JSProperty) * sh->prop_size));
@@ -4947,7 +4957,7 @@ QJS_STATIC void js_c_function_data_finalizer(LEPUSRuntime *rt, LEPUSValue val) {
 
 QJS_STATIC void js_c_function_data_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                         LEPUS_MarkFunc *mark_func,
-                                        int local_idx) {
+                                        uint64_t trace_tool) {
   JSCFunctionDataRecord *s = static_cast<JSCFunctionDataRecord *>(
       LEPUS_GetOpaque(val, JS_CLASS_C_FUNCTION_DATA));
   int i;
@@ -5130,7 +5140,7 @@ QJS_STATIC void js_array_finalizer(LEPUSRuntime *rt, LEPUSValue val) {
 }
 
 QJS_STATIC void js_array_mark(LEPUSRuntime *rt, LEPUSValueConst val,
-                              LEPUS_MarkFunc *mark_func, int local_idx) {
+                              LEPUS_MarkFunc *mark_func, uint64_t trace_tool) {
   LEPUSObject *p = LEPUS_VALUE_GET_OBJ(val);
   int i;
 
@@ -5146,7 +5156,8 @@ QJS_STATIC void js_object_data_finalizer(LEPUSRuntime *rt, LEPUSValue val) {
 }
 
 QJS_STATIC void js_object_data_mark(LEPUSRuntime *rt, LEPUSValueConst val,
-                                    LEPUS_MarkFunc *mark_func, int local_idx) {
+                                    LEPUS_MarkFunc *mark_func,
+                                    uint64_t trace_tool) {
   LEPUSObject *p = LEPUS_VALUE_GET_OBJ(val);
   JS_MarkValue_RC(rt, p->u.object_data, mark_func);
 }
@@ -5175,7 +5186,7 @@ QJS_STATIC void js_bytecode_function_finalizer(LEPUSRuntime *rt,
 
 QJS_STATIC void js_bytecode_function_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                           LEPUS_MarkFunc *mark_func,
-                                          int local_idx) {
+                                          uint64_t trace_tool) {
   LEPUSObject *p = LEPUS_VALUE_GET_OBJ(val);
   JSVarRef **var_refs = p->u.func.var_refs;
   LEPUSFunctionBytecode *b = p->u.func.function_bytecode;
@@ -5216,7 +5227,7 @@ QJS_STATIC void js_bound_function_finalizer(LEPUSRuntime *rt, LEPUSValue val) {
 
 QJS_STATIC void js_bound_function_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                        LEPUS_MarkFunc *mark_func,
-                                       int local_idx) {
+                                       uint64_t trace_tool) {
   LEPUSObject *p = LEPUS_VALUE_GET_OBJ(val);
   JSBoundFunction *bf = p->u.bound_function;
   int i;
@@ -5235,7 +5246,7 @@ QJS_STATIC void js_for_in_iterator_finalizer(LEPUSRuntime *rt, LEPUSValue val) {
 
 QJS_STATIC void js_for_in_iterator_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                         LEPUS_MarkFunc *mark_func,
-                                        int local_idx) {
+                                        uint64_t trace_tool) {
   LEPUSObject *p = LEPUS_VALUE_GET_OBJ(val);
   JSForInIterator *it = p->u.for_in_iterator;
   JS_MarkValue_RC(rt, it->obj, mark_func);
@@ -5426,6 +5437,9 @@ void LEPUS_FreeValue(LEPUSContext *ctx, LEPUSValue v) {
   DCHECK(!ctx->gc_enable);
   if (LEPUS_VALUE_HAS_REF_COUNT(v)) {
     LEPUSRefCountHeader *p = (LEPUSRefCountHeader *)LEPUS_VALUE_GET_PTR(v);
+#ifdef ENABLE_CHECK_TOOLS
+    CheckObjectCtx(ctx, v);
+#endif
     if (--p->ref_count <= 0) {
       __JS_FreeValue(ctx, v);
     }
@@ -5435,6 +5449,9 @@ void LEPUS_FreeValue(LEPUSContext *ctx, LEPUSValue v) {
 void LEPUS_FreeValueRT(LEPUSRuntime *rt, LEPUSValue v) {
   if (LEPUS_VALUE_HAS_REF_COUNT(v)) {
     LEPUSRefCountHeader *p = (LEPUSRefCountHeader *)LEPUS_VALUE_GET_PTR(v);
+#ifdef ENABLE_CHECK_TOOLS
+    CheckObjectRt(rt, v);
+#endif
     if (--p->ref_count <= 0) {
       __JS_FreeValueRT(rt, v);
     }
@@ -5457,21 +5474,22 @@ QJS_STATIC BOOL has_children(LEPUSValueConst val) {
 }
 
 static void JS_MarkValue_RC(LEPUSRuntime *rt, LEPUSValueConst val,
-                            LEPUS_MarkFunc *mark_func, int local_idx) {
+                            LEPUS_MarkFunc *mark_func, uint64_t trace_tool) {
   if (LEPUS_VALUE_HAS_REF_COUNT(val) && has_children(val)) {
-    mark_func(rt, val, local_idx);
+    mark_func(rt, val, trace_tool);
   }
 }
 
 void LEPUS_MarkValue(LEPUSRuntime *rt, LEPUSValueConst val,
-                     LEPUS_MarkFunc *mark_func, int local_idx = -1) {
-  CallGCFunc(JS_MarkValue_GC, rt, val, mark_func, local_idx);
-  JS_MarkValue_RC(rt, val, mark_func, local_idx);
+                     LEPUS_MarkFunc *mark_func, uint64_t trace_tool = 0) {
+  CallGCFunc(JS_MarkValue_GC, rt, val, mark_func, trace_tool);
+  JS_MarkValue_RC(rt, val, mark_func, trace_tool);
   return;
 }
 
 QJS_STATIC void mark_children(LEPUSRuntime *rt, LEPUSValueConst val,
-                              LEPUS_MarkFunc *mark_func, int local_idx = -1) {
+                              LEPUS_MarkFunc *mark_func,
+                              uint64_t trace_tool = 0) {
   // <Primjs begin>
   rt->c_stack_depth++;
   // <Primjs end>
@@ -5481,7 +5499,7 @@ QJS_STATIC void mark_children(LEPUSRuntime *rt, LEPUSValueConst val,
     case LEPUS_TAG_LEPUS_REF: {
       LEPUSLepusRef *pref = (LEPUSLepusRef *)(LEPUS_VALUE_GET_PTR(val));
       if (LEPUS_VALUE_IS_OBJECT(pref->lepus_val)) {
-        mark_func(rt, pref->lepus_val, local_idx);
+        mark_func(rt, pref->lepus_val, trace_tool);
       }
       break;
     }
@@ -5493,7 +5511,7 @@ QJS_STATIC void mark_children(LEPUSRuntime *rt, LEPUSValueConst val,
       JSShape *sh;
       int i;
       sh = p->shape;
-      mark_func(rt, LEPUS_MKPTR(LEPUS_TAG_SHAPE, sh), local_idx);
+      mark_func(rt, LEPUS_MKPTR(LEPUS_TAG_SHAPE, sh), trace_tool);
       /* mark all the fields */
       prs = get_shape_prop(sh);
       if (p->class_id != JS_CLASS_WeakRef) {
@@ -5506,11 +5524,11 @@ QJS_STATIC void mark_children(LEPUSRuntime *rt, LEPUSValueConst val,
                 if (pr->u.getset.getter)
                   mark_func(rt,
                             LEPUS_MKPTR(LEPUS_TAG_OBJECT, pr->u.getset.getter),
-                            local_idx);
+                            trace_tool);
                 if (pr->u.getset.setter)
                   mark_func(rt,
                             LEPUS_MKPTR(LEPUS_TAG_OBJECT, pr->u.getset.setter),
-                            local_idx);
+                            trace_tool);
               } else if ((prs->flags & LEPUS_PROP_TMASK) == LEPUS_PROP_VARREF) {
                 JS_MarkValue_RC(rt,
                                 LEPUS_MKPTR(LEPUS_TAG_VAR_REF, pr->u.var_ref),
@@ -5562,7 +5580,7 @@ QJS_STATIC void mark_children(LEPUSRuntime *rt, LEPUSValueConst val,
     case LEPUS_TAG_SHAPE: {
       JSShape *sh = static_cast<JSShape *>(LEPUS_VALUE_GET_PTR(val));
       if (sh->proto != NULL) {
-        mark_func(rt, LEPUS_MKPTR(LEPUS_TAG_OBJECT, sh->proto), local_idx);
+        mark_func(rt, LEPUS_MKPTR(LEPUS_TAG_OBJECT, sh->proto), trace_tool);
       }
     } break;
     default:
@@ -5620,7 +5638,7 @@ static int decref_indent;
 #endif
 
 QJS_STATIC void gc_decref_child(LEPUSRuntime *rt, LEPUSValueConst obj,
-                                int local_idx = -1) {
+                                uint64_t trace_tool = 0) {
   LEPUSObject *p = reinterpret_cast<LEPUSObject *>(LEPUS_VALUE_GET_PTR(obj));
 
 #ifdef DUMP_LEAKS
@@ -5748,7 +5766,7 @@ gc_decref_label:
 QJS_STATIC void gc_scan_incref(LEPUSRuntime *rt, LEPUSValueConst obj, BOOL);
 
 QJS_STATIC void gc_scan_incref_child(LEPUSRuntime *rt, LEPUSValueConst obj,
-                                     int local_idx = -1) {
+                                     uint64_t trace_tool = 0) {
   LEPUSObject *p = reinterpret_cast<LEPUSObject *>(LEPUS_VALUE_GET_PTR(obj));
   p->header.ref_count++;
   // <Primjs begin>
@@ -5813,7 +5831,7 @@ QJS_STATIC void gc_scan_obj(LEPUSRuntime *rt, LEPUSValueConst obj) {
 }
 // <Primjs begin>
 QJS_STATIC void gc_scan_obj_set_mark2(LEPUSRuntime *rt, LEPUSValueConst obj,
-                                      int local_idx = -1) {
+                                      uint64_t trace_tool = 0) {
   if (LEPUS_IsLepusRef(obj)) {
     LEPUSValue lepus_val =
         reinterpret_cast<LEPUSLepusRef *>(LEPUS_VALUE_GET_PTR(obj))->lepus_val;
@@ -5840,7 +5858,7 @@ QJS_STATIC void gc_scan_obj_set_mark2(LEPUSRuntime *rt, LEPUSValueConst obj,
 QJS_STATIC void gc_scan_obj2(LEPUSRuntime *rt, LEPUSValueConst obj);
 
 QJS_STATIC void gc_scan_incref_child2(LEPUSRuntime *rt, LEPUSValueConst obj,
-                                      int local_idx = -1) {
+                                      uint64_t trace_tool = 0) {
   LEPUSObject *p = reinterpret_cast<LEPUSObject *>(LEPUS_VALUE_GET_PTR(obj));
   if (!p || ((uintptr_t)p & 0x1) == 1) return;
   p->header.ref_count++;
@@ -6028,6 +6046,10 @@ void LEPUS_RunGC(LEPUSRuntime *rt) {
   /* decrement the reference of the children of each object. mark =
      1 after this pass. */
   // <Primjs begin>
+  if (rt->gc_depth > 0) {
+    return;
+  }
+  rt->gc_depth++;
   rt->c_stack_depth = 0;
   /*
    * Temporaily detach all closure variable references of async functions
@@ -6049,6 +6071,7 @@ void LEPUS_RunGC(LEPUSRuntime *rt) {
 
   /* free the GC objects in a cycle */
   gc_free_cycles(rt);
+  rt->gc_depth--;
   return;
 }
 
@@ -6831,7 +6854,7 @@ void build_backtrace_frame(LEPUSContext *ctx, LEPUSStackFrame *sf, DynBuf *dbuf,
       dbuf_printf(
           dbuf, " (%s",
           JS_AtomGetStr(ctx, atom_buf, sizeof(atom_buf), b->debug.filename));
-      if (b->function_id == 0 || ctx->debugger_mode) {
+      if (b->function_id == 0 || (ctx->debugger_mode && b->debug.pc2line_buf)) {
         // output actual line and column number
         if (line_num1 != -1) {
           // <Primjs begin>
@@ -8848,7 +8871,7 @@ int JS_SetPropertyInternalImpl(LEPUSContext *ctx, LEPUSValueConst this_obj,
   }
   p = LEPUS_VALUE_GET_OBJ(this_obj);
 
-#ifdef ENABLE_QUICKJS_DEBUGGER
+#ifdef ENABLE_CHECK_TOOLS
   CheckObjectCtx(ctx, val);
 #endif
 
@@ -14197,7 +14220,8 @@ LEPUSValue LEPUS_NewLepusWrap(LEPUSContext *ctx, void *p, int tag) {
   return LEPUS_MKPTR(LEPUS_TAG_LEPUS_REF, pref);
 }
 
-void RegisterGCInfoCallback(LEPUSRuntime *rt, void (*func)(const char *, int)) {
+void RegisterGCInfoCallback(LEPUSRuntime *rt,
+                            void (*func)(LEPUSContext *, const char *, int)) {
   if (!rt) return;
   rt->update_gc_info = func;
 }
@@ -14213,6 +14237,7 @@ void RegisterLepusRefCallbacks(LEPUSRuntime *rt,
   rt->js_callbacks_.free_str_cache = funcs->free_str_cache;
   rt->js_callbacks_.lepus_ref_equal = funcs->lepus_ref_equal;
   rt->js_callbacks_.lepus_ref_tostring = funcs->lepus_ref_tostring;
+  rt->js_callbacks_.ref_counted_obj_visitor = funcs->ref_counted_obj_visitor;
   return;
 }
 
@@ -15353,9 +15378,9 @@ __exception int js_append_enumerate(LEPUSContext *ctx, LEPUSValue *sp) {
   iterator = JS_GetPropertyInternal_RC(ctx, sp[-1], JS_ATOM_Symbol_iterator,
                                        sp[-1], 0);
   if (LEPUS_IsException(iterator)) return -1;
+  LEPUSCFunctionType ft = {.generic_magic = js_create_array_iterator};
   is_array_iterator =
-      JS_IsCFunction(ctx, iterator, (LEPUSCFunction *)js_create_array_iterator,
-                     JS_ITERATOR_KIND_VALUE);
+      JS_IsCFunction(ctx, iterator, ft.generic, JS_ITERATOR_KIND_VALUE);
   LEPUS_FreeValue(ctx, iterator);
 
   enumobj = JS_GetIterator(ctx, sp[-1], FALSE);
@@ -15365,9 +15390,8 @@ __exception int js_append_enumerate(LEPUSContext *ctx, LEPUSValue *sp) {
     LEPUS_FreeValue(ctx, enumobj);
     return -1;
   }
-  if (is_array_iterator &&
-      JS_IsCFunction(ctx, method, (LEPUSCFunction *)js_array_iterator_next,
-                     0) &&
+  LEPUSCFunctionType ft2 = {.iterator_next = js_array_iterator_next};
+  if (is_array_iterator && JS_IsCFunction(ctx, method, ft2.generic, 0) &&
       js_get_fast_array(ctx, sp[-1], &arrp, &count32)) {
     int64_t len;
     /* Handle fast arrays explicitly */
@@ -16029,7 +16053,7 @@ void DebuggerCallEachFunc(LEPUSContext *ctx, const uint8_t *pc) {
   // in other situations, there is no need to call inspectorcheck
   if (ctx->debugger_need_polling || info->pause_on_next_statement) {
     ctx->debugger_info->debugger_current_pc = pc;
-    ctx->rt->debugger_callbacks_.inspector_check(ctx);
+    DoInspectorCheck(ctx);
   }
 #ifdef ENABLE_COMPATIBLE_MM
   if (ctx->gc_enable) ctx->rt->gc->ResetForbidGC();
@@ -16051,7 +16075,7 @@ void DebuggerCallEachOp(LEPUSContext *ctx, const uint8_t *pc,
   // 2. current position hits a breakpoint
   ctx->debugger_info->debugger_current_pc = pc;
   if (info->step_type || (b->bp_num && info->break_bytecode_map.count(pc))) {
-    ctx->rt->debugger_callbacks_.inspector_check(ctx);
+    DoInspectorCheck(ctx);
   }
 #ifdef ENABLE_COMPATIBLE_MM
   if (ctx->gc_enable) {
@@ -18503,7 +18527,7 @@ QJS_STATIC inline LEPUSValue JS_CallInternalTI(LEPUSContext *caller_ctx,
                                                LEPUSValue this_obj,
                                                LEPUSValue new_target, int argc,
                                                LEPUSValue *argv, int flags) {
-#ifdef ENABLE_QUICKJS_DEBUGGER
+#ifdef ENABLE_CHECK_TOOLS
   CheckObjectCtx(caller_ctx, func_obj);
 #endif
 
@@ -18700,7 +18724,8 @@ QJS_STATIC __exception int async_func_init(LEPUSContext *ctx,
 }
 
 QJS_STATIC void async_func_mark(LEPUSRuntime *rt, JSAsyncFunctionState *s,
-                                LEPUS_MarkFunc *mark_func, int local_idx) {
+                                LEPUS_MarkFunc *mark_func,
+                                uint64_t trace_tool) {
   LEPUSStackFrame *sf;
   LEPUSValue *sp;
   list_head *el;
@@ -18710,7 +18735,7 @@ QJS_STATIC void async_func_mark(LEPUSRuntime *rt, JSAsyncFunctionState *s,
   // Because sf->var_refs refer var_ref.
   list_for_each(el, &sf->var_ref_list) {
     var_ref = list_entry(el, JSVarRef, link);
-    mark_func(rt, LEPUS_MKPTR(LEPUS_TAG_VAR_REF, var_ref), local_idx);
+    mark_func(rt, LEPUS_MKPTR(LEPUS_TAG_VAR_REF, var_ref), trace_tool);
   }
 
   JS_MarkValue_RC(rt, sf->cur_func, mark_func);
@@ -18784,7 +18809,8 @@ QJS_STATIC void free_generator_stack(LEPUSContext *ctx, JSGeneratorData *s) {
 }
 
 QJS_STATIC void js_generator_mark(LEPUSRuntime *rt, LEPUSValueConst val,
-                                  LEPUS_MarkFunc *mark_func, int local_idxc) {
+                                  LEPUS_MarkFunc *mark_func,
+                                  uint64_t trace_tool) {
   LEPUSObject *p = LEPUS_VALUE_GET_OBJ(val);
   JSGeneratorData *s = p->u.generator_data;
 
@@ -19017,7 +19043,7 @@ QJS_STATIC void js_async_function_resolve_finalizer(LEPUSRuntime *rt,
 QJS_STATIC void js_async_function_resolve_mark(LEPUSRuntime *rt,
                                                LEPUSValueConst val,
                                                LEPUS_MarkFunc *mark_func,
-                                               int local_idx) {
+                                               uint64_t trace_tool) {
   LEPUSObject *p = LEPUS_VALUE_GET_OBJ(val);
   JSAsyncFunctionData *s = p->u.async_function_data;
   if (s) {
@@ -19213,7 +19239,7 @@ QJS_STATIC void js_async_generator_finalizer(LEPUSRuntime *rt, LEPUSValue obj) {
 
 QJS_STATIC void js_async_generator_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                         LEPUS_MarkFunc *mark_func,
-                                        int local_idx) {
+                                        uint64_t trace_tool) {
   JSAsyncGeneratorData *s = static_cast<JSAsyncGeneratorData *>(
       LEPUS_GetOpaque(val, JS_CLASS_ASYNC_GENERATOR));
   struct list_head *el;
@@ -31543,11 +31569,14 @@ LEPUSValue js_create_function(LEPUSContext *ctx, JSFunctionDef *fd) {
   }
 
   b->stack_size = stack_size;
-#ifdef ENABLE_QUICKJS_DEBUGGER
-  b->ctx = ctx;
-#if defined(ANDROID) || defined(__ANDROID__)
-  b->tid = get_tid();
-#endif
+#ifdef ENABLE_CHECK_TOOLS
+  if (ctx->object_ctx_check) {
+    b->ctx = ctx;
+    b->tid = get_tid();
+  } else {
+    b->ctx = nullptr;
+    b->tid = 0;
+  }
 #endif
 
   if (fd->js_mode & JS_MODE_STRIP) {
@@ -38440,7 +38469,7 @@ QJS_STATIC void js_array_iterator_finalizer(LEPUSRuntime *rt, LEPUSValue val) {
 
 QJS_STATIC void js_array_iterator_mark(LEPUSRuntime *rt, LEPUSValueConst val,
                                        LEPUS_MarkFunc *mark_func,
-                                       int local_idx) {
+                                       uint64_t trace_tool) {
   LEPUSObject *p = LEPUS_VALUE_GET_OBJ(val);
   JSArrayIteratorData *it = p->u.array_iterator_data;
   if (it) {
@@ -42212,7 +42241,7 @@ QJS_STATIC void js_regexp_string_iterator_finalizer(LEPUSRuntime *rt,
 QJS_STATIC void js_regexp_string_iterator_mark(LEPUSRuntime *rt,
                                                LEPUSValueConst val,
                                                LEPUS_MarkFunc *mark_func,
-                                               int local_idx) {
+                                               uint64_t trace_tool) {
   LEPUSObject *p = LEPUS_VALUE_GET_OBJ(val);
   JSRegExpStringIteratorData *it = p->u.regexp_string_iterator_data;
   if (it) {
@@ -46143,7 +46172,7 @@ QJS_STATIC void js_proxy_finalizer(LEPUSRuntime *rt, LEPUSValue val) {
 }
 
 QJS_STATIC void js_proxy_mark(LEPUSRuntime *rt, LEPUSValueConst val,
-                              LEPUS_MarkFunc *mark_func, int local_idx) {
+                              LEPUS_MarkFunc *mark_func, uint64_t trace_tool) {
   JSProxyData *s =
       static_cast<JSProxyData *>(LEPUS_GetOpaque(val, JS_CLASS_PROXY));
   if (s) {
@@ -47156,17 +47185,17 @@ QJS_STATIC void js_finalizationRegistry_finalizer(LEPUSRuntime *rt,
 QJS_STATIC void js_finalizationRegistry_mark(LEPUSRuntime *rt,
                                              LEPUSValueConst val,
                                              LEPUS_MarkFunc *mark_func,
-                                             int local_idx) {
+                                             uint64_t trace_tool) {
   FinalizationRegistryData *frd = static_cast<FinalizationRegistryData *>(
       LEPUS_GetOpaque(val, JS_CLASS_FinalizationRegistry));
   if (!frd) return;
-  mark_func(rt, frd->cbs, local_idx);
+  mark_func(rt, frd->cbs, trace_tool);
   list_head *el;
   list_for_each(el, &frd->entries) {
     FinalizationRegistryEntry *fin_node =
         list_entry(el, FinalizationRegistryEntry, link);
-    LEPUS_MarkValue(rt, fin_node->held_value, mark_func, local_idx);
-    LEPUS_MarkValue(rt, fin_node->token, mark_func, local_idx);
+    LEPUS_MarkValue(rt, fin_node->held_value, mark_func, trace_tool);
+    LEPUS_MarkValue(rt, fin_node->token, mark_func, trace_tool);
   }
   return;
 }
@@ -47332,12 +47361,11 @@ QJS_STATIC uint32_t map_hash_key(LEPUSContext *ctx, LEPUSValueConst key) {
 
 QJS_STATIC JSMapRecord *map_find_record(LEPUSContext *ctx, JSMapState *s,
                                         LEPUSValueConst key) {
-  struct list_head *el;
+  struct list_head *el, *el1;
   JSMapRecord *mr;
   uint32_t h;
-
   h = map_hash_key(ctx, key) & (s->hash_size - 1);
-  list_for_each(el, &s->hash_table[h]) {
+  list_for_each_safe(el, el1, &s->hash_table[h]) {
     mr = list_entry(el, JSMapRecord, hash_link);
     if (js_same_value_zero(ctx, mr->key, key)) return mr;
   }
@@ -47715,7 +47743,7 @@ QJS_STATIC void js_map_finalizer(LEPUSRuntime *rt, LEPUSValue val) {
 }
 
 QJS_STATIC void js_map_mark(LEPUSRuntime *rt, LEPUSValueConst val,
-                            LEPUS_MarkFunc *mark_func, int local_idx) {
+                            LEPUS_MarkFunc *mark_func, uint64_t trace_tool) {
   LEPUSObject *p = LEPUS_VALUE_GET_OBJ(val);
   JSMapState *s;
   struct list_head *el;
@@ -47757,7 +47785,8 @@ QJS_STATIC void js_map_iterator_finalizer(LEPUSRuntime *rt, LEPUSValue val) {
 }
 
 QJS_STATIC void js_map_iterator_mark(LEPUSRuntime *rt, LEPUSValueConst val,
-                                     LEPUS_MarkFunc *mark_func, int local_idx) {
+                                     LEPUS_MarkFunc *mark_func,
+                                     uint64_t trace_tool) {
   LEPUSObject *p = LEPUS_VALUE_GET_OBJ(val);
   JSMapIteratorData *it;
   it = p->u.map_iterator_data;
@@ -48452,7 +48481,7 @@ QJS_STATIC void js_promise_resolve_function_finalizer(LEPUSRuntime *rt,
 QJS_STATIC void js_promise_resolve_function_mark(LEPUSRuntime *rt,
                                                  LEPUSValueConst val,
                                                  LEPUS_MarkFunc *mark_func,
-                                                 int local_idx) {
+                                                 uint64_t trace_tool) {
   JSPromiseFunctionData *s = LEPUS_VALUE_GET_OBJ(val)->u.promise_function_data;
   if (s) {
     JS_MarkValue_RC(rt, s->promise, mark_func);
@@ -48537,7 +48566,8 @@ QJS_STATIC void js_promise_finalizer(LEPUSRuntime *rt, LEPUSValue val) {
 }
 
 QJS_STATIC void js_promise_mark(LEPUSRuntime *rt, LEPUSValueConst val,
-                                LEPUS_MarkFunc *mark_func, int local_idx) {
+                                LEPUS_MarkFunc *mark_func,
+                                uint64_t trace_tool) {
   JSPromiseData *s =
       static_cast<JSPromiseData *>(LEPUS_GetOpaque(val, JS_CLASS_PROMISE));
   struct list_head *el;
@@ -49409,7 +49439,7 @@ QJS_STATIC void js_async_from_sync_iterator_finalizer(LEPUSRuntime *rt,
 QJS_STATIC void js_async_from_sync_iterator_mark(LEPUSRuntime *rt,
                                                  LEPUSValueConst val,
                                                  LEPUS_MarkFunc *mark_func,
-                                                 int local_idx) {
+                                                 uint64_t trace_tool) {
   JSAsyncFromSyncIteratorData *s = static_cast<JSAsyncFromSyncIteratorData *>(
       LEPUS_GetOpaque(val, JS_CLASS_ASYNC_FROM_SYNC_ITERATOR));
   if (s) {
@@ -49643,9 +49673,10 @@ void LEPUS_AddIntrinsicPromise(LEPUSContext *ctx) {
   /* AsyncFunction */
   ctx->class_proto[JS_CLASS_ASYNC_FUNCTION] =
       LEPUS_NewObjectProto(ctx, ctx->function_proto);
-  obj1 = JS_NewCFunction3(
-      ctx, (LEPUSCFunction *)js_function_constructor, "AsyncFunction", 1,
-      LEPUS_CFUNC_constructor_or_func_magic, JS_FUNC_ASYNC, ctx->function_ctor);
+  LEPUSCFunctionType ft = {.generic_magic = js_function_constructor};
+  obj1 = JS_NewCFunction3(ctx, ft.generic, "AsyncFunction", 1,
+                          LEPUS_CFUNC_constructor_or_func_magic, JS_FUNC_ASYNC,
+                          ctx->function_ctor);
   LEPUS_SetPropertyFunctionList(ctx, ctx->class_proto[JS_CLASS_ASYNC_FUNCTION],
                                 js_async_function_proto_funcs,
                                 countof(js_async_function_proto_funcs));
@@ -49677,8 +49708,7 @@ void LEPUS_AddIntrinsicPromise(LEPUSContext *ctx) {
   /* AsyncGeneratorFunction */
   ctx->class_proto[JS_CLASS_ASYNC_GENERATOR_FUNCTION] =
       LEPUS_NewObjectProto(ctx, ctx->function_proto);
-  obj1 = JS_NewCFunction3(ctx, (LEPUSCFunction *)js_function_constructor,
-                          "AsyncGeneratorFunction", 1,
+  obj1 = JS_NewCFunction3(ctx, ft.generic, "AsyncGeneratorFunction", 1,
                           LEPUS_CFUNC_constructor_or_func_magic,
                           JS_FUNC_ASYNC_GENERATOR, ctx->function_ctor);
   LEPUS_SetPropertyFunctionList(
@@ -51636,11 +51666,12 @@ void LEPUS_AddIntrinsicBaseObjects(LEPUSContext *ctx) {
   JS_NewGlobalCConstructor2(ctx, obj1, "Error",
                             ctx->class_proto[JS_CLASS_ERROR]);
 
+  LEPUSCFunctionType ft = {.generic_magic = js_error_constructor};
   for (i = 0; i < JS_NATIVE_ERROR_COUNT; i++) {
     int n_args = 1 + (i == JS_AGGREGATE_ERROR);
-    LEPUSValue func_obj = JS_NewCFunction3(
-        ctx, (LEPUSCFunction *)js_error_constructor, native_error_name[i],
-        n_args, LEPUS_CFUNC_constructor_or_func_magic, i, obj1);
+    LEPUSValue func_obj =
+        JS_NewCFunction3(ctx, ft.generic, native_error_name[i], n_args,
+                         LEPUS_CFUNC_constructor_or_func_magic, i, obj1);
     JS_NewGlobalCConstructor2(ctx, func_obj, native_error_name[i],
                               ctx->native_error_proto[i]);
   }
@@ -53785,7 +53816,8 @@ QJS_STATIC void js_typed_array_finalizer(LEPUSRuntime *rt, LEPUSValue val) {
 }
 
 QJS_STATIC void js_typed_array_mark(LEPUSRuntime *rt, LEPUSValueConst val,
-                                    LEPUS_MarkFunc *mark_func, int local_idx) {
+                                    LEPUS_MarkFunc *mark_func,
+                                    uint64_t trace_tool) {
   LEPUSObject *p = LEPUS_VALUE_GET_OBJ(val);
   JSTypedArray *ta = p->u.typed_array;
   if (ta) {
@@ -54500,6 +54532,7 @@ void LEPUS_AddIntrinsicTypedArrays(LEPUSContext *ctx) {
                                 countof(js_typed_array_base_funcs));
   JS_SetConstructor(ctx, typed_array_base_func, typed_array_base_proto);
 
+  LEPUSCFunctionType ft2 = {.generic_magic = js_typed_array_constructor};
   for (i = JS_CLASS_UINT8C_ARRAY;
        i < JS_CLASS_UINT8C_ARRAY + JS_TYPED_ARRAY_COUNT; i++) {
     LEPUSValue func_obj;
@@ -54512,9 +54545,9 @@ void LEPUS_AddIntrinsicTypedArrays(LEPUSContext *ctx) {
         LEPUS_NewInt32(ctx, 1 << typed_array_size_log2(i)), 0);
     name = JS_AtomGetStr(ctx, buf, sizeof(buf),
                          JS_ATOM_Uint8ClampedArray + i - JS_CLASS_UINT8C_ARRAY);
-    func_obj = JS_NewCFunction3(
-        ctx, (LEPUSCFunction *)js_typed_array_constructor, name, 3,
-        LEPUS_CFUNC_constructor_magic, i, typed_array_base_func);
+    func_obj = JS_NewCFunction3(ctx, ft2.generic, name, 3,
+                                LEPUS_CFUNC_constructor_magic, i,
+                                typed_array_base_func);
     JS_NewGlobalCConstructor2(ctx, func_obj, name, ctx->class_proto[i]);
     JS_DefinePropertyValueStr_RC(
         ctx, func_obj, "BYTES_PER_ELEMENT",
@@ -55273,7 +55306,6 @@ void PrepareQJSDebuggerForSharedContext(LEPUSContext *ctx, void **funcs,
     ctx->debugger_parse_script = 1;
     ctx->debugger_mode = 0;
   }
-  RegisterLynxConsole(ctx);
 #endif
   return;
 }
@@ -56088,7 +56120,7 @@ void LEPUS_SetFuncFileName(LEPUSContext *ctx, LEPUSValue obj,
   LEPUSFunctionBytecode *b =
       static_cast<LEPUSFunctionBytecode *>(LEPUS_VALUE_GET_PTR(obj));
   list_add_tail(&b->debug.link, &all_funcs);
-  auto add_child_wrapper = [](LEPUSRuntime *rt, LEPUSValue val, int32_t) {
+  auto add_child_wrapper = [](LEPUSRuntime *rt, LEPUSValue val, uint64_t) {
     if (LEPUS_VALUE_IS_FUNCTION_BYTECODE(val)) {
       auto *b = static_cast<LEPUSFunctionBytecode *>(LEPUS_VALUE_GET_PTR(val));
       list_add_tail(&b->debug.link, &all_funcs);
@@ -56121,33 +56153,72 @@ void InitLynxTraceEnv(void *(*begin)(const char *), void (*end)(void *ptr)) {
 
 void SetObjectCtxCheckStatus(LEPUSContext *ctx, bool enable) {
   ctx->object_ctx_check = enable;
+  if (enable) {
+    ctx->check_tools = new CheckTools();
+  }
   return;
+}
+
+bool LEPUS_PushObjectCheckTid(LEPUSContext *ctx) {
+#ifdef ENABLE_CHECK_TOOLS
+  if (!ctx->object_ctx_check || ctx->check_tools == nullptr) {
+    return false;
+  }
+  pid_t cur_tid = get_tid();
+  return ctx->check_tools->PushTid(static_cast<int>(cur_tid));
+#else
+  return false;
+#endif
 }
 
 void UpdateOuterObjSize(LEPUSRuntime *rt, int size) {
 #ifdef ENABLE_COMPATIBLE_MM
+  if (size == 0) return;
   if (rt->gc_enable) {
     JSMallocState *s = &rt->malloc_state;
     s->allocate_state.outer_heap_size += size;
-    if (s->allocate_state.outer_heap_size > OUTER_HEAP_SIZE_LIMIT) {
+    if (s->allocate_state.outer_heap_size >
+        s->allocate_state.footprint_limit / 2) {
       trig_gc(s, size, true);
-      s->allocate_state.outer_heap_size = 0;
     }
   }
 #endif
 }
 
-#ifdef ENABLE_QUICKJS_DEBUGGER
-#if defined(ANDROID) || defined(__ANDROID__)
-pid_t get_tid() { return syscall(SYS_gettid); }
+void LEPUS_SetGCObserver(LEPUSRuntime *rt, void *opaque) {
+#ifdef ENABLE_COMPATIBLE_MM
+  rt->gc_observer = opaque;
 #endif
+}
+
+void *LEPUS_GetGCObserver(LEPUSRuntime *rt) {
+#ifdef ENABLE_COMPATIBLE_MM
+  return rt->gc_observer;
+#else
+  return nullptr;
+#endif
+}
+
+#ifdef ENABLE_CHECK_TOOLS
+pid_t get_tid() {
+#if defined(ANDROID) || defined(__ANDROID__)
+  return syscall(SYS_gettid);
+#elif defined(OS_IOS)
+  uint64_t tid64;
+  pthread_threadid_np(NULL, &tid64);
+  return (pid_t)tid64;
+#else
+  return 0;
+#endif
+}
 
 void CheckObjectCtx(LEPUSContext *ctx, LEPUSValue obj) {
   if (ctx->object_ctx_check) {
     bool inconsistent_ctx =
-        (LEPUS_VALUE_IS_OBJECT(obj) &&
+        (LEPUS_VALUE_IS_OBJECT(obj) && LEPUS_VALUE_GET_OBJ(obj)->ctx &&
          (LEPUS_VALUE_GET_OBJ(obj)->ctx) != ctx) ||
         (LEPUS_VALUE_IS_FUNCTION_BYTECODE(obj) &&
+         static_cast<LEPUSFunctionBytecode *>(LEPUS_VALUE_GET_PTR(obj))->ctx &&
          static_cast<LEPUSFunctionBytecode *>(LEPUS_VALUE_GET_PTR(obj))->ctx !=
              ctx);
     if (inconsistent_ctx) {
@@ -56160,26 +56231,40 @@ void CheckObjectCtx(LEPUSContext *ctx, LEPUSValue obj) {
 #endif
       abort();
     }
-#if 0
-#if defined(ANDROID) || defined(__ANDROID__)
+    pid_t obj_tid = 0;
+    if (LEPUS_VALUE_IS_OBJECT(obj)) {
+      obj_tid = LEPUS_VALUE_GET_OBJ(obj)->tid;
+    } else if (LEPUS_VALUE_IS_FUNCTION_BYTECODE(obj)) {
+      obj_tid =
+          static_cast<LEPUSFunctionBytecode *>(LEPUS_VALUE_GET_PTR(obj))->tid;
+    }
     pid_t tid = get_tid();
-    bool inconsistent_tid =
-        (LEPUS_VALUE_IS_OBJECT(obj) &&
-         (LEPUS_VALUE_GET_OBJ(obj)->tid) != tid) ||
-        (LEPUS_VALUE_IS_FUNCTION_BYTECODE(obj) &&
-         static_cast<LEPUSFunctionBytecode *>(LEPUS_VALUE_GET_PTR(obj))->tid !=
-             tid);
+    bool inconsistent_tid = false;
+    if (obj_tid) {
+      inconsistent_tid =
+          (obj_tid != tid) && !(ctx->check_tools->IsValidTid((int)obj_tid));
+    }
 
     if (inconsistent_tid) {
+#if defined(ANDROID) || defined(__ANDROID__)
       __android_log_print(ANDROID_LOG_FATAL, "PRIMJS_GC",
                           "CheckObjectCtx failed, inconsistent_tid; obj: %p, "
                           "ori_tid: %d, cur_tid: %d ctx: %p\n",
                           LEPUS_VALUE_GET_OBJ(obj),
                           (int)(LEPUS_VALUE_GET_OBJ(obj)->tid), (int)tid, ctx);
+#endif
       abort();
     }
-#endif
-#endif
+  }
+}
+void CheckObjectRt(LEPUSRuntime *rt, LEPUSValue obj) {
+  LEPUSContext *ctx = nullptr;
+  struct list_head *el, *el1;
+  list_for_each_safe(el, el1, &rt->context_list) {
+    ctx = list_entry(el, LEPUSContext, link);
+  }
+  if (ctx) {
+    CheckObjectCtx(ctx, obj);
   }
 }
 #endif

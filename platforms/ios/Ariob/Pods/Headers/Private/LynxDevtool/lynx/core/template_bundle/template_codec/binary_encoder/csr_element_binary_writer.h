@@ -1,1 +1,0 @@
-../../../../../../../../LynxDevtool/lynx/core/template_bundle/template_codec/binary_encoder/csr_element_binary_writer.h

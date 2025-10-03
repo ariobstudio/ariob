@@ -13,9 +13,14 @@
   ],
   "scripts": {
     "dev": "turbo run dev",
-    "dev:andromeda": "turbo run dev --filter=andromeda",
+    "dev:brana": "turbo run dev --filter=brana",
+    "dev:chat": "turbo run dev --filter=chat",
     "build": "turbo run build",
-    "build:andromeda": "turbo run build --filter=andromeda"
+    "build:brana": "turbo run build --filter=brana",
+    "build:chat": "turbo run build --filter=chat",
+    "bundle:ios": "./scripts/bundle-ios.sh",
+    "bundle:ios:help": "./scripts/bundle-ios.sh --help",
+    "bundle:android": "./scripts/bundle-android.sh"
   },
   "packageManager": "pnpm@8.15.4",
   "devDependencies": {

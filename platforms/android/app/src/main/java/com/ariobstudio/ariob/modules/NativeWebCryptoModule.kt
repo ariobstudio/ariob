@@ -1,1312 +1,713 @@
-package com.lynx.explorer.modules
+package com.ariobstudio.ariob.modules
+
 
 import android.content.Context
-import android.util.Base64
-import android.util.Log
-import com.lynx.jsbridge.LynxMethod
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.lynx.jsbridge.LynxModule
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
+import com.lynx.jsbridge.LynxMethod
 import java.math.BigInteger
-import java.nio.charset.StandardCharsets
 import java.security.*
 import java.security.interfaces.ECPrivateKey
 import java.security.interfaces.ECPublicKey
 import java.security.spec.*
+import java.util.*
 import javax.crypto.*
-import javax.crypto.spec.*
-
-// BouncyCastle imports
-import org.bouncycastle.jce.provider.BouncyCastleProvider
-import org.bouncycastle.crypto.agreement.ECDHBasicAgreement
-import org.bouncycastle.crypto.params.ECDomainParameters
-import org.bouncycastle.crypto.params.ECPrivateKeyParameters
-import org.bouncycastle.crypto.params.ECPublicKeyParameters
+import javax.crypto.spec.GCMParameterSpec
+import javax.crypto.spec.PBEKeySpec
+import javax.crypto.spec.SecretKeySpec
 
 /**
- * Native implementation of Web Cryptography API for Android platforms.
+ * Native WebCrypto module for Android/Kotlin.
  *
- * This module provides cryptographic operations compatible with the JavaScript
- * Web Cryptography API (https://www.w3.org/TR/WebCryptoAPI/), allowing secure
- * cryptographic operations to be performed natively on Android devices while
- * maintaining API compatibility with browser-based implementations.
+ * This class exposes cryptographic primitives following the WebCrypto
+ * specification.  It relies solely on the Android platform’s standard
+ * cryptographic providers: SecureRandom for random values, MessageDigest for
+ * hashing, KeyPairGenerator/KeyAgreement/Signature for elliptic curve
+ * operations and Cipher for AES‑GCM.  PBKDF2 is implemented using
+ * SecretKeyFactory with HMAC‑SHA256.  No external dependencies are used, in
+ * accordance with Android security best practices which recommend AES‑GCM
+ * encryption and SHA‑2 based algorithms
  *
- * Supported algorithms:
- * - Digests: SHA-256, SHA-384, SHA-512
- * - Signatures: ECDSA (P-256)
- * - Key Agreement: ECDH (P-256)
- * - Encryption: AES-GCM
- * - Key Derivation: PBKDF2, ECDH+HKDF
+ * All methods take and return simple Kotlin types (maps, lists, byte arrays)
+ * which can easily be bridged to JavaScript via LynxJS/React Native.  Keys
+ * are represented as JWK‑like maps when imported/exported.
  */
 class NativeWebCryptoModule(context: Context) : LynxModule(context) {
-    private val TAG = "NativeWebCryptoModule"
 
-    companion object {
-        /**
-         * Constants for P-256 curve parameters (secp256r1)
-         * These are standard parameters defined by NIST and used globally
-         */
-        private val P256_FIELD_SIZE = 256
-        private val P256_CURVE_NAME = "secp256r1" // Android's name for P-256 curve
+    // region Digest
+    /**
+     * Compute a hash of the provided data using the requested algorithm.  The
+     * algorithm map must contain a `name` entry (case‑insensitive) equal to
+     * "SHA-1", "SHA-256", "SHA-384" or "SHA-512".  The data may be a
+     * ByteArray or a Map representing a JavaScript Uint8Array (index:value).
+     */
+    @LynxMethod
+    fun digest(algorithm: Map<String, Any>, data: Any): ByteArray? {
+        val name = (algorithm["name"] as? String)?.uppercase(Locale.ROOT) ?: return null
+        val input = convertToByteArray(data) ?: return null
+        val md = when (name) {
+            "SHA-1" -> MessageDigest.getInstance("SHA-1")
+            "SHA-256" -> MessageDigest.getInstance("SHA-256")
+            "SHA-384" -> MessageDigest.getInstance("SHA-384")
+            "SHA-512" -> MessageDigest.getInstance("SHA-512")
+            else -> return null
+        }
+        return md.digest(input)
+    }
 
-        // Standard P-256 curve parameters
-        private val P256_P = BigInteger("115792089210356248762697446949407573530086143415290314195533631308867097853951")
-        private val P256_A = BigInteger("-3")
-        private val P256_B = BigInteger("5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b", 16)
-        private val P256_G_X = BigInteger("6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296", 16)
-        private val P256_G_Y = BigInteger("4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5", 16)
-        private val P256_N = BigInteger("115792089210356248762697446949407573529996955224135760342422259061068512044369")
-        private val P256_H = BigInteger.ONE
+    // endregion
 
-        // Initialize the BouncyCastle provider
-        init {
-            if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
-                Security.addProvider(BouncyCastleProvider())
+    // region Key generation
+    /**
+     * Generate a cryptographic key.  Supported algorithms include:
+     * - AES‑GCM: supply `algorithm["length"]` (128,192,256).  Returns a JWK map
+     *   with kty="oct" and base64url encoded key material.
+     * - ECDSA: P‑256 signing key pair.  Returns a map with `privateKey` and
+     *   `publicKey` entries containing JWK maps.
+     * - ECDH: P‑256 key agreement key pair.  Only usages "deriveBits" and
+     *   "deriveKey" are kept for the private key.
+     */
+    @LynxMethod
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun generateKey(
+        algorithm: Map<String, Any>,
+        extractable: Boolean,
+        keyUsages: List<String>
+    ): Map<String, Any>? {
+        val name = (algorithm["name"] as? String)?.uppercase(Locale.ROOT) ?: return null
+        return when (name) {
+            "AES-GCM" -> {
+                val bits = (algorithm["length"] as? Number)?.toInt() ?: 256
+                if (bits !in listOf(128, 192, 256)) return null
+                val keyBytes = ByteArray(bits / 8)
+                SecureRandom().nextBytes(keyBytes)
+                mapOf(
+                    "kty" to "oct",
+                    "k" to base64UrlEncode(keyBytes),
+                    "alg" to "A${bits}GCM",
+                    "ext" to extractable,
+                    "key_ops" to keyUsages
+                )
             }
+            "ECDSA" -> {
+                val curve = (algorithm["namedCurve"] as? String)?.uppercase(Locale.ROOT) ?: return null
+                if (curve != "P-256") return null
+                val kpg = KeyPairGenerator.getInstance("EC")
+                val ecSpec = ECGenParameterSpec("secp256r1")
+                kpg.initialize(ecSpec, SecureRandom())
+                val kp = kpg.generateKeyPair()
+                val priv = kp.private as ECPrivateKey
+                val pub = kp.public as ECPublicKey
+                mapOf(
+                    "privateKey" to jwkFromSigningPrivate(priv, pub, listOf("sign"), extractable),
+                    "publicKey" to jwkFromSigningPublic(pub, listOf("verify"), true)
+                )
+            }
+            "ECDH" -> {
+                val curve = (algorithm["namedCurve"] as? String)?.uppercase(Locale.ROOT) ?: return null
+                if (curve != "P-256") return null
+                val kpg = KeyPairGenerator.getInstance("EC")
+                val ecSpec = ECGenParameterSpec("secp256r1")
+                kpg.initialize(ecSpec, SecureRandom())
+                val kp = kpg.generateKeyPair()
+                val priv = kp.private as ECPrivateKey
+                val pub = kp.public as ECPublicKey
+                val allowedOps = keyUsages.filter { it == "deriveBits" || it == "deriveKey" }
+                mapOf(
+                    "privateKey" to jwkFromAgreementPrivate(priv, pub, allowedOps, extractable),
+                    "publicKey" to jwkFromAgreementPublic(pub, emptyList(), true)
+                )
+            }
+            else -> null
+        }
+    }
+
+    // endregion
+
+    // region Key export / import
+    /**
+     * Export a key either as a JWK map or as raw bytes.  For AES keys the
+     * `raw` format returns the secret key bytes.  For EC public keys the raw
+     * format returns the uncompressed point (0x04 || x || y).  Private EC keys
+     * are not exported in raw form.
+     */
+    @LynxMethod
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun exportKey(format: String, key: Map<String, Any>): Any? {
+        return when (format.lowercase(Locale.ROOT)) {
+            "jwk" -> key
+            "raw" -> {
+                val kty = key["kty"] as? String
+                if (kty == "oct") {
+                    val kStr = key["k"] as? String ?: return null
+                    return base64UrlDecode(kStr)
+                } else if (kty == "EC") {
+                    val x = key["x"] as? String ?: return null
+                    val y = key["y"] as? String ?: return null
+                    val xBytes = base64UrlDecode(x) ?: return null
+                    val yBytes = base64UrlDecode(y) ?: return null
+                    val result = ByteArray(1 + xBytes.size + yBytes.size)
+                    result[0] = 0x04
+                    System.arraycopy(xBytes, 0, result, 1, xBytes.size)
+                    System.arraycopy(yBytes, 0, result, 1 + xBytes.size, yBytes.size)
+                    result
+                } else {
+                    null
+                }
+            }
+            else -> null
         }
     }
 
     /**
-     * Helper Methods for JSON and Base64
+     * Import a key from JWK or raw bytes.  For AES‑GCM raw import, the input
+     * must be a ByteArray; it will be normalized to 128/192/256 bits by
+     * hashing with SHA‑256 if necessary.  For JWK import, the provided map
+     * will be returned with `ext` and `key_ops` fields updated.
      */
+    @LynxMethod
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun importKey(
+        format: String,
+        keyData: Any,
+        algorithm: Map<String, Any>,
+        extractable: Boolean,
+        keyUsages: List<String>
+    ): Map<String, Any>? {
+        val name = (algorithm["name"] as? String)?.uppercase(Locale.ROOT) ?: return null
+        return when (format.lowercase(Locale.ROOT) to name) {
+            "raw" to "AES-GCM" -> {
+                val raw = convertToByteArray(keyData) ?: return null
+                val norm = normalizeAESKey(raw)
+                val bits = norm.size * 8
+                mapOf(
+                    "kty" to "oct",
+                    "k" to base64UrlEncode(norm),
+                    "alg" to "A${bits}GCM",
+                    "ext" to extractable,
+                    "key_ops" to keyUsages
+                )
+            }
+            else -> {
+                if (format.lowercase(Locale.ROOT) == "jwk") {
+                    val jwk = (keyData as? Map<*, *>)?.toMutableMap() ?: return null
+                    jwk["ext"] = extractable
+                    jwk["key_ops"] = keyUsages
+                    @Suppress("UNCHECKED_CAST")
+                    return jwk as Map<String, Any>
+                }
+                null
+            }
+        }
+    }
+    // endregion
+
+    // region Sign / Verify
+    /**
+     * Sign the given data with an ECDSA private key.  The key must be a JWK
+     * containing base64url encoded `d`, `x` and `y`.  The algorithm
+     * dictionary must have name "ECDSA".  Returns the DER‑encoded signature
+     * or null on error.
+     */
+    @LynxMethod
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun sign(algorithm: Map<String, Any>, key: Map<String, Any>, data: Any): ByteArray? {
+        val algName = (algorithm["name"] as? String)?.uppercase(Locale.ROOT) ?: return null
+        if (algName != "ECDSA") return null
+        val dStr = key["d"] as? String ?: return null
+        val xStr = key["x"] as? String ?: return null
+        val yStr = key["y"] as? String ?: return null
+        val d = base64UrlDecode(dStr) ?: return null
+        val x = base64UrlDecode(xStr) ?: return null
+        val y = base64UrlDecode(yStr) ?: return null
+        val dataBytes = convertToByteArray(data) ?: return null
+        val ecSpec = getECParameterSpec() ?: return null
+        val privSpec = ECPrivateKeySpec(BigInteger(1, d), ecSpec)
+        val kf = KeyFactory.getInstance("EC")
+        val privKey = kf.generatePrivate(privSpec)
+        val sig = Signature.getInstance("SHA256withECDSA")
+        sig.initSign(privKey)
+        sig.update(dataBytes)
+        return sig.sign()
+    }
 
     /**
-     * Parses a JSON string into a JSONObject.
-     * @param jsonString The JSON string to parse
-     * @return The parsed JSONObject or null if parsing failed
+     * Verify an ECDSA signature over data.  Requires an EC public key JWK.
+     * Returns true if the signature is valid.  The signature must be DER
+     * encoded as produced by the sign() method.
      */
-    private fun parseJSONObject(jsonString: String): JSONObject? {
+    @LynxMethod
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun verify(
+        algorithm: Map<String, Any>,
+        key: Map<String, Any>,
+        signature: Any,
+        data: Any
+    ): Boolean {
+        val algName = (algorithm["name"] as? String)?.uppercase(Locale.ROOT) ?: return false
+        if (algName != "ECDSA") return false
+        val xStr = key["x"] as? String ?: return false
+        val yStr = key["y"] as? String ?: return false
+        val x = base64UrlDecode(xStr) ?: return false
+        val y = base64UrlDecode(yStr) ?: return false
+        val sigBytes = convertToByteArray(signature) ?: return false
+        val dataBytes = convertToByteArray(data) ?: return false
+        val ecSpec = getECParameterSpec() ?: return false
+        val pubSpec = ECPublicKeySpec(ECPoint(BigInteger(1, x), BigInteger(1, y)), ecSpec)
+        val kf = KeyFactory.getInstance("EC")
+        val pubKey = kf.generatePublic(pubSpec)
+        val sig = Signature.getInstance("SHA256withECDSA")
+        sig.initVerify(pubKey)
+        sig.update(dataBytes)
+        return sig.verify(sigBytes)
+    }
+    // endregion
+
+    // region Encrypt / Decrypt
+    /**
+     * Encrypt data using AES‑GCM.  The `algorithm` map must contain an
+     * `iv` ByteArray and may optionally contain `additionalData`.  The `key`
+     * map must be a JWK with a base64url encoded `k` field.  The result is
+     * the ciphertext followed by the 16‑byte authentication tag.
+     */
+    @LynxMethod
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun encrypt(algorithm: Map<String, Any>, key: Map<String, Any>, data: Any): ByteArray? {
+        val algName = (algorithm["name"] as? String)?.uppercase(Locale.ROOT) ?: return null
+        if (algName != "AES-GCM") return null
+        val iv = convertToByteArray(algorithm["iv"] ?: return null) ?: return null
+        val kStr = key["k"] as? String ?: return null
+        val kBytes = base64UrlDecode(kStr) ?: return null
+        val plain = convertToByteArray(data) ?: return null
+        val aad = algorithm["additionalData"]?.let { convertToByteArray(it) }
+        val keyBytes = normalizeAESKey(kBytes)
+        val secretKey = SecretKeySpec(keyBytes, "AES")
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        val spec = GCMParameterSpec(128, iv)
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, spec)
+        if (aad != null) cipher.updateAAD(aad)
+        return cipher.doFinal(plain)
+    }
+
+    /**
+     * Decrypt data encrypted with AES‑GCM.  The input data must be the
+     * ciphertext followed by the 16‑byte authentication tag.  The same `iv`
+     * and optional `additionalData` must be provided as during encryption.
+     */
+    @LynxMethod
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun decrypt(algorithm: Map<String, Any>, key: Map<String, Any>, data: Any): ByteArray? {
+        val algName = (algorithm["name"] as? String)?.uppercase(Locale.ROOT) ?: return null
+        if (algName != "AES-GCM") return null
+        val iv = convertToByteArray(algorithm["iv"] ?: return null) ?: return null
+        val kStr = key["k"] as? String ?: return null
+        val kBytes = base64UrlDecode(kStr) ?: return null
+        val cipherData = convertToByteArray(data) ?: return null
+        val aad = algorithm["additionalData"]?.let { convertToByteArray(it) }
+        val keyBytes = normalizeAESKey(kBytes)
+        val secretKey = SecretKeySpec(keyBytes, "AES")
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        val spec = GCMParameterSpec(128, iv)
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, spec)
+        if (aad != null) cipher.updateAAD(aad)
         return try {
-            JSONObject(jsonString)
-        } catch (e: JSONException) {
-            Log.e(TAG, "Failed to parse JSON object: $jsonString", e)
+            cipher.doFinal(cipherData)
+        } catch (e: AEADBadTagException) {
             null
         }
     }
 
     /**
-     * Parses a JSON string into a JSONArray.
-     * @param jsonString The JSON string to parse
-     * @return The parsed JSONArray or null if parsing failed
+     * Encrypt a base64 encoded plaintext using AES‑GCM and return separate
+     * base64 encoded ciphertext and authentication tag.  This mirrors the
+     * NativeScript crypto API and makes it easier to interoperate with code
+     * expecting separate cipher and tag values.  The provided key, plaintext,
+     * AAD and IV must be standard Base64 strings (not base64url).  The tag
+     * length is specified in bits (default 128).
+     *
+     * @param key Base64 encoded AES key
+     * @param plaint Base64 encoded plaintext
+     * @param aad Base64 encoded additional authenticated data; an empty
+     *            string means no AAD
+     * @param iv Base64 encoded initialization vector
+     * @param tagLength Tag length in bits (default 128)
+     * @return A map with keys "cipherb" and "atag" containing Base64 strings
      */
-    private fun parseJSONArray(jsonString: String): JSONArray? {
+    @RequiresApi(Build.VERSION_CODES.O)
+    @LynxMethod
+    fun encryptAES256GCM(
+        key: String,
+        plaint: String,
+        aad: String,
+        iv: String,
+        tagLength: Int = 128
+    ): Map<String, String>? {
         return try {
-            JSONArray(jsonString)
-        } catch (e: JSONException) {
-            Log.e(TAG, "Failed to parse JSON array: $jsonString", e)
-            null
-        }
-    }
-
-    /**
-     * Encodes binary data using Base64URL format (RFC 4648 Section 5).
-     * Used for JWK components.
-     * @param data The binary data to encode
-     * @return Base64URL encoded string
-     */
-    private fun base64urlEncode(data: ByteArray): String {
-        val base64 = Base64.encodeToString(data, Base64.NO_WRAP)
-        return base64.replace("+", "-")
-            .replace("/", "_")
-            .replace("=", "")
-    }
-
-    /**
-     * Decodes a Base64URL encoded string (RFC 4648 Section 5).
-     * Used for JWK components.
-     * @param string The Base64URL encoded string
-     * @return The decoded binary data or null if decoding failed
-     */
-    private fun base64urlDecode(string: String): ByteArray? {
-        return try {
-            var base64 = string
-            base64 = base64.replace("-", "+")
-                .replace("_", "/")
-            // Add padding if needed
-            val padding = base64.length % 4
-            if (padding > 0) {
-                base64 += "=".repeat(4 - padding)
-            }
-            Base64.decode(base64, Base64.NO_WRAP)
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to decode base64url: $string", e)
-            null
-        }
-    }
-
-    /**
-     * Encodes binary data using standard Base64 format.
-     * @param data The binary data to encode
-     * @return Base64 encoded string
-     */
-    private fun base64Encode(data: ByteArray): String {
-        return Base64.encodeToString(data, Base64.NO_WRAP)
-    }
-
-    /**
-     * Decodes a standard Base64 encoded string.
-     * @param string The Base64 encoded string
-     * @return The decoded binary data or null if decoding failed
-     */
-    private fun base64Decode(string: String): ByteArray? {
-        return try {
-            Base64.decode(string, Base64.NO_WRAP)
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to decode base64: $string", e)
-            null
-        }
-    }
-
-    /**
-     * Creates a JSON error response.
-     * @param message The error message
-     * @return JSON string containing the error details
-     */
-    private fun errorToJSON(message: String): String {
-        val errorObj = JSONObject()
-        try {
-            errorObj.put("error", true)
-            errorObj.put("message", message)
-            Log.e(TAG, "Error: $message")
-            return errorObj.toString()
-        } catch (e: JSONException) {
-            return "{\"error\": true, \"message\": \"Failed to serialize error object\"}"
-        }
-    }
-
-    /**
-     * TextEncoder implementation - converts text to UTF-8 and returns base64.
-     * @param text The text to encode
-     * @return Base64 encoded UTF-8 bytes
-     */
-    @LynxMethod
-    fun textEncode(text: String): String {
-        try {
-            val data = text.toByteArray(StandardCharsets.UTF_8)
-            return base64Encode(data)
-        } catch (e: Exception) {
-            return errorToJSON("UTF-8 encoding failed: ${e.message}")
-        }
-    }
-
-    /**
-     * TextDecoder implementation - converts base64 to UTF-8 text.
-     * @param data Base64 encoded UTF-8 bytes
-     * @return Decoded UTF-8 text
-     */
-    @LynxMethod
-    fun textDecode(data: String): String {
-        try {
-            val decodedData = base64Decode(data) ?: throw Exception("Base64 decoding failed")
-            return String(decodedData, StandardCharsets.UTF_8)
-        } catch (e: Exception) {
-            return errorToJSON("Base64 or UTF-8 decoding failed: ${e.message}")
-        }
-    }
-
-    /**
-     * Generates cryptographically secure random values.
-     * @param length The number of random bytes to generate
-     * @return Base64 encoded random bytes
-     */
-    @LynxMethod
-    fun getRandomValues(length: Int): String {
-        if (length <= 0) {
-            return errorToJSON("Length must be positive")
-        }
-
-        try {
-            val randomBytes = ByteArray(length)
-            SecureRandom().nextBytes(randomBytes)
-            return base64Encode(randomBytes)
-        } catch (e: Exception) {
-            return errorToJSON("Failed to generate random bytes: ${e.message}")
-        }
-    }
-
-    /**
-     * Computes a digest (hash) of the provided data.
-     * Supports SHA-256, SHA-384, and SHA-512 algorithms.
-     *
-     * @param options JSON string containing algorithm name
-     * @param data Base64 encoded data to hash
-     * @return Base64 encoded hash
-     */
-    @LynxMethod
-    fun digest(options: String, data: String): String {
-        try {
-            val optionsObj = parseJSONObject(options) ?: throw Exception("Invalid options format")
-            val algorithmName = optionsObj.getString("name")
-            val inputData = base64Decode(data) ?: throw Exception("Invalid input data")
-
-            val hashAlgo = when (algorithmName.uppercase()) {
-                "SHA-256" -> "SHA-256"
-                "SHA-384" -> "SHA-384"
-                "SHA-512" -> "SHA-512"
-                else -> throw Exception("Unsupported digest algorithm: $algorithmName")
-            }
-
-            val md = MessageDigest.getInstance(hashAlgo)
-            val hash = md.digest(inputData)
-            return base64Encode(hash)
-        } catch (e: Exception) {
-            return errorToJSON("Digest failed: ${e.message}")
-        }
-    }
-
-    /**
-     * Creates ECParameterSpec for P-256 curve operations.
-     * @return ECParameterSpec configured for the P-256 curve
-     */
-    private fun getP256ParameterSpec(): ECParameterSpec {
-        // Create the curve using standard P-256 parameters
-        val curve = EllipticCurve(ECFieldFp(P256_P), P256_A, P256_B)
-        val generator = ECPoint(P256_G_X, P256_G_Y)
-        return ECParameterSpec(curve, generator, P256_N, P256_H.toInt())
-    }
-
-    /**
-     * Creates a JWK (JSON Web Key) representation of an EC key pair.
-     *
-     * @param privateKey The EC private key
-     * @param publicKey The EC public key
-     * @param keyOps Allowed key operations
-     * @param extractable Whether the key can be exported
-     * @return JWK as a JSONObject or null if creation failed
-     */
-    private fun createECJWK(privateKey: ECPrivateKey, publicKey: ECPublicKey, keyOps: List<String>, extractable: Boolean): JSONObject? {
-        try {
-            // Get the private key data - convert to byte array with proper length
-            val dBigInt = privateKey.s
-            val dBytes = dBigInt.toByteArray()
-            // Trim any leading zero byte if present (from two's complement representation)
-            val privData = if (dBytes[0].toInt() == 0 && dBytes.size > 32) dBytes.copyOfRange(1, dBytes.size) else dBytes
-
-            // Get public key coordinates
-            val xBigInt = publicKey.w.affineX
-            val yBigInt = publicKey.w.affineY
-
-            // Convert to byte arrays with proper length (32 bytes for P-256)
-            val xBytes = xBigInt.toByteArray()
-            val xData = if (xBytes[0].toInt() == 0 && xBytes.size > 32) xBytes.copyOfRange(1, xBytes.size) else xBytes
-
-            val yBytes = yBigInt.toByteArray()
-            val yData = if (yBytes[0].toInt() == 0 && yBytes.size > 32) yBytes.copyOfRange(1, yBytes.size) else yBytes
-
-            // Create JWK
-            val jwk = JSONObject()
-            jwk.put("kty", "EC")
-            jwk.put("crv", "P-256")
-            jwk.put("alg", "ES256")
-            jwk.put("d", base64urlEncode(privData))
-            jwk.put("x", base64urlEncode(xData))
-            jwk.put("y", base64urlEncode(yData))
-            jwk.put("ext", extractable)
-
-            val keyOpsArray = JSONArray()
-            for (op in keyOps) {
-                keyOpsArray.put(op)
-            }
-            jwk.put("key_ops", keyOpsArray)
-
-            return jwk
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to create EC JWK", e)
-            return null
-        }
-    }
-
-    /**
-     * Creates a JWK representation of an EC public key.
-     *
-     * @param publicKey The EC public key
-     * @param keyOps Allowed key operations
-     * @param extractable Whether the key can be exported
-     * @return JWK as a JSONObject or null if creation failed
-     */
-    private fun createECJWK(publicKey: ECPublicKey, keyOps: List<String>, extractable: Boolean): JSONObject? {
-        try {
-            // Get public key coordinates
-            val xBigInt = publicKey.w.affineX
-            val yBigInt = publicKey.w.affineY
-
-            // Convert to byte arrays with proper length (32 bytes for P-256)
-            val xBytes = xBigInt.toByteArray()
-            val xData = if (xBytes[0].toInt() == 0 && xBytes.size > 32) xBytes.copyOfRange(1, xBytes.size) else xBytes
-
-            val yBytes = yBigInt.toByteArray()
-            val yData = if (yBytes[0].toInt() == 0 && yBytes.size > 32) yBytes.copyOfRange(1, yBytes.size) else yBytes
-
-            // Create JWK
-            val jwk = JSONObject()
-            jwk.put("kty", "EC")
-            jwk.put("crv", "P-256")
-            jwk.put("alg", "ES256")
-            jwk.put("x", base64urlEncode(xData))
-            jwk.put("y", base64urlEncode(yData))
-            jwk.put("ext", extractable)
-
-            val keyOpsArray = JSONArray()
-            for (op in keyOps) {
-                keyOpsArray.put(op)
-            }
-            jwk.put("key_ops", keyOpsArray)
-
-            return jwk
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to create EC JWK", e)
-            return null
-        }
-    }
-
-    /**
-     * Normalizes an AES key to a valid length.
-     * Ensures the key is 128, 192, or 256 bits by hashing if necessary.
-     *
-     * @param keyData The input key data
-     * @return Normalized key data
-     */
-    private fun normalizeAESKey(keyData: ByteArray): ByteArray {
-        val keyBitSize = keyData.size * 8
-        if (keyBitSize == 128 || keyBitSize == 192 || keyBitSize == 256) {
-            return keyData
-        }
-
-        // Hash to 256 bits if not standard size
-        val md = MessageDigest.getInstance("SHA-256")
-        return md.digest(keyData)
-    }
-
-    /**
-     * Creates a symmetric key from a JWK.
-     *
-     * @param jwk The JWK containing the key data
-     * @return SecretKey or null if creation failed
-     */
-    private fun createSymmetricKeyFromJWK(jwk: JSONObject): SecretKey? {
-        try {
-            if (jwk.getString("kty") != "oct") return null
-
-            val kBase64url = jwk.getString("k")
-            val keyData = base64urlDecode(kBase64url) ?: return null
-            val normalizedKey = normalizeAESKey(keyData)
-
-            return SecretKeySpec(normalizedKey, "AES")
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to create symmetric key from JWK", e)
-            return null
-        }
-    }
-
-    /**
-     * Generates a new cryptographic key or key pair.
-     * Supports ECDSA, ECDH, and AES-GCM algorithms.
-     *
-     * @param algorithm JSON string with algorithm parameters
-     * @param extractable Whether the key can be exported
-     * @param keyUsages JSON array of allowed key operations
-     * @return JSON string containing the generated key(s)
-     */
-    @LynxMethod
-    fun generateKey(algorithm: String, extractable: Boolean, keyUsages: String): String {
-        try {
-            val algorithmObj = parseJSONObject(algorithm) ?: throw Exception("Invalid algorithm format")
-            val algorithmName = algorithmObj.getString("name")
-            val keyUsagesArray = parseJSONArray(keyUsages) ?: throw Exception("Invalid keyUsages format")
-
-            val keyUsagesList = mutableListOf<String>()
-            for (i in 0 until keyUsagesArray.length()) {
-                keyUsagesList.add(keyUsagesArray.getString(i))
-            }
-
-            when (algorithmName.uppercase()) {
-                "ECDSA" -> {
-                    val namedCurve = algorithmObj.getString("namedCurve")
-                    if (namedCurve.uppercase() != "P-256") {
-                        return errorToJSON("Only P-256 curve is supported for ECDSA")
-                    }
-
-                    // Generate EC key pair
-                    val kpg = KeyPairGenerator.getInstance("EC")
-                    val parameterSpec = ECGenParameterSpec(P256_CURVE_NAME)
-                    kpg.initialize(parameterSpec)
-                    val keyPair = kpg.generateKeyPair()
-
-                    // Create JWKs
-                    val privateKey = keyPair.private as ECPrivateKey
-                    val publicKey = keyPair.public as ECPublicKey
-
-                    val privateJWK = createECJWK(
-                        privateKey,
-                        publicKey,
-                        keyUsagesList.filter { it == "sign" },
-                        extractable
-                    ) ?: throw Exception("Failed to create private ECDSA JWK")
-
-                    val publicJWK = createECJWK(
-                        publicKey,
-                        keyUsagesList.filter { it == "verify" },
-                        true
-                    ) ?: throw Exception("Failed to create public ECDSA JWK")
-
-                    val resultObj = JSONObject()
-                    resultObj.put("privateKey", privateJWK)
-                    resultObj.put("publicKey", publicJWK)
-
-                    return resultObj.toString()
-                }
-
-                "ECDH" -> {
-                    val namedCurve = algorithmObj.getString("namedCurve")
-                    if (namedCurve.uppercase() != "P-256") {
-                        return errorToJSON("Only P-256 curve is supported for ECDH")
-                    }
-
-                    // Generate EC key pair
-                    val kpg = KeyPairGenerator.getInstance("EC")
-                    val parameterSpec = ECGenParameterSpec(P256_CURVE_NAME)
-                    kpg.initialize(parameterSpec)
-                    val keyPair = kpg.generateKeyPair()
-
-                    // Create JWKs
-                    val privateKey = keyPair.private as ECPrivateKey
-                    val publicKey = keyPair.public as ECPublicKey
-
-                    val allowedOps = keyUsagesList.filter { it == "deriveKey" || it == "deriveBits" }
-
-                    val privateJWK = createECJWK(
-                        privateKey,
-                        publicKey,
-                        allowedOps,
-                        extractable
-                    ) ?: throw Exception("Failed to create private ECDH JWK")
-                    privateJWK.put("alg", "ECDH-ES")
-
-                    val publicJWK = createECJWK(
-                        publicKey,
-                        emptyList(),
-                        true
-                    ) ?: throw Exception("Failed to create public ECDH JWK")
-                    publicJWK.put("alg", "ECDH-ES")
-
-                    val resultObj = JSONObject()
-                    resultObj.put("privateKey", privateJWK)
-                    resultObj.put("publicKey", publicJWK)
-
-                    return resultObj.toString()
-                }
-
-                "AES-GCM" -> {
-                    val keySize = algorithmObj.optInt("length", 256)
-                    if (keySize != 128 && keySize != 192 && keySize != 256) {
-                        return errorToJSON("AES key size must be 128, 192, or 256 bits")
-                    }
-
-                    // Generate AES key
-                    val keyGen = KeyGenerator.getInstance("AES")
-                    keyGen.init(keySize)
-                    val secretKey = keyGen.generateKey()
-
-                    // Create JWK
-                    val keyJwk = JSONObject()
-                    keyJwk.put("kty", "oct")
-                    keyJwk.put("k", base64urlEncode(secretKey.encoded))
-                    keyJwk.put("alg", "A${keySize}GCM")
-                    keyJwk.put("ext", extractable)
-
-                    val keyOpsArray = JSONArray()
-                    for (usage in keyUsagesList) {
-                        keyOpsArray.put(usage)
-                    }
-                    keyJwk.put("key_ops", keyOpsArray)
-
-                    return keyJwk.toString()
-                }
-
-                else -> return errorToJSON("Unsupported algorithm for generateKey: $algorithmName")
-            }
-        } catch (e: Exception) {
-            return errorToJSON("Error during key generation: ${e.message}")
-        }
-    }
-
-    /**
-     * Exports a key in the requested format.
-     * Supports JWK and raw formats.
-     *
-     * @param format Export format ("jwk" or "raw")
-     * @param key JSON string containing the key to export
-     * @return Exported key in the requested format
-     */
-    @LynxMethod
-    fun exportKey(format: String, key: String): String {
-        try {
-            val keyObj = parseJSONObject(key) ?: throw Exception("Invalid key format")
-            val kty = keyObj.getString("kty")
-
-            val isPublicKey = !keyObj.has("d")
-            if (!isPublicKey && keyObj.has("ext") && !keyObj.getBoolean("ext")) {
-                return errorToJSON("Key is not extractable")
-            }
-
-            when (format.lowercase()) {
-                "jwk" -> {
-                    return keyObj.toString()
-                }
-                "raw" -> {
-                    if (kty == "oct") {
-                        val kBase64url = keyObj.getString("k")
-                        val keyData = base64urlDecode(kBase64url) ?: throw Exception("Invalid 'oct' key material")
-                        return base64Encode(keyData)
-                    } else {
-                        return errorToJSON("Raw export format only supported for 'oct' keys")
-                    }
-                }
-                else -> return errorToJSON("Unsupported export format: $format")
-            }
-        } catch (e: Exception) {
-            return errorToJSON("Error during key export: ${e.message}")
-        }
-    }
-
-    /**
-     * Imports a key from external format.
-     * Supports JWK and raw formats for various algorithms.
-     *
-     * @param format Import format ("jwk" or "raw")
-     * @param keyDataString Key data to import
-     * @param algorithm JSON string with algorithm parameters
-     * @param extractable Whether the imported key can be exported
-     * @param keyUsages JSON array of allowed key operations
-     * @return JSON string containing the imported key
-     */
-    @LynxMethod
-    fun importKey(format: String, keyDataString: String, algorithm: String, extractable: Boolean, keyUsages: String): String {
-        try {
-            val algorithmObj = parseJSONObject(algorithm) ?: throw Exception("Invalid algorithm format")
-            val algorithmName = algorithmObj.getString("name")
-            val keyUsagesArray = parseJSONArray(keyUsages) ?: throw Exception("Invalid keyUsages format")
-
-            val keyUsagesList = mutableListOf<String>()
-            for (i in 0 until keyUsagesArray.length()) {
-                keyUsagesList.add(keyUsagesArray.getString(i))
-            }
-
-            var importedJWK: JSONObject? = null
-
-            when (format.lowercase()) {
-                "jwk" -> {
-                    val jwk = parseJSONObject(keyDataString) ?: throw Exception("Invalid JWK data")
-                    val kty = jwk.getString("kty")
-
-                    when (algorithmName.uppercase()) {
-                        "ECDSA" -> {
-                            if (kty != "EC" || jwk.getString("crv") != "P-256" || !jwk.has("x") || !jwk.has("y")) {
-                                return errorToJSON("JWK is not a valid P-256 EC key for ECDSA")
-                            }
-                            jwk.put("alg", "ES256")
-                        }
-                        "ECDH" -> {
-                            if (kty != "EC" || jwk.getString("crv") != "P-256" || !jwk.has("x") || !jwk.has("y")) {
-                                return errorToJSON("JWK is not a valid P-256 EC key for ECDH")
-                            }
-                            jwk.put("alg", "ECDH-ES")
-                        }
-                        "AES-GCM" -> {
-                            if (kty != "oct" || !jwk.has("k")) {
-                                return errorToJSON("JWK is not a valid octet key for AES-GCM")
-                            }
-                            val kBase64url = jwk.getString("k")
-                            val kData = base64urlDecode(kBase64url) ?: throw Exception("Invalid key data in JWK")
-                            val keySize = normalizeAESKey(kData).size * 8
-                            if (keySize != 128 && keySize != 192 && keySize != 256) {
-                                return errorToJSON("Imported AES key material has invalid size")
-                            }
-                            jwk.put("alg", "A${keySize}GCM")
-                        }
-                        "PBKDF2" -> return errorToJSON("JWK import not supported for PBKDF2 base key (use 'raw')")
-                        else -> return errorToJSON("Unsupported algorithm for JWK import: $algorithmName")
-                    }
-
-                    jwk.put("ext", extractable)
-                    val keyOpsArray = JSONArray()
-                    for (usage in keyUsagesList) {
-                        keyOpsArray.put(usage)
-                    }
-                    jwk.put("key_ops", keyOpsArray)
-
-                    importedJWK = jwk
-                }
-
-                "raw" -> {
-                    val rawData = base64Decode(keyDataString) ?: throw Exception("Invalid raw key data")
-
-                    when (algorithmName.uppercase()) {
-                        "AES-GCM" -> {
-                            val normalizedKey = normalizeAESKey(rawData)
-                            val keyBitSize = normalizedKey.size * 8
-
-                            if (keyBitSize != 128 && keyBitSize != 192 && keyBitSize != 256) {
-                                return errorToJSON("Raw AES key data has invalid size")
-                            }
-
-                            val jwk = JSONObject()
-                            jwk.put("kty", "oct")
-                            jwk.put("k", base64urlEncode(normalizedKey))
-                            jwk.put("alg", "A${keyBitSize}GCM")
-                            jwk.put("ext", extractable)
-
-                            val keyOpsArray = JSONArray()
-                            for (usage in keyUsagesList) {
-                                keyOpsArray.put(usage)
-                            }
-                            jwk.put("key_ops", keyOpsArray)
-
-                            importedJWK = jwk
-                        }
-                        "PBKDF2" -> {
-                            val jwk = JSONObject()
-                            jwk.put("kty", "PBKDF2-RAW")
-                            jwk.put("rawData", base64Encode(rawData))
-                            jwk.put("ext", false)
-
-                            val keyOpsArray = JSONArray()
-                            for (usage in keyUsagesList) {
-                                keyOpsArray.put(usage)
-                            }
-                            jwk.put("key_ops", keyOpsArray)
-
-                            importedJWK = jwk
-                        }
-                        else -> return errorToJSON("Raw import not supported for algorithm: $algorithmName")
-                    }
-                }
-
-                else -> return errorToJSON("Unsupported import format: $format")
-            }
-
-            return importedJWK?.toString() ?: errorToJSON("Internal error during key import")
-        } catch (e: Exception) {
-            return errorToJSON("Error during key import: ${e.message}")
-        }
-    }
-
-    /**
-     * Signs data using the specified key.
-     * Currently supports ECDSA with P-256 curve.
-     *
-     * @param algorithm JSON string with algorithm parameters
-     * @param key JSON string containing the private key
-     * @param data Base64 encoded data to sign
-     * @return Base64 encoded signature
-     */
-    @LynxMethod
-    fun sign(algorithm: String, key: String, data: String): String {
-        try {
-            val algorithmObj = parseJSONObject(algorithm) ?: throw Exception("Invalid algorithm format")
-            val algorithmName = algorithmObj.getString("name")
-
-            if (algorithmName.uppercase() != "ECDSA") {
-                return errorToJSON("Unsupported algorithm for sign: $algorithmName")
-            }
-
-            val keyObj = parseJSONObject(key) ?: throw Exception("Invalid key format")
-
-            if (!keyObj.has("d")) {
-                return errorToJSON("Private key required for signing")
-            }
-
-            val inputData = base64Decode(data) ?: throw Exception("Invalid input data")
-
-            // Reconstruct private key from JWK
-            val dBase64url = keyObj.getString("d")
-            val xBase64url = keyObj.getString("x")
-            val yBase64url = keyObj.getString("y")
-
-            val dData = base64urlDecode(dBase64url) ?: throw Exception("Invalid 'd' component in key")
-            val xData = base64urlDecode(xBase64url) ?: throw Exception("Invalid 'x' component in key")
-            val yData = base64urlDecode(yBase64url) ?: throw Exception("Invalid 'y' component in key")
-
-            // Create EC spec directly without ECNamedCurveTable
-            val ecSpec = getP256ParameterSpec()
-
-            val privateKeySpec = ECPrivateKeySpec(BigInteger(1, dData), ecSpec)
-            val keyFactory = KeyFactory.getInstance("EC")
-            val privateKey = keyFactory.generatePrivate(privateKeySpec)
-
-            // Sign the data
-            val signature = Signature.getInstance("SHA256withECDSA")
-            signature.initSign(privateKey)
-            signature.update(inputData)
-            val signatureData = signature.sign()
-
-            return base64Encode(signatureData)
-        } catch (e: Exception) {
-            return errorToJSON("Signing failed: ${e.message}")
-        }
-    }
-
-    /**
-     * Verifies a signature against the provided data.
-     * Currently supports ECDSA with P-256 curve.
-     *
-     * @param algorithm JSON string with algorithm parameters
-     * @param key JSON string containing the public key
-     * @param signature Base64 encoded signature to verify
-     * @param data Base64 encoded signed data
-     * @return String "true" or "false" indicating verification result
-     */
-    @LynxMethod
-    fun verify(algorithm: String, key: String, signature: String, data: String): String {
-        try {
-            val algorithmObj = parseJSONObject(algorithm) ?: throw Exception("Invalid algorithm format")
-            val algoName = algorithmObj.getString("name")
-
-            if (algoName.uppercase() != "ECDSA") {
-                return errorToJSON("Unsupported algorithm for verify: $algoName")
-            }
-
-            val keyObj = parseJSONObject(key) ?: throw Exception("Invalid key format")
-            val inputData = base64Decode(data) ?: throw Exception("Invalid input data")
-            val sigData = base64Decode(signature) ?: throw Exception("Invalid signature data")
-
-            // Extract public key components
-            val xBase64url = keyObj.getString("x")
-            val yBase64url = keyObj.getString("y")
-
-            val xData = base64urlDecode(xBase64url) ?: throw Exception("Invalid 'x' component in key")
-            val yData = base64urlDecode(yBase64url) ?: throw Exception("Invalid 'y' component in key")
-
-            // Create public key from components
-            val keyFactory = KeyFactory.getInstance("EC")
-            val pubPoint = ECPoint(BigInteger(1, xData), BigInteger(1, yData))
-            val ecSpec = getP256ParameterSpec()
-
-            val publicKeySpec = ECPublicKeySpec(pubPoint, ecSpec)
-            val publicKey = keyFactory.generatePublic(publicKeySpec)
-
-            // Verify signature
-            val verifier = Signature.getInstance("SHA256withECDSA")
-            verifier.initVerify(publicKey)
-            verifier.update(inputData)
-            val isValid = verifier.verify(sigData)
-
-            return if (isValid) "true" else "false"
-        } catch (e: Exception) {
-            Log.e(TAG, "Verification error: ${e.message}")
-            return "false" // Errors in verification process should result in false
-        }
-    }
-
-    /**
-     * Encrypts data using the specified algorithm and key.
-     * Currently supports AES-GCM.
-     *
-     * This is an optimized version that reduces memory operations and
-     * avoids unnecessary logging to improve performance.
-     *
-     * @param algorithm JSON string with algorithm parameters
-     * @param key JSON string containing the key
-     * @param data Base64 encoded data to encrypt
-     * @return Base64 encoded encrypted data
-     */
-    @LynxMethod
-    fun encrypt(algorithm: String, key: String, data: String): String {
-        try {
-            // Parse inputs once and validate
-            val algorithmObj = parseJSONObject(algorithm) ?: throw Exception("Invalid algorithm format")
-            val algorithmName = algorithmObj.getString("name")
-
-            if (algorithmName.uppercase() != "AES-GCM") {
-                return errorToJSON("Unsupported algorithm for encrypt: $algorithmName")
-            }
-
-            val keyObj = parseJSONObject(key) ?: throw Exception("Invalid key format")
-            val inputData = base64Decode(data) ?: throw Exception("Invalid input data")
-            val ivBase64 = algorithmObj.getString("iv")
-            val iv = base64Decode(ivBase64) ?: throw Exception("Invalid IV")
-
-            // Create key once
-            val symmetricKey = createSymmetricKeyFromJWK(keyObj) ?: throw Exception("Invalid symmetric key")
-
-            // Optional AAD - only process if present
-            val aad = algorithmObj.optString("additionalData", null)?.let { base64Decode(it) }
-
-            // Initialize cipher with GCM parameters (128-bit auth tag)
+            val keyBytes = Base64.getDecoder().decode(key)
+            val plainBytes = Base64.getDecoder().decode(plaint)
+            val aadBytes = if (aad.isNotEmpty()) Base64.getDecoder().decode(aad) else ByteArray(0)
+            val ivBytes = Base64.getDecoder().decode(iv)
+            val normalizedKey = normalizeAESKey(keyBytes)
+            val secretKey = SecretKeySpec(normalizedKey, "AES")
             val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-            cipher.init(Cipher.ENCRYPT_MODE, symmetricKey, GCMParameterSpec(128, iv))
-
-            // Add AAD if provided
-            aad?.let { cipher.updateAAD(it) }
-
-            // Single-step encryption is more efficient
-            val ciphertext = cipher.doFinal(inputData)
-
-            return base64Encode(ciphertext)
-        } catch (e: Exception) {
-            return errorToJSON("Encryption failed: ${e.message}")
-        }
-    }
-
-    /**
-     * Decrypts data using the specified algorithm and key.
-     * Currently supports AES-GCM.
-     *
-     * This is an optimized version that reduces memory operations and
-     * only logs critical errors to improve performance.
-     *
-     * @param algorithm JSON string with algorithm parameters
-     * @param key JSON string containing the key
-     * @param data Base64 encoded encrypted data
-     * @return Base64 encoded decrypted data or empty string on failure
-     */
-    @LynxMethod
-    fun decrypt(algorithm: String, key: String, data: String): String {
-        try {
-            // Fast path validation - minimal processing
-            val algorithmObj = parseJSONObject(algorithm) ?: return ""
-            if (algorithmObj.optString("name", "").uppercase() != "AES-GCM") {
-                return ""
-            }
-
-            val keyObj = parseJSONObject(key) ?: return ""
-            val encryptedData = base64Decode(data) ?: return ""
-            val iv = base64Decode(algorithmObj.getString("iv")) ?: return ""
-
-            // Create key once
-            val symmetricKey = createSymmetricKeyFromJWK(keyObj) ?: return ""
-
-            // Optional AAD - only process if present
-            val aad = algorithmObj.optString("additionalData", null)?.let { base64Decode(it) }
-
-            // Initialize cipher with GCM parameters
-            val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-            cipher.init(Cipher.DECRYPT_MODE, symmetricKey, GCMParameterSpec(128, iv))
-
-            // Add AAD if provided
-            aad?.let { cipher.updateAAD(it) }
-
-            // Single-step decryption is more efficient
-            val decryptedData = cipher.doFinal(encryptedData)
-
-            return base64Encode(decryptedData)
-        } catch (e: Exception) {
-            // Minimize logging for performance - only log critical errors
-            if (e is InvalidKeyException || e is InvalidAlgorithmParameterException) {
-                Log.e(TAG, "Decrypt failed with critical error: ${e.javaClass.simpleName}")
-            }
-            return "" // Return empty string on decrypt failure
-        }
-    }
-
-    /**
-     * Derives cryptographic key material from a base key.
-     *
-     * @param algorithm JSON string with algorithm parameters
-     * @param baseKey JSON string containing the base key
-     * @param length Length of the derived material in bits
-     * @return Base64 encoded derived key material
-     */
-    @LynxMethod
-    fun deriveBits(algorithm: String, baseKey: String, length: Int): String {
-        try {
-            val algoObj = parseJSONObject(algorithm) ?: throw Exception("Invalid algorithm format")
-            val algoName = algoObj.getString("name")
-
-            if (length <= 0 || length % 8 != 0) {
-                return errorToJSON("deriveBits length must be positive multiple of 8")
-            }
-
-            val derivedKeyLengthBytes = length / 8
-
-            when (algoName.uppercase()) {
-                "PBKDF2" -> {
-                    // Process password data from base key
-                    var passwordData: ByteArray? = null
-
-                    // Check if baseKey is a PBKDF2-RAW JWK
-                    val baseKeyObj = parseJSONObject(baseKey)
-                    if (baseKeyObj != null && baseKeyObj.optString("kty") == "PBKDF2-RAW") {
-                        val pwdB64 = baseKeyObj.getString("rawData")
-                        passwordData = base64Decode(pwdB64)
-                    } else {
-                        // Try treating baseKey as raw base64 password
-                        passwordData = base64Decode(baseKey)
-                    }
-
-                    if (passwordData == null) {
-                        return errorToJSON("Invalid base key for PBKDF2")
-                    }
-
-                    return deriveBitsPBKDF2(passwordData, algoObj, derivedKeyLengthBytes)
-                }
-
-                "ECDH" -> {
-                    // Base key = local private key JWK
-                    val privateKeyJWK = parseJSONObject(baseKey) ?: throw Exception("Invalid base key format")
-                    val dBase64url = privateKeyJWK.getString("d")
-                    val privateKeyData = base64urlDecode(dBase64url) ?: throw Exception("Invalid private key data")
-
-                    // Get peer public key from algorithm params
-                    val peerPublicKeyJWK = algoObj.getJSONObject("public")
-                    val xBase64url = peerPublicKeyJWK.getString("x")
-                    val yBase64url = peerPublicKeyJWK.getString("y")
-
-                    val xData = base64urlDecode(xBase64url) ?: throw Exception("Invalid x coordinate")
-                    val yData = base64urlDecode(yBase64url) ?: throw Exception("Invalid y coordinate")
-
-                    // Create key objects
-                    val keyFactory = KeyFactory.getInstance("EC")
-
-                    // Create private key
-                    val privateKeySpec = ECPrivateKeySpec(
-                        BigInteger(1, privateKeyData),
-                        getP256ParameterSpec()
-                    )
-                    val privateKey = keyFactory.generatePrivate(privateKeySpec)
-
-                    // Create public key
-                    val pubPoint = ECPoint(BigInteger(1, xData), BigInteger(1, yData))
-                    val publicKeySpec = ECPublicKeySpec(pubPoint, getP256ParameterSpec())
-                    val publicKey = keyFactory.generatePublic(publicKeySpec)
-
-                    // Perform key agreement
-                    val keyAgreement = KeyAgreement.getInstance("ECDH")
-                    keyAgreement.init(privateKey)
-                    keyAgreement.doPhase(publicKey, true)
-
-                    // Get shared secret
-                    val sharedSecret = keyAgreement.generateSecret()
-
-                    // Derive the requested number of bytes using HKDF-SHA256
-                    val derivedKey = hkdfDerive(sharedSecret, ByteArray(0), ByteArray(0), derivedKeyLengthBytes)
-
-                    // Return derived bytes as BASE64URL
-                    return base64urlEncode(derivedKey)
-                }
-
-                else -> return errorToJSON("Unsupported derivation algorithm: $algoName")
-            }
-        } catch (e: Exception) {
-            return errorToJSON("Error in deriveBits: ${e.message}")
-        }
-    }
-
-    /**
-     * Helper function for PBKDF2 key derivation.
-     *
-     * @param passwordData Password bytes
-     * @param algoObj Algorithm parameters
-     * @param derivedKeyLengthBytes Desired output length in bytes
-     * @return Base64 encoded derived key
-     */
-    private fun deriveBitsPBKDF2(passwordData: ByteArray, algoObj: JSONObject, derivedKeyLengthBytes: Int): String {
-        try {
-            val saltBase64 = algoObj.getString("salt")
-            val saltData = base64Decode(saltBase64) ?: throw Exception("Invalid salt data")
-
-            // Get iterations and hash algorithm
-            val iterations = algoObj.optInt("iterations", 100000) // Default from SEA.js
-            if (iterations <= 0) {
-                return errorToJSON("PBKDF2 iterations must be positive")
-            }
-
-            val hashObj = algoObj.optJSONObject("hash")
-            val hashAlgoName = hashObj?.optString("name", "SHA-256") ?: "SHA-256"
-
-            // Determine the hash algorithm
-            val algorithm = when (hashAlgoName.uppercase()) {
-                "SHA-256" -> "PBKDF2WithHmacSHA256"
-                "SHA-384" -> "PBKDF2WithHmacSHA384"
-                "SHA-512" -> "PBKDF2WithHmacSHA512"
-                else -> throw Exception("Unsupported hash for PBKDF2: $hashAlgoName")
-            }
-
-            // Create key factory and spec
-            val factory = SecretKeyFactory.getInstance(algorithm)
-            val spec = PBEKeySpec(
-                String(passwordData, Charsets.UTF_8).toCharArray(),
-                saltData,
-                iterations,
-                derivedKeyLengthBytes * 8 // Key length in bits
+            val spec = GCMParameterSpec(tagLength, ivBytes)
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, spec)
+            if (aadBytes.isNotEmpty()) cipher.updateAAD(aadBytes)
+            val out = cipher.doFinal(plainBytes)
+            val tagBytes = tagLength / 8
+            val cipherb = out.copyOfRange(0, out.size - tagBytes)
+            val atag = out.copyOfRange(out.size - tagBytes, out.size)
+            mapOf(
+                "cipherb" to Base64.getEncoder().encodeToString(cipherb),
+                "atag" to Base64.getEncoder().encodeToString(atag)
             )
-
-            // Generate the key
-            val secretKey = factory.generateSecret(spec)
-            val derivedKey = secretKey.encoded
-
-            return base64Encode(derivedKey)
-        } catch (e: Exception) {
-            return errorToJSON("PBKDF2 derivation failed: ${e.message}")
+        } catch (_: Exception) {
+            null
         }
     }
 
     /**
-     * HKDF (HMAC-based Key Derivation Function) implementation.
-     * Used for ECDH key derivation.
+     * Decrypt a base64 encoded ciphertext and authentication tag using AES‑GCM.
+     * All inputs must be standard Base64 strings.  The plaintext is returned
+     * as a Base64 encoded string.  This complements encryptAES256GCM().
      *
-     * @param ikm Input key material
-     * @param salt Salt value
-     * @param info Context and application specific information
-     * @param outputLength Desired output length in bytes
-     * @return Derived key material
+     * @param key Base64 encoded AES key
+     * @param cipherb Base64 encoded ciphertext
+     * @param aad Base64 encoded additional authenticated data
+     * @param iv Base64 encoded initialization vector
+     * @param atag Base64 encoded authentication tag
+     * @return Base64 encoded plaintext or null on failure
      */
-    private fun hkdfDerive(ikm: ByteArray, salt: ByteArray, info: ByteArray, outputLength: Int): ByteArray {
-        val effectiveSalt = if (salt.isEmpty()) ByteArray(32) else salt
-
-        // Step 1: Extract
-        val prk = hmacSha256(effectiveSalt, ikm)
-
-        // Step 2: Expand
-        val result = ByteArray(outputLength)
-        val hashLen = 32 // SHA-256 hash length
-        val iterations = (outputLength + hashLen - 1) / hashLen
-
-        val t = ByteArray(hashLen)
-        var lastT = ByteArray(0)
-
-        for (i in 1..iterations) {
-            val input = ByteArray(lastT.size + info.size + 1)
-            System.arraycopy(lastT, 0, input, 0, lastT.size)
-            System.arraycopy(info, 0, input, lastT.size, info.size)
-            input[lastT.size + info.size] = i.toByte()
-
-            lastT = hmacSha256(prk, input)
-
-            val copyLength = if (i == iterations) {
-                outputLength - (iterations - 1) * hashLen
-            } else {
-                hashLen
-            }
-
-            System.arraycopy(lastT, 0, result, (i - 1) * hashLen, copyLength)
+    @RequiresApi(Build.VERSION_CODES.O)
+    @LynxMethod
+    fun decryptAES256GCM(
+        key: String,
+        cipherb: String,
+        aad: String,
+        iv: String,
+        atag: String
+    ): String? {
+        return try {
+            val keyBytes = Base64.getDecoder().decode(key)
+            val cipherBytes = Base64.getDecoder().decode(cipherb)
+            val aadBytes = if (aad.isNotEmpty()) Base64.getDecoder().decode(aad) else ByteArray(0)
+            val ivBytes = Base64.getDecoder().decode(iv)
+            val tagBytes = Base64.getDecoder().decode(atag)
+            val normalizedKey = normalizeAESKey(keyBytes)
+            val secretKey = SecretKeySpec(normalizedKey, "AES")
+            val tagLengthBits = tagBytes.size * 8
+            val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+            val spec = GCMParameterSpec(tagLengthBits, ivBytes)
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, spec)
+            if (aadBytes.isNotEmpty()) cipher.updateAAD(aadBytes)
+            // Concatenate cipher and tag
+            val input = ByteArray(cipherBytes.size + tagBytes.size)
+            System.arraycopy(cipherBytes, 0, input, 0, cipherBytes.size)
+            System.arraycopy(tagBytes, 0, input, cipherBytes.size, tagBytes.size)
+            val plain = cipher.doFinal(input)
+            Base64.getEncoder().encodeToString(plain)
+        } catch (_: Exception) {
+            null
         }
+    }
+    // endregion
 
+    // region deriveBits / deriveKey
+    /**
+     * Derive raw bits from a base key.  Supports ECDH and PBKDF2.  The
+     * resulting byte array has length equal to `length` in bits divided by 8.
+     * For ECDH the algorithm map must contain a `public` JWK for the peer.
+     * For PBKDF2 the `baseKey` must include a `rawData` base64url string.
+     */
+    @LynxMethod
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun deriveBits(
+        algorithm: Map<String, Any>,
+        baseKey: Map<String, Any>,
+        length: Int
+    ): ByteArray? {
+        val name = (algorithm["name"] as? String)?.uppercase(Locale.ROOT) ?: return null
+        val byteCount = length / 8
+        return when (name) {
+            "ECDH" -> {
+                val priv = privateKeyFromJwk(baseKey) ?: return null
+                val peerJwkAny = algorithm["public"] as? Map<*, *> ?: return null
+                val peerJwk = peerJwkAny as Map<String, Any>
+                val peerPub = publicKeyFromJwk(peerJwk) ?: return null
+                val ka = KeyAgreement.getInstance("ECDH")
+                ka.init(priv)
+                ka.doPhase(peerPub, true)
+                val secret = ka.generateSecret()
+                hkdf(secret, ByteArray(0), ByteArray(0), byteCount)
+            }
+            "PBKDF2" -> {
+                val pwdStr = baseKey["rawData"] as? String ?: return null
+                val pwdRaw = base64UrlDecode(pwdStr) ?: return null
+                val saltDataAny = algorithm["salt"] ?: return null
+                val saltData = convertToByteArray(saltDataAny) ?: return null
+                val iterations = (algorithm["iterations"] as? Number)?.toInt() ?: 0
+                val skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")
+                // Convert raw bytes to char array by interpreting each byte as ISO-8859-1 char.
+                val pwdChars = pwdRaw.toString(Charsets.ISO_8859_1).toCharArray()
+                val spec = PBEKeySpec(pwdChars, saltData, iterations, length)
+                skf.generateSecret(spec).encoded
+            }
+            else -> null
+        }
+    }
+
+    /**
+     * Derive a new key (wrapped as a JWK) from a base key using ECDH or
+     * PBKDF2.  The `derivedKeyType` map must include a `length` entry
+     * specifying the key size in bits.  Returns a JWK map for an AES‑GCM
+     * symmetric key.
+     */
+    @LynxMethod
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun deriveKey(
+        algorithm: Map<String, Any>,
+        baseKey: Map<String, Any>,
+        derivedKeyType: Map<String, Any>,
+        extractable: Boolean,
+        keyUsages: List<String>
+    ): Map<String, Any>? {
+        val bits = (derivedKeyType["length"] as? Number)?.toInt() ?: return null
+        val raw = deriveBits(algorithm, baseKey, bits) ?: return null
+        return mapOf(
+            "kty" to "oct",
+            "k" to base64UrlEncode(raw),
+            "alg" to "A${bits}GCM",
+            "ext" to extractable,
+            "key_ops" to keyUsages
+        )
+    }
+    // endregion
+
+    // region Text encoding/decoding and random values
+    /** Encode a UTF‑8 string into a byte array. */
+    @LynxMethod
+    fun textEncode(text: String): ByteArray {
+        return text.toByteArray(Charsets.UTF_8)
+    }
+    /** Decode a UTF‑8 encoded byte array into a string. */
+    @LynxMethod
+    fun textDecode(data: ByteArray): String {
+        return String(data, Charsets.UTF_8)
+    }
+    /**
+     * Fill a buffer with cryptographically secure random bytes.  The length
+     * must be between 0 and 65536 bytes; outside this range returns null as
+     * mandated by the WebCrypto specification【408000048587121†L128-L160】.
+     */
+    @LynxMethod
+    fun getRandomValues(length: Int): ByteArray? {
+        if (length < 0 || length > 65536) return null
+        if (length == 0) return ByteArray(0)
+        val bytes = ByteArray(length)
+        SecureRandom().nextBytes(bytes)
+        return bytes
+    }
+    // endregion
+
+    // region Helper functions
+    /** Convert an arbitrary JavaScript value into a ByteArray.  Accepts
+     * ByteArray directly or a Map representing a JavaScript Uint8Array
+     * (index:value). */
+    private fun convertToByteArray(input: Any?): ByteArray? {
+        return when (input) {
+            null -> null
+            is ByteArray -> input
+            is IntArray -> input.map { it.toByte() }.toByteArray()
+            is List<*> -> {
+                val bytes = ByteArray(input.size)
+                for (i in input.indices) {
+                    val num = (input[i] as? Number)?.toInt() ?: return null
+                    bytes[i] = num.toByte()
+                }
+                bytes
+            }
+            is Map<*, *> -> {
+                val values = input.values.toList()
+                val bytes = ByteArray(values.size)
+                for (i in values.indices) {
+                    val num = (values[i] as? Number)?.toInt() ?: return null
+                    bytes[i] = num.toByte()
+                }
+                bytes
+            }
+            is String -> input.toByteArray(Charsets.UTF_8)
+            else -> null
+        }
+    }
+
+    /** Compute the SHA‑256 digest of data unless it is already of length
+     * 16/24/32 bytes, in which case it is returned unchanged.  This is used
+     * to normalize AES keys to valid lengths【841229793092621†L164-L168】. */
+    private fun normalizeAESKey(data: ByteArray): ByteArray {
+        return if (data.size == 16 || data.size == 24 || data.size == 32) {
+            data
+        } else {
+            val md = MessageDigest.getInstance("SHA-256")
+            md.digest(data)
+        }
+    }
+
+    /** Base64url encode a byte array without padding. */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun base64UrlEncode(data: ByteArray): String {
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(data)
+    }
+    /** Base64url decode a string.  Returns null on invalid input. */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun base64UrlDecode(s: String): ByteArray? {
+        return try {
+            Base64.getUrlDecoder().decode(s)
+        } catch (e: IllegalArgumentException) {
+            null
+        }
+    }
+    /** Convert a BigInteger to a 32‑byte array, padded with leading zeros. */
+    private fun bigIntTo32Bytes(big: BigInteger): ByteArray {
+        var bytes = big.toByteArray()
+        if (bytes.size == 33 && bytes[0].toInt() == 0) {
+            bytes = bytes.copyOfRange(1, 33)
+        }
+        if (bytes.size < 32) {
+            val padded = ByteArray(32)
+            System.arraycopy(bytes, 0, padded, 32 - bytes.size, bytes.size)
+            return padded
+        }
+        return bytes
+    }
+    /** Retrieve the standard P‑256 EC parameter spec. */
+    private fun getECParameterSpec(): ECParameterSpec? {
+        return try {
+            val params = AlgorithmParameters.getInstance("EC")
+            params.init(ECGenParameterSpec("secp256r1"))
+            params.getParameterSpec(ECParameterSpec::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+    /** Construct a JWK map from an ECDSA private key. */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun jwkFromSigningPrivate(priv: ECPrivateKey, pub: ECPublicKey, ops: List<String>, ext: Boolean): Map<String, Any> {
+        val x = bigIntTo32Bytes(pub.w.affineX)
+        val y = bigIntTo32Bytes(pub.w.affineY)
+        return mapOf(
+            "kty" to "EC",
+            "crv" to "P-256",
+            "alg" to "ES256",
+            "ext" to ext,
+            "key_ops" to ops,
+            "d" to base64UrlEncode(bigIntTo32Bytes(priv.s)),
+            "x" to base64UrlEncode(x),
+            "y" to base64UrlEncode(y)
+        )
+    }
+    /** Construct a JWK map from an ECDSA public key. */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun jwkFromSigningPublic(pub: ECPublicKey, ops: List<String>, ext: Boolean): Map<String, Any> {
+        val x = bigIntTo32Bytes(pub.w.affineX)
+        val y = bigIntTo32Bytes(pub.w.affineY)
+        return mapOf(
+            "kty" to "EC",
+            "crv" to "P-256",
+            "alg" to "ES256",
+            "ext" to ext,
+            "key_ops" to ops,
+            "x" to base64UrlEncode(x),
+            "y" to base64UrlEncode(y)
+        )
+    }
+    /** Construct a JWK map from an ECDH private key. */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun jwkFromAgreementPrivate(priv: ECPrivateKey, pub: ECPublicKey, ops: List<String>, ext: Boolean): Map<String, Any> {
+        val x = bigIntTo32Bytes(pub.w.affineX)
+        val y = bigIntTo32Bytes(pub.w.affineY)
+        return mapOf(
+            "kty" to "EC",
+            "crv" to "P-256",
+            "alg" to "ECDH-ES",
+            "ext" to ext,
+            "key_ops" to ops,
+            "d" to base64UrlEncode(bigIntTo32Bytes(priv.s)),
+            "x" to base64UrlEncode(x),
+            "y" to base64UrlEncode(y)
+        )
+    }
+    /** Construct a JWK map from an ECDH public key. */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun jwkFromAgreementPublic(pub: ECPublicKey, ops: List<String>, ext: Boolean): Map<String, Any> {
+        val x = bigIntTo32Bytes(pub.w.affineX)
+        val y = bigIntTo32Bytes(pub.w.affineY)
+        return mapOf(
+            "kty" to "EC",
+            "crv" to "P-256",
+            "alg" to "ECDH-ES",
+            "ext" to ext,
+            "key_ops" to ops,
+            "x" to base64UrlEncode(x),
+            "y" to base64UrlEncode(y)
+        )
+    }
+    /** Create an EC private key from a JWK map. */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun privateKeyFromJwk(jwk: Map<String, Any>): PrivateKey? {
+        val dStr = jwk["d"] as? String ?: return null
+        val d = base64UrlDecode(dStr) ?: return null
+        val ecSpec = getECParameterSpec() ?: return null
+        val privSpec = ECPrivateKeySpec(BigInteger(1, d), ecSpec)
+        val kf = KeyFactory.getInstance("EC")
+        return kf.generatePrivate(privSpec)
+    }
+    /** Create an EC public key from a JWK map. */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun publicKeyFromJwk(jwk: Map<String, Any>): PublicKey? {
+        val xStr = jwk["x"] as? String ?: return null
+        val yStr = jwk["y"] as? String ?: return null
+        val x = base64UrlDecode(xStr) ?: return null
+        val y = base64UrlDecode(yStr) ?: return null
+        val ecSpec = getECParameterSpec() ?: return null
+        val pubSpec = ECPublicKeySpec(ECPoint(BigInteger(1, x), BigInteger(1, y)), ecSpec)
+        val kf = KeyFactory.getInstance("EC")
+        return kf.generatePublic(pubSpec)
+    }
+    /** Perform HKDF using HMAC‑SHA256.  Implements the extract‑and‑expand
+     * operation defined in RFC 5869.  Takes input keying material (ikm), an
+     * optional salt and info, and the desired output length in bytes. */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun hkdf(
+        ikm: ByteArray,
+        salt: ByteArray,
+        info: ByteArray,
+        length: Int
+    ): ByteArray {
+        val mac = Mac.getInstance("HmacSHA256")
+        // HKDF-Extract
+        val prk: ByteArray = run {
+            val keySpec = SecretKeySpec(if (salt.isEmpty()) ByteArray(mac.macLength) else salt, "HmacSHA256")
+            mac.init(keySpec)
+            mac.doFinal(ikm)
+        }
+        // HKDF-Expand
+        val n = (length + mac.macLength - 1) / mac.macLength
+        var previous = ByteArray(0)
+        val result = ByteArray(length)
+        mac.init(SecretKeySpec(prk, "HmacSHA256"))
+        var offset = 0
+        for (i in 1..n) {
+            mac.reset()
+            mac.update(previous)
+            mac.update(info)
+            mac.update(i.toByte())
+            previous = mac.doFinal()
+            val bytesToCopy = if (offset + previous.size > length) length - offset else previous.size
+            System.arraycopy(previous, 0, result, offset, bytesToCopy)
+            offset += bytesToCopy
+        }
         return result
     }
-
-    /**
-     * HMAC-SHA256 implementation.
-     *
-     * @param key Key for HMAC
-     * @param data Data to HMAC
-     * @return HMAC result
-     */
-    private fun hmacSha256(key: ByteArray, data: ByteArray): ByteArray {
-        val mac = Mac.getInstance("HmacSHA256")
-        mac.init(SecretKeySpec(key, "HmacSHA256"))
-        return mac.doFinal(data)
-    }
-
-    /**
-     * Derives a cryptographic key from a base key.
-     * Supports ECDH and PBKDF2 algorithms.
-     *
-     * @param algorithm JSON string with algorithm parameters
-     * @param baseKey JSON string containing the base key
-     * @param derivedKeyType JSON string with derived key parameters
-     * @param extractable Whether the derived key can be exported
-     * @param keyUsages JSON array of allowed key operations
-     * @return JSON string containing the derived key
-     */
-    @LynxMethod
-    fun deriveKey(algorithm: String, baseKey: String, derivedKeyType: String, extractable: Boolean, keyUsages: String): String {
-        try {
-            // Parse input parameters
-            val algoObj = parseJSONObject(algorithm) ?: throw Exception("Invalid algorithm format")
-            val algoName = algoObj.getString("name")
-            val baseKeyObj = parseJSONObject(baseKey) ?: throw Exception("Invalid base key format")
-            val derivedKeyAlgoObj = parseJSONObject(derivedKeyType) ?: throw Exception("Invalid derived key type format")
-            val derivedKeyAlgoName = derivedKeyAlgoObj.getString("name")
-            val keyUsagesArray = parseJSONArray(keyUsages) ?: throw Exception("Invalid key usages format")
-
-            // Convert JSON array to List
-            val targetKeyUsages = mutableListOf<String>()
-            for (i in 0 until keyUsagesArray.length()) {
-                targetKeyUsages.add(keyUsagesArray.getString(i))
-            }
-
-            when (algoName.uppercase()) {
-                "ECDH" -> {
-                    // Extract local private key from baseKeyObj
-                    if (baseKeyObj.getString("kty") != "EC" || !baseKeyObj.has("d")) {
-                        return errorToJSON("Invalid baseKey format for ECDH deriveKey")
-                    }
-                    val dBase64url = baseKeyObj.getString("d")
-                    val privateKeyData = base64urlDecode(dBase64url) ?: throw Exception("Invalid private key data")
-
-                    // Extract peer's public key from algorithm parameters
-                    val peerPublicKeyJWK = algoObj.getJSONObject("public")
-                    if (peerPublicKeyJWK.getString("kty") != "EC") {
-                        return errorToJSON("Invalid peer public key format in algorithm parameters")
-                    }
-                    val xBase64url = peerPublicKeyJWK.getString("x")
-                    val yBase64url = peerPublicKeyJWK.getString("y")
-                    val xData = base64urlDecode(xBase64url) ?: throw Exception("Invalid x coordinate")
-                    val yData = base64urlDecode(yBase64url) ?: throw Exception("Invalid y coordinate")
-
-                    // Determine target key length and algorithm
-                    val targetKeyLengthBits: Int
-                    val targetKeyAlg: String
-
-                    when (derivedKeyAlgoName.uppercase()) {
-                        "AES-GCM" -> {
-                            val length = derivedKeyAlgoObj.optInt("length", 256)
-                            if (length != 128 && length != 192 && length != 256) {
-                                return errorToJSON("Invalid or missing 'length' for AES-GCM derivedKeyType")
-                            }
-                            targetKeyLengthBits = length
-                            targetKeyAlg = "A${length}GCM"
-                        }
-                        else -> return errorToJSON("Unsupported derivedKeyType algorithm: $derivedKeyAlgoName")
-                    }
-
-                    val targetKeyLengthBytes = targetKeyLengthBits / 8
-
-                    // Create key objects using BouncyCastle for better compatibility
-                    val ecSpec = org.bouncycastle.jce.ECNamedCurveTable.getParameterSpec("secp256r1") // P-256 curve
-
-                    // Create private key
-                    val privateKeyParams = ECPrivateKeyParameters(
-                        BigInteger(1, privateKeyData),
-                        ECDomainParameters(ecSpec.curve, ecSpec.g, ecSpec.n, ecSpec.h)
-                    )
-
-                    // Create public key point
-                    val pubPoint = ecSpec.curve.createPoint(
-                        BigInteger(1, xData),
-                        BigInteger(1, yData)
-                    )
-
-                    // Create ECDH agreement
-                    val agreement = ECDHBasicAgreement()
-                    agreement.init(privateKeyParams)
-
-                    // Create public key parameters
-                    val publicKeyParams = ECPublicKeyParameters(
-                        pubPoint,
-                        ECDomainParameters(ecSpec.curve, ecSpec.g, ecSpec.n, ecSpec.h)
-                    )
-
-                    // Calculate shared secret
-                    val sharedSecret = agreement.calculateAgreement(publicKeyParams)
-                    val sharedSecretBytes = sharedSecret.toByteArray()
-
-                    // Use HKDF to derive the symmetric key (match iOS implementation)
-                    val derivedKeyData = hkdfDerive(
-                        sharedSecretBytes,
-                        ByteArray(0), // empty salt
-                        ByteArray(0), // empty info
-                        targetKeyLengthBytes
-                    )
-
-                    // Construct the JWK for the derived symmetric key
-                    val derivedKeyJWK = JSONObject()
-                    derivedKeyJWK.put("kty", "oct")
-                    derivedKeyJWK.put("k", base64urlEncode(derivedKeyData))
-                    derivedKeyJWK.put("alg", targetKeyAlg)
-                    derivedKeyJWK.put("ext", extractable)
-
-                    val keyOpsArray = JSONArray()
-                    for (usage in targetKeyUsages) {
-                        keyOpsArray.put(usage)
-                    }
-                    derivedKeyJWK.put("key_ops", keyOpsArray)
-
-                    return derivedKeyJWK.toString()
-                }
-
-                "PBKDF2" -> {
-                    // Extract password data from base key
-                    var passwordData: ByteArray? = null
-
-                    if (baseKeyObj.getString("kty") == "PBKDF2-RAW" && baseKeyObj.has("rawData")) {
-                        val pwdB64 = baseKeyObj.getString("rawData")
-                        passwordData = base64Decode(pwdB64)
-                    } else if (baseKey.startsWith("{") && baseKey.endsWith("}")) {
-                        // baseKey might already be a JSON string
-                        return errorToJSON("Invalid base key format for PBKDF2 deriveKey")
-                    } else {
-                        // baseKey might be the raw base64 password string itself
-                        passwordData = base64Decode(baseKey)
-                    }
-
-                    if (passwordData == null) {
-                        return errorToJSON("Invalid base key for PBKDF2 deriveKey")
-                    }
-
-                    // Extract PBKDF2 parameters
-                    val saltBase64 = algoObj.getString("salt")
-                    val saltData = base64Decode(saltBase64) ?: throw Exception("Invalid salt data")
-                    val iterations = algoObj.optInt("iterations", 100000)
-
-                    if (iterations <= 0) {
-                        return errorToJSON("PBKDF2 iterations must be positive")
-                    }
-
-                    val hashObj = algoObj.optJSONObject("hash")
-                    val hashAlgoName = hashObj?.optString("name", "SHA-256") ?: "SHA-256"
-
-                    // Determine the hash algorithm
-                    val algorithm = when (hashAlgoName.uppercase()) {
-                        "SHA-256" -> "PBKDF2WithHmacSHA256"
-                        "SHA-384" -> "PBKDF2WithHmacSHA384"
-                        "SHA-512" -> "PBKDF2WithHmacSHA512"
-                        else -> throw Exception("Unsupported hash for PBKDF2: $hashAlgoName")
-                    }
-
-                    // Determine target key parameters
-                    val targetKeyLengthBits: Int
-                    val targetKeyAlg: String
-
-                    when (derivedKeyAlgoName.uppercase()) {
-                        "AES-GCM" -> {
-                            val length = derivedKeyAlgoObj.optInt("length", 256)
-                            if (length != 128 && length != 192 && length != 256) {
-                                return errorToJSON("Invalid or missing 'length' for AES-GCM derivedKeyType")
-                            }
-                            targetKeyLengthBits = length
-                            targetKeyAlg = "A${length}GCM"
-                        }
-                        else -> return errorToJSON("Unsupported derivedKeyType algorithm: $derivedKeyAlgoName")
-                    }
-
-                    val targetKeyLengthBytes = targetKeyLengthBits / 8
-
-                    // Create key factory and spec
-                    val factory = SecretKeyFactory.getInstance(algorithm)
-                    val spec = PBEKeySpec(
-                        String(passwordData, Charsets.UTF_8).toCharArray(),
-                        saltData,
-                        iterations,
-                        targetKeyLengthBits
-                    )
-
-                    // Generate the key
-                    val secretKey = factory.generateSecret(spec)
-                    val derivedKeyData = secretKey.encoded
-
-                    // Construct the JWK for the derived key
-                    val derivedKeyJWK = JSONObject()
-                    derivedKeyJWK.put("kty", "oct")
-                    derivedKeyJWK.put("k", base64urlEncode(derivedKeyData))
-                    derivedKeyJWK.put("alg", targetKeyAlg)
-                    derivedKeyJWK.put("ext", extractable)
-
-                    val keyOpsArray = JSONArray()
-                    for (usage in targetKeyUsages) {
-                        keyOpsArray.put(usage)
-                    }
-                    derivedKeyJWK.put("key_ops", keyOpsArray)
-
-                    return derivedKeyJWK.toString()
-                }
-
-                else -> return errorToJSON("Unsupported derivation algorithm: $algoName")
-            }
-        } catch (e: Exception) {
-            return errorToJSON("Error in deriveKey: ${e.message}")
-        }
-    }
+    // endregion
 }

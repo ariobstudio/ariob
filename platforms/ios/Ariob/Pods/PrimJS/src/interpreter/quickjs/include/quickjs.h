@@ -664,6 +664,9 @@ typedef struct LEPUSDebuggerCallbacks {
   uint8_t (*is_devtool_on)(LEPUSContext *ctx);
 } LEPUSDebuggerCallbacks;
 
+typedef void LEPUS_MarkFunc(LEPUSRuntime *rt, LEPUSValueConst val,
+                            uint64_t trace_tool);
+
 typedef struct LEPUSLepusRefCallbacks {
   LEPUSValue (*free_value)(LEPUSRuntime *rt, LEPUSValue val);
   LEPUSValue (*get_property)(LEPUSContext *ctx, LEPUSValue thisObj, JSAtom prop,
@@ -675,6 +678,9 @@ typedef struct LEPUSLepusRefCallbacks {
   void (*free_str_cache)(void *old_ptr, void *new_ptr);
   size_t (*lepus_ref_equal)(LEPUSValue val1, LEPUSValue val2);
   LEPUSValue (*lepus_ref_tostring)(LEPUSContext *ctx, LEPUSValue val);
+  void (*ref_counted_obj_visitor)(LEPUSRuntime *rt, void *ref_counted_obj,
+                                  uint64_t trace_tool, int tag,
+                                  LEPUS_MarkFunc *f);
   // void (*free_string_cache)();
 } LEPUSLepusRefCallbacks;
 
@@ -688,7 +694,8 @@ typedef struct LEPUSLepusRef {
 void RegisterLepusType(LEPUSRuntime *rt, int32_t array_typeid,
                        int32_t table_typeid);
 
-void RegisterGCInfoCallback(LEPUSRuntime *rt, void (*func)(const char *, int));
+void RegisterGCInfoCallback(LEPUSRuntime *rt,
+                            void (*func)(LEPUSContext *, const char *, int));
 
 void RegisterLepusRefCallbacks(LEPUSRuntime *rt, LEPUSLepusRefCallbacks *funcs);
 
@@ -714,10 +721,8 @@ void LEPUS_SetGCThreshold(LEPUSRuntime *rt, size_t gc_threshold);
 LEPUSRuntime *LEPUS_NewRuntime2(const struct LEPUSMallocFunctions *mf,
                                 void *opaque, uint32_t mode);
 void LEPUS_FreeRuntime(LEPUSRuntime *rt);
-typedef void LEPUS_MarkFunc(LEPUSRuntime *rt, LEPUSValueConst val,
-                            int local_idx);
 void LEPUS_MarkValue(LEPUSRuntime *rt, LEPUSValueConst val,
-                     LEPUS_MarkFunc *mark_func, int local_idx);
+                     LEPUS_MarkFunc *mark_func, uint64_t trace_tool);
 void LEPUS_RunGC(LEPUSRuntime *rt);
 LEPUS_BOOL LEPUS_IsInGCSweep(LEPUSRuntime *rt);
 
@@ -854,7 +859,7 @@ typedef struct LEPUSClassExoticMethods {
 
 typedef void LEPUSClassFinalizer(LEPUSRuntime *rt, LEPUSValue val);
 typedef void LEPUSClassGCMark(LEPUSRuntime *rt, LEPUSValueConst val,
-                              LEPUS_MarkFunc *mark_func, int local_idx);
+                              LEPUS_MarkFunc *mark_func, uint64_t trace_tool);
 #define LEPUS_CALL_FLAG_CONSTRUCTOR (1 << 0)
 typedef LEPUSValue LEPUSClassCall(LEPUSContext *ctx, LEPUSValueConst func_obj,
                                   LEPUSValueConst this_val, int argc,
@@ -1004,10 +1009,18 @@ char *LEPUS_GetGCTimingInfo(LEPUSContext *ctx, bool is_start);
 void LEPUS_PushHandle(LEPUSContext *ctx, void *ptr, int type);
 void LEPUS_ResetHandle(LEPUSContext *ctx, void *ptr, int type);
 
+#ifdef ENABLE_CHECK_TOOLS
+void CheckObjectCtx(LEPUSContext *ctx, LEPUSValue obj);
+void CheckObjectRt(LEPUSRuntime *rt, LEPUSValue obj);
+#endif
+
 static inline LEPUSValue LEPUS_DupValue(LEPUSContext *ctx, LEPUSValueConst v) {
   if (LEPUS_VALUE_HAS_REF_COUNT(v)) {
     LEPUSRefCountHeader *p = (LEPUSRefCountHeader *)LEPUS_VALUE_GET_PTR(v);
     p->ref_count++;
+#ifdef ENABLE_CHECK_TOOLS
+    CheckObjectCtx(ctx, v);
+#endif
   }
   return (LEPUSValue)v;
 }
@@ -1028,6 +1041,9 @@ static inline LEPUSValue LEPUS_DupValueRT(LEPUSRuntime *rt, LEPUSValueConst v) {
   if (LEPUS_VALUE_HAS_REF_COUNT(v)) {
     LEPUSRefCountHeader *p = (LEPUSRefCountHeader *)LEPUS_VALUE_GET_PTR(v);
     p->ref_count++;
+#ifdef ENABLE_CHECK_TOOLS
+    CheckObjectRt(rt, v);
+#endif
   }
   return (LEPUSValue)v;
 }
@@ -1398,8 +1414,8 @@ static inline LEPUSValue LEPUS_NewCFunctionMagic(LEPUSContext *ctx,
                                                  const char *name, int length,
                                                  LEPUSCFunctionEnum cproto,
                                                  int magic) {
-  return LEPUS_NewCFunction2(ctx, (LEPUSCFunction *)func, name, length, cproto,
-                             magic);
+  LEPUSCFunctionType ft = {.generic_magic = func};
+  return LEPUS_NewCFunction2(ctx, ft.generic, name, length, cproto, magic);
 }
 
 /* C property definition */
@@ -1605,8 +1621,12 @@ void LEPUS_SetFuncFileName(LEPUSContext *, LEPUSValue, const char *);
 void InitLynxTraceEnv(void *(*)(const char *), void (*)(void *));
 
 void SetObjectCtxCheckStatus(LEPUSContext *ctx, bool enable);
+bool LEPUS_PushObjectCheckTid(LEPUSContext *ctx);
 
 void UpdateOuterObjSize(LEPUSRuntime *rt, int size);
+
+void LEPUS_SetGCObserver(LEPUSRuntime *rt, void *opaque);
+void *LEPUS_GetGCObserver(LEPUSRuntime *rt);
 // <Primjs end>
 
 #undef lepus_unlikely

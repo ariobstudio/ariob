@@ -179,7 +179,7 @@ void dbuf_free(DynBuf *s) {
   /* we test s->buf as a fail safe to avoid crashing if dbuf_free()
      is called twice */
   if (s->buf) {
-    s->realloc_func(s->opaque, s->buf, 0, 0);
+    free(s->buf);
   }
   memset(s, 0, sizeof(*s));
 }

@@ -22,6 +22,7 @@ A minimal, schema-first functional architecture for building decentralized appli
 - [Getting Started](#-getting-started)
 - [Development](#-development)
 - [Project Structure](#-project-structure)
+- [Documentation](#-documentation)
 - [Available Scripts](#-available-scripts)
 - [Testing](#-testing)
 - [Contributing](#-contributing)
@@ -44,6 +45,7 @@ Ariob is a modern decentralized application platform built with React and LynxJS
 - 📱 **Cross-Platform** - Single codebase for web and mobile platforms
 - ⚡ **Real-time Updates** - Automatic data synchronization across devices
 - 🎨 **Modern UI** - Beautiful, responsive interface with theme support
+- 🧭 **File-based Routing** - TanStack Router integration via `@ariob/router`
 - 🛡️ **Type Safety** - Full TypeScript support with runtime validation
 - 📦 **Modular Architecture** - Clean separation of concerns with monorepo structure
 
@@ -52,10 +54,13 @@ Ariob is a modern decentralized application platform built with React and LynxJS
 ```
 ariob/
 ├── apps/
-│   └── andromeda/        # Main application (React + LynxJS)
+│   └── brana/            # ML-powered Lynx assistant experience
 ├── packages/
-│   └── core/             # Core functionality
-│       └── gun/          # Gun.js integration layer
+│   ├── ai/               # Native MLX bridge helpers
+│   ├── core/             # Gun.js services and stores
+│   ├── editor/           # Rich-text editor engine
+│   ├── router/           # TanStack router generator plugin
+│   └── ui/               # Shared component library & Tailwind config
 └── platforms/            # Platform-specific implementations
     ├── web/              # Web platform
     ├── android/          # Android platform (coming soon)
@@ -68,8 +73,6 @@ Before you begin, ensure you have the following installed:
 
 - **Node.js** >= 18.0.0
 - **pnpm** >= 8.15.4
-- **Git** >= 2.0.0
-- **LynxExplorer App** (for mobile development) - [Download here](https://lynx-js.com)
 
 ## 🚀 Getting Started
 
@@ -103,8 +106,7 @@ GUN_RELAY_URL=http://localhost:8765/gun
 # Start all services
 pnpm dev
 
-# Or start specific services
-pnpm dev:andromeda  # Main application only
+pnpm dev:chat 
 ```
 
 ### 5. Access the Application
@@ -116,7 +118,7 @@ pnpm dev:andromeda  # Main application only
 
 ### Core Application
 
-The main application is located in `apps/andromeda/`. Key areas:
+The main application is located in `apps/chat/`. Key areas:
 
 - `src/components/` - React components
 - `src/services/` - Business logic and API services
@@ -139,26 +141,30 @@ See [packages/core/README.md](packages/core/README.md) for detailed documentatio
 ```
 ariob/
 ├── apps/
-│   └── andromeda/           # Main React application
-│       ├── src/
-│       │   ├── components/  # UI components
-│       │   ├── hooks/       # Custom hooks
-│       │   ├── services/    # Business logic
-│       │   ├── schema/      # Data schemas
-│       │   └── styles/      # Global styles
-│       └── README.md
+│   ├── chat/           # Main React + Lynx application
+│   ├──── src/             # Feature code, routes, components
+│   └──── README.md        # App-specific docs
 ├── packages/
-│   └── core/                # Shared core functionality
-│       ├── gun/             # Gun.js integration
-│       └── README.md
-├── platforms/               # Platform-specific code
-├── .cursor/                 # Cursor AI configuration
-│   └── rules/              # Development rules and guidelines
+│   ├── ai/                  # Native ML bridge helpers
+│   ├── core/                # Gun.js services + stores
+│   ├── editor/              # Rich text editor engine
+│   ├── router/              # TanStack router generator
+│   └── ui/                  # Shared UI kit & Tailwind config
+├── platforms/               # Platform-specific code (iOS, Android, Web)
 ├── package.json
 ├── pnpm-workspace.yaml
 ├── tsconfig.json
 └── turbo.json
 ```
+
+## 📚 Documentation
+
+- [Chat App Guide](apps/chat/README.md)
+- [UI Package Reference](packages/ui/README.md)
+- [Router Plugin Reference](packages/router/README.md)
+- [Core Package Reference](packages/core/README.md)
+- [Editor Package Reference](packages/editor/README.md)
+- [AI Package Reference](packages/ai/README.md)
 
 ## 📜 Available Scripts
 
@@ -167,7 +173,7 @@ ariob/
 | Command | Description |
 |---------|-------------|
 | `pnpm dev` | Start all services in development mode |
-| `pnpm dev:andromeda` | Start only the main application |
+| `pnpm dev:chat` | Start only the main application |
 | `pnpm dev:web` | Start web platform (when available) |
 
 ### Building
@@ -175,7 +181,7 @@ ariob/
 | Command | Description |
 |---------|-------------|
 | `pnpm build` | Build all applications |
-| `pnpm build:andromeda` | Build main application |
+| `pnpm build:chat` | Build main application |
 
 ### Testing
 
@@ -212,10 +218,10 @@ pnpm test
 pnpm test:ui
 
 # Run specific app tests
-pnpm --filter andromeda test
+pnpm --filter chat test
 ```
 
-See [apps/andromeda/src/test/README.md](apps/andromeda/src/test/README.md) for testing guidelines.
+See [apps/chat/src/test/README.md](apps/chat/src/test/README.md) for testing guidelines.
 
 ## 🤝 Contributing
 
@@ -242,7 +248,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - [Gun.js](https://gun.eco/) for decentralized data sync
-- [LynxJS](https://lynx-js.com/) for cross-platform React
+- [LynxJS](https://lynxjs.org/) for cross-platform React
 - [Zod](https://zod.dev/) for schema validation
 - [Zustand](https://zustand-demo.pmnd.rs/) for state management
 

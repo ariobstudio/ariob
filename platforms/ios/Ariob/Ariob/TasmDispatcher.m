@@ -3,8 +3,10 @@
 // LICENSE file in the root directory of this source tree.
 
 #import "TasmDispatcher.h"
+#import <LynxDevtool/LynxRecorderViewController.h>
 #import "AppDelegate.h"
 #import "DemoTemplateResourceFetcher.h"
+#import "LynxRecorderDefaultActionCallback.h"
 #import "LynxViewShellViewController.h"
 
 @implementation TasmDispatcher {
@@ -55,8 +57,13 @@ static NSMapTable<NSString *, __kindof UIViewController *> *_dispatchedViewContr
     data = localRes.data;
     url = localRes.url;
     _latestQuery = localRes.query;
+  } else if (localRes.isLynxRecorderSchema) {
+    url = localRes.url;
   } else {
-    NSURL *source = [NSURL URLWithString:sourceUrl];
+    NSString *encodeUrl = [sourceUrl
+        stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet
+                                                               URLFragmentAllowedCharacterSet]];
+    NSURL *source = [NSURL URLWithString:encodeUrl];
     if ([source.scheme isEqualToString:@"http"] || [source.scheme isEqualToString:@"https"]) {
       _latestQuery = source.query;
       url = sourceUrl;
@@ -73,12 +80,19 @@ static NSMapTable<NSString *, __kindof UIViewController *> *_dispatchedViewContr
     UINavigationController *vc =
         ((AppDelegate *)([UIApplication sharedApplication].delegate)).navigationController;
 
-    LynxViewShellViewController *shellVC = [LynxViewShellViewController new];
-    shellVC.navigationController = (UINavigationController *)vc;
-    shellVC.url = url;
-    shellVC.data = data;
-    shellVC.params = self->_latestParams;
-    [vc pushViewController:shellVC animated:animated];
+    if (localRes.isLynxRecorderSchema) {
+      LynxRecorderViewController *tbVC = [[LynxRecorderViewController alloc] init];
+      tbVC.url = url;
+      [tbVC registerLynxRecorderActionCallback:[[LynxRecorderDefaultActionCallback alloc] init]];
+      [vc pushViewController:tbVC animated:animated];
+    } else {
+      LynxViewShellViewController *shellVC = [LynxViewShellViewController new];
+      shellVC.navigationController = (UINavigationController *)vc;
+      shellVC.url = url;
+      shellVC.data = data;
+      shellVC.params = self->_latestParams;
+      [vc pushViewController:shellVC animated:animated];
+    }
   });
 }
 

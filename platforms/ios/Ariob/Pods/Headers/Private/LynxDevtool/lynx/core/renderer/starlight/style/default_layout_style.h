@@ -1,1 +1,0 @@
-../../../../../../../../LynxDevtool/lynx/core/renderer/starlight/style/default_layout_style.h

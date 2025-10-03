@@ -3,13 +3,19 @@
 // LICENSE file in the root directory of this source tree.
 
 #import "DemoTemplateResourceFetcher.h"
+#import <Lynx/LynxService.h>
+#import <Lynx/LynxServiceDevToolProtocol.h>
+#import <LynxDevtool/LynxRecorderEnv.h>
 
 @implementation DemoTemplateResourceFetcher
 
 // scheme: file://lynx?local://
 + (LocalBundleResult)readLocalBundleFromResource:(NSString *)url {
-  LocalBundleResult res = {NO, nil, nil, nil};
-  NSURL *source = [NSURL URLWithString:url];
+  LocalBundleResult res = {NO, NO, nil, nil, nil};
+  NSString *encodeUrl =
+      [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet
+                                                                  URLFragmentAllowedCharacterSet]];
+  NSURL *source = [NSURL URLWithString:encodeUrl];
   if ([source.scheme isEqualToString:@"file"]) {
     NSURL *subSourceUrl = [NSURL URLWithString:source.query];
     if ([subSourceUrl.scheme isEqualToString:@"local"]) {
@@ -20,14 +26,19 @@
       res.url = [[NSBundle mainBundle] pathForResource:[localUrl stringByDeletingPathExtension]
                                                 ofType:@"bundle"];
       if (res.url == nil) {
-        NSURL *debugBundleUrl = [[NSBundle mainBundle] URLForResource:@"LynxDebugResources"
-                                                        withExtension:@"bundle"];
+        Class debuggerBridgeClass = [LynxService(LynxServiceDevToolProtocol) debuggerBridgeClass];
+        NSBundle *devtoolFrameworkBundle = [NSBundle bundleForClass:debuggerBridgeClass];
+        NSURL *debugBundleUrl = [devtoolFrameworkBundle URLForResource:@"LynxDebugResources"
+                                                         withExtension:@"bundle"];
         NSBundle *bundle = [NSBundle bundleWithURL:debugBundleUrl];
         localUrl = [NSString stringWithFormat:@"%@%@", subSourceUrl.host, subSourceUrl.path];
         res.url = [bundle pathForResource:[localUrl stringByDeletingPathExtension]
                                    ofType:@"bundle"];
       }
       res.data = [NSData dataWithContentsOfFile:res.url];
+    } else if ([url hasPrefix:[LynxRecorderEnv sharedInstance].lynxRecorderUrlPrefix]) {
+      res.isLynxRecorderSchema = YES;
+      res.url = url;
     }
   }
   return res;

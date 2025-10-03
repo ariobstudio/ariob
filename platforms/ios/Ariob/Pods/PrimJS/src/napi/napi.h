@@ -483,6 +483,10 @@ class NAPI_EXTERN Number : public Value {
 
   NAPI_INLINE operator int64_t() const { return Int64Value(); }
 
+  NAPI_INLINE operator uint64_t() const {
+    return static_cast<uint64_t>(Int64Value());
+  }
+
   NAPI_INLINE operator float() const { return FloatValue(); }
 
   NAPI_INLINE operator double() const { return DoubleValue(); }
@@ -1205,7 +1209,7 @@ class Reference {
     return *this;
   }
 
-  NAPI_DISALLOW_ASSIGN(Reference<T>)
+  NAPI_DISALLOW_ASSIGN_COPY(Reference<T>)
 
   NAPI_INLINE operator napi_ref() const { return _ref; }
 

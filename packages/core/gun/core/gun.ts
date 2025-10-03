@@ -1,5 +1,6 @@
-import Gun from '../gun';
-import SEA from '../sea';
+import Gun from '../gun.js';
+import SEA from '../sea.js';
+
 import { GunInstance } from './types';
 
 // Configure Gun options

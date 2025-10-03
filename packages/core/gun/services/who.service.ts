@@ -79,6 +79,37 @@ class WhoService {
     return new Promise((resolve) => {
       const user = gun.user();
       
+      console.log('user', user);
+
+      user.auth(keyPair, (ack: any) => {
+        console.log('ack', ack);
+        if (ack.err) {
+          resolve(err(Err.auth('KeyPair signup failed', ack.err)));
+          return;
+        }
+        user.put(keyPair, (ack: any) => {
+          console.log('ack', ack);
+          this.createProfile(req.alias, keyPair.pub).then(profileResult => {
+            if (profileResult.isOk()) {
+              this.saveCredentials({
+                pub: keyPair.pub,
+                epub: keyPair.epub || '',
+                priv: keyPair.priv,
+                epriv: keyPair.epriv || '',
+                alias: req.alias,
+                authMethod: 'keypair',
+              });
+              resolve(ok(profileResult.value));
+            } else {
+              resolve(err(Err.auth('Failed to create profile', profileResult.error)));
+            }
+          });
+        });
+      });
+
+      return;
+
+
       // For keypair auth, we create with a temporary password then switch to keypair
       const tempPass = sea.random(16);
       user.create(req.alias, tempPass).then((ack: any) => {
@@ -95,30 +126,7 @@ class WhoService {
           }
 
           // Set the keypair
-          user.put(keyPair).then(() => {
-            this.me = user;
-            const userIs = user.is;
-            if (!userIs) {
-              resolve(err(Err.auth('Failed to get user info')));
-              return;
-            }
-
-            this.createProfile(req.alias, keyPair.pub).then(profileResult => {
-              if (profileResult.isOk()) {
-                this.saveCredentials({
-                  pub: keyPair.pub,
-                  epub: keyPair.epub || '',
-                  priv: keyPair.priv,
-                  epriv: keyPair.epriv || '',
-                  alias: req.alias,
-                  authMethod: 'keypair',
-                });
-                resolve(profileResult);
-              } else {
-                resolve(profileResult);
-              }
-            });
-          });
+          
         });
       });
     });

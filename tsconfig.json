@@ -2,11 +2,31 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@core/*": ["packages/core/src/*"],
-      "@packages/*": ["packages/*/src"],
-      "@apps/*": ["apps/*/src"]
+      "@core/*": [
+        "packages/core/src/*"
+      ],
+      "@packages/*": [
+        "packages/*/src"
+      ],
+      "@apps/*": [
+        "apps/*/src"
+      ],
+      "@ariob/ui": [
+        "packages/ui/src/index.ts"
+      ],
+      "@ariob/ui/*": [
+        "packages/ui/src/*"
+      ]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "apps/andromeda/vitest.config.cjs"],
-  "exclude": ["node_modules", "dist", ".turbo"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "apps/andromeda/vitest.config.cjs"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".turbo"
+  ]
 }

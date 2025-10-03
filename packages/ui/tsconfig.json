@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "noEmit": true,
+  },
+  "references": [
+    { "path": "./tsconfig.node.json" },
+    { "path": "./src" },
+  ],
+  "paths": {
+    "@/*": ["./src/*"],
+    "@ariob/core": ["../../packages/core/index.ts"],
+    "@ariob/ui": ["../../packages/ui/src/index.ts"],
+    "@ariob/ui/*": ["../../packages/ui/src/*"]
+  },
+  "baseUrl": ".",
+  "files": [],
+  "exclude": ["dist", "node_modules"]
+}
