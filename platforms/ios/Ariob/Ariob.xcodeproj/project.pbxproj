@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1024A2152E90869400FA8CF0 /* BasicContainers in Frameworks */ = {isa = PBXBuildFile; productRef = 1024A2142E90869400FA8CF0 /* BasicContainers */; };
+		1024A2172E90869400FA8CF0 /* BitCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 1024A2162E90869400FA8CF0 /* BitCollections */; };
+		1024A2192E90869400FA8CF0 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = 1024A2182E90869400FA8CF0 /* Collections */; };
+		1024A21B2E90869400FA8CF0 /* ContainersPreview in Frameworks */ = {isa = PBXBuildFile; productRef = 1024A21A2E90869400FA8CF0 /* ContainersPreview */; };
+		1024A21D2E90869400FA8CF0 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 1024A21C2E90869400FA8CF0 /* DequeModule */; };
+		1024A2AD2E908A1600FA8CF0 /* ComplexModule in Frameworks */ = {isa = PBXBuildFile; productRef = 1024A2AC2E908A1600FA8CF0 /* ComplexModule */; };
+		1024A2AF2E908A1600FA8CF0 /* Numerics in Frameworks */ = {isa = PBXBuildFile; productRef = 1024A2AE2E908A1600FA8CF0 /* Numerics */; };
+		1024A2B12E908A1600FA8CF0 /* RealModule in Frameworks */ = {isa = PBXBuildFile; productRef = 1024A2B02E908A1600FA8CF0 /* RealModule */; };
 		10388F542E827FD8000C60D5 /* MLX in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F532E827FD8000C60D5 /* MLX */; };
 		10388F562E827FD8000C60D5 /* MLXFFT in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F552E827FD8000C60D5 /* MLXFFT */; };
 		10388F582E827FD8000C60D5 /* MLXFast in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F572E827FD8000C60D5 /* MLXFast */; };
@@ -112,9 +120,14 @@
 			files = (
 				10ADC15F2E8E519800F4CDCD /* MLXMNIST in Frameworks */,
 				10ADC1B12E8E633100F4CDCD /* ContainersPreview in Frameworks */,
+				1024A2AD2E908A1600FA8CF0 /* ComplexModule in Frameworks */,
+				1024A2192E90869400FA8CF0 /* Collections in Frameworks */,
 				10388F5C2E827FD8000C60D5 /* MLXNN in Frameworks */,
 				10388F5A2E827FD8000C60D5 /* MLXLinalg in Frameworks */,
+				1024A21B2E90869400FA8CF0 /* ContainersPreview in Frameworks */,
 				10388F542E827FD8000C60D5 /* MLX in Frameworks */,
+				1024A2B12E908A1600FA8CF0 /* RealModule in Frameworks */,
+				1024A2152E90869400FA8CF0 /* BasicContainers in Frameworks */,
 				10ADC1B92E8E633100F4CDCD /* OrderedCollections in Frameworks */,
 				10ADC1B32E8E633100F4CDCD /* DequeModule in Frameworks */,
 				10ADC1BB2E8E633100F4CDCD /* TrailingElementsModule in Frameworks */,
@@ -124,9 +137,11 @@
 				10ADC1822E8E5FB000F4CDCD /* OrderedCollections in Frameworks */,
 				10ADC15D2E8E519800F4CDCD /* MLXLMCommon in Frameworks */,
 				10ADC1A72E8E631100F4CDCD /* Numerics in Frameworks */,
+				1024A21D2E90869400FA8CF0 /* DequeModule in Frameworks */,
 				10ADBC7B2E89DA4D00F4CDCD /* MLXMNIST in Frameworks */,
 				10ADC1612E8E519800F4CDCD /* MLXVLM in Frameworks */,
 				10ADBC752E89DA4D00F4CDCD /* MLXEmbedders in Frameworks */,
+				1024A2AF2E908A1600FA8CF0 /* Numerics in Frameworks */,
 				10ADC1AF2E8E633100F4CDCD /* Collections in Frameworks */,
 				10ADC1B52E8E633100F4CDCD /* HashTreeCollections in Frameworks */,
 				10ADC1632E8E519800F4CDCD /* StableDiffusion in Frameworks */,
@@ -144,6 +159,7 @@
 				10ADC15B2E8E519800F4CDCD /* MLXLLM in Frameworks */,
 				10ADC1A52E8E631100F4CDCD /* ComplexModule in Frameworks */,
 				10ADC19D2E8E61DC00F4CDCD /* RealModule in Frameworks */,
+				1024A2172E90869400FA8CF0 /* BitCollections in Frameworks */,
 				10ADBC792E89DA4D00F4CDCD /* MLXLMCommon in Frameworks */,
 				148B7F5FFC7AC915D5361BDE /* libPods-Ariob.a in Frameworks */,
 				10ADC1592E8E519800F4CDCD /* MLXEmbedders in Frameworks */,
@@ -924,6 +940,46 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1024A2142E90869400FA8CF0 /* BasicContainers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = BasicContainers;
+		};
+		1024A2162E90869400FA8CF0 /* BitCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = BitCollections;
+		};
+		1024A2182E90869400FA8CF0 /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = Collections;
+		};
+		1024A21A2E90869400FA8CF0 /* ContainersPreview */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = ContainersPreview;
+		};
+		1024A21C2E90869400FA8CF0 /* DequeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = DequeModule;
+		};
+		1024A2AC2E908A1600FA8CF0 /* ComplexModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = ComplexModule;
+		};
+		1024A2AE2E908A1600FA8CF0 /* Numerics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = Numerics;
+		};
+		1024A2B02E908A1600FA8CF0 /* RealModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = RealModule;
+		};
 		10388F532E827FD8000C60D5 /* MLX */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 10388F522E827FD8000C60D5 /* XCRemoteSwiftPackageReference "mlx-swift" */;

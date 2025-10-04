@@ -41,7 +41,7 @@ Reusable component library, layout primitives, and Tailwind tooling shared acros
 npm install @ariob/ui
 ```
 
-### [@ariob/router](./router/) 
+### [@ariob/router](./router/)
 
 TanStack Router code generator that converts `/src/pages` into a fully-typed route tree.
 
@@ -53,6 +53,24 @@ TanStack Router code generator that converts `/src/pages` into a fully-typed rou
 
 ```bash
 npm install @ariob/router
+```
+
+### [@ariob/ai](./ai/)
+
+Native AI integration for on-device language models powered by Apple's MLX framework.
+
+- 🤖 **On-device AI** - Run language models locally with GPU acceleration via MLX
+- 🔌 **Native bridge** - TypeScript bindings to Swift native module via Lynx
+- 📡 **Streaming generation** - Real-time text generation with progress events
+- 🎯 **Dynamic models** - Load any HuggingFace model at runtime without hardcoding
+- 🪝 **React hooks** - `useNativeAIStream`, `useNativeAIModelStatus`, `useModels`
+- 🔄 **Event system** - Global events for model loading and streaming updates
+- ⚡ **Background processing** - Non-blocking operations with `.userInitiated` priority
+
+**Note:** Requires Lynx native runtime and iOS 16.0+ with MLX Swift framework.
+
+```bash
+npm install @ariob/ai
 ```
 
 ## 🏗️ Package Structure
@@ -71,6 +89,25 @@ packages/
     ├── tsconfig.json
     └── README.md
 ```
+
+## 🔗 Lynx Runtime Integration
+
+Several packages require the Lynx native runtime for full functionality:
+
+### Native Module Dependencies
+
+**@ariob/ai** - Requires Lynx native runtime with `LynxContextModule` support:
+- Uses `NativeModules.NativeAIModule` for Swift bridge communication
+- Relies on `LynxContext.sendGlobalEvent` for real-time updates
+- Must be used within a Lynx application environment
+
+The Lynx runtime provides:
+- **Native module registration** - Automatic bridging between JavaScript and native code
+- **Global event system** - Cross-boundary event emission for real-time updates
+- **Context injection** - `LynxContext` provided to modules at initialization
+- **Thread management** - Ensures callbacks execute on main thread for UI updates
+
+See [@ariob/ai documentation](./ai/README.md#-native-module-architecture) for detailed integration guide.
 
 ## 🚀 Getting Started
 
