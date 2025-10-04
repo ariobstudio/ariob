@@ -41,20 +41,6 @@ Reusable component library, layout primitives, and Tailwind tooling shared acros
 npm install @ariob/ui
 ```
 
-### [@ariob/router](./router/)
-
-TanStack Router code generator that converts `/src/pages` into a fully-typed route tree.
-
-- 🗂️ **File-system routing** - Layouts, dynamic segments, and catch-alls supported out of the box
-- 🔁 **Live regeneration** - Watches the filesystem and rewrites `_routes.tsx` on change
-- 🛠️ **Rsbuild plugin** - Drop-in integration for Rspeedy/Lynx projects
-- 📐 **Type-safe output** - Emits router type augmentation for TanStack Router
-- 🧭 **Memory history** - Configured for Lynx native runtime by default
-
-```bash
-npm install @ariob/router
-```
-
 ### [@ariob/ai](./ai/)
 
 Native AI integration for on-device language models powered by Apple's MLX framework.
