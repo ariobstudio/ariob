@@ -5,6 +5,7 @@ import MLX
 import MLXLLM
 import MLXLMCommon
 import MLXVLM
+import UIKit
 
 // MARK: - Event Constants
 
@@ -196,8 +197,23 @@ public final class NativeAIModule: NSObject, LynxContextModule {
             "listLoadedModels": NSStringFromSelector(#selector(listLoadedModels)),
             "isModelLoaded": NSStringFromSelector(#selector(isModelLoaded(_:))),
             "loadModel": NSStringFromSelector(#selector(loadModel(_:callback:))),
+            "loadModelWithConfig": NSStringFromSelector(#selector(loadModelWithConfig(_:callback:))),
+            "registerModel": NSStringFromSelector(#selector(registerModel(_:))),
+            "unregisterModel": NSStringFromSelector(#selector(unregisterModel(_:))),
+            "listRegisteredModels": NSStringFromSelector(#selector(listRegisteredModels)),
             "unloadModel": NSStringFromSelector(#selector(unloadModel(_:))),
-            "generateChat": NSStringFromSelector(#selector(generateChat(_:callback:)))
+            "generateChat": NSStringFromSelector(#selector(generateChat(_:callback:))),
+            "generateWithImage": NSStringFromSelector(#selector(generateWithImage(_:callback:))),
+            "countTokens": NSStringFromSelector(#selector(countTokens(_:callback:))),
+            "encodeText": NSStringFromSelector(#selector(encodeText(_:callback:))),
+            "decodeTokens": NSStringFromSelector(#selector(decodeTokens(_:callback:))),
+            "downloadModel": NSStringFromSelector(#selector(downloadModel(_:callback:))),
+            "pauseModelDownload": NSStringFromSelector(#selector(pauseModelDownload(_:))),
+            "resumeModelDownload": NSStringFromSelector(#selector(resumeModelDownload(_:))),
+            "cancelModelDownload": NSStringFromSelector(#selector(cancelModelDownload(_:))),
+            "deleteModelCache": NSStringFromSelector(#selector(deleteModelCache(_:))),
+            "getModelSize": NSStringFromSelector(#selector(getModelSize(_:))),
+            "checkModelUpdate": NSStringFromSelector(#selector(checkModelUpdate(_:)))
         ]
     }
 
@@ -205,6 +221,7 @@ public final class NativeAIModule: NSObject, LynxContextModule {
 
     private let chatService: MLXChatService
     private let eventEmitter: NativeAIEventEmitter
+    private let downloadManager: ModelDownloadManager
 
     /// One-time runtime bootstrap for MLX configuration.
     ///
@@ -228,11 +245,13 @@ public final class NativeAIModule: NSObject, LynxContextModule {
     // MARK: - Initializers
 
     /// Default initializer without context.
-    public override init() {
+    @objc public override init() {
         _ = Self.runtimeBootstrap
         self.chatService = MLXChatService()
         self.eventEmitter = NativeAIEventEmitter(context: nil)
+        self.downloadManager = ModelDownloadManager()
         super.init()
+        self.downloadManager.setEventEmitter(self.eventEmitter)
     }
 
     /// Primary Lynx entry point with runtime context.
@@ -242,7 +261,9 @@ public final class NativeAIModule: NSObject, LynxContextModule {
         _ = Self.runtimeBootstrap
         self.chatService = MLXChatService()
         self.eventEmitter = NativeAIEventEmitter(context: lynxContext)
+        self.downloadManager = ModelDownloadManager()
         super.init()
+        self.downloadManager.setEventEmitter(self.eventEmitter)
     }
 
     /// Optional Lynx entry point that receives module parameters.
@@ -254,7 +275,9 @@ public final class NativeAIModule: NSObject, LynxContextModule {
         _ = Self.runtimeBootstrap
         self.chatService = MLXChatService()
         self.eventEmitter = NativeAIEventEmitter(context: lynxContext)
+        self.downloadManager = ModelDownloadManager()
         super.init()
+        self.downloadManager.setEventEmitter(self.eventEmitter)
     }
 
     /// Legacy initializer for backward compatibility when no context is supplied.
@@ -264,7 +287,9 @@ public final class NativeAIModule: NSObject, LynxContextModule {
         _ = Self.runtimeBootstrap
         self.chatService = MLXChatService()
         self.eventEmitter = NativeAIEventEmitter(context: nil)
+        self.downloadManager = ModelDownloadManager()
         super.init()
+        self.downloadManager.setEventEmitter(self.eventEmitter)
     }
 
     // MARK: - Model Management
@@ -418,18 +443,29 @@ public final class NativeAIModule: NSObject, LynxContextModule {
                 let request = try ModelLoadRequest.parse(jsonString: requestString)
                 eventEmitter.emitModelEvent([
                     "type": "loading_started",
-                    "model": request.modelName
+                    "model": request.modelName,
+                    "state": "loading",
+                    "percentage": 0,
+                    "message": "Starting model load..."
                 ])
 
                 let summary = try await chatService.loadModel(
                     named: request.modelName
                 ) { progress in
                     let percentage = max(0, min(100, progress * 100.0))
+                    let isDownloading = percentage < 100
+                    let message = isDownloading
+                        ? String(format: "Downloading model files... %.0f%%", percentage)
+                        : "Loading model into memory..."
+
                     eventEmitter.emitModelEvent([
                         "type": "download_progress",
                         "model": request.modelName,
+                        "state": "loading",
                         "progress": progress,
-                        "percentage": percentage
+                        "percentage": percentage,
+                        "message": message,
+                        "phase": isDownloading ? "downloading" : "loading"
                     ])
                 }
 
@@ -437,12 +473,17 @@ public final class NativeAIModule: NSObject, LynxContextModule {
                 eventEmitter.emitModelEvent([
                     "type": "loaded",
                     "model": request.modelName,
+                    "state": "loaded",
+                    "percentage": 100,
+                    "message": "Model ready",
                     "summary": summary.dictionary
                 ])
                 callbackWrapper.send(json: response)
             } catch let error as NativeAIError {
                 var errorEvent: [String: Any] = [
                     "type": "error",
+                    "state": "error",
+                    "percentage": 0,
                     "message": error.localizedDescription
                 ]
                 if let relatedModel = error.relatedModel {
@@ -454,6 +495,8 @@ public final class NativeAIModule: NSObject, LynxContextModule {
                 let runtimeError = NativeAIError.runtime(error.localizedDescription)
                 eventEmitter.emitModelEvent([
                     "type": "error",
+                    "state": "error",
+                    "percentage": 0,
                     "message": error.localizedDescription
                 ])
                 callbackWrapper.send(json: runtimeError.jsonString)
@@ -704,6 +747,978 @@ public final class NativeAIModule: NSObject, LynxContextModule {
             callback.send(json: runtimeError.jsonString)
         }
     }
+
+    // MARK: - Vision-Language Model (VLM) Support
+
+    /// Generates text using a vision-language model with image input.
+    ///
+    /// Processes images alongside text prompts to generate contextual responses.
+    /// Supports both base64-encoded images and image URLs.
+    ///
+    /// - Parameters:
+    ///   - requestJSON: JSON payload with model, prompt, and images
+    ///   - callback: Invoked with generated response
+    ///
+    /// # Request Format
+    /// ```json
+    /// {
+    ///   "model": "vlm-model-name",
+    ///   "prompt": "What's in this image?",
+    ///   "images": [
+    ///     { "base64": "iVBORw0KGgoAAAANS..." },
+    ///     { "url": "https://example.com/image.jpg" }
+    ///   ],
+    ///   "temperature": 0.7,
+    ///   "maxTokens": 256
+    /// }
+    /// ```
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "model": "vlm-model",
+    ///     "content": "I see a cat sitting on a chair.",
+    ///     "duration": 1.23,
+    ///     "imageCount": 2
+    ///   }
+    /// }
+    /// ```
+    ///
+    /// - Important: Model must be a VLM type, not an LLM
+    /// - Note: Images are resized to 1024x1024 for processing
+    public func generateWithImage(_ requestJSON: NSString, callback: @escaping (NSString) -> Void) {
+        let requestString = requestJSON as String
+        let callbackWrapper = NativeAICallback(callback)
+
+        Task(priority: .userInitiated) { [chatService] in
+            do {
+                let request = try VLMGenerationRequest.parse(jsonString: requestString)
+
+                // Verify model is VLM type
+                let model = try chatService.model(named: request.modelName)
+                guard model.type == .vlm else {
+                    throw NativeAIError.invalidRequest("Model '\(request.modelName)' is not a vision-language model")
+                }
+
+                // Convert image inputs to UIImage
+                var images: [UIImage] = []
+                for imageInput in request.images {
+                    if let uiImage = imageInput.toUIImage() {
+                        images.append(uiImage)
+                    } else {
+                        throw NativeAIError.invalidRequest("Failed to load image from provided data")
+                    }
+                }
+
+                guard !images.isEmpty else {
+                    throw NativeAIError.invalidRequest("At least one valid image is required")
+                }
+
+                let startTime = Date()
+
+                // Load model if not already loaded
+                let container = try await chatService.load(model: model)
+
+                // Create user input with images
+                // Convert UIImage to CIImage for MLX processing
+                let userInput = UserInput(
+                    prompt: .text(request.prompt),
+                    images: images.compactMap { uiImage -> UserInput.Image? in
+                        guard let ciImage = CIImage(image: uiImage) else { return nil }
+                        return .ciImage(ciImage)
+                    },
+                    processing: .init(resize: .init(width: 1024, height: 1024))
+                )
+
+                // Generate with VLM
+                // Create parameters as an immutable value to avoid concurrency issues
+                let params: GenerateParameters = {
+                    var p = GenerateParameters(temperature: Float(request.temperature ?? 0.7))
+                    p.maxTokens = request.maxTokens ?? 256
+                    return p
+                }()
+
+                let generated = try await container.perform { (context: ModelContext) in
+                    let preparedInput = try await context.processor.prepare(input: userInput)
+
+                    var fullText = ""
+                    let stream = try MLXLMCommon.generate(
+                        input: preparedInput,
+                        parameters: params,
+                        context: context
+                    )
+
+                    for await generation in stream {
+                        if case .chunk(let chunk) = generation {
+                            fullText.append(chunk)
+                        }
+                    }
+
+                    return fullText
+                }
+
+                let duration = Date().timeIntervalSince(startTime)
+                let payload: [String: Any] = [
+                    "model": request.modelName,
+                    "content": generated.trimmingCharacters(in: .whitespacesAndNewlines),
+                    "duration": duration,
+                    "imageCount": images.count
+                ]
+
+                callbackWrapper.send(json: NativeAIModule.successJSON(payload))
+            } catch let error as NativeAIError {
+                callbackWrapper.send(json: error.jsonString)
+            } catch {
+                let runtimeError = NativeAIError.runtime(error.localizedDescription)
+                callbackWrapper.send(json: runtimeError.jsonString)
+            }
+        }
+    }
+
+    // MARK: - Token Utilities
+
+    /// Counts the number of tokens in the provided text for a specific model.
+    ///
+    /// - Parameter requestJSON: JSON payload with model name and text
+    /// - Parameter callback: Invoked with token count result
+    ///
+    /// # Request Format
+    /// ```json
+    /// {
+    ///   "model": "gemma3:2b",
+    ///   "text": "Hello, world!"
+    /// }
+    /// ```
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "model": "gemma3:2b",
+    ///     "text": "Hello, world!",
+    ///     "tokenCount": 5
+    ///   }
+    /// }
+    /// ```
+    public func countTokens(_ requestJSON: NSString, callback: @escaping (NSString) -> Void) {
+        let requestString = requestJSON as String
+        let callbackWrapper = NativeAICallback(callback)
+
+        Task { [chatService] in
+            do {
+                let request = try TokenCountRequest.parse(jsonString: requestString)
+
+                guard chatService.isModelLoaded(request.modelName) else {
+                    callbackWrapper.send(json: NativeAIError.invalidRequest("Model '\(request.modelName)' is not loaded. Load the model first.").jsonString)
+                    return
+                }
+
+                let model = try chatService.model(named: request.modelName)
+                guard let container = chatService.cachedContainer(for: model.name) else {
+                    callbackWrapper.send(json: NativeAIError.modelNotFound(request.modelName).jsonString)
+                    return
+                }
+
+                let tokenCount = try await container.perform { (context: ModelContext) in
+                    context.tokenizer.encode(text: request.text).count
+                }
+
+                let payload: [String: Any] = [
+                    "model": request.modelName,
+                    "text": request.text,
+                    "tokenCount": tokenCount
+                ]
+
+                callbackWrapper.send(json: NativeAIModule.successJSON(payload))
+            } catch let error as NativeAIError {
+                callbackWrapper.send(json: error.jsonString)
+            } catch {
+                callbackWrapper.send(json: NativeAIError.runtime(error.localizedDescription).jsonString)
+            }
+        }
+    }
+
+    /// Encodes text into token IDs using the model's tokenizer.
+    ///
+    /// - Parameter requestJSON: JSON payload with model name and text
+    /// - Parameter callback: Invoked with encoded tokens result
+    ///
+    /// # Request Format
+    /// ```json
+    /// {
+    ///   "model": "gemma3:2b",
+    ///   "text": "Hello, world!"
+    /// }
+    /// ```
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "model": "gemma3:2b",
+    ///     "text": "Hello, world!",
+    ///     "tokens": [15339, 11, 1917, 0]
+    ///   }
+    /// }
+    /// ```
+    public func encodeText(_ requestJSON: NSString, callback: @escaping (NSString) -> Void) {
+        let requestString = requestJSON as String
+        let callbackWrapper = NativeAICallback(callback)
+
+        Task { [chatService] in
+            do {
+                let request = try TokenEncodeRequest.parse(jsonString: requestString)
+
+                guard chatService.isModelLoaded(request.modelName) else {
+                    callbackWrapper.send(json: NativeAIError.invalidRequest("Model '\(request.modelName)' is not loaded. Load the model first.").jsonString)
+                    return
+                }
+
+                let model = try chatService.model(named: request.modelName)
+                guard let container = chatService.cachedContainer(for: model.name) else {
+                    callbackWrapper.send(json: NativeAIError.modelNotFound(request.modelName).jsonString)
+                    return
+                }
+
+                let tokens = try await container.perform { (context: ModelContext) in
+                    context.tokenizer.encode(text: request.text)
+                }
+
+                let payload: [String: Any] = [
+                    "model": request.modelName,
+                    "text": request.text,
+                    "tokens": tokens
+                ]
+
+                callbackWrapper.send(json: NativeAIModule.successJSON(payload))
+            } catch let error as NativeAIError {
+                callbackWrapper.send(json: error.jsonString)
+            } catch {
+                callbackWrapper.send(json: NativeAIError.runtime(error.localizedDescription).jsonString)
+            }
+        }
+    }
+
+    /// Decodes token IDs back into text using the model's tokenizer.
+    ///
+    /// - Parameter requestJSON: JSON payload with model name and token array
+    /// - Parameter callback: Invoked with decoded text result
+    ///
+    /// # Request Format
+    /// ```json
+    /// {
+    ///   "model": "gemma3:2b",
+    ///   "tokens": [15339, 11, 1917, 0]
+    /// }
+    /// ```
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "model": "gemma3:2b",
+    ///     "tokens": [15339, 11, 1917, 0],
+    ///     "text": "Hello, world!"
+    ///   }
+    /// }
+    /// ```
+    public func decodeTokens(_ requestJSON: NSString, callback: @escaping (NSString) -> Void) {
+        let requestString = requestJSON as String
+        let callbackWrapper = NativeAICallback(callback)
+
+        Task { [chatService] in
+            do {
+                let request = try TokenDecodeRequest.parse(jsonString: requestString)
+
+                guard chatService.isModelLoaded(request.modelName) else {
+                    callbackWrapper.send(json: NativeAIError.invalidRequest("Model '\(request.modelName)' is not loaded. Load the model first.").jsonString)
+                    return
+                }
+
+                let model = try chatService.model(named: request.modelName)
+                guard let container = chatService.cachedContainer(for: model.name) else {
+                    callbackWrapper.send(json: NativeAIError.modelNotFound(request.modelName).jsonString)
+                    return
+                }
+
+                let text = try await container.perform { (context: ModelContext) in
+                    context.tokenizer.decode(tokens: request.tokens)
+                }
+
+                let payload: [String: Any] = [
+                    "model": request.modelName,
+                    "tokens": request.tokens,
+                    "text": text
+                ]
+
+                callbackWrapper.send(json: NativeAIModule.successJSON(payload))
+            } catch let error as NativeAIError {
+                callbackWrapper.send(json: error.jsonString)
+            } catch {
+                callbackWrapper.send(json: NativeAIError.runtime(error.localizedDescription).jsonString)
+            }
+        }
+    }
+
+    // MARK: - Advanced Model Management
+
+    /// Downloads a model with progress tracking.
+    ///
+    /// Initiates background download of model files from Hugging Face.
+    /// Emits progress events throughout the download.
+    ///
+    /// - Parameters:
+    ///   - requestJSON: JSON payload with model name
+    ///   - callback: Invoked with download completion status
+    ///
+    /// # Request Format
+    /// ```json
+    /// {
+    ///   "model": "gemma3:2b"
+    /// }
+    /// ```
+    ///
+    /// # Progress Events
+    /// Emits `native_ai:model` events:
+    /// - `download_started`: Download initiated
+    /// - `download_progress`: Progress updates with percentage
+    /// - `download_complete`: Download finished
+    /// - `download_error`: Download failed
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "model": "gemma3:2b",
+    ///     "status": "downloaded"
+    ///   }
+    /// }
+    /// ```
+    public func downloadModel(_ requestJSON: NSString, callback: @escaping (NSString) -> Void) {
+        let requestString = requestJSON as String
+        print("[NativeAIModule.downloadModel] Received request:", requestString)
+        let callbackWrapper = NativeAICallback(callback)
+
+        Task(priority: .userInitiated) { [chatService, downloadManager, eventEmitter] in
+            do {
+                print("[NativeAIModule.downloadModel] Parsing request...")
+                let request = try ModelDownloadRequest.parse(jsonString: requestString)
+                print("[NativeAIModule.downloadModel] Parsed model name:", request.modelName)
+
+                print("[NativeAIModule.downloadModel] Looking up model in registry...")
+                let model = try chatService.model(named: request.modelName)
+                print("[NativeAIModule.downloadModel] Found model:", model.name)
+
+                print("[NativeAIModule.downloadModel] Emitting download_started event")
+                eventEmitter.emitModelEvent([
+                    "type": "download_started",
+                    "model": request.modelName
+                ])
+
+                print("[NativeAIModule.downloadModel] Starting download...")
+                try await downloadManager.downloadModel(
+                    model: model,
+                    hub: .default
+                )
+                print("[NativeAIModule.downloadModel] Download complete")
+
+                eventEmitter.emitModelEvent([
+                    "type": "download_complete",
+                    "model": request.modelName
+                ])
+
+                let payload: [String: Any] = [
+                    "model": request.modelName,
+                    "status": "downloaded"
+                ]
+                print("[NativeAIModule.downloadModel] Sending success callback")
+                callbackWrapper.send(json: NativeAIModule.successJSON(payload))
+            } catch let error as NativeAIError {
+                print("[NativeAIModule.downloadModel] NativeAIError:", error.message)
+                eventEmitter.emitModelEvent([
+                    "type": "download_error",
+                    "model": error.relatedModel ?? "unknown",
+                    "message": error.message
+                ])
+                callbackWrapper.send(json: error.jsonString)
+            } catch {
+                print("[NativeAIModule.downloadModel] Unexpected error:", error.localizedDescription)
+                let runtimeError = NativeAIError.runtime(error.localizedDescription)
+                eventEmitter.emitModelEvent([
+                    "type": "download_error",
+                    "message": error.localizedDescription
+                ])
+                callbackWrapper.send(json: runtimeError.jsonString)
+            }
+        }
+    }
+
+    /// Pauses an active model download.
+    ///
+    /// - Parameter modelName: Model identifier
+    /// - Returns: JSON string indicating success or failure
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "model": "gemma3:2b",
+    ///     "status": "paused"
+    ///   }
+    /// }
+    /// ```
+    public func pauseModelDownload(_ modelName: NSString) -> NSString {
+        let name = (modelName as String).trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else {
+            return NativeAIError.invalidRequest("Model name cannot be empty").jsonString as NSString
+        }
+
+        let paused = downloadManager.pauseDownload(for: name)
+        guard paused else {
+            return NativeAIError.invalidRequest("No active download found for model '\(name)'").jsonString as NSString
+        }
+
+        let payload: [String: Any] = [
+            "model": name,
+            "status": "paused"
+        ]
+        return NativeAIModule.successJSON(payload) as NSString
+    }
+
+    /// Resumes a paused model download.
+    ///
+    /// - Parameter modelName: Model identifier
+    /// - Returns: JSON string indicating success or failure
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "model": "gemma3:2b",
+    ///     "status": "resumed"
+    ///   }
+    /// }
+    /// ```
+    public func resumeModelDownload(_ modelName: NSString) -> NSString {
+        let name = (modelName as String).trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else {
+            return NativeAIError.invalidRequest("Model name cannot be empty").jsonString as NSString
+        }
+
+        let resumed = downloadManager.resumeDownload(for: name)
+        guard resumed else {
+            return NativeAIError.invalidRequest("No paused download found for model '\(name)'").jsonString as NSString
+        }
+
+        let payload: [String: Any] = [
+            "model": name,
+            "status": "resumed"
+        ]
+        return NativeAIModule.successJSON(payload) as NSString
+    }
+
+    /// Cancels an active or paused model download.
+    ///
+    /// - Parameter modelName: Model identifier
+    /// - Returns: JSON string indicating success or failure
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "model": "gemma3:2b",
+    ///     "status": "cancelled"
+    ///   }
+    /// }
+    /// ```
+    public func cancelModelDownload(_ modelName: NSString) -> NSString {
+        let name = (modelName as String).trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else {
+            return NativeAIError.invalidRequest("Model name cannot be empty").jsonString as NSString
+        }
+
+        let cancelled = downloadManager.cancelDownload(for: name)
+        guard cancelled else {
+            return NativeAIError.invalidRequest("No active download found for model '\(name)'").jsonString as NSString
+        }
+
+        let payload: [String: Any] = [
+            "model": name,
+            "status": "cancelled"
+        ]
+        return NativeAIModule.successJSON(payload) as NSString
+    }
+
+    /// Deletes cached model files from disk.
+    ///
+    /// - Parameter modelName: Model identifier
+    /// - Returns: JSON string indicating success or failure
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "model": "gemma3:2b",
+    ///     "status": "deleted",
+    ///     "freedSpace": 1234567890
+    ///   }
+    /// }
+    /// ```
+    public func deleteModelCache(_ modelName: NSString) -> NSString {
+        let name = (modelName as String).trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else {
+            return NativeAIError.invalidRequest("Model name cannot be empty").jsonString as NSString
+        }
+
+        do {
+            let model = try chatService.model(named: name)
+
+            // Unload model first if loaded
+            _ = chatService.unloadModel(named: name)
+
+            // Get cache directory and calculate size
+            let cacheDir = model.configuration.details.cacheDirectory
+            guard let cachePath = cacheDir else {
+                return NativeAIError.invalidRequest("Model cache directory not found").jsonString as NSString
+            }
+
+            let cacheURL = URL(fileURLWithPath: cachePath)
+            let fileManager = FileManager.default
+
+            var freedSpace: Int64 = 0
+            if fileManager.fileExists(atPath: cachePath) {
+                freedSpace = Self.calculateDirectorySize(at: cacheURL)
+                try fileManager.removeItem(at: cacheURL)
+            }
+
+            let payload: [String: Any] = [
+                "model": name,
+                "status": "deleted",
+                "freedSpace": freedSpace
+            ]
+            return NativeAIModule.successJSON(payload) as NSString
+        } catch let error as NativeAIError {
+            return error.jsonString as NSString
+        } catch {
+            return NativeAIError.runtime(error.localizedDescription).jsonString as NSString
+        }
+    }
+
+    /// Gets the disk space used by a model's cached files.
+    ///
+    /// - Parameter modelName: Model identifier
+    /// - Returns: JSON string with size information
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "model": "gemma3:2b",
+    ///     "sizeBytes": 1234567890,
+    ///     "sizeMB": 1177.38,
+    ///     "sizeGB": 1.15,
+    ///     "cached": true
+    ///   }
+    /// }
+    /// ```
+    public func getModelSize(_ modelName: NSString) -> NSString {
+        let name = (modelName as String).trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else {
+            return NativeAIError.invalidRequest("Model name cannot be empty").jsonString as NSString
+        }
+
+        do {
+            let model = try chatService.model(named: name)
+            let cacheDir = model.configuration.details.cacheDirectory
+
+            guard let cachePath = cacheDir else {
+                let payload: [String: Any] = [
+                    "model": name,
+                    "sizeBytes": 0,
+                    "sizeMB": 0.0,
+                    "sizeGB": 0.0,
+                    "cached": false
+                ]
+                return NativeAIModule.successJSON(payload) as NSString
+            }
+
+            let cacheURL = URL(fileURLWithPath: cachePath)
+            let fileManager = FileManager.default
+
+            let cached = fileManager.fileExists(atPath: cachePath)
+            let sizeBytes = cached ? Self.calculateDirectorySize(at: cacheURL) : 0
+            let sizeMB = Double(sizeBytes) / 1_048_576.0
+            let sizeGB = Double(sizeBytes) / 1_073_741_824.0
+
+            let payload: [String: Any] = [
+                "model": name,
+                "sizeBytes": sizeBytes,
+                "sizeMB": sizeMB,
+                "sizeGB": sizeGB,
+                "cached": cached
+            ]
+            return NativeAIModule.successJSON(payload) as NSString
+        } catch let error as NativeAIError {
+            return error.jsonString as NSString
+        } catch {
+            return NativeAIError.runtime(error.localizedDescription).jsonString as NSString
+        }
+    }
+
+    /// Checks if a newer version of the model is available.
+    ///
+    /// - Parameter modelName: Model identifier
+    /// - Returns: JSON string with update information
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "model": "gemma3:2b",
+    ///     "currentRevision": "abc123",
+    ///     "updateAvailable": false
+    ///   }
+    /// }
+    /// ```
+    public func checkModelUpdate(_ modelName: NSString) -> NSString {
+        let name = (modelName as String).trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else {
+            return NativeAIError.invalidRequest("Model name cannot be empty").jsonString as NSString
+        }
+
+        do {
+            let model = try chatService.model(named: name)
+            let currentRevision = model.configuration.details.revision ?? "main"
+
+            // Note: Actual update checking would require querying Hugging Face API
+            // For now, we return current revision info
+            let payload: [String: Any] = [
+                "model": name,
+                "currentRevision": currentRevision,
+                "updateAvailable": false
+            ]
+            return NativeAIModule.successJSON(payload) as NSString
+        } catch let error as NativeAIError {
+            return error.jsonString as NSString
+        } catch {
+            return NativeAIError.runtime(error.localizedDescription).jsonString as NSString
+        }
+    }
+
+    // MARK: - Dynamic Model Registration
+
+    /// Registers a new model configuration dynamically from TypeScript.
+    ///
+    /// This method allows TypeScript/JavaScript code to register models at runtime
+    /// without requiring Swift code changes or recompilation. Registered models
+    /// are stored in memory and can be loaded like built-in models.
+    ///
+    /// - Parameter requestJSON: JSON payload with model configuration
+    /// - Returns: JSON string indicating success or failure
+    ///
+    /// # Request Format
+    /// ```json
+    /// {
+    ///   "name": "My Custom Model",
+    ///   "modelId": "mlx-community/Llama-3.2-1B-Instruct-4bit",
+    ///   "type": "llm",
+    ///   "revision": "main",
+    ///   "extraEOSTokens": ["</s>"],
+    ///   "defaultPrompt": "You are a helpful assistant",
+    ///   "tokenizerId": "optional-tokenizer-id",
+    ///   "overrideTokenizer": "PreTrainedTokenizer"
+    /// }
+    /// ```
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "name": "My Custom Model",
+    ///     "status": "registered",
+    ///     "configuration": { ... }
+    ///   }
+    /// }
+    /// ```
+    ///
+    /// # Error Response
+    /// ```json
+    /// {
+    ///   "success": false,
+    ///   "message": "Model with name 'My Custom Model' is already registered"
+    /// }
+    /// ```
+    ///
+    /// - Important: Model name must be unique across both built-in and registered models
+    /// - Note: Registered models persist only in memory and are lost on app restart
+    public func registerModel(_ requestJSON: NSString) -> NSString {
+        let requestString = requestJSON as String
+
+        do {
+            let request = try ModelConfigurationRequest.parse(jsonString: requestString)
+            let lmModel = request.toLMModel()
+
+            // Check if model already exists (either built-in or registered)
+            if (try? chatService.model(named: lmModel.name)) != nil {
+                return NativeAIError.invalidRequest("Model with name '\(lmModel.name)' is already registered or exists as a built-in model").jsonString as NSString
+            }
+
+            // Register the model
+            chatService.registerModel(lmModel)
+
+            let payload: [String: Any] = [
+                "name": lmModel.name,
+                "status": "registered",
+                "configuration": lmModel.toDictionary()
+            ]
+            return NativeAIModule.successJSON(payload) as NSString
+        } catch let error as NativeAIError {
+            return error.jsonString as NSString
+        } catch {
+            return NativeAIError.runtime(error.localizedDescription).jsonString as NSString
+        }
+    }
+
+    /// Unregisters a dynamically registered model.
+    ///
+    /// Removes a model from the dynamic registry. Built-in models cannot be unregistered.
+    /// If the model is currently loaded, it will be unloaded first.
+    ///
+    /// - Parameter modelName: Name of the model to unregister
+    /// - Returns: JSON string indicating success or failure
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "model": "My Custom Model",
+    ///     "status": "unregistered"
+    ///   }
+    /// }
+    /// ```
+    ///
+    /// # Error Response
+    /// ```json
+    /// {
+    ///   "success": false,
+    ///   "message": "Model 'My Custom Model' is not registered or is a built-in model"
+    /// }
+    /// ```
+    public func unregisterModel(_ modelName: NSString) -> NSString {
+        let name = (modelName as String).trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else {
+            return NativeAIError.invalidRequest("Model name cannot be empty").jsonString as NSString
+        }
+
+        // Unload first if loaded
+        _ = chatService.unloadModel(named: name)
+
+        let unregistered = chatService.unregisterModel(named: name)
+        guard unregistered else {
+            return NativeAIError.invalidRequest("Model '\(name)' is not registered or is a built-in model").jsonString as NSString
+        }
+
+        let payload: [String: Any] = [
+            "model": name,
+            "status": "unregistered"
+        ]
+        return NativeAIModule.successJSON(payload) as NSString
+    }
+
+    /// Lists all dynamically registered models.
+    ///
+    /// Returns metadata for models that were registered at runtime via `registerModel`.
+    /// Does not include built-in models (use `listAvailableModels` for all models).
+    ///
+    /// - Returns: JSON string with array of registered models
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "models": [
+    ///       {
+    ///         "name": "My Custom Model",
+    ///         "type": "llm",
+    ///         "configuration": { ... }
+    ///       }
+    ///     ]
+    ///   }
+    /// }
+    /// ```
+    public func listRegisteredModels() -> NSString {
+        let models = chatService.registeredModels.map { $0.toDictionary() }
+        let payload: [String: Any] = [
+            "models": models
+        ]
+        return NativeAIModule.successJSON(payload) as NSString
+    }
+
+    /// Loads a model with inline configuration (without pre-registration).
+    ///
+    /// This method allows loading a model by providing its full configuration
+    /// in the request, bypassing the need to call `registerModel` first.
+    /// Useful for one-off model loads or testing.
+    ///
+    /// - Parameters:
+    ///   - requestJSON: JSON payload with model configuration
+    ///   - callback: Invoked with load completion status
+    ///
+    /// # Request Format
+    /// ```json
+    /// {
+    ///   "name": "Temporary Model",
+    ///   "modelId": "mlx-community/model-repo",
+    ///   "type": "llm",
+    ///   "revision": "main",
+    ///   "extraEOSTokens": ["</s>"],
+    ///   "defaultPrompt": "Hello"
+    /// }
+    /// ```
+    ///
+    /// # Success Response
+    /// ```json
+    /// {
+    ///   "success": true,
+    ///   "data": {
+    ///     "name": "Temporary Model",
+    ///     "status": "loaded",
+    ///     "loadedAt": 1704067200,
+    ///     ...
+    ///   }
+    /// }
+    /// ```
+    ///
+    /// # Progress Events
+    /// Emits `native_ai:model` events during loading:
+    /// - `loading_started`: Load initiated
+    /// - `download_progress`: Download progress (0-100%)
+    /// - `loaded`: Model successfully loaded
+    /// - `error`: Load failed
+    ///
+    /// - Important: Model is automatically registered if not already present
+    /// - Note: Runs on `.userInitiated` priority background thread
+    public func loadModelWithConfig(_ requestJSON: NSString, callback: @escaping (NSString) -> Void) {
+        let requestString = requestJSON as String
+        let callbackWrapper = NativeAICallback(callback)
+
+        Task(priority: .userInitiated) { [chatService, eventEmitter] in
+            do {
+                let request = try ModelConfigurationRequest.parse(jsonString: requestString)
+                let lmModel = request.toLMModel()
+
+                // Register model if not already present
+                if (try? chatService.model(named: lmModel.name)) == nil {
+                    chatService.registerModel(lmModel)
+                }
+
+                eventEmitter.emitModelEvent([
+                    "type": "loading_started",
+                    "model": lmModel.name,
+                    "state": "loading",
+                    "percentage": 0,
+                    "message": "Starting model load..."
+                ])
+
+                let summary = try await chatService.loadModel(
+                    named: lmModel.name
+                ) { progress in
+                    let percentage = max(0, min(100, progress * 100.0))
+                    let isDownloading = percentage < 100
+                    let message = isDownloading
+                        ? String(format: "Downloading model files... %.0f%%", percentage)
+                        : "Loading model into memory..."
+
+                    eventEmitter.emitModelEvent([
+                        "type": "download_progress",
+                        "model": lmModel.name,
+                        "state": "loading",
+                        "progress": progress,
+                        "percentage": percentage,
+                        "message": message,
+                        "phase": isDownloading ? "downloading" : "loading"
+                    ])
+                }
+
+                let response = NativeAIModule.successJSON(summary.dictionary)
+                eventEmitter.emitModelEvent([
+                    "type": "loaded",
+                    "model": lmModel.name,
+                    "state": "loaded",
+                    "percentage": 100,
+                    "message": "Model ready",
+                    "summary": summary.dictionary
+                ])
+                callbackWrapper.send(json: response)
+            } catch let error as NativeAIError {
+                var errorEvent: [String: Any] = [
+                    "type": "error",
+                    "state": "error",
+                    "percentage": 0,
+                    "message": error.localizedDescription
+                ]
+                if let relatedModel = error.relatedModel {
+                    errorEvent["model"] = relatedModel
+                }
+                eventEmitter.emitModelEvent(errorEvent)
+                callbackWrapper.send(json: error.jsonString)
+            } catch {
+                let runtimeError = NativeAIError.runtime(error.localizedDescription)
+                eventEmitter.emitModelEvent([
+                    "type": "error",
+                    "state": "error",
+                    "percentage": 0,
+                    "message": error.localizedDescription
+                ])
+                callbackWrapper.send(json: runtimeError.jsonString)
+            }
+        }
+    }
+
+    // MARK: - Helper Methods
+
+    /// Calculates total size of a directory and its contents.
+    ///
+    /// - Parameter url: Directory URL to measure
+    /// - Returns: Total size in bytes
+    private static func calculateDirectorySize(at url: URL) -> Int64 {
+        let fileManager = FileManager.default
+        var totalSize: Int64 = 0
+
+        guard let enumerator = fileManager.enumerator(
+            at: url,
+            includingPropertiesForKeys: [.fileSizeKey, .isRegularFileKey]
+        ) else {
+            return 0
+        }
+
+        for case let fileURL as URL in enumerator {
+            guard let resourceValues = try? fileURL.resourceValues(forKeys: [.isRegularFileKey, .fileSizeKey]),
+                  let isRegularFile = resourceValues.isRegularFile,
+                  isRegularFile,
+                  let fileSize = resourceValues.fileSize else {
+                continue
+            }
+            totalSize += Int64(fileSize)
+        }
+
+        return totalSize
+    }
 }
 
 // MARK: - JSON Helpers
@@ -928,6 +1943,291 @@ private struct ChatGenerationRequest {
     }
 }
 
+/// VLM generation request with image support.
+@available(iOS 16.0, *)
+private struct VLMGenerationRequest {
+    let modelName: String
+    let prompt: String
+    let images: [ImageInput]
+    let temperature: Double?
+    let maxTokens: Int?
+
+    /// Parses JSON string into VLM generation request.
+    ///
+    /// - Parameter jsonString: JSON with model, prompt, images, and optional parameters
+    /// - Returns: Parsed request
+    /// - Throws: `NativeAIError` if parsing fails
+    static func parse(jsonString: String) throws -> VLMGenerationRequest {
+        guard let data = jsonString.data(using: .utf8),
+              let root = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            throw NativeAIError.invalidJSON
+        }
+
+        guard let modelName = (root["model"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !modelName.isEmpty else {
+            throw NativeAIError.invalidRequest("Missing or empty model field")
+        }
+
+        guard let prompt = root["prompt"] as? String, !prompt.isEmpty else {
+            throw NativeAIError.invalidRequest("Missing or empty prompt field")
+        }
+
+        guard let imagesArray = root["images"] as? [[String: Any]], !imagesArray.isEmpty else {
+            throw NativeAIError.invalidRequest("Missing images array")
+        }
+
+        let images = try imagesArray.map { imageDict -> ImageInput in
+            if let base64String = imageDict["base64"] as? String {
+                return .base64(base64String)
+            } else if let urlString = imageDict["url"] as? String {
+                return .url(urlString)
+            } else {
+                throw NativeAIError.invalidRequest("Each image must have either 'base64' or 'url' field")
+            }
+        }
+
+        let temperature = root["temperature"] as? Double
+        let maxTokens = root["maxTokens"] as? Int
+
+        return VLMGenerationRequest(
+            modelName: modelName,
+            prompt: prompt,
+            images: images,
+            temperature: temperature,
+            maxTokens: maxTokens
+        )
+    }
+}
+
+/// Image input format for VLM requests.
+@available(iOS 16.0, *)
+private enum ImageInput {
+    case base64(String)
+    case url(String)
+
+    /// Converts image input to UIImage.
+    ///
+    /// - Returns: UIImage if conversion succeeds, nil otherwise
+    func toUIImage() -> UIImage? {
+        switch self {
+        case .base64(let base64String):
+            guard let imageData = Data(base64Encoded: base64String) else {
+                return nil
+            }
+            return UIImage(data: imageData)
+        case .url(let urlString):
+            guard let url = URL(string: urlString),
+                  let imageData = try? Data(contentsOf: url) else {
+                return nil
+            }
+            return UIImage(data: imageData)
+        }
+    }
+}
+
+/// Token count request payload.
+@available(iOS 16.0, *)
+private struct TokenCountRequest {
+    let modelName: String
+    let text: String
+
+    static func parse(jsonString: String) throws -> TokenCountRequest {
+        guard let data = jsonString.data(using: .utf8),
+              let root = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            throw NativeAIError.invalidJSON
+        }
+
+        guard let modelName = (root["model"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !modelName.isEmpty else {
+            throw NativeAIError.invalidRequest("Missing or empty model field")
+        }
+
+        guard let text = root["text"] as? String else {
+            throw NativeAIError.invalidRequest("Missing text field")
+        }
+
+        return TokenCountRequest(modelName: modelName, text: text)
+    }
+}
+
+/// Token encode request payload.
+@available(iOS 16.0, *)
+private struct TokenEncodeRequest {
+    let modelName: String
+    let text: String
+
+    static func parse(jsonString: String) throws -> TokenEncodeRequest {
+        guard let data = jsonString.data(using: .utf8),
+              let root = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            throw NativeAIError.invalidJSON
+        }
+
+        guard let modelName = (root["model"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !modelName.isEmpty else {
+            throw NativeAIError.invalidRequest("Missing or empty model field")
+        }
+
+        guard let text = root["text"] as? String else {
+            throw NativeAIError.invalidRequest("Missing text field")
+        }
+
+        return TokenEncodeRequest(modelName: modelName, text: text)
+    }
+}
+
+/// Token decode request payload.
+@available(iOS 16.0, *)
+private struct TokenDecodeRequest {
+    let modelName: String
+    let tokens: [Int]
+
+    static func parse(jsonString: String) throws -> TokenDecodeRequest {
+        guard let data = jsonString.data(using: .utf8),
+              let root = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            throw NativeAIError.invalidJSON
+        }
+
+        guard let modelName = (root["model"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !modelName.isEmpty else {
+            throw NativeAIError.invalidRequest("Missing or empty model field")
+        }
+
+        guard let tokens = root["tokens"] as? [Int] else {
+            throw NativeAIError.invalidRequest("Missing tokens array")
+        }
+
+        return TokenDecodeRequest(modelName: modelName, tokens: tokens)
+    }
+}
+
+/// Model download request payload.
+@available(iOS 16.0, *)
+private struct ModelDownloadRequest {
+    let modelName: String
+
+    static func parse(jsonString: String) throws -> ModelDownloadRequest {
+        guard let data = jsonString.data(using: .utf8),
+              let root = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            throw NativeAIError.invalidJSON
+        }
+
+        guard let modelName = (root["model"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !modelName.isEmpty else {
+            throw NativeAIError.invalidRequest("Missing or empty model field")
+        }
+
+        return ModelDownloadRequest(modelName: modelName)
+    }
+}
+
+/// Model configuration request for dynamic model registration.
+///
+/// Represents a complete model configuration sent from TypeScript/JavaScript
+/// to register a new model dynamically without requiring Swift code changes.
+///
+/// # Request Format
+/// ```json
+/// {
+///   "name": "Custom Model Name",
+///   "modelId": "mlx-community/model-repo-id",
+///   "type": "llm",
+///   "revision": "main",
+///   "extraEOSTokens": ["</s>", "<|endoftext|>"],
+///   "defaultPrompt": "You are a helpful assistant",
+///   "tokenizerID": "optional-tokenizer-id",
+///   "overrideTokenizer": "PreTrainedTokenizer"
+/// }
+/// ```
+@available(iOS 16.0, *)
+private struct ModelConfigurationRequest {
+    let name: String
+    let modelId: String
+    let type: LMModel.ModelType
+    let revision: String
+    let extraEOSTokens: Set<String>
+    let defaultPrompt: String
+    let tokenizerId: String?
+    let overrideTokenizer: String?
+
+    /// Parses JSON string into model configuration request.
+    ///
+    /// - Parameter jsonString: JSON with model configuration fields
+    /// - Returns: Parsed configuration request
+    /// - Throws: `NativeAIError` if parsing fails or required fields are missing
+    static func parse(jsonString: String) throws -> ModelConfigurationRequest {
+        guard let data = jsonString.data(using: .utf8),
+              let root = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            throw NativeAIError.invalidJSON
+        }
+
+        // Required: name
+        guard let name = (root["name"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !name.isEmpty else {
+            throw NativeAIError.invalidRequest("Missing or empty 'name' field")
+        }
+
+        // Required: modelId (HuggingFace repo ID)
+        guard let modelId = (root["modelId"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !modelId.isEmpty else {
+            throw NativeAIError.invalidRequest("Missing or empty 'modelId' field")
+        }
+
+        // Required: type (llm or vlm)
+        guard let typeString = (root["type"] as? String)?.lowercased(),
+              let modelType = LMModel.ModelType(rawValue: typeString) else {
+            throw NativeAIError.invalidRequest("Invalid or missing 'type' field. Must be 'llm' or 'vlm'")
+        }
+
+        // Optional fields with defaults
+        let revision = (root["revision"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "main"
+        let defaultPrompt = (root["defaultPrompt"] as? String) ?? "Hello"
+        let tokenizerId = root["tokenizerId"] as? String
+        let overrideTokenizer = root["overrideTokenizer"] as? String
+
+        // Optional: extraEOSTokens array
+        var extraEOSTokens = Set<String>()
+        if let eosArray = root["extraEOSTokens"] as? [String] {
+            extraEOSTokens = Set(eosArray.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty })
+        }
+
+        return ModelConfigurationRequest(
+            name: name,
+            modelId: modelId,
+            type: modelType,
+            revision: revision,
+            extraEOSTokens: extraEOSTokens,
+            defaultPrompt: defaultPrompt,
+            tokenizerId: tokenizerId,
+            overrideTokenizer: overrideTokenizer
+        )
+    }
+
+    /// Converts request to MLX ModelConfiguration.
+    ///
+    /// - Returns: ModelConfiguration instance ready for MLX loading
+    func toModelConfiguration() -> ModelConfiguration {
+        return ModelConfiguration(
+            id: modelId,
+            revision: revision,
+            tokenizerId: tokenizerId,
+            overrideTokenizer: overrideTokenizer,
+            defaultPrompt: defaultPrompt,
+            extraEOSTokens: extraEOSTokens
+        )
+    }
+
+    /// Converts request to LMModel.
+    ///
+    /// - Returns: LMModel instance for registration
+    func toLMModel() -> LMModel {
+        return LMModel(
+            name: name,
+            configuration: toModelConfiguration(),
+            type: type
+        )
+    }
+}
+
 // MARK: - Chat Messages
 
 /// Represents a single chat message with role and content.
@@ -1005,46 +2305,83 @@ extension Array where Element == ChatMessage {
 final class MLXChatService: @unchecked Sendable {
 
     /// Default model name used when none specified.
-    static let defaultModelName: String = "Qwen 3"
+    static let defaultModelName: String = "Qwen 3B"
 
     /// Registry of available models with their configurations.
     let availableModels: [LMModel] = [
+        // Ultra-small models (0.5B-1B) - Best for basic tasks
         LMModel(
-            name: "Qwen 3",
-            configuration: LLMRegistry.qwen3_0_6b_4bit,
-            type: .llm),
-        LMModel(
-            name: "Gemma 3",
+            name: "Qwen 0.5B",
             configuration: ModelConfiguration(
-                id: "mlx-community/gemma-3-1b-it-qat-4bit",
-                extraEOSTokens: ["<end_of_turn>"],
-            ),
+                id: "mlx-community/Qwen2.5-0.5B-Instruct-4bit"),
             type: .llm),
         LMModel(
-            name: "DeepSeek R1",
+            name: "TinyLlama 1.1B",
+            configuration: ModelConfiguration(
+                id: "mlx-community/JOSIE-TinyLlama-1.1B-32k-base-4bit"),
+            type: .llm),
+
+        // Small models (1B-2B) - Balanced performance
+        LMModel(
+            name: "Qwen 1.5B",
+            configuration: ModelConfiguration(
+                id: "mlx-community/Qwen2.5-1.5B-Instruct-4bit"),
+            type: .llm),
+        LMModel(
+            name: "DeepSeek 1.5B",
             configuration: ModelConfiguration(
                 id: "mlx-community/DeepSeek-R1-Distill-Qwen-1.5B-4bit"),
             type: .llm),
         LMModel(
-            name: "Qwen3 Thinking (2)",
+            name: "Gemma 2B",
             configuration: ModelConfiguration(
-                id: "lmstudio-community/Qwen3-4B-Thinking-2507-MLX-4bit"),
+                id: "mlx-community/gemma-2-2b-it-4bit"),
+            type: .llm),
+
+        // Medium models (3B-4B) - Best quality for mobile
+        LMModel(
+            name: "Qwen 3B",
+            configuration: LLMRegistry.qwen3_0_6b_4bit,
             type: .llm),
         LMModel(
-            name: "Llama 3.2",
+            name: "Qwen 3B Pro",
             configuration: ModelConfiguration(
-                id: "mlx-community/Llama-3.2-3B-Instruct-uncensored-6bit"),
+                id: "mlx-community/Qwen2.5-3B-Instruct-4bit"),
             type: .llm),
         LMModel(
-            name: "Gemma 2",
+            name: "Llama 3B",
             configuration: ModelConfiguration(
-                id: "mitkox/gemma-2b-dpo-uncensored-4bit"),
+                id: "mlx-community/Llama-3.2-3B-Instruct-4bit"),
+            type: .llm),
+        LMModel(
+            name: "Phi 14B",
+            configuration: ModelConfiguration(
+                id: "mlx-community/phi-4-4bit"),
             type: .llm),
     ]
 
+    /// Dynamic registry for models registered at runtime from TypeScript.
+    ///
+    /// This dictionary stores models that are registered via `registerModel()` method,
+    /// allowing TypeScript/JavaScript code to add models without Swift recompilation.
+    ///
+    /// - Important: Access is protected by `registryLock` for thread safety
+    /// - Note: Registered models are stored in memory only and cleared on app restart
+    private var dynamicRegistry: [String: LMModel] = [:]
+
     private let cacheLock = NSLock()
+    private let registryLock = NSLock()
     private var containerCache: [String: ModelContainer] = [:]
     private var metadataCache: [String: ModelLoadRecord] = [:]
+
+    /// Returns all dynamically registered models.
+    ///
+    /// - Returns: Array of models registered at runtime
+    var registeredModels: [LMModel] {
+        registryLock.lock()
+        defer { registryLock.unlock() }
+        return Array(dynamicRegistry.values)
+    }
 
     /// Loads a model into memory with progress tracking.
     ///
@@ -1139,16 +2476,67 @@ final class MLXChatService: @unchecked Sendable {
 
     func clearDownloadProgress() async {}
 
-    // MARK: - Private Methods
+    // MARK: - Dynamic Model Registration
 
-    private func model(named name: String) throws -> LMModel {
+    /// Registers a model dynamically at runtime.
+    ///
+    /// This method adds a model to the dynamic registry, making it available
+    /// for loading via `loadModel()` or other model operations.
+    ///
+    /// - Parameter model: LMModel instance to register
+    ///
+    /// - Important: Thread-safe operation protected by `registryLock`
+    /// - Note: Model name must be unique (checked by caller)
+    func registerModel(_ model: LMModel) {
+        registryLock.lock()
+        dynamicRegistry[model.name] = model
+        registryLock.unlock()
+    }
+
+    /// Unregisters a dynamically registered model.
+    ///
+    /// Removes a model from the dynamic registry. Built-in models in `availableModels`
+    /// cannot be unregistered.
+    ///
+    /// - Parameter name: Name of the model to unregister
+    /// - Returns: True if model was unregistered, false if not found or is built-in
+    ///
+    /// - Important: Thread-safe operation protected by `registryLock`
+    func unregisterModel(named name: String) -> Bool {
+        registryLock.lock()
+        defer { registryLock.unlock() }
+        return dynamicRegistry.removeValue(forKey: name) != nil
+    }
+
+    // MARK: - Internal Methods (Package-visible)
+
+    /// Retrieves a model by name from both built-in and dynamic registries.
+    ///
+    /// This method first checks the dynamic registry for runtime-registered models,
+    /// then falls back to the built-in `availableModels` array.
+    ///
+    /// - Parameter name: Model identifier
+    /// - Returns: LMModel if found
+    /// - Throws: `NativeAIError.modelNotFound` if model doesn't exist in either registry
+    ///
+    /// - Important: Checks dynamic registry first for override capability
+    func model(named name: String) throws -> LMModel {
+        // Check dynamic registry first (allows overriding built-in models)
+        registryLock.lock()
+        if let dynamicModel = dynamicRegistry[name] {
+            registryLock.unlock()
+            return dynamicModel
+        }
+        registryLock.unlock()
+
+        // Check built-in models
         guard let model = availableModels.first(where: { $0.name == name }) else {
             throw NativeAIError.modelNotFound(name)
         }
         return model
     }
 
-    private func cachedContainer(for name: String) -> ModelContainer? {
+    func cachedContainer(for name: String) -> ModelContainer? {
         cacheLock.lock()
         defer { cacheLock.unlock() }
         return containerCache[name]
@@ -1161,7 +2549,7 @@ final class MLXChatService: @unchecked Sendable {
         cacheLock.unlock()
     }
 
-    private func load(
+    func load(
         model: LMModel,
         progressHandler: (@Sendable (Double) -> Void)? = nil
     ) async throws -> ModelContainer {
@@ -1238,7 +2626,7 @@ struct ModelLoadSummary {
 
 /// Describes a model configuration.
 @available(iOS 16.0, *)
-struct LMModel {
+internal struct LMModel {
     let name: String
     let configuration: ModelConfiguration
     let type: ModelType
@@ -1248,7 +2636,7 @@ struct LMModel {
         case vlm
     }
 
-    func toDictionary() -> [String: Any] {
+    fileprivate func toDictionary() -> [String: Any] {
         var configDetails = configuration.details.dictionary
         configDetails["defaultPrompt"] = configuration.defaultPrompt
         return [
@@ -1312,3 +2700,147 @@ private extension URL {
         }
     #endif
 }
+
+// MARK: - Model Download Manager
+
+/// Manages background downloads of model files with pause/resume/cancel support.
+///
+/// This manager handles downloading model files from Hugging Face repositories,
+/// tracking download progress, and supporting pause/resume/cancel operations.
+///
+/// # Thread Safety
+/// - All operations are synchronized using DispatchQueue
+/// - Progress tracking uses Foundation's Progress API
+/// - Event emission happens on main thread
+///
+/// # Features
+/// - Progress tracking for active downloads
+/// - Pause and resume capability
+/// - Download cancellation
+/// - Event emission for download progress
+@available(iOS 16.0, *)
+final class ModelDownloadManager: @unchecked Sendable {
+
+    private let syncQueue = DispatchQueue(label: "com.ariob.modeldownload.sync")
+    private var activeDownloads: [String: Progress] = [:]
+    private weak var eventEmitter: NativeAIEventEmitter?
+
+    /// Sets the event emitter for progress notifications.
+    ///
+    /// - Parameter emitter: Event emitter instance
+    fileprivate func setEventEmitter(_ emitter: NativeAIEventEmitter) {
+        syncQueue.sync {
+            self.eventEmitter = emitter
+        }
+    }
+
+    /// Downloads a model from Hugging Face with progress tracking.
+    ///
+    /// - Parameters:
+    ///   - model: Model to download
+    ///   - hub: HubApi instance for downloads
+    /// - Throws: Download errors
+    func downloadModel(model: LMModel, hub: HubApi) async throws {
+        let modelName = model.name
+
+        // Create progress object for tracking
+        let progress = Progress(totalUnitCount: 100)
+
+        syncQueue.sync {
+            activeDownloads[modelName] = progress
+        }
+
+        defer {
+            syncQueue.sync {
+                activeDownloads.removeValue(forKey: modelName)
+            }
+        }
+
+        // Get repo configuration
+        guard case .id(let repoId, _) = model.configuration.id else {
+            throw NativeAIError.invalidRequest("Model must have a Hugging Face repository ID")
+        }
+
+        let repo = Hub.Repo(id: repoId)
+
+        // Download model files with progress tracking
+        let progressHandler: @Sendable (Progress) -> Void = { [weak self, weak eventEmitter] downloadProgress in
+            guard let self = self, let eventEmitter = eventEmitter else { return }
+
+            let fractionCompleted = downloadProgress.fractionCompleted
+            let percentage = max(0, min(100, fractionCompleted * 100.0))
+
+            // Update our progress object
+            progress.completedUnitCount = Int64(percentage)
+
+            // Emit progress event
+            eventEmitter.emitModelEvent([
+                "type": "download_progress",
+                "model": modelName,
+                "progress": fractionCompleted,
+                "percentage": percentage
+            ])
+        }
+
+        // Use Hub API to download repository files
+        // Note: This downloads all model files to the cache directory
+        let factory: ModelFactory = {
+            switch model.type {
+            case .llm:
+                return LLMModelFactory.shared
+            case .vlm:
+                return VLMModelFactory.shared
+            }
+        }()
+
+        _ = try await factory.loadContainer(
+            hub: hub,
+            configuration: model.configuration,
+            progressHandler: progressHandler
+        )
+    }
+
+    /// Pauses an active download.
+    ///
+    /// - Parameter modelName: Model identifier
+    /// - Returns: True if download was paused, false if not found
+    func pauseDownload(for modelName: String) -> Bool {
+        syncQueue.sync {
+            guard let progress = activeDownloads[modelName] else {
+                return false
+            }
+            progress.pause()
+            return true
+        }
+    }
+
+    /// Resumes a paused download.
+    ///
+    /// - Parameter modelName: Model identifier
+    /// - Returns: True if download was resumed, false if not found
+    func resumeDownload(for modelName: String) -> Bool {
+        syncQueue.sync {
+            guard let progress = activeDownloads[modelName] else {
+                return false
+            }
+            progress.resume()
+            return true
+        }
+    }
+
+    /// Cancels an active download.
+    ///
+    /// - Parameter modelName: Model identifier
+    /// - Returns: True if download was cancelled, false if not found
+    func cancelDownload(for modelName: String) -> Bool {
+        syncQueue.sync {
+            guard let progress = activeDownloads[modelName] else {
+                return false
+            }
+            progress.cancel()
+            activeDownloads.removeValue(forKey: modelName)
+            return true
+        }
+    }
+}
+

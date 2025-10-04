@@ -1,126 +1,73 @@
-
 import {
   useCallback,
   useMemo,
   useRef,
   useState,
   useLynxGlobalEventListener,
-  useMainThreadRef,
   runOnBackground,
 } from '@lynx-js/react';
 
 import './styles/globals.css';
 
-import { Alert, AlertDescription, Button, Icon, Input, useTheme } from '@ariob/ui';
+import { useTheme } from '@ariob/ui';
 
 import {
   createMessageId,
-  ensureModelLoaded,
-  generateNativeChat,
   type NativeAIMessage,
-  type NativeAIRole,
-  type NativeAIStatistics,
   useNativeAIStream,
-  useModels,
 } from '@ariob/ai';
-import { lucideGlyphs } from '@ariob/ui';
-import { ModelSelector } from './components/ModelSelector';
 
-type LucideName = keyof typeof lucideGlyphs;
+// Import custom hooks
+import { useChatMessages } from './hooks/useChatMessages';
+import { useChatGeneration } from './hooks/useChatGeneration';
+import { useStatusCalculator } from './hooks/useStatusCalculator';
+import { useModelManagement } from './hooks/useModelStore';
 
-interface ChatMessage {
-  id: string;
-  role: NativeAIRole;
-  content: string;
-  pending?: boolean;
-  createdAt?: number;
-}
-
-const CUSTOM_SYSTEM_PROMPT = `You are a conversational AI focused on engaging in authentic dialogue. Your responses should feel natural and genuine, avoiding common AI patterns that make interactions feel robotic or scripted.`;
-const createInitialMessages = (): ChatMessage[] => [
-  { id: 'system-message', role: 'system', content: CUSTOM_SYSTEM_PROMPT },
-];
+// Import components
+import { ChatMessage, type ChatMessageData } from './components/ChatMessage';
+import { ChatInput } from './components/ChatInput';
+import { ChatHeader } from './components/ChatHeader';
 
 export const App = () => {
-  const [messages, setMessages] = useState<ChatMessage[]>(() => createInitialMessages());
   const [prompt, setPrompt] = useState('');
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [statistics, setStatistics] = useState<NativeAIStatistics | null>(null);
-  const [liveStatistics, setLiveStatistics] = useState<NativeAIStatistics | null>(null);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [showModelSelector, setShowModelSelector] = useState(false);
 
+  // Custom hooks for state management
   const {
-    availableModels,
-    loadedModelNames: loadedModels,
+    messages,
+    appendMessages,
+    updateMessageById,
+    createAssistantPlaceholder,
+    resetMessages,
+    pendingAssistantRef,
+    activeStreamRef,
+  } = useChatMessages();
+
+  const {
+    isGenerating,
+    setIsGenerating,
+    statistics,
+    setStatistics,
+    liveStatistics,
+    setLiveStatistics,
+    errorMessage,
+    setErrorMessage,
+    clearError,
+    resetGeneration,
+    ensureModelReady,
+    runNativeChat,
+  } = useChatGeneration();
+
+  const {
+    loadedModels,
     selectedModel,
     isLoading: loadingModelName,
     error: listError,
     selectModel,
-    loadModel,
-  } = useModels({ autoLoadFirst: true });
+    isModelLoaded,
+  } = useModelManagement({ autoLoadFirst: true });
 
-  const pendingAssistantRef = useRef<{ messageId: string; model: string; streamId?: string } | null>(
-    null,
-  );
-  const activeStreamRef = useRef<{ messageId: string; streamId: string } | null>(null);
-
-  // UI State Updates - Background Thread (Default)
-  // Per Lynx architecture: State updates happen on background thread
-  // Background thread sends messages to main thread for actual UI rendering
-  // setTimeout(0) defers updates to keep event handler responsive
-  const scheduleMessagesUpdate = useCallback(
-    (updater: (previous: ChatMessage[]) => ChatMessage[]) => {
-      setTimeout(() => {
-        setMessages((previous) => updater(previous));
-      }, 0);
-    },
-    [],
-  );
-
-  const appendMessages = useCallback(
-    (items: ChatMessage[]) => {
-      setTimeout(() => {
-        setMessages((previous) => [...previous, ...items]);
-      }, 0);
-    },
-    [],
-  );
-
-  const updateMessageById = useCallback(
-    (messageId: string, mapper: (message: ChatMessage) => ChatMessage) => {
-      scheduleMessagesUpdate((previous) =>
-        previous.map((message) => (message.id === messageId ? mapper(message) : message)),
-      );
-    },
-    [scheduleMessagesUpdate],
-  );
-
-  const createAssistantPlaceholder = useCallback(
-    (): ChatMessage => ({
-      id: createMessageId(),
-      role: 'assistant',
-      content: '',
-      pending: true,
-      createdAt: Date.now(),
-    }),
-    [],
-  );
-
-  // AI Operations - Background Thread (Default)
-  // All async operations run on background thread by default in Lynx
-  // NO 'background only' directive exists - background is the default execution context
-  const ensureModelReady = useCallback(async (modelName: string) => {
-    return ensureModelLoaded(modelName);
-  }, []);
-
-  const runNativeChat = useCallback(
-    async (modelName: string, conversation: NativeAIMessage[]) => {
-      return generateNativeChat(modelName, conversation);
-    },
-    [],
-  );
 
   const setNativeProps = (itemId: string, props: Record<string, unknown>) => {
     // @ts-ignore lynx is provided by runtime
@@ -132,10 +79,19 @@ export const App = () => {
   };
 
   const keyboardChanged = (keyboardHeightInPx: number) => {
+    console.log('[Keyboard] Height changed:', keyboardHeightInPx);
     const translate = keyboardHeightInPx === 0 ? 0 : -keyboardHeightInPx;
+
+    // Smooth and fast animation
+    const transition = keyboardHeightInPx === 0
+      ? 'transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1)' // Smooth ease out when keyboard dismisses
+      : 'transform 0.25s cubic-bezier(0.4, 0.0, 0.2, 1)'; // Smooth ease out when keyboard appears
+
+    console.log('[Keyboard] Moving input:', translate);
+    // Only move the input, messages auto-scroll via scroll-into-view
     setNativeProps('composer-panel', {
       transform: `translateY(${translate}px)`,
-      transition: `transform ${keyboardHeightInPx === 0 ? '0.15s' : '0.3s'}`,
+      transition,
     });
   };
 
@@ -147,72 +103,43 @@ export const App = () => {
     setTheme(nextTheme);
   }, [currentTheme, setTheme]);
 
-  // Simple toggle for model selector - runs on background thread (default, which is fine for state updates)
+  // Simple toggle for model selector
   const handleToggleModelSelector = useCallback(() => {
     console.log('[UI Event] Toggle model selector');
     setShowModelSelector((prev) => !prev);
   }, []);
-  
-  const inputRef = useRef<any>(null);
 
   const handleResetConversationMainThread = useCallback((event: any) => {
     'main thread';
-    // Provide immediate visual feedback if needed
-    // Then execute reset on background thread
+    // Execute reset on background thread
     runOnBackground(() => {
-      setMessages(createInitialMessages());
+      resetMessages();
+      resetGeneration();
       setPrompt('');
-      setErrorMessage(null);
-      setStatistics(null);
-      setLiveStatistics(null);
-      setIsGenerating(false);
-      pendingAssistantRef.current = null;
-      activeStreamRef.current = null;
     })();
-  }, []);
+  }, [resetMessages, resetGeneration]);
 
   const handleResetConversation = useCallback(() => {
-    setMessages(createInitialMessages());
+    resetMessages();
+    resetGeneration();
     setPrompt('');
-    setErrorMessage(null);
-    setStatistics(null);
-    setLiveStatistics(null);
-    setIsGenerating(false);
-    pendingAssistantRef.current = null;
-    activeStreamRef.current = null;
-  }, []);
+  }, [resetMessages, resetGeneration]);
 
   const handleModelSelect = useCallback(
-    async (modelName: string) => {
-      console.log('[AI Event] Model selected:', modelName);
-      try {
-        await selectModel(modelName);
-        console.log('[AI Event] Model selection successful');
-
-        // Ensure model is loaded after selection
-        if (!loadedModels.includes(modelName)) {
-          console.log('[AI Event] Loading model:', modelName);
-          await loadModel(modelName);
-          console.log('[AI Event] Model loaded successfully');
-        }
-
-        setShowModelSelector(false);
-      } catch (error) {
-        console.error('[AI Event] Model selection failed:', error);
-      }
+    (modelName: string) => {
+      console.log('[AI Event] Model selected from selector:', modelName);
+      // ModelSelector already handles selection and loading, just close the selector
+      setShowModelSelector(false);
     },
-    [selectModel, loadedModels, loadModel],
+    [],
   );
 
-  // Input value binding - runs on BACKGROUND THREAD (default)
-  // Per Lynx architecture: bindinput handlers run on background thread
-  // State updates are automatically batched and sent to main thread for rendering
+  // Input value binding
   const handlePromptInput = useCallback((event: any) => {
     const value = event?.detail?.value ?? '';
     setPrompt(value);
-    // Clear error when user starts typing
-    setErrorMessage(null);
-  }, []);
+    clearError();
+  }, [clearError]);
 
   // Simplified send message handler with comprehensive logging
   const handleSendMessage = useCallback(async () => {
@@ -251,7 +178,7 @@ export const App = () => {
     }
     console.log('[AI Event] Model ready');
 
-    const userMessage: ChatMessage = {
+    const userMessage: ChatMessageData = {
       id: createMessageId(),
       role: 'user',
       content: trimmed,
@@ -272,21 +199,7 @@ export const App = () => {
     setIsGenerating(true);
     setStatistics(null);
     setLiveStatistics(null);
-    setPrompt('');
-    
-    // Clear the input field using Lynx API
-    if (inputRef.current) {
-      console.log('[UI Event] Clearing input field');
-      // @ts-ignore lynx is provided by runtime
-      lynx
-        .createSelectorQuery()
-        .select('#chat-input')
-        .invoke({
-          method: 'setValue',
-          params: { value: '' },
-        })
-        .exec();
-    }
+    setPrompt(''); // This now clears the controlled input
 
     console.log('[AI Event] Starting chat generation');
     try {
@@ -347,12 +260,6 @@ export const App = () => {
     },
     [],
   );
-
-  const composerBaseOffset = 32;
-  const composerInset = composerBaseOffset;
-
-  const headerSurfaceClass = 'bg-card border-b border-border backdrop-blur-md';
-  const chatSurfaceClass = 'bg-background backdrop-blur-lg';
 
   const streamSnapshot = useNativeAIStream({
     onStarted: (event) => {
@@ -419,283 +326,72 @@ export const App = () => {
   });
 
   useLynxGlobalEventListener('keyboardstatuschanged', (status: unknown, height: unknown) => {
+    console.log('[Keyboard] Event fired - status:', status, 'height:', height);
     const isOn = status === 'on';
     const kbHeight = isOn ? Number(height ?? 0) : 0;
+    console.log('[Keyboard] Calculated height:', kbHeight);
     setKeyboardHeight(kbHeight);
     keyboardChanged(kbHeight);
   });
 
 
-  const latestMessageId = messages[messages.length - 1]?.id ?? 'chat-top';
-  const selectedModelLoaded = selectedModel ? loadedModels.includes(selectedModel) : false;
-
-  // Model selector shows when toggled
-
+  // Computed values
+  const messageList = Array.isArray(messages) ? messages : [];
+  const latestMessageId = messageList[messageList.length - 1]?.id ?? 'chat-top';
+  const selectedModelLoaded = selectedModel ? isModelLoaded(selectedModel) : false;
   const isStreamingOrGenerating = isGenerating || streamSnapshot.pending;
 
-  const statusLabel = useMemo(() => {
-    if (isStreamingOrGenerating) {
-      return 'Thinking';
-    }
-    if (loadingModelName) {
-      return 'Loading Model';
-    }
-    if (listError) {
-      return 'Error';
-    }
-    if (selectedModelLoaded) {
-      return 'Ready';
-    }
-    if (selectedModel) {
-      return 'Selected';
-    }
-    return 'Select Model';
-  }, [isStreamingOrGenerating, loadingModelName, listError, selectedModelLoaded, selectedModel]);
+  // Use status calculator hook
+  const statusInfo = useStatusCalculator({
+    isGenerating,
+    pending: streamSnapshot.pending,
+    loadingModelName,
+    listError,
+    selectedModel,
+    selectedModelLoaded,
+  });
 
   const canSend = useMemo(() => {
-    if (!prompt.trim()) {
-      return false;
-    }
-    if (!selectedModel) {
-      return false;
-    }
-    if (isStreamingOrGenerating || Boolean(loadingModelName)) {
-      return false;
-    }
+    if (!prompt.trim()) return false;
+    if (!selectedModel) return false;
+    if (isStreamingOrGenerating || Boolean(loadingModelName)) return false;
     return selectedModelLoaded;
-  }, [
-    prompt,
-    selectedModel,
-    isStreamingOrGenerating,
-    loadingModelName,
-    selectedModelLoaded,
-  ]);
+  }, [prompt, selectedModel, isStreamingOrGenerating, loadingModelName, selectedModelLoaded]);
 
-  type RolePalette = {
-    bubble: string;
-    text: string;
-    label: string;
-    avatar: string;
-    icon: LucideName;
-    title: string;
-  };
+  const composerBaseOffset = 32;
+  const composerInset = composerBaseOffset;
+  const chatSurfaceClass = 'bg-background backdrop-blur-lg';
 
-  type MessageBubbleProps = {
-    message: ChatMessage;
-    palette: RolePalette;
-  };
-
-  const getRoleStyles = (role: NativeAIRole): RolePalette => {
-    switch (role) {
-      case 'user':
-        return {
-          bubble: 'bg-primary text-primary-foreground border border-primary shadow-[var(--shadow-lg)]',
-          text: 'text-primary-foreground',
-          label: 'text-primary-foreground',
-          avatar: 'bg-primary-foreground text-primary shadow-[var(--shadow-xs)]',
-          icon: 'user',
-          title: 'You',
-        };
-      case 'assistant':
-        return {
-          bubble: 'bg-secondary text-secondary-foreground border border-border shadow-[var(--shadow-md)]',
-          label: 'text-secondary-foreground',
-          text: 'text-secondary-foreground',
-          avatar: 'bg-muted text-muted-foreground shadow-[var(--shadow-xs)]',
-          icon: 'bot',
-          title: 'Assistant',
-        };
-      default:
-        return {
-          bubble: 'bg-muted text-muted-foreground border border-border shadow-[var(--shadow-sm)]',
-          text: 'text-muted-foreground',
-          label: 'text-muted-foreground',
-          avatar: 'bg-muted-foreground text-muted shadow-[var(--shadow-xs)]',
-          icon: 'shield',
-          title: 'System',
-        };
-    }
-  };
-
-  const MessageBubble = ({ message, palette }: MessageBubbleProps) => {
-    const isThinking = message.pending && !message.content;
-    const content = message.content || '';
-    const alignmentClass = message.role === 'user' ? 'self-end' : 'self-start';
-    const bubbleStateClass = message.pending ? 'border-border' : '';
-
-    return (
-      <view
-        id={message.id}
-        className={`flex max-w-[80%] flex-col gap-3 rounded-[calc(var(--radius)*1.05)] border px-5 py-4 transition-all duration-300 ${palette.bubble} ${alignmentClass} ${bubbleStateClass} mb-4`}
-        aria-label={`${palette.title} message`}
-      >
-        <view className="flex items-center gap-2.5 text-[10px] uppercase tracking-[0.35em]">
-          <view
-            className={`inline-flex h-7 w-7 items-center justify-center rounded-full ${palette.avatar}`}
-            aria-hidden
-          >
-            <Icon name={palette.icon} className="text-base" />
-          </view>
-          <text className={`font-semibold ${palette.label}`}>{palette.title}</text>
-          {message.createdAt ? (
-            <text className={`text-[9px] ml-auto ${palette.label}`}>
-              {new Date(message.createdAt).toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </text>
-          ) : null}
-        </view>
-
-        {/* Main Content */}
-        {isThinking ? (
-          <view className="flex items-center gap-2 py-2">
-            <Icon
-              name="loader-circle"
-              className={`h-4 w-4 ${palette.text} opacity-70`}
-              style={{ animation: 'spin 1s linear infinite' }}
-            />
-            <Icon
-              name="loader-circle"
-              className={`h-4 w-4 ${palette.text} opacity-50`}
-              style={{ animation: 'spin 1s linear infinite', animationDelay: '0.15s' }}
-            />
-            <Icon
-              name="loader-circle"
-              className={`h-4 w-4 ${palette.text} opacity-30`}
-              style={{ animation: 'spin 1s linear infinite', animationDelay: '0.3s' }}
-            />
-          </view>
-        ) : (
-          <text
-            className={`whitespace-pre-wrap text-sm leading-relaxed ${palette.text}`}
-            aria-live={message.pending ? 'polite' : 'off'}
-          >
-            {content}
-          </text>
-        )}
-      </view>
-    );
-  };
-
-  let statusIcon: LucideName = 'circle';
-  if (isStreamingOrGenerating) {
-    statusIcon = 'loader-circle';
-  } else if (loadingModelName) {
-    statusIcon = 'loader-circle';
-  } else if (listError) {
-    statusIcon = 'triangle-alert';
-  } else if (selectedModelLoaded) {
-    statusIcon = 'check';
-  } else if (selectedModel) {
-    statusIcon = 'clock';
-  } else {
-    statusIcon = 'circle';
-  }
-
-  const statusBadgeBg = loadingModelName
-    ? 'bg-accent border border-accent'
-    : selectedModelLoaded
-      ? 'bg-primary border border-primary'
-      : selectedModel
-        ? 'bg-secondary border border-secondary'
-        : 'bg-muted border border-border';
-
-  const statusTextColor = loadingModelName
-    ? 'text-accent-foreground'
-    : selectedModelLoaded
-      ? 'text-primary-foreground'
-      : selectedModel
-        ? 'text-secondary-foreground'
-        : 'text-muted-foreground';
+  const inputPlaceholder = selectedModelLoaded
+    ? 'Type a message...'
+    : loadingModelName
+      ? 'Loading model...'
+      : 'Select a model first';
 
   return (
-    <page className={
-      withTheme("bg-background", "dark bg-background")
-    } style={{ height: '100%', width: '100%', paddingTop: '7%', paddingBottom: '4%' }}>
-      <view className="flex h-full flex-col bg-background text-foreground">
-        <view className={`flex-shrink-0 px-5 py-4 ${headerSurfaceClass}`}>
-          <view className="flex flex-col gap-3">
-            {/* Top Row - Title, Status and Actions */}
-            <view className="flex items-center justify-between">
-              <view className="flex items-center gap-2.5">
-                <text className="text-lg font-semibold text-foreground">Chat</text>
-                <view
-                  className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 ${statusBadgeBg}`}
-                >
-                  <Icon
-                    name={statusIcon}
-                    className={`text-xs ${statusTextColor}`}
-                    style={isStreamingOrGenerating || loadingModelName ? { animation: 'spin 1s linear infinite' } : undefined}
-                  />
-                  <text className={`text-xs font-medium ${statusTextColor}`}>{statusLabel}</text>
-                </view>
-              </view>
-              <view className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="default"
-                  icon={currentTheme === 'Light' ? 'sun' : currentTheme === 'Dark' ? 'moon' : 'monitor'}
-                  aria-label="Toggle theme"
-                  className="text-muted-foreground hover:text-foreground"
-                  bindtap={handleToggleTheme}
-                />
-                <view main-thread:bindtap={handleResetConversationMainThread}>
-                  <Button
-                    variant="ghost"
-                    size="default"
-                    icon="trash-2"
-                    aria-label="Clear conversation"
-                    className="text-muted-foreground hover:text-destructive"
-                  />
-                </view>
-              </view>
-            </view>
-
-            {/* Model Selection - Clean and Minimal */}
-            <view className="space-y-2">
-              <view className="flex items-center justify-between gap-3 p-3 rounded-lg border border-border bg-card transition-colors">
-                <view className="flex items-center gap-2.5 flex-1 min-w-0">
-                  <Icon
-                    name="cpu"
-                    className="text-base flex-shrink-0 text-muted-foreground"
-                  />
-                  <view className="flex-1 min-w-0">
-                    <text className="text-xs font-medium text-muted-foreground block">
-                      Model
-                    </text>
-                    <text className="text-sm font-semibold text-foreground block truncate">
-                      {selectedModel || 'Select a model'}
-                    </text>
-                  </view>
-                </view>
-                <Button
-                  variant="ghost"
-                  size="default"
-                  icon="chevron-down"
-                  aria-label="Select model"
-                  className={`text-muted-foreground flex-shrink-0 ${showModelSelector ? 'rotate-180' : ''} transition-transform`}
-                  bindtap={handleToggleModelSelector}
-                />
-              </view>
-
-              {/* Model Selection Dropdown */}
-              {showModelSelector && (
-                <view className="relative">
-                  <ModelSelector onModelSelect={handleModelSelect} />
-                </view>
-              )}
-            </view>
-
-            {/* Error Display */}
-            {listError && !showModelSelector && (
-              <Alert variant="destructive" className="border-destructive bg-destructive">
-                <AlertDescription>{listError}</AlertDescription>
-              </Alert>
-            )}
-          </view>
+    <page
+      className={withTheme("bg-card pt-safe-top w-full h-full", "dark bg-card pt-safe-top w-full h-full")}
+    >
+      <view className="flex h-full flex-col text-foreground relative">
+        {/* Header with model selector and controls - fixed at top with z-index */}
+        <view className="relative z-10">
+          <ChatHeader
+            statusLabel={statusInfo.label}
+            statusIcon={statusInfo.icon}
+            statusVariant={statusInfo.variant}
+            statusAnimated={statusInfo.animated}
+            currentTheme={currentTheme}
+            onToggleTheme={handleToggleTheme}
+            onResetConversation={handleResetConversation}
+            selectedModel={selectedModel}
+            showModelSelector={showModelSelector}
+            onToggleModelSelector={handleToggleModelSelector}
+            onModelSelect={handleModelSelect}
+            listError={listError}
+          />
         </view>
 
+        {/* Chat messages scrollable area - fills remaining space, stays fixed */}
         <scroll-view
           className={`flex-1 ${chatSurfaceClass}`}
           scroll-y
@@ -704,55 +400,26 @@ export const App = () => {
         >
           <view className="flex flex-col px-4 py-6 sm:px-6 sm:py-8">
             <view id="chat-top" className="h-0 w-0" />
-            {messages.map((message) => {
-              if (message.role === 'system') {
-                return null;
-              }
-              const palette = getRoleStyles(message.role);
-              return <MessageBubble key={message.id} message={message} palette={palette} />;
+            {messageList.map((message) => {
+              if (message.role === 'system') return null;
+              return <ChatMessage key={message.id} message={message} />;
             })}
           </view>
         </scroll-view>
 
-        <view
-          id="composer-panel"
-          className="flex-shrink-0 bg-background px-4 py-3.5 pb-safe-bottom backdrop-blur-xl"
-        >
-          {errorMessage ? (
-            <Alert variant="destructive" className="mb-2.5 border-destructive bg-destructive">
-              <AlertDescription>{errorMessage}</AlertDescription>
-            </Alert>
-          ) : null}
-
-          <view className="flex w-full max-w-2xl items-center gap-2.5 rounded-xl border border-border bg-card px-3.5 pt-2.5 pb-3">
-            <view className="flex-1">
-              <Input
-                id="chat-input"
-                ref={inputRef}
-                className="w-full border-none bg-transparent px-0 text-sm text-foreground"
-                type="text"
-                placeholder={selectedModelLoaded
-                  ? 'Type a message...'
-                  : loadingModelName
-                    ? 'Loading model...'
-                    : 'Select a model first'}
-                show-soft-input-on-focus
-                bindinput={handlePromptInput}
-                bindconfirm={handleSendMessage}
-                bindkeydown={handlePromptKeydown}
-                disabled={isStreamingOrGenerating}
-              />
-            </view>
-            <Button
-              variant={canSend ? 'default' : 'ghost'}
-              size="icon"
-              icon={isStreamingOrGenerating ? 'loader-circle' : 'send'}
-              disabled={!canSend}
-              className={`flex-shrink-0 h-8 w-8 ${isStreamingOrGenerating ? 'animate-spin' : ''} ${!canSend ? 'opacity-40' : ''}`}
-              bindtap={handleSendMessage}
-            />
-          </view>
-        </view>
+        {/* Chat input composer - only this moves with keyboard */}
+        <ChatInput
+          onSend={handleSendMessage}
+          onInput={handlePromptInput}
+          onKeydown={handlePromptKeydown}
+          disabled={isStreamingOrGenerating}
+          placeholder={inputPlaceholder}
+          errorMessage={errorMessage}
+          canSend={canSend}
+          isGenerating={isStreamingOrGenerating}
+          onDismissError={clearError}
+          value={prompt}
+        />
       </view>
     </page>
   );

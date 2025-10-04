@@ -31,6 +31,7 @@ import {
 import {
   fetchAvailableModelsAsync,
   fetchLoadedModelNamesAsync,
+  downloadNativeModel,
   loadNativeModel,
 } from './operations';
 
@@ -340,6 +341,7 @@ export function useNativeAIModelStatus(initial?: NativeAIModelStatus): NativeAIM
 
   const handleEvent = useCallback((event: NativeAIModelEvent) => {
     switch (event.type) {
+      case 'download_started':
       case 'loading_started':
         setStatus({ model: event.model, state: 'loading', percentage: 0 });
         break;
@@ -350,6 +352,14 @@ export function useNativeAIModelStatus(initial?: NativeAIModelStatus): NativeAIM
           percentage: Math.max(0, Math.min(100, Math.round(event.percentage))),
         });
         break;
+      case 'download_complete':
+        // Download complete, now loading into memory
+        setStatus({
+          model: event.model,
+          state: 'loading',
+          percentage: 100,
+        });
+        break;
       case 'loaded':
         setStatus({
           model: event.model,
@@ -358,6 +368,7 @@ export function useNativeAIModelStatus(initial?: NativeAIModelStatus): NativeAIM
           summary: (event.summary as Record<string, unknown> | undefined) ?? undefined,
         });
         break;
+      case 'download_error':
       case 'error':
         setStatus({
           model: event.model ?? status?.model ?? 'unknown',
@@ -604,17 +615,30 @@ export function useModels(options: ModelOptions = {}): ModelsState {
     }
 
     try {
-      const result = await loadNativeModel(modelName);
+      // First, download the model (if not already downloaded)
+      console.log('[useModels] Step 1: Downloading model:', modelName);
+      const downloadResult = await downloadNativeModel(modelName);
 
-      if (result?.success) {
+      if (!downloadResult?.success) {
+        setError(downloadResult?.message || `Failed to download model: ${modelName}`);
+        return;
+      }
+
+      console.log('[useModels] Step 2: Loading model into memory:', modelName);
+      // Then, load it into memory
+      const loadResult = await loadNativeModel(modelName);
+
+      if (loadResult?.success) {
         // Update loaded models list
         setLoadedModelNames(prev =>
           prev.includes(modelName) ? prev : [...prev, modelName]
         );
+        console.log('[useModels] Model successfully loaded:', modelName);
       } else {
-        setError(result?.message || `Failed to load model: ${modelName}`);
+        setError(loadResult?.message || `Failed to load model: ${modelName}`);
       }
     } catch (err) {
+      console.error('[useModels] Error during model load:', err);
       setError(err instanceof Error ? err.message : 'Model loading failed');
     } finally {
       setLoadingModels(prev => {

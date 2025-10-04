@@ -24,7 +24,7 @@ export type IconProps = {
   style?: React.CSSProperties;
 };
 
-export const Icon = ({ name, size, className }: IconProps & TextProps) => {
+export const Icon = ({ name, size, className, style, ...props }: IconProps & TextProps) => {
   const glyphCode = lucideGlyphs[name];
   const glyph = glyphCode ? String.fromCodePoint(glyphCode) : '?';
   return (
@@ -34,6 +34,7 @@ export const Icon = ({ name, size, className }: IconProps & TextProps) => {
         fontFamily: 'Icon',
         lineHeight: 1,
       }}
+      {...props}
     >
       {glyph}
     </text>
