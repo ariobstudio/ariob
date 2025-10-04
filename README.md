@@ -54,7 +54,7 @@ Ariob is a modern decentralized application platform built with React and LynxJS
 ```
 ariob/
 ├── apps/
-│   └── brana/            # ML-powered Lynx assistant experience
+│   └── chat/            # ML-powered Lynx assistant experience
 ├── packages/
 │   ├── ai/               # Native MLX bridge helpers
 │   ├── core/             # Gun.js services and stores
