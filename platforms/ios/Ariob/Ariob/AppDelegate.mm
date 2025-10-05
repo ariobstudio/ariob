@@ -10,7 +10,6 @@
 
 NSString *const LOCAL_URL_PREFIX = @"file://lynx?local://";
 NSString *const MAIN_URL = @"file://lynx?local://main.lynx.bundle?fullscreen=true";
-NSString *const DEBUG_URL = @"http://10.0.0.246:3000/main.lynx.bundle?fullscreen=true";
 
 @interface AppDelegate ()
 
@@ -37,7 +36,7 @@ NSString *const DEBUG_URL = @"http://10.0.0.246:3000/main.lynx.bundle?fullscreen
     });
   }];
 
-  [[TasmDispatcher sharedInstance] openTargetUrl:DEBUG_URL];
+  [[TasmDispatcher sharedInstance] openTargetUrl:MAIN_URL];
   return YES;
 }
 
