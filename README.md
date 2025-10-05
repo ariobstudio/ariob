@@ -45,7 +45,6 @@ Ariob is a modern decentralized application platform built with React and LynxJS
 - 📱 **Cross-Platform** - Single codebase for web and mobile platforms
 - ⚡ **Real-time Updates** - Automatic data synchronization across devices
 - 🎨 **Modern UI** - Beautiful, responsive interface with theme support
-- 🧭 **File-based Routing** - TanStack Router integration via `@ariob/router`
 - 🛡️ **Type Safety** - Full TypeScript support with runtime validation
 - 📦 **Modular Architecture** - Clean separation of concerns with monorepo structure
 
@@ -58,8 +57,6 @@ ariob/
 ├── packages/
 │   ├── ai/               # Native MLX bridge helpers
 │   ├── core/             # Gun.js services and stores
-│   ├── editor/           # Rich-text editor engine
-│   ├── router/           # TanStack router generator plugin
 │   └── ui/               # Shared component library & Tailwind config
 └── platforms/            # Platform-specific implementations
     ├── web/              # Web platform
@@ -73,6 +70,7 @@ Before you begin, ensure you have the following installed:
 
 - **Node.js** >= 18.0.0
 - **pnpm** >= 8.15.4
+- **XCode** or **Android Studio** for Mobile Testing
 
 ## 🚀 Getting Started
 
@@ -147,8 +145,6 @@ ariob/
 ├── packages/
 │   ├── ai/                  # Native ML bridge helpers
 │   ├── core/                # Gun.js services + stores
-│   ├── editor/              # Rich text editor engine
-│   ├── router/              # TanStack router generator
 │   └── ui/                  # Shared UI kit & Tailwind config
 ├── platforms/               # Platform-specific code (iOS, Android, Web)
 ├── package.json
