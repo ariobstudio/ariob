@@ -1,37 +1,28 @@
 # Gun Core
 
-Core Gun.js configuration and initialization for decentralized data synchronization.
+Gun.js initialization and core utilities.
 
 ## Overview
 
-The core module provides:
+Provides pre-configured Gun.js instance and SEA cryptographic operations.
 
-- **Gun.js instance** configured for optimal performance
-- **SEA (Security, Encryption, Authorization)** for cryptographic operations
-- **Cross-platform compatibility** for ReactLynx applications
-- **Real-time synchronization** across peers
-- **Offline-first capabilities** with automatic sync
+- Gun.js database instance
+- SEA cryptographic utilities
+- Cross-platform configuration
+- Real-time synchronization
+- Offline-first support
 
-## Gun.js Basics
+## Quick Start
 
-Gun is a decentralized, real-time, offline-first database that:
-
-- **Syncs automatically** between all connected peers
-- **Works offline** and syncs when connection returns
-- **Provides cryptography** through the SEA module
-- **Scales horizontally** without central servers
-
-## Configuration
-
-### Basic Setup
+### Basic Usage
 
 ```typescript
 import { gun, sea } from '@ariob/core';
 
-// Gun instance is pre-configured and ready to use
+// Gun instance is ready to use
 gun.get('test').put({ hello: 'world' });
 
-// SEA is available for cryptographic operations
+// SEA for cryptographic operations
 const keyPair = await sea.pair();
 const encrypted = await sea.encrypt('secret', keyPair);
 ```
@@ -48,9 +39,9 @@ const customGun = new Gun({
     'https://gun-relay1.example.com/gun',
     'https://gun-relay2.example.com/gun',
   ],
-  localStorage: false, // Disable for server-side
-  radisk: true,       // Enable Radix storage engine
-  multicast: true,    // Enable local network discovery
+  localStorage: false,
+  radisk: true,
+  multicast: true,
 });
 ```
 
@@ -58,7 +49,7 @@ const customGun = new Gun({
 
 ### Souls (Unique IDs)
 
-Every piece of data in Gun has a "soul" - a unique identifier:
+Every piece of data in Gun has a "soul" - a unique path identifier:
 
 ```typescript
 // Souls are paths to data
@@ -73,7 +64,7 @@ gun.get(`posts/${id}`).put({ title: 'My Post' });
 
 ### Graph Structure
 
-Gun stores data as a graph:
+Gun stores data as a graph with relationships:
 
 ```typescript
 // Create relationships
@@ -127,22 +118,22 @@ const pair2 = await sea.pair(seed);
 ### Encryption/Decryption
 
 ```typescript
-// Symmetric encryption (shared secret)
+// Symmetric encryption
 const secret = 'shared-secret-key';
 const encrypted = await sea.encrypt('Hello World', secret);
 const decrypted = await sea.decrypt(encrypted, secret);
 
-// Asymmetric encryption (public key)
+// Asymmetric encryption
 const alice = await sea.pair();
 const bob = await sea.pair();
 
-// Bob encrypts for Alice (using her public key)
-const secret = await sea.secret(bob, alice.pub);
-const encrypted2 = await sea.encrypt('Secret message', secret);
+// Bob encrypts for Alice
+const sharedSecret = await sea.secret(bob, alice.pub);
+const encrypted2 = await sea.encrypt('Secret message', sharedSecret);
 
-// Alice decrypts (using her key pair)
-const secret2 = await sea.secret(alice, bob.pub);
-const decrypted2 = await sea.decrypt(encrypted2, secret2);
+// Alice decrypts
+const sharedSecret2 = await sea.secret(alice, bob.pub);
+const decrypted2 = await sea.decrypt(encrypted2, sharedSecret2);
 ```
 
 ### Digital Signatures
@@ -195,113 +186,11 @@ user.get('profile').put({
 user.leave();
 ```
 
-## ReactLynx Integration
-
-### Real-time Hook
-
-```typescript
-import { useEffect, useState } from '@lynx-js/react';
-import { gun } from '@ariob/core';
-
-function useGunData(path: string) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const ref = gun.get(path);
-    
-    // Subscribe to changes
-    const off = ref.on((data) => {
-      setData(data);
-      setLoading(false);
-    });
-
-    // Cleanup
-    return () => {
-      off();
-    };
-  }, [path]);
-
-  return { data, loading };
-}
-
-// Usage in component
-function MessageDisplay() {
-  const { data: message, loading } = useGunData('messages/latest');
-
-  if (loading) return <text>Loading...</text>;
-  
-  return (
-    <view className="message">
-      <text>{message?.text || 'No message'}</text>
-      <text className="timestamp">
-        {new Date(message?.timestamp).toLocaleString()}
-      </text>
-    </view>
-  );
-}
-```
-
-### Collaborative Editor
-
-```typescript
-import { gun } from '@ariob/core';
-import { useState, useEffect, useCallback } from '@lynx-js/react';
-
-function CollaborativeEditor({ documentId }: { documentId: string }) {
-  const [content, setContent] = useState('');
-  const [lastUpdate, setLastUpdate] = useState(0);
-  const docRef = gun.get(`docs/${documentId}`);
-
-  // Subscribe to changes
-  useEffect(() => {
-    const off = docRef.on((data) => {
-      if (data && data.content && data.timestamp > lastUpdate) {
-        setContent(data.content);
-        setLastUpdate(data.timestamp);
-      }
-    });
-
-    return () => off();
-  }, [documentId, lastUpdate]);
-
-  // Debounced save
-  const saveContent = useCallback(
-    debounce((newContent: string) => {
-      docRef.put({
-        content: newContent,
-        timestamp: Date.now(),
-        editor: gun.user().is?.pub || 'anonymous',
-      });
-    }, 500),
-    [documentId]
-  );
-
-  return (
-    <view className="editor">
-      <textarea
-        value={content}
-        onChange={(e) => {
-          setContent(e.target.value);
-          saveContent(e.target.value);
-        }}
-        className="editor-input"
-        placeholder="Start typing..."
-      />
-      <text className="status">
-        Last updated: {new Date(lastUpdate).toLocaleString()}
-      </text>
-    </view>
-  );
-}
-```
-
 ## Advanced Patterns
 
 ### Pagination
 
 ```typescript
-// Paginate large lists
 async function paginate(path: string, limit: number, offset: number) {
   const items: any[] = [];
   let count = 0;
@@ -312,7 +201,7 @@ async function paginate(path: string, limit: number, offset: number) {
         items.push({ ...data, id: key });
       }
       count++;
-      
+
       if (items.length >= limit) {
         resolve(items);
       }
@@ -346,57 +235,7 @@ task.put({ description: 'Updated by B', updatedAt: Date.now() });
 // { title: 'Updated by A', description: 'Updated by B', updatedAt: <later timestamp> }
 ```
 
-### Offline Queue
-
-```typescript
-class OfflineQueue {
-  private queue: Array<() => Promise<void>> = [];
-  private online = navigator.onLine;
-
-  constructor() {
-    window.addEventListener('online', () => {
-      this.online = true;
-      this.flush();
-    });
-
-    window.addEventListener('offline', () => {
-      this.online = false;
-    });
-  }
-
-  async add(operation: () => Promise<void>) {
-    if (this.online) {
-      await operation();
-    } else {
-      this.queue.push(operation);
-    }
-  }
-
-  async flush() {
-    while (this.queue.length > 0) {
-      const operation = this.queue.shift()!;
-      try {
-        await operation();
-      } catch (error) {
-        console.error('Failed to sync:', error);
-        this.queue.unshift(operation); // Retry later
-        break;
-      }
-    }
-  }
-}
-
-// Usage
-const queue = new OfflineQueue();
-
-async function saveData(data: any) {
-  await queue.add(async () => {
-    gun.get('data').put(data);
-  });
-}
-```
-
-## Performance Best Practices
+## Best Practices
 
 1. **Use `.once()` for single reads** instead of `.on()` when you don't need updates
 2. **Limit `.map()` operations** on large datasets
@@ -446,63 +285,11 @@ console.log('Connected peers:', gun._.opt.peers);
 console.log('Authenticated:', gun.user().is);
 ```
 
-## Common Issues
+## See Also
 
-### Data Not Syncing
-
-```typescript
-// Ensure peers are configured
-const gun = new Gun({
-  peers: ['https://your-relay.com/gun'],
-});
-
-// Check connection
-gun.on('hi', (peer) => {
-  console.log('Connected to peer:', peer);
-});
-```
-
-### Authentication Errors
-
-```typescript
-// Handle auth errors properly
-user.auth(alias, pass, (ack) => {
-  if (ack.err) {
-    if (ack.err.includes('Wrong user')) {
-      console.error('User not found');
-    } else if (ack.err.includes('Wrong password')) {
-      console.error('Invalid password');
-    }
-  }
-});
-```
-
-### Memory Leaks
-
-```typescript
-// Always clean up subscriptions
-const subscriptions = new Set<() => void>();
-
-function subscribe(path: string, callback: (data: any) => void) {
-  const off = gun.get(path).on(callback);
-  subscriptions.add(off);
-  return off;
-}
-
-function cleanup() {
-  subscriptions.forEach(off => off());
-  subscriptions.clear();
-}
-
-// Clean up on unmount
-useEffect(() => {
-  return cleanup;
-}, []);
-```
-
-## Resources
-
+- [Gun Module](../README.md) - Gun.js integration overview
+- [Schema Module](../schema/README.md) - Data validation
+- [Services Module](../services/README.md) - Business logic
+- [Main Documentation](../../README.md) - Package overview
 - [Gun.js Documentation](https://gun.eco/docs/)
 - [SEA Documentation](https://gun.eco/docs/SEA)
-- [Gun.js GitHub](https://github.com/amark/gun)
-- [Community Chat](https://chat.gun.eco/) 

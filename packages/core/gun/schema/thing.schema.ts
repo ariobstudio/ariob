@@ -15,7 +15,7 @@ export const ThingSchema = z.object({
   updatedAt: z.number().optional(),
   
   // Ownership
-  public: z.boolean().default(true),
+  public: z.boolean(),
   createdBy: z.string().optional(), // Creator's public key
 });
 
@@ -29,7 +29,7 @@ export type Thing = z.infer<typeof ThingSchema>;
 export const ContentThingSchema = ThingSchema.extend({
   title: z.string().optional(),
   body: z.string().optional(),
-  tags: z.array(z.string()).default([]),
+  tags: z.array(z.string()).optional(),
 });
 
 export type ContentThing = z.infer<typeof ContentThingSchema>;

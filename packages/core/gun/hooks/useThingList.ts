@@ -1,6 +1,6 @@
 // src/gun/hooks/useThingList.ts (continued)
 import { useEffect } from 'react';
-import type { ThingState } from '../state/thing.store';
+import type { Store } from '../state/factory';
 import type { Thing } from '../schema/thing.schema';
 
 /**
@@ -44,7 +44,7 @@ import type { Thing } from '../schema/thing.schema';
  * ```
  */
 export const useThingList = <T extends Thing>(
-  store: () => ThingState<T>
+  store: () => Store<T>
 ) => {
   const { items, fetchAll, create } = store();
 

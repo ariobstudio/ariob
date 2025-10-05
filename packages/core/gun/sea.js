@@ -1,5 +1,5 @@
 ;(function(){
-  function USE(arg, req){
+  function USE(arg, req) {
     return req
       ? req(arg)
       : arg.slice
@@ -7,9 +7,9 @@
         : (mod, path) => {
             arg((mod = { exports: {} }));
             USE[R(path)] = mod.exports;
-    }
-    function R(p){
-      return p.split('/').slice(-1).toString().replace('.js','');
+          };
+    function R(p) {
+      return p.split('/').slice(-1).toString().replace('.js', '');
     }
   }
   if(typeof module !== "undefined"){ var MODULE = module }
@@ -50,14 +50,13 @@
 
   ;USE(function(module){
     var u;
-    if(u+''== typeof btoa){
-      // if(u+'' == typeof Buffer){
-      //   try{ global.Buffer = USE("buffer", 1).Buffer }catch(e){ console.log("Please `npm install buffer` or add it to your package.json !") }
-      // }
-      const { Crypto } = require('./native-crypto');
-      global.btoa = Crypto.textEncode;
-      global.atob = Crypto.textDecode;
-    }
+    // if(u+''== typeof btoa){
+    //   if(u+'' == typeof Buffer){
+    //     try{ global.Buffer = require("buffer").Buffer }catch(e){ console.log("Please `npm install buffer` or add it to your package.json !") }
+    //   }
+    //   global.btoa = function(data){ return Buffer.from(data, "binary").toString("base64") };
+    //   global.atob = function(data){ return Buffer.from(data, "base64").toString("binary") };
+    // }
   })(USE, './base64');
 
   ;USE(function(module){
@@ -188,33 +187,18 @@
       api.TextDecoder = SEA.window.TextDecoder;
       api.random = (len) => api.Buffer.from(api.crypto.getRandomValues(new Uint8Array(api.Buffer.alloc(len))));
     }
-    const { Crypto } = require('./native-crypto');
-    const { TextEncoder, TextDecoder } = require('./text-encoding');
-    api.crypto = api.subtle = Crypto;
-    api.TextEncoder = TextEncoder;
-    api.TextDecoder = TextDecoder;
-    api.random = (len) => api.Buffer.from(api.crypto.getRandomValues(new Uint8Array(api.Buffer.alloc(len))));
     if(!api.TextDecoder)
     {
-      api.TextDecoder = globalThis.TextDecoder;
-      api.TextEncoder = globalThis.TextEncoder;
+      const { TextEncoder, TextDecoder } = require('./text-encoding');
+      api.TextDecoder = TextDecoder;
+      api.TextEncoder = TextEncoder;
     }
-    if(!api.crypto)
-    {
-      try
-      {
-      var crypto = USE('crypto');
-      Object.assign(api, {
-        crypto,
-        random: (len) => api.Buffer.from(crypto.randomBytes(len))
-      });      
-      const { Crypto: WebCrypto } = USE('@peculiar/webcrypto');
-      api.ossl = api.subtle = new WebCrypto({directory: 'ossl'}).subtle // ECDH
-    }
-    catch(e){
-      console.log("Please `npm install @peculiar/webcrypto` or add it to your package.json !");
-    }}
-
+    api.crypto = globalThis.crypto
+    api.subtle = globalThis.crypto.subtle
+    api.TextEncoder = globalThis.TextEncoder
+    api.TextDecoder = globalThis.TextDecoder
+    api.random = (len) => api.Buffer.from(globalThis.crypto.randomBytes(len))
+    api.ossl = api.subtle = globalThis.crypto.subtle 
     module.exports = api
   })(USE, './shim');
 
@@ -240,8 +224,7 @@
     };
     
     s.keyToJwk = function(keyBytes) {
-
-      const keyB64 = keyBytes.toString();
+      const keyB64 = keyBytes.toString('base64');
       const k = keyB64.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '');
       return { kty: 'oct', k: k, ext: false, alg: 'A256GCM' };
     }
@@ -263,38 +246,9 @@
     SEA.opt = s;
     module.exports = s
   })(USE, './settings');
-  ;USE(function(module){
-    function arrayBufferToBase64(buffer) {
-      const base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-      const uint8Array = new Uint8Array(buffer);
-      let result = "";
-      let i = 0;
-      while (i < uint8Array.length) {
-        const byte1 = uint8Array[i];
-        const byte2 = uint8Array[i + 1];
-        const byte3 = uint8Array[i + 2];
-    
-        const char1 = base64Chars.charAt(byte1 >> 2);
-        const char2 = base64Chars.charAt(((byte1 & 0x03) << 4) | (byte2 >> 4));
-        const char3 = base64Chars.charAt(((byte2 & 0x0F) << 2) | (byte3 >> 6));
-        const char4 = base64Chars.charAt(byte3 & 0x3F);
-    
-        result += char1 + char2 + char3 + char4;
-        i += 3;
-      }
-      if (uint8Array.length % 3 === 1) {
-        result = result.substring(0, result.length - 2) + "==";
-      } else if (uint8Array.length % 3 === 2) {
-        result = result.substring(0, result.length - 1) + "=";
-      }
-      return result;
-    }
-    module.exports = arrayBufferToBase64;
-  })(USE, './array');
 
   ;USE(function(module){
     var shim = USE('./shim');
-    var arrayBufferToBase64 = USE('./array');
     module.exports = async function(d, o){
       var t = (typeof d == 'string')? d : await shim.stringify(d);
       var hash = await shim.subtle.digest({name: o||'SHA-256'}, new shim.TextEncoder().encode(t));
@@ -457,7 +411,7 @@
       var hash = await sha(json);
       var sig = await (shim.ossl || shim.subtle).importKey('jwk', jwk, {name: 'ECDSA', namedCurve: 'P-256'}, false, ['sign'])
       .then((key) => (shim.ossl || shim.subtle).sign({name: 'ECDSA', hash: {name: 'SHA-256'}}, key, new Uint8Array(hash))) // privateKey scope doesn't leak out from here!
-      var r = {m: json, s: sig}
+      var r = {m: json, s: shim.Buffer.from(sig, 'binary').toString(opt.encode || 'base64')}
       if(!opt.raw){ r = 'SEA' + await shim.stringify(r) }
 
       if(cb){ try{ cb(r) }catch(e){console.log(e)} }
@@ -884,7 +838,7 @@
   })(USE, './user');
 
   ;USE(function(module){
-    var u, Gun = require('./gun');
+    var u, Gun = (''+u != typeof GUN)? (GUN||{chain:{}}) : require('./gun');
     Gun.chain.then = function(cb, opt){
       var gun = this, p = (new Promise(function(res, rej){
         gun.once(res, opt);

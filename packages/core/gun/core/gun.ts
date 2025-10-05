@@ -1,7 +1,10 @@
+'background only';
+
+import '../crypto.js'
 import Gun from '../gun.js';
 import SEA from '../sea.js';
 
-import { GunInstance } from './types';
+import type { GunInstance } from './types';
 
 // Configure Gun options
 const gunOptions = {
