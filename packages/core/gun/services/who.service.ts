@@ -1,6 +1,7 @@
 import { gun, sea } from '../core/gun';
 import * as Err from '../schema/errors';
-import { Who, Credentials, AuthRequest, WhoSchema } from '../schema/who.schema';
+import type { Who, Credentials, AuthRequest } from '../schema/who.schema';
+import { WhoSchema } from '../schema/who.schema';
 import { Result, ok, err } from 'neverthrow';
 
 // Storage wrapper for React Native/Web compatibility

@@ -1,6 +1,6 @@
 import { gun, sea } from '../core/gun';
 import * as Err from '../schema/errors';
-import { Thing } from '../schema/thing.schema';
+import type { Thing } from '../schema/thing.schema';
 import { Result, ok, err } from 'neverthrow';
 import { z } from 'zod';
 import { who } from './who.service';
@@ -9,7 +9,11 @@ import { who } from './who.service';
 export const soul = (prefix: string, id: string): string => `${prefix}/${id}`;
 
 export interface ServiceOptions {
-  userScoped?: boolean;
+  /**
+   * Whether to scope data to authenticated user
+   * If true, data is private to the user
+   */
+  scoped?: boolean;
 }
 
 export interface ThingService<T extends Thing> {
@@ -35,7 +39,7 @@ export const make = <T extends Thing, TSchema extends z.ZodType<T>>(
 
   // Get the appropriate gun reference
   const getGunRef = () => {
-    if (options?.userScoped) {
+    if (options?.scoped) {
       const me = who.instance();
       if (!me?.is) throw new Error('Authentication required for user-scoped operations');
       return me;
@@ -57,15 +61,16 @@ export const make = <T extends Thing, TSchema extends z.ZodType<T>>(
     const id = sea.random(16);
     const now = Date.now();
     const current = who.current();
-    
+
     return {
+      ...input,
       id,
       soul: soul(prefix, id),
       schema: schemaType,
       createdAt: now,
       updatedAt: now,
-      ...(options.userScoped && current?.pub && { createdBy: current.pub }),
-      ...input,
+      public: (input as any).public ?? true,
+      ...(options.scoped && current?.pub && { createdBy: current.pub }),
     } as T;
   };
   

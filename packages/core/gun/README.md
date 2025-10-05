@@ -1,80 +1,37 @@
-# 🔫 @ariob/gun - Decentralized Identity & Data Management
+# Gun Module
 
-<div align="center">
+Decentralized data synchronization and authentication using Gun.js.
 
-[![Gun.js](https://img.shields.io/badge/Gun.js-2C3E50?style=for-the-badge&logo=javascript&logoColor=white)](https://gun.eco/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![SEA](https://img.shields.io/badge/SEA-Encryption-green?style=for-the-badge)](https://gun.eco/docs/SEA)
+## Overview
 
-A simplified, secure package for decentralized identity management and data persistence using GunDB with native storage integration.
+The Gun module provides:
 
-</div>
+- **Decentralized data storage** - Real-time synchronization via Gun.js
+- **Authentication system** - Multi-method user authentication (keypair, mnemonic, traditional)
+- **Type-safe services** - CRUD operations with Zod validation
+- **React integration** - Hooks and stores for reactive UIs
+- **Schema-first design** - Data models defined with Zod schemas
+- **Encrypted storage** - SEA cryptographic operations
 
-## 📋 Table of Contents
-
-- [Overview](#-overview)
-- [Architecture](#-architecture)
-- [Quick Start](#-quick-start)
-- [Core Services](#-core-services)
-- [API Reference](#-api-reference)
-- [Best Practices](#-best-practices)
-- [Security](#-security)
-- [Troubleshooting](#-troubleshooting)
-
-## 🎯 Overview
-
-This package provides the Gun.js integration layer for the Ariob platform, offering:
-
-### Core Services
-- **🔐 WhoService** - User identity and authentication with automatic session persistence
-- **📊 ThingService** - Generic data management with optional user scoping
-
-### Built With
-- 🔫 **GunDB** - Decentralized, real-time data synchronization
-- 🔐 **SEA** - Security, Encryption, Authorization for cryptographic operations
-- 💾 **NativeLocalStorage** - Persistent sessions across app restarts
-- ✅ **Result Pattern** - Type-safe error handling using `neverthrow`
-
-## 🏗️ Architecture
-
-```
-┌──────────────────────┐     ┌─────────────────────┐
-│  NativeLocalStorage  │────▶│   who.service.ts    │
-│  (Session Persist)   │     │   (Auth + Profile)  │
-└──────────────────────┘     └──────────┬──────────┘
-                                        │
-                                        ▼
-┌──────────────────────┐     ┌─────────────────────┐
-│   thing.service.ts   │────▶│       GunDB         │
-│   (Data CRUD)        │     │   (Decentralized)   │
-└──────────────────────┘     └─────────────────────┘
-                                        │
-                                        ▼
-┌──────────────────────┐     ┌─────────────────────┐
-│   who.store.ts       │     │   thing.store.ts    │
-│   (Zustand State)    │     │   (Zustand State)   │
-└──────────────────────┘     └─────────────────────┘
-```
-
-### Directory Structure
+## Module Structure
 
 ```
 gun/
-├── core/           # Core Gun.js utilities and initialization
-├── hooks/          # React hooks for Gun.js integration
-├── lib/            # Shared libraries and utilities
-├── schema/         # Zod schemas for data validation
-├── services/       # Business logic services
-│   ├── who.service.ts    # Authentication service
-│   └── thing.service.ts  # Data management service
-└── state/          # Zustand stores for state management
+├── core/           # Gun.js instance and initialization
+├── hooks/          # React hooks for data access
+├── lib/            # Utilities and helpers
+├── schema/         # Zod data schemas
+├── services/       # Business logic and CRUD operations
+│   ├── who.service.ts    # Authentication
+│   └── thing.service.ts  # Generic data management
+└── state/          # Zustand state stores
     ├── who.store.ts      # Auth state
     └── thing.store.ts    # Data state
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
-### 1. Initialize and Authenticate
+### Authentication
 
 ```typescript
 import { who } from '@ariob/core/gun/services';
@@ -108,7 +65,7 @@ const handleSignup = async (alias: string) => {
 };
 ```
 
-### 2. Create a Data Service
+### Data Services
 
 ```typescript
 import { make } from '@ariob/core/gun/services';
@@ -140,7 +97,7 @@ const usePublicNotesStore = createThingStore(publicNotes, 'PublicNotes');
 const usePrivateNotesStore = createThingStore(privateNotes, 'PrivateNotes');
 ```
 
-### 3. Use in Components
+### React Components
 
 ```tsx
 import React, { useEffect } from 'react';
@@ -197,20 +154,11 @@ function NotesApp() {
 }
 ```
 
-## 🔧 Core Services
+## Core Components
 
-### WhoService - Authentication & Identity
+### WhoService - Authentication
 
-The WhoService handles all authentication operations with automatic session persistence.
-
-#### Features
-- 🔑 Multiple authentication methods (keypair, mnemonic, traditional)
-- 💾 Automatic session persistence using NativeLocalStorage
-- 👤 User profile management
-- 🔐 Secure credential storage
-- 🌐 Public profile discovery
-
-#### Example Usage
+Handles user authentication with automatic session persistence.
 
 ```typescript
 // Initialize (restores session)
@@ -246,16 +194,7 @@ who.logout();
 
 ### ThingService - Data Management
 
-The ThingService provides generic CRUD operations with optional user scoping.
-
-#### Features
-- 📝 Schema-based validation
-- 🔄 Real-time synchronization
-- 👤 Optional user scoping for private data
-- 🎯 Type-safe operations
-- 📡 Live subscriptions
-
-#### Example Usage
+Provides generic CRUD operations with schema validation and real-time sync.
 
 ```typescript
 // Create a service
@@ -288,7 +227,7 @@ const unsubscribe = taskService.watch(task.id, (result) => {
 unsubscribe();
 ```
 
-## 📚 API Reference
+## API Reference
 
 ### WhoService API
 
@@ -346,9 +285,9 @@ const {
 } = useDataStore();
 ```
 
-## 🎯 Best Practices
+## Best Practices
 
-### 1. Always Initialize First
+### 1. Initialize Early
 ```typescript
 // In your app's entry point
 useEffect(() => {
@@ -403,17 +342,17 @@ const StrictSchema = z.object({
 });
 ```
 
-## 🔒 Security
+## Security
 
-### Key Security Features
+### Security Features
 
-- **🔐 Encrypted Storage** - Private keys stored encrypted in NativeLocalStorage
-- **🔑 Public/Private Keys** - SEA cryptographic key pairs for security
-- **👤 User Isolation** - User-scoped data is cryptographically isolated
-- **🛡️ Input Validation** - All data validated against schemas
-- **🚫 No Plaintext Passwords** - Passwords are never stored in plaintext
+- Encrypted credential storage
+- SEA cryptographic key pairs
+- User-scoped data isolation
+- Schema validation for all inputs
+- No plaintext password storage
 
-### Security Best Practices
+### Security Guidelines
 
 1. **Backup Credentials** - Always allow users to export and backup credentials
 2. **Use Strong Passphrases** - Encourage strong passphrases for traditional auth
@@ -421,72 +360,12 @@ const StrictSchema = z.object({
 4. **Scope Private Data** - Use `userScoped: true` for sensitive data
 5. **Regular Security Audits** - Review and update security practices regularly
 
-## ❓ Troubleshooting
+## See Also
 
-### Common Issues
-
-<details>
-<summary><strong>Session not persisting</strong></summary>
-
-**Cause:** NativeLocalStorage not properly configured
-
-**Solution:**
-- Ensure NativeLocalStorageModule is configured in your app
-- Check that credentials are valid before storing
-- Verify `init()` is called on app startup
-</details>
-
-<details>
-<summary><strong>User-scoped operations failing</strong></summary>
-
-**Cause:** User not authenticated
-
-**Solution:**
-```typescript
-// Always check authentication
-const user = await who.current();
-if (!user) {
-  // Redirect to login
-  return;
-}
-```
-</details>
-
-<details>
-<summary><strong>Data not syncing</strong></summary>
-
-**Cause:** Gun relay server issues
-
-**Solution:**
-- Check Gun server connection
-- Verify network connectivity
-- Configure Gun peers properly:
-```typescript
-import Gun from 'gun';
-
-const gun = Gun({
-  peers: ['https://relay.example.com/gun']
-});
-```
-</details>
-
-<details>
-<summary><strong>Performance issues</strong></summary>
-
-**Cause:** Too many active subscriptions
-
-**Solution:**
-- Clean up subscriptions when components unmount
-- Use pagination for large datasets
-- Implement debouncing for frequent updates
-</details>
-
-## 📄 License
-
-MIT License - Part of the [Ariob Platform](../../../README.md)
-
----
-
-<div align="center">
-Built with ❤️ using Gun.js
-</div> 
+- [Core Module](../core/README.md) - Gun.js initialization and configuration
+- [Schema Module](../schema/README.md) - Data validation with Zod
+- [Services Module](../services/README.md) - Business logic layer
+- [State Module](../state/README.md) - Zustand stores
+- [Hooks Module](../hooks/README.md) - React hooks
+- [Main Documentation](../../README.md) - Package overview
+- [API Reference](../docs/API.md) - Complete API documentation 

@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@ariob/ai": "workspace:*",
-    "@ariob/editor": "workspace:*",
     "@lynx-js/react": "^0.114.0",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.0",

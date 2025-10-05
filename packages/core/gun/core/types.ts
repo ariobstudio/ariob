@@ -3,6 +3,11 @@ export interface GunChain<T = any> {
   put: (
     data: Partial<T> | null,
     callback?: (ack: any) => void,
+    options?: {
+      opt?: {
+        cert?: any;
+      };
+    },
   ) => GunChain<T>;
   on: (callback: (data: T, key: string) => void, options?: any) => GunChain<T>;
   once: (
@@ -51,7 +56,12 @@ export interface SEA {
   verify: (data: any, pair: KeyPair | string) => Promise<any>;
   encrypt: (data: any, pair: KeyPair | string) => Promise<string>;
   decrypt: (data: any, pair: KeyPair | string) => Promise<any>;
-  work: (data: any, salt?: any, options?: any) => Promise<string>;
+  work: (
+    data: any,
+    salt?: any,
+    key?: any,
+    options?: { name?: string; encode?: string }
+  ) => Promise<string>;
   random: (bytes?: number) => string;
 }
 

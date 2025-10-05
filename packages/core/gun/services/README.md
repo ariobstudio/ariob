@@ -1,16 +1,16 @@
 # Gun Services
 
-Business logic layer for Gun.js with type-safe operations and error handling.
+Business logic layer with type-safe operations and error handling.
 
 ## Overview
 
-Services provide a clean, functional interface for working with Gun.js data. They handle:
+Services provide a functional interface for working with Gun.js data.
 
-- **Type-safe CRUD operations** with Zod validation
-- **Real-time subscriptions** with automatic cleanup
-- **Error handling** using Result types
-- **User-scoped data** for authenticated operations
-- **Soul generation** for consistent Gun.js paths
+- Type-safe CRUD operations
+- Real-time subscriptions
+- Result types for error handling
+- User-scoped data support
+- Soul generation for Gun.js paths
 
 ## Core Services
 
@@ -22,17 +22,17 @@ The `make` function creates a type-safe service for any schema:
 import { make, ThingSchema } from '@ariob/core';
 import { z } from 'zod';
 
-// Define your schema
+// Define schema
 const TodoSchema = ThingSchema.extend({
   text: z.string(),
   completed: z.boolean().default(false),
   priority: z.enum(['low', 'medium', 'high']).default('medium'),
 });
 
-// Create the service
+// Create service
 const todoService = make(TodoSchema, 'todos');
 
-// Use the service
+// Use service
 const result = await todoService.create({
   text: 'Build an awesome app',
   completed: false,
@@ -47,7 +47,7 @@ result.match(
 
 ### Who Service
 
-Authentication service supporting multiple auth methods:
+Authentication service supporting multiple methods:
 
 ```typescript
 import { who } from '@ariob/core';
@@ -56,7 +56,6 @@ import { who } from '@ariob/core';
 const result = await who.signup({
   method: 'keypair',
   alias: 'alice',
-  // Keys are auto-generated if not provided
 });
 
 // Mnemonic authentication
@@ -102,25 +101,25 @@ All services implement the `ThingService<T>` interface:
 interface ThingService<T> {
   // Create a new entity
   create(data: Omit<T, 'id' | 'soul' | 'createdAt' | 'schema' | 'createdBy'>): Promise<Result<T, AppError>>;
-  
+
   // Get entity by ID
   get(id: string): Promise<Result<T | null, AppError>>;
-  
+
   // Update entity
   update(id: string, updates: Partial<T>): Promise<Result<T | null, AppError>>;
-  
+
   // Remove entity
   remove(id: string): Promise<Result<boolean, AppError>>;
-  
+
   // List all entities
   list(): Promise<Result<T[], AppError>>;
-  
+
   // Watch entity for real-time updates
   watch(id: string, callback: (result: Result<T | null, AppError>) => void): () => void;
-  
+
   // Clean up all subscriptions
   cleanup(): void;
-  
+
   // Get Gun.js soul path
   soul(id: string): string;
 }
@@ -128,31 +127,27 @@ interface ThingService<T> {
 
 ## Complete Examples
 
-### Task Management System
+### Task Management
 
 ```typescript
-import { make, ThingSchema, who } from '@ariob/core';
+import { make, ThingSchema } from '@ariob/core';
 import { z } from 'zod';
 
-// Task schema with relationships
 const TaskSchema = ThingSchema.extend({
   title: z.string(),
   description: z.string().optional(),
   status: z.enum(['todo', 'in-progress', 'done']).default('todo'),
-  assignedTo: z.string().optional(), // User's public key
-  projectId: z.string().optional(),
+  assignedTo: z.string().optional(),
   dueDate: z.number().optional(),
-  tags: z.array(z.string()).default([]),
   priority: z.enum(['low', 'medium', 'high', 'urgent']).default('medium'),
 });
 
 type Task = z.infer<typeof TaskSchema>;
 
-// Create services
+// Create service
 const taskService = make(TaskSchema, 'tasks');
-const myTasksService = make(TaskSchema, 'my-tasks', { userScoped: true });
 
-// Task creation with validation
+// Create task
 async function createTask(input: {
   title: string;
   description?: string;
@@ -167,7 +162,6 @@ async function createTask(input: {
     dueDate: input.dueDate?.getTime(),
     priority: input.priority || 'medium',
     status: 'todo',
-    tags: [],
   });
 
   return result.match(
@@ -182,7 +176,7 @@ async function createTask(input: {
   );
 }
 
-// Real-time task monitoring
+// Real-time monitoring
 function watchTask(taskId: string) {
   const unsubscribe = taskService.watch(taskId, (result) => {
     result.match(
@@ -199,17 +193,16 @@ function watchTask(taskId: string) {
     );
   });
 
-  // Clean up when done
   return unsubscribe;
 }
 
 // Bulk operations
 async function assignTasksToUser(taskIds: string[], userId: string) {
   const results = await Promise.all(
-    taskIds.map(id => 
-      taskService.update(id, { 
+    taskIds.map(id =>
+      taskService.update(id, {
         assignedTo: userId,
-        status: 'in-progress' 
+        status: 'in-progress'
       })
     )
   );
@@ -219,127 +212,12 @@ async function assignTasksToUser(taskIds: string[], userId: string) {
 }
 ```
 
-### Collaborative Document System
-
-```typescript
-import { make, ContentThingSchema, who } from '@ariob/core';
-import { z } from 'zod';
-
-// Document schema with versioning
-const DocumentSchema = ContentThingSchema.extend({
-  content: z.string(),
-  format: z.enum(['markdown', 'html', 'plain']).default('markdown'),
-  collaborators: z.array(z.string()).default([]),
-  revisions: z.array(z.object({
-    content: z.string(),
-    editedBy: z.string(),
-    timestamp: z.number(),
-  })).default([]),
-  locked: z.boolean().default(false),
-  lockedBy: z.string().optional(),
-});
-
-type Document = z.infer<typeof DocumentSchema>;
-
-const docService = make(DocumentSchema, 'docs');
-
-// Collaborative editing with conflict detection
-class DocumentEditor {
-  private currentDoc: Document | null = null;
-  private unsubscribe: (() => void) | null = null;
-
-  async open(docId: string) {
-    // Get initial document
-    const result = await docService.get(docId);
-    if (result.isErr()) throw result.error;
-    
-    this.currentDoc = result.value;
-    
-    // Watch for changes
-    this.unsubscribe = docService.watch(docId, (result) => {
-      result.match(
-        (doc) => {
-          if (doc) {
-            this.handleRemoteUpdate(doc);
-          }
-        },
-        (error) => console.error('Watch error:', error)
-      );
-    });
-  }
-
-  async save(content: string) {
-    if (!this.currentDoc) return;
-
-    const user = who.current();
-    if (!user) throw new Error('Must be authenticated');
-
-    // Check if locked by another user
-    if (this.currentDoc.locked && this.currentDoc.lockedBy !== user.pub) {
-      throw new Error('Document is locked by another user');
-    }
-
-    // Save revision
-    const revision = {
-      content: this.currentDoc.content,
-      editedBy: user.pub,
-      timestamp: Date.now(),
-    };
-
-    const result = await docService.update(this.currentDoc.id, {
-      content,
-      revisions: [...this.currentDoc.revisions, revision],
-      updatedAt: Date.now(),
-    });
-
-    if (result.isErr()) throw result.error;
-  }
-
-  async lock() {
-    if (!this.currentDoc) return;
-    
-    const user = who.current();
-    if (!user) throw new Error('Must be authenticated');
-
-    await docService.update(this.currentDoc.id, {
-      locked: true,
-      lockedBy: user.pub,
-    });
-  }
-
-  async unlock() {
-    if (!this.currentDoc) return;
-    
-    await docService.update(this.currentDoc.id, {
-      locked: false,
-      lockedBy: undefined,
-    });
-  }
-
-  private handleRemoteUpdate(doc: Document) {
-    // Handle conflict resolution
-    if (this.currentDoc && doc.updatedAt! > this.currentDoc.updatedAt!) {
-      console.log('Document updated by another user');
-      // Implement your conflict resolution strategy
-      this.currentDoc = doc;
-      this.notifyUI(doc);
-    }
-  }
-
-  close() {
-    this.unsubscribe?.();
-    this.currentDoc = null;
-  }
-}
-```
-
 ### Private User Data
 
 ```typescript
-import { make, ThingSchema, who } from '@ariob/core';
+import { make, ThingSchema } from '@ariob/core';
 import { z } from 'zod';
 
-// Settings schema
 const SettingsSchema = ThingSchema.extend({
   theme: z.enum(['light', 'dark', 'auto']).default('auto'),
   notifications: z.object({
@@ -365,25 +243,21 @@ class UserSettings {
 
   static async load() {
     const result = await settingsService.get(this.SETTINGS_ID);
-    
+
     if (result.isOk() && result.value) {
       return result.value;
     }
 
-    // Create default settings
     return this.createDefaults();
   }
 
   static async save(updates: Partial<z.infer<typeof SettingsSchema>>) {
-    const current = await this.load();
-    
     const result = await settingsService.update(this.SETTINGS_ID, {
       ...updates,
       updatedAt: Date.now(),
     });
 
     if (result.isErr()) {
-      // If update failed, might need to create
       if (result.error.type === 'NOT_FOUND') {
         return this.createDefaults(updates);
       }
@@ -393,7 +267,7 @@ class UserSettings {
     return result.value;
   }
 
-  private static async createDefaults(overrides?: Partial<z.infer<typeof SettingsSchema>>) {
+  private static async createDefaults(overrides?: any) {
     const result = await settingsService.create({
       theme: 'auto',
       notifications: {
@@ -413,53 +287,11 @@ class UserSettings {
     return result.value;
   }
 }
-
-// Usage in ReactLynx component
-function SettingsScreen() {
-  const { user } = useWho();
-  const [settings, setSettings] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (user) {
-      UserSettings.load().then(s => {
-        setSettings(s);
-        setLoading(false);
-      });
-    }
-  }, [user]);
-
-  const updateTheme = async (theme: 'light' | 'dark' | 'auto') => {
-    const updated = await UserSettings.save({ theme });
-    setSettings(updated);
-  };
-
-  if (!user) return <text>Please login to access settings</text>;
-  if (loading) return <text>Loading settings...</text>;
-
-  return (
-    <view className="settings">
-      <text className="title">Settings</text>
-      
-      <view className="setting-group">
-        <text>Theme</text>
-        <select 
-          value={settings.theme}
-          onChange={(e) => updateTheme(e.target.value)}
-        >
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-          <option value="auto">Auto</option>
-        </select>
-      </view>
-    </view>
-  );
-}
 ```
 
 ## Error Handling
 
-All service methods return `Result` types for explicit error handling:
+All service methods return `Result` types:
 
 ```typescript
 // Handle specific error types
@@ -497,26 +329,19 @@ try {
 
 ## Best Practices
 
-1. **Define schemas first** - Let your data model drive the implementation
-2. **Use Result types** - Handle errors explicitly, don't ignore them
-3. **Clean up subscriptions** - Always call the unsubscribe function
+1. **Define schemas first** - Let your data model drive implementation
+2. **Use Result types** - Handle errors explicitly
+3. **Clean up subscriptions** - Always call unsubscribe function
 4. **Check authentication** - Verify user is logged in for user-scoped services
-5. **Validate inputs** - Let Zod handle validation automatically
-6. **Use TypeScript** - Get full type safety and auto-completion
+5. **Validate inputs** - Let Zod handle validation
+6. **Use TypeScript** - Get full type safety
 
 ## Performance Tips
 
-1. **Batch operations** when possible:
-```typescript
-// Instead of multiple individual updates
-const results = await Promise.all(
-  ids.map(id => service.update(id, data))
-);
-```
-
-2. **Use watch selectively** - Only subscribe to data you're actively displaying
+1. **Batch operations** when possible
+2. **Use watch selectively** - Only subscribe to displayed data
 3. **Clean up unused services** - Call `service.cleanup()` when done
-4. **Limit list operations** - Gun.js loads all data, so paginate in your UI
+4. **Limit list operations** - Gun.js loads all data, paginate in UI
 
 ## Security Considerations
 
@@ -525,3 +350,11 @@ const results = await Promise.all(
 3. **Validate all inputs** - Schemas provide first-line defense
 4. **Don't store sensitive data unencrypted** - Use SEA for encryption
 5. **Check ownership** before allowing updates
+
+## See Also
+
+- [Gun Module](../README.md) - Gun.js integration
+- [Schema Module](../schema/README.md) - Data validation
+- [State Module](../state/README.md) - Zustand stores
+- [Hooks Module](../hooks/README.md) - React hooks
+- [Main Documentation](../../README.md) - Package overview

@@ -1,165 +1,56 @@
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { Thing } from '../schema/thing.schema';
-import { ThingService } from '../services/thing.service';
-import { AppError } from '../schema/errors';
-import { Result } from 'neverthrow';
+'background only';
 
-interface ThingState<T extends Thing> {
-  items: T[];
-  byId: Record<string, T>;
-  isLoading: boolean;
-  error: AppError | null;
-}
+/**
+ * Thing Store - Zustand state management for Thing entities
+ *
+ * This module provides state management for Thing entities using Zustand.
+ * It has been refactored to use the generic store factory following UNIX philosophy.
+ *
+ * @example
+ * ```typescript
+ * import { createThingStore, make } from '@ariob/core';
+ * import { z } from 'zod';
+ *
+ * const TodoSchema = ThingSchema.extend({
+ *   title: z.string(),
+ *   completed: z.boolean(),
+ * });
+ *
+ * const todos = make(TodoSchema, 'todos');
+ * const useTodoStore = createThingStore(todos, 'TodoStore');
+ *
+ * // In a component
+ * function TodoList() {
+ *   const items = useTodoStore(state => state.items);
+ *   const create = useTodoStore(state => state.create);
+ *
+ *   return <div>...</div>;
+ * }
+ * ```
+ */
 
-interface ThingActions<T extends Thing> {
-  create: (data: any) => Promise<Result<T, AppError>>;
-  update: (id: string, updates: any) => Promise<Result<T | null, AppError>>;
-  remove: (id: string) => Promise<Result<boolean, AppError>>;
-  fetchAll: () => Promise<Result<T[], AppError>>;
-  fetchById: (id: string) => Promise<Result<T | null, AppError>>;
-  watch: (id: string) => () => void;
-  cleanup: () => void;
-}
+import type { Thing } from '../schema/thing.schema';
+import type { ThingService } from '../services/thing/service';
+import { store, type Store } from './factory';
 
-export type ThingStore<T extends Thing> = ThingState<T> & ThingActions<T>;
+/**
+ * Thing store type (backward compatibility)
+ * @deprecated Use Store<T> from factory instead
+ */
+export type ThingStore<T extends Thing> = Store<T>;
 
+/**
+ * Create a Thing store
+ * Uses the generic store factory under the hood
+ * Following UNIX philosophy: composed from smaller parts
+ *
+ * @param service - Thing service
+ * @param name - Store name for devtools
+ * @returns Zustand store hook
+ */
 export const createThingStore = <T extends Thing>(
   service: ThingService<T>,
   name: string
-) => {
-  return create<ThingStore<T>>()(
-    (set, get) => ({
-      items: [],
-      byId: {},
-      isLoading: false,
-      error: null,
-
-      create: async (data) => {
-        set({ isLoading: true, error: null });
-        const result = await service.create(data);
-        
-        result.match(
-          (item) => {
-            const { items, byId } = get();
-            set({
-              items: [...items, item],
-              byId: { ...byId, [item.id]: item },
-              isLoading: false,
-            });
-          },
-          (error) => set({ error, isLoading: false })
-        );
-        
-        return result;
-      },
-
-      update: async (id, updates) => {
-        set({ isLoading: true, error: null });
-        const result = await service.update(id, updates);
-        
-        result.match(
-          (item) => {
-            if (item) {
-              const { items, byId } = get();
-              set({
-                items: items.map(i => i.id === id ? item : i),
-                byId: { ...byId, [id]: item },
-                isLoading: false,
-              });
-            }
-          },
-          (error) => set({ error, isLoading: false })
-        );
-        
-        return result;
-      },
-
-      remove: async (id) => {
-        set({ isLoading: true, error: null });
-        const result = await service.remove(id);
-        
-        result.match(
-          () => {
-            const { items, byId } = get();
-            const newById = { ...byId };
-            delete newById[id];
-            set({
-              items: items.filter(i => i.id !== id),
-              byId: newById,
-              isLoading: false,
-            });
-          },
-          (error) => set({ error, isLoading: false })
-        );
-        
-        return result;
-      },
-
-      fetchAll: async () => {
-        set({ isLoading: true, error: null });
-        const result = await service.list();
-        
-        result.match(
-          (items) => {
-            const byId = items.reduce((acc, item) => ({ ...acc, [item.id]: item }), {});
-            set({ items, byId, isLoading: false });
-          },
-          (error) => set({ error, isLoading: false })
-        );
-        
-        return result;
-      },
-
-      fetchById: async (id) => {
-        const result = await service.get(id);
-        
-        result.match(
-          (item) => {
-            if (item) {
-              const { items, byId } = get();
-              if (!byId[id]) {
-                set({
-                  items: [...items, item],
-                  byId: { ...byId, [id]: item },
-                });
-              }
-            }
-          },
-          (error) => set({ error })
-        );
-        
-        return result;
-      },
-
-      watch: (id) => {
-        return service.watch(id, (result) => {
-          result.match(
-            (item) => {
-              if (item) {
-                const { items, byId } = get();
-                const exists = byId[id];
-                if (exists) {
-                  set({
-                    items: items.map(i => i.id === id ? item : i),
-                    byId: { ...byId, [id]: item },
-                  });
-                } else {
-                  set({
-                    items: [...items, item],
-                    byId: { ...byId, [id]: item },
-                  });
-                }
-              }
-            },
-            (error) => set({ error })
-          );
-        });
-      },
-
-      cleanup: () => {
-        service.cleanup();
-      },
-    })
-  );
+): (() => Store<T>) => {
+  return store(service, { name, devtools: true });
 };

@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react';
-import { Thing } from '../schema/thing.schema';
-import { ThingStore } from '../state/thing.store';
+import type { Thing } from '../schema/thing.schema';
+import type { ThingStore } from '../state/thing.store';
 
 /**
  * useThing Hook

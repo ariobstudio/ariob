@@ -24,6 +24,7 @@
 		10388F602E827FD8000C60D5 /* MLXRandom in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F5F2E827FD8000C60D5 /* MLXRandom */; };
 		10388F632E827FEF000C60D5 /* Transformers in Frameworks */ = {isa = PBXBuildFile; productRef = 10388F622E827FEF000C60D5 /* Transformers */; };
 		106113F42E8F9BFF00F6DBCC /* Resource in Resources */ = {isa = PBXBuildFile; fileRef = 106113F32E8F9BFF00F6DBCC /* Resource */; };
+		109130012E91032300FA322C /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 109130002E91032300FA322C /* CryptoSwift */; };
 		10ADBC752E89DA4D00F4CDCD /* MLXEmbedders in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADBC742E89DA4D00F4CDCD /* MLXEmbedders */; };
 		10ADBC772E89DA4D00F4CDCD /* MLXLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADBC762E89DA4D00F4CDCD /* MLXLLM */; };
 		10ADBC792E89DA4D00F4CDCD /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 10ADBC782E89DA4D00F4CDCD /* MLXLMCommon */; };
@@ -127,6 +128,7 @@
 				1024A21B2E90869400FA8CF0 /* ContainersPreview in Frameworks */,
 				10388F542E827FD8000C60D5 /* MLX in Frameworks */,
 				1024A2B12E908A1600FA8CF0 /* RealModule in Frameworks */,
+				109130012E91032300FA322C /* CryptoSwift in Frameworks */,
 				1024A2152E90869400FA8CF0 /* BasicContainers in Frameworks */,
 				10ADC1B92E8E633100F4CDCD /* OrderedCollections in Frameworks */,
 				10ADC1B32E8E633100F4CDCD /* DequeModule in Frameworks */,
@@ -239,6 +241,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				109130032E9103B900FA322C /* PBXTargetDependency */,
 				10ADC19F2E8E629700F4CDCD /* PBXTargetDependency */,
 				10ADC1A12E8E629700F4CDCD /* PBXTargetDependency */,
 				10ADC1A32E8E629700F4CDCD /* PBXTargetDependency */,
@@ -355,6 +358,7 @@
 				10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
 				10ADC1802E8E5FB000F4CDCD /* XCRemoteSwiftPackageReference "swift-collections" */,
 				10ADC1972E8E61DC00F4CDCD /* XCRemoteSwiftPackageReference "swift-numerics" */,
+				10912FFF2E91032300FA322C /* XCRemoteSwiftPackageReference "CryptoSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 10305DAE2D87ED200021DD5A /* Products */;
@@ -473,6 +477,10 @@
 			isa = PBXTargetDependency;
 			target = 10305DAC2D87ED200021DD5A /* Ariob */;
 			targetProxy = 10305DD32D87ED230021DD5A /* PBXContainerItemProxy */;
+		};
+		109130032E9103B900FA322C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 109130022E9103B900FA322C /* CryptoSwift */;
 		};
 		10ADC1652E8E51C800F4CDCD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -913,6 +921,14 @@
 				minimumVersion = 0.1.24;
 			};
 		};
+		10912FFF2E91032300FA322C /* XCRemoteSwiftPackageReference "CryptoSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzyzanowskim/CryptoSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.9.0;
+			};
+		};
 		10ADBC732E89DA4D00F4CDCD /* XCRemoteSwiftPackageReference "mlx-swift-examples" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ml-explore/mlx-swift-examples.git";
@@ -1019,6 +1035,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 10388F612E827FEF000C60D5 /* XCRemoteSwiftPackageReference "swift-transformers" */;
 			productName = Transformers;
+		};
+		109130002E91032300FA322C /* CryptoSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10912FFF2E91032300FA322C /* XCRemoteSwiftPackageReference "CryptoSwift" */;
+			productName = CryptoSwift;
+		};
+		109130022E9103B900FA322C /* CryptoSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10912FFF2E91032300FA322C /* XCRemoteSwiftPackageReference "CryptoSwift" */;
+			productName = CryptoSwift;
 		};
 		10ADBC742E89DA4D00F4CDCD /* MLXEmbedders */ = {
 			isa = XCSwiftPackageProductDependency;
