@@ -16,6 +16,24 @@
       ],
       "@ariob/ui/*": [
         "packages/ui/src/*"
+      ],
+      "@ariob/senterej/engine": [
+        "packages/senterej/engine/src/index.ts"
+      ],
+      "@ariob/senterej/engine/*": [
+        "packages/senterej/engine/src/*"
+      ],
+      "@ariob/senterej/ui": [
+        "packages/senterej/ui/src/index.ts"
+      ],
+      "@ariob/senterej/ui/*": [
+        "packages/senterej/ui/src/*"
+      ],
+      "@ariob/senterej/p2p": [
+        "packages/senterej/p2p/src/index.ts"
+      ],
+      "@ariob/senterej/p2p/*": [
+        "packages/senterej/p2p/src/*"
       ]
     }
   },

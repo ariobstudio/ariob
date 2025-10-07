@@ -63,18 +63,19 @@ interface ButtonProps
   onClick?: () => void;
 }
 
-function Button({ className, variant, size, icon, ...props }: ButtonProps) {
+function Button({ className, variant, size, icon, onClick, disabled, children, ...props }: ButtonProps) {
   return (
   <view
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
-      bindtap={props.onClick}
+      bindtap={onClick}
+      // disabled={disabled}
       {...props}
     >
       {icon && <Icon className={cn(textVariants({ variant }))} name={icon} />}
-      {props.children && (
+      {children && (
         <text className={cn(textVariants({ variant, size, className }))}>
-          {props.children}
+          {children}
         </text>
       )}
     </view>

@@ -3469,7 +3469,8 @@
         opt.WebSocket ||
         env.WebSocket ||
         env.webkitWebSocket ||
-        env.mozWebSocket;
+        env.mozWebSocket ||
+        globalThis.WebSocket;
       if (!websocket) {
         return;
       }

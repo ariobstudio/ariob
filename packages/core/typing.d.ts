@@ -86,5 +86,10 @@ declare global {
       btoa(binaryString: string): string;
       atob(base64String: string): string;
     };
+    NativeWebSocketModule: {
+      connect(url: string, id: number): void;
+      send(id: number, message: string): void;
+      close(id: number, code: number, reason: string): void;
+    };
   };
 }

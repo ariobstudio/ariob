@@ -120,15 +120,16 @@ function List<T = any>({
       >
         {headerComponent}
         {data.map((item, index) => {
-          const key = keyExtractor ? keyExtractor(item, index) : index;
+          const key = keyExtractor ? keyExtractor(item, index) : String(index);
           return (
-            <view
+            <list-item
               key={key}
+              item-key={key}
               data-slot="list-item-wrapper"
               bindtap={() => onItemPress?.(item, index)}
             >
               {renderItem(item, index)}
-            </view>
+            </list-item>
           );
         })}
         {footerComponent}

@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@lynx-js/react",
+
+    "module": "esnext",
+    "moduleResolution": "bundler",
+
+    "strict": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+
+    "paths": {
+      "@/*": ["./src/*"],
+      "@assets/*": ["assets/*"],
+      "@ariob/ai": ["../../packages/ai/index.ts"],
+      "@ariob/ui": ["../../packages/ui/src/index.ts"],
+      "@ariob/ui/*": ["../../packages/ui/src/*"]
+    },
+    "baseUrl": "."
+  },
+  "exclude": ["dist/", "src/data/", "src/scripts/"]
+}
+
+
+// {
+//   "compilerOptions": {
+//     "strict": true,
+//     "isolatedModules": true,
+//     "verbatimModuleSyntax": true,
+
+//     "esModuleInterop": true,
+//     "skipLibCheck": true,
+    // "paths": {
+    //   "@/*": ["./src/*"],
+    //   "@ariob/ai": ["../../packages/ai/index.ts"],
+    //   "@ariob/ui": ["../../packages/ui/src/index.ts"],
+    //   "@ariob/ui/*": ["../../packages/ui/src/*"]
+    // },
+//     "baseUrl": ".",
+//     "noEmit": true,
+//   },
+//   "references": [
+//     { "path": "./tsconfig.node.json" },
+//     { "path": "./src" },
+//   ],
+//   "files": [],
+// }

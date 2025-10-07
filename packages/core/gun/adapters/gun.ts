@@ -1,7 +1,7 @@
 import type { Result } from 'neverthrow';
 import { ok, err } from 'neverthrow';
 import type { z } from 'zod';
-import type { GunInstance } from '../core/types';
+import type { GunInstance, GunChain } from '../core/types';
 import type { AppError } from '../schema/errors';
 import * as Err from '../schema/errors';
 import type { Adapter } from './adapter';
@@ -36,9 +36,25 @@ export class Gun<T> implements Adapter<T> {
   /**
    * Get a single item by path
    */
+  private chain(path: string): GunChain {
+    const segments = path.split('/').filter(Boolean);
+
+    if (segments.length === 0) {
+      return this.gun.get(path);
+    }
+
+    let node: GunChain = this.gun.get(segments[0]);
+
+    for (let i = 1; i < segments.length; i += 1) {
+      node = node.get(segments[i]);
+    }
+
+    return node;
+  }
+
   async get(path: string): Promise<Result<T | null, AppError>> {
     return new Promise((resolve) => {
-      this.gun.get(path).once((data: any) => {
+      this.chain(path).once((data: any) => {
         if (!data) {
           resolve(ok(null));
           return;
@@ -61,11 +77,25 @@ export class Gun<T> implements Adapter<T> {
     }
 
     return new Promise((resolve) => {
-      this.gun.get(path).put(data as any, (ack: any) => {
-        if (ack.err) {
-          resolve(err(Err.db(ack.err)));
+      let settled = false;
+      const finish = (result: Result<T, AppError>) => {
+        if (settled) return;
+        settled = true;
+        resolve(result);
+      };
+
+      const timeout = setTimeout(() => {
+        finish(ok(data));
+      }, 3000);
+
+      this.chain(path).put(data as any, (ack: any) => {
+        if (settled) return;
+        clearTimeout(timeout);
+
+        if (ack && ack.err) {
+          finish(err(Err.db(ack.err)));
         } else {
-          resolve(ok(data));
+          finish(ok(data));
         }
       });
     });
@@ -76,11 +106,25 @@ export class Gun<T> implements Adapter<T> {
    */
   async remove(path: string): Promise<Result<boolean, AppError>> {
     return new Promise((resolve) => {
-      this.gun.get(path).put(null, (ack: any) => {
-        if (ack.err) {
-          resolve(err(Err.db(ack.err)));
+      let settled = false;
+      const finish = (result: Result<boolean, AppError>) => {
+        if (settled) return;
+        settled = true;
+        resolve(result);
+      };
+
+      const timeout = setTimeout(() => {
+        finish(ok(true));
+      }, 3000);
+
+      this.chain(path).put(null, (ack: any) => {
+        if (settled) return;
+        clearTimeout(timeout);
+
+        if (ack && ack.err) {
+          finish(err(Err.db(ack.err)));
         } else {
-          resolve(ok(true));
+          finish(ok(true));
         }
       });
     });
@@ -94,8 +138,7 @@ export class Gun<T> implements Adapter<T> {
     return new Promise((resolve) => {
       const items: T[] = [];
 
-      this.gun
-        .get(path)
+      this.chain(path)
         .map()
         .once((data: any) => {
           if (data) {
@@ -117,7 +160,9 @@ export class Gun<T> implements Adapter<T> {
    * Subscribe to real-time updates at path
    */
   watch(path: string, callback: (data: T | null) => void): () => void {
-    this.gun.get(path).on((data: any) => {
+    const node = this.chain(path);
+
+    node.on((data: any) => {
       if (!data) {
         callback(null);
         return;
@@ -130,7 +175,7 @@ export class Gun<T> implements Adapter<T> {
     });
 
     // Return unsubscribe function
-    return () => this.gun.get(path).off();
+    return () => node.off();
   }
 
   /**

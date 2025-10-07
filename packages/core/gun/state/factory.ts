@@ -102,21 +102,35 @@ export const actions = <T extends Thing>(service: ThingService<T>) => ({
     set: (state: Partial<BaseState<T>>) => void,
     get: () => BaseState<T>
   ): Promise<Result<T, AppError>> => {
+    console.log('----[factory.ts][create action called][Starting store create][for state management]');
+    console.log('----[factory.ts][Data to create][Input data][for]', data);
+
+    console.log('----[factory.ts][Setting loading state][Updating store state][for UI feedback]');
     set({ isLoading: true, error: null });
+
+    console.log('----[factory.ts][Calling service.create][Delegating to service][for persistence]');
     const result = await service.create(data);
+    console.log('----[factory.ts][service.create returned][Result from service][for]', result);
 
     result.match(
       (item) => {
+        console.log('----[factory.ts][Create success][Item created][for]', item);
         const { items, byId } = get();
+        console.log('----[factory.ts][Current state][Before update][for]', { itemCount: items.length, byIdKeys: Object.keys(byId) });
         set({
           items: [...items, item],
           byId: { ...byId, [item.id]: item },
           isLoading: false,
         });
+        console.log('----[factory.ts][State updated][After adding item][for reactive updates]');
       },
-      (error) => set({ error, isLoading: false })
+      (error) => {
+        console.error('----[factory.ts][Create failed][Error from service][for]', error);
+        set({ error, isLoading: false });
+      }
     );
 
+    console.log('----[factory.ts][Returning result][Create action complete][for]', result);
     return result;
   },
 
@@ -210,27 +224,38 @@ export const actions = <T extends Thing>(service: ThingService<T>) => ({
     set: (state: Partial<BaseState<T>>) => void,
     get: () => BaseState<T>
   ): Promise<Result<T | null, AppError>> => {
+    console.log('----[factory.ts][fetchById called][Fetching item by ID][for]', id);
+    console.log('----[factory.ts][Calling service.get][Getting from service][for]', id);
     const result = await service.get(id);
+    console.log('----[factory.ts][service.get returned][Fetch result][for]', result);
 
     result.match(
       (item) => {
         if (item) {
+          console.log('----[factory.ts][Item found][Got item from service][for]', item);
           const { items, byId } = get();
           if (!byId[id]) {
+            console.log('----[factory.ts][New item][Adding to store][for]', id);
             set({
               items: [...items, item],
               byId: { ...byId, [id]: item },
             });
           } else {
+            console.log('----[factory.ts][Existing item][Updating in store][for]', id);
             // Update existing item
             set({
               items: items.map((i) => (i.id === id ? item : i)),
               byId: { ...byId, [id]: item },
             });
           }
+        } else {
+          console.log('----[factory.ts][Item not found][Service returned null][for]', id);
         }
       },
-      (error) => set({ error })
+      (error) => {
+        console.error('----[factory.ts][Fetch error][Service error][for]', error);
+        set({ error });
+      }
     );
 
     return result;
@@ -245,28 +270,41 @@ export const actions = <T extends Thing>(service: ThingService<T>) => ({
     get: () => BaseState<T>,
     service: ThingService<T>
   ): (() => void) => {
-    return service.watch(id, (result) => {
+    console.log('----[factory.ts][watch called][Starting watch subscription][for]', id);
+    console.log('----[factory.ts][Calling service.watch][Subscribing to updates][for]', id);
+    const unsubscribe = service.watch(id, (result) => {
+      console.log('----[factory.ts][Watch callback][Update received][for]', { id, result });
       result.match(
         (item) => {
           if (item) {
+            console.log('----[factory.ts][Watch update][Item updated][for]', item);
             const { items, byId } = get();
             const exists = byId[id];
             if (exists) {
+              console.log('----[factory.ts][Updating existing][Item already in store][for]', id);
               set({
                 items: items.map((i) => (i.id === id ? item : i)),
                 byId: { ...byId, [id]: item },
               });
             } else {
+              console.log('----[factory.ts][Adding new][Item not in store][for]', id);
               set({
                 items: [...items, item],
                 byId: { ...byId, [id]: item },
               });
             }
+          } else {
+            console.log('----[factory.ts][Watch null][Item deleted or null][for]', id);
           }
         },
-        (error) => set({ error })
+        (error) => {
+          console.error('----[factory.ts][Watch error][Error in watch callback][for]', error);
+          set({ error });
+        }
       );
     });
+    console.log('----[factory.ts][Watch started][Subscription active][for]', id);
+    return unsubscribe;
   },
 
   /**

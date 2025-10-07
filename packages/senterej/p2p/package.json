@@ -1,0 +1,23 @@
+{
+  "name": "@ariob/senterej-p2p",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  },
+  "dependencies": {
+    "@ariob/core": "workspace:*",
+    "@ariob/senterej": "workspace:*",
+    "zod": "^3.22.4"
+  },
+  "peerDependencies": {
+    "@lynx-js/react": "^0.114.0",
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.20",
+    "typescript": "^5.5.0"
+  }
+}

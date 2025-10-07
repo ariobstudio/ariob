@@ -44,6 +44,7 @@ static LynxInitProcessor *_instance = nil;
   [globalConfig registerModule:ExplorerModule.class];
   [globalConfig registerModule:NativeWebCryptoModule.class];
   [globalConfig registerModule:NativeLocalStorageModule.class];
+  [globalConfig registerModule:NativeWebSocketModule.class];
 
   // Only register A module on iOS 16+ due to MLX Swift Package requirements
   if (@available(iOS 16.0, *)) {

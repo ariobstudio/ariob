@@ -1,6 +1,7 @@
 'background only';
 
-import '../crypto.js'
+import '../crypto.js';
+import '../websocket.js';
 import Gun from '../gun.js';
 import SEA from '../sea.js';
 
@@ -9,7 +10,8 @@ import type { GunInstance } from './types';
 // Configure Gun options
 const gunOptions = {
   peers: [
-    'ws://gun-manhattan.herokuapp.com/gun',
+    // 'ws://gun-manhattan.herokuapp.com/gun',
+    'ws://peer.wallie.io/gun'
     // Add your own peers here
   ],
   localStorage: true, // Set to true to enable localStorage persistence
@@ -18,5 +20,4 @@ const gunOptions = {
 const gun: GunInstance = Gun(gunOptions) as GunInstance;
 const sea = SEA;
 gun.state = Gun.state;
-
 export { gun, sea };
