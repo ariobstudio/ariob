@@ -1,0 +1,1386 @@
+{
+  "en_name": "Esther",
+  "local_name": "Esther",
+  "abr": "est",
+  "ch_count": 10,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 22,
+      "verses": [
+        {
+          "num": 1,
+          "text": "1a",
+          "parts": [
+            "1a"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "in the days when King Artaxerxes sat on the throne in the city of Susa,",
+          "parts": [
+            "in the days when King Artaxerxes sat on the throne in the city of Susa,"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "that in the third year of his reign he gave a feast for his friends and the rest of the nations, and for the nobles of the Persians and the Medes and the chiefs of the satraps.",
+          "parts": [
+            "that in the third year of his reign he gave a feast for his friends and the rest of the nations, and for the nobles of the Persians and the Medes and the chiefs of the satraps."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "And after these things, that is after he had displayed the wealth of his kingdom and the glory of the joy of his riches for one hundred eighty days,",
+          "parts": [
+            "And after these things, that is after he had displayed the wealth of his kingdom and the glory of the joy of his riches for one hundred eighty days,"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "when the days of the celebration were completed, the king set forth a banquet in the court of the king's palace for six days for the people living in the city.",
+          "parts": [
+            "when the days of the celebration were completed, the king set forth a banquet in the court of the king's palace for six days for the people living in the city."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "The courtyard was adorned with fine white linen curtains stretched out on cords of purple and fastened to square gold and silver studs, on pillars of marble and stone.",
+          "parts": [
+            "The courtyard was adorned with fine white linen curtains stretched out on cords of purple and fastened to square gold and silver studs, on pillars of marble and stone."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "There were gold and silver cups, and a ruby goblet set out, worth thirty thousand talents, and there was an abundance of sweet wine, which the king himself drank.",
+          "parts": [
+            "There were gold and silver cups, and a ruby goblet set out, worth thirty thousand talents, and there was an abundance of sweet wine, which the king himself drank.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1706"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Now this banquet was not in keeping with established law; but this is what the king desired, and he ordered all the stewards of his household, those of his men, to do his will.",
+          "parts": [
+            "Now this banquet was not in keeping with established law; but this is what the king desired, and he ordered all the stewards of his household, those of his men, to do his will."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Queen Vashti also provided a banquet for the women in the royal palace of King Artaxerxes.",
+          "parts": [
+            "Queen Vashti also provided a banquet for the women in the royal palace of King Artaxerxes."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Now on the seventh day, the king was merry and told Mehuman, Biztha, Harbona, Bigtha, Abagtha, Zethar, and Carcas—the seven eunuchs, the servants of King Artaxerxes— to bring the queen before him, to enthrone her and to place the royal crown upon her, to show her beauty to the rulers and the nations, for she was beautiful.",
+          "parts": [
+            "Now on the seventh day, the king was merry and told Mehuman, Biztha, Harbona, Bigtha, Abagtha, Zethar, and Carcas—the seven eunuchs, the servants of King Artaxerxes— to bring the queen before him, to enthrone her and to place the royal crown upon her, to show her beauty to the rulers and the nations, for she was beautiful."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "to bring the queen before him, to enthrone her and to place the royal crown upon her, to show her beauty to the rulers and the nations, for she was beautiful.",
+          "parts": [
+            "to bring the queen before him, to enthrone her and to place the royal crown upon her, to show her beauty to the rulers and the nations, for she was beautiful."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "But Queen Vashti did not heed his words and refused to come with the eunuchs.",
+          "parts": [
+            "But Queen Vashti did not heed his words and refused to come with the eunuchs."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "The king said to his friends, “Thus has Vashti spoken; follow the law and justice concerning this.” And Arkesaios, Sarsathaios and Memucan, the nobles of the Persians and Medes, those near to the king and first in rank by the king, went to him.",
+          "parts": [
+            "The king said to his friends, “Thus has Vashti spoken; follow the law and justice concerning this.” And Arkesaios, Sarsathaios and Memucan, the nobles of the Persians and Medes, those near to the king and first in rank by the king, went to him."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "And Arkesaios, Sarsathaios and Memucan, the nobles of the Persians and Medes, those near to the king and first in rank by the king, went to him.",
+          "parts": [
+            "And Arkesaios, Sarsathaios and Memucan, the nobles of the Persians and Medes, those near to the king and first in rank by the king, went to him."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "They reported to him what according to the laws was to be done to the queen Vashti, because she did not do as commanded by King Artaxerxes by way of the eunuchs.",
+          "parts": [
+            "They reported to him what according to the laws was to be done to the queen Vashti, because she did not do as commanded by King Artaxerxes by way of the eunuchs."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "And Memucan said to the king and the princes, “Queen Vashti has not only wronged the king, but also all the king's rulers and nobles.”",
+          "parts": [
+            "And Memucan said to the king and the princes, “Queen Vashti has not only wronged the king, but also all the king's rulers and nobles.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1708"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "He reported the words of the queen, and how she contradicted the king, and how she disobeyed King Artaxerxes:",
+          "parts": [
+            "He reported the words of the queen, and how she contradicted the king, and how she disobeyed King Artaxerxes:"
+          ]
+        },
+        {
+          "num": 18,
+          "text": "“Thus today the royal ladies of the rulers of the Persians and the Medes, hearing the words which were spoken to the king, will dare to dishonor their husbands in the same way.",
+          "parts": [
+            "“Thus today the royal ladies of the rulers of the Persians and the Medes, hearing the words which were spoken to the king, will dare to dishonor their husbands in the same way."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "If it pleases the king, let him make a royal decree, and let it be written according to the laws of the Persians and the Medes, and let it not be declared otherwise, that the queen no longer come before him, and let the king give her royal position to a woman better than she.",
+          "parts": [
+            "If it pleases the king, let him make a royal decree, and let it be written according to the laws of the Persians and the Medes, and let it not be declared otherwise, that the queen no longer come before him, and let the king give her royal position to a woman better than she."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "And let the decree of the king, which he shall have made, be proclaimed throughout his kingdom, and thus all wives will honor their husbands, from the poor to the rich.”",
+          "parts": [
+            "And let the decree of the king, which he shall have made, be proclaimed throughout his kingdom, and thus all wives will honor their husbands, from the poor to the rich.”"
+          ]
+        },
+        {
+          "num": 21,
+          "text": "And the word pleased the king and the nobles, and the king did just as Memucan said.",
+          "parts": [
+            "And the word pleased the king and the nobles, and the king did just as Memucan said."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "He then sent out to his entire kingdom, throughout the provinces, according to their own language, that husbands be feared in their own houses.",
+          "parts": [
+            "He then sent out to his entire kingdom, throughout the provinces, according to their own language, that husbands be feared in their own houses.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1709"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Introduction: Mordecai's Prophetic Dream",
+        "A Plot against the King",
+        "King Artaxerxes’ Banquet",
+        "Queen Vashti Dishonors the King",
+        "The Search for a New Queen"
+      ]
+    },
+    {
+      "chapter_num": 2,
+      "verses_count": 23,
+      "verses": [
+        {
+          "num": 1,
+          "text": "And after these words the wrath of the king subsided, and he no longer mentioned Vashti, remembering either what she had said or how he had condemned her. Then the king's servants who attended him said, “Let beautiful young virgins be sought for the king, and let the king appoint officers in all the provinces of his kingdom, that they may gather all the beautiful young virgins to the city of Susa into the women's quarters, under the custody of the king's eunuch, custodian of the women.",
+          "parts": [
+            "And after these words the wrath of the king subsided, and he no longer mentioned Vashti, remembering either what she had said or how he had condemned her.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1710"
+            },
+            "Then the king's servants who attended him said, “Let beautiful young virgins be sought for the king, and let the king appoint officers in all the provinces of his kingdom, that they may gather all the beautiful young virgins to the city of Susa into the women's quarters, under the custody of the king's eunuch, custodian of the women."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "And let the young woman who pleases the king be queen instead of Vashti.” This thing pleased the king, and he did so.",
+          "parts": [
+            "And let the young woman who pleases the king be queen instead of Vashti.” This thing pleased the king, and he did so."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Now there was a Jewish man in the city of Susa whose name was Mordecai, son of Jair, son of Shimei, son of Kish, of the tribe of Benjamin, who was an exile from Jerusalem, whom Nebuchadnezzar the king of Babylon had taken captive.",
+          "parts": [
+            "Now there was a Jewish man in the city of Susa whose name was Mordecai, son of Jair, son of Shimei, son of Kish, of the tribe of Benjamin, who was an exile from Jerusalem, whom Nebuchadnezzar the king of Babylon had taken captive."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "who was an exile from Jerusalem, whom Nebuchadnezzar the king of Babylon had taken captive.",
+          "parts": [
+            "who was an exile from Jerusalem, whom Nebuchadnezzar the king of Babylon had taken captive."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "He had raised the daughter of Abihail, his father's brother, and her name was Esther; and when her parents died, he brought her up to be his wife, and she was beautiful.",
+          "parts": [
+            "He had raised the daughter of Abihail, his father's brother, and her name was Esther; and when her parents died, he brought her up to be his wife, and she was beautiful.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1711"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "So when the king's ordinance was heard, many young maidens were gathered together in the city of Susa, under the custody of Hegai, and Esther was brought to Hegai, the custodian of the women.",
+          "parts": [
+            "So when the king's ordinance was heard, many young maidens were gathered together in the city of Susa, under the custody of Hegai, and Esther was brought to Hegai, the custodian of the women."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "And the young woman pleased him and found favor in his sight.",
+          "parts": [
+            "And the young woman pleased him and found favor in his sight."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "But Esther did not reveal her people or her family, for Mordecai charged her not to reveal it.",
+          "parts": [
+            "But Esther did not reveal her people or her family, for Mordecai charged her not to reveal it."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And every day Mordecai walked about the courtyard of the women to see what would happen to Esther.",
+          "parts": [
+            "And every day Mordecai walked about the courtyard of the women to see what would happen to Esther."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Now this was the time for a young woman to go in to the king, after she had completed twelve months, for thus are the days of preparation fulfilled: six months being anointed with oil of myrrh, and six months with perfumes and beauty treatments for women. After this, she goes to the king, and she shall be allowed to bring whatever she asks with her from the women's quarters into the royal palace.",
+          "parts": [
+            "Now this was the time for a young woman to go in to the king, after she had completed twelve months, for thus are the days of preparation fulfilled: six months being anointed with oil of myrrh, and six months with perfumes and beauty treatments for women.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1712"
+            },
+            "After this, she goes to the king, and she shall be allowed to bring whatever she asks with her from the women's quarters into the royal palace."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "After this, she goes to the king, and she shall be allowed to bring whatever she asks with her from the women's quarters into the royal palace.",
+          "parts": [
+            "After this, she goes to the king, and she shall be allowed to bring whatever she asks with her from the women's quarters into the royal palace."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "She enters in the evening, and towards daybreak she departs quickly to the second women's quarters, where Shaashgaz, the king's eunuch, is the guardian of the women, and she does not go in to the king again unless she should be called by name.",
+          "parts": [
+            "She enters in the evening, and towards daybreak she departs quickly to the second women's quarters, where Shaashgaz, the king's eunuch, is the guardian of the women, and she does not go in to the king again unless she should be called by name."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Now when the time came for Esther the daughter of Abihail, the uncle of Mordecai, to go in to the king, she neglected nothing which the king's eunuch, the guardian of the women, commanded.",
+          "parts": [
+            "Now when the time came for Esther the daughter of Abihail, the uncle of Mordecai, to go in to the king, she neglected nothing which the king's eunuch, the guardian of the women, commanded."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "So Esther went in to King Artaxerxes in the tenth month, which is Tebeth, in the seventh year of his reign.",
+          "parts": [
+            "So Esther went in to King Artaxerxes in the tenth month, which is Tebeth, in the seventh year of his reign."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "And the king loved Esther, and she found favor beyond all the other virgins, and he placed the queen's crown on her.",
+          "parts": [
+            "And the king loved Esther, and she found favor beyond all the other virgins, and he placed the queen's crown on her."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "And the king gave a banquet for all his friends and nobles for seven days, and he exalted the marriage feast of Esther and granted a release to those under his reign.",
+          "parts": [
+            "And the king gave a banquet for all his friends and nobles for seven days, and he exalted the marriage feast of Esther and granted a release to those under his reign.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1713"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "And Mordecai was serving in the courtyard.",
+          "parts": [
+            "And Mordecai was serving in the courtyard."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Now Esther had not revealed her heritage, just as Mordecai commanded her when she was with him, which is to fear God and to keep His commandments, and Esther did not change her manner of life.",
+          "parts": [
+            "Now Esther had not revealed her heritage, just as Mordecai commanded her when she was with him, which is to fear God and to keep His commandments, and Esther did not change her manner of life.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1714"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Now two of the king's eunuchs, the chiefs of the bodyguards, were furious because Mordecai had been promoted, and they sought to kill King Artaxerxes.",
+          "parts": [
+            "Now two of the king's eunuchs, the chiefs of the bodyguards, were furious because Mordecai had been promoted, and they sought to kill King Artaxerxes."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "And the matter was made known to Mordecai, and he informed Esther, and she made the details of the plot known to the king.",
+          "parts": [
+            "And the matter was made known to Mordecai, and he informed Esther, and she made the details of the plot known to the king."
+          ]
+        },
+        {
+          "num": 23,
+          "text": "The king examined the two eunuchs and hanged them.",
+          "parts": [
+            "The king examined the two eunuchs and hanged them."
+          ]
+        }
+      ],
+      "headers": [
+        "Esther Chosen Queen",
+        "A Plot against the King",
+        "Haman's Hatred of Mordecai"
+      ]
+    },
+    {
+      "chapter_num": 3,
+      "verses_count": 15,
+      "verses": [
+        {
+          "num": 1,
+          "text": "After these things King Artaxerxes honored Haman, the son of Hammedatha the Agagite, and elevated him and set his seat above all his friends. All those in the court bowed to him, for thus the king commanded, but Mordecai refused to bow to him.",
+          "parts": [
+            "After these things King Artaxerxes honored Haman, the son of Hammedatha the Agagite, and elevated him and set his seat above all his friends.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1716"
+            },
+            "All those in the court bowed to him, for thus the king commanded, but Mordecai refused to bow to him."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Then those in the court said to Mordecai, “Mordecai, why do you ignore the king's command?”",
+          "parts": [
+            "Then those in the court said to Mordecai, “Mordecai, why do you ignore the king's command?”"
+          ]
+        },
+        {
+          "num": 4,
+          "text": "They said this to him daily, but he did not listen to them.",
+          "parts": [
+            "They said this to him daily, but he did not listen to them."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "When Haman learned that Mordecai did not bow to him, he became exceedingly angry,",
+          "parts": [
+            "When Haman learned that Mordecai did not bow to him, he became exceedingly angry,"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "and he determined to destroy all the Jews of the kingdom of Artaxerxes.",
+          "parts": [
+            "and he determined to destroy all the Jews of the kingdom of Artaxerxes."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "And he made a decree in the twelfth year of the reign of Artaxerxes, and he cast lots to determine the precise day and month to destroy the race of Mordecai on a single day, and the lot fell on the fourteenth day of the month, which is the month of Adar.",
+          "parts": [
+            "And he made a decree in the twelfth year of the reign of Artaxerxes, and he cast lots to determine the precise day and month to destroy the race of Mordecai on a single day, and the lot fell on the fourteenth day of the month, which is the month of Adar.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1717"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Then Haman spoke to King Artaxerxes, saying, “There is a certain people scattered among the peoples throughout your kingdom; their laws are different from all other people, and they disregard the king's laws.",
+          "parts": [
+            "Then Haman spoke to King Artaxerxes, saying, “There is a certain people scattered among the peoples throughout your kingdom; their laws are different from all other people, and they disregard the king's laws."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "If it pleases the king, let him make a decree to destroy them.",
+          "parts": [
+            "If it pleases the king, let him make a decree to destroy them."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "So the king took off his signet ring and placed it into the hand of Haman in order to seal what was written against the Jews.",
+          "parts": [
+            "So the king took off his signet ring and placed it into the hand of Haman in order to seal what was written against the Jews."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And the king said to Haman, “Keep the silver, and deal with those people as you wish.”",
+          "parts": [
+            "And the king said to Haman, “Keep the silver, and deal with those people as you wish.”"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Then the king's scribes were called on the thirteenth day of the first month, and they wrote, as Haman commanded, to the commanders and the governors in the one hundred twenty-seven provinces stretching from India to Ethiopia, and to the rulers of the nations, in their own language.",
+          "parts": [
+            "Then the king's scribes were called on the thirteenth day of the first month, and they wrote, as Haman commanded, to the commanders and the governors in the one hundred twenty-seven provinces stretching from India to Ethiopia, and to the rulers of the nations, in their own language."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "The letter was sent by couriers throughout the kingdom of Artaxerxes to utterly destroy the race of the Jews on a single day, in the twelfth month, which is Adar, and to plunder their possessions.",
+          "parts": [
+            "The letter was sent by couriers throughout the kingdom of Artaxerxes to utterly destroy the race of the Jews on a single day, in the twelfth month, which is Adar, and to plunder their possessions."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Copies of the letters were published throughout every province, and an order was given to all nations to be ready on that day.",
+          "parts": [
+            "Copies of the letters were published throughout every province, and an order was given to all nations to be ready on that day."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "The matter was quickly dispatched also in Susa.",
+          "parts": [
+            "The matter was quickly dispatched also in Susa."
+          ]
+        }
+      ],
+      "headers": [
+        "The Letter Sent to Destroy the Jews",
+        "Mordecai Enlists Esther's Aid"
+      ]
+    },
+    {
+      "chapter_num": 4,
+      "verses_count": 17,
+      "verses": [
+        {
+          "num": 1,
+          "text": "But Mordecai, learning what had happened, tore his clothes and put on sackcloth, and sprinkled ashes on himself, and running through the square of the city he cried out with a loud voice, “A people who have done no wrong are about to be destroyed!” He went as far as the king's gate, and there he waited, for it was not allowed for him to enter the courtyard wearing sackcloth and covered in ashes.",
+          "parts": [
+            "But Mordecai, learning what had happened, tore his clothes and put on sackcloth, and sprinkled ashes on himself, and running through the square of the city he cried out with a loud voice, “A people who have done no wrong are about to be destroyed!”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1720"
+            },
+            "He went as far as the king's gate, and there he waited, for it was not allowed for him to enter the courtyard wearing sackcloth and covered in ashes."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "And in every province where the king's command and decree arrived, there was great mourning among the Jews, with fasting, weeping, and wailing; and many lay in sackcloth and ashes.",
+          "parts": [
+            "And in every province where the king's command and decree arrived, there was great mourning among the Jews, with fasting, weeping, and wailing; and many lay in sackcloth and ashes."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "The queen's maids and eunuchs came and told her, and she was deeply distressed upon hearing of this situation.",
+          "parts": [
+            "The queen's maids and eunuchs came and told her, and she was deeply distressed upon hearing of this situation."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Then Esther called Hathach, her eunuch who attended to her, and sent him out to learn for herself the details from Mordecai.",
+          "parts": [
+            "Then Esther called Hathach, her eunuch who attended to her, and sent him out to learn for herself the details from Mordecai."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Mordecai made known to him what had happened, and the offer Haman had made to the king to put ten thousand talents into the treasury to destroy the Jews.",
+          "parts": [
+            "Mordecai made known to him what had happened, and the offer Haman had made to the king to put ten thousand talents into the treasury to destroy the Jews."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "He also gave him a copy of the decree posted in Susa concerning their destruction to show it to Esther.",
+          "parts": [
+            "He also gave him a copy of the decree posted in Susa concerning their destruction to show it to Esther."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "So Hathach came and told her all these words.",
+          "parts": [
+            "So Hathach came and told her all these words."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Then Esther said to Hathach, “Go to Mordecai and say, ‘All the nations of the kingdom know that any man or woman who goes into the inner court to the king who has not been summoned, there is no deliverance for him unless the king holds out his golden scepter to save that person.",
+          "parts": [
+            "Then Esther said to Hathach, “Go to Mordecai and say, ‘All the nations of the kingdom know that any man or woman who goes into the inner court to the king who has not been summoned, there is no deliverance for him unless the king holds out his golden scepter to save that person."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "‘All the nations of the kingdom know that any man or woman who goes into the inner court to the king who has not been summoned, there is no deliverance for him unless the king holds out his golden scepter to save that person.",
+          "parts": [
+            "‘All the nations of the kingdom know that any man or woman who goes into the inner court to the king who has not been summoned, there is no deliverance for him unless the king holds out his golden scepter to save that person."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "So Hathach related all Esther's words to Mordecai.",
+          "parts": [
+            "So Hathach related all Esther's words to Mordecai."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "And Mordecai said to Hathach, “Go and say to Esther, ‘Do not say to yourself that you alone will be saved in the kingdom apart from all the other Jews. For if you choose not to heed this request at this time, help and deliverance for the Jews will arise elsewhere, but you and your father's house will perish.",
+          "parts": [
+            "And Mordecai said to Hathach, “Go and say to Esther, ‘Do not say to yourself that you alone will be saved in the kingdom apart from all the other Jews.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1722"
+            },
+            "For if you choose not to heed this request at this time, help and deliverance for the Jews will arise elsewhere, but you and your father's house will perish."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "For if you choose not to heed this request at this time, help and deliverance for the Jews will arise elsewhere, but you and your father's house will perish.",
+          "parts": [
+            "For if you choose not to heed this request at this time, help and deliverance for the Jews will arise elsewhere, but you and your father's house will perish."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Then Esther dispatched the one who came to her to Mordecai, saying,",
+          "parts": [
+            "Then Esther dispatched the one who came to her to Mordecai, saying,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1723"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "“Go and assemble together the Jews in Susa.",
+          "parts": [
+            "“Go and assemble together the Jews in Susa."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "So Mordecai went and did all that Esther commanded him.",
+          "parts": [
+            "So Mordecai went and did all that Esther commanded him."
+          ]
+        }
+      ],
+      "headers": [
+        "The Prayer of Mordecai",
+        "The Prayer of Esther",
+        "Esther Goes before the King"
+      ]
+    },
+    {
+      "chapter_num": 5,
+      "verses_count": 22,
+      "verses": [
+        {
+          "num": 1,
+          "text": "And it happened on the third day, when she ceased praying, she took off the garments of the solemnity, and put on her glorious apparel. And having become resplendent, appealing to the all-seeing God and Savior, she took with her two of her favorite maids.",
+          "parts": [
+            "And it happened on the third day, when she ceased praying, she took off the garments of the solemnity, and put on her glorious apparel.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1728"
+            },
+            "And having become resplendent, appealing to the all-seeing God and Savior, she took with her two of her favorite maids."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "She was aglow in the perfection of her beauty.",
+          "parts": [
+            "She was aglow in the perfection of her beauty."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "And having entered through all the doors, she stood face to face with the king.",
+          "parts": [
+            "And having entered through all the doors, she stood face to face with the king."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "And as he looked up, resplendent in his glory, at the very edge of anger, the queen collapsed, her complexion paled, and she slumped against the head of the maid who went before her.",
+          "parts": [
+            "And as he looked up, resplendent in his glory, at the very edge of anger, the queen collapsed, her complexion paled, and she slumped against the head of the maid who went before her."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "But God changed the spirit of the king to gentleness.",
+          "parts": [
+            "But God changed the spirit of the king to gentleness."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "“Esther, what is it?",
+          "parts": [
+            "“Esther, what is it?"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "And lifting his golden scepter, he laid it upon her neck, and he embraced her and said, “Speak to me.”",
+          "parts": [
+            "And lifting his golden scepter, he laid it upon her neck, and he embraced her and said, “Speak to me.”"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "And she said to him, “I saw you, my lord, as an angel of God, and my heart was troubled for fear of your majesty, for you, my lord, are awesome, and your face is full of kindness.” But while she was speaking to him, she fainted.",
+          "parts": [
+            "And she said to him, “I saw you, my lord, as an angel of God, and my heart was troubled for fear of your majesty, for you, my lord, are awesome, and your face is full of kindness.” But while she was speaking to him, she fainted."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "But while she was speaking to him, she fainted.",
+          "parts": [
+            "But while she was speaking to him, she fainted."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And the king said, “What do you want, Esther?",
+          "parts": [
+            "And the king said, “What do you want, Esther?"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Then Esther said, “Today is my special day.",
+          "parts": [
+            "Then Esther said, “Today is my special day."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "And the king said, “Have Haman hasten here that we may do what Esther asks.” They both came to the banquet of which Esther spoke.",
+          "parts": [
+            "And the king said, “Have Haman hasten here that we may do what Esther asks.” They both came to the banquet of which Esther spoke."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "So at the banquet, the king said to Esther, “What is it, Queen Esther?",
+          "parts": [
+            "So at the banquet, the king said to Esther, “What is it, Queen Esther?"
+          ]
+        },
+        {
+          "num": 15,
+          "text": "And she said, “My request and my petition is this:",
+          "parts": [
+            "And she said, “My request and my petition is this:"
+          ]
+        },
+        {
+          "num": 16,
+          "text": "If I find favor in the sight of the king, let the king and Haman also come tomorrow to the banquet which I will prepare for them, and tomorrow I will do the same.”",
+          "parts": [
+            "If I find favor in the sight of the king, let the king and Haman also come tomorrow to the banquet which I will prepare for them, and tomorrow I will do the same.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1733"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "So Haman went out from the king overjoyed and cheerful, but when Haman saw Mordecai the Jew in the court, he was enraged. And having entered his own home, he called his friends and his wife, Zeresh.",
+          "parts": [
+            "So Haman went out from the king overjoyed and cheerful, but when Haman saw Mordecai the Jew in the court, he was enraged.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1734"
+            },
+            "And having entered his own home, he called his friends and his wife, Zeresh."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "And having entered his own home, he called his friends and his wife, Zeresh.",
+          "parts": [
+            "And having entered his own home, he called his friends and his wife, Zeresh."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "And he showed them his wealth and the honor the king had bestowed upon him, how he made him to be first and chief in the kingdom.",
+          "parts": [
+            "And he showed them his wealth and the honor the king had bestowed upon him, how he made him to be first and chief in the kingdom."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Haman added, “The queen invited no one else to be with the king at the banquet except me, and I am also invited tomorrow.",
+          "parts": [
+            "Haman added, “The queen invited no one else to be with the king at the banquet except me, and I am also invited tomorrow."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "But these things do not please me when I see Mordecai the Jew in the courtyard.”",
+          "parts": [
+            "But these things do not please me when I see Mordecai the Jew in the courtyard.”"
+          ]
+        },
+        {
+          "num": 22,
+          "text": "Then Zeresh his wife and friends said to him, “Have a tree cut down, fifty cubits high, and in the morning speak to the king and let Mordecai be hanged on the tree.",
+          "parts": [
+            "Then Zeresh his wife and friends said to him, “Have a tree cut down, fifty cubits high, and in the morning speak to the king and let Mordecai be hanged on the tree."
+          ]
+        }
+      ],
+      "headers": [
+        "Esther's First Banquet",
+        "The King's Sleepless Night"
+      ]
+    },
+    {
+      "chapter_num": 6,
+      "verses_count": 14,
+      "verses": [
+        {
+          "num": 1,
+          "text": "But the Lord made it difficult for the king to sleep that night, and the king commanded his servant to bring in the written records of notable events. And he found the written records about Mordecai, how he had told the king about the two eunuchs of the king when they were keeping guard and sought to lay hands on Artaxerxes.",
+          "parts": [
+            "But the Lord made it difficult for the king to sleep that night, and the king commanded his servant to bring in the written records of notable events.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1736"
+            },
+            "And he found the written records about Mordecai, how he had told the king about the two eunuchs of the king when they were keeping guard and sought to lay hands on Artaxerxes."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Then the king said, “Has any honor or favor been granted Mordecai?” And the king's servants said, “Nothing was done for him.”",
+          "parts": [
+            "Then the king said, “Has any honor or favor been granted Mordecai?” And the king's servants said, “Nothing was done for him.”"
+          ]
+        },
+        {
+          "num": 4,
+          "text": "And at the same time the king asked about the good will of Mordecai, behold, Haman entered the courtyard.",
+          "parts": [
+            "And at the same time the king asked about the good will of Mordecai, behold, Haman entered the courtyard."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "And the king's servants said, “Behold, Haman is standing in the courtyard.” And the king said, “Let him come in.”",
+          "parts": [
+            "And the king's servants said, “Behold, Haman is standing in the courtyard.” And the king said, “Let him come in.”"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "The king said to Haman, “What should I do for a man whom I wish to honor?” And Haman thought to himself, “Whom would the king wish to honor but me?” So Haman said to the king, “As for the man whom the king wishes to honor, have the king's servant bring the royal robe the king wears, along with the horse he rides, and let these be given to one of the king's honored friends, and let him clothe the man whom the king loves and then mount him upon the horse.",
+          "parts": [
+            "The king said to Haman, “What should I do for a man whom I wish to honor?” And Haman thought to himself, “Whom would the king wish to honor but me?”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1737"
+            },
+            "So Haman said to the king, “As for the man whom the king wishes to honor, have the king's servant bring the royal robe the king wears, along with the horse he rides, and let these be given to one of the king's honored friends, and let him clothe the man whom the king loves and then mount him upon the horse."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "So Haman said to the king,",
+          "parts": [
+            "So Haman said to the king,"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "“As for the man whom the king wishes to honor, have the king's servant bring the royal robe the king wears, along with the horse he rides,",
+          "parts": [
+            "“As for the man whom the king wishes to honor, have the king's servant bring the royal robe the king wears, along with the horse he rides,"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "and let these be given to one of the king's honored friends, and let him clothe the man whom the king loves and then mount him upon the horse.",
+          "parts": [
+            "and let these be given to one of the king's honored friends, and let him clothe the man whom the king loves and then mount him upon the horse."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Then the king said to Haman, “You have spoken well; thus you shall do to Mordecai the Jew, the one serving in the courtyard, and let no word you have spoken be overlooked.”",
+          "parts": [
+            "Then the king said to Haman, “You have spoken well; thus you shall do to Mordecai the Jew, the one serving in the courtyard, and let no word you have spoken be overlooked.”"
+          ]
+        },
+        {
+          "num": 11,
+          "text": "So Haman took the robe and the horse and arrayed Mordecai with the robe, and mounted him on the horse; and he went throughout the city square, and proclaimed, saying, “Thus shall it be done to every man whom the king honors.”",
+          "parts": [
+            "So Haman took the robe and the horse and arrayed Mordecai with the robe, and mounted him on the horse; and he went throughout the city square, and proclaimed, saying, “Thus shall it be done to every man whom the king honors.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1738"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Mordecai returned to the courtyard, but Haman returned to his own quarters grieving, with his head down.",
+          "parts": [
+            "Mordecai returned to the courtyard, but Haman returned to his own quarters grieving, with his head down."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "And Haman related these events to his wife Zeresh and his friends.",
+          "parts": [
+            "And Haman related these events to his wife Zeresh and his friends."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "While they were still speaking, the king's eunuchs came to hasten Haman to the banquet which Esther had prepared.",
+          "parts": [
+            "While they were still speaking, the king's eunuchs came to hasten Haman to the banquet which Esther had prepared."
+          ]
+        }
+      ],
+      "headers": [
+        "The King Honors Mordecai",
+        "Esther's Second Banquet"
+      ]
+    },
+    {
+      "chapter_num": 7,
+      "verses_count": 10,
+      "verses": [
+        {
+          "num": 1,
+          "text": "So the king and Haman came to the banquet to drink together with the queen. And the king said to Esther on this second day of the banquet, “What is it, Queen Esther?",
+          "parts": [
+            "So the king and Haman came to the banquet to drink together with the queen.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1739"
+            },
+            "And the king said to Esther on this second day of the banquet, “What is it, Queen Esther?"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "She said in reply, “If I have found favor in the sight of the king, let my life be given to me at my request, and my people at my petition.",
+          "parts": [
+            "She said in reply, “If I have found favor in the sight of the king, let my life be given to me at my request, and my people at my petition."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "For both I and my people are sold into destruction, pillage, and bondage.",
+          "parts": [
+            "For both I and my people are sold into destruction, pillage, and bondage."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Then the king said, “Who is this who dared to do this thing?”",
+          "parts": [
+            "Then the king said, “Who is this who dared to do this thing?”"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "And Esther said, “The enemy is this wicked man, Haman.” Then Haman was troubled before the king and the queen.",
+          "parts": [
+            "And Esther said, “The enemy is this wicked man, Haman.” Then Haman was troubled before the king and the queen."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "The king arose from the banquet and went into the garden, but Haman was pleading with the queen, for he realized that he was in desperate circumstances.",
+          "parts": [
+            "The king arose from the banquet and went into the garden, but Haman was pleading with the queen, for he realized that he was in desperate circumstances."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "The king returned from the garden, and Haman, while entreating the queen, had fallen upon the couch.",
+          "parts": [
+            "The king returned from the garden, and Haman, while entreating the queen, had fallen upon the couch."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Then Harbona, one of the eunuchs, said to the king, “Look!",
+          "parts": [
+            "Then Harbona, one of the eunuchs, said to the king, “Look!"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "And Haman was hung on the gallows he had prepared for Mordecai.",
+          "parts": [
+            "And Haman was hung on the gallows he had prepared for Mordecai."
+          ]
+        }
+      ],
+      "headers": [
+        "Haman Is Hanged",
+        "Haman's Plot Is Thwarted"
+      ]
+    },
+    {
+      "chapter_num": 8,
+      "verses_count": 17,
+      "verses": [
+        {
+          "num": 1,
+          "text": "On that day, King Artaxerxes gave Esther everything belonging to Haman the accuser.",
+          "parts": [
+            "On that day, King Artaxerxes gave Esther everything belonging to Haman the accuser."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "The king then took the signet ring he had taken from Haman and gave it to Mordecai.",
+          "parts": [
+            "The king then took the signet ring he had taken from Haman and gave it to Mordecai."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Again she fell down at the feet of the king, and she implored him to remove all the evils Haman had done to the Jews.",
+          "parts": [
+            "Again she fell down at the feet of the king, and she implored him to remove all the evils Haman had done to the Jews."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Then the king held out his golden scepter toward Esther.",
+          "parts": [
+            "Then the king held out his golden scepter toward Esther."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "“If it seems good to you, and I have found favor, let a letter be sent out to revoke the letters sent out by Haman, which were written to annihilate all the Jews in your kingdom.",
+          "parts": [
+            "“If it seems good to you, and I have found favor, let a letter be sent out to revoke the letters sent out by Haman, which were written to annihilate all the Jews in your kingdom.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1742"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "For how can I be able to look upon the oppression of my people?",
+          "parts": [
+            "For how can I be able to look upon the oppression of my people?"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Then the king said to Esther, “Since I granted you everything that belonged to Haman, and hung him from the gallows because he laid hands on the Jews, what else do you want?",
+          "parts": [
+            "Then the king said to Esther, “Since I granted you everything that belonged to Haman, and hung him from the gallows because he laid hands on the Jews, what else do you want?"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Write it yourselves in my name, as it seems good to you, and seal it with my ring; for whatever is written by command of the king and sealed with my ring cannot be revoked.”",
+          "parts": [
+            "Write it yourselves in my name, as it seems good to you, and seal it with my ring; for whatever is written by command of the king and sealed with my ring cannot be revoked.”"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "So the scribes were summoned in the first month, which is Nisan, on the twenty-third day of that same year.",
+          "parts": [
+            "So the scribes were summoned in the first month, which is Nisan, on the twenty-third day of that same year."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "So it was written by the authority of the king and sealed with his ring, and the letters were dispatched by couriers.",
+          "parts": [
+            "So it was written by the authority of the king and sealed with his ring, and the letters were dispatched by couriers."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "As he commanded by these letters, the Jews were to exercise their own laws in every city, to be of help to each other, and to treat their adversaries and those opposing them as they wished.",
+          "parts": [
+            "As he commanded by these letters, the Jews were to exercise their own laws in every city, to be of help to each other, and to treat their adversaries and those opposing them as they wished."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "This was to take effect beginning on one day throughout all the kingdom of Artaxerxes—the thirteenth day of the twelfth month, which is Adar.",
+          "parts": [
+            "This was to take effect beginning on one day throughout all the kingdom of Artaxerxes—the thirteenth day of the twelfth month, which is Adar."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Let copies of the decree be posted conspicuously throughout the kingdom, and let all the Jews be ready on that day to fight against those who oppose them.",
+          "parts": [
+            "Let copies of the decree be posted conspicuously throughout the kingdom, and let all the Jews be ready on that day to fight against those who oppose them."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "So horsemen were sent out quickly to carry out the king's commands, and the decree was also posted in Susa.",
+          "parts": [
+            "So horsemen were sent out quickly to carry out the king's commands, and the decree was also posted in Susa."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Then Mordecai went out robed in royal raiment, having a gold crown and a diadem of fine purple linen; and seeing him, the people of Susa rejoiced. † And there was light and gladness for the Jews. In every city and province where the decree was published, where the proclamation was posted, there was joy and gladness among the Jews—feasting and good cheer.",
+          "parts": [
+            "Then Mordecai went out robed in royal raiment, having a gold crown and a diadem of fine purple linen; and seeing him, the people of Susa rejoiced.",
+            {
+              "style": "CROSS_REF",
+              "text": "†",
+              "ref_id": "r302"
+            },
+            "And there was light and gladness for the Jews.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1747"
+            },
+            "In every city and province where the decree was published, where the proclamation was posted, there was joy and gladness among the Jews—feasting and good cheer."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "And there was light and gladness for the Jews.",
+          "parts": [
+            "And there was light and gladness for the Jews.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1747"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "In every city and province where the decree was published, where the proclamation was posted, there was joy and gladness among the Jews—feasting and good cheer.",
+          "parts": [
+            "In every city and province where the decree was published, where the proclamation was posted, there was joy and gladness among the Jews—feasting and good cheer."
+          ]
+        }
+      ],
+      "headers": [
+        "The New Decree",
+        "The Posting of the New Decree",
+        "The Jews Defeat Their Enemies"
+      ]
+    },
+    {
+      "chapter_num": 9,
+      "verses_count": 30,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Now in the twelfth month, on the thirteenth day of the month of Adar, the decree written by the king arrived. On that day those in opposition were destroyed by the Jews, for fearing them, no one resisted.",
+          "parts": [
+            "Now in the twelfth month, on the thirteenth day of the month of Adar, the decree written by the king arrived.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1749"
+            },
+            "On that day those in opposition were destroyed by the Jews, for fearing them, no one resisted."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For the leaders of the satraps, the sovereigns, and the royal scribes honored the Jews, and the fear of Mordecai weighed on them,",
+          "parts": [
+            "For the leaders of the satraps, the sovereigns, and the royal scribes honored the Jews, and the fear of Mordecai weighed on them,"
+          ]
+        },
+        {
+          "num": 4,
+          "text": "for the order of the king had come down that Mordecai should be acknowledged throughout the kingdom.",
+          "parts": [
+            "for the order of the king had come down that Mordecai should be acknowledged throughout the kingdom."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "And in the city of Susa, the Jews killed five hundred men.",
+          "parts": [
+            "And in the city of Susa, the Jews killed five hundred men."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "These included Parshandatha, Dalphon, Aspatha,",
+          "parts": [
+            "These included Parshandatha, Dalphon, Aspatha,"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Poratha, Adalia, Aridatha,",
+          "parts": [
+            "Poratha, Adalia, Aridatha,"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Parmashta, Arisai, Aridai, and Vajezatha—",
+          "parts": [
+            "Parmashta, Arisai, Aridai, and Vajezatha—"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "the ten sons of Haman, son of Hamadatha, the enemy of the Jews.",
+          "parts": [
+            "the ten sons of Haman, son of Hamadatha, the enemy of the Jews."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "On that day, the number of those killed in Susa was reported to the king.",
+          "parts": [
+            "On that day, the number of those killed in Susa was reported to the king."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Then the king said to Esther, “The Jews have killed five hundred men in the city of Susa.",
+          "parts": [
+            "Then the king said to Esther, “The Jews have killed five hundred men in the city of Susa."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Esther said to the king, “Let the Jews be granted the opportunity to do the same tomorrow in order to hang the sons of Haman.”",
+          "parts": [
+            "Esther said to the king, “Let the Jews be granted the opportunity to do the same tomorrow in order to hang the sons of Haman.”"
+          ]
+        },
+        {
+          "num": 13,
+          "text": "And he permitted this to be done, and he set out for the Jews of the city the bodies of the sons of Haman to hang.",
+          "parts": [
+            "And he permitted this to be done, and he set out for the Jews of the city the bodies of the sons of Haman to hang."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Then the Jews gathered together in Susa on the fourteenth of Adar and killed three hundred men, but they plundered nothing.",
+          "parts": [
+            "Then the Jews gathered together in Susa on the fourteenth of Adar and killed three hundred men, but they plundered nothing."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "The rest of the Jews throughout the kingdom assembled and came to the aid of one another, and they had rest from their enemies, for they killed fifteen thousand of them on the thirteenth of Adar, but they plundered nothing.",
+          "parts": [
+            "The rest of the Jews throughout the kingdom assembled and came to the aid of one another, and they had rest from their enemies, for they killed fifteen thousand of them on the thirteenth of Adar, but they plundered nothing."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Then they rested on the fourteenth of that month, and observed it as a day of rest with joy and gladness.",
+          "parts": [
+            "Then they rested on the fourteenth of that month, and observed it as a day of rest with joy and gladness."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "And the Jews in the city of Susa also gathered together on the fourteenth, but did not rest from their enemies, but they observed the fifteenth with joy and gladness.",
+          "parts": [
+            "And the Jews in the city of Susa also gathered together on the fourteenth, but did not rest from their enemies, but they observed the fifteenth with joy and gladness."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "This is why the Jews scattered in every foreign land observe the fourteenth of Adar with gladness as a holiday, sending parcels to their neighbors.",
+          "parts": [
+            "This is why the Jews scattered in every foreign land observe the fourteenth of Adar with gladness as a holiday, sending parcels to their neighbors."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Mordecai wrote these things in a book and sent it to all the Jews in the kingdom of Artaxerxes, to those both near and far, to establish these days as holidays, and to observe both the fourteenth and fifteenth day of Adar— for on these days the Jews had rest from their enemies.",
+          "parts": [
+            "Mordecai wrote these things in a book and sent it to all the Jews in the kingdom of Artaxerxes, to those both near and far,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f1750"
+            },
+            "to establish these days as holidays, and to observe both the fourteenth and fifteenth day of Adar— for on these days the Jews had rest from their enemies."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "to establish these days as holidays, and to observe both the fourteenth and fifteenth day of Adar—",
+          "parts": [
+            "to establish these days as holidays, and to observe both the fourteenth and fifteenth day of Adar—"
+          ]
+        },
+        {
+          "num": 21,
+          "text": "for on these days the Jews had rest from their enemies.",
+          "parts": [
+            "for on these days the Jews had rest from their enemies."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "The Jews accepted everything just as Mordecai wrote to them: how Haman the son of Hamadatha, the Macedonian, warred against them; how he had made a decree and cast lots to exterminate them; how he had gone to the king telling him to hang Mordecai; and how all the evils he plotted against the Jews came upon himself, and how he was hanged, he and his children.",
+          "parts": [
+            "The Jews accepted everything just as Mordecai wrote to them: how Haman the son of Hamadatha, the Macedonian, warred against them; how he had made a decree and cast lots to exterminate them; how he had gone to the king telling him to hang Mordecai; and how all the evils he plotted against the Jews came upon himself, and how he was hanged, he and his children."
+          ]
+        },
+        {
+          "num": 23,
+          "text": "how Haman the son of Hamadatha, the Macedonian, warred against them; how he had made a decree and cast lots to exterminate them;",
+          "parts": [
+            "how Haman the son of Hamadatha, the Macedonian, warred against them; how he had made a decree and cast lots to exterminate them;"
+          ]
+        },
+        {
+          "num": 24,
+          "text": "how he had gone to the king telling him to hang Mordecai; and how all the evils he plotted against the Jews came upon himself, and how he was hanged, he and his children.",
+          "parts": [
+            "how he had gone to the king telling him to hang Mordecai; and how all the evils he plotted against the Jews came upon himself, and how he was hanged, he and his children."
+          ]
+        },
+        {
+          "num": 25,
+          "text": "Therefore these days were called Purim—on account of the lots (because in their language they are called pur",
+          "parts": [
+            "Therefore these days were called Purim—on account of the lots (because in their language they are called",
+            {
+              "style": "ITALIC",
+              "text": "pur"
+            }
+          ]
+        },
+        {
+          "num": 26,
+          "text": "Mordecai established it, and the Jews took it upon themselves, their descendants, and upon those joining with them not to do otherwise.",
+          "parts": [
+            "Mordecai established it, and the Jews took it upon themselves, their descendants, and upon those joining with them not to do otherwise."
+          ]
+        },
+        {
+          "num": 27,
+          "text": "Thus these days of Purim shall be observed forever, and their remembrance shall not cease in any generation.",
+          "parts": [
+            "Thus these days of Purim shall be observed forever, and their remembrance shall not cease in any generation."
+          ]
+        },
+        {
+          "num": 28,
+          "text": "Then Queen Esther, daughter of Abihail, and Mordecai the Jew wrote down the many things they had done and the truthfulness of the command of Purim.",
+          "parts": [
+            "Then Queen Esther, daughter of Abihail, and Mordecai the Jew wrote down the many things they had done and the truthfulness of the command of Purim."
+          ]
+        },
+        {
+          "num": 29,
+          "text": "And Mordecai and Queen Esther established it for themselves, establishing it at that time according to their soundness of mind and their purpose.",
+          "parts": [
+            "And Mordecai and Queen Esther established it for themselves, establishing it at that time according to their soundness of mind and their purpose."
+          ]
+        },
+        {
+          "num": 30,
+          "text": "Esther established it by a command forever, and it was written for a memorial.",
+          "parts": [
+            "Esther established it by a command forever, and it was written for a memorial."
+          ]
+        }
+      ],
+      "headers": [
+        "The Feast of Purim"
+      ]
+    },
+    {
+      "chapter_num": 10,
+      "verses_count": 3,
+      "verses": [
+        {
+          "num": 1,
+          "text": "And the king levied tribute upon his kingdom both by land and sea.",
+          "parts": [
+            "And the king levied tribute upon his kingdom both by land and sea."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "And his power and valor, the riches and the glory of his kingdom, behold, they are written in the book of the kings of Persia and Media for a memorial.",
+          "parts": [
+            "And his power and valor, the riches and the glory of his kingdom, behold, they are written in the book of the kings of Persia and Media for a memorial."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "And Mordecai was next to King Artaxerxes, and he was great in the kingdom and honored by the Jews; and being beloved, he set forth in detail the way of life to all his people.",
+          "parts": [
+            "And Mordecai was next to King Artaxerxes, and he was great in the kingdom and honored by the Jews; and being beloved, he set forth in detail the way of life to all his people."
+          ]
+        }
+      ],
+      "headers": [
+        "Epilogue"
+      ]
+    }
+  ],
+  "author": "By tradition, Mordecai (9:20, 29).",
+  "date": "About 450 BC, after the fall of Babylon.",
+  "theme": "Divine providence of God in taking care of His people in adversity when they pray to Him and trust in Him. The Jews fasted and prayed when they learned of an evil plot to destroy them. Esther, an orphan, was chosen by King Xerxes (Ahasuerus) to replace the Persian queen. It was because of her royal position that she was able to persuade the king to save her people. Similar patterns to the rise of Esther as queen may be seen in the rise of Joseph to the court of the Pharaoh and the rise of Daniel in the court of Babylon."
+}

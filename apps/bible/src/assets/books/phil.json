@@ -1,0 +1,335 @@
+{
+  "en_name": "Philemon",
+  "local_name": "Philemon",
+  "abr": "phil",
+  "ch_count": 1,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 25,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Paul, a prisoner of Christ Jesus, and Timothy our brother,",
+          "parts": [
+            "Paul, a prisoner of Christ Jesus, and Timothy",
+            {
+              "style": "ITALIC",
+              "text": "our"
+            },
+            "brother,"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "to the beloved a",
+          "parts": [
+            "to the beloved",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1583"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Grace to you and peace from God our Father and the Lord Jesus Christ.",
+          "parts": [
+            "Grace to you and peace from God our Father and the Lord Jesus Christ."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "I thank my God, making mention of you always in my prayers, hearing of your love and faith which you have toward the Lord Jesus and toward all the saints, that the sharing of your faith may become effective by the acknowledgment of every good thing which is in you a in Christ Jesus. For we have a great joy b and consolation in your love, because the hearts of the saints have been refreshed by you, brother.",
+          "parts": [
+            "I thank my God, making mention of you always in my prayers, hearing of your love and faith which you have toward the Lord Jesus and toward all the saints,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5787"
+            },
+            "that the sharing of your faith may become effective by the acknowledgment of every good thing which is in you",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1584"
+            },
+            "in Christ Jesus.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5788"
+            },
+            "For we have",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1585"
+            },
+            "great joy",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r1586"
+            },
+            "and consolation in your love, because the hearts of the saints have been refreshed by you, brother.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5789"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "hearing of your love and faith which you have toward the Lord Jesus and toward all the saints,",
+          "parts": [
+            "hearing of your love and faith which you have toward the Lord Jesus and toward all the saints,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5787"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "that the sharing of your faith may become effective by the acknowledgment of every good thing which is in you a",
+          "parts": [
+            "that the sharing of your faith may become effective by the acknowledgment of every good thing which is in you",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1587"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For we have a",
+          "parts": [
+            "For we have",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1588"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Therefore, though I might be very bold in Christ to command you what is fitting, yet for love's sake I rather appeal to you —being such a one as Paul, the aged, and now also a prisoner of Jesus Christ— I appeal to you for my son Onesimus, whom I have begotten while in my chains, who once was unprofitable to you, but now is profitable to you and to me.",
+          "parts": [
+            "Therefore, though I might be very bold in Christ to command you what is fitting,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5790"
+            },
+            {
+              "style": "ITALIC",
+              "text": "yet"
+            },
+            "for love's sake I rather appeal",
+            {
+              "style": "ITALIC",
+              "text": "to you"
+            },
+            "—being such a one as Paul, the aged, and now also a prisoner of Jesus Christ— I appeal to you for my son Onesimus, whom I have begotten",
+            {
+              "style": "ITALIC",
+              "text": "while"
+            },
+            "in my chains,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5791"
+            },
+            "who once was unprofitable to you, but now is profitable to you and to me.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5792"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "yet",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "yet"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "I appeal to you for my son Onesimus, whom I have begotten while",
+          "parts": [
+            "I appeal to you for my son Onesimus, whom I have begotten",
+            {
+              "style": "ITALIC",
+              "text": "while"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "who once was unprofitable to you, but now is profitable to you and to me.",
+          "parts": [
+            "who once was unprofitable to you, but now is profitable to you and to me.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5792"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "I am sending him back. a You therefore receive him, that is, my own heart, whom I wished to keep with me, that on your behalf he might minister to me in my chains for the gospel.",
+          "parts": [
+            "I am sending him back.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1589"
+            },
+            "You therefore receive him, that is, my own heart, whom I wished to keep with me, that on your behalf he might minister to me in my chains for the gospel."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "whom I wished to keep with me, that on your behalf he might minister to me in my chains for the gospel.",
+          "parts": [
+            "whom I wished to keep with me, that on your behalf he might minister to me in my chains for the gospel."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "But without your consent I wanted to do nothing, that your good deed might not be by compulsion, as it were, but voluntary.",
+          "parts": [
+            "But without your consent I wanted to do nothing, that your good deed might not be by compulsion, as it were, but voluntary.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5793"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "For perhaps he departed for a while for this purpose, that you might receive him forever, no longer as a slave but more than a slave—a beloved brother, especially to me but how much more to you, both in the flesh and in the Lord.",
+          "parts": [
+            "For perhaps he departed for a while for this",
+            {
+              "style": "ITALIC",
+              "text": "purpose,"
+            },
+            "that you might receive him forever, no longer as a slave but more than a slave—a beloved brother, especially to me but how much more to you, both in the flesh and in the Lord."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "no longer as a slave but more than a slave—a beloved brother, especially to me but how much more to you, both in the flesh and in the Lord.",
+          "parts": [
+            "no longer as a slave but more than a slave—a beloved brother, especially to me but how much more to you, both in the flesh and in the Lord."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "If then you count me as a partner, receive him as you would me.",
+          "parts": [
+            "If then you count me as a partner, receive him as",
+            {
+              "style": "ITALIC",
+              "text": "you would"
+            },
+            "me."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "But if he has wronged you or owes anything, put that on my account.",
+          "parts": [
+            "But if he has wronged you or owes anything, put that on my account.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5794"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "I, Paul, am writing with my own hand.",
+          "parts": [
+            "I, Paul, am writing with my own hand."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Yes, brother, let me have joy from you in the Lord; refresh my heart in the Lord.",
+          "parts": [
+            "Yes, brother, let me have joy from you in the Lord; refresh my heart in the Lord."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Having confidence in your obedience, I write to you, knowing that you will do even more than I say. But, meanwhile, also prepare a guest room for me, for I trust that through your prayers I shall be granted to you.",
+          "parts": [
+            "Having confidence in your obedience, I write to you, knowing that you will do even more than I say.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5796"
+            },
+            "But, meanwhile, also prepare a guest room for me, for I trust that through your prayers I shall be granted to you."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "But, meanwhile, also prepare a guest room for me, for I trust that through your prayers I shall be granted to you.",
+          "parts": [
+            "But, meanwhile, also prepare a guest room for me, for I trust that through your prayers I shall be granted to you."
+          ]
+        },
+        {
+          "num": 23,
+          "text": "Epaphras, my fellow prisoner in Christ Jesus, greets you, as do Mark, Aristarchus, Demas, Luke, my fellow laborers.",
+          "parts": [
+            "Epaphras, my fellow prisoner in Christ Jesus, greets you,",
+            {
+              "style": "ITALIC",
+              "text": "as do"
+            },
+            "Mark, Aristarchus, Demas, Luke, my fellow laborers."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "as do",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "as do"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "The grace of our Lord Jesus Christ be with your spirit.",
+          "parts": [
+            "The grace of our Lord Jesus Christ",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            },
+            "with your spirit."
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting",
+        "Commendation of Philemon",
+        "Plea for Onesimus",
+        "Personal Request, Greetings, and Benediction"
+      ]
+    }
+  ],
+  "author": "St. Paul. Paul often used an assistant to whom he dictated his letters (Rom 16:22; 1Co 16:21; Gal 6:11; Col 4:18; 2Th 3:17), but he wrote Philemon with his own hand (v. 19).",
+  "date": "AD 61–63. Philemon was written at the same time as Colossians, most likely from Rome during Paul's first Roman captivity.",
+  "theme": "No longer slaves, we are brothers and sisters in Christ."
+}

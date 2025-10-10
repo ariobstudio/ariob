@@ -1,0 +1,4829 @@
+{
+  "en_name": "1 Corinthians",
+  "local_name": "1 Corinthians",
+  "abr": "1co",
+  "ch_count": 16,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 31,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Paul, called to be an apostle of Jesus Christ through the will of God, and Sosthenes our brother,",
+          "parts": [
+            "Paul, called",
+            {
+              "style": "ITALIC",
+              "text": "to be"
+            },
+            "an apostle of Jesus Christ through the will of God, and Sosthenes",
+            {
+              "style": "ITALIC",
+              "text": "our"
+            },
+            "brother,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5356"
+            }
+          ]
+        },
+        {
+          "num": 2,
+          "text": "To the church of God which is at Corinth, to those who are sanctified in Christ Jesus, called to be saints, with all who in every place call on the name of Jesus Christ our Lord, both theirs and ours:",
+          "parts": [
+            "To the church of God which is at Corinth, to those who are sanctified in Christ Jesus, called",
+            {
+              "style": "ITALIC",
+              "text": "to be"
+            },
+            "saints, with all who in every place call on the name of Jesus Christ our Lord, both theirs and ours:",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5357"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Grace to you and peace from God our Father and the Lord Jesus Christ.",
+          "parts": [
+            "Grace to you and peace from God our Father and the Lord Jesus Christ.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5358"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "I thank my God always concerning you for the grace of God which was given to you by Christ Jesus, that you were enriched in everything by Him in all utterance and all knowledge, even as the testimony of Christ was confirmed in you, so that you come short in no gift, eagerly waiting for the revelation of our Lord Jesus Christ, who will also confirm you to the end, that you may be blameless in the day of our Lord Jesus Christ.",
+          "parts": [
+            "I thank my God always concerning you for the grace of God which was given to you by Christ Jesus,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5359"
+            },
+            "that you were enriched in everything by Him in all utterance and all knowledge, even as the testimony of Christ was confirmed in you, so that you come short in no gift, eagerly waiting for the revelation of our Lord Jesus Christ,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5360"
+            },
+            "who will also confirm you to the end,",
+            {
+              "style": "ITALIC",
+              "text": "that you may be"
+            },
+            "blameless in the day of our Lord Jesus Christ."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "that you were enriched in everything by Him in all utterance and all knowledge,",
+          "parts": [
+            "that you were enriched in everything by Him in all utterance and all knowledge,"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "even as the testimony of Christ was confirmed in you,",
+          "parts": [
+            "even as the testimony of Christ was confirmed in you,"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "so that you come short in no gift, eagerly waiting for the revelation of our Lord Jesus Christ,",
+          "parts": [
+            "so that you come short in no gift, eagerly waiting for the revelation of our Lord Jesus Christ,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5360"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "who will also confirm you to the end, that you may be",
+          "parts": [
+            "who will also confirm you to the end,",
+            {
+              "style": "ITALIC",
+              "text": "that you may be"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "God is",
+          "parts": [
+            "God",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Now I plead with you, brethren, by the name of our Lord Jesus Christ, that you all speak the same thing, and that there be no divisions among you, but that you be perfectly joined together in the same mind and in the same judgment. For it has been declared to me concerning you, my brethren, by those of Chloe's household, that there are contentions among you. Now I say this, that each of you says, “I am of Paul,” or “I am of Apollos,” or “I am of Cephas,” or “I am of Christ.”",
+          "parts": [
+            "Now I plead with you, brethren, by the name of our Lord Jesus Christ, that you all speak the same thing, and",
+            {
+              "style": "ITALIC",
+              "text": "that"
+            },
+            "there be no divisions among you, but",
+            {
+              "style": "ITALIC",
+              "text": "that"
+            },
+            "you be perfectly joined together in the same mind and in the same judgment.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5362"
+            },
+            "For it has been declared to me concerning you, my brethren, by those of Chloe's",
+            {
+              "style": "ITALIC",
+              "text": "household,"
+            },
+            "that there are contentions among you.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5363"
+            },
+            "Now I say this, that each of you says, “I am of Paul,” or “I am of Apollos,” or “I am of Cephas,” or “I am of Christ.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5364"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "For it has been declared to me concerning you, my brethren, by those of Chloe's household,",
+          "parts": [
+            "For it has been declared to me concerning you, my brethren, by those of Chloe's",
+            {
+              "style": "ITALIC",
+              "text": "household,"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Now I say this, that each of you says, “I am of Paul,” or “I am of Apollos,” or “I am of Cephas,” or “I am of Christ.”",
+          "parts": [
+            "Now I say this, that each of you says, “I am of Paul,” or “I am of Apollos,” or “I am of Cephas,” or “I am of Christ.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5364"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Is Christ divided?",
+          "parts": [
+            "Is Christ divided?"
+          ]
+        },
+        {
+          "num": 14,
+          "text": "I thank God that I baptized none of you except Crispus and Gaius, lest anyone should say that I had baptized in my own name. Yes, I also baptized the household of Stephanas.",
+          "parts": [
+            "I thank God that I baptized none of you except Crispus and Gaius,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5366"
+            },
+            "lest anyone should say that I had baptized in my own name.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5367"
+            },
+            "Yes, I also baptized the household of Stephanas."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "lest anyone should say that I had baptized in my own name.",
+          "parts": [
+            "lest anyone should say that I had baptized in my own name.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5367"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Yes, I also baptized the household of Stephanas.",
+          "parts": [
+            "Yes, I also baptized the household of Stephanas."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For Christ did not send me to baptize, but to preach the gospel, not with wisdom of words, lest the cross of Christ should be made of no effect.",
+          "parts": [
+            "For Christ did not send me to baptize, but to preach the gospel, not with wisdom of words, lest the cross of Christ should be made of no effect.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5368"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "For the message of the cross is foolishness to those who are perishing, but to us who are being saved it is the power of God. For it is written:",
+          "parts": [
+            "For the message of the cross is foolishness to those who are perishing, but to us who are being saved it is the power of God.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5369"
+            },
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx319"
+            },
+            "For it is written:"
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For it is written:",
+          "parts": [
+            "For it is written:"
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Where is the wise?",
+          "parts": [
+            "Where",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "the wise?"
+          ]
+        },
+        {
+          "num": 21,
+          "text": "For since, in the wisdom of God, the world through wisdom did not know God, it pleased God through the foolishness of the message preached to save those who believe.",
+          "parts": [
+            "For since, in the wisdom of God, the world through wisdom did not know God, it pleased God through the foolishness of the message preached to save those who believe."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "For Jews request a sign, and Greeks seek after wisdom;",
+          "parts": [
+            "For Jews request a sign, and Greeks seek after wisdom;",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5370"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "but we preach Christ crucified, to the Jews a stumbling block and to the Greeks a",
+          "parts": [
+            "but we preach Christ crucified, to the Jews a stumbling block and to the Greeks",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r299"
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "but to those who are called, both Jews and Greeks, Christ the power of God and the wisdom of God.",
+          "parts": [
+            "but to those who are called, both Jews and Greeks, Christ the power of God and the wisdom of God.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5371"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "Because the foolishness of God is wiser than men, and the weakness of God is stronger than men.",
+          "parts": [
+            "Because the foolishness of God is wiser than men, and the weakness of God is stronger than men."
+          ]
+        },
+        {
+          "num": 26,
+          "text": "For you see your calling, brethren, that not many wise according to the flesh, not many mighty, not many noble, are called. But God has chosen the foolish things of the world to put to shame the wise, and God has chosen the weak things of the world to put to shame the things which are mighty; and the base things of the world and the things which are despised God has chosen, and the things which are not, to bring to nothing the things that are, that no flesh should glory in His presence.",
+          "parts": [
+            "For you see your calling, brethren, that not many wise according to the flesh, not many mighty, not many noble,",
+            {
+              "style": "ITALIC",
+              "text": "are called."
+            },
+            "But God has chosen the foolish things of the world to put to shame the wise, and God has chosen the weak things of the world to put to shame the things which are mighty; and the base things of the world and the things which are despised God has chosen, and the things which are not, to bring to nothing the things that are,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5372"
+            },
+            "that no flesh should glory in His presence."
+          ]
+        },
+        {
+          "num": 27,
+          "text": "But God has chosen the foolish things of the world to put to shame the wise, and God has chosen the weak things of the world to put to shame the things which are mighty;",
+          "parts": [
+            "But God has chosen the foolish things of the world to put to shame the wise, and God has chosen the weak things of the world to put to shame the things which are mighty;"
+          ]
+        },
+        {
+          "num": 28,
+          "text": "and the base things of the world and the things which are despised God has chosen, and the things which are not, to bring to nothing the things that are,",
+          "parts": [
+            "and the base things of the world and the things which are despised God has chosen, and the things which are not, to bring to nothing the things that are,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5372"
+            }
+          ]
+        },
+        {
+          "num": 29,
+          "text": "that no flesh should glory in His presence.",
+          "parts": [
+            "that no flesh should glory in His presence."
+          ]
+        },
+        {
+          "num": 30,
+          "text": "But of Him you are in Christ Jesus, who became for us wisdom from God—and righteousness and sanctification and redemption—",
+          "parts": [
+            "But of Him you are in Christ Jesus, who became for us wisdom from God—and righteousness and sanctification and redemption—"
+          ]
+        },
+        {
+          "num": 31,
+          "text": "that, as it is written, “He who glories, let him glory in the LORD.”",
+          "parts": [
+            "that, as it is written,",
+            {
+              "style": "ITALIC",
+              "text": " “He who glories, let him glory in the LORD.”"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting",
+        "Thanksgiving for God's Grace at Corinth",
+        "Reported Contentiousness in the Church",
+        "The Sacrament of Unity: Baptism",
+        "The Message of Unity: Exaltation of the Cross",
+        "Understanding Unity: Wisdom of the Spirit",
+        "Wisdom in the Apostolic Ministry",
+        "Wisdom in Christ's Church",
+        "Wisdom in Spiritual Fatherhood",
+        "Appeal and Warning",
+        "Incest: The Church Must Be Pure",
+        "Lawsuits: The Church Has Discernment",
+        "Immorality: The Church Is a Temple",
+        "Concerning Marriage",
+        "Concerning Virginity",
+        "Concerning Widowhood",
+        "Love Reigns Over Knowledge",
+        "A Good Example: Paul's Rights",
+        "Paul's Obligations",
+        "Paul's Spiritual Discipline",
+        "A Bad Example: Israel's Apostasy",
+        "Worship Is Sacramental",
+        "Offend No Man, Glorify God",
+        "The Conduct of Women",
+        "Unity at the Eucharist",
+        "Spiritual Gifts",
+        "Love, Superior to Gifts",
+        "Prophecy, Superior to Tongues",
+        "Order in Worship",
+        "Witnesses to the Resurrection",
+        "The Centrality of the Resurrection",
+        "The Resurrection and the Kingdom",
+        "The Manner of the Resurrection",
+        "The One Who Resurrects Us",
+        "The Time of the Resurrection",
+        "Hymn: Triumph Over Death",
+        "Collection for Jerusalem",
+        "Paul's Plans",
+        "Final Exhortations and Greetings"
+      ]
+    },
+    {
+      "chapter_num": 2,
+      "verses_count": 16,
+      "verses": [
+        {
+          "num": 1,
+          "text": "And I, brethren, when I came to you, did not come with excellence of speech or of wisdom declaring to you the testimony a of God.",
+          "parts": [
+            "And I, brethren, when I came to you, did not come with excellence of speech or of wisdom declaring to you the testimony",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r300"
+            },
+            "of God."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "For I determined not to know anything among you except Jesus Christ and Him crucified.",
+          "parts": [
+            "For I determined not to know anything among you except Jesus Christ and Him crucified."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "I was with you in weakness, in fear, and in much trembling.",
+          "parts": [
+            "I was with you in weakness, in fear, and in much trembling."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "And my speech and my preaching were",
+          "parts": [
+            "And my speech and my preaching",
+            {
+              "style": "ITALIC",
+              "text": "were"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "that your faith should not be in the wisdom of men but in the power of God.",
+          "parts": [
+            "that your faith should not be in the wisdom of men but in the power of God."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "However, we speak wisdom among those who are mature, yet not the wisdom of this age, nor of the rulers of this age, who are coming to nothing. But we speak the wisdom of God in a mystery, the hidden wisdom which God ordained before the ages for our glory, which none of the rulers of this age knew; for had they known, they would not have crucified the Lord of glory.",
+          "parts": [
+            "However, we speak wisdom among those who are mature, yet not the wisdom of this age, nor of the rulers of this age, who are coming to nothing.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5374"
+            },
+            "But we speak the wisdom of God in a mystery, the hidden",
+            {
+              "style": "ITALIC",
+              "text": "wisdom"
+            },
+            "which God ordained before the ages for our glory, which none of the rulers of this age knew; for had they known, they would not have crucified the Lord of glory.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5375"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "But we speak the wisdom of God in a mystery, the hidden wisdom",
+          "parts": [
+            "But we speak the wisdom of God in a mystery, the hidden",
+            {
+              "style": "ITALIC",
+              "text": "wisdom"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "which none of the rulers of this age knew; for had they known, they would not have crucified the Lord of glory.",
+          "parts": [
+            "which none of the rulers of this age knew; for had they known, they would not have crucified the Lord of glory.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5375"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "But as it is written:",
+          "parts": [
+            "But as it is written:"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "But God has revealed them to us through His Spirit.",
+          "parts": [
+            "But God has revealed",
+            {
+              "style": "ITALIC",
+              "text": "them"
+            },
+            "to us through His Spirit."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "For what man knows the things of a man except the spirit of the man which is in him?",
+          "parts": [
+            "For what man knows the things of a man except the spirit of the man which is in him?"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Now we have received, not the spirit of the world, but the Spirit who is from God, that we might know the things that have been freely given to us by God.",
+          "parts": [
+            "Now we have received, not the spirit of the world, but the Spirit who is from God, that we might know the things that have been freely given to us by God.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5378"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "These things we also speak, not in words which man's wisdom teaches but which the Holy a Spirit teaches, comparing spiritual things with spiritual.",
+          "parts": [
+            "These things we also speak, not in words which man's wisdom teaches but which the Holy",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r301"
+            },
+            "Spirit teaches, comparing spiritual things with spiritual."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "But the natural man does not receive the things of the Spirit of God, for they are foolishness to him; nor can he know them,",
+          "parts": [
+            "But the natural man does not receive the things of the Spirit of God, for they are foolishness to him; nor can he know",
+            {
+              "style": "ITALIC",
+              "text": "them,"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "But he who is spiritual judges all things, yet he himself is rightly",
+          "parts": [
+            "But he who is spiritual judges all things, yet he himself is",
+            {
+              "style": "ITALIC",
+              "text": "rightly"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "For “who has known the mind of the LORD that he may instruct Him?”",
+          "parts": [
+            "For",
+            {
+              "style": "ITALIC",
+              "text": "“who has known the mind of the LORD that he may instruct Him?”"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 3,
+      "verses_count": 23,
+      "verses": [
+        {
+          "num": 1,
+          "text": "And I, brethren, could not speak to you as to spiritual people but as to carnal, as to babes in Christ. I fed you with milk and not with solid food; for until now you were not able to receive it, and even now you are still not able; for you are still carnal.",
+          "parts": [
+            "And I, brethren, could not speak to you as to spiritual",
+            {
+              "style": "ITALIC",
+              "text": "people"
+            },
+            "but as to carnal, as to babes in Christ.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5380"
+            },
+            "I fed you with milk and not with solid food; for until now you were not able",
+            {
+              "style": "ITALIC",
+              "text": "to receive it,"
+            },
+            "and even now you are still not able; for you are still carnal."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "For when one says, “I am of Paul,” and another, “I am",
+          "parts": [
+            "For when one says, “I am of Paul,” and another, “I",
+            {
+              "style": "ITALIC",
+              "text": "am"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Who then is Paul, and who is Apollos, but ministers through whom you believed, as the Lord gave to each one?",
+          "parts": [
+            "Who then is Paul, and who",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "Apollos, but ministers through whom you believed, as the Lord gave to each one?"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "I planted, Apollos watered, but God gave the increase.",
+          "parts": [
+            "I planted, Apollos watered, but God gave the increase.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5381"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "So then neither he who plants is anything, nor he who waters, but God who gives the increase.",
+          "parts": [
+            "So then neither he who plants is anything, nor he who waters, but God who gives the increase."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Now he who plants and he who waters are one, and each one will receive his own reward according to his own labor.",
+          "parts": [
+            "Now he who plants and he who waters are one, and each one will receive his own reward according to his own labor."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For we are God's fellow workers; you are God's field, you are God's building. According to the grace of God which was given to me, as a wise master builder I have laid the foundation, and another builds on it.",
+          "parts": [
+            "For we are God's fellow workers; you are God's field,",
+            {
+              "style": "ITALIC",
+              "text": "you are"
+            },
+            "God's building.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5382"
+            },
+            "According to the grace of God which was given to me, as a wise master builder I have laid the foundation, and another builds on it."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "According to the grace of God which was given to me, as a wise master builder I have laid the foundation, and another builds on it.",
+          "parts": [
+            "According to the grace of God which was given to me, as a wise master builder I have laid the foundation, and another builds on it."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "For no other foundation can anyone lay than that which is laid, which is Jesus Christ.",
+          "parts": [
+            "For no other foundation can anyone lay than that which is laid, which is Jesus Christ."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Now if anyone builds on this foundation with",
+          "parts": [
+            "Now if anyone builds on this foundation",
+            {
+              "style": "ITALIC",
+              "text": "with"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "each one's work will become clear; for the Day will declare it, because it will be revealed by fire; and the fire will test each one's work, of what sort it is.",
+          "parts": [
+            "each one's work will become clear; for the Day will declare it, because it will be revealed by fire; and the fire will test each one's work, of what sort it is."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "If anyone's work which he has built on it",
+          "parts": [
+            "If anyone's work which he has built on",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "If anyone's work is burned, he will suffer loss; but he himself will be saved, yet so as through fire.",
+          "parts": [
+            "If anyone's work is burned, he will suffer loss; but he himself will be saved, yet so as through fire."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Do you not know that you are the temple of God and that the Spirit of God dwells in you?",
+          "parts": [
+            "Do you not know that you are the temple of God and",
+            {
+              "style": "ITALIC",
+              "text": "that"
+            },
+            "the Spirit of God dwells in you?"
+          ]
+        },
+        {
+          "num": 17,
+          "text": "If anyone defiles the temple of God, God will destroy him.",
+          "parts": [
+            "If anyone defiles the temple of God, God will destroy him."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Let no one deceive himself.",
+          "parts": [
+            "Let no one deceive himself."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For the wisdom of this world is foolishness with God.",
+          "parts": [
+            "For the wisdom of this world is foolishness with God."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "and again, “The LORD knows the thoughts of the wise, that they are futile.”",
+          "parts": [
+            "and again,",
+            {
+              "style": "ITALIC",
+              "text": "“The LORD knows the thoughts of the wise, that they are futile.”"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Therefore let no one boast in men.",
+          "parts": [
+            "Therefore let no one boast in men."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "whether Paul or Apollos or Cephas, or the world or life or death, or things present or things to come—all are yours.",
+          "parts": [
+            "whether Paul or Apollos or Cephas, or the world or life or death, or things present or things to come—all are yours."
+          ]
+        },
+        {
+          "num": 23,
+          "text": "And you are",
+          "parts": [
+            "And you",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 4,
+      "verses_count": 21,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Let a man so consider us, as servants of Christ and stewards of the mysteries of God.",
+          "parts": [
+            "Let a man so consider us, as servants of Christ and stewards of the mysteries of God."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "Moreover it is required in stewards that one be found faithful.",
+          "parts": [
+            "Moreover it is required in stewards that one be found faithful."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "But with me it is a very small thing that I should be judged by you or by a human court. a",
+          "parts": [
+            "But with me it is a very small thing that I should be judged by you or by a human court.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r302"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "For I know of nothing against myself, yet I am not justified by this; but He who judges me is the Lord.",
+          "parts": [
+            "For I know of nothing against myself, yet I am not justified by this; but He who judges me is the Lord."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Therefore judge nothing before the time, until the Lord comes, who will both bring to light the hidden things of darkness and reveal the counsels of the hearts.",
+          "parts": [
+            "Therefore judge nothing before the time, until the Lord comes, who will both bring to light the hidden things of darkness and reveal the counsels of the hearts."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Now these things, brethren, I have figuratively transferred to myself and Apollos for your sakes, that you may learn in us not to think beyond what is written, that none of you may be puffed up on behalf of one against the other. For who makes you differ from another? And what do you have that you did not receive?",
+          "parts": [
+            "Now these things, brethren, I have figuratively transferred to myself and Apollos for your sakes, that you may learn in us not to think beyond what is written, that none of you may be puffed up on behalf of one against the other.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5386"
+            },
+            "For who makes you differ",
+            {
+              "style": "ITALIC",
+              "text": "from another?"
+            },
+            "And what do you have that you did not receive?"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For who makes you differ from another?",
+          "parts": [
+            "For who makes you differ",
+            {
+              "style": "ITALIC",
+              "text": "from another?"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "You are already full!",
+          "parts": [
+            "You are already full!"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For I think that God has displayed us, the apostles, last, as men condemned to death; for we have been made a spectacle to the world, both to angels and to men.",
+          "parts": [
+            "For I think that God has displayed us, the apostles, last, as men condemned to death; for we have been made a spectacle to the world, both to angels and to men.",
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx321"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "We are",
+          "parts": [
+            "We",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "To the present hour we both hunger and thirst, and we are poorly clothed, and beaten, and homeless.",
+          "parts": [
+            "To the present hour we both hunger and thirst, and we are poorly clothed, and beaten, and homeless."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "And we labor, working with our own hands.",
+          "parts": [
+            "And we labor, working with our own hands."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "being defamed, we entreat.",
+          "parts": [
+            "being defamed, we entreat."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "I do not write these things to shame you, but as my beloved children I warn you. For though you might have ten thousand instructors in Christ, yet you do not have many fathers; for in Christ Jesus I have begotten you through the gospel.",
+          "parts": [
+            "I do not write these things to shame you, but as my beloved children I warn",
+            {
+              "style": "ITALIC",
+              "text": "you."
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5390"
+            },
+            "For though you might have ten thousand instructors in Christ, yet",
+            {
+              "style": "ITALIC",
+              "text": "you do"
+            },
+            "not",
+            {
+              "style": "ITALIC",
+              "text": "have"
+            },
+            "many fathers; for in Christ Jesus I have begotten you through the gospel."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "For though you might have ten thousand instructors in Christ, yet you do",
+          "parts": [
+            "For though you might have ten thousand instructors in Christ, yet",
+            {
+              "style": "ITALIC",
+              "text": "you do"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Therefore I urge you, imitate me.",
+          "parts": [
+            "Therefore I urge you, imitate me."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For this reason I have sent Timothy to you, who is my beloved and faithful son in the Lord, who will remind you of my ways in Christ, as I teach everywhere in every church.",
+          "parts": [
+            "For this reason I have sent Timothy to you, who is my beloved and faithful son in the Lord, who will remind you of my ways in Christ, as I teach everywhere in every church."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Now some are puffed up, as though I were not coming to you. But I will come to you shortly, if the Lord wills, and I will know, not the word of those who are puffed up, but the power.",
+          "parts": [
+            "Now some are puffed up, as though I were not coming to you.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5391"
+            },
+            "But I will come to you shortly, if the Lord wills, and I will know, not the word of those who are puffed up, but the power."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "But I will come to you shortly, if the Lord wills, and I will know, not the word of those who are puffed up, but the power.",
+          "parts": [
+            "But I will come to you shortly, if the Lord wills, and I will know, not the word of those who are puffed up, but the power."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "For the kingdom of God is",
+          "parts": [
+            "For the kingdom of God",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "What do you want?",
+          "parts": [
+            "What do you want?"
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 5,
+      "verses_count": 13,
+      "verses": [
+        {
+          "num": 1,
+          "text": "It is actually reported that there is sexual immorality among you, and such sexual immorality as is not even named a among the Gentiles—that a man has his father's wife! And you are puffed up, and have not rather mourned, that he who has done this deed might be taken away from among you. For I indeed, as absent in body but present in spirit, have already judged (as though I were present) him who has so done this deed.",
+          "parts": [
+            "It is actually reported",
+            {
+              "style": "ITALIC",
+              "text": "that there is"
+            },
+            "sexual immorality among you, and such sexual immorality as is not even named",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r303"
+            },
+            "among the Gentiles—that a man has his father's wife!",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5392"
+            },
+            "And you are puffed up, and have not rather mourned, that he who has done this deed might be taken away from among you.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5393"
+            },
+            "For I indeed, as absent in body but present in spirit, have already judged (as though I were present) him who has so done this deed."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "In the name of our Lord Jesus Christ, when you are gathered together, along with my spirit, with the power of our Lord Jesus Christ,",
+          "parts": [
+            "In the name of our Lord Jesus Christ, when you are gathered together, along with my spirit, with the power of our Lord Jesus Christ,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5394"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "deliver such a one to Satan for the destruction of the flesh, that his spirit may be saved in the day of the Lord Jesus. a",
+          "parts": [
+            "deliver such a one to Satan for the destruction of the flesh, that his spirit may be saved in the day of the Lord Jesus.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r304"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Your glorying is not good.",
+          "parts": [
+            "Your glorying",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "not good."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Therefore purge out the old leaven, that you may be a new lump, since you truly are unleavened.",
+          "parts": [
+            "Therefore purge out the old leaven, that you may be a new lump, since you truly are unleavened."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Therefore let us keep the feast, not with old leaven, nor with the leaven of malice and wickedness, but with the unleavened bread",
+          "parts": [
+            "Therefore let us keep the feast, not with old leaven, nor with the leaven of malice and wickedness, but with the unleavened",
+            {
+              "style": "ITALIC",
+              "text": "bread"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "I wrote to you in my epistle not to keep company with sexually immoral people. Yet I certainly did not mean with the sexually immoral people of this world, or with the covetous, or extortioners, or idolaters, since then you would need to go out of the world.",
+          "parts": [
+            "I wrote to you in my epistle not to keep company with sexually immoral people.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5397"
+            },
+            "Yet",
+            {
+              "style": "ITALIC",
+              "text": "I"
+            },
+            "certainly",
+            {
+              "style": "ITALIC",
+              "text": "did"
+            },
+            "not",
+            {
+              "style": "ITALIC",
+              "text": "mean"
+            },
+            "with the sexually immoral people of this world, or with the covetous, or extortioners, or idolaters, since then you would need to go out of the world."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Yet I",
+          "parts": [
+            "Yet",
+            {
+              "style": "ITALIC",
+              "text": "I"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "But now I have written to you not to keep company with anyone named a brother, who is sexually immoral, or covetous, or an idolater, or a reviler, or a drunkard, or an extortioner—not even to eat with such a person.",
+          "parts": [
+            "But now I have written to you not to keep company with anyone named a brother, who is sexually immoral, or covetous, or an idolater, or a reviler, or a drunkard, or an extortioner—not even to eat with such a person."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "For what have I to do with judging those also who are outside?",
+          "parts": [
+            "For what",
+            {
+              "style": "ITALIC",
+              "text": "have"
+            },
+            "I",
+            {
+              "style": "ITALIC",
+              "text": "to do"
+            },
+            "with judging those also who are outside?"
+          ]
+        },
+        {
+          "num": 13,
+          "text": "But those who are outside God judges.",
+          "parts": [
+            "But those who are outside God judges."
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 6,
+      "verses_count": 20,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Dare any of you, having a matter against another, go to law before the unrighteous, and not before the saints? Do you not know that the saints will judge the world?",
+          "parts": [
+            "Dare any of you, having a matter against another, go to law before the unrighteous, and not before the saints?",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5399"
+            },
+            "Do you not know that the saints will judge the world?"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Do you not know that we shall judge angels?",
+          "parts": [
+            "Do you not know that we shall judge angels?"
+          ]
+        },
+        {
+          "num": 4,
+          "text": "If then you have judgments concerning things pertaining to this life, do you appoint those who are least esteemed by the church to judge?",
+          "parts": [
+            "If then you have judgments concerning things pertaining to this life, do you appoint those who are least esteemed by the church to judge?"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "I say this to your shame.",
+          "parts": [
+            "I say this to your shame."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "But brother goes to law against brother, and that before unbelievers!",
+          "parts": [
+            "But brother goes to law against brother, and that before unbelievers!"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Now therefore, it is already an utter failure for you that you go to law against one another.",
+          "parts": [
+            "Now therefore, it is already an utter failure for you that you go to law against one another."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "No, you yourselves do wrong and cheat, and you do",
+          "parts": [
+            "No, you yourselves do wrong and cheat, and",
+            {
+              "style": "ITALIC",
+              "text": "you do"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Do you not know that the unrighteous will not inherit the kingdom of God?",
+          "parts": [
+            "Do you not know that the unrighteous will not inherit the kingdom of God?"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "nor thieves, nor covetous, nor drunkards, nor revilers, nor extortioners will inherit the kingdom of God.",
+          "parts": [
+            "nor thieves, nor covetous, nor drunkards, nor revilers, nor extortioners will inherit the kingdom of God."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And such were some of you.",
+          "parts": [
+            "And such were some of you."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "All things are lawful for me, but all things are not helpful.",
+          "parts": [
+            "All things are lawful for me, but all things are not helpful."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Foods for the stomach and the stomach for foods, but God will destroy both it and them.",
+          "parts": [
+            "Foods for the stomach and the stomach for foods, but God will destroy both it and them."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "And God both raised up the Lord and will also raise us up by His power.",
+          "parts": [
+            "And God both raised up the Lord and will also raise us up by His power."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Do you not know that your bodies are members of Christ?",
+          "parts": [
+            "Do you not know that your bodies are members of Christ?"
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Or do you not know that he who is joined to a harlot is one body with her?",
+          "parts": [
+            "Or do you not know that he who is joined to a harlot is one body",
+            {
+              "style": "ITALIC",
+              "text": "with her?"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "But he who is joined to the Lord is one spirit with Him.",
+          "parts": [
+            "But he who is joined to the Lord is one spirit",
+            {
+              "style": "ITALIC",
+              "text": "with Him."
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Flee sexual immorality.",
+          "parts": [
+            "Flee sexual immorality."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Or do you not know that your body is the temple of the Holy Spirit who is",
+          "parts": [
+            "Or do you not know that your body is the temple of the Holy Spirit",
+            {
+              "style": "ITALIC",
+              "text": "who is"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "For you were bought at a price; therefore glorify God in your body a",
+          "parts": [
+            "For you were bought at a price; therefore glorify God in your body",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r305"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 7,
+      "verses_count": 40,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Now concerning the things of which you wrote to me:",
+          "parts": [
+            "Now concerning the things of which you wrote to me:"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "Nevertheless, because of sexual immorality, let each man have his own wife, and let each woman have her own husband.",
+          "parts": [
+            "Nevertheless, because of sexual immorality, let each man have his own wife, and let each woman have her own husband."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Let the husband render to his wife the affection due her, and likewise also the wife to her husband.",
+          "parts": [
+            "Let the husband render to his wife the affection due her, and likewise also the wife to her husband."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "The wife does not have authority over her own body, but the husband does.",
+          "parts": [
+            "The wife does not have authority over her own body, but the husband",
+            {
+              "style": "ITALIC",
+              "text": "does."
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Do not deprive one another except with consent for a time, that you may give yourselves to fasting and prayer; and come together again so that Satan does not tempt you because of your lack of self-control.",
+          "parts": [
+            "Do not deprive one another except with consent for a time, that you may give yourselves to fasting and prayer; and come together again so that Satan does not tempt you because of your lack of self-control.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5410"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "But I say this as a concession, not as a commandment.",
+          "parts": [
+            "But I say this as a concession, not as a commandment."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For I wish that all men were even as I myself.",
+          "parts": [
+            "For I wish that all men were even as I myself."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "But I say to the unmarried and to the widows: It is good for them if they remain even as I am; but if they cannot exercise self-control, let them marry.",
+          "parts": [
+            "But I say to the unmarried and to the widows: It is good for them if they remain even as I am;",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5411"
+            },
+            "but if they cannot exercise self-control, let them marry."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "but if they cannot exercise self-control, let them marry.",
+          "parts": [
+            "but if they cannot exercise self-control, let them marry."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Now to the married I command, yet not I but the Lord: A wife is not to depart from her husband.",
+          "parts": [
+            "Now to the married I command,",
+            {
+              "style": "ITALIC",
+              "text": "yet"
+            },
+            "not I but the Lord: A wife is not to depart from",
+            {
+              "style": "ITALIC",
+              "text": "her"
+            },
+            "husband."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "But even if she does depart, let her remain unmarried or be reconciled to her",
+          "parts": [
+            "But even if she does depart, let her remain unmarried or be reconciled to",
+            {
+              "style": "ITALIC",
+              "text": "her"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "But to the rest I, not the Lord, say: If any brother has a wife who does not believe, and she is willing to live with him, let him not divorce her.",
+          "parts": [
+            "But to the rest I, not the Lord, say: If any brother has a wife who does not believe, and she is willing to live with him, let him not divorce her."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "And a woman who has a husband who does not believe, if he is willing to live with her, let her not divorce him.",
+          "parts": [
+            "And a woman who has a husband who does not believe, if he is willing to live with her, let her not divorce him."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "For the unbelieving husband is sanctified by the wife, and the unbelieving wife is sanctified by the husband; otherwise your children would be unclean, but now they are holy.",
+          "parts": [
+            "For the unbelieving husband is sanctified by the wife, and the unbelieving wife is sanctified by the husband; otherwise your children would be unclean, but now they are holy.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5413"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "But if the unbeliever departs, let him depart; a brother or a sister is not under bondage in such cases.",
+          "parts": [
+            "But if the unbeliever departs, let him depart; a brother or a sister is not under bondage in such",
+            {
+              "style": "ITALIC",
+              "text": "cases."
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "For how do you know, O wife, whether you will save your",
+          "parts": [
+            "For how do you know, O wife, whether you will save",
+            {
+              "style": "ITALIC",
+              "text": "your"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "But as God has distributed to each one, as the Lord has called each one, so let him walk.",
+          "parts": [
+            "But as God has distributed to each one, as the Lord has called each one, so let him walk."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Was anyone called while circumcised?",
+          "parts": [
+            "Was anyone called while circumcised?"
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Circumcision is nothing and uncircumcision is nothing, but keeping the commandments of God is what matters.",
+          "parts": [
+            "Circumcision is nothing and uncircumcision is nothing, but keeping the commandments of God",
+            {
+              "style": "ITALIC",
+              "text": "is what matters."
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Let each one remain in the same calling in which he was called.",
+          "parts": [
+            "Let each one remain in the same calling in which he was called."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Were you called while",
+          "parts": [
+            "Were you called",
+            {
+              "style": "ITALIC",
+              "text": "while"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "For he who is called in the Lord while",
+          "parts": [
+            "For he who is called in the Lord",
+            {
+              "style": "ITALIC",
+              "text": "while"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "You were bought at a price; do not become slaves of men.",
+          "parts": [
+            "You were bought at a price; do not become slaves of men."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "Brethren, let each one remain with God in that state",
+          "parts": [
+            "Brethren, let each one remain with God in that",
+            {
+              "style": "ITALIC",
+              "text": "state"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "Now concerning virgins: I have no commandment from the Lord; yet I give judgment as one whom the Lord in His mercy has made trustworthy.",
+          "parts": [
+            "Now concerning virgins: I have no commandment from the Lord; yet I give judgment as one whom the Lord in His mercy has made trustworthy."
+          ]
+        },
+        {
+          "num": 26,
+          "text": "I suppose therefore that this is good because of the present distress—that it is",
+          "parts": [
+            "I suppose therefore that this is good because of the present distress—that",
+            {
+              "style": "ITALIC",
+              "text": "it is"
+            }
+          ]
+        },
+        {
+          "num": 27,
+          "text": "Are you bound to a wife?",
+          "parts": [
+            "Are you bound to a wife?"
+          ]
+        },
+        {
+          "num": 28,
+          "text": "But even if you do marry, you have not sinned; and if a virgin marries, she has not sinned.",
+          "parts": [
+            "But even if you do marry, you have not sinned; and if a virgin marries, she has not sinned."
+          ]
+        },
+        {
+          "num": 29,
+          "text": "But this I say, brethren, the time is short, so that from now on even those who have wives should be as though they had none, those who weep as though they did not weep, those who rejoice as though they did not rejoice, those who buy as though they did not possess, and those who use this world as not misusing it. For the form of this world is passing away.",
+          "parts": [
+            "But this I say, brethren, the time",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "short, so that from now on even those who have wives should be as though they had none,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5416"
+            },
+            "those who weep as though they did not weep, those who rejoice as though they did not rejoice, those who buy as though they did not possess, and those who use this world as not misusing",
+            {
+              "style": "ITALIC",
+              "text": "it."
+            },
+            "For the form of this world is passing away."
+          ]
+        },
+        {
+          "num": 30,
+          "text": "those who weep as though they did not weep, those who rejoice as though they did not rejoice, those who buy as though they did not possess,",
+          "parts": [
+            "those who weep as though they did not weep, those who rejoice as though they did not rejoice, those who buy as though they did not possess,"
+          ]
+        },
+        {
+          "num": 31,
+          "text": "and those who use this world as not misusing it.",
+          "parts": [
+            "and those who use this world as not misusing",
+            {
+              "style": "ITALIC",
+              "text": "it."
+            }
+          ]
+        },
+        {
+          "num": 32,
+          "text": "But I want you to be without care.",
+          "parts": [
+            "But I want you to be without care."
+          ]
+        },
+        {
+          "num": 33,
+          "text": "But he who is married cares about the things of the world—how he may please his",
+          "parts": [
+            "But he who is married cares about the things of the world—how he may please",
+            {
+              "style": "ITALIC",
+              "text": "his"
+            }
+          ]
+        },
+        {
+          "num": 34,
+          "text": "There is a",
+          "parts": [
+            "There is",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r306"
+            }
+          ]
+        },
+        {
+          "num": 35,
+          "text": "And this I say for your own profit, not that I may put a leash on you, but for what is proper, and that you may serve the Lord without distraction.",
+          "parts": [
+            "And this I say for your own profit, not that I may put a leash on you, but for what is proper, and that you may serve the Lord without distraction."
+          ]
+        },
+        {
+          "num": 36,
+          "text": "But if any man thinks he is behaving improperly toward his virgin, if she is past the flower of youth, and thus it must be, let him do what he wishes.",
+          "parts": [
+            "But if any man thinks he is behaving improperly toward his virgin, if she is past the flower of youth, and thus it must be, let him do what he wishes."
+          ]
+        },
+        {
+          "num": 37,
+          "text": "Nevertheless he who stands steadfast in his heart, having no necessity, but has power over his own will, and has so determined in his heart that he will keep his virgin, a",
+          "parts": [
+            "Nevertheless he who stands steadfast in his heart, having no necessity, but has power over his own will, and has so determined in his heart that he will keep his virgin,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r307"
+            }
+          ]
+        },
+        {
+          "num": 38,
+          "text": "So then he who gives her",
+          "parts": [
+            "So then he who gives",
+            {
+              "style": "ITALIC",
+              "text": "her"
+            }
+          ]
+        },
+        {
+          "num": 39,
+          "text": "A wife is bound by law as long as her husband lives; but if her husband dies, she is at liberty to be married to whom she wishes, only in the Lord. But she is happier if she remains as she is, according to my judgment—and I think I also have the Spirit of God.",
+          "parts": [
+            "A wife is bound by law as long as her husband lives; but if her husband dies, she is at liberty to be married to whom she wishes, only in the Lord.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5418"
+            },
+            "But she is happier if she remains as she is, according to my judgment—and I think I also have the Spirit of God."
+          ]
+        },
+        {
+          "num": 40,
+          "text": "But she is happier if she remains as she is, according to my judgment—and I think I also have the Spirit of God.",
+          "parts": [
+            "But she is happier if she remains as she is, according to my judgment—and I think I also have the Spirit of God."
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 8,
+      "verses_count": 13,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Now concerning things offered to idols: We know that we all have knowledge.",
+          "parts": [
+            "Now concerning things offered to idols: We know that we all have knowledge."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "And if anyone thinks that he knows anything, he knows nothing yet as he ought to know.",
+          "parts": [
+            "And if anyone thinks that he knows anything, he knows nothing yet as he ought to know."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "But if anyone loves God, this one is known by Him.",
+          "parts": [
+            "But if anyone loves God, this one is known by Him."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Therefore concerning the eating of things offered to idols, we know that an idol is nothing in the world, and that there is no other God but one. For even if there are so-called gods, whether in heaven or on earth (as there are many gods and many lords), yet for us there is one God, the Father, of whom are all things, and we for Him; and one Lord Jesus Christ, through whom are all things, and through whom we live.",
+          "parts": [
+            "Therefore concerning the eating of things offered to idols, we know that an idol",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "nothing in the world, and that",
+            {
+              "style": "ITALIC",
+              "text": "there is"
+            },
+            "no other God but one.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5419"
+            },
+            "For even if there are so-called gods, whether in heaven or on earth (as there are many gods and many lords), yet for us",
+            {
+              "style": "ITALIC",
+              "text": "there is"
+            },
+            "one God, the Father, of whom",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "all things, and we for Him; and one Lord Jesus Christ, through whom",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "all things, and through whom we",
+            {
+              "style": "ITALIC",
+              "text": "live."
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5420"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "For even if there are so-called gods, whether in heaven or on earth (as there are many gods and many lords),",
+          "parts": [
+            "For even if there are so-called gods, whether in heaven or on earth (as there are many gods and many lords),"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "yet for us there is",
+          "parts": [
+            "yet for us",
+            {
+              "style": "ITALIC",
+              "text": "there is"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "However, there is not in everyone that knowledge; for some, with consciousness of the idol, until now eat it as a thing offered to an idol; and their conscience, being weak, is defiled.",
+          "parts": [
+            "However,",
+            {
+              "style": "ITALIC",
+              "text": "there is"
+            },
+            "not in everyone that knowledge; for some, with consciousness of the idol, until now eat",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            },
+            "as a thing offered to an idol; and their conscience, being weak, is defiled."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "But food does not commend us to God; for neither if we eat are we the better, nor if we do not eat are we the worse.",
+          "parts": [
+            "But food does not commend us to God; for neither if we eat are we the better, nor if we do not eat are we the worse.",
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx323"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "But beware lest somehow this liberty of yours become a stumbling block to those who are weak.",
+          "parts": [
+            "But beware lest somehow this liberty of yours become a stumbling block to those who are weak."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "For if anyone sees you who have knowledge eating in an idol's temple, will not the conscience of him who is weak be emboldened to eat those things offered to idols?",
+          "parts": [
+            "For if anyone sees you who have knowledge eating in an idol's temple, will not the conscience of him who is weak be emboldened to eat those things offered to idols?"
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And because of your knowledge shall the weak brother perish, for whom Christ died?",
+          "parts": [
+            "And because of your knowledge shall the weak brother perish, for whom Christ died?"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "But when you thus sin against the brethren, and wound their weak conscience, you sin against Christ.",
+          "parts": [
+            "But when you thus sin against the brethren, and wound their weak conscience, you sin against Christ."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Therefore, if food makes my brother stumble, I will never again eat meat, lest I make my brother stumble.",
+          "parts": [
+            "Therefore, if food makes my brother stumble, I will never again eat meat, lest I make my brother stumble."
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 9,
+      "verses_count": 27,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Am I not an apostle?",
+          "parts": [
+            "Am I not an apostle?"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "If I am not an apostle to others, yet doubtless I am to you.",
+          "parts": [
+            "If I am not an apostle to others, yet doubtless I am to you."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "My defense to those who examine me is this: Do we have no right to eat and drink?",
+          "parts": [
+            "My defense to those who examine me is this: Do we have no right to eat and drink?"
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Do we have no right to eat and drink?",
+          "parts": [
+            "Do we have no right to eat and drink?"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Do we have no right to take along a believing wife, as do",
+          "parts": [
+            "Do we have no right to take along a believing wife, as",
+            {
+              "style": "ITALIC",
+              "text": "do"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Or is it",
+          "parts": [
+            "Or",
+            {
+              "style": "ITALIC",
+              "text": "is it"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Who ever goes to war at his own expense?",
+          "parts": [
+            "Who ever goes to war at his own expense?"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Do I say these things as a mere man?",
+          "parts": [
+            "Do I say these things as a",
+            {
+              "style": "ITALIC",
+              "text": "mere"
+            },
+            "man?"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For it is written in the law of Moses, “You shall not muzzle an ox while it treads out the grain.”",
+          "parts": [
+            "For it is written in the law of Moses,",
+            {
+              "style": "ITALIC",
+              "text": "“You shall not muzzle an ox while it treads out the grain.”"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Or does He say it",
+          "parts": [
+            "Or does He say",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "If we have sown spiritual things for you, is it",
+          "parts": [
+            "If we have sown spiritual things for you,",
+            {
+              "style": "ITALIC",
+              "text": "is it"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "If others are partakers of this",
+          "parts": [
+            "If others are partakers of",
+            {
+              "style": "ITALIC",
+              "text": "this"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Do you not know that those who minister the holy things eat of the things",
+          "parts": [
+            "Do you not know that those who minister the holy things eat",
+            {
+              "style": "ITALIC",
+              "text": "of the things"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Even so the Lord has commanded that those who preach the gospel should live from the gospel.",
+          "parts": [
+            "Even so the Lord has commanded that those who preach the gospel should live from the gospel."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "But I have used none of these things, nor have I written these things that it should be done so to me; for it would be better for me to die than that anyone should make my boasting void.",
+          "parts": [
+            "But I have used none of these things, nor have I written these things that it should be done so to me; for it",
+            {
+              "style": "ITALIC",
+              "text": "would be"
+            },
+            "better for me to die than that anyone should make my boasting void."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "For if I preach the gospel, I have nothing to boast of, for necessity is laid upon me; yes, woe is me if I do not preach the gospel!",
+          "parts": [
+            "For if I preach the gospel, I have nothing to boast of, for necessity is laid upon me; yes, woe is me if I do not preach the gospel!"
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For if I do this willingly, I have a reward; but if against my will, I have been entrusted with a stewardship.",
+          "parts": [
+            "For if I do this willingly, I have a reward; but if against my will, I have been entrusted with a stewardship."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "What is my reward then?",
+          "parts": [
+            "What is my reward then?"
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For though I am free from all men, I have made myself a servant to all, that I might win the more; and to the Jews I became as a Jew, that I might win Jews; to those who are under the law, as under the law, a that I might win those who are under the law; to those who are without law, as without law (not being without law toward God, a but under law toward Christ b ), that I might win those who are without law; to the weak I became as a weak, that I might win the weak.",
+          "parts": [
+            "For though I am free from all",
+            {
+              "style": "ITALIC",
+              "text": "men,"
+            },
+            "I have made myself a servant to all, that I might win the more;",
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx324"
+            },
+            "and to the Jews I became as a Jew, that I might win Jews; to those",
+            {
+              "style": "ITALIC",
+              "text": "who are"
+            },
+            "under the law, as under the law,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r308"
+            },
+            "that I might win those",
+            {
+              "style": "ITALIC",
+              "text": "who are"
+            },
+            "under the law; to those",
+            {
+              "style": "ITALIC",
+              "text": "who are"
+            },
+            "without law, as without law (not being without law toward God,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r309"
+            },
+            "but under law toward Christ",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r310"
+            },
+            "), that I might win those",
+            {
+              "style": "ITALIC",
+              "text": "who are"
+            },
+            "without law; to the weak I became as",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r311"
+            },
+            "weak, that I might win the weak."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "and to the Jews I became as a Jew, that I might win Jews; to those who are",
+          "parts": [
+            "and to the Jews I became as a Jew, that I might win Jews; to those",
+            {
+              "style": "ITALIC",
+              "text": "who are"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "to those who are",
+          "parts": [
+            "to those",
+            {
+              "style": "ITALIC",
+              "text": "who are"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "to the weak I became as a",
+          "parts": [
+            "to the weak I became as",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r312"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "Now this I do for the gospel's sake, that I may be partaker of it with you.",
+          "parts": [
+            "Now this I do for the gospel's sake, that I may be partaker of it with",
+            {
+              "style": "ITALIC",
+              "text": "you."
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "Do you not know that those who run in a race all run, but one receives the prize?",
+          "parts": [
+            "Do you not know that those who run in a race all run, but one receives the prize?"
+          ]
+        },
+        {
+          "num": 25,
+          "text": "And everyone who competes for the prize",
+          "parts": [
+            "And everyone who competes",
+            {
+              "style": "ITALIC",
+              "text": "for the prize"
+            }
+          ]
+        },
+        {
+          "num": 26,
+          "text": "Therefore I run thus: not with uncertainty.",
+          "parts": [
+            "Therefore I run thus: not with uncertainty."
+          ]
+        },
+        {
+          "num": 27,
+          "text": "But I discipline my body and bring it",
+          "parts": [
+            "But I discipline my body and bring",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 10,
+      "verses_count": 33,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Moreover, brethren, I do not want you to be unaware that all our fathers were under the cloud, all passed through the sea, all were baptized into Moses in the cloud and in the sea, all ate the same spiritual food, and all drank the same spiritual drink.",
+          "parts": [
+            "Moreover, brethren, I do not want you to be unaware that all our fathers were under the cloud, all passed through the sea,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5425"
+            },
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx325"
+            },
+            "all were baptized into Moses in the cloud and in the sea,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5426"
+            },
+            "all ate the same spiritual food, and all drank the same spiritual drink."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "But with most of them God was not well pleased, for their bodies",
+          "parts": [
+            "But with most of them God was not well pleased, for",
+            {
+              "style": "ITALIC",
+              "text": "their bodies"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Now these things became our examples, to the intent that we should not lust after evil things as they also lusted. And do not become idolaters as were some of them.",
+          "parts": [
+            "Now these things became our examples, to the intent that we should not lust after evil things as they also lusted.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5428"
+            },
+            "And do not become idolaters as",
+            {
+              "style": "ITALIC",
+              "text": "were"
+            },
+            "some of them."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "And do not become idolaters as were",
+          "parts": [
+            "And do not become idolaters as",
+            {
+              "style": "ITALIC",
+              "text": "were"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Nor let us commit sexual immorality, as some of them did, and in one day twenty-three thousand fell;",
+          "parts": [
+            "Nor let us commit sexual immorality, as some of them did, and in one day twenty-three thousand fell;"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "nor let us tempt Christ, as some of them also tempted, and were destroyed by serpents;",
+          "parts": [
+            "nor let us tempt Christ, as some of them also tempted, and were destroyed by serpents;"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "nor complain, as some of them also complained, and were destroyed by the destroyer.",
+          "parts": [
+            "nor complain, as some of them also complained, and were destroyed by the destroyer."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Now all a",
+          "parts": [
+            "Now all",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r313"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Therefore let him who thinks he stands take heed lest he fall.",
+          "parts": [
+            "Therefore let him who thinks he stands take heed lest he fall."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "No temptation has overtaken you except such as is common to man; but God is",
+          "parts": [
+            "No temptation has overtaken you except such as is common to man; but God",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Therefore, my beloved, flee from idolatry.",
+          "parts": [
+            "Therefore, my beloved, flee from idolatry."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "I speak as to wise men; judge for yourselves what I say.",
+          "parts": [
+            "I speak as to wise men; judge for yourselves what I say."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "The cup of blessing which we bless, is it not the communion of the blood of Christ?",
+          "parts": [
+            "The cup of blessing which we bless, is it not the communion of the blood of Christ?",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5429"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For we, though",
+          "parts": [
+            "For we,",
+            {
+              "style": "ITALIC",
+              "text": "though"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Observe Israel after the flesh: Are not those who eat of the sacrifices partakers of the altar? What am I saying then?",
+          "parts": [
+            "Observe Israel after the flesh: Are not those who eat of the sacrifices partakers of the altar?",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5430"
+            },
+            "What am I saying then?"
+          ]
+        },
+        {
+          "num": 19,
+          "text": "What am I saying then?",
+          "parts": [
+            "What am I saying then?"
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Rather, that the things which the Gentiles sacrifice they sacrifice to demons and not to God, and I do not want you to have fellowship with demons.",
+          "parts": [
+            "Rather, that the things which the Gentiles sacrifice they sacrifice to demons and not to God, and I do not want you to have fellowship with demons."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "You cannot drink the cup of the Lord and the cup of demons; you cannot partake of the Lord's table and of the table of demons.",
+          "parts": [
+            "You cannot drink the cup of the Lord and the cup of demons; you cannot partake of the Lord's table and of the table of demons."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "Or do we provoke the Lord to jealousy?",
+          "parts": [
+            "Or do we provoke the Lord to jealousy?"
+          ]
+        },
+        {
+          "num": 23,
+          "text": "All things are lawful for me, a but not all things are helpful; all things are lawful for me, b but not all things edify. Let no one seek his own, but each one the other's well-being.",
+          "parts": [
+            "All things are lawful for me,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r314"
+            },
+            "but not all things are helpful; all things are lawful for me,",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r315"
+            },
+            "but not all things edify.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5432"
+            },
+            "Let no one seek his own, but each one the other's",
+            {
+              "style": "ITALIC",
+              "text": "well-being."
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "Let no one seek his own, but each one the other's well-being.",
+          "parts": [
+            "Let no one seek his own, but each one the other's",
+            {
+              "style": "ITALIC",
+              "text": "well-being."
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "Eat whatever is sold in the meat market, asking no questions for conscience’ sake; for “the earth is the LORD'S, and all its fullness.” a",
+          "parts": [
+            "Eat whatever is sold in the meat market, asking no questions for conscience’ sake;",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5433"
+            },
+            "for",
+            {
+              "style": "ITALIC",
+              "text": "“the earth is the LORD'S, and all its fullness.”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r316"
+            }
+          ]
+        },
+        {
+          "num": 26,
+          "text": "for “the earth is the LORD'S, and all its fullness.”",
+          "parts": [
+            "for",
+            {
+              "style": "ITALIC",
+              "text": "“the earth is the LORD'S, and all its fullness.”"
+            }
+          ]
+        },
+        {
+          "num": 27,
+          "text": "If any of those who do not believe invites you to dinner, and you desire to go, eat whatever is set before you, asking no question for conscience’ sake.",
+          "parts": [
+            "If any of those who do not believe invites you",
+            {
+              "style": "ITALIC",
+              "text": "to dinner,"
+            },
+            "and you desire to go, eat whatever is set before you, asking no question for conscience’ sake."
+          ]
+        },
+        {
+          "num": 28,
+          "text": "But if anyone says to you, “This was offered to idols,” do not eat it for the sake of the one who told you, and for conscience’ sake; a",
+          "parts": [
+            "But if anyone says to you, “This was offered to idols,” do not eat it for the sake of the one who told you, and for conscience’ sake;",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r317"
+            }
+          ]
+        },
+        {
+          "num": 29,
+          "text": "“Conscience,” I say, not your own, but that of the other.",
+          "parts": [
+            "“Conscience,” I say, not your own, but that of the other."
+          ]
+        },
+        {
+          "num": 30,
+          "text": "But if I partake with thanks, why am I evil spoken of for the food",
+          "parts": [
+            "But if I partake with thanks, why am I evil spoken of for",
+            {
+              "style": "ITALIC",
+              "text": "the food"
+            }
+          ]
+        },
+        {
+          "num": 31,
+          "text": "Therefore, whether you eat or drink, or whatever you do, do all to the glory of God.",
+          "parts": [
+            "Therefore, whether you eat or drink, or whatever you do, do all to the glory of God."
+          ]
+        },
+        {
+          "num": 32,
+          "text": "Give no offense, either to the Jews or to the Greeks or to the church of God,",
+          "parts": [
+            "Give no offense, either to the Jews or to the Greeks or to the church of God,"
+          ]
+        },
+        {
+          "num": 33,
+          "text": "just as I also please all men",
+          "parts": [
+            "just as I also please all",
+            {
+              "style": "ITALIC",
+              "text": "men"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 11,
+      "verses_count": 34,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Imitate me, just as I also imitate Christ.",
+          "parts": [
+            "Imitate me, just as I also",
+            {
+              "style": "ITALIC",
+              "text": "imitate"
+            },
+            "Christ."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "Now I praise you, brethren, that you remember me in all things and keep the traditions just as I delivered them to you. But I want you to know that the head of every man is Christ, the head of woman is man, and the head of Christ is God.",
+          "parts": [
+            "Now I praise you, brethren, that you remember me in all things and keep the traditions just as I delivered",
+            {
+              "style": "ITALIC",
+              "text": "them"
+            },
+            "to you.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5434"
+            },
+            "But I want you to know that the head of every man is Christ, the head of woman",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "man, and the head of Christ",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "God."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "But I want you to know that the head of every man is Christ, the head of woman is",
+          "parts": [
+            "But I want you to know that the head of every man is Christ, the head of woman",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Every man praying or prophesying, having his",
+          "parts": [
+            "Every man praying or prophesying, having",
+            {
+              "style": "ITALIC",
+              "text": "his"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "But every woman who prays or prophesies with her",
+          "parts": [
+            "But every woman who prays or prophesies with",
+            {
+              "style": "ITALIC",
+              "text": "her"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "For if a woman is not covered, let her also be shorn.",
+          "parts": [
+            "For if a woman is not covered, let her also be shorn."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For a man indeed ought not to cover his",
+          "parts": [
+            "For a man indeed ought not to cover",
+            {
+              "style": "ITALIC",
+              "text": "his"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "For man is not from woman, but woman from man.",
+          "parts": [
+            "For man is not from woman, but woman from man."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Nor was man created for the woman, but woman for the man.",
+          "parts": [
+            "Nor was man created for the woman, but woman for the man."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "For this reason the woman ought to have a symbol of",
+          "parts": [
+            "For this reason the woman ought to have",
+            {
+              "style": "ITALIC",
+              "text": "a symbol of"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Nevertheless, neither is",
+          "parts": [
+            "Nevertheless, neither",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "For as woman came",
+          "parts": [
+            "For as woman",
+            {
+              "style": "ITALIC",
+              "text": "came"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Judge among yourselves.",
+          "parts": [
+            "Judge among yourselves."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Does not even nature itself teach you that if a man has long hair, it is a dishonor to him?",
+          "parts": [
+            "Does not even nature itself teach you that if a man has long hair, it is a dishonor to him?"
+          ]
+        },
+        {
+          "num": 15,
+          "text": "But if a woman has long hair, it is a glory to her; for her",
+          "parts": [
+            "But if a woman has long hair, it is a glory to her; for",
+            {
+              "style": "ITALIC",
+              "text": "her"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "But if anyone seems to be contentious, we have no such custom, nor do",
+          "parts": [
+            "But if anyone seems to be contentious, we have no such custom, nor",
+            {
+              "style": "ITALIC",
+              "text": "do"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Now in giving these instructions I do not praise you, since you come together not for the better but for the worse. For first of all, when you come together as a church, I hear that there are divisions among you, and in part I believe it.",
+          "parts": [
+            "Now in giving these instructions I do not praise",
+            {
+              "style": "ITALIC",
+              "text": "you,"
+            },
+            "since you come together not for the better but for the worse.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5435"
+            },
+            "For first of all, when you come together as a church, I hear that there are divisions among you, and in part I believe it."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "For first of all, when you come together as a church, I hear that there are divisions among you, and in part I believe it.",
+          "parts": [
+            "For first of all, when you come together as a church, I hear that there are divisions among you, and in part I believe it."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For there must also be factions among you, that those who are approved may be recognized among you.",
+          "parts": [
+            "For there must also be factions among you, that those who are approved may be recognized among you."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Therefore when you come together in one place, it is not to eat the Lord's Supper.",
+          "parts": [
+            "Therefore when you come together in one place, it is not to eat the Lord's Supper.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5436"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "For in eating, each one takes his own supper ahead of others;",
+          "parts": [
+            "For in eating, each one takes his own supper ahead of",
+            {
+              "style": "ITALIC",
+              "text": "others;"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "What!",
+          "parts": [
+            "What!"
+          ]
+        },
+        {
+          "num": 23,
+          "text": "For I received from the Lord that which I also delivered to you: that the Lord Jesus on the same night in which He was betrayed took bread; and when He had given thanks, He broke it and said, “Take, eat; a this is My body which is broken b for you; do this in remembrance of Me.” In the same manner He also took the cup after supper, saying, “This cup is the new covenant in My blood.",
+          "parts": [
+            "For I received from the Lord that which I also delivered to you: that the Lord Jesus on the",
+            {
+              "style": "ITALIC",
+              "text": "same"
+            },
+            "night in which He was betrayed took bread;",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5437"
+            },
+            "and when He had given thanks, He broke",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            },
+            "and said, “Take, eat;",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r318"
+            },
+            "this is My body which is broken",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r319"
+            },
+            "for you; do this in remembrance of Me.” In the same manner",
+            {
+              "style": "ITALIC",
+              "text": "He"
+            },
+            "also",
+            {
+              "style": "ITALIC",
+              "text": "took"
+            },
+            "the cup after supper, saying, “This cup is the new covenant in My blood."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "and when He had given thanks, He broke it",
+          "parts": [
+            "and when He had given thanks, He broke",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "In the same manner He",
+          "parts": [
+            "In the same manner",
+            {
+              "style": "ITALIC",
+              "text": "He"
+            }
+          ]
+        },
+        {
+          "num": 26,
+          "text": "For as often as you eat this bread and drink this cup, you proclaim the Lord's death till He comes.",
+          "parts": [
+            "For as often as you eat this bread and drink this cup, you proclaim the Lord's death till He comes."
+          ]
+        },
+        {
+          "num": 27,
+          "text": "Therefore whoever eats this bread or drinks this cup of the Lord in an unworthy manner will be guilty of the body and blood a of the Lord. But let a man examine himself, and so let him eat of the bread and drink of the cup. For he who eats and drinks in an unworthy manner a eats and drinks judgment to himself, not discerning the Lord's b body. For this reason many are weak and sick among you, and many sleep.",
+          "parts": [
+            "Therefore whoever eats this bread or drinks",
+            {
+              "style": "ITALIC",
+              "text": "this"
+            },
+            "cup of the Lord in an unworthy manner will be guilty of the body and blood",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r320"
+            },
+            "of the Lord.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5438"
+            },
+            "But let a man examine himself, and so let him eat of the bread and drink of the cup.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5439"
+            },
+            "For he who eats and drinks in an unworthy manner",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r321"
+            },
+            "eats and drinks judgment to himself, not discerning the Lord's",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r322"
+            },
+            "body.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5440"
+            },
+            "For this reason many",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "weak and sick among you, and many sleep."
+          ]
+        },
+        {
+          "num": 28,
+          "text": "But let a man examine himself, and so let him eat of the bread and drink of the cup.",
+          "parts": [
+            "But let a man examine himself, and so let him eat of the bread and drink of the cup.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5439"
+            }
+          ]
+        },
+        {
+          "num": 29,
+          "text": "For he who eats and drinks in an unworthy manner a",
+          "parts": [
+            "For he who eats and drinks in an unworthy manner",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r323"
+            }
+          ]
+        },
+        {
+          "num": 30,
+          "text": "For this reason many are",
+          "parts": [
+            "For this reason many",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            }
+          ]
+        },
+        {
+          "num": 31,
+          "text": "For if we would judge ourselves, we would not be judged.",
+          "parts": [
+            "For if we would judge ourselves, we would not be judged.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5441"
+            }
+          ]
+        },
+        {
+          "num": 32,
+          "text": "But when we are judged, we are chastened by the Lord, that we may not be condemned with the world.",
+          "parts": [
+            "But when we are judged, we are chastened by the Lord, that we may not be condemned with the world."
+          ]
+        },
+        {
+          "num": 33,
+          "text": "Therefore, my brethren, when you come together to eat, wait for one another. But if anyone is hungry, let him eat at home, lest you come together for judgment.",
+          "parts": [
+            "Therefore, my brethren, when you come together to eat, wait for one another.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5442"
+            },
+            "But if anyone is hungry, let him eat at home, lest you come together for judgment."
+          ]
+        },
+        {
+          "num": 34,
+          "text": "But if anyone is hungry, let him eat at home, lest you come together for judgment.",
+          "parts": [
+            "But if anyone is hungry, let him eat at home, lest you come together for judgment."
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 12,
+      "verses_count": 31,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Now concerning spiritual gifts, brethren, I do not want you to be ignorant: You know that a you were Gentiles, carried away to these dumb idols, however you were led. Therefore I make known to you that no one speaking by the Spirit of God calls Jesus accursed, and no one can say that Jesus is Lord except by the Holy Spirit.",
+          "parts": [
+            "Now concerning spiritual",
+            {
+              "style": "ITALIC",
+              "text": "gifts, "
+            },
+            "brethren, I do not want you to be ignorant:",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5443"
+            },
+            "You know that",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r324"
+            },
+            "you were Gentiles, carried away to these dumb idols, however you were led.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5444"
+            },
+            "Therefore I make known to you that no one speaking by the Spirit of God calls Jesus accursed, and no one can say that Jesus is Lord except by the Holy Spirit.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5445"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "There are diversities of gifts, but the same Spirit. There are differences of ministries, but the same Lord.",
+          "parts": [
+            "There are diversities of gifts, but the same Spirit.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5446"
+            },
+            "There are differences of ministries, but the same Lord."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "There are differences of ministries, but the same Lord.",
+          "parts": [
+            "There are differences of ministries, but the same Lord."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "And there are diversities of activities, but it is the same God who works all in all.",
+          "parts": [
+            "And there are diversities of activities, but it is the same God who works all in all."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "But the manifestation of the Spirit is given to each one for the profit of all:",
+          "parts": [
+            "But the manifestation of the Spirit is given to each one for the profit",
+            {
+              "style": "ITALIC",
+              "text": "of all:"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "for to one is given the word of wisdom through the Spirit, to another the word of knowledge through the same Spirit,",
+          "parts": [
+            "for to one is given the word of wisdom through the Spirit, to another the word of knowledge through the same Spirit,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5448"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "to another faith by the same Spirit, to another gifts of healings by the same a",
+          "parts": [
+            "to another faith by the same Spirit, to another gifts of healings by the same",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r325"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "to another the working of miracles, to another prophecy, to another discerning of spirits, to another different",
+          "parts": [
+            "to another the working of miracles, to another prophecy, to another discerning of spirits, to another",
+            {
+              "style": "ITALIC",
+              "text": "different"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "But one and the same Spirit works all these things, distributing to each one individually as He wills.",
+          "parts": [
+            "But one and the same Spirit works all these things, distributing to each one individually as He wills."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "For as the body is one and has many members, but all the members of that one body, being many, are one body, so also is Christ. For by one Spirit we were all baptized into one body—whether Jews or Greeks, whether slaves or free—and have all been made to drink into a one Spirit.",
+          "parts": [
+            "For as the body is one and has many members, but all the members of that one body, being many, are one body, so also",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "Christ.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5449"
+            },
+            "For by one Spirit we were all baptized into one body—whether Jews or Greeks, whether slaves or free—and have all been made to drink into",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r326"
+            },
+            "one Spirit."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "For by one Spirit we were all baptized into one body—whether Jews or Greeks, whether slaves or free—and have all been made to drink into a",
+          "parts": [
+            "For by one Spirit we were all baptized into one body—whether Jews or Greeks, whether slaves or free—and have all been made to drink into",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r327"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "For in fact the body is not one member but many.",
+          "parts": [
+            "For in fact the body is not one member but many.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5450"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "If the foot should say, “Because I am not a hand, I am not of the body,” is it therefore not of the body?",
+          "parts": [
+            "If the foot should say, “Because I am not a hand, I am not of the body,” is it therefore not of the body?"
+          ]
+        },
+        {
+          "num": 16,
+          "text": "And if the ear should say, “Because I am not an eye, I am not of the body,” is it therefore not of the body?",
+          "parts": [
+            "And if the ear should say, “Because I am not an eye, I am not of the body,” is it therefore not of the body?"
+          ]
+        },
+        {
+          "num": 17,
+          "text": "If the whole body were",
+          "parts": [
+            "If the whole body",
+            {
+              "style": "ITALIC",
+              "text": "were"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "But now God has set the members, each one of them, in the body just as He pleased.",
+          "parts": [
+            "But now God has set the members, each one of them, in the body just as He pleased."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "And if they were all one member, where would",
+          "parts": [
+            "And if they were all one member, where",
+            {
+              "style": "ITALIC",
+              "text": "would"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "But now indeed there are many members, yet one body.",
+          "parts": [
+            "But now indeed",
+            {
+              "style": "ITALIC",
+              "text": "there are"
+            },
+            "many members, yet one body."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "And the eye cannot say to the hand, “I have no need of you”; nor again the head to the feet, “I have no need of you.”",
+          "parts": [
+            "And the eye cannot say to the hand, “I have no need of you”; nor again the head to the feet, “I have no need of you.”"
+          ]
+        },
+        {
+          "num": 22,
+          "text": "No, much rather, those members of the body which seem to be weaker are necessary.",
+          "parts": [
+            "No, much rather, those members of the body which seem to be weaker are necessary."
+          ]
+        },
+        {
+          "num": 23,
+          "text": "And those members",
+          "parts": [
+            "And those",
+            {
+              "style": "ITALIC",
+              "text": "members"
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "but our presentable parts",
+          "parts": [
+            "but our presentable",
+            {
+              "style": "ITALIC",
+              "text": "parts"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "that there should be no schism in the body, but that",
+          "parts": [
+            "that there should be no schism in the body, but",
+            {
+              "style": "ITALIC",
+              "text": "that"
+            }
+          ]
+        },
+        {
+          "num": 26,
+          "text": "And if one member suffers, all the members suffer with it;",
+          "parts": [
+            "And if one member suffers, all the members suffer with",
+            {
+              "style": "ITALIC",
+              "text": "it;"
+            }
+          ]
+        },
+        {
+          "num": 27,
+          "text": "Now you are the body of Christ, and members individually. And God has appointed these in the church: first apostles, second prophets, third teachers, after that miracles, then gifts of healings, helps, administrations, varieties of tongues. Are all apostles?",
+          "parts": [
+            "Now you are the body of Christ, and members individually.",
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx326"
+            },
+            "And God has appointed these in the church: first apostles, second prophets, third teachers, after that miracles, then gifts of healings, helps, administrations, varieties of tongues.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5452"
+            },
+            {
+              "style": "ITALIC",
+              "text": "Are"
+            },
+            "all apostles?"
+          ]
+        },
+        {
+          "num": 28,
+          "text": "And God has appointed these in the church: first apostles, second prophets, third teachers, after that miracles, then gifts of healings, helps, administrations, varieties of tongues.",
+          "parts": [
+            "And God has appointed these in the church: first apostles, second prophets, third teachers, after that miracles, then gifts of healings, helps, administrations, varieties of tongues.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5452"
+            }
+          ]
+        },
+        {
+          "num": 29,
+          "text": "Are",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "Are"
+            }
+          ]
+        },
+        {
+          "num": 30,
+          "text": "Do all have gifts of healings?",
+          "parts": [
+            "Do all have gifts of healings?"
+          ]
+        },
+        {
+          "num": 31,
+          "text": "But earnestly desire the best a",
+          "parts": [
+            "But earnestly desire the best",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r328"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 13,
+      "verses_count": 13,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Though I speak with the tongues of men and of angels, but have not love, I have become sounding brass or a clanging cymbal. And though I have the gift of prophecy, and understand all mysteries and all knowledge, and though I have all faith, so that I could remove mountains, but have not love, I am nothing. And though I bestow all my goods to feed the poor, and though I give my body to be burned, a but have not love, it profits me nothing.",
+          "parts": [
+            "Though I speak with the tongues of men and of angels, but have not love, I have become sounding brass or a clanging cymbal.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5453"
+            },
+            "And though I have",
+            {
+              "style": "ITALIC",
+              "text": "the gift of"
+            },
+            "prophecy, and understand all mysteries and all knowledge, and though I have all faith, so that I could remove mountains, but have not love, I am nothing.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5454"
+            },
+            "And though I bestow all my goods to feed",
+            {
+              "style": "ITALIC",
+              "text": "the poor,"
+            },
+            "and though I give my body to be burned,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r329"
+            },
+            "but have not love, it profits me nothing.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5455"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Love suffers long and is kind; love does not envy; love does not parade itself, is not puffed up; does not behave rudely, does not seek its own, is not provoked, thinks no evil; does not rejoice in iniquity, but rejoices in the truth; bears all things, believes all things, hopes all things, endures all things.",
+          "parts": [
+            "Love suffers long",
+            {
+              "style": "ITALIC",
+              "text": "and"
+            },
+            "is kind; love does not envy; love does not parade itself, is not puffed up;",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5456"
+            },
+            "does not behave rudely, does not seek its own, is not provoked, thinks no evil; does not rejoice in iniquity, but rejoices in the truth; bears all things, believes all things, hopes all things, endures all things."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "does not behave rudely, does not seek its own, is not provoked, thinks no evil;",
+          "parts": [
+            "does not behave rudely, does not seek its own, is not provoked, thinks no evil;"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "does not rejoice in iniquity, but rejoices in the truth;",
+          "parts": [
+            "does not rejoice in iniquity, but rejoices in the truth;"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "bears all things, believes all things, hopes all things, endures all things.",
+          "parts": [
+            "bears all things, believes all things, hopes all things, endures all things."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Love never fails.",
+          "parts": [
+            "Love never fails."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For we know in part and we prophesy in part.",
+          "parts": [
+            "For we know in part and we prophesy in part."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "But when that which is perfect has come, then that which is in part will be done away.",
+          "parts": [
+            "But when that which is perfect has come, then that which is in part will be done away."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "When I was a child, I spoke as a child, I understood as a child, I thought as a child; but when I became a man, I put away childish things. For now we see in a mirror, dimly, but then face to face.",
+          "parts": [
+            "When I was a child, I spoke as a child, I understood as a child, I thought as a child; but when I became a man, I put away childish things.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5458"
+            },
+            "For now we see in a mirror, dimly, but then face to face."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "For now we see in a mirror, dimly, but then face to face.",
+          "parts": [
+            "For now we see in a mirror, dimly, but then face to face."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "And now abide faith, hope, love, these three; but the greatest of these is love.",
+          "parts": [
+            "And now abide faith, hope, love, these three; but the greatest of these",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "love."
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 14,
+      "verses_count": 40,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Pursue love, and desire spiritual gifts, but especially that you may prophesy. For he who speaks in a tongue does not speak to men but to God, for no one understands him; however, in the spirit he speaks mysteries. But he who prophesies speaks edification and exhortation and comfort to men.",
+          "parts": [
+            "Pursue love, and desire spiritual",
+            {
+              "style": "ITALIC",
+              "text": "gifts,"
+            },
+            "but especially that you may prophesy.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5459"
+            },
+            "For he who speaks in a tongue does not speak to men but to God, for no one understands",
+            {
+              "style": "ITALIC",
+              "text": "him;"
+            },
+            "however, in the spirit he speaks mysteries.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5460"
+            },
+            "But he who prophesies speaks edification and exhortation and comfort to men."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "He who speaks in a tongue edifies himself, but he who prophesies edifies the church.",
+          "parts": [
+            "He who speaks in a tongue edifies himself, but he who prophesies edifies the church."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "I wish you all spoke with tongues, but even more that you prophesied; for a",
+          "parts": [
+            "I wish you all spoke with tongues, but even more that you prophesied; for",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r330"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "But now, brethren, if I come to you speaking with tongues, what shall I profit you unless I speak to you either by revelation, by knowledge, by prophesying, or by teaching?",
+          "parts": [
+            "But now, brethren, if I come to you speaking with tongues, what shall I profit you unless I speak to you either by revelation, by knowledge, by prophesying, or by teaching?"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Even things without life, whether flute or harp, when they make a sound, unless they make a distinction in the sounds, how will it be known what is piped or played?",
+          "parts": [
+            "Even things without life, whether flute or harp, when they make a sound, unless they make a distinction in the sounds, how will it be known what is piped or played?"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "For if the trumpet makes an uncertain sound, who will prepare for battle?",
+          "parts": [
+            "For if the trumpet makes an uncertain sound, who will prepare for battle?"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "So likewise you, unless you utter by the tongue words easy to understand, how will it be known what is spoken?",
+          "parts": [
+            "So likewise you, unless you utter by the tongue words easy to understand, how will it be known what is spoken?"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "There are, it may be, so many kinds of languages in the world, and none of them is",
+          "parts": [
+            "There are, it may be, so many kinds of languages in the world, and none of them",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Therefore, if I do not know the meaning of the language, I shall be a foreigner to him who speaks, and he who speaks will be",
+          "parts": [
+            "Therefore, if I do not know the meaning of the language, I shall be a foreigner to him who speaks, and he who speaks",
+            {
+              "style": "ITALIC",
+              "text": "will be"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Even so you, since you are zealous for spiritual gifts,",
+          "parts": [
+            "Even so you, since you are zealous for spiritual",
+            {
+              "style": "ITALIC",
+              "text": "gifts,"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Therefore let him who speaks in a tongue pray that he may interpret.",
+          "parts": [
+            "Therefore let him who speaks in a tongue pray that he may interpret."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "For if I pray in a tongue, my spirit prays, but my understanding is unfruitful.",
+          "parts": [
+            "For if I pray in a tongue, my spirit prays, but my understanding is unfruitful."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "What is the conclusion",
+          "parts": [
+            "What is",
+            {
+              "style": "ITALIC",
+              "text": "the conclusion"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Otherwise, if you bless with the spirit, how will he who occupies the place of the uninformed say “Amen” at your giving of thanks, since he does not understand what you say?",
+          "parts": [
+            "Otherwise, if you bless with the spirit, how will he who occupies the place of the uninformed say “Amen” at your giving of thanks, since he does not understand what you say?"
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For you indeed give thanks well, but the other is not edified.",
+          "parts": [
+            "For you indeed give thanks well, but the other is not edified."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "I thank my God I speak with tongues more than you all; yet in the church I would rather speak five words with my understanding, that I may teach others also, than ten thousand words in a tongue.",
+          "parts": [
+            "I thank my God I speak with tongues more than you all; yet in the church I would rather speak five words with my understanding, that I may teach others also, than ten thousand words in a tongue."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "yet in the church I would rather speak five words with my understanding, that I may teach others also, than ten thousand words in a tongue.",
+          "parts": [
+            "yet in the church I would rather speak five words with my understanding, that I may teach others also, than ten thousand words in a tongue."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Brethren, do not be children in understanding; however, in malice be babes, but in understanding be mature.",
+          "parts": [
+            "Brethren, do not be children in understanding; however, in malice be babes, but in understanding be mature.",
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx327"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "In the law it is written:",
+          "parts": [
+            "In the law it is written:"
+          ]
+        },
+        {
+          "num": 22,
+          "text": "Therefore tongues are for a sign, not to those who believe but to unbelievers; but prophesying is not for unbelievers but for those who believe. Therefore if the whole church comes together in one place, and all speak with tongues, and there come in those who are uninformed or unbelievers, will they not say that you are out of your mind?",
+          "parts": [
+            "Therefore tongues are for a sign, not to those who believe but to unbelievers; but prophesying is not for unbelievers but for those who believe.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5461"
+            },
+            "Therefore if the whole church comes together in one place, and all speak with tongues, and there come in",
+            {
+              "style": "ITALIC",
+              "text": "those who are"
+            },
+            "uninformed or unbelievers, will they not say that you are out of your mind?"
+          ]
+        },
+        {
+          "num": 23,
+          "text": "Therefore if the whole church comes together in one place, and all speak with tongues, and there come in those who are",
+          "parts": [
+            "Therefore if the whole church comes together in one place, and all speak with tongues, and there come in",
+            {
+              "style": "ITALIC",
+              "text": "those who are"
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "But if all prophesy, and an unbeliever or an uninformed person comes in, he is convinced by all, he is convicted by all.",
+          "parts": [
+            "But if all prophesy, and an unbeliever or an uninformed person comes in, he is convinced by all, he is convicted by all."
+          ]
+        },
+        {
+          "num": 25,
+          "text": "And thus a",
+          "parts": [
+            "And thus",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r331"
+            }
+          ]
+        },
+        {
+          "num": 26,
+          "text": "How is it then, brethren?",
+          "parts": [
+            "How is it then, brethren?"
+          ]
+        },
+        {
+          "num": 27,
+          "text": "If anyone speaks in a tongue, let there be",
+          "parts": [
+            "If anyone speaks in a tongue,",
+            {
+              "style": "ITALIC",
+              "text": "let there be"
+            }
+          ]
+        },
+        {
+          "num": 28,
+          "text": "But if there is no interpreter, let him keep silent in church, and let him speak to himself and to God.",
+          "parts": [
+            "But if there is no interpreter, let him keep silent in church, and let him speak to himself and to God."
+          ]
+        },
+        {
+          "num": 29,
+          "text": "Let two or three prophets speak, and let the others judge.",
+          "parts": [
+            "Let two or three prophets speak, and let the others judge."
+          ]
+        },
+        {
+          "num": 30,
+          "text": "But if anything",
+          "parts": [
+            "But if",
+            {
+              "style": "ITALIC",
+              "text": "anything"
+            }
+          ]
+        },
+        {
+          "num": 31,
+          "text": "For you can all prophesy one by one, that all may learn and all may be encouraged.",
+          "parts": [
+            "For you can all prophesy one by one, that all may learn and all may be encouraged."
+          ]
+        },
+        {
+          "num": 32,
+          "text": "And the spirits of the prophets are subject to the prophets.",
+          "parts": [
+            "And the spirits of the prophets are subject to the prophets."
+          ]
+        },
+        {
+          "num": 33,
+          "text": "For God is not the author",
+          "parts": [
+            "For God is not",
+            {
+              "style": "ITALIC",
+              "text": "the author"
+            }
+          ]
+        },
+        {
+          "num": 34,
+          "text": "Let your a women keep silent in the churches, for they are not permitted to speak; but they are to be submissive, as the law also says. And if they want to learn something, let them ask their own husbands at home; for it is shameful for women to speak in church.",
+          "parts": [
+            "Let your",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r332"
+            },
+            "women keep silent in the churches, for they are not permitted to speak; but",
+            {
+              "style": "ITALIC",
+              "text": "they are"
+            },
+            "to be submissive, as the law also says.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5463"
+            },
+            "And if they want to learn something, let them ask their own husbands at home; for it is shameful for women to speak in church."
+          ]
+        },
+        {
+          "num": 35,
+          "text": "And if they want to learn something, let them ask their own husbands at home; for it is shameful for women to speak in church.",
+          "parts": [
+            "And if they want to learn something, let them ask their own husbands at home; for it is shameful for women to speak in church."
+          ]
+        },
+        {
+          "num": 36,
+          "text": "Or did the word of God come originally from you?",
+          "parts": [
+            "Or did the word of God come",
+            {
+              "style": "ITALIC",
+              "text": "originally"
+            },
+            "from you?"
+          ]
+        },
+        {
+          "num": 37,
+          "text": "If anyone thinks himself to be a prophet or spiritual, let him acknowledge that the things which I write to you are the commandments of the Lord.",
+          "parts": [
+            "If anyone thinks himself to be a prophet or spiritual, let him acknowledge that the things which I write to you are the commandments of the Lord.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5464"
+            }
+          ]
+        },
+        {
+          "num": 38,
+          "text": "But if anyone is ignorant, let him be ignorant. a",
+          "parts": [
+            "But if anyone is ignorant, let him be ignorant.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r333"
+            }
+          ]
+        },
+        {
+          "num": 39,
+          "text": "Therefore, brethren, desire earnestly to prophesy, and do not forbid to speak with tongues.",
+          "parts": [
+            "Therefore, brethren, desire earnestly to prophesy, and do not forbid to speak with tongues."
+          ]
+        },
+        {
+          "num": 40,
+          "text": "Let all things be done decently and in order.",
+          "parts": [
+            "Let all things be done decently and in order."
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 15,
+      "verses_count": 58,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Moreover, brethren, I declare to you the gospel which I preached to you, which also you received and in which you stand, by which also you are saved, if you hold fast that word which I preached to you—unless you believed in vain.",
+          "parts": [
+            "Moreover, brethren, I declare to you the gospel which I preached to you, which also you received and in which you stand, by which also you are saved, if you hold fast that word which I preached to you—unless you believed in vain."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For I delivered to you first of all that which I also received: that Christ died for our sins according to the Scriptures, and that He was buried, and that He rose again the third day according to the Scriptures, and that He was seen by Cephas, then by the twelve. After that He was seen by over five hundred brethren at once, of whom the greater part remain to the present, but some have fallen asleep.",
+          "parts": [
+            "For I delivered to you first of all that which I also received: that Christ died for our sins according to the Scriptures,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5465"
+            },
+            "and that He was buried, and that He rose again the third day according to the Scriptures,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5466"
+            },
+            "and that He was seen by Cephas, then by the twelve.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5467"
+            },
+            "After that He was seen by over five hundred brethren at once, of whom the greater part remain to the present, but some have fallen asleep."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "and that He was buried, and that He rose again the third day according to the Scriptures,",
+          "parts": [
+            "and that He was buried, and that He rose again the third day according to the Scriptures,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5466"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "and that He was seen by Cephas, then by the twelve.",
+          "parts": [
+            "and that He was seen by Cephas, then by the twelve.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5467"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "After that He was seen by over five hundred brethren at once, of whom the greater part remain to the present, but some have fallen asleep.",
+          "parts": [
+            "After that He was seen by over five hundred brethren at once, of whom the greater part remain to the present, but some have fallen asleep."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "After that He was seen by James, then by all the apostles.",
+          "parts": [
+            "After that He was seen by James, then by all the apostles."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Then last of all He was seen by me also, as by one born out of due time.",
+          "parts": [
+            "Then last of all He was seen by me also, as by one born out of due time."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For I am the least of the apostles, who am not worthy to be called an apostle, because I persecuted the church of God.",
+          "parts": [
+            "For I am the least of the apostles, who am not worthy to be called an apostle, because I persecuted the church of God."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "But by the grace of God I am what I am, and His grace toward me was not in vain; but I labored more abundantly than they all, yet not I, but the grace of God which was",
+          "parts": [
+            "But by the grace of God I am what I am, and His grace toward me was not in vain; but I labored more abundantly than they all, yet not I, but the grace of God",
+            {
+              "style": "ITALIC",
+              "text": "which was"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Therefore, whether it was",
+          "parts": [
+            "Therefore, whether",
+            {
+              "style": "ITALIC",
+              "text": "it was"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Now if Christ is preached that He has been raised from the dead, how do some among you say that there is no resurrection of the dead? But if there is no resurrection of the dead, then Christ is not risen.",
+          "parts": [
+            "Now if Christ is preached that He has been raised from the dead, how do some among you say that there is no resurrection of the dead?",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5468"
+            },
+            "But if there is no resurrection of the dead, then Christ is not risen."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "But if there is no resurrection of the dead, then Christ is not risen.",
+          "parts": [
+            "But if there is no resurrection of the dead, then Christ is not risen."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "And if Christ is not risen, then our preaching is",
+          "parts": [
+            "And if Christ is not risen, then our preaching",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Yes, and we are found false witnesses of God, because we have testified of God that He raised up Christ, whom He did not raise up—if in fact the dead do not rise.",
+          "parts": [
+            "Yes, and we are found false witnesses of God, because we have testified of God that He raised up Christ, whom He did not raise up—if in fact the dead do not rise."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "For if the",
+          "parts": [
+            "For if",
+            {
+              "style": "ITALIC",
+              "text": "the"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "And if Christ is not risen, your faith is",
+          "parts": [
+            "And if Christ is not risen, your faith",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Then also those who have fallen asleep in Christ have perished.",
+          "parts": [
+            "Then also those who have fallen asleep in Christ have perished."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "If in this life only we have hope in Christ, we are of all men the most pitiable.",
+          "parts": [
+            "If in this life only we have hope in Christ, we are of all men the most pitiable."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "But now Christ is risen from the dead, and has become the firstfruits of those who have fallen asleep. For since by man came death, by Man also came the resurrection of the dead.",
+          "parts": [
+            "But now Christ is risen from the dead,",
+            {
+              "style": "ITALIC",
+              "text": "and"
+            },
+            "has become the firstfruits of those who have fallen asleep.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5469"
+            },
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx328"
+            },
+            "For since by man",
+            {
+              "style": "ITALIC",
+              "text": "came"
+            },
+            "death, by Man also",
+            {
+              "style": "ITALIC",
+              "text": "came"
+            },
+            "the resurrection of the dead."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "For since by man came",
+          "parts": [
+            "For since by man",
+            {
+              "style": "ITALIC",
+              "text": "came"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "For as in Adam all die, even so in Christ all shall be made alive.",
+          "parts": [
+            "For as in Adam all die, even so in Christ all shall be made alive.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5470"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "But each one in his own order: Christ the firstfruits, afterward those who are",
+          "parts": [
+            "But each one in his own order: Christ the firstfruits, afterward those",
+            {
+              "style": "ITALIC",
+              "text": "who are"
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "Then comes",
+          "parts": [
+            "Then",
+            {
+              "style": "ITALIC",
+              "text": "comes"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "For He must reign till He has put all enemies under His feet.",
+          "parts": [
+            "For He must reign till He has put all enemies under His feet."
+          ]
+        },
+        {
+          "num": 26,
+          "text": "The last enemy that",
+          "parts": [
+            "The last enemy",
+            {
+              "style": "ITALIC",
+              "text": "that"
+            }
+          ]
+        },
+        {
+          "num": 27,
+          "text": "For “He has put all things under His feet.”",
+          "parts": [
+            "For",
+            {
+              "style": "ITALIC",
+              "text": "“He has put all things under His feet.”"
+            }
+          ]
+        },
+        {
+          "num": 28,
+          "text": "Now when all things are made subject to Him, then the Son Himself will also be subject to Him who put all things under Him, that God may be all in all.",
+          "parts": [
+            "Now when all things are made subject to Him, then the Son Himself will also be subject to Him who put all things under Him, that God may be all in all."
+          ]
+        },
+        {
+          "num": 29,
+          "text": "Otherwise, what will they do who are baptized for the dead, if the dead do not rise at all?",
+          "parts": [
+            "Otherwise, what will they do who are baptized for the dead, if the dead do not rise at all?"
+          ]
+        },
+        {
+          "num": 30,
+          "text": "And why do we stand in jeopardy every hour?",
+          "parts": [
+            "And why do we stand in jeopardy every hour?"
+          ]
+        },
+        {
+          "num": 31,
+          "text": "I affirm, by the boasting in you which I have in Christ Jesus our Lord, I die daily.",
+          "parts": [
+            "I affirm, by the boasting in you which I have in Christ Jesus our Lord, I die daily."
+          ]
+        },
+        {
+          "num": 32,
+          "text": "If, in the manner of men, I have fought with beasts at Ephesus, what advantage is it",
+          "parts": [
+            "If, in the manner of men, I have fought with beasts at Ephesus, what advantage",
+            {
+              "style": "ITALIC",
+              "text": "is it"
+            }
+          ]
+        },
+        {
+          "num": 33,
+          "text": "Do not be deceived: “Evil company corrupts good habits.” Awake to righteousness, and do not sin; for some do not have the knowledge of God.",
+          "parts": [
+            "Do not be deceived: “Evil company corrupts good habits.” Awake to righteousness, and do not sin; for some do not have the knowledge of God."
+          ]
+        },
+        {
+          "num": 34,
+          "text": "Awake to righteousness, and do not sin; for some do not have the knowledge of God.",
+          "parts": [
+            "Awake to righteousness, and do not sin; for some do not have the knowledge of God."
+          ]
+        },
+        {
+          "num": 35,
+          "text": "But someone will say, “How are the dead raised up?",
+          "parts": [
+            "But someone will say, “How are the dead raised up?"
+          ]
+        },
+        {
+          "num": 36,
+          "text": "Foolish one, what you sow is not made alive unless it dies.",
+          "parts": [
+            "Foolish one, what you sow is not made alive unless it dies."
+          ]
+        },
+        {
+          "num": 37,
+          "text": "And what you sow, you do not sow that body that shall be, but mere grain—perhaps wheat or some other grain.",
+          "parts": [
+            "And what you sow, you do not sow that body that shall be, but mere grain—perhaps wheat or some other",
+            {
+              "style": "ITALIC",
+              "text": "grain."
+            }
+          ]
+        },
+        {
+          "num": 38,
+          "text": "But God gives it a body as He pleases, and to each seed its own body.",
+          "parts": [
+            "But God gives it a body as He pleases, and to each seed its own body."
+          ]
+        },
+        {
+          "num": 39,
+          "text": "All flesh is not the same flesh, but there is one kind of flesh a of men, another flesh of animals, another of fish, and another of birds.",
+          "parts": [
+            "All flesh",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "not the same flesh, but",
+            {
+              "style": "ITALIC",
+              "text": "there is"
+            },
+            "one",
+            {
+              "style": "ITALIC",
+              "text": "kind"
+            },
+            {
+              "style": "ITALIC",
+              "text": "of"
+            },
+            "flesh",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r334"
+            },
+            "of men, another flesh of animals, another of fish,",
+            {
+              "style": "ITALIC",
+              "text": "and"
+            },
+            "another of birds."
+          ]
+        },
+        {
+          "num": 40,
+          "text": "There are",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "There are"
+            }
+          ]
+        },
+        {
+          "num": 41,
+          "text": "There is",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "There is"
+            }
+          ]
+        },
+        {
+          "num": 42,
+          "text": "So also is the resurrection of the dead.",
+          "parts": [
+            "So also",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "the resurrection of the dead."
+          ]
+        },
+        {
+          "num": 43,
+          "text": "It is sown in dishonor, it is raised in glory.",
+          "parts": [
+            "It is sown in dishonor, it is raised in glory."
+          ]
+        },
+        {
+          "num": 44,
+          "text": "It is sown a natural body, it is raised a spiritual body.",
+          "parts": [
+            "It is sown a natural body, it is raised a spiritual body."
+          ]
+        },
+        {
+          "num": 45,
+          "text": "And so it is written, “The first man Adam became a living being.”",
+          "parts": [
+            "And so it is written,",
+            {
+              "style": "ITALIC",
+              "text": "“The first man Adam became a living being.”"
+            }
+          ]
+        },
+        {
+          "num": 46,
+          "text": "However, the spiritual is not first, but the natural, and afterward the spiritual.",
+          "parts": [
+            "However, the spiritual is not first, but the natural, and afterward the spiritual."
+          ]
+        },
+        {
+          "num": 47,
+          "text": "The first man was",
+          "parts": [
+            "The first man",
+            {
+              "style": "ITALIC",
+              "text": "was"
+            }
+          ]
+        },
+        {
+          "num": 48,
+          "text": "As was",
+          "parts": [
+            "As",
+            {
+              "style": "ITALIC",
+              "text": "was"
+            }
+          ]
+        },
+        {
+          "num": 49,
+          "text": "And as we have borne the image of the man",
+          "parts": [
+            "And as we have borne the image of the",
+            {
+              "style": "ITALIC",
+              "text": "man"
+            }
+          ]
+        },
+        {
+          "num": 50,
+          "text": "Now this I say, brethren, that flesh and blood cannot inherit the kingdom of God; nor does corruption inherit incorruption. Behold, I tell you a mystery: We shall not all sleep, but we shall all be changed— in a moment, in the twinkling of an eye, at the last trumpet.",
+          "parts": [
+            "Now this I say, brethren, that flesh and blood cannot inherit the kingdom of God; nor does corruption inherit incorruption.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5476"
+            },
+            "Behold, I tell you a mystery: We shall not all sleep, but we shall all be changed— in a moment, in the twinkling of an eye, at the last trumpet."
+          ]
+        },
+        {
+          "num": 51,
+          "text": "Behold, I tell you a mystery: We shall not all sleep, but we shall all be changed—",
+          "parts": [
+            "Behold, I tell you a mystery: We shall not all sleep, but we shall all be changed—"
+          ]
+        },
+        {
+          "num": 52,
+          "text": "in a moment, in the twinkling of an eye, at the last trumpet.",
+          "parts": [
+            "in a moment, in the twinkling of an eye, at the last trumpet."
+          ]
+        },
+        {
+          "num": 53,
+          "text": "For this corruptible must put on incorruption, and this mortal must",
+          "parts": [
+            "For this corruptible must put on incorruption, and this mortal",
+            {
+              "style": "ITALIC",
+              "text": "must"
+            }
+          ]
+        },
+        {
+          "num": 54,
+          "text": "So when this corruptible has put on incorruption, and this mortal has put on immortality, then shall be brought to pass the saying that is written: “Death is swallowed up in victory.” a",
+          "parts": [
+            "So when this corruptible has put on incorruption, and this mortal has put on immortality, then shall be brought to pass the saying that is written:",
+            {
+              "style": "ITALIC",
+              "text": "“Death is swallowed up in victory.”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r335"
+            }
+          ]
+        },
+        {
+          "num": 56,
+          "text": "The sting of death is sin, and the strength of sin is the law. But thanks be to God, who gives us the victory through our Lord Jesus Christ.",
+          "parts": [
+            "The sting of death",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "sin, and the strength of sin",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "the law.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5477"
+            },
+            "But thanks",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            },
+            "to God, who gives us the victory through our Lord Jesus Christ."
+          ]
+        },
+        {
+          "num": 57,
+          "text": "But thanks be",
+          "parts": [
+            "But thanks",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            }
+          ]
+        },
+        {
+          "num": 58,
+          "text": "Therefore, my beloved brethren, be steadfast, immovable, always abounding in the work of the Lord, knowing that your labor is not in vain in the Lord.",
+          "parts": [
+            "Therefore, my beloved brethren, be steadfast, immovable, always abounding in the work of the Lord, knowing that your labor is not in vain in the Lord.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5478"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 16,
+      "verses_count": 24,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Now concerning the collection for the saints, as I have given orders to the churches of Galatia, so you must do also: On the first day of the week let each one of you lay something aside, storing up as he may prosper, that there be no collections when I come.",
+          "parts": [
+            "Now concerning the collection for the saints, as I have given orders to the churches of Galatia, so you must do also:",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5479"
+            },
+            "On the first",
+            {
+              "style": "ITALIC",
+              "text": "day"
+            },
+            "of the week let each one of you lay something aside, storing up as he may prosper, that there be no collections when I come."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "And when I come, whomever you approve by your",
+          "parts": [
+            "And when I come, whomever you approve by",
+            {
+              "style": "ITALIC",
+              "text": "your"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "But if it is fitting that I go also, they will go with me.",
+          "parts": [
+            "But if it is fitting that I go also, they will go with me."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Now I will come to you when I pass through Macedonia (for I am passing through Macedonia).",
+          "parts": [
+            "Now I will come to you when I pass through Macedonia (for I am passing through Macedonia)."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "And it may be that I will remain, or even spend the winter with you, that you may send me on my journey, wherever I go.",
+          "parts": [
+            "And it may be that I will remain, or even spend the winter with you, that you may send me on my journey, wherever I go."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For I do not wish to see you now on the way; but I hope to stay a while with you, if the Lord permits.",
+          "parts": [
+            "For I do not wish to see you now on the way; but I hope to stay a while with you, if the Lord permits."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "But I will tarry in Ephesus until Pentecost.",
+          "parts": [
+            "But I will tarry in Ephesus until Pentecost."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For a great and effective door has opened to me, and there are",
+          "parts": [
+            "For a great and effective door has opened to me, and",
+            {
+              "style": "ITALIC",
+              "text": "there are"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "And if Timothy comes, see that he may be with you without fear; for he does the work of the Lord, as I also do. Therefore let no one despise him.",
+          "parts": [
+            "And if Timothy comes, see that he may be with you without fear; for he does the work of the Lord, as I also",
+            {
+              "style": "ITALIC",
+              "text": "do."
+            },
+            "Therefore let no one despise him."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Therefore let no one despise him.",
+          "parts": [
+            "Therefore let no one despise him."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Now concerning our brother Apollos, I strongly urged him to come to you with the brethren, but he was quite unwilling to come at this time; however, he will come when he has a convenient time.",
+          "parts": [
+            "Now concerning",
+            {
+              "style": "ITALIC",
+              "text": "our"
+            },
+            "brother Apollos, I strongly urged him to come to you with the brethren, but he was quite unwilling to come at this time; however, he will come when he has a convenient time."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Watch, stand fast in the faith, be brave, be strong.",
+          "parts": [
+            "Watch, stand fast in the faith, be brave, be strong."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Let all that",
+          "parts": [
+            "Let all",
+            {
+              "style": "ITALIC",
+              "text": "that"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "I urge you, brethren—you know the household of Stephanas, that it is the firstfruits of Achaia, and that they have devoted themselves to the ministry of the saints— that you also submit to such, and to everyone who works and labors with us.",
+          "parts": [
+            "I urge you, brethren—you know the household of Stephanas, that it is the firstfruits of Achaia, and",
+            {
+              "style": "ITALIC",
+              "text": "that"
+            },
+            "they have devoted themselves to the ministry of the saints— that you also submit to such, and to everyone who works and labors with",
+            {
+              "style": "ITALIC",
+              "text": "us."
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "that you also submit to such, and to everyone who works and labors with us.",
+          "parts": [
+            "that you also submit to such, and to everyone who works and labors with",
+            {
+              "style": "ITALIC",
+              "text": "us."
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "I am glad about the coming of Stephanas, Fortunatus, and Achaicus, for what was lacking on your part they supplied. For they refreshed my spirit and yours.",
+          "parts": [
+            "I am glad about the coming of Stephanas, Fortunatus, and Achaicus, for what was lacking on your part they supplied.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5480"
+            },
+            "For they refreshed my spirit and yours."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "For they refreshed my spirit and yours.",
+          "parts": [
+            "For they refreshed my spirit and yours."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "The churches of Asia greet you.",
+          "parts": [
+            "The churches of Asia greet you."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "All the brethren greet you.",
+          "parts": [
+            "All the brethren greet you."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "The salutation with my own hand—Paul's.",
+          "parts": [
+            "The salutation with my own hand—Paul's.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5482"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "If anyone does not love the Lord Jesus Christ, let him be accursed. a O Lord, come! b",
+          "parts": [
+            "If anyone does not love the Lord Jesus Christ, let him be accursed.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r336"
+            },
+            "O Lord, come!",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r337"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "The grace of our Lord Jesus Christ be with you.",
+          "parts": [
+            "The grace of our Lord Jesus Christ",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            },
+            "with you."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "My love be",
+          "parts": [
+            "My love",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    }
+  ],
+  "lessons": [
+    {
+      "title": "Unity at the Eucharist",
+      "entries": [
+        {
+          "parts": [
+            "T H E E U C H A R I S T"
+          ]
+        },
+        {
+          "parts": [
+            {
+              "style": "BOLD",
+              "text": "“F"
+            },
+            "or I received from the Lord that which I also delivered to you: that the Lord Jesus on the",
+            {
+              "style": "ITALIC",
+              "text": "same "
+            },
+            "night in which He was betrayed took bread; and when He had given thanks [Gr.",
+            {
+              "style": "ITALIC",
+              "text": "eucharistesas"
+            },
+            "], He broke",
+            {
+              "style": "ITALIC",
+              "text": "it "
+            },
+            "and said, ‘Take, eat; this is My body which is broken for you; do this in remembrance of Me.’ In the same manner",
+            {
+              "style": "ITALIC",
+              "text": "He "
+            },
+            "also",
+            {
+              "style": "ITALIC",
+              "text": "took "
+            },
+            "the cup after supper, saying, ‘This cup is the new covenant in My blood. This do, as often as you drink",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            },
+            ", in remembrance of Me” (",
+            {
+              "style": "CROSS_REF",
+              "text": "1Co 11:23–25",
+              "ref_id": "r338"
+            },
+            ")."
+          ]
+        },
+        {
+          "parts": [
+            "With these words—quoting the words of Christ in",
+            {
+              "style": "CROSS_REF",
+              "text": "Luke 22:19, 20",
+              "ref_id": "r339"
+            },
+            "—St. Paul instructs the Corinthians concerning the Eucharist, the giving of thanks. Some two thousand years after Jesus gave Himself “for the life of the world” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Jn 6:51",
+              "ref_id": "r340"
+            },
+            "), there are in Christendom at least three different interpretations of His words."
+          ]
+        },
+        {
+          "parts": [
+            "For the first thousand years of Christian history, when the Church was visibly one and undivided, the holy gifts of the Body and Blood of Christ were received as just that: His Body and Blood. The Church confessed this was a mystery: The bread is truly His Body, that which is in the cup is truly His Blood, but one cannot say",
+            {
+              "style": "ITALIC",
+              "text": "how "
+            },
+            "they become so."
+          ]
+        },
+        {
+          "parts": [
+            "The eleventh and twelfth centuries brought on the scholastic era, the Age of Reason in the West. The Roman Church, which had become separated from the Orthodox Church in 1054, was pressed by the rationalists to define",
+            {
+              "style": "ITALIC",
+              "text": "how "
+            },
+            "the transformation occurs. They answered with the word",
+            {
+              "style": "ITALIC",
+              "text": "transubstantiation, "
+            },
+            "meaning a change of substance. The elements are no longer bread and wine; they are physically changed into flesh and blood. The sacrament, which only faith can comprehend, was subjected to a philosophical definition. This second view was unknown in the ancient Church."
+          ]
+        },
+        {
+          "parts": [
+            "Not surprisingly, one of the points of disagreement between Rome and the sixteenth-century reformers was this issue of transubstantiation. Unable to accept this explanation of the sacrament, the radical reformers, who were rationalists themselves, took up the opposite point of view: the gifts are nothing but bread and wine, period. They only represent Christ’s Body and Blood; they have no spiritual reality. This third, symbol-only view helps explains the infrequency with which some Protestants partake of the Eucharist."
+          ]
+        },
+        {
+          "parts": [
+            "What do the Scriptures teach concerning the Eucharist?"
+          ]
+        },
+        {
+          "parts": [
+            "1 Jesus said, “This",
+            {
+              "style": "ITALIC",
+              "text": "is "
+            },
+            "My body . . . this",
+            {
+              "style": "ITALIC",
+              "text": "is "
+            },
+            "My blood” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Lk 22:19, 20",
+              "ref_id": "r341"
+            },
+            "). He never says these gifts merely symbolize His Body and Blood. Critics have charged that Jesus also said of Himself, “I am the door” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Jn 10:7",
+              "ref_id": "r342"
+            },
+            "), and He certainly is not a seven-foot wooden plank. The flaw in that argument is obvious: at no time has the Church ever believed He was a literal door. But she has always believed the consecrated gifts of bread and wine are truly His Body and Blood."
+          ]
+        },
+        {
+          "parts": [
+            "2 In the New Testament, those who receive Christ’s Body and Blood unworthily are said to bring condemnation upon themselves. “For this reason many",
+            {
+              "style": "ITALIC",
+              "text": "are "
+            },
+            "weak and sick among you, and many sleep” (literally, “are dead”; 1Co 11:30 ). A mere symbol, a quarterly reminder, could hardly have the power to cause sickness and death!"
+          ]
+        },
+        {
+          "parts": [
+            "3 Historically, from New Testament days on, the central act of worship, the very apex of spiritual sacrifice, took place “on the first day of the week, when the disciples came together to break bread” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Acts 20:7",
+              "ref_id": "r343"
+            },
+            "). The Eucharist has always been that supreme act of thanksgiving and praise to God in His Church."
+          ]
+        }
+      ]
+    }
+  ]
+}

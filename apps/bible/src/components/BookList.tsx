@@ -18,9 +18,10 @@ export function BookList() {
     );
   }
 
-  // Group books by testament (Old Testament: first 39 books, New Testament: rest)
-  const oldTestament = bibleData.books.slice(0, 39);
-  const newTestament = bibleData.books.slice(39);
+  // Group books by testament (Old Testament: first 51 books, New Testament: rest)
+  // NKJV includes deuterocanonical books, so OT has 51 books (Genesis through Malachi)
+  const oldTestament = bibleData.books.slice(0, 51);
+  const newTestament = bibleData.books.slice(51);
 
   console.log('[BookList] Total books:', bibleData.books.length);
   console.log('[BookList] Old Testament books:', oldTestament.length);
@@ -100,8 +101,8 @@ export function BookList() {
                     console.log('[BookList] New Testament book clicked');
                     console.log('[BookList] Book name:', book.en_name);
                     console.log('[BookList] Index in newTestament array:', index);
-                    console.log('[BookList] Passing to navigateToBook:', 39 + index);
-                    navigateToBook(39 + index);
+                    console.log('[BookList] Passing to navigateToBook:', 51 + index);
+                    navigateToBook(51 + index);
                   }}
                 >
                   <Row align="center" justify="between" spacing="md" className="p-4">

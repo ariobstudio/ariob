@@ -4,21 +4,32 @@ import { bibleService } from '../services/bible-service';
 import { Button, Card, Column, Row, Input, Icon } from '@ariob/ui';
 import { useTheme } from '@ariob/ui';
 
+interface SearchResult {
+  bookName: string;
+  bookIndex: number;
+  chapterNum: number;
+  chapterIndex: number;
+  verseNum: number;
+  text: string;
+}
+
+interface GroupedResults {
+  [bookChapter: string]: {
+    bookName: string;
+    bookIndex: number;
+    chapterNum: number;
+    chapterIndex: number;
+    results: SearchResult[];
+  };
+}
+
 export function SearchView() {
   const { goBack, navigateToVerse, bibleData } = useBibleStore();
   const { withTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<
-    Array<{
-      bookName: string;
-      bookIndex: number;
-      chapterNum: number;
-      chapterIndex: number;
-      verseNum: number;
-      text: string;
-    }>
-  >([]);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
 
   const handleSearch = () => {
     console.log('[SearchView] handleSearch called');
@@ -44,7 +55,7 @@ export function SearchView() {
     setIsSearching(false);
   };
 
-  const handleResultClick = (result: typeof searchResults[0]) => {
+  const handleResultClick = (result: SearchResult) => {
     console.log('[SearchView] handleResultClick called');
     console.log('[SearchView] Navigating to verse:', {
       bookIndex: result.bookIndex,
@@ -53,6 +64,38 @@ export function SearchView() {
       bookName: result.bookName
     });
     navigateToVerse(result.bookIndex, result.chapterIndex, result.verseNum);
+  };
+
+  // Group results by book and chapter
+  const groupedResults: GroupedResults = searchResults.reduce((acc, result) => {
+    const key = `${result.bookName}-${result.chapterNum}`;
+    if (!acc[key]) {
+      acc[key] = {
+        bookName: result.bookName,
+        bookIndex: result.bookIndex,
+        chapterNum: result.chapterNum,
+        chapterIndex: result.chapterIndex,
+        results: []
+      };
+    }
+    acc[key].results.push(result);
+    return acc;
+  }, {} as GroupedResults);
+
+  const toggleGroup = (key: string) => {
+    setExpandedGroups((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+    );
+  };
+
+  // Highlight search term in text
+  const highlightText = (text: string, query: string) => {
+    if (!query.trim()) return text;
+
+    const regex = new RegExp(`(${query})`, 'gi');
+    const parts = text.split(regex);
+
+    return parts;
   };
 
   return (
@@ -100,27 +143,80 @@ export function SearchView() {
           </Column>
         ) : searchResults.length > 0 ? (
           <Column width="full" spacing="sm" className="p-4">
-            {searchResults.map((result, index) => (
-              <Card
-                key={index}
-                className="active:scale-95 transition-transform shadow-md"
-                bindtap={() => handleResultClick(result)}
-              >
-                <Column spacing="sm" className="p-4">
-                  <Row align="center" justify="between">
-                    <text className="text-sm font-semibold text-foreground">
-                      {result.bookName} {result.chapterNum}:{result.verseNum}
-                    </text>
-                    <Icon name="chevron-right" className="text-muted-foreground" />
-                  </Row>
-                  <text className="text-sm text-foreground leading-relaxed">
-                    {result.text.length > 200
-                      ? `${result.text.substring(0, 200)}...`
-                      : result.text}
-                  </text>
-                </Column>
-              </Card>
-            ))}
+            {Object.entries(groupedResults).map(([key, group]) => {
+              const isExpanded = expandedGroups.includes(key);
+
+              return (
+                <Card key={key} className="overflow-hidden">
+                  {/* Group Header */}
+                  <view
+                    className="cursor-pointer active:bg-muted/50 transition-colors"
+                    bindtap={() => toggleGroup(key)}
+                  >
+                    <Row align="center" justify="between" className="p-4">
+                      <Column spacing="xs">
+                        <text className="text-sm font-bold text-foreground">
+                          {group.bookName} {group.chapterNum}
+                        </text>
+                        <text className="text-xs text-muted-foreground">
+                          {group.results.length} {group.results.length === 1 ? 'verse' : 'verses'}
+                        </text>
+                      </Column>
+                      <Icon
+                        name={isExpanded ? 'chevron-up' : 'chevron-down'}
+                        className="text-muted-foreground"
+                      />
+                    </Row>
+                  </view>
+
+                  {/* Group Results */}
+                  {isExpanded && (
+                    <view className="border-t border-border/50">
+                      <Column spacing="xs" className="p-2">
+                        {group.results.map((result, idx) => {
+                          const textParts = highlightText(result.text, searchQuery);
+
+                          return (
+                            <view
+                              key={idx}
+                              className="p-3 rounded-lg active:bg-muted/30 transition-colors cursor-pointer"
+                              bindtap={() => handleResultClick(result)}
+                            >
+                              <Column spacing="sm">
+                                <Row align="center" justify="between">
+                                  <text className="text-xs font-semibold text-primary">
+                                    Verse {result.verseNum}
+                                  </text>
+                                  <Icon name="chevron-right" className="text-muted-foreground text-xs" />
+                                </Row>
+                                <view className="flex flex-row flex-wrap">
+                                  {textParts.map((part, partIdx) => (
+                                    <text
+                                      key={partIdx}
+                                      className={
+                                        part.toLowerCase() === searchQuery.toLowerCase()
+                                          ? 'text-sm text-foreground bg-primary/20 font-semibold'
+                                          : 'text-sm text-foreground'
+                                      }
+                                    >
+                                      {part.length > 150 && partIdx === 0
+                                        ? `...${part.substring(part.length - 150)}`
+                                        : part.length > 150
+                                        ? `${part.substring(0, 150)}...`
+                                        : part}
+                                    </text>
+                                  ))}
+                                </view>
+                              </Column>
+                            </view>
+                          );
+                        })}
+                      </Column>
+                    </view>
+                  )}
+                </Card>
+              );
+            })}
           </Column>
         ) : searchQuery && !isSearching ? (
           <Column align="center" justify="center" className="p-8">

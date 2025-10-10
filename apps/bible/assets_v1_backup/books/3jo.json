@@ -1,0 +1,196 @@
+{
+  "en_name": "3 John",
+  "local_name": "3 John",
+  "abr": "3jo",
+  "ch_count": 1,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 14,
+      "verses": [
+        {
+          "num": 1,
+          "text": "The Elder,",
+          "parts": [
+            "The Elder,"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "Beloved, I pray that you may prosper in all things and be in health, just as your soul prospers.For I rejoiced greatly when brethren came and testified of the truththat isin you, just as you walk in the truth.I have no greater joy than to hear that my children walk in truth.a",
+          "parts": [
+            "Beloved, I pray that you may prosper in all things and be in health, just as your soul prospers.For I rejoiced greatly when brethren came and testified of the truth",
+            {
+              "italic": "that is"
+            },
+            "in you, just as you walk in the truth.",
+            {
+              "footnote": "f6032"
+            },
+            "I have no greater joy than to hear that my children walk in truth.",
+            {
+              "text": "a",
+              "cross_ref": "r266"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For I rejoiced greatly when brethren came and testified of the truththat isin you, just as you walk in the truth.",
+          "parts": [
+            "For I rejoiced greatly when brethren came and testified of the truth",
+            {
+              "italic": "that is"
+            },
+            "in you, just as you walk in the truth.",
+            {
+              "footnote": "f6032"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "I have no greater joy than to hear that my children walk in truth.a",
+          "parts": [
+            "I have no greater joy than to hear that my children walk in truth.",
+            {
+              "text": "a",
+              "cross_ref": "r267"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Beloved, you do faithfully whatever you do for the brethren andafor strangers,who have borne witness of your love before the church.Ifyou send them forward on their journey in a manner worthy of God, you will do well, because they went forth for His name's sake, taking nothing from the Gentiles.We therefore ought to receiveasuch, that we may become fellow workers for the truth.",
+          "parts": [
+            "Beloved, you do faithfully whatever you do for the brethren and",
+            {
+              "text": "a",
+              "cross_ref": "r268"
+            },
+            "for strangers,",
+            {
+              "footnote": "f6033"
+            },
+            "who have borne witness of your love before the church.",
+            {
+              "italic": "If"
+            },
+            "you send them forward on their journey in a manner worthy of God, you will do well, because they went forth for His name's sake, taking nothing from the Gentiles.",
+            {
+              "footnote": "f6034"
+            },
+            "We therefore ought to receive",
+            {
+              "text": "a",
+              "cross_ref": "r269"
+            },
+            "such, that we may become fellow workers for the truth.",
+            {
+              "footnote": "f6035"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "who have borne witness of your love before the church.",
+          "parts": [
+            "who have borne witness of your love before the church."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "because they went forth for His name's sake, taking nothing from the Gentiles.",
+          "parts": [
+            "because they went forth for His name's sake, taking nothing from the Gentiles.",
+            {
+              "footnote": "f6034"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "We therefore ought to receiveasuch, that we may become fellow workers for the truth.",
+          "parts": [
+            "We therefore ought to receive",
+            {
+              "text": "a",
+              "cross_ref": "r270"
+            },
+            "such, that we may become fellow workers for the truth.",
+            {
+              "footnote": "f6035"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "I wrote to the church, but Diotrephes, who loves to have the preeminence among them, does not receive us.Therefore, if I come, I will call to mind his deeds which he does, prating against us with malicious words. And not content with that, he himself does not receive the brethren, and forbids those who wish to, puttingthemout of the church.",
+          "parts": [
+            "I wrote to the church, but Diotrephes, who loves to have the preeminence among them, does not receive us.",
+            {
+              "footnote": "f6036"
+            },
+            "Therefore, if I come, I will call to mind his deeds which he does, prating against us with malicious words. And not content with that, he himself does not receive the brethren, and forbids those who wish to, putting",
+            {
+              "italic": "them"
+            },
+            "out of the church."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Therefore, if I come, I will call to mind his deeds which he does, prating against us with malicious words.",
+          "parts": [
+            "Therefore, if I come, I will call to mind his deeds which he does, prating against us with malicious words."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Beloved, do not imitate what is evil, but what is good. He who does good is of God, butahe who does evil has not seen God.",
+          "parts": [
+            "Beloved, do not imitate what is evil, but what is good. He who does good is of God, but",
+            {
+              "text": "a",
+              "cross_ref": "r271"
+            },
+            "he who does evil has not seen God."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Demetrius has agoodtestimony from all, and from the truth itself. And we also bear witness, and you know that our testimony is true.",
+          "parts": [
+            "Demetrius has a",
+            {
+              "italic": "good"
+            },
+            "testimony from all, and from the truth itself. And we also bear witness, and you know that our testimony is true.",
+            {
+              "footnote": "f6037"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "I had many things to write, but I do not wish to write to you with pen and ink; but I hope to see you shortly, and we shall speak face to face.",
+          "parts": [
+            "I had many things to write, but I do not wish to write to you with pen and ink; but I hope to see you shortly, and we shall speak face to face."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "but I hope to see you shortly, and we shall speak face to face.",
+          "parts": [
+            "but I hope to see you shortly, and we shall speak face to face."
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting to Gaius",
+        "Commendation of Gaius",
+        "Condemnation of Diotrephes"
+      ]
+    }
+  ]
+}

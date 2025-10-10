@@ -1,3 +1,4 @@
+import { useState } from '@lynx-js/react';
 import { useBibleStore } from '../store/bible-store';
 import { Button, Card, Column, Row, Icon } from '@ariob/ui';
 import { useTheme } from '@ariob/ui';
@@ -5,6 +6,20 @@ import { useTheme } from '@ariob/ui';
 export function ChapterList() {
   const { bibleData, currentReference, navigateToChapter, goBack } = useBibleStore();
   const { withTheme } = useTheme();
+  const [expandedMetadata, setExpandedMetadata] = useState<number[]>([]);
+  const [expandedLessons, setExpandedLessons] = useState<number[]>([]);
+
+  const toggleMetadata = (index: number) => {
+    setExpandedMetadata((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
+  };
+
+  const toggleLesson = (index: number) => {
+    setExpandedLessons((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
+  };
 
   if (!bibleData) return null;
 
@@ -32,93 +47,162 @@ export function ChapterList() {
 
       {/* Book Info (if available) */}
       {book.metadata && book.metadata.length > 0 && (
-        <view className="px-4 py-3 border-b border-border bg-muted/30">
-          <Column spacing="md">
+        <scroll-view scroll-y className="max-h-80 border-b border-border">
+          <Column spacing="sm" className="p-4">
             {book.metadata.map((info, index) => {
               // Skip rendering if no content
               if (!info.content_parts && !info.list) return null;
+              const isExpanded = expandedMetadata.includes(index);
 
               return (
-                <view key={index}>
-                  <text className="text-sm font-bold text-foreground mb-1">
-                    {info.title}
-                  </text>
-                  {info.content_parts && (
-                    <text className="text-sm text-muted-foreground leading-relaxed">
-                      {info.content_parts
-                        .map((part) => part.text.replace(/^[—-]\s*/, ''))
-                        .join('')
-                        .trim()}
-                    </text>
+                <Card key={index} className="overflow-hidden">
+                  <view
+                    className="cursor-pointer active:bg-muted/50 transition-colors"
+                    bindtap={() => toggleMetadata(index)}
+                  >
+                    <Row align="center" justify="between" className="p-4">
+                      <text className="text-sm font-bold text-foreground flex-1">
+                        {info.title}
+                      </text>
+                      <Icon
+                        name={isExpanded ? 'chevron-up' : 'chevron-down'}
+                        className="text-muted-foreground"
+                      />
+                    </Row>
+                  </view>
+                  {isExpanded && (
+                    <view className="px-4 pb-4 border-t border-border/50">
+                      <Column spacing="sm" className="pt-3">
+                        {info.content_parts && (
+                          <text className="text-sm text-muted-foreground leading-relaxed">
+                            {info.content_parts
+                              .map((part) => part.text.replace(/^[—-]\s*/, ''))
+                              .join('')
+                              .trim()}
+                          </text>
+                        )}
+                        {info.list && (
+                          <Column spacing="xs" className="mt-2">
+                            {info.list.map((item, itemIndex) => (
+                              <text key={itemIndex} className="text-sm text-muted-foreground pl-4">
+                                • {item.map((part) => part.text.replace(/^[—-]\s*/, '')).join('').trim()}
+                              </text>
+                            ))}
+                          </Column>
+                        )}
+                      </Column>
+                    </view>
                   )}
-                  {info.list && (
-                    <Column spacing="xs" className="mt-2">
-                      {info.list.map((item, itemIndex) => (
-                        <text key={itemIndex} className="text-sm text-muted-foreground pl-4">
-                          • {item.map((part) => part.text.replace(/^[—-]\s*/, '')).join('').trim()}
-                        </text>
-                      ))}
-                    </Column>
-                  )}
-                </view>
+                </Card>
               );
             })}
           </Column>
-        </view>
+        </scroll-view>
       )}
 
       {/* Lessons/Commentary (if available) */}
       {book.lessons && book.lessons.length > 0 && (
-        <view className="px-4 py-3 border-b border-border bg-card">
-          <Column spacing="lg">
-            <text className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+        <scroll-view scroll-y className="max-h-96 border-b border-border">
+          <Column spacing="sm" className="p-4">
+            <text className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-2 mb-1">
               Study & Commentary
             </text>
-            {book.lessons.map((lesson, lessonIndex) => (
-              <Column key={lessonIndex} spacing="sm">
-                <text className="text-base font-bold text-foreground">
-                  {lesson.title}
-                </text>
-                {lesson.entries.map((entry, entryIndex) => (
-                  <view key={entryIndex} className="flex flex-row flex-wrap gap-1">
-                    {entry.parts.map((part, partIndex) => {
-                      if (typeof part === 'string') {
-                        return (
-                          <text key={partIndex} className="text-sm text-muted-foreground leading-relaxed">
-                            {part}
-                          </text>
-                        );
-                      }
-                      if ('italic' in part) {
-                        return (
-                          <text key={partIndex} className="text-sm text-muted-foreground leading-relaxed italic">
-                            {part.italic}
-                          </text>
-                        );
-                      }
-                      if ('cross_ref' in part) {
-                        return (
-                          <text key={partIndex} className="text-sm text-primary underline">
-                            {part.text}
-                          </text>
-                        );
-                      }
-                      return null;
-                    })}
+            {book.lessons.map((lesson, lessonIndex) => {
+              const isExpanded = expandedLessons.includes(lessonIndex);
+
+              return (
+                <Card key={lessonIndex} className="overflow-hidden">
+                  <view
+                    className="cursor-pointer active:bg-muted/50 transition-colors"
+                    bindtap={() => toggleLesson(lessonIndex)}
+                  >
+                    <Row align="center" justify="between" className="p-4">
+                      <text className="text-sm font-bold text-foreground flex-1">
+                        {lesson.title}
+                      </text>
+                      <Icon
+                        name={isExpanded ? 'chevron-up' : 'chevron-down'}
+                        className="text-muted-foreground"
+                      />
+                    </Row>
                   </view>
-                ))}
-              </Column>
-            ))}
+                  {isExpanded && (
+                    <view className="px-4 pb-4 border-t border-border/50">
+                      <Column spacing="md" className="pt-3">
+                        {lesson.entries.map((entry, entryIndex) => {
+                          // Group consecutive string parts to avoid single-letter splits
+                          const groupedParts: Array<{ type: 'text' | 'italic' | 'cross_ref', content: string }> = [];
+                          let textBuffer = '';
+
+                          entry.parts.forEach((part, idx) => {
+                            if (typeof part === 'string') {
+                              textBuffer += part;
+                            } else {
+                              // Flush text buffer if we have one
+                              if (textBuffer) {
+                                groupedParts.push({ type: 'text', content: textBuffer });
+                                textBuffer = '';
+                              }
+
+                              if ('italic' in part) {
+                                groupedParts.push({ type: 'italic', content: part.italic });
+                              } else if ('cross_ref' in part) {
+                                groupedParts.push({ type: 'cross_ref', content: part.text });
+                              }
+                            }
+
+                            // Flush remaining text at the end
+                            if (idx === entry.parts.length - 1 && textBuffer) {
+                              groupedParts.push({ type: 'text', content: textBuffer });
+                            }
+                          });
+
+                          return (
+                            <view key={entryIndex} className="flex flex-row flex-wrap gap-1">
+                              {groupedParts.map((part, partIndex) => {
+                                if (part.type === 'text') {
+                                  return (
+                                    <text key={partIndex} className="text-sm text-muted-foreground leading-relaxed">
+                                      {part.content}
+                                    </text>
+                                  );
+                                }
+                                if (part.type === 'italic') {
+                                  return (
+                                    <text key={partIndex} className="text-sm text-muted-foreground leading-relaxed italic">
+                                      {part.content}
+                                    </text>
+                                  );
+                                }
+                                if (part.type === 'cross_ref') {
+                                  return (
+                                    <text key={partIndex} className="text-sm text-primary underline">
+                                      {part.content}
+                                    </text>
+                                  );
+                                }
+                                return null;
+                              })}
+                            </view>
+                          );
+                        })}
+                      </Column>
+                    </view>
+                  )}
+                </Card>
+              );
+            })}
           </Column>
-        </view>
+        </scroll-view>
       )}
 
       {/* Chapters Grid */}
       <scroll-view scroll-y className="flex-1 w-full">
-        <view className="p-4 flex flex-row flex-wrap gap-2">
+        <view className="p-4 flex flex-row flex-wrap justify-center gap-3">
             {chapters.map((chapterNum) => {
               const chapterIndex = chapterNum - 1;
               const chapter = book.chapters[chapterIndex];
+              const verseCount = chapter?.verses_count || chapter?.verses?.length || 0;
 
               return (
                 <Card
@@ -130,14 +214,16 @@ export function ChapterList() {
                     align="center"
                     justify="center"
                     spacing="xs"
-                    className="w-20 h-20 p-4"
+                    className="w-16 h-16 p-2"
                   >
-                    <text className="text-2xl font-bold text-foreground">
+                    <text className="text-xl font-bold text-foreground">
                       {chapterNum}
                     </text>
-                    <text className="text-[10px] text-muted-foreground">
-                      {chapter?.verses_count || 0} verses
-                    </text>
+                    {verseCount > 0 && (
+                      <text className="text-xs text-muted-foreground text-center">
+                        {verseCount}
+                      </text>
+                    )}
                   </Column>
                 </Card>
               );

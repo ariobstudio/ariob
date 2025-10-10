@@ -1,0 +1,369 @@
+{
+  "en_name": "Habakkuk",
+  "local_name": "Habakkuk",
+  "abr": "hab",
+  "ch_count": 3,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 17,
+      "verses": [
+        {
+          "num": 1,
+          "text": "The burden which the prophet Habakkuk saw.",
+          "parts": [
+            "The burden which the prophet Habakkuk saw.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3220"
+            }
+          ]
+        },
+        {
+          "num": 2,
+          "text": "How long, O Lord, shall I cry out to You, and You will not hear me?",
+          "parts": [
+            "How long, O Lord, shall I cry out to You, and You will not hear me?"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Why have You shown me hardship and suffering, to look upon misery and ungodliness?",
+          "parts": [
+            "Why have You shown me hardship and suffering, to look upon misery and ungodliness?"
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Therefore the law is disregarded and justice is done ineffectually, for the ungodly oppress the righteous; therefore justice shall go forth perverted.",
+          "parts": [
+            "Therefore the law is disregarded and justice is done ineffectually, for the ungodly oppress the righteous; therefore justice shall go forth perverted."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "“Behold, you scoffers, take notice; look and be amazed and be gone, for I am working a work in your days which you would not believe even if someone told it to you. For behold, I am raising up against you the Chaldeans, a bitter and hasty nation that marches through the breadth of the earth to take possession of dwellings that are not theirs.",
+          "parts": [
+            "“Behold, you scoffers, take notice; look and be amazed and be gone, for I am working a work in your days which you would not believe even if someone told it to you.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3222"
+            },
+            "For behold, I am raising up against you the Chaldeans, a bitter and hasty nation that marches through the breadth of the earth to take possession of dwellings that are not theirs."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "For behold, I am raising up against you the Chaldeans, a bitter and hasty nation that marches through the breadth of the earth to take possession of dwellings that are not theirs.",
+          "parts": [
+            "For behold, I am raising up against you the Chaldeans, a bitter and hasty nation that marches through the breadth of the earth to take possession of dwellings that are not theirs."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "He is terrible and awesome.",
+          "parts": [
+            "He is terrible and awesome."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Their horses bound more swiftly than leopards, and they are more fierce than the wolves of Arabia.",
+          "parts": [
+            "Their horses bound more swiftly than leopards, and they are more fierce than the wolves of Arabia."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Destruction will come upon the ungodly, opposing their advances from the opposite side, and like sand will he gather the captivity.",
+          "parts": [
+            "Destruction will come upon the ungodly, opposing their advances from the opposite side, and like sand will he gather the captivity.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3224"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "And he will revel in kings, and princes will be his plaything; he shall mock every fortified city and put up a siege mound and capture it.",
+          "parts": [
+            "And he will revel in kings, and princes will be his plaything; he shall mock every fortified city and put up a siege mound and capture it."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Then he will change his spirit, and he will pass through and he will make an atonement saying, ‘This strength is from my god.’ ”",
+          "parts": [
+            "Then he will change his spirit, and he will pass through and he will make an atonement saying, ‘This strength is from my god.’ ”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3225"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Are You not from everlasting, O Lord God, my Holy One?",
+          "parts": [
+            "Are You not from everlasting, O Lord God, my Holy One?"
+          ]
+        },
+        {
+          "num": 13,
+          "text": "His eye is too pure to see evil, and You are not able to look upon affliction.",
+          "parts": [
+            "His eye is too pure to see evil, and You are not able to look upon affliction."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "And will you make men to be like the fish of the sea and as the reptiles with no one leading them?",
+          "parts": [
+            "And will you make men to be like the fish of the sea and as the reptiles with no one leading them?",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3227"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "He has brought up destruction with a fishhook, drawn it with his casting net, and gathered it in his dragnets.",
+          "parts": [
+            "He has brought up destruction with a fishhook, drawn it with his casting net, and gathered it in his dragnets."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "On account of this he will sacrifice to his dragnet and burn incense to his casting net.",
+          "parts": [
+            "On account of this he will sacrifice to his dragnet and burn incense to his casting net."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Therefore, he will throw out his casting net, and he will not spare to kill all the nations.",
+          "parts": [
+            "Therefore, he will throw out his casting net, and he will not spare to kill all the nations."
+          ]
+        }
+      ],
+      "headers": [
+        "The Prophet Complains of Injustice",
+        "The Lord Answers",
+        "A Further Complaint of Injustice",
+        "The Lord Answers the Prophet's Complaints",
+        "The Prophet's Prayer"
+      ]
+    },
+    {
+      "chapter_num": 2,
+      "verses_count": 20,
+      "verses": [
+        {
+          "num": 1,
+          "text": "I will stand on my watch, mounted upon the rock, and see what He shall say to me, and what might I answer when I am reproved?",
+          "parts": [
+            "I will stand on my watch, mounted upon the rock, and see what He shall say to me, and what might I answer when I am reproved?",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3228"
+            }
+          ]
+        },
+        {
+          "num": 2,
+          "text": "And the Lord answered me and said, “Write the vision distinctly upon a tablet, that he who reads it may flee. For the vision is yet for an appointed time, and it will come up at the end, and it will not be in vain; if he should tarry, wait for him, for he will surely come, and he will not tarry.",
+          "parts": [
+            "And the Lord answered me and said, “Write the vision distinctly upon a tablet, that he who reads it may flee.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3229"
+            },
+            "For the vision is yet for an appointed time, and it will come up at the end, and it will not be in vain; if he should tarry, wait for him, for he will surely come, and he will not tarry.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3230"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For the vision is yet for an appointed time, and it will come up at the end, and it will not be in vain; if he should tarry, wait for him, for he will surely come, and he will not tarry.",
+          "parts": [
+            "For the vision is yet for an appointed time, and it will come up at the end, and it will not be in vain; if he should tarry, wait for him, for he will surely come, and he will not tarry.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3230"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "“If any man should shrink back, My soul will not be well pleased in him; but the righteous shall live by My faith. But the one who is drunk and the scoffer, the man who boasts, shall accomplish nothing; he widened his soul as the grave, and as death he is never satisfied, and he will gather to himself all the nations and will take to himself all the peoples. Shall not all these take up a parable against him and a proverb for his history?",
+          "parts": [
+            "“If any man should shrink back, My soul will not be well pleased in him; but the righteous shall live by My faith.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3231"
+            },
+            "But the one who is drunk and the scoffer, the man who boasts, shall accomplish nothing; he widened his soul as the grave, and as death he is never satisfied, and he will gather to himself all the nations and will take to himself all the peoples.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3232"
+            },
+            "Shall not all these take up a parable against him and a proverb for his history?"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "But the one who is drunk and the scoffer, the man who boasts, shall accomplish nothing; he widened his soul as the grave, and as death he is never satisfied, and he will gather to himself all the nations and will take to himself all the peoples.",
+          "parts": [
+            "But the one who is drunk and the scoffer, the man who boasts, shall accomplish nothing; he widened his soul as the grave, and as death he is never satisfied, and he will gather to himself all the nations and will take to himself all the peoples.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3232"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Shall not all these take up a parable against him and a proverb for his history?",
+          "parts": [
+            "Shall not all these take up a parable against him and a proverb for his history?"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For suddenly those biting at him shall rise up, and they who plot against you will sober up, and you shall be as plunder to them.",
+          "parts": [
+            "For suddenly those biting at him shall rise up, and they who plot against you will sober up, and you shall be as plunder to them."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Because you have plundered many nations, all the people who remain shall plunder you, because of the men's blood and the sins of the land, and of the city and all who dwell in it.",
+          "parts": [
+            "Because you have plundered many nations, all the people who remain shall plunder you, because of the men's blood and the sins of the land, and of the city and all who dwell in it."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "“Woe to him who takes advantage of evil gain for his own house, so that he may set his nest on high, that he may be delivered from the hand of evil.",
+          "parts": [
+            "“Woe to him who takes advantage of evil gain for his own house, so that he may set his nest on high, that he may be delivered from the hand of evil."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "You counseled shame to your house, and you wiped out many peoples, and your soul sinned.",
+          "parts": [
+            "You counseled shame to your house, and you wiped out many peoples, and your soul sinned.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3234"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Therefore, the stones will cry out from the wall, and the beetle will speak out of wood.",
+          "parts": [
+            "Therefore, the stones will cry out from the wall, and the beetle will speak out of wood.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3235"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "“Woe to him who builds a city with bloodshed, who establishes a city by wrongdoing.",
+          "parts": [
+            "“Woe to him who builds a city with bloodshed, who establishes a city by wrongdoing."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Are not these things from the Lord Almighty?",
+          "parts": [
+            "Are not these things from the Lord Almighty?"
+          ]
+        },
+        {
+          "num": 14,
+          "text": "For the earth shall be filled with the knowledge of the glory of the Lord; it shall cover them as water.",
+          "parts": [
+            "For the earth shall be filled with the knowledge of the glory of the Lord; it shall cover them as water.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3236"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "“Woe to him who gives clouded and intoxicating drink to his neighbor, that he might look upon his private parts.",
+          "parts": [
+            "“Woe to him who gives clouded and intoxicating drink to his neighbor, that he might look upon his private parts."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Drink to the fullness of the dishonor of your glory.",
+          "parts": [
+            "Drink to the fullness of the dishonor of your glory."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For the ungodliness of Lebanon shall cover you, and the distress of wild beasts will terrify you, because of the blood of men and the ungodliness of the land and all who dwell in it.",
+          "parts": [
+            "For the ungodliness of Lebanon shall cover you, and the distress of wild beasts will terrify you, because of the blood of men and the ungodliness of the land and all who dwell in it."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "“What benefit is a graven image, since men carve it?",
+          "parts": [
+            "“What benefit is a graven image, since men carve it?"
+          ]
+        },
+        {
+          "num": 19,
+          "text": "“Woe to him saying to the wood, ‘Awake and rise up,’ and to the dumb stone, ‘Be exalted.’ It is a merely a fantasy, being but a hammered piece of gold and silver.",
+          "parts": [
+            "“Woe to him saying to the wood, ‘Awake and rise up,’ and to the dumb stone, ‘Be exalted.’ It is a merely a fantasy, being but a hammered piece of gold and silver."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "But the Lord is in His holy temple; let all the earth be reverent before Him.”",
+          "parts": [
+            "But the Lord is in His holy temple; let all the earth be reverent before Him.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3238"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 3,
+      "verses_count": 1,
+      "verses": [
+        {
+          "num": 1,
+          "text": "The prayer of the prophet Habakkuk, with an ode.",
+          "parts": [
+            "The prayer of the prophet Habakkuk, with an ode."
+          ]
+        }
+      ],
+      "headers": []
+    }
+  ]
+}

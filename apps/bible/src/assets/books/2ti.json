@@ -1,0 +1,840 @@
+{
+  "en_name": "2 Timothy",
+  "local_name": "2 Timothy",
+  "abr": "2ti",
+  "ch_count": 4,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 18,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Paul, an apostle of Jesus Christ a by the will of God, according to the promise of life which is in Christ Jesus,",
+          "parts": [
+            "Paul, an apostle of Jesus Christ",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1561"
+            },
+            "by the will of God, according to the promise of life which is in Christ Jesus,"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "To Timothy, a beloved son:",
+          "parts": [
+            "To Timothy, a beloved son:"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "I thank God, whom I serve with a pure conscience, as my forefathers did, as without ceasing I remember you in my prayers night and day, greatly desiring to see you, being mindful of your tears, that I may be filled with joy, when I call to remembrance the genuine faith that is in you, which dwelt first in your grandmother Lois and your mother Eunice, and I am persuaded is in you also.",
+          "parts": [
+            "I thank God, whom I serve with a pure conscience, as",
+            {
+              "style": "ITALIC",
+              "text": "my"
+            },
+            "forefathers",
+            {
+              "style": "ITALIC",
+              "text": "did,"
+            },
+            "as without ceasing I remember you in my prayers night and day, greatly desiring to see you, being mindful of your tears, that I may be filled with joy, when I call to remembrance the genuine faith that is in you, which dwelt first in your grandmother Lois and your mother Eunice, and I am persuaded is in you also."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "greatly desiring to see you, being mindful of your tears, that I may be filled with joy,",
+          "parts": [
+            "greatly desiring to see you, being mindful of your tears, that I may be filled with joy,"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "when I call to remembrance the genuine faith that is in you, which dwelt first in your grandmother Lois and your mother Eunice, and I am persuaded is in you also.",
+          "parts": [
+            "when I call to remembrance the genuine faith that is in you, which dwelt first in your grandmother Lois and your mother Eunice, and I am persuaded is in you also."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Therefore I remind you to stir up the gift of God which is in you through the laying on of my hands. For God has not given us a spirit of fear, but of power and of love and of a sound mind.",
+          "parts": [
+            "Therefore I remind you to stir up the gift of God which is in you through the laying on of my hands.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5751"
+            },
+            "For God has not given us a spirit of fear, but of power and of love and of a sound mind.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5752"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For God has not given us a spirit of fear, but of power and of love and of a sound mind.",
+          "parts": [
+            "For God has not given us a spirit of fear, but of power and of love and of a sound mind.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5752"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Therefore do not be ashamed of the testimony of our Lord, nor of me His prisoner, but share with me in the sufferings for the gospel according to the power of God, who has saved us and called us with a holy calling, not according to our works, but according to His own purpose and grace which was given to us in Christ Jesus before time began, but has now been revealed by the appearing of our Savior Jesus Christ, who has abolished death and brought life and immortality to light through the gospel, to which I was appointed a preacher, an apostle, and a teacher of the Gentiles. a For this reason I also suffer these things; nevertheless I am not ashamed, for I know whom I have believed and am persuaded that He is able to keep what I have committed to Him until that Day.",
+          "parts": [
+            "Therefore do not be ashamed of the testimony of our Lord, nor of me His prisoner, but share with me in the sufferings for the gospel according to the power of God, who has saved us and called",
+            {
+              "style": "ITALIC",
+              "text": "us"
+            },
+            "with a holy calling, not according to our works, but according to His own purpose and grace which was given to us in Christ Jesus before time began,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5753"
+            },
+            "but has now been revealed by the appearing of our Savior Jesus Christ,",
+            {
+              "style": "ITALIC",
+              "text": "who"
+            },
+            "has abolished death and brought life and immortality to light through the gospel,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5754"
+            },
+            "to which I was appointed a preacher, an apostle, and a teacher of the Gentiles.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1562"
+            },
+            "For this reason I also suffer these things; nevertheless I am not ashamed, for I know whom I have believed and am persuaded that He is able to keep what I have committed to Him until that Day."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "who has saved us and called us",
+          "parts": [
+            "who has saved us and called",
+            {
+              "style": "ITALIC",
+              "text": "us"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "but has now been revealed by the appearing of our Savior Jesus Christ, who",
+          "parts": [
+            "but has now been revealed by the appearing of our Savior Jesus Christ,",
+            {
+              "style": "ITALIC",
+              "text": "who"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "to which I was appointed a preacher, an apostle, and a teacher of the Gentiles. a",
+          "parts": [
+            "to which I was appointed a preacher, an apostle, and a teacher of the Gentiles.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1563"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "For this reason I also suffer these things; nevertheless I am not ashamed, for I know whom I have believed and am persuaded that He is able to keep what I have committed to Him until that Day.",
+          "parts": [
+            "For this reason I also suffer these things; nevertheless I am not ashamed, for I know whom I have believed and am persuaded that He is able to keep what I have committed to Him until that Day."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Hold fast the pattern of sound words which you have heard from me, in faith and love which are in Christ Jesus. That good thing which was committed to you, keep by the Holy Spirit who dwells in us.",
+          "parts": [
+            "Hold fast the pattern of sound words which you have heard from me, in faith and love which are in Christ Jesus.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5755"
+            },
+            "That good thing which was committed to you, keep by the Holy Spirit who dwells in us."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "That good thing which was committed to you, keep by the Holy Spirit who dwells in us.",
+          "parts": [
+            "That good thing which was committed to you, keep by the Holy Spirit who dwells in us."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "This you know, that all those in Asia have turned away from me, among whom are Phygellus and Hermogenes.",
+          "parts": [
+            "This you know, that all those in Asia have turned away from me, among whom are Phygellus and Hermogenes."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "The Lord grant mercy to the household of Onesiphorus, for he often refreshed me, and was not ashamed of my chain;",
+          "parts": [
+            "The Lord grant mercy to the household of Onesiphorus, for he often refreshed me, and was not ashamed of my chain;"
+          ]
+        },
+        {
+          "num": 17,
+          "text": "but when he arrived in Rome, he sought me out very zealously and found me.",
+          "parts": [
+            "but when he arrived in Rome, he sought me out very zealously and found",
+            {
+              "style": "ITALIC",
+              "text": "me."
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "The Lord grant to him that he may find mercy from the Lord in that Day—and you know very well how many ways he ministered to me",
+          "parts": [
+            "The Lord grant to him that he may find mercy from the Lord in that Day—and you know very well how many ways he ministered",
+            {
+              "style": "ITALIC",
+              "text": "to me"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting",
+        "Thanksgiving for Timothy",
+        "Timothy's Gift, the Power of God",
+        "Fidelity in Spite of Desertions",
+        "Transmitting the Faith"
+      ]
+    },
+    {
+      "chapter_num": 2,
+      "verses_count": 26,
+      "verses": [
+        {
+          "num": 1,
+          "text": "You therefore, my son, be strong in the grace that is in Christ Jesus. And the things that you have heard from me among many witnesses, commit these to faithful men who will be able to teach others also.",
+          "parts": [
+            "You therefore, my son, be strong in the grace that is in Christ Jesus.",
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx346"
+            },
+            "And the things that you have heard from me among many witnesses, commit these to faithful men who will be able to teach others also.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5757"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "You therefore must endure a hardship as a good soldier of Jesus Christ. No one engaged in warfare entangles himself with the affairs of this life, that he may please him who enlisted him as a soldier.",
+          "parts": [
+            "You therefore must endure",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1564"
+            },
+            "hardship as a good soldier of Jesus Christ.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5758"
+            },
+            "No one engaged in warfare entangles himself with the affairs of",
+            {
+              "style": "ITALIC",
+              "text": "this"
+            },
+            "life, that he may please him who enlisted him as a soldier."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "No one engaged in warfare entangles himself with the affairs of this",
+          "parts": [
+            "No one engaged in warfare entangles himself with the affairs of",
+            {
+              "style": "ITALIC",
+              "text": "this"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "And also if anyone competes in athletics, he is not crowned unless he competes according to the rules.",
+          "parts": [
+            "And also if anyone competes in athletics, he is not crowned unless he competes according to the rules."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "The hardworking farmer must be first to partake of the crops.",
+          "parts": [
+            "The hardworking farmer must be first to partake of the crops."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Consider what I say, and may a",
+          "parts": [
+            "Consider what I say, and may",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1565"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Remember that Jesus Christ, of the seed of David, was raised from the dead according to my gospel, for which I suffer trouble as an evildoer, even to the point of chains; but the word of God is not chained.",
+          "parts": [
+            "Remember that Jesus Christ, of the seed of David, was raised from the dead according to my gospel,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5759"
+            },
+            "for which I suffer trouble as an evildoer,",
+            {
+              "style": "ITALIC",
+              "text": "even"
+            },
+            "to the point of chains; but the word of God is not chained."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "for which I suffer trouble as an evildoer, even",
+          "parts": [
+            "for which I suffer trouble as an evildoer,",
+            {
+              "style": "ITALIC",
+              "text": "even"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Therefore I endure all things for the sake of the elect, that they also may obtain the salvation which is in Christ Jesus with eternal glory.",
+          "parts": [
+            "Therefore I endure all things for the sake of the elect, that they also may obtain the salvation which is in Christ Jesus with eternal glory."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "This is",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "This is"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Remind them of these things, charging them before the Lord not to strive about words to no profit, to the ruin of the hearers.",
+          "parts": [
+            "Remind",
+            {
+              "style": "ITALIC",
+              "text": "them"
+            },
+            "of these things, charging",
+            {
+              "style": "ITALIC",
+              "text": "them"
+            },
+            "before the Lord not to strive about words to no profit, to the ruin of the hearers."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Be diligent to present yourself approved to God, a worker who does not need to be ashamed, rightly dividing the word of truth.",
+          "parts": [
+            "Be diligent to present yourself approved to God, a worker who does not need to be ashamed, rightly dividing the word of truth.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5760"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "But shun profane and",
+          "parts": [
+            "But shun profane",
+            {
+              "style": "ITALIC",
+              "text": "and"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "And their message will spread like cancer.",
+          "parts": [
+            "And their message will spread like cancer."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "who have strayed concerning the truth, saying that the resurrection is already past; and they overthrow the faith of some.",
+          "parts": [
+            "who have strayed concerning the truth, saying that the resurrection is already past; and they overthrow the faith of some."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Nevertheless the solid foundation of God stands, having this seal: “The Lord knows those who are His,” and, “Let everyone who names the name of Christ a",
+          "parts": [
+            "Nevertheless the solid foundation of God stands, having this seal: “The Lord knows those who are His,” and, “Let everyone who names the name of Christ",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1566"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "But in a great house there are not only vessels of gold and silver, but also of wood and clay, some for honor and some for dishonor. Therefore if anyone cleanses himself from the latter, he will be a vessel for honor, sanctified and useful for the Master, prepared for every good work.",
+          "parts": [
+            "But in a great house there are not only vessels of gold and silver, but also of wood and clay, some for honor and some for dishonor.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5763"
+            },
+            "Therefore if anyone cleanses himself from the latter, he will be a vessel for honor, sanctified and useful for the Master, prepared for every good work."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Therefore if anyone cleanses himself from the latter, he will be a vessel for honor, sanctified and useful for the Master, prepared for every good work.",
+          "parts": [
+            "Therefore if anyone cleanses himself from the latter, he will be a vessel for honor, sanctified and useful for the Master, prepared for every good work."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "Flee also youthful lusts; but pursue righteousness, faith, love, peace with those who call on the Lord out of a pure heart.",
+          "parts": [
+            "Flee also youthful lusts; but pursue righteousness, faith, love, peace with those who call on the Lord out of a pure heart."
+          ]
+        },
+        {
+          "num": 23,
+          "text": "But avoid foolish and ignorant disputes, knowing that they generate strife.",
+          "parts": [
+            "But avoid foolish and ignorant disputes, knowing that they generate strife."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "And a servant of the Lord must not quarrel but be gentle to all, able to teach, patient,",
+          "parts": [
+            "And a servant of the Lord must not quarrel but be gentle to all, able to teach, patient,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5764"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "in humility correcting those who are in opposition, if God perhaps will grant them repentance, so that they may know the truth,",
+          "parts": [
+            "in humility correcting those who are in opposition, if God perhaps will grant them repentance, so that they may know the truth,"
+          ]
+        },
+        {
+          "num": 26,
+          "text": "and that",
+          "parts": [
+            "and",
+            {
+              "style": "ITALIC",
+              "text": "that"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Strengthening Others: Discipline and Suffering",
+        "Apostolic Teaching vs. Error",
+        "Apostolic Conduct vs. Error",
+        "Moral Decline in the Last Days"
+      ]
+    },
+    {
+      "chapter_num": 3,
+      "verses_count": 17,
+      "verses": [
+        {
+          "num": 1,
+          "text": "But know this, that in the last days perilous times will come: For men will be lovers of themselves, lovers of money, boasters, proud, blasphemers, disobedient to parents, unthankful, unholy, unloving, unforgiving, slanderers, without self-control, brutal, despisers of good, traitors, headstrong, haughty, lovers of pleasure rather than lovers of God, having a form of godliness but denying its power.",
+          "parts": [
+            "But know this, that in the last days perilous times will come:",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5765"
+            },
+            "For men will be lovers of themselves, lovers of money, boasters, proud, blasphemers, disobedient to parents, unthankful, unholy, unloving, unforgiving, slanderers, without self-control, brutal, despisers of good, traitors, headstrong, haughty, lovers of pleasure rather than lovers of God, having a form of godliness but denying its power."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "For of this sort are those who creep into households and make captives of gullible women loaded down with sins, led away by various lusts,",
+          "parts": [
+            "For of this sort are those who creep into households and make captives of gullible women loaded down with sins, led away by various lusts,"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "always learning and never able to come to the knowledge of the truth.",
+          "parts": [
+            "always learning and never able to come to the knowledge of the truth."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Now as Jannes and Jambres resisted Moses, so do these also resist the truth: men of corrupt minds, disapproved concerning the faith;",
+          "parts": [
+            "Now as Jannes and Jambres resisted Moses, so do these also resist the truth: men of corrupt minds, disapproved concerning the faith;",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5767"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "but they will progress no further, for their folly will be manifest to all, as theirs also was.",
+          "parts": [
+            "but they will progress no further, for their folly will be manifest to all, as theirs also was."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "But you have carefully followed my doctrine, manner of life, purpose, faith, longsuffering, love, perseverance, persecutions, afflictions, which happened to me at Antioch, at Iconium, at Lystra—what persecutions I endured.",
+          "parts": [
+            "But you have carefully followed my doctrine, manner of life, purpose, faith, longsuffering, love, perseverance,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5768"
+            },
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx347"
+            },
+            "persecutions, afflictions, which happened to me at Antioch, at Iconium, at Lystra—what persecutions I endured."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "persecutions, afflictions, which happened to me at Antioch, at Iconium, at Lystra—what persecutions I endured.",
+          "parts": [
+            "persecutions, afflictions, which happened to me at Antioch, at Iconium, at Lystra—what persecutions I endured."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Yes, and all who desire to live godly in Christ Jesus will suffer persecution.",
+          "parts": [
+            "Yes, and all who desire to live godly in Christ Jesus will suffer persecution."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "But evil men and impostors will grow worse and worse, deceiving and being deceived.",
+          "parts": [
+            "But evil men and impostors will grow worse and worse, deceiving and being deceived."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "But you must continue in the things which you have learned and been assured of, knowing from whom you have learned them,",
+          "parts": [
+            "But you must continue in the things which you have learned and been assured of, knowing from whom you have learned",
+            {
+              "style": "ITALIC",
+              "text": "them,"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "and that from childhood you have known the Holy Scriptures, which are able to make you wise for salvation through faith which is in Christ Jesus.",
+          "parts": [
+            "and that from childhood you have known the Holy Scriptures, which are able to make you wise for salvation through faith which is in Christ Jesus."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "All Scripture is given by inspiration of God, and is profitable for doctrine, for reproof, for correction, for instruction in righteousness, that the man of God may be complete, thoroughly equipped for every good work.",
+          "parts": [
+            "All Scripture",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "given by inspiration of God, and",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "profitable for doctrine, for reproof, for correction, for instruction in righteousness, that the man of God may be complete, thoroughly equipped for every good work."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "that the man of God may be complete, thoroughly equipped for every good work.",
+          "parts": [
+            "that the man of God may be complete, thoroughly equipped for every good work."
+          ]
+        }
+      ],
+      "headers": [
+        "The Pastor's Defense Against Apostasy: Loyalty to Tradition",
+        "The People's Defense Against Apostasy: Orthodox Preaching"
+      ]
+    },
+    {
+      "chapter_num": 4,
+      "verses_count": 22,
+      "verses": [
+        {
+          "num": 1,
+          "text": "I charge you therefore before God and the Lord Jesus Christ, who will judge the living and the dead at a His appearing and His kingdom: Preach the word!",
+          "parts": [
+            "I charge",
+            {
+              "style": "ITALIC",
+              "text": "you"
+            },
+            "therefore before God and the Lord Jesus Christ, who will judge the living and the dead at",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1567"
+            },
+            "His appearing and His kingdom: Preach the word!"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For the time will come when they will not endure sound doctrine, but according to their own desires, because",
+          "parts": [
+            "For the time will come when they will not endure sound doctrine, but according to their own desires,",
+            {
+              "style": "ITALIC",
+              "text": "because"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "and they will turn their",
+          "parts": [
+            "and they will turn",
+            {
+              "style": "ITALIC",
+              "text": "their"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "But you be watchful in all things, endure afflictions, do the work of an evangelist, fulfill your ministry.",
+          "parts": [
+            "But you be watchful in all things, endure afflictions, do the work of an evangelist, fulfill your ministry."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "For I am already being poured out as a drink offering, and the time of my departure is at hand. I have fought the good fight, I have finished the race, I have kept the faith. Finally, there is laid up for me the crown of righteousness, which the Lord, the righteous Judge, will give to me on that Day, and not to me only but also to all who have loved His appearing.",
+          "parts": [
+            "For I am already being poured out as a drink offering, and the time of my departure is at hand.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5770"
+            },
+            "I have fought the good fight, I have finished the race, I have kept the faith.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5771"
+            },
+            "Finally, there is laid up for me the crown of righteousness, which the Lord, the righteous Judge, will give to me on that Day, and not to me only but also to all who have loved His appearing."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "I have fought the good fight, I have finished the race, I have kept the faith.",
+          "parts": [
+            "I have fought the good fight, I have finished the race, I have kept the faith.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5771"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Finally, there is laid up for me the crown of righteousness, which the Lord, the righteous Judge, will give to me on that Day, and not to me only but also to all who have loved His appearing.",
+          "parts": [
+            "Finally, there is laid up for me the crown of righteousness, which the Lord, the righteous Judge, will give to me on that Day, and not to me only but also to all who have loved His appearing."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Be diligent to come to me quickly; for Demas has forsaken me, having loved this present world, and has departed for Thessalonica—Crescens for Galatia, Titus for Dalmatia. Only Luke is with me.",
+          "parts": [
+            "Be diligent to come to me quickly; for Demas has forsaken me, having loved this present world, and has departed for Thessalonica—Crescens for Galatia, Titus for Dalmatia.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5772"
+            },
+            "Only Luke is with me."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "for Demas has forsaken me, having loved this present world, and has departed for Thessalonica—Crescens for Galatia, Titus for Dalmatia.",
+          "parts": [
+            "for Demas has forsaken me, having loved this present world, and has departed for Thessalonica—Crescens for Galatia, Titus for Dalmatia.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5772"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Only Luke is with me.",
+          "parts": [
+            "Only Luke is with me."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "And Tychicus I have sent to Ephesus.",
+          "parts": [
+            "And Tychicus I have sent to Ephesus."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Bring the cloak that I left with Carpus at Troas when you come—and the books, especially the parchments.",
+          "parts": [
+            "Bring the cloak that I left with Carpus at Troas when you come—and the books, especially the parchments."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Alexander the coppersmith did me much harm.",
+          "parts": [
+            "Alexander the coppersmith did me much harm."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "You also must beware of him, for he has greatly resisted our words.",
+          "parts": [
+            "You also must beware of him, for he has greatly resisted our words."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "At my first defense no one stood with me, but all forsook me.",
+          "parts": [
+            "At my first defense no one stood with me, but all forsook me."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "But the Lord stood with me and strengthened me, so that the message might be preached fully through me, and that all the Gentiles might hear.",
+          "parts": [
+            "But the Lord stood with me and strengthened me, so that the message might be preached fully through me, and",
+            {
+              "style": "ITALIC",
+              "text": "that"
+            },
+            "all the Gentiles might hear."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "And the Lord will deliver me from every evil work and preserve me",
+          "parts": [
+            "And the Lord will deliver me from every evil work and preserve",
+            {
+              "style": "ITALIC",
+              "text": "me"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Greet Prisca and Aquila, and the household of Onesiphorus.",
+          "parts": [
+            "Greet Prisca and Aquila, and the household of Onesiphorus."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Erastus stayed in Corinth, but Trophimus I have left in Miletus sick.",
+          "parts": [
+            "Erastus stayed in Corinth, but Trophimus I have left in Miletus sick."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Do your utmost to come before winter.",
+          "parts": [
+            "Do your utmost to come before winter."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "The Lord Jesus Christ a be with your spirit.",
+          "parts": [
+            "The Lord Jesus Christ",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1568"
+            },
+            "be with your spirit."
+          ]
+        }
+      ],
+      "headers": [
+        "Paul's Example",
+        "Request to See Timothy",
+        "Paul's First Defense",
+        "Farewell"
+      ]
+    }
+  ],
+  "author": "St. Paul the Apostle. By the second half of the second century the whole Church accepted 2 Timothy as Pauline and canonical.",
+  "date": "AD 65–67. This letter was written from Rome (1:17) when Paul was chained, suffering, and near his execution.",
+  "theme": "Overcoming hardship in the ministry. Ordained ministers use their spiritual gifts in the Church to keep and pass on her living tradition (1:13, 14; 2:2, 8, 11–13, 15; 3:14–17; 4:3). Through living tradition—the Bible and the ongoing life of the Holy Spirit in the body of Christ—the Church remains essentially as she was at her inception."
+}

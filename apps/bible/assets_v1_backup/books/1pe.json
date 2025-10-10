@@ -1,0 +1,1448 @@
+{
+  "en_name": "1 Peter",
+  "local_name": "1 Peter",
+  "abr": "1pe",
+  "ch_count": 5,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 24,
+      "verses": [
+        {
+          "num": 2,
+          "text": "elect according to the foreknowledge of God the Father, in sanctification of the Spirit, for obedience and sprinkling of the blood of Jesus Christ:",
+          "parts": [
+            "elect according to the foreknowledge of God the Father, in sanctification of the Spirit, for obedience and sprinkling of the blood of Jesus Christ:"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Blessedbethe God and Father of our Lord Jesus Christ, who according to His abundant mercy has begotten us again to a living hope through the resurrection of Jesus Christ from the dead,to an inheritance incorruptible and undefiled and that does not fade away, reserved in heaven for you,who are kept by the power of God through faith for salvation ready to be revealed in the last time.",
+          "parts": [
+            "Blessed",
+            {
+              "italic": "be"
+            },
+            "the God and Father of our Lord Jesus Christ, who according to His abundant mercy has begotten us again to a living hope through the resurrection of Jesus Christ from the dead,",
+            {
+              "footnote": "f5932"
+            },
+            "to an inheritance incorruptible and undefiled and that does not fade away, reserved in heaven for you,",
+            {
+              "footnote": "f5933"
+            },
+            "who are kept by the power of God through faith for salvation ready to be revealed in the last time.",
+            {
+              "footnote": "f5934"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "to an inheritance incorruptible and undefiled and that does not fade away, reserved in heaven for you,",
+          "parts": [
+            "to an inheritance incorruptible and undefiled and that does not fade away, reserved in heaven for you,",
+            {
+              "footnote": "f5933"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "who are kept by the power of God through faith for salvation ready to be revealed in the last time.",
+          "parts": [
+            "who are kept by the power of God through faith for salvation ready to be revealed in the last time.",
+            {
+              "footnote": "f5934"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "In this you greatly rejoice, though now for a little while, if need be, you have been grieved by various trials,that the genuineness of your faith,beingmuch more precious than gold that perishes, though it is tested by fire, may be found to praise, honor, and glory at the revelation of Jesus Christ, whom having not seenayou love. Though now you do not seeHim,yet believing, you rejoice with joy inexpressible and full of glory,receiving the end of your faith—the salvation ofyoursouls.",
+          "parts": [
+            "In this you greatly rejoice, though now for a little while, if need be, you have been grieved by various trials,",
+            {
+              "footnote": "f5935"
+            },
+            "that the genuineness of your faith,",
+            {
+              "italic": "being"
+            },
+            "much more precious than gold that perishes, though it is tested by fire, may be found to praise, honor, and glory at the revelation of Jesus Christ, whom having not seen",
+            {
+              "text": "a",
+              "cross_ref": "r120"
+            },
+            "you love. Though now you do not see",
+            {
+              "italic": "Him,"
+            },
+            "yet believing, you rejoice with joy inexpressible and full of glory,",
+            {
+              "footnote": "f5936"
+            },
+            "receiving the end of your faith—the salvation of",
+            {
+              "italic": "your"
+            },
+            "souls."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "that the genuineness of your faith,beingmuch more precious than gold that perishes, though it is tested by fire, may be found to praise, honor, and glory at the revelation of Jesus Christ,",
+          "parts": [
+            "that the genuineness of your faith,",
+            {
+              "italic": "being"
+            },
+            "much more precious than gold that perishes, though it is tested by fire, may be found to praise, honor, and glory at the revelation of Jesus Christ,"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "whom having not seenayou love.",
+          "parts": [
+            "whom having not seen",
+            {
+              "text": "a",
+              "cross_ref": "r121"
+            },
+            "you love."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "receiving the end of your faith—the salvation ofyoursouls.",
+          "parts": [
+            "receiving the end of your faith—the salvation of",
+            {
+              "italic": "your"
+            },
+            "souls."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Of this salvation the prophets have inquired and searched carefully, who prophesied of the gracethat would cometo you,searching what, or what manner of time, the Spirit of Christ who was in them was indicating when He testified beforehand the sufferings of Christ and the glories that would follow.To them it was revealed that, not to themselves, but to usathey were ministering the things which now have been reported to you through those who have preached the gospel to you by the Holy Spirit sent from heaven—things which angels desire to look into.",
+          "parts": [
+            "Of this salvation the prophets have inquired and searched carefully, who prophesied of the grace",
+            {
+              "italic": "that would come"
+            },
+            "to you,",
+            {
+              "footnote": "f5937"
+            },
+            "searching what, or what manner of time, the Spirit of Christ who was in them was indicating when He testified beforehand the sufferings of Christ and the glories that would follow.To them it was revealed that, not to themselves, but to us",
+            {
+              "text": "a",
+              "cross_ref": "r122"
+            },
+            "they were ministering the things which now have been reported to you through those who have preached the gospel to you by the Holy Spirit sent from heaven—things which angels desire to look into.",
+            {
+              "footnote": "f5938"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "searching what, or what manner of time, the Spirit of Christ who was in them was indicating when He testified beforehand the sufferings of Christ and the glories that would follow.",
+          "parts": [
+            "searching what, or what manner of time, the Spirit of Christ who was in them was indicating when He testified beforehand the sufferings of Christ and the glories that would follow."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "To them it was revealed that, not to themselves, but to usathey were ministering the things which now have been reported to you through those who have preached the gospel to you by the Holy Spirit sent from heaven—things which angels desire to look into.",
+          "parts": [
+            "To them it was revealed that, not to themselves, but to us",
+            {
+              "text": "a",
+              "cross_ref": "r123"
+            },
+            "they were ministering the things which now have been reported to you through those who have preached the gospel to you by the Holy Spirit sent from heaven—things which angels desire to look into.",
+            {
+              "footnote": "f5938"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Therefore gird up the loins of your mind, be sober, and restyourhope fully upon the grace that is to be brought to you at the revelation of Jesus Christ;as obedient children, not conforming yourselves to the former lusts,asin your ignorance; but as He who called youisholy, you also be holy in allyourconduct, because it is written,“Be holy, for I am holy.”a†",
+          "parts": [
+            "Therefore gird up the loins of your mind, be sober, and rest",
+            {
+              "italic": "your"
+            },
+            "hope fully upon the grace that is to be brought to you at the revelation of Jesus Christ;",
+            {
+              "footnote": "f5939"
+            },
+            "as obedient children, not conforming yourselves to the former lusts,",
+            {
+              "italic": "as"
+            },
+            "in your ignorance; but as He who called you",
+            {
+              "italic": "is"
+            },
+            "holy, you also be holy in all",
+            {
+              "italic": "your"
+            },
+            "conduct, because it is written,",
+            {
+              "italic": "“Be holy, for I am holy.”"
+            },
+            {
+              "text": "a",
+              "cross_ref": "r124"
+            },
+            {
+              "text": "†",
+              "cross_ref": "r125"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "as obedient children, not conforming yourselves to the former lusts,asin your ignorance;",
+          "parts": [
+            "as obedient children, not conforming yourselves to the former lusts,",
+            {
+              "italic": "as"
+            },
+            "in your ignorance;"
+          ]
+        },
+        {
+          "num": 15,
+          "text": "but as He who called youisholy, you also be holy in allyourconduct,",
+          "parts": [
+            "but as He who called you",
+            {
+              "italic": "is"
+            },
+            "holy, you also be holy in all",
+            {
+              "italic": "your"
+            },
+            "conduct,"
+          ]
+        },
+        {
+          "num": 16,
+          "text": "because it is written,“Be holy, for I am holy.”a†",
+          "parts": [
+            "because it is written,",
+            {
+              "italic": "“Be holy, for I am holy.”"
+            },
+            {
+              "text": "a",
+              "cross_ref": "r126"
+            },
+            {
+              "text": "†",
+              "cross_ref": "r127"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "And if you call on the Father, who without partiality judges according to each one's work, conduct yourselves throughout the time of your stayherein fear;knowing that you were not redeemed with corruptible things,likesilver or gold, from your aimless conductreceivedby tradition from your fathers,but with the precious blood of Christ, as of a lamb without blemish and without spot.He indeed was foreordained before the foundation of the world, but was manifest in these last times for you who through Him believe in God, who raised Him from the dead and gave Him glory, so that your faith and hope are in God.",
+          "parts": [
+            "And if you call on the Father, who without partiality judges according to each one's work, conduct yourselves throughout the time of your stay",
+            {
+              "italic": "here"
+            },
+            "in fear;",
+            {
+              "footnote": "f5940"
+            },
+            "knowing that you were not redeemed with corruptible things,",
+            {
+              "italic": "like"
+            },
+            "silver or gold, from your aimless conduct",
+            {
+              "italic": "received"
+            },
+            "by tradition from your fathers,",
+            {
+              "footnote": "f5941"
+            },
+            "but with the precious blood of Christ, as of a lamb without blemish and without spot.He indeed was foreordained before the foundation of the world, but was manifest in these last times for you who through Him believe in God, who raised Him from the dead and gave Him glory, so that your faith and hope are in God."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "knowing that you were not redeemed with corruptible things,likesilver or gold, from your aimless conductreceivedby tradition from your fathers,",
+          "parts": [
+            "knowing that you were not redeemed with corruptible things,",
+            {
+              "italic": "like"
+            },
+            "silver or gold, from your aimless conduct",
+            {
+              "italic": "received"
+            },
+            "by tradition from your fathers,",
+            {
+              "footnote": "f5941"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "but with the precious blood of Christ, as of a lamb without blemish and without spot.",
+          "parts": [
+            "but with the precious blood of Christ, as of a lamb without blemish and without spot."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "He indeed was foreordained before the foundation of the world, but was manifest in these last times for you",
+          "parts": [
+            "He indeed was foreordained before the foundation of the world, but was manifest in these last times for you"
+          ]
+        },
+        {
+          "num": 21,
+          "text": "who through Him believe in God, who raised Him from the dead and gave Him glory, so that your faith and hope are in God.",
+          "parts": [
+            "who through Him believe in God, who raised Him from the dead and gave Him glory, so that your faith and hope are in God."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "Since you have purified your souls in obeying the truth through the Spiritain sincere love of the brethren, love one another fervently with a pure heart, having been born again, not of corruptible seed but incorruptible, through the word of God which lives and abides forever,a†because",
+          "parts": [
+            "Since you have purified your souls in obeying the truth through the Spirit",
+            {
+              "text": "a",
+              "cross_ref": "r128"
+            },
+            "in sincere love of the brethren, love one another fervently with a pure heart, having been born again, not of corruptible seed but incorruptible, through the word of God which lives and abides forever,",
+            {
+              "text": "a",
+              "cross_ref": "r129"
+            },
+            {
+              "text": "†",
+              "cross_ref": "r130"
+            },
+            "because"
+          ]
+        },
+        {
+          "num": 23,
+          "text": "having been born again, not of corruptible seed but incorruptible, through the word of God which lives and abides forever,a†",
+          "parts": [
+            "having been born again, not of corruptible seed but incorruptible, through the word of God which lives and abides forever,",
+            {
+              "text": "a",
+              "cross_ref": "r131"
+            },
+            {
+              "text": "†",
+              "cross_ref": "r132"
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "because",
+          "parts": [
+            "because"
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting",
+        "Born to a Heavenly Hope",
+        "Tested for Genuine Faith"
+      ]
+    },
+    {
+      "chapter_num": 2,
+      "verses_count": 25,
+      "verses": [
+        {
+          "num": 2,
+          "text": "as newborn babes, desire the pure milk of the word, that you may grow thereby,a",
+          "parts": [
+            "as newborn babes, desire the pure milk of the word, that you may grow thereby,",
+            {
+              "text": "a",
+              "cross_ref": "r133"
+            },
+            {
+              "footnote": "f5944"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "if indeed you have tasted that the Lord isgracious.",
+          "parts": [
+            "if indeed you have tasted that the Lord",
+            {
+              "italic": " is"
+            },
+            "gracious."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Coming to Himas toa living stone, rejected indeed by men, but chosen by Godandprecious,you also, as living stones, are being built up a spiritual house, a holy priesthood, to offer up spiritual sacrifices acceptable to God through Jesus Christ.Therefore it is also contained in the Scripture,",
+          "parts": [
+            "Coming to Him",
+            {
+              "italic": "as to"
+            },
+            "a living stone, rejected indeed by men, but chosen by God",
+            {
+              "italic": "and"
+            },
+            "precious,",
+            {
+              "footnote": "f5945"
+            },
+            "you also, as living stones, are being built up a spiritual house, a holy priesthood, to offer up spiritual sacrifices acceptable to God through Jesus Christ.",
+            {
+              "footnote": "f5946"
+            },
+            "Therefore it is also contained in the Scripture,"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "you also, as living stones, are being built up a spiritual house, a holy priesthood, to offer up spiritual sacrifices acceptable to God through Jesus Christ.",
+          "parts": [
+            "you also, as living stones, are being built up a spiritual house, a holy priesthood, to offer up spiritual sacrifices acceptable to God through Jesus Christ.",
+            {
+              "footnote": "f5946"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Therefore it is also contained in the Scripture,",
+          "parts": [
+            "Therefore it is also contained in the Scripture,"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Therefore, to you who believe,He isprecious; but to those who are disobedient,a",
+          "parts": [
+            "Therefore, to you who believe,",
+            {
+              "italic": "He is"
+            },
+            "precious; but to those who are disobedient,",
+            {
+              "text": "a",
+              "cross_ref": "r134"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "and",
+          "parts": [
+            "and"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "But youarea chosen generation, a royal priesthood, a holy nation, His own special people, that you may proclaim the praises of Him who called you out of darkness into His marvelous light;who oncewerenot a people butarenow the people of God, who had not obtained mercy but now have obtained mercy.",
+          "parts": [
+            "But you",
+            {
+              "italic": "are"
+            },
+            "a chosen generation, a royal priesthood, a holy nation, His own special people, that you may proclaim the praises of Him who called you out of darkness into His marvelous light;",
+            {
+              "footnote": "f5947"
+            },
+            "who once",
+            {
+              "italic": "were"
+            },
+            "not a people but",
+            {
+              "italic": "are"
+            },
+            "now the people of God, who had not obtained mercy but now have obtained mercy."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "who oncewerenot a people butarenow the people of God, who had not obtained mercy but now have obtained mercy.",
+          "parts": [
+            "who once",
+            {
+              "italic": "were"
+            },
+            "not a people but",
+            {
+              "italic": "are"
+            },
+            "now the people of God, who had not obtained mercy but now have obtained mercy."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Beloved, I begyouas sojourners and pilgrims, abstain from fleshly lusts which war against the soul,having your conduct honorable among the Gentiles, that when they speak against you as evildoers, they may, byyourgood works which they observe, glorify God in the day of visitation.",
+          "parts": [
+            "Beloved, I beg",
+            {
+              "italic": "you"
+            },
+            "as sojourners and pilgrims, abstain from fleshly lusts which war against the soul,",
+            {
+              "footnote": "f5948"
+            },
+            "having your conduct honorable among the Gentiles, that when they speak against you as evildoers, they may, by",
+            {
+              "italic": "your"
+            },
+            "good works which they observe, glorify God in the day of visitation."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "having your conduct honorable among the Gentiles, that when they speak against you as evildoers, they may, byyourgood works which they observe, glorify God in the day of visitation.",
+          "parts": [
+            "having your conduct honorable among the Gentiles, that when they speak against you as evildoers, they may, by",
+            {
+              "italic": "your"
+            },
+            "good works which they observe, glorify God in the day of visitation."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Therefore submit yourselves to every ordinance of man for the Lord's sake, whether to the king as supreme,or to governors, as to those who are sent by him for the punishment of evildoers andfor thepraise of those who do good.For this is the will of God, that by doing good you may put to silence the ignorance of foolish men— as free, yet not using liberty as a cloak for vice, but as bondservants of God.Honor allpeople.Love the brotherhood. Fear God. Honor the king.",
+          "parts": [
+            "Therefore submit yourselves to every ordinance of man for the Lord's sake, whether to the king as supreme,",
+            {
+              "footnote": "f5949"
+            },
+            "or to governors, as to those who are sent by him for the punishment of evildoers and",
+            {
+              "italic": "for the"
+            },
+            "praise of those who do good.For this is the will of God, that by doing good you may put to silence the ignorance of foolish men— as free, yet not using liberty as a cloak for vice, but as bondservants of God.Honor all",
+            {
+              "italic": "people."
+            },
+            "Love the brotherhood. Fear God. Honor the king."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "or to governors, as to those who are sent by him for the punishment of evildoers andfor thepraise of those who do good.",
+          "parts": [
+            "or to governors, as to those who are sent by him for the punishment of evildoers and",
+            {
+              "italic": "for the"
+            },
+            "praise of those who do good."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "For this is the will of God, that by doing good you may put to silence the ignorance of foolish men—",
+          "parts": [
+            "For this is the will of God, that by doing good you may put to silence the ignorance of foolish men—"
+          ]
+        },
+        {
+          "num": 16,
+          "text": "as free, yet not using liberty as a cloak for vice, but as bondservants of God.",
+          "parts": [
+            "as free, yet not using liberty as a cloak for vice, but as bondservants of God."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Honor allpeople.Love the brotherhood.",
+          "parts": [
+            "Honor all",
+            {
+              "italic": "people."
+            },
+            "Love the brotherhood."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Servants,besubmissive toyourmasters with all fear, not only to the good and gentle, but also to the harsh.For thisiscommendable, if because of conscience toward God one endures grief, suffering wrongfully.For what creditis itif, when you are beaten for your faults, you take it patiently? But when you do good and suffer, if you take it patiently, thisiscommendable before God.For to this you were called, because Christ also suffered for us,aleaving usban example, that you should follow His steps:",
+          "parts": [
+            "Servants,",
+            {
+              "italic": "be"
+            },
+            "submissive to",
+            {
+              "italic": "your"
+            },
+            "masters with all fear, not only to the good and gentle, but also to the harsh.",
+            {
+              "footnote": "f5950"
+            },
+            "For this",
+            {
+              "italic": "is"
+            },
+            "commendable, if because of conscience toward God one endures grief, suffering wrongfully.For what credit",
+            {
+              "italic": "is it"
+            },
+            "if, when you are beaten for your faults, you take it patiently? But when you do good and suffer, if you take it patiently, this",
+            {
+              "italic": "is"
+            },
+            "commendable before God.For to this you were called, because Christ also suffered for us,",
+            {
+              "text": "a",
+              "cross_ref": "r135"
+            },
+            "leaving us",
+            {
+              "text": "b",
+              "cross_ref": "r136"
+            },
+            "an example, that you should follow His steps:"
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For thisiscommendable, if because of conscience toward God one endures grief, suffering wrongfully.",
+          "parts": [
+            "For this",
+            {
+              "italic": "is"
+            },
+            "commendable, if because of conscience toward God one endures grief, suffering wrongfully."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "For what creditis itif, when you are beaten for your faults, you take it patiently?",
+          "parts": [
+            "For what credit",
+            {
+              "italic": "is it"
+            },
+            "if, when you are beaten for your faults, you take it patiently?"
+          ]
+        },
+        {
+          "num": 21,
+          "text": "For to this you were called, because Christ also suffered for us,aleaving usban example, that you should follow His steps:",
+          "parts": [
+            "For to this you were called, because Christ also suffered for us,",
+            {
+              "text": "a",
+              "cross_ref": "r137"
+            },
+            "leaving us",
+            {
+              "text": "b",
+              "cross_ref": "r138"
+            },
+            "an example, that you should follow His steps:"
+          ]
+        },
+        {
+          "num": 23,
+          "text": "who, when He was reviled, did not revile in return; when He suffered, He did not threaten, but committedHimselfto Him who judges righteously; who Himself bore our sins in His own body on the tree, that we, having died to sins, might live for righteousness—by whose stripes you were healed.For you were like sheep going astray, but have now returned to the Shepherd and Overseeraof your souls.",
+          "parts": [
+            "who, when He was reviled, did not revile in return; when He suffered, He did not threaten, but committed",
+            {
+              "italic": "Himself"
+            },
+            "to Him who judges righteously; who Himself bore our sins in His own body on the tree, that we, having died to sins, might live for righteousness—by whose stripes you were healed.For you were like sheep going astray, but have now returned to the Shepherd and Overseer",
+            {
+              "text": "a",
+              "cross_ref": "r139"
+            },
+            "of your souls.",
+            {
+              "footnote": "f5952"
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "who Himself bore our sins in His own body on the tree, that we, having died to sins, might live for righteousness—by whose stripes you were healed.",
+          "parts": [
+            "who Himself bore our sins in His own body on the tree, that we, having died to sins, might live for righteousness—by whose stripes you were healed."
+          ]
+        },
+        {
+          "num": 25,
+          "text": "For you were like sheep going astray, but have now returned to the Shepherd and Overseeraof your souls.",
+          "parts": [
+            "For you were like sheep going astray, but have now returned to the Shepherd and Overseer",
+            {
+              "text": "a",
+              "cross_ref": "r140"
+            },
+            "of your souls.",
+            {
+              "footnote": "f5952"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting",
+        "Born to a Heavenly Hope",
+        "Tested for Genuine Faith"
+      ]
+    },
+    {
+      "chapter_num": 3,
+      "verses_count": 22,
+      "verses": [
+        {
+          "num": 2,
+          "text": "when they observe your chaste conductaccompaniedby fear.",
+          "parts": [
+            "when they observe your chaste conduct",
+            {
+              "italic": "accompanied"
+            },
+            "by fear."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Do not let your adornment bemerelyoutward—arranging the hair, wearing gold, or putting onfineapparel—",
+          "parts": [
+            "Do not let your adornment be",
+            {
+              "italic": "merely"
+            },
+            "outward—arranging the hair, wearing gold, or putting on",
+            {
+              "italic": "fine"
+            },
+            "apparel—"
+          ]
+        },
+        {
+          "num": 4,
+          "text": "ratherlet it bethe hidden person of the heart, with the incorruptiblebeautyof a gentle and quiet spirit, which is very precious in the sight of God.",
+          "parts": [
+            "rather",
+            {
+              "italic": "let it be"
+            },
+            "the hidden person of the heart, with the incorruptible",
+            {
+              "italic": "beauty"
+            },
+            "of a gentle and quiet spirit, which is very precious in the sight of God."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "For in this manner, in former times, the holy women who trusted in God also adorned themselves, being submissive to their own husbands,",
+          "parts": [
+            "For in this manner, in former times, the holy women who trusted in God also adorned themselves, being submissive to their own husbands,"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "as Sarah obeyed Abraham, calling him lord, whose daughters you are if you do good and are not afraid with any terror.",
+          "parts": [
+            "as Sarah obeyed Abraham, calling him lord, whose daughters you are if you do good and are not afraid with any terror."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Husbands, likewise, dwell withthemwith understanding, giving honor to the wife, as to the weaker vessel, and asbeingheirs together of the grace of life, that your prayers may not be hindered.",
+          "parts": [
+            "Husbands, likewise, dwell with",
+            {
+              "italic": "them"
+            },
+            "with understanding, giving honor to the wife, as to the weaker vessel, and as",
+            {
+              "italic": "being"
+            },
+            "heirs together of the grace of life, that your prayers may not be hindered."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Finally, allof you beof one mind, having compassion for one another; love as brothers,betenderhearted,becourteous;anot returning evil for evil or reviling for reviling, but on the contrary blessing, knowing that you were called to this, that you may inherit a blessing.For",
+          "parts": [
+            "Finally, all",
+            {
+              "italic": "of you be"
+            },
+            "of one mind, having compassion for one another; love as brothers,",
+            {
+              "italic": "be"
+            },
+            "tenderhearted,",
+            {
+              "italic": "be"
+            },
+            "courteous;",
+            {
+              "text": "a",
+              "cross_ref": "r141"
+            },
+            {
+              "footnote": "f5954"
+            },
+            "not returning evil for evil or reviling for reviling, but on the contrary blessing, knowing that you were called to this, that you may inherit a blessing.For"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "not returning evil for evil or reviling for reviling, but on the contrary blessing, knowing that you were called to this, that you may inherit a blessing.",
+          "parts": [
+            "not returning evil for evil or reviling for reviling, but on the contrary blessing, knowing that you were called to this, that you may inherit a blessing."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "For",
+          "parts": [
+            "For"
+          ]
+        },
+        {
+          "num": 13,
+          "text": "And who ishe who will harm you if you become followers of what is good?But even if you should suffer for righteousness’ sake,you areblessed.“And do not be afraid of their threats, nor be troubled.”aBut sanctify the Lord Godain your hearts, and alwaysbeready togivea defense to everyone who asks you a reason for the hope that is in you, with meekness and fear;having a good conscience, that when they defame you as evildoers, those who revile your good conduct in Christ may be ashamed.Forit isbetter, if it is the will of God, to suffer for doing good than for doing evil.",
+          "parts": [
+            "And who",
+            {
+              "italic": " is"
+            },
+            "he who will harm you if you become followers of what is good?",
+            {
+              "footnote": "f5955"
+            },
+            "But even if you should suffer for righteousness’ sake,",
+            {
+              "italic": "you are"
+            },
+            "blessed.",
+            {
+              "italic": "“And do not be afraid of their threats, nor be troubled.”"
+            },
+            {
+              "text": "a",
+              "cross_ref": "r142"
+            },
+            "But sanctify the Lord God",
+            {
+              "text": "a",
+              "cross_ref": "r143"
+            },
+            "in your hearts, and always",
+            {
+              "italic": "be"
+            },
+            "ready to",
+            {
+              "italic": "give"
+            },
+            "a defense to everyone who asks you a reason for the hope that is in you, with meekness and fear;",
+            {
+              "footnote": "f5956"
+            },
+            "having a good conscience, that when they defame you as evildoers, those who revile your good conduct in Christ may be ashamed.For",
+            {
+              "italic": "it is"
+            },
+            "better, if it is the will of God, to suffer for doing good than for doing evil.",
+            {
+              "footnote": "f5957"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "But even if you should suffer for righteousness’ sake,you areblessed.",
+          "parts": [
+            "But even if you should suffer for righteousness’ sake,",
+            {
+              "italic": "you are"
+            },
+            "blessed."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "But sanctify the Lord Godain your hearts, and alwaysbeready togivea defense to everyone who asks you a reason for the hope that is in you, with meekness and fear;",
+          "parts": [
+            "But sanctify the Lord God",
+            {
+              "text": "a",
+              "cross_ref": "r144"
+            },
+            "in your hearts, and always",
+            {
+              "italic": "be"
+            },
+            "ready to",
+            {
+              "italic": "give"
+            },
+            "a defense to everyone who asks you a reason for the hope that is in you, with meekness and fear;",
+            {
+              "footnote": "f5956"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "having a good conscience, that when they defame you as evildoers, those who revile your good conduct in Christ may be ashamed.",
+          "parts": [
+            "having a good conscience, that when they defame you as evildoers, those who revile your good conduct in Christ may be ashamed."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Forit isbetter, if it is the will of God, to suffer for doing good than for doing evil.",
+          "parts": [
+            "For",
+            {
+              "italic": "it is"
+            },
+            "better, if it is the will of God, to suffer for doing good than for doing evil.",
+            {
+              "footnote": "f5957"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "For Christ also suffered once for sins, the just for the unjust, that He might bring usato God, being put to death in the flesh but made alive by the Spirit,by whom also He went and preached to the spirits in prison, who formerly were disobedient, when once the Divine longsuffering waitedain the days of Noah, whiletheark was being prepared, in which a few, that is, eight souls, were saved through water.There is also an antitype which now saves us—baptism (not the removal of the filth of the flesh, but the answer of a good conscience toward God), through the resurrection of Jesus Christ,who has gone into heaven and is at the right hand of God, angels and authorities and powers having been made subject to Him.",
+          "parts": [
+            "For Christ also suffered once for sins, the just for the unjust, that He might bring us",
+            {
+              "text": "a",
+              "cross_ref": "r145"
+            },
+            "to God, being put to death in the flesh but made alive by the Spirit,",
+            {
+              "footnote": "f5958"
+            },
+            "by whom also He went and preached to the spirits in prison, who formerly were disobedient, when once the Divine longsuffering waited",
+            {
+              "text": "a",
+              "cross_ref": "r146"
+            },
+            "in the days of Noah, while",
+            {
+              "italic": "the"
+            },
+            "ark was being prepared, in which a few, that is, eight souls, were saved through water.There is also an antitype which now saves us—baptism (not the removal of the filth of the flesh, but the answer of a good conscience toward God), through the resurrection of Jesus Christ,",
+            {
+              "footnote": "f5959"
+            },
+            "who has gone into heaven and is at the right hand of God, angels and authorities and powers having been made subject to Him."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "by whom also He went and preached to the spirits in prison,",
+          "parts": [
+            "by whom also He went and preached to the spirits in prison,"
+          ]
+        },
+        {
+          "num": 20,
+          "text": "who formerly were disobedient, when once the Divine longsuffering waitedain the days of Noah, whiletheark was being prepared, in which a few, that is, eight souls, were saved through water.",
+          "parts": [
+            "who formerly were disobedient, when once the Divine longsuffering waited",
+            {
+              "text": "a",
+              "cross_ref": "r147"
+            },
+            "in the days of Noah, while",
+            {
+              "italic": "the"
+            },
+            "ark was being prepared, in which a few, that is, eight souls, were saved through water."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "There is also an antitype which now saves us—baptism (not the removal of the filth of the flesh, but the answer of a good conscience toward God), through the resurrection of Jesus Christ,",
+          "parts": [
+            "There is also an antitype which now saves us—baptism (not the removal of the filth of the flesh, but the answer of a good conscience toward God), through the resurrection of Jesus Christ,",
+            {
+              "footnote": "f5959"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "who has gone into heaven and is at the right hand of God, angels and authorities and powers having been made subject to Him.",
+          "parts": [
+            "who has gone into heaven and is at the right hand of God, angels and authorities and powers having been made subject to Him."
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting",
+        "Born to a Heavenly Hope",
+        "Tested for Genuine Faith"
+      ]
+    },
+    {
+      "chapter_num": 4,
+      "verses_count": 19,
+      "verses": [
+        {
+          "num": 2,
+          "text": "that he no longer should live the rest ofhistime in the flesh for the lusts of men, but for the will of God.",
+          "parts": [
+            "that he no longer should live the rest of",
+            {
+              "italic": "his"
+            },
+            "time in the flesh for the lusts of men, but for the will of God."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For wehave spentenough of our past lifetimeain doing the will of the Gentiles—when we walked in lewdness, lusts, drunkenness, revelries, drinking parties, and abominable idolatries.",
+          "parts": [
+            "For we",
+            {
+              "italic": "have spent"
+            },
+            "enough of our past lifetime",
+            {
+              "text": "a",
+              "cross_ref": "r148"
+            },
+            "in doing the will of the Gentiles—when we walked in lewdness, lusts, drunkenness, revelries, drinking parties, and abominable idolatries."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "In regard to these, they think it strange that you do not run withthemin the same flood of dissipation, speaking evil ofyou.",
+          "parts": [
+            "In regard to these, they think it strange that you do not run with",
+            {
+              "italic": "them"
+            },
+            "in the same flood of dissipation, speaking evil of",
+            {
+              "italic": "you."
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "They will give an account to Him who is ready to judge the living and the dead.",
+          "parts": [
+            "They will give an account to Him who is ready to judge the living and the dead."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "For this reason the gospel was preached also to those who are dead, that they might be judged according to men in the flesh, but live according to God in the spirit.",
+          "parts": [
+            "For this reason the gospel was preached also to those who are dead, that they might be judged according to men in the flesh, but live according to God in the spirit.",
+            {
+              "footnote": "f5961"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "But the end of all things is at hand; therefore be serious and watchful in your prayers.And above all things have fervent love for one another, for“love will cover a multitude of sins.”aBehospitable to one another without grumbling.As each one has received a gift, minister it to one another, as good stewards of the manifold grace of God.If anyone speaks,let himspeakas the oracles of God. If anyone ministers,let him do itas with the ability which God supplies, that in all things God may be glorified through Jesus Christ, to whom belong the glory and the dominion forever and ever. Amen.",
+          "parts": [
+            "But the end of all things is at hand; therefore be serious and watchful in your prayers.",
+            {
+              "footnote": "f5962"
+            },
+            "And above all things have fervent love for one another, for",
+            {
+              "italic": "“love will cover a multitude of sins.”"
+            },
+            {
+              "text": "a",
+              "cross_ref": "r149"
+            },
+            {
+              "italic": "Be"
+            },
+            "hospitable to one another without grumbling.As each one has received a gift, minister it to one another, as good stewards of the manifold grace of God.If anyone speaks,",
+            {
+              "italic": "let him"
+            },
+            {
+              "italic": "speak"
+            },
+            "as the oracles of God. If anyone ministers,",
+            {
+              "italic": "let him do it"
+            },
+            "as with the ability which God supplies, that in all things God may be glorified through Jesus Christ, to whom belong the glory and the dominion forever and ever. Amen."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "And above all things have fervent love for one another, for“love will cover a multitude of sins.”a",
+          "parts": [
+            "And above all things have fervent love for one another, for",
+            {
+              "italic": "“love will cover a multitude of sins.”"
+            },
+            {
+              "text": "a",
+              "cross_ref": "r150"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Behospitable to one another without grumbling.",
+          "parts": [
+            {
+              "italic": "Be"
+            },
+            "hospitable to one another without grumbling."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "As each one has received a gift, minister it to one another, as good stewards of the manifold grace of God.",
+          "parts": [
+            "As each one has received a gift, minister it to one another, as good stewards of the manifold grace of God."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "If anyone speaks,let himspeakas the oracles of God.",
+          "parts": [
+            "If anyone speaks,",
+            {
+              "italic": "let him"
+            },
+            {
+              "italic": "speak"
+            },
+            "as the oracles of God."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Beloved, do not think it strange concerning the fiery trial which is to try you, as though some strange thing happened to you;but rejoice to the extent that you partake of Christ's sufferings, that when His glory is revealed, you may also be glad with exceeding joy.If you are reproached for the name of Christ, blessedare you,for the Spirit of glory and of God rests upon you.aOn their part He is blasphemed, but on your part He is glorified.But let none of you suffer as a murderer, a thief, an evildoer, or as a busybody in other people's matters.Yet ifanyone suffersas a Christian, let him not be ashamed, but let him glorify God in this matter.a",
+          "parts": [
+            "Beloved, do not think it strange concerning the fiery trial which is to try you, as though some strange thing happened to you;",
+            {
+              "footnote": "f5963"
+            },
+            "but rejoice to the extent that you partake of Christ's sufferings, that when His glory is revealed, you may also be glad with exceeding joy.If you are reproached for the name of Christ, blessed",
+            {
+              "italic": "are you,"
+            },
+            "for the Spirit of glory and of God rests upon you.",
+            {
+              "text": "a",
+              "cross_ref": "r151"
+            },
+            "On their part He is blasphemed, but on your part He is glorified.But let none of you suffer as a murderer, a thief, an evildoer, or as a busybody in other people's matters.Yet if",
+            {
+              "italic": "anyone suffers"
+            },
+            "as a Christian, let him not be ashamed, but let him glorify God in this matter.",
+            {
+              "text": "a",
+              "cross_ref": "r152"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "but rejoice to the extent that you partake of Christ's sufferings, that when His glory is revealed, you may also be glad with exceeding joy.",
+          "parts": [
+            "but rejoice to the extent that you partake of Christ's sufferings, that when His glory is revealed, you may also be glad with exceeding joy."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "If you are reproached for the name of Christ, blessedare you,for the Spirit of glory and of God rests upon you.aOn their part He is blasphemed, but on your part He is glorified.",
+          "parts": [
+            "If you are reproached for the name of Christ, blessed",
+            {
+              "italic": "are you,"
+            },
+            "for the Spirit of glory and of God rests upon you.",
+            {
+              "text": "a",
+              "cross_ref": "r153"
+            },
+            "On their part He is blasphemed, but on your part He is glorified."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "But let none of you suffer as a murderer, a thief, an evildoer, or as a busybody in other people's matters.",
+          "parts": [
+            "But let none of you suffer as a murderer, a thief, an evildoer, or as a busybody in other people's matters."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Yet ifanyone suffersas a Christian, let him not be ashamed, but let him glorify God in this matter.a",
+          "parts": [
+            "Yet if",
+            {
+              "italic": "anyone suffers"
+            },
+            "as a Christian, let him not be ashamed, but let him glorify God in this matter.",
+            {
+              "text": "a",
+              "cross_ref": "r154"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For the timehas comefor judgment to begin at the house of God; and ifit beginswith us first, what willbethe end of those who do not obey the gospel of God?Now",
+          "parts": [
+            "For the time",
+            {
+              "italic": "has come"
+            },
+            "for judgment to begin at the house of God; and if",
+            {
+              "italic": "it begins"
+            },
+            "with us first, what will",
+            {
+              "italic": "be"
+            },
+            "the end of those who do not obey the gospel of God?",
+            {
+              "footnote": "f5964"
+            },
+            "Now"
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Now",
+          "parts": [
+            "Now"
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Therefore let those who suffer according to the will of God commit their soulsto Himin doing good, as to a faithful Creator.",
+          "parts": [
+            "Therefore let those who suffer according to the will of God commit their souls",
+            {
+              "italic": "to Him"
+            },
+            "in doing good, as to a faithful Creator."
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting",
+        "Born to a Heavenly Hope",
+        "Tested for Genuine Faith"
+      ]
+    },
+    {
+      "chapter_num": 5,
+      "verses_count": 14,
+      "verses": [
+        {
+          "num": 2,
+          "text": "Shepherd the flock of God which is among you, serving as overseers, not by compulsion but willingly,anot for dishonest gain but eagerly;",
+          "parts": [
+            "Shepherd the flock of God which is among you, serving as overseers, not by compulsion but willingly,",
+            {
+              "text": "a",
+              "cross_ref": "r155"
+            },
+            "not for dishonest gain but eagerly;"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "nor as being lords over those entrusted to you, but being examples to the flock;",
+          "parts": [
+            "nor as being lords over those entrusted to you, but being examples to the flock;",
+            {
+              "footnote": "f5966"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "and when the Chief Shepherd appears, you will receive the crown of glory that does not fade away.",
+          "parts": [
+            "and when the Chief Shepherd appears, you will receive the crown of glory that does not fade away."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Likewise you younger people, submit yourselves toyourelders. Yes, all ofyoube submissive to one another, and be clothed with humility, for",
+          "parts": [
+            "Likewise you younger people, submit yourselves to",
+            {
+              "italic": "your"
+            },
+            "elders. Yes, all of",
+            {
+              "italic": "you"
+            },
+            "be submissive to one another, and be clothed with humility, for"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Therefore humble yourselves under the mighty hand of God, that He may exalt you in due time,casting all your care upon Him, for He cares for you.",
+          "parts": [
+            "Therefore humble yourselves under the mighty hand of God, that He may exalt you in due time,",
+            {
+              "liturgy": "fx366"
+            },
+            "casting all your care upon Him, for He cares for you."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "casting all your care upon Him, for He cares for you.",
+          "parts": [
+            "casting all your care upon Him, for He cares for you."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Be sober, be vigilant; becauseayour adversary the devil walks about like a roaring lion, seeking whom he may devour.Resist him, steadfast in the faith, knowing that the same sufferings are experienced by your brotherhood in the world.But mayathe God of all grace, who called usbto His eternal glory by Christ Jesus, after you have suffered a while, perfect, establish, strengthen, and settleyou.To Himbethe glory and the dominion forever and ever. Amen.",
+          "parts": [
+            "Be sober, be vigilant; because",
+            {
+              "text": "a",
+              "cross_ref": "r156"
+            },
+            "your adversary the devil walks about like a roaring lion, seeking whom he may devour.",
+            {
+              "footnote": "f5968"
+            },
+            "Resist him, steadfast in the faith, knowing that the same sufferings are experienced by your brotherhood in the world.But may",
+            {
+              "text": "a",
+              "cross_ref": "r157"
+            },
+            "the God of all grace, who called us",
+            {
+              "text": "b",
+              "cross_ref": "r158"
+            },
+            "to His eternal glory by Christ Jesus, after you have suffered a while, perfect, establish, strengthen, and settle",
+            {
+              "italic": "you."
+            },
+            "To Him",
+            {
+              "italic": "be"
+            },
+            "the glory and the dominion forever and ever. Amen."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Resist him, steadfast in the faith, knowing that the same sufferings are experienced by your brotherhood in the world.",
+          "parts": [
+            "Resist him, steadfast in the faith, knowing that the same sufferings are experienced by your brotherhood in the world."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "But mayathe God of all grace, who called usbto His eternal glory by Christ Jesus, after you have suffered a while, perfect, establish, strengthen, and settleyou.",
+          "parts": [
+            "But may",
+            {
+              "text": "a",
+              "cross_ref": "r159"
+            },
+            "the God of all grace, who called us",
+            {
+              "text": "b",
+              "cross_ref": "r160"
+            },
+            "to His eternal glory by Christ Jesus, after you have suffered a while, perfect, establish, strengthen, and settle",
+            {
+              "italic": "you."
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "To Himbethe glory and the dominion forever and ever.",
+          "parts": [
+            "To Him",
+            {
+              "italic": "be"
+            },
+            "the glory and the dominion forever and ever."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "By Silvanus, our faithful brother as I consider him, I have written to you briefly, exhorting and testifying that this is the true grace of God in which you stand.",
+          "parts": [
+            "By Silvanus, our faithful brother as I consider him, I have written to you briefly, exhorting and testifying that this is the true grace of God in which you stand."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "She who is in Babylon, elect together withyou,greets you; andso doesMark my son.Greet one another with a kiss of love.",
+          "parts": [
+            "She who is in Babylon, elect together with",
+            {
+              "italic": "you,"
+            },
+            "greets you; and",
+            {
+              "italic": "so does"
+            },
+            "Mark my son.",
+            {
+              "footnote": "f5969"
+            },
+            "Greet one another with a kiss of love."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Greet one another with a kiss of love.",
+          "parts": [
+            "Greet one another with a kiss of love."
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting",
+        "Born to a Heavenly Hope",
+        "Tested for Genuine Faith"
+      ]
+    }
+  ]
+}

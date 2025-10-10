@@ -1,0 +1,29 @@
+{
+  "en_name": "Lamentations of Jeremiah",
+  "local_name": "Lamentations of Jeremiah",
+  "abr": "lam",
+  "ch_count": 1,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 1,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Now it came to pass that after Israel was taken captive and Jerusalem became desolate, Jeremiah sat weeping; and he lamented this song of grief over Jerusalem and said:",
+          "parts": [
+            "Now it came to pass that after Israel was taken captive and Jerusalem became desolate, Jeremiah sat weeping; and he lamented this song of grief over Jerusalem and said:",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f3843"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    }
+  ],
+  "author": "Jeremiah the prophet",
+  "date": "Written during the three months following the destruction of Jerusalem (October, 587 BC) and before Jeremiah was taken captive to Egypt in December of the same year.",
+  "theme": "Major Themes—God's judgment of the people's sins and His unfathomable love and sorrow for Israel. This is Jeremiah's personal testimonial and lament over the devastation of Jerusalem and the temple. The prophet maintains there is still hope for repentance and restoration. Consistent with his previous and later messages, here he instructs the suffering Jews not to despise God's punishment but to repent, confessing their sins and seeking forgiveness and deliverance."
+}

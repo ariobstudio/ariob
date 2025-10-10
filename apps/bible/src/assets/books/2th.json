@@ -1,0 +1,515 @@
+{
+  "en_name": "2 Thessalonians",
+  "local_name": "2 Thessalonians",
+  "abr": "2th",
+  "ch_count": 3,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 12,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Paul, Silvanus, and Timothy,",
+          "parts": [
+            "Paul, Silvanus, and Timothy,"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "Grace to you and peace from God our Father and the Lord Jesus Christ.",
+          "parts": [
+            "Grace to you and peace from God our Father and the Lord Jesus Christ."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "We are bound to thank God always for you, brethren, as it is fitting, because your faith grows exceedingly, and the love of every one of you all abounds toward each other, so that we ourselves boast of you among the churches of God for your patience and faith in all your persecutions and tribulations that you endure, which is manifest evidence of the righteous judgment of God, that you may be counted worthy of the kingdom of God, for which you also suffer; since it is a righteous thing with God to repay with tribulation those who trouble you, and to give you who are troubled rest with us when the Lord Jesus is revealed from heaven with His mighty angels, in flaming fire taking vengeance on those who do not know God, and on those who do not obey the gospel of our Lord Jesus Christ.",
+          "parts": [
+            "We are bound to thank God always for you, brethren, as it is fitting, because your faith grows exceedingly, and the love of every one of you all abounds toward each other,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6286"
+            },
+            "so that we ourselves boast of you among the churches of God for your patience and faith in all your persecutions and tribulations that you endure,",
+            {
+              "style": "ITALIC",
+              "text": "which is "
+            },
+            "manifest evidence of the righteous judgment of God, that you may be counted worthy of the kingdom of God, for which you also suffer; since",
+            {
+              "style": "ITALIC",
+              "text": "it is "
+            },
+            "a righteous thing with God to repay with tribulation those who trouble you, and to",
+            {
+              "style": "ITALIC",
+              "text": "give "
+            },
+            "you who are troubled rest with us when the Lord Jesus is revealed from heaven with His mighty angels, in flaming fire taking vengeance on those who do not know God, and on those who do not obey the gospel of our Lord Jesus Christ."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "so that we ourselves boast of you among the churches of God for your patience and faith in all your persecutions and tribulations that you endure,",
+          "parts": [
+            "so that we ourselves boast of you among the churches of God for your patience and faith in all your persecutions and tribulations that you endure,"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "which is",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "which is "
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "since it is",
+          "parts": [
+            "since",
+            {
+              "style": "ITALIC",
+              "text": "it is "
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "and to give",
+          "parts": [
+            "and to",
+            {
+              "style": "ITALIC",
+              "text": "give "
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "in flaming fire taking vengeance on those who do not know God, and on those who do not obey the gospel of our Lord Jesus Christ.",
+          "parts": [
+            "in flaming fire taking vengeance on those who do not know God, and on those who do not obey the gospel of our Lord Jesus Christ."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "These shall be punished with everlasting destruction from the presence of the Lord and from the glory of His power,",
+          "parts": [
+            "These shall be punished with everlasting destruction from the presence of the Lord and from the glory of His power,"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "when He comes, in that Day, to be glorified in His saints and to be admired among all those who believe, a",
+          "parts": [
+            "when He comes, in that Day, to be glorified in His saints and to be admired among all those who believe,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1524"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Therefore we also pray always for you that our God would count you worthy of this calling, and fulfill all the good pleasure of His goodness and the work of faith with power, that the name of our Lord Jesus Christ may be glorified in you, and you in Him, according to the grace of our God and the Lord Jesus Christ.",
+          "parts": [
+            "Therefore we also pray always for you that our God would count you worthy of",
+            {
+              "style": "ITALIC",
+              "text": "this "
+            },
+            "calling, and fulfill all the good pleasure of",
+            {
+              "style": "ITALIC",
+              "text": "His "
+            },
+            "goodness and the work of faith with power,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6287"
+            },
+            "that the name of our Lord Jesus Christ may be glorified in you, and you in Him, according to the grace of our God and the Lord Jesus Christ."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "that the name of our Lord Jesus Christ may be glorified in you, and you in Him, according to the grace of our God and the Lord Jesus Christ.",
+          "parts": [
+            "that the name of our Lord Jesus Christ may be glorified in you, and you in Him, according to the grace of our God and the Lord Jesus Christ."
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting",
+        "The Present Persecution",
+        "False Teaching on the Second Coming"
+      ]
+    },
+    {
+      "chapter_num": 2,
+      "verses_count": 17,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Now, brethren, concerning the coming of our Lord Jesus Christ and our gathering together to Him, we ask you, not to be soon shaken in mind or troubled, either by spirit or by word or by letter, as if from us, as though the day of Christ a had come.",
+          "parts": [
+            "Now, brethren, concerning the coming of our Lord Jesus Christ and our gathering together to Him, we ask you, not to be soon shaken in mind or troubled, either by spirit or by word or by letter, as if from us, as though the day of Christ",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1525"
+            },
+            "had come."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Let no one deceive you by any means; for that Day will not come unless the falling away comes first, and the man of sin a is revealed, the son of perdition, who opposes and exalts himself above all that is called God or that is worshiped, so that he sits as God a in the temple of God, showing himself that he is God.",
+          "parts": [
+            "Let no one deceive you by any means; for",
+            {
+              "style": "ITALIC",
+              "text": "that Day will not come "
+            },
+            "unless the falling away comes first, and the man of sin",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1526"
+            },
+            "is revealed, the son of perdition,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6288"
+            },
+            "who opposes and exalts himself above all that is called God or that is worshiped, so that he sits as God",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1527"
+            },
+            "in the temple of God, showing himself that he is God."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "who opposes and exalts himself above all that is called God or that is worshiped, so that he sits as God a",
+          "parts": [
+            "who opposes and exalts himself above all that is called God or that is worshiped, so that he sits as God",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1528"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Do you not remember that when I was still with you I told you these things?",
+          "parts": [
+            "Do you not remember that when I was still with you I told you these things?"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "And now you know what is restraining, that he may be revealed in his own time.",
+          "parts": [
+            "And now you know what is restraining, that he may be revealed in his own time."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For the mystery of lawlessness is already at work; only He a",
+          "parts": [
+            "For the mystery of lawlessness is already at work; only He",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1529"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "And then the lawless one will be revealed, whom the Lord will consume with the breath of His mouth and destroy with the brightness of His coming.",
+          "parts": [
+            "And then the lawless one will be revealed, whom the Lord will consume with the breath of His mouth and destroy with the brightness of His coming."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "The coming of the lawless one",
+          "parts": [
+            "The coming of the",
+            {
+              "style": "ITALIC",
+              "text": "lawless one "
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "and with all unrighteous deception among those who perish, because they did not receive the love of the truth, that they might be saved.",
+          "parts": [
+            "and with all unrighteous deception among those who perish, because they did not receive the love of the truth, that they might be saved."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And for this reason God will send them strong delusion, that they should believe the lie,",
+          "parts": [
+            "And for this reason God will send them strong delusion, that they should believe the lie,"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "that they all may be condemned who did not believe the truth but had pleasure in unrighteousness.",
+          "parts": [
+            "that they all may be condemned who did not believe the truth but had pleasure in unrighteousness."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "But we are bound to give thanks to God always for you, brethren beloved by the Lord, because God from the beginning chose you for salvation through sanctification by the Spirit and belief in the truth, to which He called you by our gospel, for the obtaining of the glory of our Lord Jesus Christ.",
+          "parts": [
+            "But we are bound to give thanks to God always for you, brethren beloved by the Lord, because God from the beginning chose you for salvation through sanctification by the Spirit and belief in the truth, to which He called you by our gospel, for the obtaining of the glory of our Lord Jesus Christ."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "to which He called you by our gospel, for the obtaining of the glory of our Lord Jesus Christ.",
+          "parts": [
+            "to which He called you by our gospel, for the obtaining of the glory of our Lord Jesus Christ."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Therefore, brethren, stand fast and hold the traditions which you were taught, whether by word or our epistle.",
+          "parts": [
+            "Therefore, brethren, stand fast and hold the traditions which you were taught, whether by word or our epistle.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6289"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Now may our Lord Jesus Christ Himself, and our God and Father, who has loved us and given us everlasting consolation and good hope by grace, comfort your hearts and establish you in every good word and work.",
+          "parts": [
+            "Now may our Lord Jesus Christ Himself, and our God and Father, who has loved us and given",
+            {
+              "style": "ITALIC",
+              "text": "us "
+            },
+            "everlasting consolation and good hope by grace, comfort your hearts and establish you in every good word and work."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "comfort your hearts and establish you in every good word and work.",
+          "parts": [
+            "comfort your hearts and establish you in every good word and work."
+          ]
+        }
+      ],
+      "headers": [
+        "True Tradition on the Second Coming",
+        "Stand Fast in the Faith",
+        "Pray for Us"
+      ]
+    },
+    {
+      "chapter_num": 3,
+      "verses_count": 18,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Finally, brethren, pray for us, that the word of the Lord may run swiftly and be glorified, just as it is with you, and that we may be delivered from unreasonable and wicked men; for not all have faith.",
+          "parts": [
+            "Finally, brethren, pray for us, that the word of the Lord may run",
+            {
+              "style": "ITALIC",
+              "text": "swiftly "
+            },
+            "and be glorified, just as",
+            {
+              "style": "ITALIC",
+              "text": "it is "
+            },
+            "with you, and that we may be delivered from unreasonable and wicked men; for not all have faith."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "But the Lord is faithful, who will establish you and guard you from the evil one.",
+          "parts": [
+            "But the Lord is faithful, who will establish you and guard",
+            {
+              "style": "ITALIC",
+              "text": "you "
+            },
+            "from the evil one."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "And we have confidence in the Lord concerning you, both that you do and will do the things we command you.",
+          "parts": [
+            "And we have confidence in the Lord concerning you, both that you do and will do the things we command you."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Now may the Lord direct your hearts into the love of God and into the patience of Christ.",
+          "parts": [
+            "Now may the Lord direct your hearts into the love of God and into the patience of Christ."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "But we command you, brethren, in the name of our Lord Jesus Christ, that you withdraw from every brother who walks disorderly and not according to the tradition which he a received from us. For you yourselves know how you ought to follow us, for we were not disorderly among you; nor did we eat anyone’s bread free of charge, but worked with labor and toil night and day, that we might not be a burden to any of you, not because we do not have authority, but to make ourselves an example of how you should follow us.",
+          "parts": [
+            "But we command you, brethren, in the name of our Lord Jesus Christ, that you withdraw from every brother who walks disorderly and not according to the tradition which he",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1530"
+            },
+            "received from us.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6290"
+            },
+            "For you yourselves know how you ought to follow us, for we were not disorderly among you; nor did we eat anyone’s bread free of charge, but worked with labor and toil night and day, that we might not be a burden to any of you, not because we do not have authority, but to make ourselves an example of how you should follow us."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For you yourselves know how you ought to follow us, for we were not disorderly among you;",
+          "parts": [
+            "For you yourselves know how you ought to follow us, for we were not disorderly among you;"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "nor did we eat anyone’s bread free of charge, but worked with labor and toil night and day, that we might not be a burden to any of you,",
+          "parts": [
+            "nor did we eat anyone’s bread free of charge, but worked with labor and toil night and day, that we might not be a burden to any of you,"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "not because we do not have authority, but to make ourselves an example of how you should follow us.",
+          "parts": [
+            "not because we do not have authority, but to make ourselves an example of how you should follow us."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "For even when we were with you, we commanded you this: If anyone will not work, neither shall he eat.",
+          "parts": [
+            "For even when we were with you, we commanded you this: If anyone will not work, neither shall he eat."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "For we hear that there are some who walk among you in a disorderly manner, not working at all, but are busybodies.",
+          "parts": [
+            "For we hear that there are some who walk among you in a disorderly manner, not working at all, but are busybodies."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Now those who are such we command and exhort through our Lord Jesus Christ that they work in quietness and eat their own bread.",
+          "parts": [
+            "Now those who are such we command and exhort through our Lord Jesus Christ that they work in quietness and eat their own bread."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "But as for you, brethren, do not grow weary in doing good. And if anyone does not obey our word in this epistle, note that person and do not keep company with him, that he may be ashamed.",
+          "parts": [
+            "But",
+            {
+              "style": "ITALIC",
+              "text": "as for "
+            },
+            "you, brethren, do not grow weary",
+            {
+              "style": "ITALIC",
+              "text": "in "
+            },
+            "doing good.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6291"
+            },
+            "And if anyone does not obey our word in this epistle, note that person and do not keep company with him, that he may be ashamed."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "And if anyone does not obey our word in this epistle, note that person and do not keep company with him, that he may be ashamed.",
+          "parts": [
+            "And if anyone does not obey our word in this epistle, note that person and do not keep company with him, that he may be ashamed."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Yet do not count him",
+          "parts": [
+            "Yet do not count",
+            {
+              "style": "ITALIC",
+              "text": "him "
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Now may the Lord of peace Himself give you peace always in every way.",
+          "parts": [
+            "Now may the Lord of peace Himself give you peace always in every way."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "The salutation of Paul with my own hand, which is a sign in every epistle; so I write.",
+          "parts": [
+            "The salutation of Paul with my own hand, which is a sign in every epistle; so I write.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6292"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "The grace of our Lord Jesus Christ be with you all.",
+          "parts": [
+            "The grace of our Lord Jesus Christ",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            },
+            "with you all."
+          ]
+        }
+      ],
+      "headers": [
+        "Be Industrious",
+        "Preserve Unity",
+        "Benediction"
+      ]
+    }
+  ],
+  "author": "Silvanus (Silas) and Timothy are named with the author, Paul (as they are at the opening of 1 Thessalonians), because they were his co-laborers in establishing the Thessalonian church (see Acts 17:1–9).",
+  "date": "This epistle was written in AD 51, probably from Corinth.",
+  "theme": "Stand fast by means of apostolic teaching. Some of the Thessalonians had been shaken in their faith by speculations on Christ’s return; some even said the day of the Lord had already come (2:2). As a result, these people had lost holiness of life. Paul counters such traditions of men with apostolic tradition (2:15; 3:6). Subthemes include Paul’s gratitude for the people’s faithfulness (1:3; 2:13) and for God’s faithfulness to His people (3:3)."
+}

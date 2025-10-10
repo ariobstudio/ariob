@@ -4,6 +4,11 @@ import { useEffect } from '@lynx-js/react';
 import { useTheme, Column } from '@ariob/ui';
 import { useBibleStore } from './store/bible-store';
 import { bibleService } from './services/bible-service';
+import { Home } from './components/Home';
+import { Settings } from './components/Settings';
+import { Lessons } from './components/Lessons';
+import { BookInfo } from './components/BookInfo';
+import { NotesAndHighlights } from './components/NotesAndHighlights';
 import { BookList, ChapterList, VerseReader, SearchView } from './components';
 
 export function App() {
@@ -79,10 +84,15 @@ export function App() {
         'dark bg-background pt-safe-top w-full h-full'
       )}
     >
+      {viewMode === 'home' && <Home />}
       {viewMode === 'books' && <BookList />}
       {viewMode === 'chapters' && <ChapterList />}
       {viewMode === 'reader' && <VerseReader />}
       {viewMode === 'search' && <SearchView />}
+      {viewMode === 'lessons' && <Lessons />}
+      {viewMode === 'bookInfo' && <BookInfo />}
+      {viewMode === 'notes' && <NotesAndHighlights />}
+      {viewMode === 'settings' && <Settings />}
     </page>
   );
 }

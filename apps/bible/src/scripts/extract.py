@@ -1,5 +1,5 @@
 """
-Extractor for the Orthodox Study Bible (OSB) EPUB.
+Simplified extractor for the Orthodox Study Bible (OSB) EPUB.
 
 This script produces a developer‑friendly JSON representation of the
 Bible, flattening chapters and verses, extracting plain text for each
@@ -8,7 +8,7 @@ and assigning short IDs to cross references to avoid repeated objects.
 
 Key features:
 
-1. **Chapter/Verse Access**: Each book has a `chapters` array,
+1. **Simplified Chapter/Verse Access**: Each book has a `chapters` array,
    and each chapter has a `verses` array for direct indexing (`book.chapters[0].verses[0]`).
 
 2. **Plain Text**: Each verse includes a `text` field containing the
@@ -37,7 +37,7 @@ Key features:
    `chapters` and `verses` fields are adopted.
 
 Usage:
-    python extract.py --input path/to/epub --output path/to/json
+    python extract_osb_simplified.py --input path/to/epub --output path/to/json
 
 """
 
@@ -59,6 +59,12 @@ from extract_osb_enhanced import parse_cross_reference  # for commentary parsing
 def parse_commentary_parts(p_tag, current_book: str, cross_ref_map: Dict[Tuple[Any, ...], str], cross_refs: Dict[str, Any]) -> List[Any]:
     """Parse a commentary paragraph (<p> with class tx/tx1/ext/ct) into simplified parts.
 
+    This function extracts plain text, italicised segments, and cross references from a commentary
+    paragraph. It cleans up duplicate punctuation and whitespace, merges consecutive strings, and
+    also detects cross references within plain text (e.g., "Ps 103:30; 32:6") and converts them
+    into cross‑reference objects. Links to notes are treated as plain text to avoid
+    duplication since the notes themselves are stored separately.
+
     Args:
         p_tag: BeautifulSoup tag for the paragraph.
         current_book: Current book name for relative references.
@@ -67,21 +73,22 @@ def parse_commentary_parts(p_tag, current_book: str, cross_ref_map: Dict[Tuple[A
     Returns:
         List of simplified parts: plain strings, italic segments, cross references.
     """
-    parts: List[Any] = []
+    raw_parts: List[Any] = []
+    # Iterate over the immediate contents of the <p> tag
     for elem in p_tag.contents:
         if isinstance(elem, str):
             text = elem
             if text:
-                parts.append(text)
+                raw_parts.append(text)
         elif elem.name == 'span':
             # treat <span> as plain text
             text = elem.get_text()
             if text:
-                parts.append(text)
+                raw_parts.append(text)
         elif elem.name == 'i':
             text = elem.get_text()
             if text:
-                parts.append({'italic': text})
+                raw_parts.append({'italic': text})
         elif elem.name == 'a':
             href = elem.get('href')
             anchor_text = elem.get_text()
@@ -109,19 +116,83 @@ def parse_commentary_parts(p_tag, current_book: str, cross_ref_map: Dict[Tuple[A
                         cid = f"r{len(cross_ref_map) + 1}"
                         cross_ref_map[key] = cid
                         cross_refs[cid] = target
-                    parts.append({'text': anchor_text, 'cross_ref': cid})
+                    raw_parts.append({'text': anchor_text, 'cross_ref': cid})
                 else:
-                    # If note inside commentary, ignore or process as plain text
-                    note_id = href.split('#')[-1] if '#' in href else None
-                    # We won't include footnote text inside commentary to avoid duplication
-                    if anchor_text:
-                        parts.append(anchor_text)
+                    # Note link inside commentary: treat the visible text as plain text; actual note
+                    # content is handled elsewhere.
+                    raw_parts.append(anchor_text)
         else:
             # For any other tag, append its text
             text = elem.get_text()
             if text:
-                parts.append(text)
-    return parts
+                raw_parts.append(text)
+
+    # Clean up: merge adjacent strings and remove whitespace-only segments
+    merged_parts: List[Any] = []
+    for part in raw_parts:
+        if isinstance(part, str):
+            # Skip empty or whitespace-only strings
+            if not part.strip():
+                continue
+            if merged_parts and isinstance(merged_parts[-1], str):
+                merged_parts[-1] += part
+            else:
+                merged_parts.append(part)
+        else:
+            merged_parts.append(part)
+
+    # Further process string parts to detect cross references within them (e.g. "Ps 103:30; 32:6")
+    processed_parts: List[Any] = []
+    # Regex pattern to find verse references with optional book abbreviation
+    # Supports references like "Ps 103:30", "32:6", "1:4-25"
+    ref_pattern = re.compile(r'(?:(?P<book>[A-Za-z]{1,3})\s)?(?P<chap>\d+):(?P<start>\d+)(?:[–-](?P<end>\d+))?')
+    for part in merged_parts:
+        if isinstance(part, str):
+            text = part
+            idx = 0
+            last_book_abbrev: str = None
+            for m in ref_pattern.finditer(text):
+                start, end = m.span()
+                # add preceding text if any
+                if start > idx:
+                    prefix = text[idx:start]
+                    if prefix:
+                        processed_parts.append(prefix)
+                ref_text = m.group(0)
+                book_abbrev = m.group('book')
+                chap = int(m.group('chap'))
+                verse_start = int(m.group('start'))
+                verse_end = int(m.group('end')) if m.group('end') else verse_start
+                # Determine the book abbreviation for this ref
+                if book_abbrev:
+                    last_book_abbrev = book_abbrev
+                if not book_abbrev and last_book_abbrev:
+                    book_abbrev = last_book_abbrev
+                # Build target dict
+                target: Dict[str, Any] = {'chapter': chap, 'verse': verse_start}
+                if verse_end != verse_start:
+                    target['verse_end'] = verse_end
+                if book_abbrev:
+                    target['book_abbrev'] = book_abbrev
+                else:
+                    # If no book abbreviation specified at all, use current book file
+                    target['book_file'] = current_book
+                # Get cross ref ID
+                key = tuple(sorted(target.items()))
+                cid = cross_ref_map.get(key)
+                if not cid:
+                    cid = f"r{len(cross_ref_map) + 1}"
+                    cross_ref_map[key] = cid
+                    cross_refs[cid] = target
+                processed_parts.append({'text': ref_text, 'cross_ref': cid})
+                idx = end
+            if idx < len(text):
+                suffix = text[idx:]
+                if suffix:
+                    processed_parts.append(suffix)
+        else:
+            processed_parts.append(part)
+    return processed_parts
 
 
 def parse_note_text_simple(text: str, current_book: str) -> List[Dict[str, Any]]:
@@ -466,6 +537,63 @@ def main():
             # Append last lesson
             if current_entries:
                 lessons.append({'title': current_title or '', 'entries': current_entries})
+
+            # ---- Filter commentary titles from verses and headers ----
+            # Build a set of normalised lesson titles to aid removal from verses and headers
+            lesson_title_norms: set = set()
+            for lesson in lessons:
+                title = lesson.get('title', '')
+                if not title:
+                    continue
+                norm = ''.join(title.split()).upper()
+                lesson_title_norms.add(norm)
+            # Filter out commentary titles from verses
+            if lesson_title_norms:
+                for chap in chapters_list:
+                    for verse in chap['verses']:
+                        new_parts: List[Any] = []
+                        removed_any = False
+                        for part in verse['parts']:
+                            remove = False
+                            if isinstance(part, str):
+                                # Normalise candidate and check against lesson titles
+                                text_norm = ''.join(part.split()).upper()
+                                for lt in lesson_title_norms:
+                                    if text_norm == lt or lt in text_norm or text_norm in lt:
+                                        remove = True
+                                        break
+                            if not remove:
+                                new_parts.append(part)
+                            else:
+                                removed_any = True
+                        if removed_any:
+                            # Recompute plain text from remaining parts
+                            plain = ''
+                            for p2 in new_parts:
+                                if isinstance(p2, str):
+                                    plain += p2
+                                elif isinstance(p2, dict):
+                                    if 'italic' in p2:
+                                        plain += p2['italic']
+                                    elif 'text' in p2:
+                                        plain += p2['text']
+                            verse['parts'] = new_parts
+                            verse['text'] = plain
+                # Also filter headers in chapters
+                for chap in chapters_list:
+                    filtered_hdrs = []
+                    for hdr in chap['headers']:
+                        hdr_norm = ''.join(hdr.split()).upper()
+                        keep = True
+                        for lt in lesson_title_norms:
+                            if hdr_norm == lt or lt in hdr_norm or hdr_norm in lt:
+                                keep = False
+                                break
+                        if keep:
+                            filtered_hdrs.append(hdr)
+                    chap['headers'] = filtered_hdrs
+
+            # Now append book entry
             books.append({
                 'en_name': book_name,
                 'local_name': book_name,

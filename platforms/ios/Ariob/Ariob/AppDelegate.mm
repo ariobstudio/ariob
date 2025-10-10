@@ -37,7 +37,7 @@ NSString *const DEBUG_URL = @"http://10.0.0.246:3000/main.lynx.bundle?fullscreen
     });
   }];
 
-  [[TasmDispatcher sharedInstance] openTargetUrl:MAIN_URL];
+  [[TasmDispatcher sharedInstance] openTargetUrl:DEBUG_URL];
   return YES;
 }
 

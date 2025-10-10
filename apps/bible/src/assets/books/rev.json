@@ -1,0 +1,4932 @@
+{
+  "en_name": "Revelation",
+  "local_name": "Revelation",
+  "abr": "rev",
+  "ch_count": 22,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 20,
+      "verses": [
+        {
+          "num": 1,
+          "text": "The Revelation of Jesus Christ, which God gave Him to show His servants—things which must shortly take place.",
+          "parts": [
+            "The Revelation of Jesus Christ, which God gave Him to show His servants—things which must shortly take place."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "who bore witness to the word of God, and to the testimony of Jesus Christ, to all things that he saw.",
+          "parts": [
+            "who bore witness to the word of God, and to the testimony of Jesus Christ, to all things that he saw.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6054"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Blessed is",
+          "parts": [
+            "Blessed",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "John, to the seven churches which are in Asia:",
+          "parts": [
+            "John, to the seven churches which are in Asia:"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "and from Jesus Christ, the faithful witness, the firstborn from the dead, and the ruler over the kings of the earth.",
+          "parts": [
+            "and from Jesus Christ, the faithful witness, the firstborn from the dead, and the ruler over the kings of the earth."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "and has made us kings a",
+          "parts": [
+            "and has made us kings",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1620"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Behold, He is coming with clouds, and every eye will see Him, even they who pierced Him.",
+          "parts": [
+            "Behold, He is coming with clouds, and every eye will see Him, even they who pierced Him."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "“I am the Alpha and the Omega, the Beginning and the End,” a says the Lord, b “who is and who was and who is to come, the Almighty.”",
+          "parts": [
+            "“I am the Alpha and the Omega,",
+            {
+              "style": "ITALIC",
+              "text": "the"
+            },
+            "Beginning and",
+            {
+              "style": "ITALIC",
+              "text": "the"
+            },
+            "End,”",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1621"
+            },
+            "says the Lord,",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r1622"
+            },
+            "“who is and who was and who is to come, the Almighty.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6059"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "I, John, both a your brother and companion in the tribulation and kingdom and patience of Jesus Christ, was on the island that is called Patmos for the word of God and for the testimony of Jesus Christ. b I was in the Spirit on the Lord's Day, and I heard behind me a loud voice, as of a trumpet, saying, “I am the Alpha and the Omega, the First and the Last,” a and, “What you see, write in a book and send it to the seven churches which are in Asia: b to Ephesus, to Smyrna, to Pergamos, to Thyatira, to Sardis, to Philadelphia, and to Laodicea.”",
+          "parts": [
+            "I, John, both",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1623"
+            },
+            "your brother and companion in the tribulation and kingdom and patience of Jesus Christ, was on the island that is called Patmos for the word of God and for the testimony of Jesus Christ.",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r1624"
+            },
+            "I was in the Spirit on the Lord's Day, and I heard behind me a loud voice, as of a trumpet,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6060"
+            },
+            "saying, “I am the Alpha and the Omega, the First and the Last,”",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1625"
+            },
+            "and, “What you see, write in a book and send",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            },
+            "to the seven churches which are in Asia:",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r1626"
+            },
+            "to Ephesus, to Smyrna, to Pergamos, to Thyatira, to Sardis, to Philadelphia, and to Laodicea.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6061"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "I was in the Spirit on the Lord's Day, and I heard behind me a loud voice, as of a trumpet,",
+          "parts": [
+            "I was in the Spirit on the Lord's Day, and I heard behind me a loud voice, as of a trumpet,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6060"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "saying, “I am the Alpha and the Omega, the First and the Last,” a",
+          "parts": [
+            "saying, “I am the Alpha and the Omega, the First and the Last,”",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1627"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Then I turned to see the voice that spoke with me.",
+          "parts": [
+            "Then I turned to see the voice that spoke with me."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "and in the midst of the seven lampstands One",
+          "parts": [
+            "and in the midst of the seven lampstands",
+            {
+              "style": "ITALIC",
+              "text": "One"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "His head and hair were",
+          "parts": [
+            "His head and hair",
+            {
+              "style": "ITALIC",
+              "text": "were"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "His feet were",
+          "parts": [
+            "His feet",
+            {
+              "style": "ITALIC",
+              "text": "were"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "He had in His right hand seven stars, out of His mouth went a sharp two-edged sword, and His countenance was",
+          "parts": [
+            "He had in His right hand seven stars, out of His mouth went a sharp two-edged sword, and His countenance",
+            {
+              "style": "ITALIC",
+              "text": "was"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "And when I saw Him, I fell at His feet as dead.",
+          "parts": [
+            "And when I saw Him, I fell at His feet as dead."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "I am",
+          "parts": [
+            "I",
+            {
+              "style": "ITALIC",
+              "text": "am"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Write a",
+          "parts": [
+            "Write",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1628"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "The mystery of the seven stars which you saw in My right hand, and the seven golden lampstands: The seven stars are the angels of the seven churches, and the seven lampstands which you saw a",
+          "parts": [
+            "The mystery of the seven stars which you saw in My right hand, and the seven golden lampstands: The seven stars are the angels of the seven churches, and the seven lampstands which you saw",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1629"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Introduction and Blessing",
+        "Greeting to the Seven Churches",
+        "Vision and Commission of Christ",
+        "Ephesus: Loveless"
+      ]
+    },
+    {
+      "chapter_num": 2,
+      "verses_count": 29,
+      "verses": [
+        {
+          "num": 1,
+          "text": "“To the angel of the church of Ephesus write,",
+          "parts": [
+            "“To the angel of the church of Ephesus write,"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "“I know your works, your labor, your patience, and that you cannot bear those who are evil.",
+          "parts": [
+            "“I know your works, your labor, your patience, and that you cannot bear those who are evil."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "and you have persevered and have patience, and have labored for My name's sake and have not become weary.",
+          "parts": [
+            "and you have persevered and have patience, and have labored for My name's sake and have not become weary."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Nevertheless I have this",
+          "parts": [
+            "Nevertheless I have",
+            {
+              "style": "ITALIC",
+              "text": "this"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Remember therefore from where you have fallen; repent and do the first works, or else I will come to you quickly and remove your lampstand from its place—unless you repent.",
+          "parts": [
+            "Remember therefore from where you have fallen; repent and do the first works, or else I will come to you quickly and remove your lampstand from its place—unless you repent."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "But this you have, that you hate the deeds of the Nicolaitans, which I also hate.",
+          "parts": [
+            "But this you have, that you hate the deeds of the Nicolaitans, which I also hate.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6071"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "“He who has an ear, let him hear what the Spirit says to the churches.",
+          "parts": [
+            "“He who has an ear, let him hear what the Spirit says to the churches."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "“And to the angel of the church in Smyrna write,",
+          "parts": [
+            "“And to the angel of the church in Smyrna write,"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "“I know your works, tribulation, and poverty (but you are rich); and I know",
+          "parts": [
+            "“I know your works, tribulation, and poverty (but you are rich); and",
+            {
+              "style": "ITALIC",
+              "text": "I know"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Do not fear any of those things which you are about to suffer.",
+          "parts": [
+            "Do not fear any of those things which you are about to suffer."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "“He who has an ear, let him hear what the Spirit says to the churches.",
+          "parts": [
+            "“He who has an ear, let him hear what the Spirit says to the churches."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "“And to the angel of the church in Pergamos write,",
+          "parts": [
+            "“And to the angel of the church in Pergamos write,"
+          ]
+        },
+        {
+          "num": 13,
+          "text": "“I know your works, and where you dwell, where Satan's throne is.",
+          "parts": [
+            "“I know your works, and where you dwell, where Satan's throne",
+            {
+              "style": "ITALIC",
+              "text": "is."
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "But I have a few things against you, because you have there those who hold the doctrine of Balaam, who taught Balak to put a stumbling block before the children of Israel, to eat things sacrificed to idols, and to commit sexual immorality.",
+          "parts": [
+            "But I have a few things against you, because you have there those who hold the doctrine of Balaam, who taught Balak to put a stumbling block before the children of Israel, to eat things sacrificed to idols, and to commit sexual immorality.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6078"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Thus you also have those who hold the doctrine of the Nicolaitans, which thing I hate. a",
+          "parts": [
+            "Thus you also have those who hold the doctrine of the Nicolaitans, which thing I hate.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1630"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Repent, or else I will come to you quickly and will fight against them with the sword of My mouth.",
+          "parts": [
+            "Repent, or else I will come to you quickly and will fight against them with the sword of My mouth.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6079"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "“He who has an ear, let him hear what the Spirit says to the churches.",
+          "parts": [
+            "“He who has an ear, let him hear what the Spirit says to the churches."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "“And to the angel of the church in Thyatira write,",
+          "parts": [
+            "“And to the angel of the church in Thyatira write,"
+          ]
+        },
+        {
+          "num": 19,
+          "text": "“I know your works, love, service, faith, a",
+          "parts": [
+            "“I know your works, love, service, faith,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1631"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Nevertheless I have a few things against you, because you allow a",
+          "parts": [
+            "Nevertheless I have a few things against you, because you allow",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1632"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "And I gave her time to repent of her sexual immorality, and she did not repent. a",
+          "parts": [
+            "And I gave her time to repent of her sexual immorality, and she did not repent.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1633"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "Indeed I will cast her into a sickbed, and those who commit adultery with her into great tribulation, unless they repent of their a",
+          "parts": [
+            "Indeed I will cast her into a sickbed, and those who commit adultery with her into great tribulation, unless they repent of their",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1634"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "I will kill her children with death, and all the churches shall know that I am He who searches the minds and hearts.",
+          "parts": [
+            "I will kill her children with death, and all the churches shall know that I am He who searches the minds and hearts."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "“Now to you I say, and a to the rest in Thyatira, as many as do not have this doctrine, who have not known the depths of Satan, as they say, I will b put on you no other burden. But hold fast what you have till I come.",
+          "parts": [
+            "“Now to you I say, and",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1635"
+            },
+            "to the rest in Thyatira, as many as do not have this doctrine, who have not known the depths of Satan, as they say, I will",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r1636"
+            },
+            "put on you no other burden.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6084"
+            },
+            "But hold fast what you have till I come."
+          ]
+        },
+        {
+          "num": 25,
+          "text": "But hold fast what you have till I come.",
+          "parts": [
+            "But hold fast what you have till I come."
+          ]
+        },
+        {
+          "num": 26,
+          "text": "And he who overcomes, and keeps My works until the end, to him I will give power over the nations—",
+          "parts": [
+            "And he who overcomes, and keeps My works until the end, to him I will give power over the nations—"
+          ]
+        },
+        {
+          "num": 28,
+          "text": "and I will give him the morning star.",
+          "parts": [
+            "and I will give him the morning star.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6085"
+            }
+          ]
+        },
+        {
+          "num": 29,
+          "text": "“He who has an ear, let him hear what the Spirit says to the churches.” ’",
+          "parts": [
+            "“He who has an ear, let him hear what the Spirit says to the churches.” ’"
+          ]
+        }
+      ],
+      "headers": [
+        "Smyrna: Persecuted",
+        "Pergamos: Compromising",
+        "Thyatira: Corrupt",
+        "Sardis: Dead"
+      ]
+    },
+    {
+      "chapter_num": 3,
+      "verses_count": 22,
+      "verses": [
+        {
+          "num": 1,
+          "text": "“And to the angel of the church in Sardis write,",
+          "parts": [
+            "“And to the angel of the church in Sardis write,"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "Be watchful, and strengthen the things which remain, that are ready to die, for I have not found your works perfect before God. a",
+          "parts": [
+            "Be watchful, and strengthen the things which remain, that are ready to die, for I have not found your works perfect before God.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1637"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Remember therefore how you have received and heard; hold fast and repent.",
+          "parts": [
+            "Remember therefore how you have received and heard; hold fast and repent."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "You a",
+          "parts": [
+            "You",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1638"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "He who overcomes shall be clothed in white garments, and I will not blot out his name from the Book of Life; but I will confess his name before My Father and before His angels.",
+          "parts": [
+            "He who overcomes shall be clothed in white garments, and I will not blot out his name from the Book of Life; but I will confess his name before My Father and before His angels.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6089"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "“He who has an ear, let him hear what the Spirit says to the churches.” ’",
+          "parts": [
+            "“He who has an ear, let him hear what the Spirit says to the churches.” ’"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "“And to the angel of the church in Philadelphia write,",
+          "parts": [
+            "“And to the angel of the church in Philadelphia write,"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "“I know your works.",
+          "parts": [
+            "“I know your works."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Indeed I will make those",
+          "parts": [
+            "Indeed I will make",
+            {
+              "style": "ITALIC",
+              "text": "those"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Because you have kept My command to persevere, I also will keep you from the hour of trial which shall come upon the whole world, to test those who dwell on the earth.",
+          "parts": [
+            "Because you have kept My command to persevere, I also will keep you from the hour of trial which shall come upon the whole world, to test those who dwell on the earth.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6093"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Behold, a",
+          "parts": [
+            "Behold,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1639"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "He who overcomes, I will make him a pillar in the temple of My God, and he shall go out no more.",
+          "parts": [
+            "He who overcomes, I will make him a pillar in the temple of My God, and he shall go out no more."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "“He who has an ear, let him hear what the Spirit says to the churches.” ’",
+          "parts": [
+            "“He who has an ear, let him hear what the Spirit says to the churches.” ’"
+          ]
+        },
+        {
+          "num": 14,
+          "text": "“And to the angel of the church of the Laodiceans a write,",
+          "parts": [
+            "“And to the angel of the church of the Laodiceans",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1640"
+            },
+            "write,"
+          ]
+        },
+        {
+          "num": 15,
+          "text": "“I know your works, that you are neither cold nor hot.",
+          "parts": [
+            "“I know your works, that you are neither cold nor hot."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "So then, because you are lukewarm, and neither cold nor hot, a",
+          "parts": [
+            "So then, because you are lukewarm, and neither cold nor hot,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1641"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Because you say, ‘I am rich, have become wealthy, and have need of nothing’—and do not know that you are wretched, miserable, poor, blind, and naked—",
+          "parts": [
+            "Because you say, ‘I am rich, have become wealthy, and have need of nothing’—and do not know that you are wretched, miserable, poor, blind, and naked—",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6097"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "I counsel you to buy from Me gold refined in the fire, that you may be rich; and white garments, that you may be clothed, that",
+          "parts": [
+            "I counsel you to buy from Me gold refined in the fire, that you may be rich; and white garments, that you may be clothed,",
+            {
+              "style": "ITALIC",
+              "text": "that"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "As many as I love, I rebuke and chasten.",
+          "parts": [
+            "As many as I love, I rebuke and chasten."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Behold, I stand at the door and knock.",
+          "parts": [
+            "Behold, I stand at the door and knock."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "To him who overcomes I will grant to sit with Me on My throne, as I also overcame and sat down with My Father on His throne.",
+          "parts": [
+            "To him who overcomes I will grant to sit with Me on My throne, as I also overcame and sat down with My Father on His throne.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6099"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "“He who has an ear, let him hear what the Spirit says to the churches.” ’ ”",
+          "parts": [
+            "“He who has an ear, let him hear what the Spirit says to the churches.” ’ ”"
+          ]
+        }
+      ],
+      "headers": [
+        "Philadelphia: Faithful",
+        "Laodicea: Lukewarm",
+        "Heavenly Temple, Heavenly Worship"
+      ]
+    },
+    {
+      "chapter_num": 4,
+      "verses_count": 10,
+      "verses": [
+        {
+          "num": 1,
+          "text": "After these things I looked, and behold, a door standing open in heaven.",
+          "parts": [
+            "After these things I looked, and behold, a door",
+            {
+              "style": "ITALIC",
+              "text": "standing"
+            },
+            "open in heaven."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "Immediately I was in the Spirit; and behold, a throne set in heaven, and One sat on the throne. And He who sat there was a like a jasper and a sardius stone in appearance; and there was a rainbow around the throne, in appearance like an emerald.",
+          "parts": [
+            "Immediately I was in the Spirit; and behold, a throne set in heaven, and",
+            {
+              "style": "ITALIC",
+              "text": "One"
+            },
+            "sat on the throne.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6101"
+            },
+            "And He who sat there was",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1642"
+            },
+            "like a jasper and a sardius stone in appearance; and",
+            {
+              "style": "ITALIC",
+              "text": "there was"
+            },
+            "a rainbow around the throne, in appearance like an emerald."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "And He who sat there was a",
+          "parts": [
+            "And He who sat there was",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1643"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Around the throne were",
+          "parts": [
+            "Around the throne",
+            {
+              "style": "ITALIC",
+              "text": "were"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "And from the throne proceeded lightnings, thunderings, and voices. a",
+          "parts": [
+            "And from the throne proceeded lightnings, thunderings, and voices.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1644"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Before the throne there was a a sea of glass, like crystal.",
+          "parts": [
+            "Before the throne",
+            {
+              "style": "ITALIC",
+              "text": "there was"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1645"
+            },
+            "a sea of glass, like crystal."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "The first living creature was",
+          "parts": [
+            "The first living creature",
+            {
+              "style": "ITALIC",
+              "text": "was"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "The",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "The"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Whenever the living creatures give glory and honor and thanks to Him who sits on the throne, who lives forever and ever, the twenty-four elders fall down before Him who sits on the throne and worship Him who lives forever and ever, and cast their crowns before the throne, saying:",
+          "parts": [
+            "Whenever the living creatures give glory and honor and thanks to Him who sits on the throne, who lives forever and ever, the twenty-four elders fall down before Him who sits on the throne and worship Him who lives forever and ever, and cast their crowns before the throne, saying:",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6105"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "the twenty-four elders fall down before Him who sits on the throne and worship Him who lives forever and ever, and cast their crowns before the throne, saying:",
+          "parts": [
+            "the twenty-four elders fall down before Him who sits on the throne and worship Him who lives forever and ever, and cast their crowns before the throne, saying:",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6105"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "The Lamb Opens the Scroll"
+      ]
+    },
+    {
+      "chapter_num": 5,
+      "verses_count": 14,
+      "verses": [
+        {
+          "num": 1,
+          "text": "And I saw in the right hand of Him who sat on the throne a scroll written inside and on the back, sealed with seven seals. Then I saw a strong angel proclaiming with a loud voice, “Who is worthy to open the scroll and to loose its seals?” And no one in heaven or on the earth or under the earth was able to open the scroll, or to look at it.",
+          "parts": [
+            "And I saw in the right",
+            {
+              "style": "ITALIC",
+              "text": "hand"
+            },
+            "of Him who sat on the throne a scroll written inside and on the back, sealed with seven seals.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6107"
+            },
+            "Then I saw a strong angel proclaiming with a loud voice, “Who is worthy to open the scroll and to loose its seals?”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6108"
+            },
+            "And no one in heaven or on the earth or under the earth was able to open the scroll, or to look at it."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "So I wept much, because no one was found worthy to open and read a the scroll, or to look at it.",
+          "parts": [
+            "So I wept much, because no one was found worthy to open and read",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1646"
+            },
+            "the scroll, or to look at it."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "But one of the elders said to me, “Do not weep.",
+          "parts": [
+            "But one of the elders said to me, “Do not weep."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "And I looked, and behold, a in the midst of the throne and of the four living creatures, and in the midst of the elders, stood a Lamb as though it had been slain, having seven horns and seven eyes, which are the seven Spirits of God sent out into all the earth. Then He came and took the scroll out of the right hand of Him who sat on the throne.",
+          "parts": [
+            "And I looked, and behold,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1647"
+            },
+            "in the midst of the throne and of the four living creatures, and in the midst of the elders, stood a Lamb as though it had been slain, having seven horns and seven eyes, which are the seven Spirits of God sent out into all the earth.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6109"
+            },
+            "Then He came and took the scroll out of the right hand of Him who sat on the throne."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Then He came and took the scroll out of the right hand of Him who sat on the throne.",
+          "parts": [
+            "Then He came and took the scroll out of the right hand of Him who sat on the throne."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Now when He had taken the scroll, the four living creatures and the twenty-four elders fell down before the Lamb, each having a harp, and golden bowls full of incense, which are the prayers of the saints. And they sang a new song, saying:",
+          "parts": [
+            "Now when He had taken the scroll, the four living creatures and the twenty-four elders fell down before the Lamb, each having a harp, and golden bowls full of incense, which are the prayers of the saints.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6110"
+            },
+            "And they sang a new song, saying:"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "And they sang a new song, saying:",
+          "parts": [
+            "And they sang a new song, saying:"
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Then I looked, and I heard the voice of many angels around the throne, the living creatures, and the elders; and the number of them was ten thousand times ten thousand, and thousands of thousands, saying with a loud voice:",
+          "parts": [
+            "Then I looked, and I heard the voice of many angels around the throne, the living creatures, and the elders; and the number of them was ten thousand times ten thousand, and thousands of thousands, saying with a loud voice:"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "saying with a loud voice:",
+          "parts": [
+            "saying with a loud voice:"
+          ]
+        },
+        {
+          "num": 13,
+          "text": "And every creature which is in heaven and on the earth and under the earth and such as are in the sea, and all that are in them, I heard saying:",
+          "parts": [
+            "And every creature which is in heaven and on the earth and under the earth and such as are in the sea, and all that are in them, I heard saying:"
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Then the four living creatures said, “Amen!” And the twenty-four a elders fell down and worshiped Him who lives forever and ever. b",
+          "parts": [
+            "Then the four living creatures said, “Amen!” And the twenty-four",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1648"
+            },
+            "elders fell down and worshiped Him who lives forever and ever.",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r1649"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Seal One: The Conqueror"
+      ]
+    },
+    {
+      "chapter_num": 6,
+      "verses_count": 17,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Now I saw when the Lamb opened one of the seals; a and I heard one of the four living creatures saying with a voice like thunder, “Come and see.” And I looked, and behold, a white horse.",
+          "parts": [
+            "Now I saw when the Lamb opened one of the seals;",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1650"
+            },
+            "and I heard one of the four living creatures saying with a voice like thunder, “Come and see.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6112"
+            },
+            "And I looked, and behold, a white horse."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "When He opened the second seal, I heard the second living creature saying, “Come and see.” a Another horse, fiery red, went out.",
+          "parts": [
+            "When He opened the second seal, I heard the second living creature saying, “Come and see.”",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1651"
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6114"
+            },
+            "Another horse, fiery red, went out."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Another horse, fiery red, went out.",
+          "parts": [
+            "Another horse, fiery red, went out."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "When He opened the third seal, I heard the third living creature say, “Come and see.” So I looked, and behold, a black horse, and he who sat on it had a pair of scales in his hand. And I heard a voice in the midst of the four living creatures saying, “A quart a of wheat for a denarius, b and three quarts of barley for a denarius; and do not harm the oil and the wine.”",
+          "parts": [
+            "When He opened the third seal, I heard the third living creature say, “Come and see.” So I looked, and behold, a black horse, and he who sat on it had a pair of scales in his hand.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6115"
+            },
+            "And I heard a voice in the midst of the four living creatures saying, “A quart",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1652"
+            },
+            "of wheat for a denarius,",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r1653"
+            },
+            "and three quarts of barley for a denarius; and do not harm the oil and the wine.”"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "And I heard a voice in the midst of the four living creatures saying, “A quart a",
+          "parts": [
+            "And I heard a voice in the midst of the four living creatures saying, “A quart",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1654"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "When He opened the fourth seal, I heard the voice of the fourth living creature saying, “Come and see.” So I looked, and behold, a pale horse.",
+          "parts": [
+            "When He opened the fourth seal, I heard the voice of the fourth living creature saying, “Come and see.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6116"
+            },
+            "So I looked, and behold, a pale horse."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "So I looked, and behold, a pale horse.",
+          "parts": [
+            "So I looked, and behold, a pale horse."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "When He opened the fifth seal, I saw under the altar the souls of those who had been slain for the word of God and for the testimony which they held. And they cried with a loud voice, saying, “How long, O Lord, holy and true, until You judge and avenge our blood on those who dwell on the earth?” Then a white robe was given to each of them; and it was said to them that they should rest a little while longer, until both the number of their fellow servants and their brethren, who would be killed as they were, was completed.",
+          "parts": [
+            "When He opened the fifth seal, I saw under the altar the souls of those who had been slain for the word of God and for the testimony which they held.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6117"
+            },
+            "And they cried with a loud voice, saying, “How long, O Lord, holy and true, until You judge and avenge our blood on those who dwell on the earth?” Then a white robe was given to each of them; and it was said to them that they should rest a little while longer, until both",
+            {
+              "style": "ITALIC",
+              "text": "the number of"
+            },
+            "their fellow servants and their brethren, who would be killed as they",
+            {
+              "style": "ITALIC",
+              "text": "were,"
+            },
+            "was completed."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "And they cried with a loud voice, saying, “How long, O Lord, holy and true, until You judge and avenge our blood on those who dwell on the earth?”",
+          "parts": [
+            "And they cried with a loud voice, saying, “How long, O Lord, holy and true, until You judge and avenge our blood on those who dwell on the earth?”"
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Then a white robe was given to each of them; and it was said to them that they should rest a little while longer, until both the number of",
+          "parts": [
+            "Then a white robe was given to each of them; and it was said to them that they should rest a little while longer, until both",
+            {
+              "style": "ITALIC",
+              "text": "the number of"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "I looked when He opened the sixth seal, and behold, a there was a great earthquake; and the sun became black as sackcloth of hair, and the moon b became like blood. And the stars of heaven fell to the earth, as a fig tree drops its late figs when it is shaken by a mighty wind.",
+          "parts": [
+            "I looked when He opened the sixth seal, and behold,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1655"
+            },
+            "there was a great earthquake; and the sun became black as sackcloth of hair, and the moon",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r1656"
+            },
+            "became like blood.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6118"
+            },
+            "And the stars of heaven fell to the earth, as a fig tree drops its late figs when it is shaken by a mighty wind."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "And the stars of heaven fell to the earth, as a fig tree drops its late figs when it is shaken by a mighty wind.",
+          "parts": [
+            "And the stars of heaven fell to the earth, as a fig tree drops its late figs when it is shaken by a mighty wind."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Then the sky receded as a scroll when it is rolled up, and every mountain and island was moved out of its place.",
+          "parts": [
+            "Then the sky receded as a scroll when it is rolled up, and every mountain and island was moved out of its place."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "And the kings of the earth, the great men, the rich men, the commanders, a",
+          "parts": [
+            "And the kings of the earth, the great men, the rich men, the commanders,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1657"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "and said to the mountains and rocks, “Fall on us and hide us from the face of Him who sits on the throne and from the wrath of the Lamb!",
+          "parts": [
+            "and said to the mountains and rocks, “Fall on us and hide us from the face of Him who sits on the throne and from the wrath of the Lamb!"
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For the great day of His wrath has come, and who is able to stand?”",
+          "parts": [
+            "For the great day of His wrath has come, and who is able to stand?”"
+          ]
+        }
+      ],
+      "headers": [
+        "Seal Two: Conflict on Earth",
+        "Seal Three: Scarcity on Earth",
+        "Seal Four: Widespread Death",
+        "Seal Five: Cry of the Martyrs",
+        "Seal Six: Cosmic Disturbances",
+        "Angels Visit Earth"
+      ]
+    },
+    {
+      "chapter_num": 7,
+      "verses_count": 17,
+      "verses": [
+        {
+          "num": 1,
+          "text": "After these things I saw four angels standing at the four corners of the earth, holding the four winds of the earth, that the wind should not blow on the earth, on the sea, or on any tree. Then I saw another angel ascending from the east, having the seal of the living God.",
+          "parts": [
+            "After these things I saw four angels standing at the four corners of the earth, holding the four winds of the earth, that the wind should not blow on the earth, on the sea, or on any tree.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6119"
+            },
+            "Then I saw another angel ascending from the east, having the seal of the living God."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "saying, “Do not harm the earth, the sea, or the trees till we have sealed the servants of our God on their foreheads.”",
+          "parts": [
+            "saying, “Do not harm the earth, the sea, or the trees till we have sealed the servants of our God on their foreheads.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6120"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "And I heard the number of those who were sealed.",
+          "parts": [
+            "And I heard the number of those who were sealed."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "After these things I looked, and behold, a great multitude which no one could number, of all nations, tribes, peoples, and tongues, standing before the throne and before the Lamb, clothed with white robes, with palm branches in their hands, and crying out with a loud voice, saying, “Salvation belongs to our God who sits on the throne, and to the Lamb!” All the angels stood around the throne and the elders and the four living creatures, and fell on their faces before the throne and worshiped God, saying:",
+          "parts": [
+            "After these things I looked, and behold, a great multitude which no one could number, of all nations, tribes, peoples, and tongues, standing before the throne and before the Lamb, clothed with white robes, with palm branches in their hands,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6122"
+            },
+            "and crying out with a loud voice, saying, “Salvation",
+            {
+              "style": "ITALIC",
+              "text": "belongs"
+            },
+            "to our God who sits on the throne, and to the Lamb!” All the angels stood around the throne and the elders and the four living creatures, and fell on their faces before the throne and worshiped God, saying:"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "and crying out with a loud voice, saying, “Salvation belongs",
+          "parts": [
+            "and crying out with a loud voice, saying, “Salvation",
+            {
+              "style": "ITALIC",
+              "text": "belongs"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "All the angels stood around the throne and the elders and the four living creatures, and fell on their faces before the throne and worshiped God,",
+          "parts": [
+            "All the angels stood around the throne and the elders and the four living creatures, and fell on their faces before the throne and worshiped God,"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "saying:",
+          "parts": [
+            "saying:"
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Then one of the elders answered, saying to me, “Who are these arrayed in white robes, and where did they come from?”",
+          "parts": [
+            "Then one of the elders answered, saying to me, “Who are these arrayed in white robes, and where did they come from?”"
+          ]
+        },
+        {
+          "num": 14,
+          "text": "And I said to him, “Sir, a you know.”",
+          "parts": [
+            "And I said to him, “Sir,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1658"
+            },
+            "you know.”"
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Therefore they are before the throne of God, and serve Him day and night in His temple.",
+          "parts": [
+            "Therefore they are before the throne of God, and serve Him day and night in His temple."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "They shall neither hunger anymore nor thirst anymore; the sun shall not strike them, nor any heat;",
+          "parts": [
+            "They shall neither hunger anymore nor thirst anymore; the sun shall not strike them, nor any heat;"
+          ]
+        },
+        {
+          "num": 17,
+          "text": "for the Lamb who is in the midst of the throne will shepherd them and lead them to living fountains of waters. a",
+          "parts": [
+            "for the Lamb who is in the midst of the throne will shepherd them and lead them to living fountains of waters.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1659"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Sealing God's Servants",
+        "Final Ingathering and Worship",
+        "Seal Seven: Prelude to the Trumpets"
+      ]
+    },
+    {
+      "chapter_num": 8,
+      "verses_count": 13,
+      "verses": [
+        {
+          "num": 1,
+          "text": "When He opened the seventh seal, there was silence in heaven for about half an hour. And I saw the seven angels who stand before God, and to them were given seven trumpets. Then another angel, having a golden censer, came and stood at the altar.",
+          "parts": [
+            "When He opened the seventh seal, there was silence in heaven for about half an hour.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6124"
+            },
+            "And I saw the seven angels who stand before God, and to them were given seven trumpets.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6125"
+            },
+            "Then another angel, having a golden censer, came and stood at the altar."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "And the smoke of the incense, with the prayers of the saints, ascended before God from the angel's hand.",
+          "parts": [
+            "And the smoke of the incense, with the prayers of the saints, ascended before God from the angel's hand."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Then the angel took the censer, filled it with fire from the altar, and threw it",
+          "parts": [
+            "Then the angel took the censer, filled it with fire from the altar, and threw",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "So the seven angels who had the seven trumpets prepared themselves to sound.",
+          "parts": [
+            "So the seven angels who had the seven trumpets prepared themselves to sound.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6128"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "The first angel sounded: And hail and fire followed, mingled with blood, and they were thrown to the earth. a And a third of the trees were burned up, and all green grass was burned up.",
+          "parts": [
+            "The first angel sounded: And hail and fire followed, mingled with blood, and they were thrown to the earth.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1660"
+            },
+            "And a third of the trees were burned up, and all green grass was burned up.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6129"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Then the second angel sounded: And something like a great mountain burning with fire was thrown into the sea, and a third of the sea became blood. And a third of the living creatures in the sea died, and a third of the ships were destroyed.",
+          "parts": [
+            "Then the second angel sounded: And",
+            {
+              "style": "ITALIC",
+              "text": "something"
+            },
+            "like a great mountain burning with fire was thrown into the sea, and a third of the sea became blood.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6130"
+            },
+            "And a third of the living creatures in the sea died, and a third of the ships were destroyed."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "And a third of the living creatures in the sea died, and a third of the ships were destroyed.",
+          "parts": [
+            "And a third of the living creatures in the sea died, and a third of the ships were destroyed."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Then the third angel sounded: And a great star fell from heaven, burning like a torch, and it fell on a third of the rivers and on the springs of water. The name of the star is Wormwood.",
+          "parts": [
+            "Then the third angel sounded: And a great star fell from heaven, burning like a torch, and it fell on a third of the rivers and on the springs of water.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6131"
+            },
+            "The name of the star is Wormwood."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "The name of the star is Wormwood.",
+          "parts": [
+            "The name of the star is Wormwood."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Then the fourth angel sounded: And a third of the sun was struck, a third of the moon, and a third of the stars, so that a third of them were darkened.",
+          "parts": [
+            "Then the fourth angel sounded: And a third of the sun was struck, a third of the moon, and a third of the stars, so that a third of them were darkened."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "And I looked, and I heard an angel a flying through the midst of heaven, saying with a loud voice, “Woe, woe, woe to the inhabitants of the earth, because of the remaining blasts of the trumpet of the three angels who are about to sound!”",
+          "parts": [
+            "And I looked, and I heard an angel",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1661"
+            },
+            "flying through the midst of heaven, saying with a loud voice, “Woe, woe, woe to the inhabitants of the earth, because of the remaining blasts of the trumpet of the three angels who are about to sound!”"
+          ]
+        }
+      ],
+      "headers": [
+        "Trumpet One: Vegetation Struck",
+        "Trumpet Two: The Seas Struck",
+        "Trumpet Three: Fresh Waters Struck",
+        "Trumpet Four: The Heavens Struck",
+        "Trumpet Five, Woe One: The Locusts"
+      ]
+    },
+    {
+      "chapter_num": 9,
+      "verses_count": 21,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Then the fifth angel sounded: And I saw a star fallen from heaven to the earth.",
+          "parts": [
+            "Then the fifth angel sounded: And I saw a star fallen from heaven to the earth."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "And he opened the bottomless pit, and smoke arose out of the pit like the smoke of a great furnace.",
+          "parts": [
+            "And he opened the bottomless pit, and smoke arose out of the pit like the smoke of a great furnace."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Then out of the smoke locusts came upon the earth.",
+          "parts": [
+            "Then out of the smoke locusts came upon the earth."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "They were commanded not to harm the grass of the earth, or any green thing, or any tree, but only those men who do not have the seal of God on their foreheads.",
+          "parts": [
+            "They were commanded not to harm the grass of the earth, or any green thing, or any tree, but only those men who do not have the seal of God on their foreheads."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "And they were not given authority",
+          "parts": [
+            "And they were not given",
+            {
+              "style": "ITALIC",
+              "text": "authority"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "In those days men will seek death and will not find it; they will desire to die, and death will flee from them.",
+          "parts": [
+            "In those days men will seek death and will not find it; they will desire to die, and death will flee from them."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "The shape of the locusts was like horses prepared for battle.",
+          "parts": [
+            "The shape of the locusts was like horses prepared for battle."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "They had hair like women's hair, and their teeth were like lions’ teeth.",
+          "parts": [
+            "They had hair like women's hair, and their teeth were like lions’",
+            {
+              "style": "ITALIC",
+              "text": "teeth."
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "And they had breastplates like breastplates of iron, and the sound of their wings was",
+          "parts": [
+            "And they had breastplates like breastplates of iron, and the sound of their wings",
+            {
+              "style": "ITALIC",
+              "text": "was"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "They had tails like scorpions, and there were stings in their tails.",
+          "parts": [
+            "They had tails like scorpions, and there were stings in their tails."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And they had as king over them the angel of the bottomless pit, whose name in Hebrew is",
+          "parts": [
+            "And they had as king over them the angel of the bottomless pit, whose name in Hebrew",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "One woe is past.",
+          "parts": [
+            "One woe is past."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Then the sixth angel sounded: And I heard a voice from the four horns of the golden altar which is before God, saying to the sixth angel who had the trumpet, “Release the four angels who are bound at the great river Euphrates.” So the four angels, who had been prepared for the hour and day and month and year, were released to kill a third of mankind.",
+          "parts": [
+            "Then the sixth angel sounded: And I heard a voice from the four horns of the golden altar which is before God,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6138"
+            },
+            "saying to the sixth angel who had the trumpet, “Release the four angels who are bound at the great river Euphrates.” So the four angels, who had been prepared for the hour and day and month and year, were released to kill a third of mankind."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "saying to the sixth angel who had the trumpet, “Release the four angels who are bound at the great river Euphrates.”",
+          "parts": [
+            "saying to the sixth angel who had the trumpet, “Release the four angels who are bound at the great river Euphrates.”"
+          ]
+        },
+        {
+          "num": 15,
+          "text": "So the four angels, who had been prepared for the hour and day and month and year, were released to kill a third of mankind.",
+          "parts": [
+            "So the four angels, who had been prepared for the hour and day and month and year, were released to kill a third of mankind."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Now the number of the army of the horsemen was",
+          "parts": [
+            "Now the number of the army of the horsemen",
+            {
+              "style": "ITALIC",
+              "text": "was"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "And thus I saw the horses in the vision: those who sat on them had breastplates of fiery red, hyacinth blue, and sulfur yellow; and the heads of the horses were",
+          "parts": [
+            "And thus I saw the horses in the vision: those who sat on them had breastplates of fiery red, hyacinth blue, and sulfur yellow; and the heads of the horses",
+            {
+              "style": "ITALIC",
+              "text": "were"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "By these three plagues",
+          "parts": [
+            "By these three",
+            {
+              "style": "ITALIC",
+              "text": "plagues"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For their power a",
+          "parts": [
+            "For their power",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1662"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "But the rest of mankind, who were not killed by these plagues, did not repent of the works of their hands, that they should not worship demons, and idols of gold, silver, brass, stone, and wood, which can neither see nor hear nor walk. And they did not repent of their murders or their sorceries a or their sexual immorality or their thefts.",
+          "parts": [
+            "But the rest of mankind, who were not killed by these plagues, did not repent of the works of their hands, that they should not worship demons, and idols of gold, silver, brass, stone, and wood, which can neither see nor hear nor walk.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6140"
+            },
+            "And they did not repent of their murders or their sorceries",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1663"
+            },
+            "or their sexual immorality or their thefts."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "And they did not repent of their murders or their sorceries a",
+          "parts": [
+            "And they did not repent of their murders or their sorceries",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1664"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Trumpet Six, Woe Two: The Plagues",
+        "Mighty Angel, Little Book"
+      ]
+    },
+    {
+      "chapter_num": 10,
+      "verses_count": 11,
+      "verses": [
+        {
+          "num": 1,
+          "text": "I saw still another mighty angel coming down from heaven, clothed with a cloud.",
+          "parts": [
+            "I saw still another mighty angel coming down from heaven, clothed with a cloud."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "He had a little book open in his hand.",
+          "parts": [
+            "He had a little book open in his hand."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "and cried with a loud voice, as when",
+          "parts": [
+            "and cried with a loud voice, as",
+            {
+              "style": "ITALIC",
+              "text": "when"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Now when the seven thunders uttered their voices, a",
+          "parts": [
+            "Now when the seven thunders uttered their voices,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1665"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "The angel whom I saw standing on the sea and on the land raised up his hand a to heaven and swore by Him who lives forever and ever, who created heaven and the things that are in it, the earth and the things that are in it, and the sea and the things that are in it, that there should be delay no longer, but in the days of the sounding of the seventh angel, when he is about to sound, the mystery of God would be finished, as He declared to His servants the prophets.",
+          "parts": [
+            "The angel whom I saw standing on the sea and on the land raised up his hand",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1666"
+            },
+            "to heaven",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6144"
+            },
+            "and swore by Him who lives forever and ever, who created heaven and the things that are in it, the earth and the things that are in it, and the sea and the things that are in it, that there should be delay no longer, but in the days of the sounding of the seventh angel, when he is about to sound, the mystery of God would be finished, as He declared to His servants the prophets."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "and swore by Him who lives forever and ever, who created heaven and the things that are in it, the earth and the things that are in it, and the sea and the things that are in it, that there should be delay no longer,",
+          "parts": [
+            "and swore by Him who lives forever and ever, who created heaven and the things that are in it, the earth and the things that are in it, and the sea and the things that are in it, that there should be delay no longer,"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "but in the days of the sounding of the seventh angel, when he is about to sound, the mystery of God would be finished, as He declared to His servants the prophets.",
+          "parts": [
+            "but in the days of the sounding of the seventh angel, when he is about to sound, the mystery of God would be finished, as He declared to His servants the prophets."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Then the voice which I heard from heaven spoke to me again and said, “Go, take the little book which is open in the hand of the angel who stands on the sea and on the earth.”",
+          "parts": [
+            "Then the voice which I heard from heaven spoke to me again and said, “Go, take the little book which is open in the hand of the angel who stands on the sea and on the earth.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6145"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "So I went to the angel and said to him, “Give me the little book.”",
+          "parts": [
+            "So I went to the angel and said to him, “Give me the little book.”"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Then I took the little book out of the angel's hand and ate it, and it was as sweet as honey in my mouth.",
+          "parts": [
+            "Then I took the little book out of the angel's hand and ate it, and it was as sweet as honey in my mouth."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And he a",
+          "parts": [
+            "And he",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1667"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "John Eats the Book",
+        "The Two Witnesses"
+      ]
+    },
+    {
+      "chapter_num": 11,
+      "verses_count": 19,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Then I was given a reed like a measuring rod.",
+          "parts": [
+            "Then I was given a reed like a measuring rod."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "But leave out the court which is outside the temple, and do not measure it, for it has been given to the Gentiles.",
+          "parts": [
+            "But leave out the court which is outside the temple, and do not measure it, for it has been given to the Gentiles."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "And I will give power",
+          "parts": [
+            "And I will give",
+            {
+              "style": "ITALIC",
+              "text": "power"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "These are the two olive trees and the two lampstands standing before the God a of the earth. And if anyone wants to harm them, fire proceeds from their mouth and devours their enemies.",
+          "parts": [
+            "These are the two olive trees and the two lampstands standing before the God",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1668"
+            },
+            "of the earth.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6148"
+            },
+            "And if anyone wants to harm them, fire proceeds from their mouth and devours their enemies."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "And if anyone wants to harm them, fire proceeds from their mouth and devours their enemies.",
+          "parts": [
+            "And if anyone wants to harm them, fire proceeds from their mouth and devours their enemies."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "These have power to shut heaven, so that no rain falls in the days of their prophecy; and they have power over waters to turn them to blood, and to strike the earth with all plagues, as often as they desire.",
+          "parts": [
+            "These have power to shut heaven, so that no rain falls in the days of their prophecy; and they have power over waters to turn them to blood, and to strike the earth with all plagues, as often as they desire."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "When they finish their testimony, the beast that ascends out of the bottomless pit will make war against them, overcome them, and kill them. And their dead bodies will lie in the street of the great city which spiritually is called Sodom and Egypt, where also our a Lord was crucified. Then those from the peoples, tribes, tongues, and nations will see their dead bodies three-and-a-half days, and not allow a their dead bodies to be put into graves. And those who dwell on the earth will rejoice over them, make merry, and send gifts to one another, because these two prophets tormented those who dwell on the earth.",
+          "parts": [
+            "When they finish their testimony, the beast that ascends out of the bottomless pit will make war against them, overcome them, and kill them.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6150"
+            },
+            "And their dead bodies",
+            {
+              "style": "ITALIC",
+              "text": "will lie"
+            },
+            "in the street of the great city which spiritually is called Sodom and Egypt, where also our",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1669"
+            },
+            "Lord was crucified.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6151"
+            },
+            "Then",
+            {
+              "style": "ITALIC",
+              "text": "those"
+            },
+            "from the peoples, tribes, tongues, and nations will see their dead bodies three-and-a-half days, and not allow",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1670"
+            },
+            "their dead bodies to be put into graves.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6152"
+            },
+            "And those who dwell on the earth will rejoice over them, make merry, and send gifts to one another, because these two prophets tormented those who dwell on the earth."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "And their dead bodies will lie",
+          "parts": [
+            "And their dead bodies",
+            {
+              "style": "ITALIC",
+              "text": "will lie"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Then those",
+          "parts": [
+            "Then",
+            {
+              "style": "ITALIC",
+              "text": "those"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "And those who dwell on the earth will rejoice over them, make merry, and send gifts to one another, because these two prophets tormented those who dwell on the earth.",
+          "parts": [
+            "And those who dwell on the earth will rejoice over them, make merry, and send gifts to one another, because these two prophets tormented those who dwell on the earth."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Now after the three-and-a-half days the breath of life from God entered them, and they stood on their feet, and great fear fell on those who saw them. And they a heard a loud voice from heaven saying to them, “Come up here.” And they ascended to heaven in a cloud, and their enemies saw them.",
+          "parts": [
+            "Now after the three-and-a-half days the breath of life from God entered them, and they stood on their feet, and great fear fell on those who saw them.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6153"
+            },
+            "And they",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1671"
+            },
+            "heard a loud voice from heaven saying to them, “Come up here.” And they ascended to heaven in a cloud, and their enemies saw them."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "And they a",
+          "parts": [
+            "And they",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1672"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "In the same hour there was a great earthquake, and a tenth of the city fell.",
+          "parts": [
+            "In the same hour there was a great earthquake, and a tenth of the city fell."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "The second woe is past.",
+          "parts": [
+            "The second woe is past."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Then the seventh angel sounded: And there were loud voices in heaven, saying, “The kingdoms a of this world have become the kingdoms of our Lord and of His Christ, and He shall reign forever and ever!” And the twenty-four elders who sat before God on their thrones fell on their faces and worshiped God, saying:",
+          "parts": [
+            "Then the seventh angel sounded: And there were loud voices in heaven, saying, “The kingdoms",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1673"
+            },
+            "of this world have become",
+            {
+              "style": "ITALIC",
+              "text": "the kingdoms"
+            },
+            "of our Lord and of His Christ, and He shall reign forever and ever!”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6154"
+            },
+            "And the twenty-four elders who sat before God on their thrones fell on their faces and worshiped God,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6155"
+            },
+            "saying:"
+          ]
+        },
+        {
+          "num": 16,
+          "text": "And the twenty-four elders who sat before God on their thrones fell on their faces and worshiped God,",
+          "parts": [
+            "And the twenty-four elders who sat before God on their thrones fell on their faces and worshiped God,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6155"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "saying:",
+          "parts": [
+            "saying:"
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Then the temple of God was opened in heaven, and the ark of His covenant a was seen in His temple.",
+          "parts": [
+            "Then the temple of God was opened in heaven, and the ark of His covenant",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1674"
+            },
+            "was seen in His temple."
+          ]
+        }
+      ],
+      "headers": [
+        "Trumpet Seven: The Kingdom Proclaimed",
+        "The Woman, Her Child and the Dragon"
+      ]
+    },
+    {
+      "chapter_num": 12,
+      "verses_count": 17,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Now a great sign appeared in heaven: a woman clothed with the sun, with the moon under her feet, and on her head a garland of twelve stars. Then being with child, she cried out in labor and in pain to give birth.",
+          "parts": [
+            "Now a great sign appeared in heaven: a woman clothed with the sun, with the moon under her feet, and on her head a garland of twelve stars.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6156"
+            },
+            "Then being with child, she cried out in labor and in pain to give birth."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "And another sign appeared in heaven: behold, a great, fiery red dragon having seven heads and ten horns, and seven diadems on his heads. His tail drew a third of the stars of heaven and threw them to the earth.",
+          "parts": [
+            "And another sign appeared in heaven: behold, a great, fiery red dragon having seven heads and ten horns, and seven diadems on his heads.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6157"
+            },
+            "His tail drew a third of the stars of heaven and threw them to the earth."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "His tail drew a third of the stars of heaven and threw them to the earth.",
+          "parts": [
+            "His tail drew a third of the stars of heaven and threw them to the earth."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "She bore a male Child who was to rule all nations with a rod of iron.",
+          "parts": [
+            "She bore a male Child who was to rule all nations with a rod of iron."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Then the woman fled into the wilderness, where she has a place prepared by God, that they should feed her there one thousand two hundred and sixty days.",
+          "parts": [
+            "Then the woman fled into the wilderness, where she has a place prepared by God, that they should feed her there one thousand two hundred and sixty days.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6159"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "And war broke out in heaven: Michael and his angels fought with the dragon; and the dragon and his angels fought, but they did not prevail, nor was a place found for them a in heaven any longer.",
+          "parts": [
+            "And war broke out in heaven: Michael and his angels fought with the dragon; and the dragon and his angels fought,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6160"
+            },
+            "but they did not prevail, nor was a place found for them",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1675"
+            },
+            "in heaven any longer."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "but they did not prevail, nor was a place found for them a",
+          "parts": [
+            "but they did not prevail, nor was a place found for them",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1676"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "So the great dragon was cast out, that serpent of old, called the Devil and Satan, who deceives the whole world; he was cast to the earth, and his angels were cast out with him.",
+          "parts": [
+            "So the great dragon was cast out, that serpent of old, called the Devil and Satan, who deceives the whole world; he was cast to the earth, and his angels were cast out with him."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Then I heard a loud voice saying in heaven, “Now salvation, and strength, and the kingdom of our God, and the power of His Christ have come, for the accuser of our brethren, who accused them before our God day and night, has been cast down.",
+          "parts": [
+            "Then I heard a loud voice saying in heaven, “Now salvation, and strength, and the kingdom of our God, and the power of His Christ have come, for the accuser of our brethren, who accused them before our God day and night, has been cast down."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And they overcame him by the blood of the Lamb and by the word of their testimony, and they did not love their lives to the death.",
+          "parts": [
+            "And they overcame him by the blood of the Lamb and by the word of their testimony, and they did not love their lives to the death."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Therefore rejoice, O heavens, and you who dwell in them!",
+          "parts": [
+            "Therefore rejoice, O heavens, and you who dwell in them!"
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Now when the dragon saw that he had been cast to the earth, he persecuted the woman who gave birth to the male Child. But the woman was given two wings of a great eagle, that she might fly into the wilderness to her place, where she is nourished for a time and times and half a time, from the presence of the serpent.",
+          "parts": [
+            "Now when the dragon saw that he had been cast to the earth, he persecuted the woman who gave birth to the male",
+            {
+              "style": "ITALIC",
+              "text": "Child."
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6161"
+            },
+            "But the woman was given two wings of a great eagle, that she might fly into the wilderness to her place, where she is nourished for a time and times and half a time, from the presence of the serpent."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "But the woman was given two wings of a great eagle, that she might fly into the wilderness to her place, where she is nourished for a time and times and half a time, from the presence of the serpent.",
+          "parts": [
+            "But the woman was given two wings of a great eagle, that she might fly into the wilderness to her place, where she is nourished for a time and times and half a time, from the presence of the serpent."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "So the serpent spewed water out of his mouth like a flood after the woman, that he might cause her to be carried away by the flood.",
+          "parts": [
+            "So the serpent spewed water out of his mouth like a flood after the woman, that he might cause her to be carried away by the flood."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "But the earth helped the woman, and the earth opened its mouth and swallowed up the flood which the dragon had spewed out of his mouth.",
+          "parts": [
+            "But the earth helped the woman, and the earth opened its mouth and swallowed up the flood which the dragon had spewed out of his mouth."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "And the dragon was enraged with the woman, and he went to make war with the rest of her offspring, who keep the commandments of God and have the testimony of Jesus Christ. a",
+          "parts": [
+            "And the dragon was enraged with the woman, and he went to make war with the rest of her offspring, who keep the commandments of God and have the testimony of Jesus Christ.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1677"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "The Child",
+        "War in Heaven",
+        "War on Earth",
+        "The Beast Against the Saints"
+      ]
+    },
+    {
+      "chapter_num": 13,
+      "verses_count": 18,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Then I a stood on the sand of the sea.",
+          "parts": [
+            "Then I",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1678"
+            },
+            "stood on the sand of the sea."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "Now the beast which I saw was like a leopard, his feet were like the feet of",
+          "parts": [
+            "Now the beast which I saw was like a leopard, his feet were like",
+            {
+              "style": "ITALIC",
+              "text": "the feet of"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "And I saw one of his heads as if it had been mortally wounded, and his deadly wound was healed.",
+          "parts": [
+            "And I saw one of his heads as if it had been mortally wounded, and his deadly wound was healed."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "So they worshiped the dragon who gave authority to the beast; and they worshiped the beast, saying, “Who is",
+          "parts": [
+            "So they worshiped the dragon who gave authority to the beast; and they worshiped the beast, saying, “Who",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "And he was given a mouth speaking great things and blasphemies, and he was given authority to continue a for forty-two months. Then he opened his mouth in blasphemy against God, to blaspheme His name, His tabernacle, and those who dwell in heaven. It was granted to him to make war with the saints and to overcome them.",
+          "parts": [
+            "And he was given a mouth speaking great things and blasphemies, and he was given authority to continue",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1679"
+            },
+            "for forty-two months.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6165"
+            },
+            "Then he opened his mouth in blasphemy against God, to blaspheme His name, His tabernacle, and those who dwell in heaven.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6166"
+            },
+            "It was granted to him to make war with the saints and to overcome them."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Then he opened his mouth in blasphemy against God, to blaspheme His name, His tabernacle, and those who dwell in heaven.",
+          "parts": [
+            "Then he opened his mouth in blasphemy against God, to blaspheme His name, His tabernacle, and those who dwell in heaven.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6166"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "It was granted to him to make war with the saints and to overcome them.",
+          "parts": [
+            "It was granted to him to make war with the saints and to overcome them."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "All who dwell on the earth will worship him, whose names have not been written in the Book of Life of the Lamb slain from the foundation of the world.",
+          "parts": [
+            "All who dwell on the earth will worship him, whose names have not been written in the Book of Life of the Lamb slain from the foundation of the world."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "If anyone has an ear, let him hear.",
+          "parts": [
+            "If anyone has an ear, let him hear."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "He who leads into captivity shall go into captivity; he who kills with the sword must be killed with the sword.",
+          "parts": [
+            "He who leads into captivity shall go into captivity; he who kills with the sword must be killed with the sword."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Then I saw another beast coming up out of the earth, and he had two horns like a lamb and spoke like a dragon. And he exercises all the authority of the first beast in his presence, and causes the earth and those who dwell in it to worship the first beast, whose deadly wound was healed.",
+          "parts": [
+            "Then I saw another beast coming up out of the earth, and he had two horns like a lamb and spoke like a dragon.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6168"
+            },
+            "And he exercises all the authority of the first beast in his presence, and causes the earth and those who dwell in it to worship the first beast, whose deadly wound was healed."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "And he exercises all the authority of the first beast in his presence, and causes the earth and those who dwell in it to worship the first beast, whose deadly wound was healed.",
+          "parts": [
+            "And he exercises all the authority of the first beast in his presence, and causes the earth and those who dwell in it to worship the first beast, whose deadly wound was healed."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "He performs great signs, so that he even makes fire come down from heaven on the earth in the sight of men.",
+          "parts": [
+            "He performs great signs, so that he even makes fire come down from heaven on the earth in the sight of men.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6169"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "And he deceives those a",
+          "parts": [
+            "And he deceives those",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1680"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "He was granted power",
+          "parts": [
+            "He was granted",
+            {
+              "style": "ITALIC",
+              "text": "power"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "He causes all, both small and great, rich and poor, free and slave, to receive a mark on their right hand or on their foreheads,",
+          "parts": [
+            "He causes all, both small and great, rich and poor, free and slave, to receive a mark on their right hand or on their foreheads,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6170"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "and that no one may buy or sell except one who has the mark or a",
+          "parts": [
+            "and that no one may buy or sell except one who has the mark or",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1681"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Here is wisdom.",
+          "parts": [
+            "Here is wisdom."
+          ]
+        }
+      ],
+      "headers": [
+        "The Deception",
+        "The Lamb and the 144,000"
+      ]
+    },
+    {
+      "chapter_num": 14,
+      "verses_count": 20,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Then I looked, and behold, a a Lamb standing on Mount Zion, and with Him one hundred and forty-four thousand, having b His Father's name written on their foreheads. And I heard a voice from heaven, like the voice of many waters, and like the voice of loud thunder.",
+          "parts": [
+            "Then I looked, and behold, a",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1682"
+            },
+            "Lamb standing on Mount Zion, and with Him one hundred",
+            {
+              "style": "ITALIC",
+              "text": "and"
+            },
+            "forty-four thousand, having",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r1683"
+            },
+            "His Father's name written on their foreheads.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6172"
+            },
+            "And I heard a voice from heaven, like the voice of many waters, and like the voice of loud thunder."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "They sang as it were a new song before the throne, before the four living creatures, and the elders; and no one could learn that song except the hundred and",
+          "parts": [
+            "They sang as it were a new song before the throne, before the four living creatures, and the elders; and no one could learn that song except the hundred",
+            {
+              "style": "ITALIC",
+              "text": "and"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "These are the ones who were not defiled with women, for they are virgins.",
+          "parts": [
+            "These are the ones who were not defiled with women, for they are virgins."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "And in their mouth was found no deceit, a",
+          "parts": [
+            "And in their mouth was found no deceit,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1684"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Then I saw another angel flying in the midst of heaven, having the everlasting gospel to preach to those who dwell on the earth—to every nation, tribe, tongue, and people— saying with a loud voice, “Fear God and give glory to Him, for the hour of His judgment has come; and worship Him who made heaven and earth, the sea and springs of water.”",
+          "parts": [
+            "Then I saw another angel flying in the midst of heaven, having the everlasting gospel to preach to those who dwell on the earth—to every nation, tribe, tongue, and people—",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6175"
+            },
+            "saying with a loud voice, “Fear God and give glory to Him, for the hour of His judgment has come; and worship Him who made heaven and earth, the sea and springs of water.”"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "saying with a loud voice, “Fear God and give glory to Him, for the hour of His judgment has come; and worship Him who made heaven and earth, the sea and springs of water.”",
+          "parts": [
+            "saying with a loud voice, “Fear God and give glory to Him, for the hour of His judgment has come; and worship Him who made heaven and earth, the sea and springs of water.”"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "And another angel followed, saying, “Babylon a is fallen, is fallen, that great city, because she has made all nations drink of the wine of the wrath of her fornication.”",
+          "parts": [
+            "And another angel followed, saying, “Babylon",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1685"
+            },
+            "is fallen, is fallen, that great city, because she has made all nations drink of the wine of the wrath of her fornication.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6176"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Then a third angel followed them, saying with a loud voice, “If anyone worships the beast and his image, and receives his mark on his forehead or on his hand, he himself shall also drink of the wine of the wrath of God, which is poured out full strength into the cup of His indignation.",
+          "parts": [
+            "Then a third angel followed them, saying with a loud voice, “If anyone worships the beast and his image, and receives",
+            {
+              "style": "ITALIC",
+              "text": "his"
+            },
+            "mark on his forehead or on his hand,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6177"
+            },
+            "he himself shall also drink of the wine of the wrath of God, which is poured out full strength into the cup of His indignation."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "he himself shall also drink of the wine of the wrath of God, which is poured out full strength into the cup of His indignation.",
+          "parts": [
+            "he himself shall also drink of the wine of the wrath of God, which is poured out full strength into the cup of His indignation."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And the smoke of their torment ascends forever and ever; and they have no rest day or night, who worship the beast and his image, and whoever receives the mark of his name.”",
+          "parts": [
+            "And the smoke of their torment ascends forever and ever; and they have no rest day or night, who worship the beast and his image, and whoever receives the mark of his name.”"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Here is the patience of the saints; here are those a who keep the commandments of God and the faith of Jesus.",
+          "parts": [
+            "Here is the patience of the saints; here",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "those",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1686"
+            },
+            "who keep the commandments of God and the faith of Jesus.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6178"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Then I heard a voice from heaven saying to me, a “Write: ‘Blessed are the dead who die in the Lord from now on.’ ”",
+          "parts": [
+            "Then I heard a voice from heaven saying to me,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1687"
+            },
+            "“Write: ‘Blessed",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "the dead who die in the Lord from now on.’ ”"
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Then I looked, and behold, a white cloud, and on the cloud sat One like the Son of Man, having on His head a golden crown, and in His hand a sharp sickle. And another angel came out of the temple, crying with a loud voice to Him who sat on the cloud, “Thrust in Your sickle and reap, for the time has come for You a to reap, for the harvest of the earth is ripe.” So He who sat on the cloud thrust in His sickle on the earth, and the earth was reaped.",
+          "parts": [
+            "Then I looked, and behold, a white cloud, and on the cloud sat",
+            {
+              "style": "ITALIC",
+              "text": "One"
+            },
+            "like the Son of Man, having on His head a golden crown, and in His hand a sharp sickle.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6179"
+            },
+            "And another angel came out of the temple, crying with a loud voice to Him who sat on the cloud, “Thrust in Your sickle and reap, for the time has come for You",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1688"
+            },
+            "to reap, for the harvest of the earth is ripe.” So He who sat on the cloud thrust in His sickle on the earth, and the earth was reaped."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "And another angel came out of the temple, crying with a loud voice to Him who sat on the cloud, “Thrust in Your sickle and reap, for the time has come for You a",
+          "parts": [
+            "And another angel came out of the temple, crying with a loud voice to Him who sat on the cloud, “Thrust in Your sickle and reap, for the time has come for You",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1689"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "So He who sat on the cloud thrust in His sickle on the earth, and the earth was reaped.",
+          "parts": [
+            "So He who sat on the cloud thrust in His sickle on the earth, and the earth was reaped."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Then another angel came out of the temple which is in heaven, he also having a sharp sickle.",
+          "parts": [
+            "Then another angel came out of the temple which is in heaven, he also having a sharp sickle."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "And another angel came out from the altar, who had power over fire, and he cried with a loud cry to him who had the sharp sickle, saying, “Thrust in your sharp sickle and gather the clusters of the vine of the earth, for her grapes are fully ripe.” So the angel thrust his sickle into the earth and gathered the vine of the earth, and threw it into the great winepress of the wrath of God.",
+          "parts": [
+            "And another angel came out from the altar, who had power over fire, and he cried with a loud cry to him who had the sharp sickle, saying, “Thrust in your sharp sickle and gather the clusters of the vine of the earth, for her grapes are fully ripe.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6180"
+            },
+            "So the angel thrust his sickle into the earth and gathered the vine of the earth, and threw",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            },
+            "into the great winepress of the wrath of God."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "So the angel thrust his sickle into the earth and gathered the vine of the earth, and threw it",
+          "parts": [
+            "So the angel thrust his sickle into the earth and gathered the vine of the earth, and threw",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "And the winepress was trampled outside the city, and blood came out of the winepress, up to the horses’ bridles, for one thousand six hundred furlongs.",
+          "parts": [
+            "And the winepress was trampled outside the city, and blood came out of the winepress, up to the horses’ bridles, for one thousand six hundred furlongs.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6181"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Proclamation of Angels",
+        "Harvest of Blessing: The Martyrs",
+        "Harvest of Wrath: The Grapes",
+        "The Liturgy of Preparation"
+      ]
+    },
+    {
+      "chapter_num": 15,
+      "verses_count": 8,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Then I saw another sign in heaven, great and marvelous: seven angels having the seven last plagues, for in them the wrath of God is complete.",
+          "parts": [
+            "Then I saw another sign in heaven, great and marvelous: seven angels having the seven last plagues, for in them the wrath of God is complete.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6183"
+            }
+          ]
+        },
+        {
+          "num": 2,
+          "text": "And I saw something like a sea of glass mingled with fire, and those who have the victory over the beast, over his image and over his mark a and over the number of his name, standing on the sea of glass, having harps of God. They sing the song of Moses, the servant of God, and the song of the Lamb, saying:",
+          "parts": [
+            "And I saw",
+            {
+              "style": "ITALIC",
+              "text": "something"
+            },
+            "like a sea of glass mingled with fire, and those who have the victory over the beast, over his image and over his mark",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1690"
+            },
+            {
+              "style": "ITALIC",
+              "text": "and"
+            },
+            "over the number of his name, standing on the sea of glass, having harps of God.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6184"
+            },
+            "They sing the song of Moses, the servant of God, and the song of the Lamb, saying:"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "They sing the song of Moses, the servant of God, and the song of the Lamb, saying:",
+          "parts": [
+            "They sing the song of Moses, the servant of God, and the song of the Lamb, saying:"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "After these things I looked, and behold, a the temple of the tabernacle of the testimony in heaven was opened. And out of the temple came the seven angels having the seven plagues, clothed in pure bright linen, and having their chests girded with golden bands.",
+          "parts": [
+            "After these things I looked, and behold,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1691"
+            },
+            "the temple of the tabernacle of the testimony in heaven was opened.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6185"
+            },
+            "And out of the temple came the seven angels having the seven plagues, clothed in pure bright linen, and having their chests girded with golden bands."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "And out of the temple came the seven angels having the seven plagues, clothed in pure bright linen, and having their chests girded with golden bands.",
+          "parts": [
+            "And out of the temple came the seven angels having the seven plagues, clothed in pure bright linen, and having their chests girded with golden bands."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Then one of the four living creatures gave to the seven angels seven golden bowls full of the wrath of God who lives forever and ever.",
+          "parts": [
+            "Then one of the four living creatures gave to the seven angels seven golden bowls full of the wrath of God who lives forever and ever."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "The temple was filled with smoke from the glory of God and from His power, and no one was able to enter the temple till the seven plagues of the seven angels were completed.",
+          "parts": [
+            "The temple was filled with smoke from the glory of God and from His power, and no one was able to enter the temple till the seven plagues of the seven angels were completed.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6186"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 16,
+      "verses_count": 21,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Then I heard a loud voice from the temple saying to the seven angels, “Go and pour out the bowls a of the wrath of God on the earth.”",
+          "parts": [
+            "Then I heard a loud voice from the temple saying to the seven angels, “Go and pour out the bowls",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1692"
+            },
+            "of the wrath of God on the earth.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6187"
+            }
+          ]
+        },
+        {
+          "num": 2,
+          "text": "So the first went and poured out his bowl upon the earth, and a foul and loathsome sore came upon the men who had the mark of the beast and those who worshiped his image.",
+          "parts": [
+            "So the first went and poured out his bowl upon the earth, and a foul and loathsome sore came upon the men who had the mark of the beast and those who worshiped his image.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6188"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Then the second angel poured out his bowl on the sea, and it became blood as of a dead man; and every living creature in the sea died.",
+          "parts": [
+            "Then the second angel poured out his bowl on the sea, and it became blood as of a dead",
+            {
+              "style": "ITALIC",
+              "text": "man;"
+            },
+            "and every living creature in the sea died."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Then the third angel poured out his bowl on the rivers and springs of water, and they became blood.",
+          "parts": [
+            "Then the third angel poured out his bowl on the rivers and springs of water, and they became blood."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "And I heard the angel of the waters saying:",
+          "parts": [
+            "And I heard the angel of the waters saying:"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "And I heard another from a the altar saying, “Even so, Lord God Almighty, true and righteous are Your judgments.”",
+          "parts": [
+            "And I heard another from",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1693"
+            },
+            "the altar saying, “Even so, Lord God Almighty, true and righteous",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "Your judgments.”"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Then the fourth angel poured out his bowl on the sun, and power was given to him to scorch men with fire. And men were scorched with great heat, and they blasphemed the name of God who has power over these plagues; and they did not repent and give Him glory.",
+          "parts": [
+            "Then the fourth angel poured out his bowl on the sun, and power was given to him to scorch men with fire.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6190"
+            },
+            "And men were scorched with great heat, and they blasphemed the name of God who has power over these plagues; and they did not repent and give Him glory."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "And men were scorched with great heat, and they blasphemed the name of God who has power over these plagues; and they did not repent and give Him glory.",
+          "parts": [
+            "And men were scorched with great heat, and they blasphemed the name of God who has power over these plagues; and they did not repent and give Him glory."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Then the fifth angel poured out his bowl on the throne of the beast, and his kingdom became full of darkness; and they gnawed their tongues because of the pain. They blasphemed the God of heaven because of their pains and their sores, and did not repent of their deeds.",
+          "parts": [
+            "Then the fifth angel poured out his bowl on the throne of the beast, and his kingdom became full of darkness; and they gnawed their tongues because of the pain.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6191"
+            },
+            "They blasphemed the God of heaven because of their pains and their sores, and did not repent of their deeds."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "They blasphemed the God of heaven because of their pains and their sores, and did not repent of their deeds.",
+          "parts": [
+            "They blasphemed the God of heaven because of their pains and their sores, and did not repent of their deeds."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Then the sixth angel poured out his bowl on the great river Euphrates, and its water was dried up, so that the way of the kings from the east might be prepared. And I saw three unclean spirits like frogs coming out of the mouth of the dragon, out of the mouth of the beast, and out of the mouth of the false prophet. For they are spirits of demons, performing signs, which go out to the kings of the earth and a of the whole world, to gather them to the battle of that great day of God Almighty.",
+          "parts": [
+            "Then the sixth angel poured out his bowl on the great river Euphrates, and its water was dried up, so that the way of the kings from the east might be prepared.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6192"
+            },
+            "And I saw three unclean spirits like frogs",
+            {
+              "style": "ITALIC",
+              "text": "coming"
+            },
+            "out of the mouth of the dragon, out of the mouth of the beast, and out of the mouth of the false prophet.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6193"
+            },
+            "For they are spirits of demons, performing signs,",
+            {
+              "style": "ITALIC",
+              "text": "which"
+            },
+            "go out to the kings of the earth and",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1694"
+            },
+            "of the whole world, to gather them to the battle of that great day of God Almighty.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6194"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "And I saw three unclean spirits like frogs coming",
+          "parts": [
+            "And I saw three unclean spirits like frogs",
+            {
+              "style": "ITALIC",
+              "text": "coming"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "For they are spirits of demons, performing signs, which",
+          "parts": [
+            "For they are spirits of demons, performing signs,",
+            {
+              "style": "ITALIC",
+              "text": "which"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "“Behold, I am coming as a thief.",
+          "parts": [
+            "“Behold, I am coming as a thief."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "And they gathered them together to the place called in Hebrew, Armageddon. a",
+          "parts": [
+            "And they gathered them together to the place called in Hebrew, Armageddon.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1695"
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6196"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Then the seventh angel poured out his bowl into the air, and a loud voice came out of the temple of heaven, from the throne, saying, “It is done!” And there were noises and thunderings and lightnings; and there was a great earthquake, such a mighty and great earthquake as had not occurred since men were on the earth.",
+          "parts": [
+            "Then the seventh angel poured out his bowl into the air, and a loud voice came out of the temple of heaven, from the throne, saying, “It is done!”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6197"
+            },
+            "And there were noises and thunderings and lightnings; and there was a great earthquake, such a mighty and great earthquake as had not occurred since men were on the earth."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "And there were noises and thunderings and lightnings; and there was a great earthquake, such a mighty and great earthquake as had not occurred since men were on the earth.",
+          "parts": [
+            "And there were noises and thunderings and lightnings; and there was a great earthquake, such a mighty and great earthquake as had not occurred since men were on the earth."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Now the great city was divided into three parts, and the cities of the nations fell.",
+          "parts": [
+            "Now the great city was divided into three parts, and the cities of the nations fell."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Then every island fled away, and the mountains were not found.",
+          "parts": [
+            "Then every island fled away, and the mountains were not found."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "And great hail from heaven fell upon men, each hailstone",
+          "parts": [
+            "And great hail from heaven fell upon men,",
+            {
+              "style": "ITALIC",
+              "text": "each hailstone"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Bowl One: Loathsome Sores",
+        "Bowl Two: The Sea Turns to Blood",
+        "Bowl Three: Fresh Waters Turn to Blood",
+        "Bowl Four: Men Are Scorched",
+        "Bowl Five: Darkness and Pain",
+        "Bowl Six: Euphrates Dries Up",
+        "Bowl Seven: Earth Utterly Shaken",
+        "The Great Harlot and Her Beast"
+      ]
+    },
+    {
+      "chapter_num": 17,
+      "verses_count": 18,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Then one of the seven angels who had the seven bowls came and talked with me, saying to me, a “Come, I will show you the judgment of the great harlot who sits on many waters, with whom the kings of the earth committed fornication, and the inhabitants of the earth were made drunk with the wine of her fornication.”",
+          "parts": [
+            "Then one of the seven angels who had the seven bowls came and talked with me, saying to me,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1696"
+            },
+            "“Come, I will show you the judgment of the great harlot who sits on many waters,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6198"
+            },
+            "with whom the kings of the earth committed fornication, and the inhabitants of the earth were made drunk with the wine of her fornication.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6199"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "So he carried me away in the Spirit into the wilderness.",
+          "parts": [
+            "So he carried me away in the Spirit into the wilderness."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "The woman was arrayed in purple and scarlet, and adorned with gold and precious stones and pearls, having in her hand a golden cup full of abominations and the filthiness of her fornication. a",
+          "parts": [
+            "The woman was arrayed in purple and scarlet, and adorned with gold and precious stones and pearls, having in her hand a golden cup full of abominations and the filthiness of her fornication.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1697"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "And on her forehead a name was",
+          "parts": [
+            "And on her forehead a name",
+            {
+              "style": "ITALIC",
+              "text": "was"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "I saw the woman, drunk with the blood of the saints and with the blood of the martyrs of Jesus.",
+          "parts": [
+            "I saw the woman, drunk with the blood of the saints and with the blood of the martyrs of Jesus."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "But the angel said to me, “Why did you marvel?",
+          "parts": [
+            "But the angel said to me, “Why did you marvel?"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "The beast that you saw was, and is not, and will ascend out of the bottomless pit and go to perdition.",
+          "parts": [
+            "The beast that you saw was, and is not, and will ascend out of the bottomless pit and go to perdition."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "“Here is the mind which has wisdom: The seven heads are seven mountains on which the woman sits.",
+          "parts": [
+            "“Here",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "the mind which has wisdom: The seven heads are seven mountains on which the woman sits."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "There are also seven kings.",
+          "parts": [
+            "There are also seven kings."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "The beast that was, and is not, is himself also the eighth, and is of the seven, and is going to perdition.",
+          "parts": [
+            "The beast that was, and is not, is himself also the eighth, and is of the seven, and is going to perdition."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "“The ten horns which you saw are ten kings who have received no kingdom as yet, but they receive authority for one hour as kings with the beast. These are of one mind, and they will give their power and authority to the beast.",
+          "parts": [
+            "“The ten horns which you saw are ten kings who have received no kingdom as yet, but they receive authority for one hour as kings with the beast.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6204"
+            },
+            "These are of one mind, and they will give their power and authority to the beast."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "These are of one mind, and they will give their power and authority to the beast.",
+          "parts": [
+            "These are of one mind, and they will give their power and authority to the beast."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "These will make war with the Lamb, and the Lamb will overcome them, for He is Lord of lords and King of kings; and those who are",
+          "parts": [
+            "These will make war with the Lamb, and the Lamb will overcome them, for He is Lord of lords and King of kings; and those",
+            {
+              "style": "ITALIC",
+              "text": "who are"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Then he said to me, “The waters which you saw, where the harlot sits, are peoples, multitudes, nations, and tongues. And the ten horns which you saw on a the beast, these will hate the harlot, make her desolate and naked, eat her flesh and burn her with fire.",
+          "parts": [
+            "Then he said to me, “The waters which you saw, where the harlot sits, are peoples, multitudes, nations, and tongues.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6205"
+            },
+            "And the ten horns which you saw on",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1698"
+            },
+            "the beast, these will hate the harlot, make her desolate and naked, eat her flesh and burn her with fire."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "And the ten horns which you saw on a",
+          "parts": [
+            "And the ten horns which you saw on",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1699"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For God has put it into their hearts to fulfill His purpose, to be of one mind, and to give their kingdom to the beast, until the words of God are fulfilled.",
+          "parts": [
+            "For God has put it into their hearts to fulfill His purpose, to be of one mind, and to give their kingdom to the beast, until the words of God are fulfilled."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "And the woman whom you saw is that great city which reigns over the kings of the earth.”",
+          "parts": [
+            "And the woman whom you saw is that great city which reigns over the kings of the earth.”"
+          ]
+        }
+      ],
+      "headers": [
+        "The Meaning of the Harlot and Her Beast",
+        "The Judgment of Babylon"
+      ]
+    },
+    {
+      "chapter_num": 18,
+      "verses_count": 24,
+      "verses": [
+        {
+          "num": 1,
+          "text": "After these things I saw another angel coming down from heaven, having great authority, and the earth was illuminated with his glory. And he cried mightily a with a loud voice, saying, “Babylon the great is fallen, is fallen, and has become a dwelling place of demons, a prison for every foul spirit, and a cage for every unclean and hated bird! For all the nations have drunk of the wine of the wrath of her fornication, the kings of the earth have committed fornication with her, and the merchants of the earth have become rich through the abundance of her luxury.”",
+          "parts": [
+            "After these things I saw another angel coming down from heaven, having great authority, and the earth was illuminated with his glory.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6206"
+            },
+            "And he cried mightily",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1700"
+            },
+            "with a loud voice, saying, “Babylon the great is fallen, is fallen, and has become a dwelling place of demons, a prison for every foul spirit, and a cage for every unclean and hated bird!",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6207"
+            },
+            "For all the nations have drunk of the wine of the wrath of her fornication, the kings of the earth have committed fornication with her, and the merchants of the earth have become rich through the abundance of her luxury.”"
+          ]
+        },
+        {
+          "num": 4,
+          "text": "And I heard another voice from heaven saying, “Come out of her, my people, lest you share in her sins, and lest you receive of her plagues. For her sins have reached a to heaven, and God has remembered her iniquities.",
+          "parts": [
+            "And I heard another voice from heaven saying, “Come out of her, my people, lest you share in her sins, and lest you receive of her plagues.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6208"
+            },
+            "For her sins have reached",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1701"
+            },
+            "to heaven, and God has remembered her iniquities."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "For her sins have reached a",
+          "parts": [
+            "For her sins have reached",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1702"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Render to her just as she rendered to you, a",
+          "parts": [
+            "Render to her just as she rendered to you,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1703"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "In the measure that she glorified herself and lived luxuriously, in the same measure give her torment and sorrow; for she says in her heart, ‘I sit as",
+          "parts": [
+            "In the measure that she glorified herself and lived luxuriously, in the same measure give her torment and sorrow; for she says in her heart, ‘I sit",
+            {
+              "style": "ITALIC",
+              "text": "as"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Therefore her plagues will come in one day—death and mourning and famine.",
+          "parts": [
+            "Therefore her plagues will come in one day—death and mourning and famine."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "“The kings of the earth who committed fornication and lived luxuriously with her will weep and lament for her, when they see the smoke of her burning, standing at a distance for fear of her torment, saying, ‘Alas, alas, that great city Babylon, that mighty city!",
+          "parts": [
+            "“The kings of the earth who committed fornication and lived luxuriously with her will weep and lament for her, when they see the smoke of her burning,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6209"
+            },
+            "standing at a distance for fear of her torment, saying, ‘Alas, alas, that great city Babylon, that mighty city!"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "standing at a distance for fear of her torment, saying, ‘Alas, alas, that great city Babylon, that mighty city!",
+          "parts": [
+            "standing at a distance for fear of her torment, saying, ‘Alas, alas, that great city Babylon, that mighty city!"
+          ]
+        },
+        {
+          "num": 11,
+          "text": "“And the merchants of the earth will weep and mourn over her, for no one buys their merchandise anymore: merchandise of gold and silver, precious stones and pearls, fine linen and purple, silk and scarlet, every kind of citron wood, every kind of object of ivory, every kind of object of most precious wood, bronze, iron, and marble; and cinnamon and incense, fragrant oil and frankincense, wine and oil, fine flour and wheat, cattle and sheep, horses and chariots, and bodies and souls of men.",
+          "parts": [
+            "“And the merchants of the earth will weep and mourn over her, for no one buys their merchandise anymore:",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6210"
+            },
+            "merchandise of gold and silver, precious stones and pearls, fine linen and purple, silk and scarlet, every kind of citron wood, every kind of object of ivory, every kind of object of most precious wood, bronze, iron, and marble; and cinnamon and incense, fragrant oil and frankincense, wine and oil, fine flour and wheat, cattle and sheep, horses and chariots, and bodies and souls of men."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "merchandise of gold and silver, precious stones and pearls, fine linen and purple, silk and scarlet, every kind of citron wood, every kind of object of ivory, every kind of object of most precious wood, bronze, iron, and marble;",
+          "parts": [
+            "merchandise of gold and silver, precious stones and pearls, fine linen and purple, silk and scarlet, every kind of citron wood, every kind of object of ivory, every kind of object of most precious wood, bronze, iron, and marble;"
+          ]
+        },
+        {
+          "num": 13,
+          "text": "and cinnamon and incense, fragrant oil and frankincense, wine and oil, fine flour and wheat, cattle and sheep, horses and chariots, and bodies and souls of men.",
+          "parts": [
+            "and cinnamon and incense, fragrant oil and frankincense, wine and oil, fine flour and wheat, cattle and sheep, horses and chariots, and bodies and souls of men."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "The fruit that your soul longed for has gone from you, and all the things which are rich and splendid have gone from you, a",
+          "parts": [
+            "The fruit that your soul longed for has gone from you, and all the things which are rich and splendid have gone from you,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1704"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "The merchants of these things, who became rich by her, will stand at a distance for fear of her torment, weeping and wailing,",
+          "parts": [
+            "The merchants of these things, who became rich by her, will stand at a distance for fear of her torment, weeping and wailing,"
+          ]
+        },
+        {
+          "num": 16,
+          "text": "and saying, ‘Alas, alas, that great city that was clothed in fine linen, purple, and scarlet, and adorned with gold and precious stones and pearls!",
+          "parts": [
+            "and saying, ‘Alas, alas, that great city that was clothed in fine linen, purple, and scarlet, and adorned with gold and precious stones and pearls!"
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For in one hour such great riches came to nothing.’ Every shipmaster, all who travel by ship, sailors, and as many as trade on the sea, stood at a distance",
+          "parts": [
+            "For in one hour such great riches came to nothing.’ Every shipmaster, all who travel by ship, sailors, and as many as trade on the sea, stood at a distance"
+          ]
+        },
+        {
+          "num": 18,
+          "text": "and cried out when they saw the smoke of her burning, saying, ‘What is",
+          "parts": [
+            "and cried out when they saw the smoke of her burning, saying, ‘What",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "“They threw dust on their heads and cried out, weeping and wailing, and saying, ‘Alas, alas, that great city, in which all who had ships on the sea became rich by her wealth!",
+          "parts": [
+            "“They threw dust on their heads and cried out, weeping and wailing, and saying, ‘Alas, alas, that great city, in which all who had ships on the sea became rich by her wealth!"
+          ]
+        },
+        {
+          "num": 20,
+          "text": "“Rejoice over her, O heaven, and you holy apostles a and prophets, for God has avenged you on her!”",
+          "parts": [
+            "“Rejoice over her, O heaven, and",
+            {
+              "style": "ITALIC",
+              "text": "you"
+            },
+            "holy apostles",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1705"
+            },
+            "and prophets, for God has avenged you on her!”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6211"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Then a mighty angel took up a stone like a great millstone and threw it into the sea, saying, “Thus with violence the great city Babylon shall be thrown down, and shall not be found anymore. The sound of harpists, musicians, flutists, and trumpeters shall not be heard in you anymore.",
+          "parts": [
+            "Then a mighty angel took up a stone like a great millstone and threw",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            },
+            "into the sea, saying, “Thus with violence the great city Babylon shall be thrown down, and shall not be found anymore.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6212"
+            },
+            "The sound of harpists, musicians, flutists, and trumpeters shall not be heard in you anymore."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "The sound of harpists, musicians, flutists, and trumpeters shall not be heard in you anymore.",
+          "parts": [
+            "The sound of harpists, musicians, flutists, and trumpeters shall not be heard in you anymore."
+          ]
+        },
+        {
+          "num": 23,
+          "text": "The light of a lamp shall not shine in you anymore, and the voice of bridegroom and bride shall not be heard in you anymore.",
+          "parts": [
+            "The light of a lamp shall not shine in you anymore, and the voice of bridegroom and bride shall not be heard in you anymore."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "And in her was found the blood of prophets and saints, and of all who were slain on the earth.”",
+          "parts": [
+            "And in her was found the blood of prophets and saints, and of all who were slain on the earth.”"
+          ]
+        }
+      ],
+      "headers": [
+        "The World Mourns for Babylon",
+        "The Finality of Babylon's Fall",
+        "Litany of Triumph in Heaven"
+      ]
+    },
+    {
+      "chapter_num": 19,
+      "verses_count": 21,
+      "verses": [
+        {
+          "num": 1,
+          "text": "After these things I heard a a loud voice of a great multitude in heaven, saying, “Alleluia!",
+          "parts": [
+            "After these things I heard",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1706"
+            },
+            "a loud voice of a great multitude in heaven, saying, “Alleluia!"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "For true and righteous are",
+          "parts": [
+            "For true and righteous",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Again they said, “Alleluia!",
+          "parts": [
+            "Again they said, “Alleluia!"
+          ]
+        },
+        {
+          "num": 4,
+          "text": "And the twenty-four elders and the four living creatures fell down and worshiped God who sat on the throne, saying, “Amen!",
+          "parts": [
+            "And the twenty-four elders and the four living creatures fell down and worshiped God who sat on the throne, saying, “Amen!"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Then a voice came from the throne, saying, “Praise our God, all you His servants and those who fear Him, both a",
+          "parts": [
+            "Then a voice came from the throne, saying, “Praise our God, all you His servants and those who fear Him, both",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1707"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "And I heard, as it were, the voice of a great multitude, as the sound of many waters and as the sound of mighty thunderings, saying, “Alleluia!",
+          "parts": [
+            "And I heard, as it were, the voice of a great multitude, as the sound of many waters and as the sound of mighty thunderings, saying, “Alleluia!"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Let us be glad and rejoice and give Him glory, for the marriage of the Lamb has come, and His wife has made herself ready.”",
+          "parts": [
+            "Let us be glad and rejoice and give Him glory, for the marriage of the Lamb has come, and His wife has made herself ready.”"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "And to her it was granted to be arrayed in fine linen, clean and bright, for the fine linen is the righteous acts of the saints.",
+          "parts": [
+            "And to her it was granted to be arrayed in fine linen, clean and bright, for the fine linen is the righteous acts of the saints."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Then he said to me, “Write: ‘Blessed are those who are called to the marriage supper of the Lamb!’ ” And he said to me, “These are the true sayings of God.” And I fell at his feet to worship him.",
+          "parts": [
+            "Then he said to me, “Write: ‘Blessed",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "those who are called to the marriage supper of the Lamb!’ ” And he said to me, “These are the true sayings of God.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6217"
+            },
+            "And I fell at his feet to worship him."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "And I fell at his feet to worship him.",
+          "parts": [
+            "And I fell at his feet to worship him."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Now I saw heaven opened, and behold, a white horse.",
+          "parts": [
+            "Now I saw heaven opened, and behold, a white horse."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "His eyes were",
+          "parts": [
+            "His eyes",
+            {
+              "style": "ITALIC",
+              "text": "were"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "He was",
+          "parts": [
+            "He",
+            {
+              "style": "ITALIC",
+              "text": "was"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "And the armies in heaven, clothed in fine linen, white and clean, a",
+          "parts": [
+            "And the armies in heaven, clothed in fine linen, white and clean,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1708"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Now out of His mouth goes a sharp a",
+          "parts": [
+            "Now out of His mouth goes a sharp",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1709"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "And He has on His",
+          "parts": [
+            "And He has on",
+            {
+              "style": "ITALIC",
+              "text": "His"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Then I saw an angel standing in the sun; and he cried with a loud voice, saying to all the birds that fly in the midst of heaven, “Come and gather together for the supper of the great God, a that you may eat the flesh of kings, the flesh of captains, the flesh of mighty men, the flesh of horses and of those who sit on them, and the flesh of all people, free a and slave, both small and great.”",
+          "parts": [
+            "Then I saw an angel standing in the sun; and he cried with a loud voice, saying to all the birds that fly in the midst of heaven, “Come and gather together for the supper of the great God,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1710"
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6223"
+            },
+            "that you may eat the flesh of kings, the flesh of captains, the flesh of mighty men, the flesh of horses and of those who sit on them, and the flesh of all",
+            {
+              "style": "ITALIC",
+              "text": "people,"
+            },
+            "free",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1711"
+            },
+            "and slave, both small and great.”"
+          ]
+        },
+        {
+          "num": 18,
+          "text": "that you may eat the flesh of kings, the flesh of captains, the flesh of mighty men, the flesh of horses and of those who sit on them, and the flesh of all people,",
+          "parts": [
+            "that you may eat the flesh of kings, the flesh of captains, the flesh of mighty men, the flesh of horses and of those who sit on them, and the flesh of all",
+            {
+              "style": "ITALIC",
+              "text": "people,"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "And I saw the beast, the kings of the earth, and their armies, gathered together to make war against Him who sat on the horse and against His army.",
+          "parts": [
+            "And I saw the beast, the kings of the earth, and their armies, gathered together to make war against Him who sat on the horse and against His army."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Then the beast was captured, and with him the false prophet who worked signs in his presence, by which he deceived those who received the mark of the beast and those who worshiped his image.",
+          "parts": [
+            "Then the beast was captured, and with him the false prophet who worked signs in his presence, by which he deceived those who received the mark of the beast and those who worshiped his image."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "And the rest were killed with the sword which proceeded from the mouth of Him who sat on the horse.",
+          "parts": [
+            "And the rest were killed with the sword which proceeded from the mouth of Him who sat on the horse."
+          ]
+        }
+      ],
+      "headers": [
+        "The Word and His Army",
+        "Defeat of the Beast and False Prophet",
+        "The Millennial Age"
+      ]
+    },
+    {
+      "chapter_num": 20,
+      "verses_count": 15,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Then I saw an angel coming down from heaven, having the key to the bottomless pit and a great chain in his hand. He laid hold of the dragon, that serpent of old, who is the Devil and Satan, and bound him for a thousand years; and he cast him into the bottomless pit, and shut him up, and set a seal on him, so that he should deceive the nations no more till the thousand years were finished.",
+          "parts": [
+            "Then I saw an angel coming down from heaven, having the key to the bottomless pit and a great chain in his hand.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6225"
+            },
+            "He laid hold of the dragon, that serpent of old, who is",
+            {
+              "style": "ITALIC",
+              "text": "the"
+            },
+            "Devil and Satan, and bound him for a thousand years;",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6226"
+            },
+            "and he cast him into the bottomless pit, and shut him up, and set a seal on him, so that he should deceive the nations no more till the thousand years were finished."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "And I saw thrones, and they sat on them, and judgment was committed to them.",
+          "parts": [
+            "And I saw thrones, and they sat on them, and judgment was committed to them."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "But the rest of the dead did not live again until the thousand years were finished.",
+          "parts": [
+            "But the rest of the dead did not live again until the thousand years were finished."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Blessed and holy is",
+          "parts": [
+            "Blessed and holy",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Now when the thousand years have expired, Satan will be released from his prison and will go out to deceive the nations which are in the four corners of the earth, Gog and Magog, to gather them together to battle, whose number is as the sand of the sea.",
+          "parts": [
+            "Now when the thousand years have expired, Satan will be released from his prison",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6229"
+            },
+            "and will go out to deceive the nations which are in the four corners of the earth, Gog and Magog, to gather them together to battle, whose number",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "as the sand of the sea."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "and will go out to deceive the nations which are in the four corners of the earth, Gog and Magog, to gather them together to battle, whose number is",
+          "parts": [
+            "and will go out to deceive the nations which are in the four corners of the earth, Gog and Magog, to gather them together to battle, whose number",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "They went up on the breadth of the earth and surrounded the camp of the saints and the beloved city.",
+          "parts": [
+            "They went up on the breadth of the earth and surrounded the camp of the saints and the beloved city."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "The devil, who deceived them, was cast into the lake of fire and brimstone where a",
+          "parts": [
+            "The devil, who deceived them, was cast into the lake of fire and brimstone where",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1712"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Then I saw a great white throne and Him who sat on it, from whose face the earth and the heaven fled away.",
+          "parts": [
+            "Then I saw a great white throne and Him who sat on it, from whose face the earth and the heaven fled away."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "And I saw the dead, small and great, standing before God, a",
+          "parts": [
+            "And I saw the dead, small and great, standing before God,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1713"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "The sea gave up the dead who were in it, and Death and Hades delivered up the dead who were in them.",
+          "parts": [
+            "The sea gave up the dead who were in it, and Death and Hades delivered up the dead who were in them."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Then Death and Hades were cast into the lake of fire.",
+          "parts": [
+            "Then Death and Hades were cast into the lake of fire."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "And anyone not found written in the Book of Life was cast into the lake of fire.",
+          "parts": [
+            "And anyone not found written in the Book of Life was cast into the lake of fire."
+          ]
+        }
+      ],
+      "headers": [
+        "After the Millennium",
+        "The Great White Throne Judgment",
+        "A New Creation"
+      ]
+    },
+    {
+      "chapter_num": 21,
+      "verses_count": 27,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Now I saw a new heaven and a new earth, for the first heaven and the first earth had passed away.",
+          "parts": [
+            "Now I saw a new heaven and a new earth, for the first heaven and the first earth had passed away."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "Then I, John, a",
+          "parts": [
+            "Then I, John,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1714"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "And I heard a loud voice from heaven saying, “Behold, the tabernacle of God is",
+          "parts": [
+            "And I heard a loud voice from heaven saying, “Behold, the tabernacle of God",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "And God will wipe away every tear from their eyes; there shall be no more death, nor sorrow, nor crying.",
+          "parts": [
+            "And God will wipe away every tear from their eyes; there shall be no more death, nor sorrow, nor crying."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Then He who sat on the throne said, “Behold, I make all things new.” And He said to me, a “Write, for these words are true and faithful.”",
+          "parts": [
+            "Then He who sat on the throne said, “Behold, I make all things new.” And He said to me,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1715"
+            },
+            "“Write, for these words are true and faithful.”"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "And He said to me, “It is done! a I am the Alpha and the Omega, the Beginning and the End.",
+          "parts": [
+            "And He said to me, “It is done!",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1716"
+            },
+            "I am the Alpha and the Omega, the Beginning and the End."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "He who overcomes shall inherit all things, a",
+          "parts": [
+            "He who overcomes shall inherit all things,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1717"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "But the cowardly, unbelieving, a",
+          "parts": [
+            "But the cowardly, unbelieving,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1718"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Then one of the seven angels who had the seven bowls filled with the seven last plagues came to me a and talked with me, saying, “Come, I will show you the bride, the Lamb's wife.” b And he carried me away in the Spirit to a great and high mountain, and showed me the great city, the holy a Jerusalem, descending out of heaven from God, having the glory of God.",
+          "parts": [
+            "Then one of the seven angels who had the seven bowls filled with the seven last plagues came to me",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1719"
+            },
+            "and talked with me, saying, “Come, I will show you the bride, the Lamb's wife.”",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r1720"
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6237"
+            },
+            "And he carried me away in the Spirit to a great and high mountain, and showed me the great city, the holy",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1721"
+            },
+            "Jerusalem, descending out of heaven from God,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6238"
+            },
+            "having the glory of God."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "And he carried me away in the Spirit to a great and high mountain, and showed me the great city, the holy a",
+          "parts": [
+            "And he carried me away in the Spirit to a great and high mountain, and showed me the great city, the holy",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1722"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "having the glory of God.",
+          "parts": [
+            "having the glory of God."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Also she had a great and high wall with twelve gates, and twelve angels at the gates, and names written on them, which are the names",
+          "parts": [
+            "Also she had a great and high wall with twelve gates, and twelve angels at the gates, and names written on them, which are",
+            {
+              "style": "ITALIC",
+              "text": "the names"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "three gates on the east, three gates on the north, three gates on the south, and three gates on the west.",
+          "parts": [
+            "three gates on the east, three gates on the north, three gates on the south, and three gates on the west."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Now the wall of the city had twelve foundations, and on them were the names a of the twelve apostles of the Lamb.",
+          "parts": [
+            "Now the wall of the city had twelve foundations, and on them were the names",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1723"
+            },
+            "of the twelve apostles of the Lamb."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "And he who talked with me had a gold reed to measure the city, its gates, and its wall.",
+          "parts": [
+            "And he who talked with me had a gold reed to measure the city, its gates, and its wall.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6240"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "The city is laid out as a square; its length is as great as its breadth.",
+          "parts": [
+            "The city is laid out as a square; its length is as great as its breadth."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Then he measured its wall: one hundred and",
+          "parts": [
+            "Then he measured its wall: one hundred",
+            {
+              "style": "ITALIC",
+              "text": "and"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "The construction of its wall was of",
+          "parts": [
+            "The construction of its wall was",
+            {
+              "style": "ITALIC",
+              "text": "of"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "The foundations of the wall of the city were",
+          "parts": [
+            "The foundations of the wall of the city",
+            {
+              "style": "ITALIC",
+              "text": "were"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "the fifth sardonyx, the sixth sardius, the seventh chrysolite, the eighth beryl, the ninth topaz, the tenth chrysoprase, the eleventh jacinth, and the twelfth amethyst.",
+          "parts": [
+            "the fifth sardonyx, the sixth sardius, the seventh chrysolite, the eighth beryl, the ninth topaz, the tenth chrysoprase, the eleventh jacinth, and the twelfth amethyst."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "The twelve gates were",
+          "parts": [
+            "The twelve gates",
+            {
+              "style": "ITALIC",
+              "text": "were"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "But I saw no temple in it, for the Lord God Almighty and the Lamb are its temple. The city had no need of the sun or of the moon to shine in it, a for the glory b of God illuminated it.",
+          "parts": [
+            "But I saw no temple in it, for the Lord God Almighty and the Lamb are its temple.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6241"
+            },
+            "The city had no need of the sun or of the moon to shine in it,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1724"
+            },
+            "for the glory",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r1725"
+            },
+            "of God illuminated it."
+          ]
+        },
+        {
+          "num": 23,
+          "text": "The city had no need of the sun or of the moon to shine in it, a",
+          "parts": [
+            "The city had no need of the sun or of the moon to shine in it,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1726"
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "And the nations of those who are saved a",
+          "parts": [
+            "And the nations of those who are saved",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1727"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "Its gates shall not be shut at all by day (there shall be no night there).",
+          "parts": [
+            "Its gates shall not be shut at all by day (there shall be no night there)."
+          ]
+        },
+        {
+          "num": 26,
+          "text": "And they shall bring the glory and the honor of the nations into it. a",
+          "parts": [
+            "And they shall bring the glory and the honor of the nations into it.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1728"
+            }
+          ]
+        },
+        {
+          "num": 27,
+          "text": "But there shall by no means enter it anything that defiles, or causes a",
+          "parts": [
+            "But there shall by no means enter it anything that defiles, or causes",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1729"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "The New Jerusalem",
+        "Healing of the Nations",
+        "Paradise Regained"
+      ]
+    },
+    {
+      "chapter_num": 22,
+      "verses_count": 21,
+      "verses": [
+        {
+          "num": 1,
+          "text": "And he showed me a pure a river of water of life, clear as crystal, proceeding from the throne of God and of the Lamb. In the middle of its street, and on either side of the river, was the tree of life, which bore twelve fruits, each tree yielding its fruit every month.",
+          "parts": [
+            "And he showed me a pure",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1730"
+            },
+            "river of water of life, clear as crystal, proceeding from the throne of God and of the Lamb.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6243"
+            },
+            "In the middle of its street, and on either side of the river,",
+            {
+              "style": "ITALIC",
+              "text": "was"
+            },
+            "the tree of life, which bore twelve fruits, each",
+            {
+              "style": "ITALIC",
+              "text": "tree"
+            },
+            "yielding its fruit every month."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "And there shall be no more curse, but the throne of God and of the Lamb shall be in it, and His servants shall serve Him.",
+          "parts": [
+            "And there shall be no more curse, but the throne of God and of the Lamb shall be in it, and His servants shall serve Him."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "They shall see His face, and His name shall be",
+          "parts": [
+            "They shall see His face, and His name",
+            {
+              "style": "ITALIC",
+              "text": "shall be"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "There shall be no night there: They need no lamp nor light of the sun, for the Lord God gives them light.",
+          "parts": [
+            "There shall be no night there: They need no lamp nor light of the sun, for the Lord God gives them light."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Then he said to me, “These words are faithful and true.” And the Lord God of the holy a prophets sent His angel to show His servants the things which must shortly take place.",
+          "parts": [
+            "Then he said to me, “These words",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "faithful and true.” And the Lord God of the holy",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1731"
+            },
+            "prophets sent His angel to show His servants the things which must shortly take place."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "“Behold, I am coming quickly!",
+          "parts": [
+            "“Behold, I am coming quickly!"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Now I, John, saw and heard a these things.",
+          "parts": [
+            "Now I, John, saw and heard",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1732"
+            },
+            "these things."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Then he said to me, “See that you do not do that. For a I am your fellow servant, and of your brethren the prophets, and of those who keep the words of this book.",
+          "parts": [
+            "Then he said to me, “See",
+            {
+              "style": "ITALIC",
+              "text": "that you do"
+            },
+            "not",
+            {
+              "style": "ITALIC",
+              "text": "do that."
+            },
+            "For",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1733"
+            },
+            "I am your fellow servant, and of your brethren the prophets, and of those who keep the words of this book."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "And he said to me, “Do not seal the words of the prophecy of this book, for the time is at hand.",
+          "parts": [
+            "And he said to me, “Do not seal the words of the prophecy of this book, for the time is at hand.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6249"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "He who is unjust, let him be unjust still; he who is filthy, let him be filthy still; he who is righteous, let him be righteous a",
+          "parts": [
+            "He who is unjust, let him be unjust still; he who is filthy, let him be filthy still; he who is righteous, let him be righteous",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1734"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "“And behold, I am coming quickly, and My reward is with Me, to give to every one according to his work. I am the Alpha and the Omega, the Beginning and the End, the First and the Last.” a",
+          "parts": [
+            "“And behold, I am coming quickly, and My reward",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "with Me, to give to every one according to his work.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6250"
+            },
+            "I am the Alpha and the Omega,",
+            {
+              "style": "ITALIC",
+              "text": "the"
+            },
+            "Beginning and",
+            {
+              "style": "ITALIC",
+              "text": "the"
+            },
+            "End, the First and the Last.”",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1735"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "I am the Alpha and the Omega, the",
+          "parts": [
+            "I am the Alpha and the Omega,",
+            {
+              "style": "ITALIC",
+              "text": "the"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Blessed are those who do His commandments, a that they may have the right to the tree of life, and may enter through the gates into the city. But a outside are dogs and sorcerers and sexually immoral and murderers and idolaters, and whoever loves and practices a lie.",
+          "parts": [
+            "Blessed",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "those who do His commandments,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1736"
+            },
+            "that they may have the right to the tree of life, and may enter through the gates into the city.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6251"
+            },
+            "But",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1737"
+            },
+            "outside",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "dogs and sorcerers and sexually immoral and murderers and idolaters, and whoever loves and practices a lie."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "But a",
+          "parts": [
+            "But",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1738"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "“I, Jesus, have sent My angel to testify to you these things in the churches.",
+          "parts": [
+            "“I, Jesus, have sent My angel to testify to you these things in the churches."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "And the Spirit and the bride say, “Come!” And let him who hears say, “Come!” And let him who thirsts come.",
+          "parts": [
+            "And the Spirit and the bride say, “Come!” And let him who hears say, “Come!” And let him who thirsts come."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "For a I testify to everyone who hears the words of the prophecy of this book: If anyone adds to these things, God will add b to him the plagues that are written in this book; and if anyone takes away from the words of the book of this prophecy, God shall take away a his part from the Book b of Life, from the holy city, and from the things which are written in this book.",
+          "parts": [
+            "For",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1739"
+            },
+            "I testify to everyone who hears the words of the prophecy of this book: If anyone adds to these things, God will add",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r1740"
+            },
+            "to him the plagues that are written in this book;",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6254"
+            },
+            "and if anyone takes away from the words of the book of this prophecy, God shall take away",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1741"
+            },
+            "his part from the Book",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r1742"
+            },
+            "of Life, from the holy city, and",
+            {
+              "style": "ITALIC",
+              "text": "from"
+            },
+            "the things which are written in this book."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "and if anyone takes away from the words of the book of this prophecy, God shall take away a",
+          "parts": [
+            "and if anyone takes away from the words of the book of this prophecy, God shall take away",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1743"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "He who testifies to these things says, “Surely I am coming quickly.”",
+          "parts": [
+            "He who testifies to these things says, “Surely I am coming quickly.”"
+          ]
+        },
+        {
+          "num": 21,
+          "text": "The grace of our Lord Jesus Christ be with you all. a Amen.",
+          "parts": [
+            "The grace of our Lord Jesus Christ",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            },
+            "with you all.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1744"
+            },
+            "Amen.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6256"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "The Angel's Testimony",
+        "Christ's Testimony",
+        "The Church's Testimony",
+        "Benediction"
+      ]
+    }
+  ],
+  "author": "Traditionally, the Revelation (also called the Apocalypse) has been attributed to the apostle John.",
+  "date": "The vast majority of scholars hold that Revelation was composed during the fierce persecution in the latter part of the reign of Domitian (AD 81–96), when John was in exile on the Isle of Patmos.",
+  "theme": "Faithfulness in tribulation. “Revelation” (Gr. apokalypsis) means the uncovering of something that has been previously hidden, in this case the final triumph of the kingdom of God. Since this final triumph is assured, our faithfulness now—before its full revelation—will lead to ultimate victory. Subthemes include (1) divine judgment of human wickedness and (2) the symbolic presentation of most major New Testament teaching concerning eschatology, the study of the last things.",
+  "lessons": [
+    {
+      "title": "Heavenly Temple, Heavenly Worship",
+      "entries": [
+        {
+          "parts": [
+            "L I T U R G Y I N T H E N E W",
+            {
+              "style": "LINE_BREAK",
+              "text": "\n"
+            },
+            "T E S T A M E N T C H U R C H"
+          ]
+        },
+        {
+          "parts": [
+            "Virtually all students of the Bible realize there was liturgical worship in Israel. Immediately after the giving of the Ten Commandments (",
+            {
+              "style": "CROSS_REF",
+              "text": "Ex 20:1–17",
+              "ref_id": "r1745"
+            },
+            "), instructions for building the altar were set forth (",
+            {
+              "style": "CROSS_REF",
+              "text": "Ex 20:24–26",
+              "ref_id": "r1746"
+            },
+            "). Then comes instruction concerning keeping the Sabbath (",
+            {
+              "style": "CROSS_REF",
+              "text": "Ex 23:10–13",
+              "ref_id": "r1747"
+            },
+            "), the annual feasts (",
+            {
+              "style": "CROSS_REF",
+              "text": "Ex 23:14–19",
+              "ref_id": "r1748"
+            },
+            "), and the various offerings and furnishings in the sanctuary (",
+            {
+              "style": "CROSS_REF",
+              "text": "Ex 25:1–40",
+              "ref_id": "r1749"
+            },
+            "). Following this, chapters 26—30 deal with such matters as the design of the tabernacle, the altar, and the outer court, the priests’ vestments and their consecration, and instructions for daily offerings."
+          ]
+        },
+        {
+          "parts": [
+            "Liturgical worship is also found in heaven, which is to be expected, since God instructed Moses to make the earthly place of worship as a “copy and shadow of the heavenly things”"
+          ]
+        },
+        {
+          "parts": [
+            "(",
+            {
+              "style": "CROSS_REF",
+              "text": "Heb 8:5",
+              "ref_id": "r1750"
+            },
+            "; see",
+            {
+              "style": "CROSS_REF",
+              "text": "Ex 25:40",
+              "ref_id": "r1751"
+            },
+            "). Heavenly worship is revealed in such passages as",
+            {
+              "style": "CROSS_REF",
+              "text": "Isaiah 6:1–8",
+              "ref_id": "r1752"
+            },
+            ", where we see the prophet caught up to heaven for the liturgy, and Revelation 4, which records the apostle John’s vision of heaven’s liturgy."
+          ]
+        },
+        {
+          "parts": [
+            "The key to comprehending liturgy in the New Testament is to understand the work of the High Priest, our Lord Jesus Christ, who inaugurates the new covenant. Christ is “a priest forever” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Heb 7:17, 21",
+              "ref_id": "r1753"
+            },
+            "). It is unthinkable that He would be a priest but not serve liturgically:"
+          ]
+        },
+        {
+          "parts": [
+            "“forever” suggests He serves continually, without ceasing, in the heavenly tabernacle. Further, He is called not only a priest but a liturgist: “a Minister [Gr.",
+            {
+              "style": "ITALIC",
+              "text": "leitourgos"
+            },
+            ", lit., “liturgist”) of the sanctuary and of the true tabernacle which the Lord erected” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Heb 8:2",
+              "ref_id": "r1754"
+            },
+            "). Christian worship on earth, to be fully Christian, must mirror the worship of Christ in heaven."
+          ]
+        },
+        {
+          "parts": [
+            "Moreover, Christ is “Mediator of a better covenant” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Heb 8:6",
+              "ref_id": "r1755"
+            },
+            "). What is that covenant? In the words of the Lord, “This cup is the new covenant in My blood” (",
+            {
+              "style": "CROSS_REF",
+              "text": "1Co 11:25",
+              "ref_id": "r1756"
+            },
+            "). Just as the blood of bulls and goats in the old covenant prefigured Christ’s sacrifice to come, so the eucharistic feast brings to us the fullness of His new covenant offering, completed at the Cross and fulfilled in His Resurrection. This once-for-all offering of Himself (",
+            {
+              "style": "CROSS_REF",
+              "text": "Heb 7:27",
+              "ref_id": "r1757"
+            },
+            ") which He as High Priest presents at the heavenly altar is an offering in which we participate through the Divine Liturgy in the Church. This is the worship of the New Testament Church!"
+          ]
+        },
+        {
+          "parts": [
+            "Given this biblical background, a number of New Testament passages take on new meaning."
+          ]
+        },
+        {
+          "parts": [
+            "1",
+            {
+              "style": "ITALIC",
+              "text": "Acts 13:2: "
+            },
+            "“As they ministered to the Lord [lit., “as they were in the liturgy of the Lord”] and fasted, the Holy Spirit said, ‘Now separate to Me Barnabas and Saul.’ ” We learn that (a) these two apostles were called by God during worship, and (b) the Holy Spirit speaks in a liturgical setting."
+          ]
+        },
+        {
+          "parts": [
+            "2",
+            {
+              "style": "ITALIC",
+              "text": "Acts 20:7: "
+            },
+            "“Now on the first",
+            {
+              "style": "ITALIC",
+              "text": "day "
+            },
+            "of the week, when the disciples came together to break bread, Paul, ready to depart the next day, spoke to them.” Communion was held each Sunday."
+          ]
+        },
+        {
+          "parts": [
+            "3",
+            {
+              "style": "ITALIC",
+              "text": "Romans 16:16: "
+            },
+            "“Greet one another with a holy kiss.” A kiss of greeting was common in this ancient culture. The “holy kiss,” however, was an element of the Christian liturgy that signified the people of God were reconciled to one another, so that they might receive the Body and Blood of Christ in peace."
+          ]
+        },
+        {
+          "parts": [
+            "4",
+            {
+              "style": "ITALIC",
+              "text": "Ephesians 5:14: "
+            },
+            "“Awake, you who sleep, / Arise from the dead, / And Christ will give you light.” This is an ancient baptismal hymn, already in use by the time Ephesians was written. Other examples of creeds and hymns of New Testament times are seen in",
+            {
+              "style": "CROSS_REF",
+              "text": "1 Timothy 3:16",
+              "ref_id": "r1758"
+            },
+            "and",
+            {
+              "style": "CROSS_REF",
+              "text": "2 Timothy 2:11–13.",
+              "ref_id": "r1759"
+            }
+          ]
+        },
+        {
+          "parts": [
+            "5",
+            {
+              "style": "ITALIC",
+              "text": "Hebrews 13:10: "
+            },
+            "“We have an altar” reveals the continuation of the altar in New Testament worship."
+          ]
+        },
+        {
+          "parts": [
+            "6",
+            {
+              "style": "ITALIC",
+              "text": "Revelation 1:10: "
+            },
+            "“I was in the Spirit on the Lord’s Day.” Many scholars believe John saw his vision of Christ during the Sunday liturgy, as the Lord appeared to him “in the midst of the seven lampstands” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Rev 1:13",
+              "ref_id": "r1760"
+            },
+            "). Lampstands would be found in the Christian sanctuary just as they were in the Hebrew temple."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "A New Creation",
+      "entries": [
+        {
+          "parts": [
+            "T H E E T E R N A L K I N G D O M"
+          ]
+        },
+        {
+          "parts": [
+            {
+              "style": "BOLD",
+              "text": "F"
+            },
+            "ew saints have been blessed with a vision of heaven while still in this life. Isaiah saw heaven (",
+            {
+              "style": "CROSS_REF",
+              "text": "Is 6:1–8",
+              "ref_id": "r1761"
+            },
+            "), as did Ezekiel (",
+            {
+              "style": "CROSS_REF",
+              "text": "Ezk 1:1–28",
+              "ref_id": "r1762"
+            },
+            "), and the apostle John saw a new heaven—God’s eternal Kingdom revealed as a city (",
+            {
+              "style": "CROSS_REF",
+              "text": "Rev 21:1—22:5",
+              "ref_id": "r1763"
+            },
+            ")."
+          ]
+        },
+        {
+          "parts": [
+            "When we read these passages, we note an abundance of mystical, apocalyptic imagery. But the strong similarities between these passages suggests an inspired consistency of reporting on the visions. The living creatures, the light, the cherubic beings, the throne, and the glory of the Lord all work together to unveil a Kingdom of celestial majesty and splendor."
+          ]
+        },
+        {
+          "parts": [
+            "While confessing with the prophet Isaiah and the apostle Paul that “eye has not seen, nor ear heard, nor have entered into the heart of man the things which God has prepared for those who love Him” (",
+            {
+              "style": "CROSS_REF",
+              "text": "1Co 2:9",
+              "ref_id": "r1764"
+            },
+            "), we nonetheless find, taking the Scriptures as a whole, that certain things can be said about the eternal Kingdom."
+          ]
+        },
+        {
+          "parts": [
+            "1",
+            {
+              "style": "ITALIC",
+              "text": "The saints who inhabit God’s Kingdom live in active fulfillment of His eternal plan. "
+            },
+            "In the Kingdom, humanity becomes all it is meant to be. There is nothing at all in Scripture to suggest that eternal life means people passively afloat on huge white clouds strumming harps unto the ages of ages."
+          ]
+        },
+        {
+          "parts": [
+            "Originally created to inhabit Paradise, our first parents chose to sin against God and were expelled from the Garden. The Kingdom of God was closed to mankind (",
+            {
+              "style": "CROSS_REF",
+              "text": "Gn 3:24",
+              "ref_id": "r1765"
+            },
+            "). But God in His love called His creation back to Himself, speaking to us through the law and the prophets and ultimately through His incarnate Son. Through new life in Jesus Christ, we are brought back by God’s mercy into the new creation, His everlasting Kingdom. As kings and priests we will reign with Him forever (",
+            {
+              "style": "CROSS_REF",
+              "text": "Rev 1:6",
+              "ref_id": "r1766"
+            },
+            ")."
+          ]
+        },
+        {
+          "parts": [
+            "2",
+            {
+              "style": "ITALIC",
+              "text": "We experience a foretaste of the Kingdom in the Church. "
+            },
+            "The very first words of the Divine Liturgy spoken by the priest are, “Blessed is the Kingdom of the Father and of the Son and of the Holy Spirit, now and ever and unto ages of ages.” The Church at worship enters or ascends to the heavenly Kingdom. For it is in the Church that we are seated “together in the heavenly",
+            {
+              "style": "ITALIC",
+              "text": "places "
+            },
+            "in Christ Jesus” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Eph 2:6",
+              "ref_id": "r1767"
+            },
+            ") and are raised to “where Christ is, sitting at the right hand of God” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Col 3:1",
+              "ref_id": "r1768"
+            },
+            ")."
+          ]
+        },
+        {
+          "parts": [
+            "In worship we join the heavenly hosts—the saints and the angels—in giving praise to our God. As the body of Christ, we participate with that “great cloud of witnesses” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Heb 12:1",
+              "ref_id": "r1769"
+            },
+            ") surrounding us as we come to “the throne of God” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Heb 12:2",
+              "ref_id": "r1770"
+            },
+            "). We come liturgically “to the city of the living God, the heavenly Jerusalem, to an innumerable company of angels, to the general assembly and church of the firstborn",
+            {
+              "style": "ITALIC",
+              "text": "who are "
+            },
+            "registered in heaven, to God the Judge of all” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Heb 12:22, 23",
+              "ref_id": "r1771"
+            },
+            "). With this heavenly vision, the Orthodox Church each Sunday remembers not only those in the parish but “all those who in faith have gone on before us to their rest.”"
+          ]
+        },
+        {
+          "parts": [
+            "3",
+            {
+              "style": "ITALIC",
+              "text": "Knowledge of the Kingdom motivates us to live in complete devotion to Christ. "
+            },
+            "In this life, we have a foretaste of the Kingdom that inspires us to seek its fullness. In Paul’s words, “For now we see in a mirror, dimly, but then face to face” (",
+            {
+              "style": "CROSS_REF",
+              "text": "1Co 13:12",
+              "ref_id": "r1772"
+            },
+            "). Worship is not a solitary act. Rather it is the Bride of Christ, the one Church—those on earth joining with those in heaven—giving thanks to our God and King, who has made us citizens of His magnificent domain."
+          ]
+        },
+        {
+          "parts": [
+            "The apostle John writes, “Beloved, now we are children of God; and it has not yet been revealed what we shall be, but we know that when He is revealed, we shall be like Him, for we shall see Him as He is. And everyone who has this hope in Him purifies himself, just as He is pure” (",
+            {
+              "style": "CROSS_REF",
+              "text": "1Jn 3:2, 3",
+              "ref_id": "r1773"
+            },
+            ")."
+          ]
+        }
+      ]
+    }
+  ]
+}

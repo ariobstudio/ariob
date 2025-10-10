@@ -1,0 +1,161 @@
+{
+  "en_name": "2 John",
+  "local_name": "2 John",
+  "abr": "2jo",
+  "ch_count": 1,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 13,
+      "verses": [
+        {
+          "num": 1,
+          "text": "The Elder,",
+          "parts": [
+            "The Elder,"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "because of the truth which abides in us and will be with us forever:",
+          "parts": [
+            "because of the truth which abides in us and will be with us forever:"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Grace, mercy, and peace will be with you a from God the Father and from the Lord Jesus Christ, the Son of the Father, in truth and love.",
+          "parts": [
+            "Grace, mercy,",
+            {
+              "style": "ITALIC",
+              "text": "and"
+            },
+            "peace will be with you",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r449"
+            },
+            "from God the Father and from the Lord Jesus Christ, the Son of the Father, in truth and love.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6025"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "I rejoiced greatly that I have found some of your children walking in truth, as we received commandment from the Father. And now I plead with you, lady, not as though I wrote a new commandment to you, but that which we have had from the beginning: that we love one another.",
+          "parts": [
+            "I rejoiced greatly that I have found",
+            {
+              "style": "ITALIC",
+              "text": "some"
+            },
+            "of your children walking in truth, as we received commandment from the Father.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6026"
+            },
+            "And now I plead with you, lady, not as though I wrote a new commandment to you, but that which we have had from the beginning: that we love one another."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "And now I plead with you, lady, not as though I wrote a new commandment to you, but that which we have had from the beginning: that we love one another.",
+          "parts": [
+            "And now I plead with you, lady, not as though I wrote a new commandment to you, but that which we have had from the beginning: that we love one another."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "This is love, that we walk according to His commandments.",
+          "parts": [
+            "This is love, that we walk according to His commandments."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For many deceivers have gone out into the world who do not confess Jesus Christ as coming in the flesh.",
+          "parts": [
+            "For many deceivers have gone out into the world who do not confess Jesus Christ",
+            {
+              "style": "ITALIC",
+              "text": "as"
+            },
+            "coming in the flesh."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Look to yourselves, that we a",
+          "parts": [
+            "Look to yourselves, that we",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r450"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Whoever transgresses a and does not abide in the doctrine of Christ does not have God.",
+          "parts": [
+            "Whoever transgresses",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r451"
+            },
+            "and does not abide in the doctrine of Christ does not have God."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "If anyone comes to you and does not bring this doctrine, do not receive him into your house nor greet him;",
+          "parts": [
+            "If anyone comes to you and does not bring this doctrine, do not receive him into your house nor greet him;",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f6029"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "for he who greets him shares in his evil deeds.",
+          "parts": [
+            "for he who greets him shares in his evil deeds."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Having many things to write to you, I did not wish to do so with paper and ink; but I hope to come to you and speak face to face, that our joy may be full.",
+          "parts": [
+            "Having many things to write to you, I did not wish",
+            {
+              "style": "ITALIC",
+              "text": "to do so"
+            },
+            "with paper and ink; but I hope to come to you and speak face to face, that our joy may be full."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "The children of your elect sister greet you.",
+          "parts": [
+            "The children of your elect sister greet you."
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting and Benediction",
+        "Follow the Law of Love",
+        "Beware of Deceiving Heretics",
+        "John's Plans and Farewell"
+      ]
+    }
+  ]
+}

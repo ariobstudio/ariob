@@ -1,0 +1,474 @@
+{
+  "version": "NKJV",
+  "bookCount": 78,
+  "books": [
+    {
+      "index": 0,
+      "en_name": "Genesis",
+      "local_name": "Genesis",
+      "chapterCount": 50
+    },
+    {
+      "index": 1,
+      "en_name": "Exodus",
+      "local_name": "Exodus",
+      "chapterCount": 40
+    },
+    {
+      "index": 2,
+      "en_name": "Leviticus",
+      "local_name": "Leviticus",
+      "chapterCount": 27
+    },
+    {
+      "index": 3,
+      "en_name": "Numbers",
+      "local_name": "Numbers",
+      "chapterCount": 36
+    },
+    {
+      "index": 4,
+      "en_name": "Deuteronomy",
+      "local_name": "Deuteronomy",
+      "chapterCount": 34
+    },
+    {
+      "index": 5,
+      "en_name": "Joshua",
+      "local_name": "Joshua",
+      "chapterCount": 24
+    },
+    {
+      "index": 6,
+      "en_name": "Judges",
+      "local_name": "Judges",
+      "chapterCount": 21
+    },
+    {
+      "index": 7,
+      "en_name": "Ruth",
+      "local_name": "Ruth",
+      "chapterCount": 4
+    },
+    {
+      "index": 8,
+      "en_name": "1 Samuel",
+      "local_name": "1 Samuel",
+      "chapterCount": 31
+    },
+    {
+      "index": 9,
+      "en_name": "2 Samuel",
+      "local_name": "2 Samuel",
+      "chapterCount": 24
+    },
+    {
+      "index": 10,
+      "en_name": "1 Kings",
+      "local_name": "1 Kings",
+      "chapterCount": 22
+    },
+    {
+      "index": 11,
+      "en_name": "2 Kings",
+      "local_name": "2 Kings",
+      "chapterCount": 25
+    },
+    {
+      "index": 12,
+      "en_name": "1 Chronicles",
+      "local_name": "1 Chronicles",
+      "chapterCount": 29
+    },
+    {
+      "index": 13,
+      "en_name": "2 Chronicles",
+      "local_name": "2 Chronicles",
+      "chapterCount": 36
+    },
+    {
+      "index": 14,
+      "en_name": "Prayer of Manasseh",
+      "local_name": "",
+      "chapterCount": 0
+    },
+    {
+      "index": 15,
+      "en_name": "Ezra",
+      "local_name": "Ezra",
+      "chapterCount": 10
+    },
+    {
+      "index": 16,
+      "en_name": "1 Esdras",
+      "local_name": "",
+      "chapterCount": 0
+    },
+    {
+      "index": 17,
+      "en_name": "Nehemiah",
+      "local_name": "Nehemiah",
+      "chapterCount": 13
+    },
+    {
+      "index": 18,
+      "en_name": "Tobit",
+      "local_name": "",
+      "chapterCount": 0
+    },
+    {
+      "index": 19,
+      "en_name": "Judith",
+      "local_name": "",
+      "chapterCount": 0
+    },
+    {
+      "index": 20,
+      "en_name": "Esther",
+      "local_name": "Esther",
+      "chapterCount": 10
+    },
+    {
+      "index": 21,
+      "en_name": "1 Maccabees",
+      "local_name": "",
+      "chapterCount": 0
+    },
+    {
+      "index": 22,
+      "en_name": "2 Maccabees",
+      "local_name": "",
+      "chapterCount": 0
+    },
+    {
+      "index": 23,
+      "en_name": "3 Maccabees",
+      "local_name": "",
+      "chapterCount": 0
+    },
+    {
+      "index": 24,
+      "en_name": "4 Maccabees",
+      "local_name": "",
+      "chapterCount": 0
+    },
+    {
+      "index": 25,
+      "en_name": "Job",
+      "local_name": "Job",
+      "chapterCount": 42
+    },
+    {
+      "index": 26,
+      "en_name": "Psalms",
+      "local_name": "Psalm",
+      "chapterCount": 150
+    },
+    {
+      "index": 27,
+      "en_name": "Proverbs",
+      "local_name": "Proverbs",
+      "chapterCount": 31
+    },
+    {
+      "index": 28,
+      "en_name": "Ecclesiastes",
+      "local_name": "Ecclesiastes",
+      "chapterCount": 12
+    },
+    {
+      "index": 29,
+      "en_name": "Song of Songs",
+      "local_name": "Song of Solomon",
+      "chapterCount": 8
+    },
+    {
+      "index": 30,
+      "en_name": "Wisdom",
+      "local_name": "",
+      "chapterCount": 0
+    },
+    {
+      "index": 31,
+      "en_name": "Sirach",
+      "local_name": "",
+      "chapterCount": 0
+    },
+    {
+      "index": 32,
+      "en_name": "Isaiah",
+      "local_name": "Isaiah",
+      "chapterCount": 66
+    },
+    {
+      "index": 33,
+      "en_name": "Jeremiah",
+      "local_name": "Jeremiah",
+      "chapterCount": 52
+    },
+    {
+      "index": 34,
+      "en_name": "Epistle of Jeremiah",
+      "local_name": "",
+      "chapterCount": 0
+    },
+    {
+      "index": 35,
+      "en_name": "Lamentations",
+      "local_name": "Lamentations",
+      "chapterCount": 5
+    },
+    {
+      "index": 36,
+      "en_name": "Baruch",
+      "local_name": "",
+      "chapterCount": 0
+    },
+    {
+      "index": 37,
+      "en_name": "Ezekiel",
+      "local_name": "Ezekiel",
+      "chapterCount": 48
+    },
+    {
+      "index": 38,
+      "en_name": "Daniel",
+      "local_name": "Daniel",
+      "chapterCount": 12
+    },
+    {
+      "index": 39,
+      "en_name": "Hosea",
+      "local_name": "Hosea",
+      "chapterCount": 14
+    },
+    {
+      "index": 40,
+      "en_name": "Joel",
+      "local_name": "Joel",
+      "chapterCount": 3
+    },
+    {
+      "index": 41,
+      "en_name": "Amos",
+      "local_name": "Amos",
+      "chapterCount": 9
+    },
+    {
+      "index": 42,
+      "en_name": "Obadiah",
+      "local_name": "Obadiah",
+      "chapterCount": 1
+    },
+    {
+      "index": 43,
+      "en_name": "Jonah",
+      "local_name": "Jonah",
+      "chapterCount": 4
+    },
+    {
+      "index": 44,
+      "en_name": "Micah",
+      "local_name": "Micah",
+      "chapterCount": 7
+    },
+    {
+      "index": 45,
+      "en_name": "Nahum",
+      "local_name": "Nahum",
+      "chapterCount": 3
+    },
+    {
+      "index": 46,
+      "en_name": "Habakkuk",
+      "local_name": "Habakkuk",
+      "chapterCount": 3
+    },
+    {
+      "index": 47,
+      "en_name": "Zephaniah",
+      "local_name": "Zephaniah",
+      "chapterCount": 3
+    },
+    {
+      "index": 48,
+      "en_name": "Haggai",
+      "local_name": "Haggai",
+      "chapterCount": 2
+    },
+    {
+      "index": 49,
+      "en_name": "Zechariah",
+      "local_name": "Zechariah",
+      "chapterCount": 14
+    },
+    {
+      "index": 50,
+      "en_name": "Malachi",
+      "local_name": "Malachi",
+      "chapterCount": 4
+    },
+    {
+      "index": 51,
+      "en_name": "Matthew",
+      "local_name": "Matthew",
+      "chapterCount": 28
+    },
+    {
+      "index": 52,
+      "en_name": "Mark",
+      "local_name": "Mark",
+      "chapterCount": 16
+    },
+    {
+      "index": 53,
+      "en_name": "Luke",
+      "local_name": "Luke",
+      "chapterCount": 24
+    },
+    {
+      "index": 54,
+      "en_name": "John",
+      "local_name": "John",
+      "chapterCount": 21
+    },
+    {
+      "index": 55,
+      "en_name": "Acts",
+      "local_name": "Acts",
+      "chapterCount": 28
+    },
+    {
+      "index": 56,
+      "en_name": "Romans",
+      "local_name": "Romans",
+      "chapterCount": 16
+    },
+    {
+      "index": 57,
+      "en_name": "1 Corinthians",
+      "local_name": "1 Corinthians",
+      "chapterCount": 16
+    },
+    {
+      "index": 58,
+      "en_name": "2 Corinthians",
+      "local_name": "2 Corinthians",
+      "chapterCount": 13
+    },
+    {
+      "index": 59,
+      "en_name": "Galatians",
+      "local_name": "Galatians",
+      "chapterCount": 6
+    },
+    {
+      "index": 60,
+      "en_name": "Ephesians",
+      "local_name": "Ephesians",
+      "chapterCount": 6
+    },
+    {
+      "index": 61,
+      "en_name": "Philippians",
+      "local_name": "Philippians",
+      "chapterCount": 4
+    },
+    {
+      "index": 62,
+      "en_name": "Colossians",
+      "local_name": "Colossians",
+      "chapterCount": 4
+    },
+    {
+      "index": 63,
+      "en_name": "1 Thessalonians",
+      "local_name": "1 Thessalonians",
+      "chapterCount": 5
+    },
+    {
+      "index": 64,
+      "en_name": "2 Thessalonians",
+      "local_name": "2 Thessalonians",
+      "chapterCount": 3
+    },
+    {
+      "index": 65,
+      "en_name": "1 Timothy",
+      "local_name": "1 Timothy",
+      "chapterCount": 6
+    },
+    {
+      "index": 66,
+      "en_name": "2 Timothy",
+      "local_name": "2 Timothy",
+      "chapterCount": 4
+    },
+    {
+      "index": 67,
+      "en_name": "Titus",
+      "local_name": "Titus",
+      "chapterCount": 3
+    },
+    {
+      "index": 68,
+      "en_name": "Philemon",
+      "local_name": "Philemon",
+      "chapterCount": 1
+    },
+    {
+      "index": 69,
+      "en_name": "Hebrews",
+      "local_name": "Hebrews",
+      "chapterCount": 13
+    },
+    {
+      "index": 70,
+      "en_name": "James",
+      "local_name": "James",
+      "chapterCount": 5
+    },
+    {
+      "index": 71,
+      "en_name": "1 Peter",
+      "local_name": "1 Peter",
+      "chapterCount": 5
+    },
+    {
+      "index": 72,
+      "en_name": "2 Peter",
+      "local_name": "2 Peter",
+      "chapterCount": 3
+    },
+    {
+      "index": 73,
+      "en_name": "1 John",
+      "local_name": "1 John",
+      "chapterCount": 5
+    },
+    {
+      "index": 74,
+      "en_name": "2 John",
+      "local_name": "2 John",
+      "chapterCount": 1
+    },
+    {
+      "index": 75,
+      "en_name": "3 John",
+      "local_name": "3 John",
+      "chapterCount": 1
+    },
+    {
+      "index": 76,
+      "en_name": "Jude",
+      "local_name": "Jude",
+      "chapterCount": 1
+    },
+    {
+      "index": 77,
+      "en_name": "Revelation",
+      "local_name": "Revelation",
+      "chapterCount": 22
+    }
+  ]
+}

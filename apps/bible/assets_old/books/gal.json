@@ -1,0 +1,1795 @@
+{
+  "en_name": "Galatians",
+  "local_name": "Galatians",
+  "abr": "gal",
+  "ch_count": 6,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 24,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Paul, an apostle (not from men nor through man, but through Jesus Christ and God the Father who raised Him from the dead), and all the brethren who are with me,",
+          "parts": [
+            "Paul, an apostle (not from men nor through man, but through Jesus Christ and God the Father who raised Him from the dead),",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5546"
+            },
+            "and all the brethren who are with me,"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Grace to you and peace from God the Father and our Lord Jesus Christ, who gave Himself for our sins, that He might deliver us from this present evil age, according to the will of our God and Father, to whom be glory forever and ever.",
+          "parts": [
+            "Grace to you and peace from God the Father and our Lord Jesus Christ,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5547"
+            },
+            "who gave Himself for our sins, that He might deliver us from this present evil age, according to the will of our God and Father, to whom",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            },
+            "glory forever and ever."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "who gave Himself for our sins, that He might deliver us from this present evil age, according to the will of our God and Father,",
+          "parts": [
+            "who gave Himself for our sins, that He might deliver us from this present evil age, according to the will of our God and Father,"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "to whom be",
+          "parts": [
+            "to whom",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "I marvel that you are turning away so soon from Him who called you in the grace of Christ, to a different gospel, which is not another; but there are some who trouble you and want to pervert the gospel of Christ.",
+          "parts": [
+            "I marvel that you are turning away so soon from Him who called you in the grace of Christ, to a different gospel,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5548"
+            },
+            "which is not another; but there are some who trouble you and want to pervert the gospel of Christ."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "which is not another; but there are some who trouble you and want to pervert the gospel of Christ.",
+          "parts": [
+            "which is not another; but there are some who trouble you and want to pervert the gospel of Christ."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "But even if we, or an angel from heaven, preach any other gospel to you than what we have preached to you, let him be accursed.",
+          "parts": [
+            "But even if we, or an angel from heaven, preach any other gospel to you than what we have preached to you, let him be accursed."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "As we have said before, so now I say again, if anyone preaches any other gospel to you than what you have received, let him be accursed.",
+          "parts": [
+            "As we have said before, so now I say again, if anyone preaches any other gospel to you than what you have received, let him be accursed."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "For do I now persuade men, or God?",
+          "parts": [
+            "For do I now persuade men, or God?"
+          ]
+        },
+        {
+          "num": 11,
+          "text": "But I make known to you, brethren, that the gospel which was preached by me is not according to man. For I neither received it from man, nor was I taught it, but it came through the revelation of Jesus Christ.",
+          "parts": [
+            "But I make known to you, brethren, that the gospel which was preached by me is not according to man.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5549"
+            },
+            "For I neither received it from man, nor was I taught",
+            {
+              "style": "ITALIC",
+              "text": "it,"
+            },
+            "but",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            },
+            {
+              "style": "ITALIC",
+              "text": "came"
+            },
+            "through the revelation of Jesus Christ.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5550"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "For I neither received it from man, nor was I taught it,",
+          "parts": [
+            "For I neither received it from man, nor was I taught",
+            {
+              "style": "ITALIC",
+              "text": "it,"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "For you have heard of my former conduct in Judaism, how I persecuted the church of God beyond measure and tried to destroy it. And I advanced in Judaism beyond many of my contemporaries in my own nation, being more exceedingly zealous for the traditions of my fathers.",
+          "parts": [
+            "For you have heard of my former conduct in Judaism, how I persecuted the church of God beyond measure and",
+            {
+              "style": "ITALIC",
+              "text": "tried to"
+            },
+            "destroy it.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5551"
+            },
+            "And I advanced in Judaism beyond many of my contemporaries in my own nation, being more exceedingly zealous for the traditions of my fathers."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "And I advanced in Judaism beyond many of my contemporaries in my own nation, being more exceedingly zealous for the traditions of my fathers.",
+          "parts": [
+            "And I advanced in Judaism beyond many of my contemporaries in my own nation, being more exceedingly zealous for the traditions of my fathers."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "But when it pleased God, who separated me from my mother's womb and called me through His grace, to reveal His Son in me, that I might preach Him among the Gentiles, I did not immediately confer with flesh and blood, nor did I go up to Jerusalem to those who were apostles before me; but I went to Arabia, and returned again to Damascus.",
+          "parts": [
+            "But when it pleased God, who separated me from my mother's womb and called",
+            {
+              "style": "ITALIC",
+              "text": "me"
+            },
+            "through His grace, to reveal His Son in me, that I might preach Him among the Gentiles, I did not immediately confer with flesh and blood, nor did I go up to Jerusalem to those",
+            {
+              "style": "ITALIC",
+              "text": "who were"
+            },
+            "apostles before me; but I went to Arabia, and returned again to Damascus."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "to reveal His Son in me, that I might preach Him among the Gentiles, I did not immediately confer with flesh and blood,",
+          "parts": [
+            "to reveal His Son in me, that I might preach Him among the Gentiles, I did not immediately confer with flesh and blood,"
+          ]
+        },
+        {
+          "num": 17,
+          "text": "nor did I go up to Jerusalem to those who were",
+          "parts": [
+            "nor did I go up to Jerusalem to those",
+            {
+              "style": "ITALIC",
+              "text": "who were"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Then after three years I went up to Jerusalem to see Peter, a and remained with him fifteen days. But I saw none of the other apostles except James, the Lord's brother. (Now concerning the things which I write to you, indeed, before God, I do not lie.)",
+          "parts": [
+            "Then after three years I went up to Jerusalem to see Peter,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r723"
+            },
+            "and remained with him fifteen days.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5552"
+            },
+            "But I saw none of the other apostles except James, the Lord's brother.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5553"
+            },
+            "(Now",
+            {
+              "style": "ITALIC",
+              "text": "concerning"
+            },
+            "the things which I write to you, indeed, before God, I do not lie.)"
+          ]
+        },
+        {
+          "num": 19,
+          "text": "But I saw none of the other apostles except James, the Lord's brother.",
+          "parts": [
+            "But I saw none of the other apostles except James, the Lord's brother.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5553"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "(Now concerning",
+          "parts": [
+            "(Now",
+            {
+              "style": "ITALIC",
+              "text": "concerning"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Afterward I went into the regions of Syria and Cilicia.",
+          "parts": [
+            "Afterward I went into the regions of Syria and Cilicia."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "And I was unknown by face to the churches of Judea which were",
+          "parts": [
+            "And I was unknown by face to the churches of Judea which",
+            {
+              "style": "ITALIC",
+              "text": "were"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "But they were hearing only, “He who formerly persecuted us now preaches the faith which he once tried to",
+          "parts": [
+            "But they were hearing only, “He who formerly persecuted us now preaches the faith which he once",
+            {
+              "style": "ITALIC",
+              "text": "tried to"
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "And they glorified God in me.",
+          "parts": [
+            "And they glorified God in me.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5554"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting",
+        "Warning: True Gospel versus False Gospel",
+        "God's Call: Paul the Apostle",
+        "Paul's Gospel: That of the Twelve",
+        "The Apostles in Jerusalem: One Doctrine",
+        "True Apostles Are Correctable",
+        "The Source of Faith Is Christ",
+        "The Life of Faith Is in the Spirit",
+        "Faith Brings Sonship",
+        "Free from the Curse",
+        "Sonship: Promise, Not Law",
+        "The Law Our Tutor",
+        "Sonship by Faith and Baptism",
+        "Sons of God Through Christ and the Spirit",
+        "The Danger of the Law",
+        "An Allegory: Slavery and Sonship",
+        "Liberty of the Spirit",
+        "Liberty of the Apostles",
+        "War Against the Flesh",
+        "Do Good to All",
+        "The Rule of Faith",
+        "Benediction"
+      ]
+    },
+    {
+      "chapter_num": 2,
+      "verses_count": 21,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Then after fourteen years I went up again to Jerusalem with Barnabas, and also took Titus with me. And I went up by revelation, and communicated to them that gospel which I preach among the Gentiles, but privately to those who were of reputation, lest by any means I might run, or had run, in vain. Yet not even Titus who was with me, being a Greek, was compelled to be circumcised.",
+          "parts": [
+            "Then after fourteen years I went up again to Jerusalem with Barnabas, and also took Titus with",
+            {
+              "style": "ITALIC",
+              "text": "me."
+            },
+            "And I went up by revelation, and communicated to them that gospel which I preach among the Gentiles, but privately to those who were of reputation, lest by any means I might run, or had run, in vain.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5555"
+            },
+            "Yet not even Titus who",
+            {
+              "style": "ITALIC",
+              "text": "was"
+            },
+            "with me, being a Greek, was compelled to be circumcised."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "And this occurred",
+          "parts": [
+            "And",
+            {
+              "style": "ITALIC",
+              "text": "this occurred"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "to whom we did not yield submission even for an hour, that the truth of the gospel might continue with you.",
+          "parts": [
+            "to whom we did not yield submission even for an hour, that the truth of the gospel might continue with you."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "But from those who seemed to be something—whatever they were, it makes no difference to me; God shows personal favoritism to no man—for those who seemed to be something added nothing to me. But on the contrary, when they saw that the gospel for the uncircumcised had been committed to me, as the gospel for the circumcised was to Peter (for He who worked effectively in Peter for the apostleship to the circumcised also worked effectively in me toward the Gentiles), and when James, Cephas, and John, who seemed to be pillars, perceived the grace that had been given to me, they gave me and Barnabas the right hand of fellowship, that we should go to the Gentiles and they to the circumcised .",
+          "parts": [
+            "But from those who seemed to be something—whatever they were, it makes no difference to me; God shows personal favoritism to no man—for those who seemed",
+            {
+              "style": "ITALIC",
+              "text": "to be something"
+            },
+            "added nothing to me.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5557"
+            },
+            "But on the contrary, when they saw that the gospel for the uncircumcised had been committed to me, as",
+            {
+              "style": "ITALIC",
+              "text": "the gospel"
+            },
+            "for the circumcised",
+            {
+              "style": "ITALIC",
+              "text": "was"
+            },
+            "to Peter",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5558"
+            },
+            "(for He who worked effectively in Peter for the apostleship to the circumcised also worked effectively in me toward the Gentiles),",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5559"
+            },
+            "and when James, Cephas, and John, who seemed to be pillars, perceived the grace that had been given to me, they gave me and Barnabas the right hand of fellowship, that we",
+            {
+              "style": "ITALIC",
+              "text": "should go"
+            },
+            "to the Gentiles and they to the circumcised",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5560"
+            },
+            "."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "But on the contrary, when they saw that the gospel for the uncircumcised had been committed to me, as the gospel",
+          "parts": [
+            "But on the contrary, when they saw that the gospel for the uncircumcised had been committed to me, as",
+            {
+              "style": "ITALIC",
+              "text": "the gospel"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "(for He who worked effectively in Peter for the apostleship to the circumcised also worked effectively in me toward the Gentiles),",
+          "parts": [
+            "(for He who worked effectively in Peter for the apostleship to the circumcised also worked effectively in me toward the Gentiles),",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5559"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "and when James, Cephas, and John, who seemed to be pillars, perceived the grace that had been given to me, they gave me and Barnabas the right hand of fellowship, that we should go",
+          "parts": [
+            "and when James, Cephas, and John, who seemed to be pillars, perceived the grace that had been given to me, they gave me and Barnabas the right hand of fellowship, that we",
+            {
+              "style": "ITALIC",
+              "text": "should go"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "They desired",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "They desired"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Now when Peter a had come to Antioch, I withstood him to his face, because he was to be blamed; for before certain men came from James, he would eat with the Gentiles; but when they came, he withdrew and separated himself, fearing those who were of the circumcision. And the rest of the Jews also played the hypocrite with him, so that even Barnabas was carried away with their hypocrisy.",
+          "parts": [
+            "Now when Peter",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r724"
+            },
+            "had come to Antioch, I withstood him to his face, because he was to be blamed;",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5562"
+            },
+            "for before certain men came from James, he would eat with the Gentiles; but when they came, he withdrew and separated himself, fearing those who were of the circumcision.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5563"
+            },
+            "And the rest of the Jews also played the hypocrite with him, so that even Barnabas was carried away with their hypocrisy."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "for before certain men came from James, he would eat with the Gentiles; but when they came, he withdrew and separated himself, fearing those who were of the circumcision.",
+          "parts": [
+            "for before certain men came from James, he would eat with the Gentiles; but when they came, he withdrew and separated himself, fearing those who were of the circumcision.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5563"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "And the rest of the Jews also played the hypocrite with him, so that even Barnabas was carried away with their hypocrisy.",
+          "parts": [
+            "And the rest of the Jews also played the hypocrite with him, so that even Barnabas was carried away with their hypocrisy."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "But when I saw that they were not straightforward about the truth of the gospel, I said to Peter before them all, “If you, being a Jew, live in the manner of Gentiles and not as the Jews, why do you a compel Gentiles to live as Jews? b We who are Jews by nature, and not sinners of the Gentiles, knowing that a man is not justified by the works of the law but by faith in Jesus Christ, even we have believed in Christ Jesus, that we might be justified by faith in Christ and not by the works of the law; for by the works of the law no flesh shall be justified.",
+          "parts": [
+            "But when I saw that they were not straightforward about the truth of the gospel, I said to Peter before",
+            {
+              "style": "ITALIC",
+              "text": "them"
+            },
+            "all, “If you, being a Jew, live in the manner of Gentiles and not as the Jews, why do you",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r725"
+            },
+            "compel Gentiles to live as Jews?",
+            {
+              "style": "CROSS_REF",
+              "text": "b",
+              "ref_id": "r726"
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5564"
+            },
+            "We",
+            {
+              "style": "ITALIC",
+              "text": "who are"
+            },
+            "Jews by nature, and not sinners of the Gentiles,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5565"
+            },
+            "knowing that a man is not justified by the works of the law but by faith in Jesus Christ, even we have believed in Christ Jesus, that we might be justified by faith in Christ and not by the works of the law; for by the works of the law no flesh shall be justified.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5566"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "We who are",
+          "parts": [
+            "We",
+            {
+              "style": "ITALIC",
+              "text": "who are"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "knowing that a man is not justified by the works of the law but by faith in Jesus Christ, even we have believed in Christ Jesus, that we might be justified by faith in Christ and not by the works of the law; for by the works of the law no flesh shall be justified.",
+          "parts": [
+            "knowing that a man is not justified by the works of the law but by faith in Jesus Christ, even we have believed in Christ Jesus, that we might be justified by faith in Christ and not by the works of the law; for by the works of the law no flesh shall be justified.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5566"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "“But if, while we seek to be justified by Christ, we ourselves also are found sinners, is Christ therefore a minister of sin?",
+          "parts": [
+            "“But if, while we seek to be justified by Christ, we ourselves also are found sinners,",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "Christ therefore a minister of sin?"
+          ]
+        },
+        {
+          "num": 18,
+          "text": "For if I build again those things which I destroyed, I make myself a transgressor.",
+          "parts": [
+            "For if I build again those things which I destroyed, I make myself a transgressor.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5568"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For I through the law died to the law that I might live to God.",
+          "parts": [
+            "For I through the law died to the law that I might live to God.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5569"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "I have been crucified with Christ; it is no longer I who live, but Christ lives in me; and the life",
+          "parts": [
+            "I have been crucified with Christ; it is no longer I who live, but Christ lives in me; and the",
+            {
+              "style": "ITALIC",
+              "text": "life"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "I do not set aside the grace of God; for if righteousness comes",
+          "parts": [
+            "I do not set aside the grace of God; for if righteousness",
+            {
+              "style": "ITALIC",
+              "text": "comes"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 3,
+      "verses_count": 29,
+      "verses": [
+        {
+          "num": 1,
+          "text": "O foolish Galatians!",
+          "parts": [
+            "O foolish Galatians!"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "This only I want to learn from you: Did you receive the Spirit by the works of the law, or by the hearing of faith?",
+          "parts": [
+            "This only I want to learn from you: Did you receive the Spirit by the works of the law, or by the hearing of faith?"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Are you so foolish?",
+          "parts": [
+            "Are you so foolish?"
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Have you suffered so many things in vain—if indeed it was",
+          "parts": [
+            "Have you suffered so many things in vain—if indeed",
+            {
+              "style": "ITALIC",
+              "text": "it was"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Therefore He who supplies the Spirit to you and works miracles among you, does He do it by the works of the law, or by the hearing of faith?— just as Abraham “believed God, and it was accounted to him for righteousness.” a Therefore know that only those who are of faith are sons of Abraham.",
+          "parts": [
+            "Therefore He who supplies the Spirit to you and works miracles among you,",
+            {
+              "style": "ITALIC",
+              "text": "does He do it"
+            },
+            "by the works of the law, or by the hearing of faith?— just as Abraham",
+            {
+              "style": "ITALIC",
+              "text": "“believed God, and it was accounted to him for righteousness.”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r727"
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5573"
+            },
+            "Therefore know that",
+            {
+              "style": "ITALIC",
+              "text": "only"
+            },
+            "those who are of faith are sons of Abraham."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "just as Abraham “believed God, and it was accounted to him for righteousness.”",
+          "parts": [
+            "just as Abraham",
+            {
+              "style": "ITALIC",
+              "text": "“believed God, and it was accounted to him for righteousness.”"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Therefore know that only",
+          "parts": [
+            "Therefore know that",
+            {
+              "style": "ITALIC",
+              "text": "only"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "And the Scripture, foreseeing that God would justify the Gentiles by faith, preached the gospel to Abraham beforehand, saying,",
+          "parts": [
+            "And the Scripture, foreseeing that God would justify the Gentiles by faith, preached the gospel to Abraham beforehand,",
+            {
+              "style": "ITALIC",
+              "text": "saying,"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "So then those who are",
+          "parts": [
+            "So then those who",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "For as many as are of the works of the law are under the curse; for it is written, “Cursed is everyone who does not continue in all things which are written in the book of the law, to do them.” a But that no one is justified by the law in the sight of God is evident, for “the just shall live by faith.” a Yet the law is not of faith, but “the man who does them shall live by them.” a",
+          "parts": [
+            "For as many as are of the works of the law are under the curse; for it is written,",
+            {
+              "style": "ITALIC",
+              "text": "“Cursed is everyone who does not continue in all things which are written in the book of the law, to do them.”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r728"
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5574"
+            },
+            "But that no one is justified by the law in the sight of God",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "evident, for",
+            {
+              "style": "ITALIC",
+              "text": "“the just shall live by faith.”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r729"
+            },
+            "Yet the law is not of faith, but",
+            {
+              "style": "ITALIC",
+              "text": "“the man who does them shall live by them.”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r730"
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5575"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "But that no one is justified by the law in the sight of God is",
+          "parts": [
+            "But that no one is justified by the law in the sight of God",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Yet the law is not of faith, but “the man who does them shall live by them.”",
+          "parts": [
+            "Yet the law is not of faith, but",
+            {
+              "style": "ITALIC",
+              "text": "“the man who does them shall live by them.”"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Christ has redeemed us from the curse of the law, having become a curse for us (for it is written, “Cursed is everyone who hangs on a tree” a ), that the blessing of Abraham might come upon the Gentiles in Christ Jesus, that we might receive the promise of the Spirit through faith.",
+          "parts": [
+            "Christ has redeemed us from the curse of the law, having become a curse for us (for it is written,",
+            {
+              "style": "ITALIC",
+              "text": "“Cursed is everyone who hangs on a tree”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r731"
+            },
+            "),",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5576"
+            },
+            "that the blessing of Abraham might come upon the Gentiles in Christ Jesus, that we might receive the promise of the Spirit through faith.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5577"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "that the blessing of Abraham might come upon the Gentiles in Christ Jesus, that we might receive the promise of the Spirit through faith.",
+          "parts": [
+            "that the blessing of Abraham might come upon the Gentiles in Christ Jesus, that we might receive the promise of the Spirit through faith.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5577"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Brethren, I speak in the manner of men: Though it is only a man's covenant, yet if it is confirmed, no one annuls or adds to it. Now to Abraham and his Seed were the promises made.",
+          "parts": [
+            "Brethren, I speak in the manner of men: Though",
+            {
+              "style": "ITALIC",
+              "text": "it is"
+            },
+            "only a man's covenant, yet",
+            {
+              "style": "ITALIC",
+              "text": "if it is"
+            },
+            "confirmed, no one annuls or adds to it.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5578"
+            },
+            "Now to Abraham and his Seed were the promises made."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Now to Abraham and his Seed were the promises made.",
+          "parts": [
+            "Now to Abraham and his Seed were the promises made."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "And this I say, that",
+          "parts": [
+            "And this I say,",
+            {
+              "style": "ITALIC",
+              "text": "that"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "For if the inheritance is",
+          "parts": [
+            "For if the inheritance",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "What purpose then does the law serve? It was added because of transgressions, till the Seed should come to whom the promise was made; and it was appointed through angels by the hand of a mediator. Now a mediator does not mediate for one only, but God is one.",
+          "parts": [
+            "What purpose then",
+            {
+              "style": "ITALIC",
+              "text": "does"
+            },
+            "the law",
+            {
+              "style": "ITALIC",
+              "text": "serve?"
+            },
+            "It was added because of transgressions, till the Seed should come to whom the promise was made;",
+            {
+              "style": "ITALIC",
+              "text": "and it was"
+            },
+            "appointed through angels by the hand of a mediator.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5579"
+            },
+            "Now a mediator does not",
+            {
+              "style": "ITALIC",
+              "text": "mediate"
+            },
+            "for one",
+            {
+              "style": "ITALIC",
+              "text": "only,"
+            },
+            "but God is one.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5580"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Now a mediator does not mediate",
+          "parts": [
+            "Now a mediator does not",
+            {
+              "style": "ITALIC",
+              "text": "mediate"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Is",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "Is"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "But the Scripture has confined all under sin, that the promise by faith in Jesus Christ might be given to those who believe.",
+          "parts": [
+            "But the Scripture has confined all under sin, that the promise by faith in Jesus Christ might be given to those who believe.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5581"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "But before faith came, we were kept under guard by the law, kept for the faith which would afterward be revealed.",
+          "parts": [
+            "But before faith came, we were kept under guard by the law, kept for the faith which would afterward be revealed.",
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx332"
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "Therefore the law was our tutor to bring us",
+          "parts": [
+            "Therefore the law was our tutor",
+            {
+              "style": "ITALIC",
+              "text": "to bring us"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "But after faith has come, we are no longer under a tutor.",
+          "parts": [
+            "But after faith has come, we are no longer under a tutor."
+          ]
+        },
+        {
+          "num": 26,
+          "text": "For you are all sons of God through faith in Christ Jesus. For as many of you as were baptized into Christ have put on Christ.",
+          "parts": [
+            "For you are all sons of God through faith in Christ Jesus.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5582"
+            },
+            "For as many of you as were baptized into Christ have put on Christ."
+          ]
+        },
+        {
+          "num": 27,
+          "text": "For as many of you as were baptized into Christ have put on Christ.",
+          "parts": [
+            "For as many of you as were baptized into Christ have put on Christ."
+          ]
+        },
+        {
+          "num": 28,
+          "text": "There is neither Jew nor Greek, there is neither slave nor free, there is neither male nor female; for you are all one in Christ Jesus.",
+          "parts": [
+            "There is neither Jew nor Greek, there is neither slave nor free, there is neither male nor female; for you are all one in Christ Jesus.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5583"
+            }
+          ]
+        },
+        {
+          "num": 29,
+          "text": "And if you are",
+          "parts": [
+            "And if you",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 4,
+      "verses_count": 31,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Now I say that the heir, as long as he is a child, does not differ at all from a slave, though he is master of all, but is under guardians and stewards until the time appointed by the father.",
+          "parts": [
+            "Now I say",
+            {
+              "style": "ITALIC",
+              "text": "that"
+            },
+            "the heir, as long as he is a child, does not differ at all from a slave, though he is master of all,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5584"
+            },
+            "but is under guardians and stewards until the time appointed by the father."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Even so we, when we were children, were in bondage under the elements of the world.",
+          "parts": [
+            "Even so we, when we were children, were in bondage under the elements of the world.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5585"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "But when the fullness of the time had come, God sent forth His Son, born a",
+          "parts": [
+            "But when the fullness of the time had come, God sent forth His Son, born",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r732"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "to redeem those who were under the law, that we might receive the adoption as sons.",
+          "parts": [
+            "to redeem those who were under the law, that we might receive the adoption as sons."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "And because you are sons, God has sent forth the Spirit of His Son into your hearts, crying out, “Abba, Father!” Therefore you are no longer a slave but a son, and if a son, then an heir of a God through Christ.",
+          "parts": [
+            "And because you are sons, God has sent forth the Spirit of His Son into your hearts, crying out, “Abba, Father!”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5587"
+            },
+            "Therefore you are no longer a slave but a son, and if a son, then an heir of",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r733"
+            },
+            "God through Christ."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Therefore you are no longer a slave but a son, and if a son, then an heir of a",
+          "parts": [
+            "Therefore you are no longer a slave but a son, and if a son, then an heir of",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r734"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "But then, indeed, when you did not know God, you served those which by nature are not gods.",
+          "parts": [
+            "But then, indeed, when you did not know God, you served those which by nature are not gods."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "But now after you have known God, or rather are known by God, how is it that",
+          "parts": [
+            "But now after you have known God, or rather are known by God, how",
+            {
+              "style": "ITALIC",
+              "text": "is it that"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "You observe days and months and seasons and years.",
+          "parts": [
+            "You observe days and months and seasons and years.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5588"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "I am afraid for you, lest I have labored for you in vain.",
+          "parts": [
+            "I am afraid for you, lest I have labored for you in vain."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Brethren, I urge you to become like me, for I became like you.",
+          "parts": [
+            "Brethren, I urge you to become like me, for I",
+            {
+              "style": "ITALIC",
+              "text": "became"
+            },
+            "like you."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "You know that because of physical infirmity I preached the gospel to you at the first.",
+          "parts": [
+            "You know that because of physical infirmity I preached the gospel to you at the first.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5589"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "And my trial which was in my flesh you did not despise or reject, but you received me as an angel of God, even",
+          "parts": [
+            "And my trial which was in my flesh you did not despise or reject, but you received me as an angel of God,",
+            {
+              "style": "ITALIC",
+              "text": "even"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "What a",
+          "parts": [
+            "What",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r735"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Have I therefore become your enemy because I tell you the truth?",
+          "parts": [
+            "Have I therefore become your enemy because I tell you the truth?"
+          ]
+        },
+        {
+          "num": 17,
+          "text": "They zealously court you, but for no good; yes, they want to exclude you, that you may be zealous for them.",
+          "parts": [
+            "They zealously court you,",
+            {
+              "style": "ITALIC",
+              "text": "but"
+            },
+            "for no good; yes, they want to exclude you, that you may be zealous for them."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "But it is good to be zealous in a good thing always, and not only when I am present with you.",
+          "parts": [
+            "But it is good to be zealous in a good thing always, and not only when I am present with you."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "My little children, for whom I labor in birth again until Christ is formed in you,",
+          "parts": [
+            "My little children, for whom I labor in birth again until Christ is formed in you,"
+          ]
+        },
+        {
+          "num": 20,
+          "text": "I would like to be present with you now and to change my tone; for I have doubts about you.",
+          "parts": [
+            "I would like to be present with you now and to change my tone; for I have doubts about you."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Tell me, you who desire to be under the law, do you not hear the law? For it is written that Abraham had two sons: the one by a bondwoman, the other by a freewoman. But he who was of the bondwoman was born according to the flesh, and he of the freewoman through promise, which things are symbolic.",
+          "parts": [
+            "Tell me, you who desire to be under the law, do you not hear the law?",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5591"
+            },
+            "For it is written that Abraham had two sons: the one by a bondwoman, the other by a freewoman.",
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx334"
+            },
+            "But he",
+            {
+              "style": "ITALIC",
+              "text": "who was"
+            },
+            "of the bondwoman was born according to the flesh, and he of the freewoman through promise, which things are symbolic."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "For it is written that Abraham had two sons: the one by a bondwoman, the other by a freewoman.",
+          "parts": [
+            "For it is written that Abraham had two sons: the one by a bondwoman, the other by a freewoman.",
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx334"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "But he who was",
+          "parts": [
+            "But he",
+            {
+              "style": "ITALIC",
+              "text": "who was"
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "which things are symbolic.",
+          "parts": [
+            "which things are symbolic."
+          ]
+        },
+        {
+          "num": 25,
+          "text": "for this Hagar is Mount Sinai in Arabia, and corresponds to Jerusalem which now is, and is in bondage with her children—",
+          "parts": [
+            "for this Hagar is Mount Sinai in Arabia, and corresponds to Jerusalem which now is, and is in bondage with her children—"
+          ]
+        },
+        {
+          "num": 26,
+          "text": "but the Jerusalem above is free, which is the mother of us all.",
+          "parts": [
+            "but the Jerusalem above is free, which is the mother of us all."
+          ]
+        },
+        {
+          "num": 27,
+          "text": "For it is written:",
+          "parts": [
+            "For it is written:"
+          ]
+        },
+        {
+          "num": 28,
+          "text": "Now we, brethren, as Isaac was, are children of promise.",
+          "parts": [
+            "Now we, brethren, as Isaac",
+            {
+              "style": "ITALIC",
+              "text": "was,"
+            },
+            "are children of promise."
+          ]
+        },
+        {
+          "num": 29,
+          "text": "But, as he who was born according to the flesh then persecuted him who was born",
+          "parts": [
+            "But, as he who was born according to the flesh then persecuted him",
+            {
+              "style": "ITALIC",
+              "text": "who was born"
+            }
+          ]
+        },
+        {
+          "num": 30,
+          "text": "Nevertheless what does the Scripture say?",
+          "parts": [
+            "Nevertheless what does the Scripture say?"
+          ]
+        },
+        {
+          "num": 31,
+          "text": "So then, brethren, we are not children of the bondwoman but of the free.",
+          "parts": [
+            "So then, brethren, we are not children of the bondwoman but of the free.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5592"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 5,
+      "verses_count": 26,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Stand fast therefore in the liberty by which Christ has made us free, a and do not be entangled again with a yoke of bondage. Indeed I, Paul, say to you that if you become circumcised, Christ will profit you nothing.",
+          "parts": [
+            "Stand fast therefore in the liberty by which Christ has made us free,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r736"
+            },
+            "and do not be entangled again with a yoke of bondage.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5593"
+            },
+            "Indeed I, Paul, say to you that if you become circumcised, Christ will profit you nothing."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "And I testify again to every man who becomes circumcised that he is a debtor to keep the whole law.",
+          "parts": [
+            "And I testify again to every man who becomes circumcised that he is a debtor to keep the whole law."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "You have become estranged from Christ, you who attempt to",
+          "parts": [
+            "You have become estranged from Christ, you who",
+            {
+              "style": "ITALIC",
+              "text": "attempt to"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "For we through the Spirit eagerly wait for the hope of righteousness by faith.",
+          "parts": [
+            "For we through the Spirit eagerly wait for the hope of righteousness by faith.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5594"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "For in Christ Jesus neither circumcision nor uncircumcision avails anything, but faith working through love.",
+          "parts": [
+            "For in Christ Jesus neither circumcision nor uncircumcision avails anything, but faith working through love.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5595"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "You ran well.",
+          "parts": [
+            "You ran well."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "This persuasion does not come",
+          "parts": [
+            "This persuasion does not",
+            {
+              "style": "ITALIC",
+              "text": "come"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "A little leaven leavens the whole lump.",
+          "parts": [
+            "A little leaven leavens the whole lump."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "I have confidence in you, in the Lord, that you will have no other mind; but he who troubles you shall bear his judgment, whoever he is.",
+          "parts": [
+            "I have confidence in you, in the Lord, that you will have no other mind; but he who troubles you shall bear his judgment, whoever he is."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And I, brethren, if I still preach circumcision, why do I still suffer persecution?",
+          "parts": [
+            "And I, brethren, if I still preach circumcision, why do I still suffer persecution?"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "I could wish that those who trouble you would even cut themselves off!",
+          "parts": [
+            "I could wish that those who trouble you would even cut themselves off!"
+          ]
+        },
+        {
+          "num": 13,
+          "text": "For you, brethren, have been called to liberty; only do not use liberty as an opportunity for the flesh, but through love serve one another. For all the law is fulfilled in one word, even in this: “You shall love your neighbor as yourself.” a But if you bite and devour one another, beware lest you be consumed by one another!",
+          "parts": [
+            "For you, brethren, have been called to liberty; only do not",
+            {
+              "style": "ITALIC",
+              "text": "use"
+            },
+            "liberty as an opportunity for the flesh, but through love serve one another.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5596"
+            },
+            "For all the law is fulfilled in one word,",
+            {
+              "style": "ITALIC",
+              "text": "even"
+            },
+            "in this:",
+            {
+              "style": "ITALIC",
+              "text": "“You shall love your neighbor as yourself.”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r737"
+            },
+            "But if you bite and devour one another, beware lest you be consumed by one another!"
+          ]
+        },
+        {
+          "num": 14,
+          "text": "For all the law is fulfilled in one word, even",
+          "parts": [
+            "For all the law is fulfilled in one word,",
+            {
+              "style": "ITALIC",
+              "text": "even"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "But if you bite and devour one another, beware lest you be consumed by one another!",
+          "parts": [
+            "But if you bite and devour one another, beware lest you be consumed by one another!"
+          ]
+        },
+        {
+          "num": 16,
+          "text": "I say then: Walk in the Spirit, and you shall not fulfill the lust of the flesh. For the flesh lusts against the Spirit, and the Spirit against the flesh; and these are contrary to one another, so that you do not do the things that you wish.",
+          "parts": [
+            "I say then: Walk in the Spirit, and you shall not fulfill the lust of the flesh.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5597"
+            },
+            "For the flesh lusts against the Spirit, and the Spirit against the flesh; and these are contrary to one another, so that you do not do the things that you wish."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For the flesh lusts against the Spirit, and the Spirit against the flesh; and these are contrary to one another, so that you do not do the things that you wish.",
+          "parts": [
+            "For the flesh lusts against the Spirit, and the Spirit against the flesh; and these are contrary to one another, so that you do not do the things that you wish."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "But if you are led by the Spirit, you are not under the law.",
+          "parts": [
+            "But if you are led by the Spirit, you are not under the law."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Now the works of the flesh are evident, which are: adultery, a fornication, uncleanness, lewdness, idolatry, sorcery, hatred, contentions, jealousies, outbursts of wrath, selfish ambitions, dissensions, heresies, envy, murders, a drunkenness, revelries, and the like; of which I tell you beforehand, just as I also told you in time past, that those who practice such things will not inherit the kingdom of God.",
+          "parts": [
+            "Now the works of the flesh are evident, which are: adultery,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r738"
+            },
+            "fornication, uncleanness, lewdness, idolatry, sorcery, hatred, contentions, jealousies, outbursts of wrath, selfish ambitions, dissensions, heresies, envy, murders,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r739"
+            },
+            "drunkenness, revelries, and the like; of which I tell you beforehand, just as I also told",
+            {
+              "style": "ITALIC",
+              "text": "you"
+            },
+            "in time past, that those who practice such things will not inherit the kingdom of God."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "idolatry, sorcery, hatred, contentions, jealousies, outbursts of wrath, selfish ambitions, dissensions, heresies,",
+          "parts": [
+            "idolatry, sorcery, hatred, contentions, jealousies, outbursts of wrath, selfish ambitions, dissensions, heresies,"
+          ]
+        },
+        {
+          "num": 21,
+          "text": "envy, murders, a",
+          "parts": [
+            "envy, murders,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r740"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "But the fruit of the Spirit is love, joy, peace, longsuffering, kindness, goodness, faithfulness, gentleness, self-control.",
+          "parts": [
+            "But the fruit of the Spirit is love, joy, peace, longsuffering, kindness, goodness, faithfulness,",
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx335"
+            },
+            "gentleness, self-control."
+          ]
+        },
+        {
+          "num": 23,
+          "text": "gentleness, self-control.",
+          "parts": [
+            "gentleness, self-control."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "And those who are",
+          "parts": [
+            "And those",
+            {
+              "style": "ITALIC",
+              "text": "who are"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "If we live in the Spirit, let us also walk in the Spirit.",
+          "parts": [
+            "If we live in the Spirit, let us also walk in the Spirit."
+          ]
+        },
+        {
+          "num": 26,
+          "text": "Let us not become conceited, provoking one another, envying one another.",
+          "parts": [
+            "Let us not become conceited, provoking one another, envying one another.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5598"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 6,
+      "verses_count": 18,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Brethren, if a man is overtaken in any trespass, you who are spiritual restore such a one in a spirit of gentleness, considering yourself lest you also be tempted. Bear one another's burdens, and so fulfill the law of Christ. For if anyone thinks himself to be something, when he is nothing, he deceives himself.",
+          "parts": [
+            "Brethren, if a man is overtaken in any trespass, you who",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "spiritual restore such a one in a spirit of gentleness, considering yourself lest you also be tempted.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5599"
+            },
+            "Bear one another's burdens, and so fulfill the law of Christ.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5600"
+            },
+            "For if anyone thinks himself to be something, when he is nothing, he deceives himself."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "But let each one examine his own work, and then he will have rejoicing in himself alone, and not in another.",
+          "parts": [
+            "But let each one examine his own work, and then he will have rejoicing in himself alone, and not in another."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "For each one shall bear his own load.",
+          "parts": [
+            "For each one shall bear his own load."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Let him who is taught the word share in all good things with him who teaches.",
+          "parts": [
+            "Let him who is taught the word share in all good things with him who teaches.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5601"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Do not be deceived, God is not mocked; for whatever a man sows, that he will also reap.",
+          "parts": [
+            "Do not be deceived, God is not mocked; for whatever a man sows, that he will also reap."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "For he who sows to his flesh will of the flesh reap corruption, but he who sows to the Spirit will of the Spirit reap everlasting life.",
+          "parts": [
+            "For he who sows to his flesh will of the flesh reap corruption, but he who sows to the Spirit will of the Spirit reap everlasting life."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "And let us not grow weary while doing good, for in due season we shall reap if we do not lose heart.",
+          "parts": [
+            "And let us not grow weary while doing good, for in due season we shall reap if we do not lose heart."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Therefore, as we have opportunity, let us do good to all, especially to those who are of the household of faith.",
+          "parts": [
+            "Therefore, as we have opportunity, let us do good to all, especially to those who are of the household of faith."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "See with what large letters I have written to you with my own hand!",
+          "parts": [
+            "See with what large letters I have written to you with my own hand!"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "As many as desire to make a good showing in the flesh, these would",
+          "parts": [
+            "As many as desire to make a good showing in the flesh, these",
+            {
+              "style": "ITALIC",
+              "text": "would"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "For not even those who are circumcised keep the law, but they desire to have you circumcised that they may boast in your flesh.",
+          "parts": [
+            "For not even those who are circumcised keep the law, but they desire to have you circumcised that they may boast in your flesh."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "But God forbid that I should boast except in the cross of our Lord Jesus Christ, by whom a",
+          "parts": [
+            "But God forbid that I should boast except in the cross of our Lord Jesus Christ, by whom",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r741"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "For in Christ Jesus neither circumcision nor uncircumcision avails anything, but a new creation.",
+          "parts": [
+            "For in Christ Jesus neither circumcision nor uncircumcision avails anything, but a new creation.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5604"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "And as many as walk according to this rule, peace and mercy be upon them, and upon the Israel of God.",
+          "parts": [
+            "And as many as walk according to this rule, peace and mercy",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            },
+            "upon them, and upon the Israel of God.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5605"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "From now on let no one trouble me, for I bear in my body the marks of the Lord Jesus.",
+          "parts": [
+            "From now on let no one trouble me, for I bear in my body the marks of the Lord Jesus.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5606"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Brethren, the grace of our Lord Jesus Christ be with your spirit.",
+          "parts": [
+            "Brethren, the grace of our Lord Jesus Christ",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            },
+            "with your spirit."
+          ]
+        }
+      ],
+      "headers": []
+    }
+  ]
+}

@@ -16,7 +16,6 @@
     "paths": {
       "@/*": ["./src/*"],
       "@assets/*": ["assets/*"],
-      "@ariob/ai": ["../../packages/ai/index.ts"],
       "@ariob/ui": ["../../packages/ui/src/index.ts"],
       "@ariob/ui/*": ["../../packages/ui/src/*"]
     },

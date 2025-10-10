@@ -1,0 +1,966 @@
+{
+  "en_name": "1 Thessalonians",
+  "local_name": "1 Thessalonians",
+  "abr": "1th",
+  "ch_count": 5,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 10,
+      "verses": [
+        {
+          "num": 2,
+          "text": "We give thanks to God always for you all, making mention of you in our prayers,remembering without ceasing your work of faith, labor of love, and patience of hope in our Lord Jesus Christ in the sight of our God and Father,knowing, beloved brethren, your election by God.For our gospel did not come to you in word only, but also in power, and in the Holy Spirit and in much assurance, as you know what kind of men we were among you for your sake.",
+          "parts": [
+            "We give thanks to God always for you all, making mention of you in our prayers,",
+            {
+              "footnote": "f6259"
+            },
+            "remembering without ceasing your work of faith, labor of love, and patience of hope in our Lord Jesus Christ in the sight of our God and Father,",
+            {
+              "footnote": "f6260"
+            },
+            "knowing, beloved brethren, your election by God.For our gospel did not come to you in word only, but also in power, and in the Holy Spirit and in much assurance, as you know what kind of men we were among you for your sake."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "remembering without ceasing your work of faith, labor of love, and patience of hope in our Lord Jesus Christ in the sight of our God and Father,",
+          "parts": [
+            "remembering without ceasing your work of faith, labor of love, and patience of hope in our Lord Jesus Christ in the sight of our God and Father,",
+            {
+              "footnote": "f6260"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "knowing, beloved brethren, your election by God.",
+          "parts": [
+            "knowing, beloved brethren, your election by God."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "For our gospel did not come to you in word only, but also in power, and in the Holy Spirit and in much assurance, as you know what kind of men we were among you for your sake.",
+          "parts": [
+            "For our gospel did not come to you in word only, but also in power, and in the Holy Spirit and in much assurance, as you know what kind of men we were among you for your sake."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "And you became followers of us and of the Lord, having received the word in much affliction, with joy of the Holy Spirit,so that you became examples to all in Macedonia and Achaia who believe.For from you the word of the Lord has sounded forth, not only in Macedonia and Achaia, but also in every place. Your faith toward God has gone out, so that we do not need to say anything.For they themselves declare concerning us what manner of entry we had to you, and how you turned to God from idols to serve the living and true God, and to wait for His Son from heaven, whom He raised from the dead,even Jesus who delivers us from the wrath to come.",
+          "parts": [
+            "And you became followers of us and of the Lord, having received the word in much affliction, with joy of the Holy Spirit,",
+            {
+              "footnote": "f6261"
+            },
+            "so that you became examples to all in Macedonia and Achaia who believe.",
+            {
+              "footnote": "f6262"
+            },
+            "For from you the word of the Lord has sounded forth, not only in Macedonia and Achaia, but also in every place. Your faith toward God has gone out, so that we do not need to say anything.For they themselves declare concerning us what manner of entry we had to you, and how you turned to God from idols to serve the living and true God, and to wait for His Son from heaven, whom He raised from the dead,",
+            {
+              "italic": "even "
+            },
+            "Jesus who delivers us from the wrath to come.",
+            {
+              "footnote": "f6263"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "so that you became examples to all in Macedonia and Achaia who believe.",
+          "parts": [
+            "so that you became examples to all in Macedonia and Achaia who believe.",
+            {
+              "footnote": "f6262"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "For from you the word of the Lord has sounded forth, not only in Macedonia and Achaia, but also in every place.",
+          "parts": [
+            "For from you the word of the Lord has sounded forth, not only in Macedonia and Achaia, but also in every place."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For they themselves declare concerning us what manner of entry we had to you, and how you turned to God from idols to serve the living and true God,",
+          "parts": [
+            "For they themselves declare concerning us what manner of entry we had to you, and how you turned to God from idols to serve the living and true God,"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "and to wait for His Son from heaven, whom He raised from the dead,even Jesus who delivers us from the wrath to come.",
+          "parts": [
+            "and to wait for His Son from heaven, whom He raised from the dead,",
+            {
+              "italic": "even "
+            },
+            "Jesus who delivers us from the wrath to come.",
+            {
+              "footnote": "f6263"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting and Thanksgiving",
+        "Defense of Paul’s Past Work",
+        "Fruit of Paul’s Work: They Endured Persecution"
+      ]
+    },
+    {
+      "chapter_num": 2,
+      "verses_count": 20,
+      "verses": [
+        {
+          "num": 2,
+          "text": "But evenaafter we had suffered before and were spitefully treated at Philippi, as you know, we were bold in our God to speak to you the gospel of God in much conflict.",
+          "parts": [
+            "But even",
+            {
+              "text": "a",
+              "cross_ref": "r161"
+            },
+            "after we had suffered before and were spitefully treated at Philippi, as you know, we were bold in our God to speak to you the gospel of God in much conflict.",
+            {
+              "footnote": "f6265"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For our exhortationdid notcome from error or uncleanness, norwas it in deceit.",
+          "parts": [
+            "For our exhortation",
+            {
+              "italic": "did "
+            },
+            "not",
+            {
+              "italic": "come "
+            },
+            "from error or uncleanness, nor",
+            {
+              "italic": "was it "
+            },
+            "in deceit."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "But as we have been approved by God to be entrusted with the gospel, even so we speak, not as pleasing men, but God who tests our hearts.For neither at any time did we use flattering words, as you know, nor a cloak for covetousness—Godis witness.Nor did we seek glory from men, either from you or from others, when we might have made demands as apostles of Christ.But we were gentle among you, just as a nursingmother cherishes her own children.So, affectionately longing for you, we were well pleased to impart to you not only the gospel of God, but also our own lives, because you had become dear to us.For you remember, brethren, our labor and toil; for laboring night and day, that we might not be a burden to any of you, we preached to you the gospel of God.",
+          "parts": [
+            "But as we have been approved by God to be entrusted with the gospel, even so we speak, not as pleasing men, but God who tests our hearts.",
+            {
+              "footnote": "f6266"
+            },
+            "For neither at any time did we use flattering words, as you know, nor a cloak for covetousness—God",
+            {
+              "italic": "is "
+            },
+            "witness.Nor did we seek glory from men, either from you or from others, when we might have made demands as apostles of Christ.But we were gentle among you, just as a nursing",
+            {
+              "italic": "mother "
+            },
+            "cherishes her own children.",
+            {
+              "footnote": "f6267"
+            },
+            "So, affectionately longing for you, we were well pleased to impart to you not only the gospel of God, but also our own lives, because you had become dear to us.For you remember, brethren, our labor and toil; for laboring night and day, that we might not be a burden to any of you, we preached to you the gospel of God."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "For neither at any time did we use flattering words, as you know, nor a cloak for covetousness—Godis witness.",
+          "parts": [
+            "For neither at any time did we use flattering words, as you know, nor a cloak for covetousness—God",
+            {
+              "italic": "is "
+            },
+            "witness."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Nor did we seek glory from men, either from you or from others, when we might have made demands as apostles of Christ.",
+          "parts": [
+            "Nor did we seek glory from men, either from you or from others, when we might have made demands as apostles of Christ."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "But we were gentle among you, just as a nursingmother cherishes her own children.",
+          "parts": [
+            "But we were gentle among you, just as a nursing",
+            {
+              "italic": "mother "
+            },
+            "cherishes her own children.",
+            {
+              "footnote": "f6267"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "So, affectionately longing for you, we were well pleased to impart to you not only the gospel of God, but also our own lives, because you had become dear to us.",
+          "parts": [
+            "So, affectionately longing for you, we were well pleased to impart to you not only the gospel of God, but also our own lives, because you had become dear to us."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For you remember, brethren, our labor and toil; for laboring night and day, that we might not be a burden to any of you, we preached to you the gospel of God.",
+          "parts": [
+            "For you remember, brethren, our labor and toil; for laboring night and day, that we might not be a burden to any of you, we preached to you the gospel of God."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Youare witnesses, and Godalso, how devoutly and justly and blamelessly we behaved ourselves among you who believe; as you know how we exhorted, and comforted, and chargedaevery one of you, as a fatherdoes his own children,that you would walk worthy of God who calls you into His own kingdom and glory.",
+          "parts": [
+            "You",
+            {
+              "italic": "are "
+            },
+            "witnesses, and God",
+            {
+              "italic": "also, "
+            },
+            "how devoutly and justly and blamelessly we behaved ourselves among you who believe; as you know how we exhorted, and comforted, and charged",
+            {
+              "text": "a",
+              "cross_ref": "r162"
+            },
+            "every one of you, as a father",
+            {
+              "italic": "does "
+            },
+            "his own children,",
+            {
+              "footnote": "f6268"
+            },
+            "that you would walk worthy of God who calls you into His own kingdom and glory."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "as you know how we exhorted, and comforted, and chargedaevery one of you, as a fatherdoes his own children,",
+          "parts": [
+            "as you know how we exhorted, and comforted, and charged",
+            {
+              "text": "a",
+              "cross_ref": "r163"
+            },
+            "every one of you, as a father",
+            {
+              "italic": "does "
+            },
+            "his own children,",
+            {
+              "footnote": "f6268"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "that you would walk worthy of God who calls you into His own kingdom and glory.",
+          "parts": [
+            "that you would walk worthy of God who calls you into His own kingdom and glory."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "For this reason we also thank God without ceasing, because when you received the word of God which you heard from us, you welcomedit notas the word of men, but as it is in truth, the word of God, which also effectively works in you who believe.For you, brethren, became imitators of the churches of God which are in Judea in Christ Jesus. For you also suffered the same things from your own countrymen, just as theydid from the Judeans,who killed both the Lord Jesus and their own prophets, and have persecuted us; and they do not please God and are contrary to all men, forbidding us to speak to the Gentiles that they may be saved, so as always to fill upthe measure of their sins; but wrath has come upon them to the uttermost.",
+          "parts": [
+            "For this reason we also thank God without ceasing, because when you received the word of God which you heard from us, you welcomed",
+            {
+              "italic": "it "
+            },
+            "not",
+            {
+              "italic": "as "
+            },
+            "the word of men, but as it is in truth, the word of God, which also effectively works in you who believe.For you, brethren, became imitators of the churches of God which are in Judea in Christ Jesus. For you also suffered the same things from your own countrymen, just as they",
+            {
+              "italic": "did "
+            },
+            "from the Judeans,",
+            {
+              "footnote": "f6269"
+            },
+            "who killed both the Lord Jesus and their own prophets, and have persecuted us; and they do not please God and are contrary to all men, forbidding us to speak to the Gentiles that they may be saved, so as always to fill up",
+            {
+              "italic": "the measure of "
+            },
+            "their sins; but wrath has come upon them to the uttermost."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "For you, brethren, became imitators of the churches of God which are in Judea in Christ Jesus.",
+          "parts": [
+            "For you, brethren, became imitators of the churches of God which are in Judea in Christ Jesus."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "who killed both the Lord Jesus and their own prophets, and have persecuted us; and they do not please God and are contrary to all men,",
+          "parts": [
+            "who killed both the Lord Jesus and their own prophets, and have persecuted us; and they do not please God and are contrary to all men,"
+          ]
+        },
+        {
+          "num": 16,
+          "text": "forbidding us to speak to the Gentiles that they may be saved, so as always to fill upthe measure of their sins; but wrath has come upon them to the uttermost.",
+          "parts": [
+            "forbidding us to speak to the Gentiles that they may be saved, so as always to fill up",
+            {
+              "italic": "the measure of "
+            },
+            "their sins; but wrath has come upon them to the uttermost."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "But we, brethren, having been taken away from you for a short time in presence, not in heart, endeavored more eagerly to see your face with great desire.Therefore we wanted to come to you—even I, Paul, time and again—but Satan hindered us.For whatis our hope, or joy, or crown of rejoicing?Is it not even you in the presence of our Lord Jesus Christ at His coming?For you are our glory and joy.",
+          "parts": [
+            "But we, brethren, having been taken away from you for a short time in presence, not in heart, endeavored more eagerly to see your face with great desire.Therefore we wanted to come to you—even I, Paul, time and again—but Satan hindered us.",
+            {
+              "footnote": "f6270"
+            },
+            "For what",
+            {
+              "italic": "is "
+            },
+            "our hope, or joy, or crown of rejoicing?",
+            {
+              "italic": "Is it "
+            },
+            "not even you in the presence of our Lord Jesus Christ at His coming?",
+            {
+              "footnote": "f6271"
+            },
+            "For you are our glory and joy."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Therefore we wanted to come to you—even I, Paul, time and again—but Satan hindered us.",
+          "parts": [
+            "Therefore we wanted to come to you—even I, Paul, time and again—but Satan hindered us.",
+            {
+              "footnote": "f6270"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For whatis our hope, or joy, or crown of rejoicing?",
+          "parts": [
+            "For what",
+            {
+              "italic": "is "
+            },
+            "our hope, or joy, or crown of rejoicing?"
+          ]
+        },
+        {
+          "num": 20,
+          "text": "For you are our glory and joy.",
+          "parts": [
+            "For you are our glory and joy."
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting and Thanksgiving",
+        "Defense of Paul’s Past Work",
+        "Fruit of Paul’s Work: They Endured Persecution"
+      ]
+    },
+    {
+      "chapter_num": 3,
+      "verses_count": 13,
+      "verses": [
+        {
+          "num": 2,
+          "text": "and sent Timothy, our brother and minister of God, and our fellow laborer in the gospel of Christ, to establish you and encourage you concerning your faith,",
+          "parts": [
+            "and sent Timothy, our brother and minister of God, and our fellow laborer in the gospel of Christ, to establish you and encourage you concerning your faith,",
+            {
+              "footnote": "f6273"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "that no one should be shaken by these afflictions; for you yourselves know that we are appointed to this.",
+          "parts": [
+            "that no one should be shaken by these afflictions; for you yourselves know that we are appointed to this."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "For, in fact, we told you before when we were with you that we would suffer tribulation, just as it happened, and you know.",
+          "parts": [
+            "For, in fact, we told you before when we were with you that we would suffer tribulation, just as it happened, and you know."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "For this reason, when I could no longer endure it, I sent to know your faith, lest by some means the tempter had tempted you, and our labor might be in vain.",
+          "parts": [
+            "For this reason, when I could no longer endure it, I sent to know your faith, lest by some means the tempter had tempted you, and our labor might be in vain."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "But now that Timothy has come to us from you, and brought us good news of your faith and love, and that you always have good remembrance of us, greatly desiring to see us, as we alsoto see you—therefore, brethren, in all our affliction and distress we were comforted concerning you by your faith.For now we live, if you stand fast in the Lord.",
+          "parts": [
+            "But now that Timothy has come to us from you, and brought us good news of your faith and love, and that you always have good remembrance of us, greatly desiring to see us, as we also",
+            {
+              "italic": "to see "
+            },
+            "you—",
+            {
+              "footnote": "f6274"
+            },
+            "therefore, brethren, in all our affliction and distress we were comforted concerning you by your faith.For now we live, if you stand fast in the Lord."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "therefore, brethren, in all our affliction and distress we were comforted concerning you by your faith.",
+          "parts": [
+            "therefore, brethren, in all our affliction and distress we were comforted concerning you by your faith."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "For now we live, if you stand fast in the Lord.",
+          "parts": [
+            "For now we live, if you stand fast in the Lord."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For what thanks can we render to God for you, for all the joy with which we rejoice for your sake before our God, night and day praying exceedingly that we may see your face and perfect what is lacking in your faith?",
+          "parts": [
+            "For what thanks can we render to God for you, for all the joy with which we rejoice for your sake before our God, night and day praying exceedingly that we may see your face and perfect what is lacking in your faith?"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "night and day praying exceedingly that we may see your face and perfect what is lacking in your faith?",
+          "parts": [
+            "night and day praying exceedingly that we may see your face and perfect what is lacking in your faith?"
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Now may our God and Father Himself, and our Lord Jesus Christ, direct our way to you.And may the Lord make you increase and abound in love to one another and to all, just as wedo to you, so that He may establish your hearts blameless in holiness before our God and Father at the coming of our Lord Jesus Christ with all His saints.",
+          "parts": [
+            "Now may our God and Father Himself, and our Lord Jesus Christ, direct our way to you.And may the Lord make you increase and abound in love to one another and to all, just as we",
+            {
+              "italic": "do "
+            },
+            "to you, so that He may establish your hearts blameless in holiness before our God and Father at the coming of our Lord Jesus Christ with all His saints.",
+            {
+              "footnote": "f6275"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "And may the Lord make you increase and abound in love to one another and to all, just as wedo to you,",
+          "parts": [
+            "And may the Lord make you increase and abound in love to one another and to all, just as we",
+            {
+              "italic": "do "
+            },
+            "to you,"
+          ]
+        },
+        {
+          "num": 13,
+          "text": "so that He may establish your hearts blameless in holiness before our God and Father at the coming of our Lord Jesus Christ with all His saints.",
+          "parts": [
+            "so that He may establish your hearts blameless in holiness before our God and Father at the coming of our Lord Jesus Christ with all His saints.",
+            {
+              "footnote": "f6275"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting and Thanksgiving",
+        "Defense of Paul’s Past Work",
+        "Fruit of Paul’s Work: They Endured Persecution"
+      ]
+    },
+    {
+      "chapter_num": 4,
+      "verses_count": 18,
+      "verses": [
+        {
+          "num": 2,
+          "text": "for you know what commandments we gave you through the Lord Jesus.",
+          "parts": [
+            "for you know what commandments we gave you through the Lord Jesus."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For this is the will of God, your sanctification: that you should abstain from sexual immorality; that each of you should know how to possess his own vessel in sanctification and honor,not in passion of lust, like the Gentiles who do not know God; that no one should take advantage of and defraud his brother in this matter, because the Lordis the avenger of all such, as we also forewarned you and testified.For God did not call us to uncleanness, but in holiness.Therefore he who rejectsthis does not reject man, but God, who has also givenaus His Holy Spirit.",
+          "parts": [
+            "For this is the will of God, your sanctification: that you should abstain from sexual immorality; that each of you should know how to possess his own vessel in sanctification and honor,",
+            {
+              "footnote": "f6277"
+            },
+            "not in passion of lust, like the Gentiles who do not know God; that no one should take advantage of and defraud his brother in this matter, because the Lord",
+            {
+              "italic": "is "
+            },
+            "the avenger of all such, as we also forewarned you and testified.For God did not call us to uncleanness, but in holiness.Therefore he who rejects",
+            {
+              "italic": "this "
+            },
+            "does not reject man, but God, who has also given",
+            {
+              "text": "a",
+              "cross_ref": "r164"
+            },
+            "us His Holy Spirit."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "that each of you should know how to possess his own vessel in sanctification and honor,",
+          "parts": [
+            "that each of you should know how to possess his own vessel in sanctification and honor,",
+            {
+              "footnote": "f6277"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "not in passion of lust, like the Gentiles who do not know God;",
+          "parts": [
+            "not in passion of lust, like the Gentiles who do not know God;"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "that no one should take advantage of and defraud his brother in this matter, because the Lordis the avenger of all such, as we also forewarned you and testified.",
+          "parts": [
+            "that no one should take advantage of and defraud his brother in this matter, because the Lord",
+            {
+              "italic": "is "
+            },
+            "the avenger of all such, as we also forewarned you and testified."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For God did not call us to uncleanness, but in holiness.",
+          "parts": [
+            "For God did not call us to uncleanness, but in holiness."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Therefore he who rejectsthis does not reject man, but God, who has also givenaus His Holy Spirit.",
+          "parts": [
+            "Therefore he who rejects",
+            {
+              "italic": "this "
+            },
+            "does not reject man, but God, who has also given",
+            {
+              "text": "a",
+              "cross_ref": "r165"
+            },
+            "us His Holy Spirit."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "But concerning brotherly love you have no need that I should write to you, for you yourselves are taught by God to love one another; and indeed you do so toward all the brethren who are in all Macedonia. But we urge you, brethren, that you increase more and more; that you also aspire to lead a quiet life, to mind your own business, and to work with your own hands, as we commanded you,that you may walk properly toward those who are outside, andthat you may lack nothing.",
+          "parts": [
+            "But concerning brotherly love you have no need that I should write to you, for you yourselves are taught by God to love one another; and indeed you do so toward all the brethren who are in all Macedonia. But we urge you, brethren, that you increase more and more; that you also aspire to lead a quiet life, to mind your own business, and to work with your own hands, as we commanded you,",
+            {
+              "footnote": "f6278"
+            },
+            "that you may walk properly toward those who are outside, and",
+            {
+              "italic": "that "
+            },
+            "you may lack nothing."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "and indeed you do so toward all the brethren who are in all Macedonia.",
+          "parts": [
+            "and indeed you do so toward all the brethren who are in all Macedonia."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "that you also aspire to lead a quiet life, to mind your own business, and to work with your own hands, as we commanded you,",
+          "parts": [
+            "that you also aspire to lead a quiet life, to mind your own business, and to work with your own hands, as we commanded you,",
+            {
+              "footnote": "f6278"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "that you may walk properly toward those who are outside, andthat you may lack nothing.",
+          "parts": [
+            "that you may walk properly toward those who are outside, and",
+            {
+              "italic": "that "
+            },
+            "you may lack nothing."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "But I do not want you to be ignorant, brethren, concerning those who have fallen asleep, lest you sorrow as others who have no hope.For if we believe that Jesus died and rose again, even so God will bring with Him those who sleep in Jesus.a",
+          "parts": [
+            "But I do not want you to be ignorant, brethren, concerning those who have fallen asleep, lest you sorrow as others who have no hope.",
+            {
+              "footnote": "f6279"
+            },
+            {
+              "liturgy": "fx369"
+            },
+            "For if we believe that Jesus died and rose again, even so God will bring with Him those who sleep in Jesus.",
+            {
+              "text": "a",
+              "cross_ref": "r166"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "For if we believe that Jesus died and rose again, even so God will bring with Him those who sleep in Jesus.a",
+          "parts": [
+            "For if we believe that Jesus died and rose again, even so God will bring with Him those who sleep in Jesus.",
+            {
+              "text": "a",
+              "cross_ref": "r167"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "For this we say to you by the word of the Lord, that we who are aliveand remain until the coming of the Lord will by no means precede those who are asleep.For the Lord Himself will descend from heaven with a shout, with the voice of an archangel, and with the trumpet of God. And the dead in Christ will rise first.Then we who are aliveand remain shall be caught up together with them in the clouds to meet the Lord in the air. And thus we shall always be with the Lord.Therefore comfort one another with these words.",
+          "parts": [
+            "For this we say to you by the word of the Lord, that we who are alive",
+            {
+              "italic": "and "
+            },
+            "remain until the coming of the Lord will by no means precede those who are asleep.For the Lord Himself will descend from heaven with a shout, with the voice of an archangel, and with the trumpet of God. And the dead in Christ will rise first.Then we who are alive",
+            {
+              "italic": "and "
+            },
+            "remain shall be caught up together with them in the clouds to meet the Lord in the air. And thus we shall always be with the Lord.Therefore comfort one another with these words."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "For the Lord Himself will descend from heaven with a shout, with the voice of an archangel, and with the trumpet of God.",
+          "parts": [
+            "For the Lord Himself will descend from heaven with a shout, with the voice of an archangel, and with the trumpet of God."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Then we who are aliveand remain shall be caught up together with them in the clouds to meet the Lord in the air.",
+          "parts": [
+            "Then we who are alive",
+            {
+              "italic": "and "
+            },
+            "remain shall be caught up together with them in the clouds to meet the Lord in the air."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Therefore comfort one another with these words.",
+          "parts": [
+            "Therefore comfort one another with these words."
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting and Thanksgiving",
+        "Defense of Paul’s Past Work",
+        "Fruit of Paul’s Work: They Endured Persecution"
+      ]
+    },
+    {
+      "chapter_num": 5,
+      "verses_count": 28,
+      "verses": [
+        {
+          "num": 2,
+          "text": "For you yourselves know perfectly that the day of the Lord so comes as a thief in the night.",
+          "parts": [
+            "For you yourselves know perfectly that the day of the Lord so comes as a thief in the night."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For when they say, “Peace and safety!” then sudden destruction comes upon them, as labor pains upon a pregnant woman.",
+          "parts": [
+            "For when they say, “Peace and safety!” then sudden destruction comes upon them, as labor pains upon a pregnant woman."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "But you, brethren, are not in darkness, so that this Day should overtake you as a thief.",
+          "parts": [
+            "But you, brethren, are not in darkness, so that this Day should overtake you as a thief."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "You are all sons of light and sons of the day.",
+          "parts": [
+            "You are all sons of light and sons of the day."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Therefore let us not sleep, as othersdo, but let us watch and be sober.",
+          "parts": [
+            "Therefore let us not sleep, as others",
+            {
+              "italic": "do, "
+            },
+            "but let us watch and be sober."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For those who sleep, sleep at night, and those who get drunk are drunk at night.",
+          "parts": [
+            "For those who sleep, sleep at night, and those who get drunk are drunk at night."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "But let us who are of the day be sober, putting on the breastplate of faith and love, andas a helmet the hope of salvation.",
+          "parts": [
+            "But let us who are of the day be sober, putting on the breastplate of faith and love, and",
+            {
+              "italic": "as "
+            },
+            "a helmet the hope of salvation."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For God did not appoint us to wrath, but to obtain salvation through our Lord Jesus Christ,",
+          "parts": [
+            "For God did not appoint us to wrath, but to obtain salvation through our Lord Jesus Christ,"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "who died for us, that whether we wake or sleep, we should live together with Him.",
+          "parts": [
+            "who died for us, that whether we wake or sleep, we should live together with Him."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Therefore comfort each other and edify one another, just as you also are doing.",
+          "parts": [
+            "Therefore comfort each other and edify one another, just as you also are doing."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "And we urge you, brethren, to recognize those who labor among you, and are over you in the Lord and admonish you,and to esteem them very highly in love for their work’s sake. Be at peace among yourselves.",
+          "parts": [
+            "And we urge you, brethren, to recognize those who labor among you, and are over you in the Lord and admonish you,",
+            {
+              "footnote": "f6281"
+            },
+            "and to esteem them very highly in love for their work’s sake. Be at peace among yourselves."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "and to esteem them very highly in love for their work’s sake.",
+          "parts": [
+            "and to esteem them very highly in love for their work’s sake."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Now we exhort you, brethren, warn those who are unruly, comfort the fainthearted, uphold the weak, be patient with all.See that no one renders evil for evil to anyone, but always pursue what is good both for yourselves and for all.",
+          "parts": [
+            "Now we exhort you, brethren, warn those who are unruly, comfort the fainthearted, uphold the weak, be patient with all.See that no one renders evil for evil to anyone, but always pursue what is good both for yourselves and for all.",
+            {
+              "footnote": "f6282"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "See that no one renders evil for evil to anyone, but always pursue what is good both for yourselves and for all.",
+          "parts": [
+            "See that no one renders evil for evil to anyone, but always pursue what is good both for yourselves and for all.",
+            {
+              "footnote": "f6282"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Rejoice always, pray without ceasing, in everything give thanks; for this is the will of God in Christ Jesus for you.",
+          "parts": [
+            "Rejoice always, pray without ceasing, in everything give thanks; for this is the will of God in Christ Jesus for you."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "pray without ceasing,",
+          "parts": [
+            "pray without ceasing,"
+          ]
+        },
+        {
+          "num": 18,
+          "text": "in everything give thanks; for this is the will of God in Christ Jesus for you.",
+          "parts": [
+            "in everything give thanks; for this is the will of God in Christ Jesus for you."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Do not quench the Spirit.Do not despise prophecies.Test all things; hold fast what is good.Abstain from every form of evil.",
+          "parts": [
+            "Do not quench the Spirit.",
+            {
+              "footnote": "f6283"
+            },
+            "Do not despise prophecies.Test all things; hold fast what is good.Abstain from every form of evil."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Do not despise prophecies.",
+          "parts": [
+            "Do not despise prophecies."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Test all things; hold fast what is good.",
+          "parts": [
+            "Test all things; hold fast what is good."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "Abstain from every form of evil.",
+          "parts": [
+            "Abstain from every form of evil."
+          ]
+        },
+        {
+          "num": 23,
+          "text": "Now may the God of peace Himself sanctify you completely; and may your whole spirit, soul, and body be preserved blameless at the coming of our Lord Jesus Christ.He who calls youis faithful, who also will doit.",
+          "parts": [
+            "Now may the God of peace Himself sanctify you completely; and may your whole spirit, soul, and body be preserved blameless at the coming of our Lord Jesus Christ.",
+            {
+              "footnote": "f6284"
+            },
+            "He who calls you",
+            {
+              "italic": "is "
+            },
+            "faithful, who also will do",
+            {
+              "italic": "it."
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "He who calls youis faithful, who also will doit.",
+          "parts": [
+            "He who calls you",
+            {
+              "italic": "is "
+            },
+            "faithful, who also will do",
+            {
+              "italic": "it."
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "Brethren, pray for us.",
+          "parts": [
+            "Brethren, pray for us."
+          ]
+        },
+        {
+          "num": 26,
+          "text": "Greet all the brethren with a holy kiss.",
+          "parts": [
+            "Greet all the brethren with a holy kiss."
+          ]
+        },
+        {
+          "num": 27,
+          "text": "I charge you by the Lord that this epistle be read to all the holyabrethren.",
+          "parts": [
+            "I charge you by the Lord that this epistle be read to all the holy",
+            {
+              "text": "a",
+              "cross_ref": "r168"
+            },
+            "brethren.",
+            {
+              "footnote": "f6285"
+            }
+          ]
+        },
+        {
+          "num": 28,
+          "text": "The grace of our Lord Jesus Christbe with you. Amen.",
+          "parts": [
+            "The grace of our Lord Jesus Christ",
+            {
+              "italic": "be "
+            },
+            "with you. Amen."
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting and Thanksgiving",
+        "Defense of Paul’s Past Work",
+        "Fruit of Paul’s Work: They Endured Persecution"
+      ]
+    }
+  ]
+}

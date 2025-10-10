@@ -1,0 +1,169 @@
+{
+  "en_name": "Song of Songs",
+  "local_name": "Song of Songs",
+  "abr": "son",
+  "ch_count": 8,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 1,
+      "verses": [
+        {
+          "num": 1,
+          "text": "The Song of Songs, which is Solomon's.",
+          "parts": [
+            "The Song of Songs, which is Solomon's.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f2579"
+            }
+          ]
+        }
+      ],
+      "headers": [
+        "The Bride",
+        "Companions",
+        "The Bride",
+        "Companions",
+        "The Bride",
+        "The Groom",
+        "Companions",
+        "The Bride",
+        "The Groom",
+        "The Bride"
+      ]
+    },
+    {
+      "chapter_num": 2,
+      "verses_count": 1,
+      "verses": [
+        {
+          "num": 1,
+          "text": "I am a flower of the plain,",
+          "parts": [
+            "I am a flower of the plain,"
+          ]
+        }
+      ],
+      "headers": [
+        "The Groom",
+        "The Bride",
+        "Companions",
+        "The Bride"
+      ]
+    },
+    {
+      "chapter_num": 3,
+      "verses_count": 1,
+      "verses": [
+        {
+          "num": 1,
+          "text": "In the night on my bed",
+          "parts": [
+            "In the night on my bed"
+          ]
+        }
+      ],
+      "headers": [
+        "Companions",
+        "The Groom"
+      ]
+    },
+    {
+      "chapter_num": 4,
+      "verses_count": 1,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Behold, you are beautiful, my companion,",
+          "parts": [
+            "Behold, you are beautiful, my companion,"
+          ]
+        }
+      ],
+      "headers": [
+        "The Bride",
+        "The Groom"
+      ]
+    },
+    {
+      "chapter_num": 5,
+      "verses_count": 1,
+      "verses": [
+        {
+          "num": 1,
+          "text": "I came into my garden, O my sister, my bride;",
+          "parts": [
+            "I came into my garden, O my sister, my bride;"
+          ]
+        }
+      ],
+      "headers": [
+        "The Bride",
+        "Companions",
+        "The Bride",
+        "Companions"
+      ]
+    },
+    {
+      "chapter_num": 6,
+      "verses_count": 1,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Where has your beloved gone,",
+          "parts": [
+            "Where has your beloved gone,"
+          ]
+        }
+      ],
+      "headers": [
+        "The Bride",
+        "The Groom",
+        "Bride",
+        "Companions"
+      ]
+    },
+    {
+      "chapter_num": 7,
+      "verses_count": 1,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Return, return, O Shulamite;",
+          "parts": [
+            "Return, return, O Shulamite;"
+          ]
+        }
+      ],
+      "headers": [
+        "The Groom",
+        "The Bride"
+      ]
+    },
+    {
+      "chapter_num": 8,
+      "verses_count": 1,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Who would have granted you, my brother,",
+          "parts": [
+            "Who would have granted you, my brother,"
+          ]
+        }
+      ],
+      "headers": [
+        "Companions",
+        "The Groom",
+        "Companions",
+        "The Bride",
+        "The Groom",
+        "The Bride"
+      ]
+    }
+  ],
+  "author": "Traditionally, Solomon, who is referred to seven times (1:1, 5; 3:7, 9, 11; 8:11, 12).",
+  "date": "About 965–960 BC, according to early Jewish tradition.",
+  "theme": "The love between husband and wife. The Song of Songs is a hymn used by the Jewish people for centuries to celebrate human love at wedding feasts. The theme is symbolic of God's love for His faithful people and their reciprocal love. Christians have tended to emphasize the allegorical interpretation of Christ's love for His Bride, the Church."
+}

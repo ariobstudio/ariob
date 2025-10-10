@@ -1,0 +1,5036 @@
+{
+  "en_name": "Romans",
+  "local_name": "Romans",
+  "abr": "rom",
+  "ch_count": 16,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 32,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Paul, a bondservant of Jesus Christ, called to be an apostle, separated to the gospel of God which He promised before through His prophets in the Holy Scriptures, concerning His Son Jesus Christ our Lord, who was born of the seed of David according to the flesh, and declared to be the Son of God with power according to the Spirit of holiness, by the resurrection from the dead. Through Him we have received grace and apostleship for obedience to the faith among all nations for His name, among whom you also are the called of Jesus Christ;",
+          "parts": [
+            "Paul, a bondservant of Jesus Christ, called",
+            {
+              "style": "ITALIC",
+              "text": "to be"
+            },
+            "an apostle, separated to the gospel of God",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5219"
+            },
+            "which He promised before through His prophets in the Holy Scriptures, concerning His Son Jesus Christ our Lord, who was born of the seed of David according to the flesh,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5220"
+            },
+            {
+              "style": "ITALIC",
+              "text": "and"
+            },
+            "declared",
+            {
+              "style": "ITALIC",
+              "text": "to be"
+            },
+            "the Son of God with power according to the Spirit of holiness, by the resurrection from the dead.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5221"
+            },
+            "Through Him we have received grace and apostleship for obedience to the faith among all nations for His name,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5222"
+            },
+            "among whom you also are the called of Jesus Christ;",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5223"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "To all who are in Rome, beloved of God, called to be saints:",
+          "parts": [
+            "To all who are in Rome, beloved of God, called",
+            {
+              "style": "ITALIC",
+              "text": "to be"
+            },
+            "saints:"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "First, I thank my God through Jesus Christ for you all, that your faith is spoken of throughout the whole world. For God is my witness, whom I serve with my spirit in the gospel of His Son, that without ceasing I make mention of you always in my prayers, making request if, by some means, now at last I may find a way in the will of God to come to you.",
+          "parts": [
+            "First, I thank my God through Jesus Christ for you all, that your faith is spoken of throughout the whole world.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5224"
+            },
+            "For God is my witness, whom I serve with my spirit in the gospel of His Son, that without ceasing I make mention of you always in my prayers, making request if, by some means, now at last I may find a way in the will of God to come to you."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For God is my witness, whom I serve with my spirit in the gospel of His Son, that without ceasing I make mention of you always in my prayers,",
+          "parts": [
+            "For God is my witness, whom I serve with my spirit in the gospel of His Son, that without ceasing I make mention of you always in my prayers,"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "making request if, by some means, now at last I may find a way in the will of God to come to you.",
+          "parts": [
+            "making request if, by some means, now at last I may find a way in the will of God to come to you."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "For I long to see you, that I may impart to you some spiritual gift, so that you may be established—",
+          "parts": [
+            "For I long to see you, that I may impart to you some spiritual gift, so that you may be established—",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5225"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "that is, that I may be encouraged together with you by the mutual faith both of you and me.",
+          "parts": [
+            "that is, that I may be encouraged together with you by the mutual faith both of you and me."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Now I do not want you to be unaware, brethren, that I often planned to come to you (but was hindered until now), that I might have some fruit among you also, just as among the other Gentiles. I am a debtor both to Greeks and to barbarians, both to wise and to unwise. So, as much as is in me, I am ready to preach the gospel to you who are in Rome also.",
+          "parts": [
+            "Now I do not want you to be unaware, brethren, that I often planned to come to you (but was hindered until now), that I might have some fruit among you also, just as among the other Gentiles.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5226"
+            },
+            "I am a debtor both to Greeks and to barbarians, both to wise and to unwise.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5227"
+            },
+            "So, as much as is in me,",
+            {
+              "style": "ITALIC",
+              "text": "I am"
+            },
+            "ready to preach the gospel to you who are in Rome also."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "I am a debtor both to Greeks and to barbarians, both to wise and to unwise.",
+          "parts": [
+            "I am a debtor both to Greeks and to barbarians, both to wise and to unwise.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5227"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "So, as much as is in me, I am",
+          "parts": [
+            "So, as much as is in me,",
+            {
+              "style": "ITALIC",
+              "text": "I am"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "For I am not ashamed of the gospel of Christ, a for it is the power of God to salvation for everyone who believes, for the Jew first and also for the Greek. For in it the righteousness of God is revealed from faith to faith; as it is written, “The just shall live by faith.” a",
+          "parts": [
+            "For I am not ashamed of the gospel of Christ,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1500"
+            },
+            "for it is the power of God to salvation for everyone who believes, for the Jew first and also for the Greek.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5228"
+            },
+            "For in it the righteousness of God is revealed from faith to faith; as it is written,",
+            {
+              "style": "ITALIC",
+              "text": "“The just shall live by faith.”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1501"
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5229"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For in it the righteousness of God is revealed from faith to faith; as it is written, “The just shall live by faith.”",
+          "parts": [
+            "For in it the righteousness of God is revealed from faith to faith; as it is written,",
+            {
+              "style": "ITALIC",
+              "text": "“The just shall live by faith.”"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "For the wrath of God is revealed from heaven against all ungodliness and unrighteousness of men, who suppress the truth in unrighteousness, because what may be known of God is manifest in them, for God has shown it to them.",
+          "parts": [
+            "For the wrath of God is revealed from heaven against all ungodliness and unrighteousness of men, who suppress the truth in unrighteousness,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5230"
+            },
+            "because what may be known of God is manifest in them, for God has shown",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            },
+            "to them."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "because what may be known of God is manifest in them, for God has shown it",
+          "parts": [
+            "because what may be known of God is manifest in them, for God has shown",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "For since the creation of the world His invisible attributes",
+          "parts": [
+            "For since the creation of the world His invisible",
+            {
+              "style": "ITALIC",
+              "text": "attributes"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "because, although they knew God, they did not glorify Him",
+          "parts": [
+            "because, although they knew God, they did not glorify",
+            {
+              "style": "ITALIC",
+              "text": "Him"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "Professing to be wise, they became fools,",
+          "parts": [
+            "Professing to be wise, they became fools,"
+          ]
+        },
+        {
+          "num": 23,
+          "text": "and changed the glory of the incorruptible God into an image made like corruptible man—and birds and four-footed animals and creeping things.",
+          "parts": [
+            "and changed the glory of the incorruptible God into an image made like corruptible man—and birds and four-footed animals and creeping things."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "Therefore God also gave them up to uncleanness, in the lusts of their hearts, to dishonor their bodies among themselves, who exchanged the truth of God for the lie, and worshiped and served the creature rather than the Creator, who is blessed forever.",
+          "parts": [
+            "Therefore God also gave them up to uncleanness, in the lusts of their hearts, to dishonor their bodies among themselves, who exchanged the truth of God for the lie, and worshiped and served the creature rather than the Creator, who is blessed forever."
+          ]
+        },
+        {
+          "num": 25,
+          "text": "who exchanged the truth of God for the lie, and worshiped and served the creature rather than the Creator, who is blessed forever.",
+          "parts": [
+            "who exchanged the truth of God for the lie, and worshiped and served the creature rather than the Creator, who is blessed forever."
+          ]
+        },
+        {
+          "num": 26,
+          "text": "For this reason God gave them up to vile passions.",
+          "parts": [
+            "For this reason God gave them up to vile passions."
+          ]
+        },
+        {
+          "num": 27,
+          "text": "Likewise also the men, leaving the natural use of the woman, burned in their lust for one another, men with men committing what is shameful, and receiving in themselves the penalty of their error which was due.",
+          "parts": [
+            "Likewise also the men, leaving the natural use of the woman, burned in their lust for one another, men with men committing what is shameful, and receiving in themselves the penalty of their error which was due."
+          ]
+        },
+        {
+          "num": 28,
+          "text": "And even as they did not like to retain God in their knowledge, God gave them over to a debased mind, to do those things which are not fitting; being filled with all unrighteousness, sexual immorality, a wickedness, covetousness, maliciousness; full of envy, murder, strife, deceit, evil-mindedness; they are whisperers, backbiters, haters of God, violent, proud, boasters, inventors of evil things, disobedient to parents, undiscerning, untrustworthy, unloving, unforgiving, a unmerciful; who, knowing the righteous judgment of God, that those who practice such things are deserving of death, not only do the same but also approve of those who practice them.",
+          "parts": [
+            "And even as they did not like to retain God in",
+            {
+              "style": "ITALIC",
+              "text": "their"
+            },
+            "knowledge, God gave them over to a debased mind, to do those things which are not fitting; being filled with all unrighteousness, sexual immorality,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1502"
+            },
+            "wickedness, covetousness, maliciousness; full of envy, murder, strife, deceit, evil-mindedness;",
+            {
+              "style": "ITALIC",
+              "text": "they are"
+            },
+            "whisperers,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5234"
+            },
+            "backbiters, haters of God, violent, proud, boasters, inventors of evil things, disobedient to parents, undiscerning, untrustworthy, unloving, unforgiving,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1503"
+            },
+            "unmerciful; who, knowing the righteous judgment of God, that those who practice such things are deserving of death, not only do the same but also approve of those who practice them."
+          ]
+        },
+        {
+          "num": 29,
+          "text": "being filled with all unrighteousness, sexual immorality, a",
+          "parts": [
+            "being filled with all unrighteousness, sexual immorality,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1504"
+            }
+          ]
+        },
+        {
+          "num": 30,
+          "text": "backbiters, haters of God, violent, proud, boasters, inventors of evil things, disobedient to parents,",
+          "parts": [
+            "backbiters, haters of God, violent, proud, boasters, inventors of evil things, disobedient to parents,"
+          ]
+        },
+        {
+          "num": 31,
+          "text": "undiscerning, untrustworthy, unloving, unforgiving, a",
+          "parts": [
+            "undiscerning, untrustworthy, unloving, unforgiving,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1505"
+            }
+          ]
+        },
+        {
+          "num": 32,
+          "text": "who, knowing the righteous judgment of God, that those who practice such things are deserving of death, not only do the same but also approve of those who practice them.",
+          "parts": [
+            "who, knowing the righteous judgment of God, that those who practice such things are deserving of death, not only do the same but also approve of those who practice them."
+          ]
+        }
+      ],
+      "headers": [
+        "Greeting",
+        "Desire to Visit Rome",
+        "The Theme: The Righteousness of God Through Faith in Christ",
+        "Judgment of Sinning Humanity",
+        "Judgment of Each Conscience",
+        "Judgment of the Jews",
+        "The Jews’ Unfaithfulness",
+        "Conclusion: All Are Unfaithful",
+        "Righteousness in Christ Fulfills the Law",
+        "Abraham, Model of Faith",
+        "Abraham's Children: Faithful Believers",
+        "Righteousness as a Living Reality",
+        "Reign of Sin, Reign of Grace",
+        "Baptism: Dead to Sin, Alive in Christ",
+        "Baptism: Freedom from Sin Under Grace",
+        "Baptism: Freedom from Law, Union with Christ",
+        "Sin Uses What Is Holy to Produce Death",
+        "The Flesh Uses What Is Good to Produce Sin",
+        "The Spirit Defeats Sin and the Flesh",
+        "The Spirit Conveys Divine Sonship",
+        "The Spirit Assists Us Through Suffering",
+        "The Father Ensures Our Destiny",
+        "The Father's Love Triumphs in Christ",
+        "Unbelief of the Jews Despite God's Blessings",
+        "God Is Sovereign, Faithful to Israel",
+        "God Is Just in His Choice",
+        "Israel Pursues Self-Righteousness",
+        "God's Righteousness Is by Faith",
+        "Israel Rejects, Gentiles Receive the Gospel",
+        "God Elects a Remnant of Israel",
+        "Gentiles Are Being Saved",
+        "God Will Yet Restore Israel",
+        "Doxology to God's Ways",
+        "Christian Renewal",
+        "A Life of Unity in the Church",
+        "A Life of Mercy for All Men",
+        "Duties to the State",
+        "Love of Neighbor",
+        "“The Day” Is at Hand",
+        "Christian Liberty in Serving God",
+        "Loving Fellow Christians",
+        "Christian Unity for God's Glory",
+        "Christ's Priestly Work for Gentiles",
+        "Paul's Missionary Work to the Gentiles",
+        "Paul's Plan to Visit Rome",
+        "Paul's Personal Greetings",
+        "Warning About Divisive Teachers",
+        "Greetings from Paul's Friends",
+        "Benediction"
+      ]
+    },
+    {
+      "chapter_num": 2,
+      "verses_count": 29,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Therefore you are inexcusable, O man, whoever you are who judge, for in whatever you judge another you condemn yourself; for you who judge practice the same things. But we know that the judgment of God is according to truth against those who practice such things. And do you think this, O man, you who judge those practicing such things, and doing the same, that you will escape the judgment of God?",
+          "parts": [
+            "Therefore you are inexcusable, O man, whoever you are who judge, for in whatever you judge another you condemn yourself; for you who judge practice the same things.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5235"
+            },
+            "But we know that the judgment of God is according to truth against those who practice such things.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5236"
+            },
+            "And do you think this, O man, you who judge those practicing such things, and doing the same, that you will escape the judgment of God?"
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Or do you despise the riches of His goodness, forbearance, and longsuffering, not knowing that the goodness of God leads you to repentance?",
+          "parts": [
+            "Or do you despise the riches of His goodness, forbearance, and longsuffering, not knowing that the goodness of God leads you to repentance?"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "But in accordance with your hardness and your impenitent heart you are treasuring up for yourself wrath in the day of wrath and revelation of the righteous judgment of God,",
+          "parts": [
+            "But in accordance with your hardness and your impenitent heart you are treasuring up for yourself wrath in the day of wrath and revelation of the righteous judgment of God,"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "who “ will render to each one according to his deeds”",
+          "parts": [
+            "who “",
+            {
+              "style": "ITALIC",
+              "text": "will render to each one according to his deeds”"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "eternal life to those who by patient continuance in doing good seek for glory, honor, and immortality;",
+          "parts": [
+            "eternal life to those who by patient continuance in doing good seek for glory, honor, and immortality;"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "but to those who are self-seeking and do not obey the truth, but obey unrighteousness—indignation and wrath,",
+          "parts": [
+            "but to those who are self-seeking and do not obey the truth, but obey unrighteousness—indignation and wrath,"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "tribulation and anguish, on every soul of man who does evil, of the Jew first and also of the Greek;",
+          "parts": [
+            "tribulation and anguish, on every soul of man who does evil, of the Jew first and also of the Greek;"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "but glory, honor, and peace to everyone who works what is good, to the Jew first and also to the Greek.",
+          "parts": [
+            "but glory, honor, and peace to everyone who works what is good, to the Jew first and also to the Greek."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "For there is no partiality with God.",
+          "parts": [
+            "For there is no partiality with God."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "For as many as have sinned without law will also perish without law, and as many as have sinned in the law will be judged by the law (for not the hearers of the law are just in the sight of God, but the doers of the law will be justified; for when Gentiles, who do not have the law, by nature do the things in the law, these, although not having the law, are a law to themselves, who show the work of the law written in their hearts, their conscience also bearing witness, and between themselves their thoughts accusing or else excusing them ) in the day when God will judge the secrets of men by Jesus Christ, according to my gospel.",
+          "parts": [
+            "For as many as have sinned without law will also perish without law, and as many as have sinned in the law will be judged by the law (for not the hearers of the law",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "just in the sight of God, but the doers of the law will be justified; for when Gentiles, who do not have the law, by nature do the things in the law, these, although not having the law, are a law to themselves,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5237"
+            },
+            "who show the work of the law written in their hearts, their conscience also bearing witness, and between themselves",
+            {
+              "style": "ITALIC",
+              "text": "their"
+            },
+            "thoughts accusing or else excusing",
+            {
+              "style": "ITALIC",
+              "text": "them"
+            },
+            ") in the day when God will judge the secrets of men by Jesus Christ, according to my gospel."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "(for not the hearers of the law are",
+          "parts": [
+            "(for not the hearers of the law",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "for when Gentiles, who do not have the law, by nature do the things in the law, these, although not having the law, are a law to themselves,",
+          "parts": [
+            "for when Gentiles, who do not have the law, by nature do the things in the law, these, although not having the law, are a law to themselves,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5237"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "who show the work of the law written in their hearts, their conscience also bearing witness, and between themselves their",
+          "parts": [
+            "who show the work of the law written in their hearts, their conscience also bearing witness, and between themselves",
+            {
+              "style": "ITALIC",
+              "text": "their"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "in the day when God will judge the secrets of men by Jesus Christ, according to my gospel.",
+          "parts": [
+            "in the day when God will judge the secrets of men by Jesus Christ, according to my gospel."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Indeed a you are called a Jew, and rest on the law, and make your boast in God, and know His will, and approve the things that are excellent, being instructed out of the law, and are confident that you yourself are a guide to the blind, a light to those who are in darkness, an instructor of the foolish, a teacher of babes, having the form of knowledge and truth in the law.",
+          "parts": [
+            "Indeed",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1506"
+            },
+            "you are called a Jew, and rest on the law, and make your boast in God,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5238"
+            },
+            "and know",
+            {
+              "style": "ITALIC",
+              "text": "His"
+            },
+            "will, and approve the things that are excellent, being instructed out of the law, and are confident that you yourself are a guide to the blind, a light to those who are in darkness, an instructor of the foolish, a teacher of babes, having the form of knowledge and truth in the law."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "and know His",
+          "parts": [
+            "and know",
+            {
+              "style": "ITALIC",
+              "text": "His"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "and are confident that you yourself are a guide to the blind, a light to those who are in darkness,",
+          "parts": [
+            "and are confident that you yourself are a guide to the blind, a light to those who are in darkness,"
+          ]
+        },
+        {
+          "num": 20,
+          "text": "an instructor of the foolish, a teacher of babes, having the form of knowledge and truth in the law.",
+          "parts": [
+            "an instructor of the foolish, a teacher of babes, having the form of knowledge and truth in the law."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "You, therefore, who teach another, do you not teach yourself?",
+          "parts": [
+            "You, therefore, who teach another, do you not teach yourself?"
+          ]
+        },
+        {
+          "num": 22,
+          "text": "You who say, “Do not commit adultery,” do you commit adultery?",
+          "parts": [
+            "You who say, “Do not commit adultery,” do you commit adultery?"
+          ]
+        },
+        {
+          "num": 23,
+          "text": "You who make your boast in the law, do you dishonor God through breaking the law?",
+          "parts": [
+            "You who make your boast in the law, do you dishonor God through breaking the law?"
+          ]
+        },
+        {
+          "num": 24,
+          "text": "For “the name of God is blasphemed among the Gentiles because of you,”",
+          "parts": [
+            "For",
+            {
+              "style": "ITALIC",
+              "text": " “the name of God is blasphemed among the Gentiles because of you,”"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "For circumcision is indeed profitable if you keep the law; but if you are a breaker of the law, your circumcision has become uncircumcision. Therefore, if an uncircumcised man keeps the righteous requirements of the law, will not his uncircumcision be counted as circumcision?",
+          "parts": [
+            "For circumcision is indeed profitable if you keep the law; but if you are a breaker of the law, your circumcision has become uncircumcision.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5239"
+            },
+            "Therefore, if an uncircumcised man keeps the righteous requirements of the law, will not his uncircumcision be counted as circumcision?"
+          ]
+        },
+        {
+          "num": 26,
+          "text": "Therefore, if an uncircumcised man keeps the righteous requirements of the law, will not his uncircumcision be counted as circumcision?",
+          "parts": [
+            "Therefore, if an uncircumcised man keeps the righteous requirements of the law, will not his uncircumcision be counted as circumcision?"
+          ]
+        },
+        {
+          "num": 27,
+          "text": "And will not the physically uncircumcised, if he fulfills the law, judge you who, even",
+          "parts": [
+            "And will not the physically uncircumcised, if he fulfills the law, judge you who,",
+            {
+              "style": "ITALIC",
+              "text": "even"
+            }
+          ]
+        },
+        {
+          "num": 28,
+          "text": "For he is not a Jew who is one",
+          "parts": [
+            "For he is not a Jew who",
+            {
+              "style": "ITALIC",
+              "text": "is one"
+            }
+          ]
+        },
+        {
+          "num": 29,
+          "text": "but he is",
+          "parts": [
+            "but",
+            {
+              "style": "ITALIC",
+              "text": "he is"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 3,
+      "verses_count": 31,
+      "verses": [
+        {
+          "num": 1,
+          "text": "What advantage then has the Jew, or what is the profit of circumcision? Much in every way!",
+          "parts": [
+            "What advantage then has the Jew, or what",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "the profit of circumcision?",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5241"
+            },
+            "Much in every way!"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For what if some did not believe?",
+          "parts": [
+            "For what if some did not believe?"
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Certainly not!",
+          "parts": [
+            "Certainly not!"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "But if our unrighteousness demonstrates the righteousness of God, what shall we say?",
+          "parts": [
+            "But if our unrighteousness demonstrates the righteousness of God, what shall we say?"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Certainly not!",
+          "parts": [
+            "Certainly not!"
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For if the truth of God has increased through my lie to His glory, why am I also still judged as a sinner?",
+          "parts": [
+            "For if the truth of God has increased through my lie to His glory, why am I also still judged as a sinner?"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "And why",
+          "parts": [
+            "And",
+            {
+              "style": "ITALIC",
+              "text": "why"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "What then?",
+          "parts": [
+            "What then?"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "As it is written:",
+          "parts": [
+            "As it is written:"
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Now we know that whatever the law says, it says to those who are under the law, that every mouth may be stopped, and all the world may become guilty before God. Therefore by the deeds of the law no flesh will be justified in His sight, for by the law is the knowledge of sin.",
+          "parts": [
+            "Now we know that whatever the law says, it says to those who are under the law, that every mouth may be stopped, and all the world may become guilty before God.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5244"
+            },
+            "Therefore by the deeds of the law no flesh will be justified in His sight, for by the law",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "the knowledge of sin.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5245"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Therefore by the deeds of the law no flesh will be justified in His sight, for by the law is",
+          "parts": [
+            "Therefore by the deeds of the law no flesh will be justified in His sight, for by the law",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "But now the righteousness of God apart from the law is revealed, being witnessed by the Law and the Prophets, even the righteousness of God, through faith in Jesus Christ, to all and on all a who believe.",
+          "parts": [
+            "But now the righteousness of God apart from the law is revealed, being witnessed by the Law and the Prophets,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5246"
+            },
+            "even the righteousness of God, through faith in Jesus Christ, to all and on all",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1507"
+            },
+            "who believe."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "even the righteousness of God, through faith in Jesus Christ, to all and on all a",
+          "parts": [
+            "even the righteousness of God, through faith in Jesus Christ, to all and on all",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1508"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "for all have sinned and fall short of the glory of God,",
+          "parts": [
+            "for all have sinned and fall short of the glory of God,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5247"
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "being justified freely by His grace through the redemption that is in Christ Jesus,",
+          "parts": [
+            "being justified freely by His grace through the redemption that is in Christ Jesus,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5248"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "whom God set forth as",
+          "parts": [
+            "whom God set forth",
+            {
+              "style": "ITALIC",
+              "text": "as"
+            }
+          ]
+        },
+        {
+          "num": 26,
+          "text": "to demonstrate at the present time His righteousness, that He might be just and the justifier of the one who has faith in Jesus.",
+          "parts": [
+            "to demonstrate at the present time His righteousness, that He might be just and the justifier of the one who has faith in Jesus.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5250"
+            }
+          ]
+        },
+        {
+          "num": 27,
+          "text": "Where is boasting then?",
+          "parts": [
+            "Where",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "boasting then?"
+          ]
+        },
+        {
+          "num": 28,
+          "text": "Therefore we conclude that a man is justified by faith apart from the deeds of the law.",
+          "parts": [
+            "Therefore we conclude that a man is justified by faith apart from the deeds of the law."
+          ]
+        },
+        {
+          "num": 29,
+          "text": "Or is He",
+          "parts": [
+            "Or",
+            {
+              "style": "ITALIC",
+              "text": "is He"
+            }
+          ]
+        },
+        {
+          "num": 30,
+          "text": "since there is",
+          "parts": [
+            "since",
+            {
+              "style": "ITALIC",
+              "text": "there is"
+            }
+          ]
+        },
+        {
+          "num": 31,
+          "text": "Do we then make void the law through faith?",
+          "parts": [
+            "Do we then make void the law through faith?"
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 4,
+      "verses_count": 25,
+      "verses": [
+        {
+          "num": 1,
+          "text": "What then shall we say that Abraham our father has found according to the flesh? a For if Abraham was justified by works, he has something to boast about, but not before God.",
+          "parts": [
+            "What then shall we say that Abraham our father has found according to the flesh?",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1509"
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5252"
+            },
+            "For if Abraham was justified by works, he has",
+            {
+              "style": "ITALIC",
+              "text": "something"
+            },
+            "to boast about, but not before God."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For what does the Scripture say?",
+          "parts": [
+            "For what does the Scripture say?"
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Now to him who works, the wages are not counted as grace but as debt.",
+          "parts": [
+            "Now to him who works, the wages are not counted as grace but as debt."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "But to him who does not work but believes on Him who justifies the ungodly, his faith is accounted for righteousness, just as David also describes the blessedness of the man to whom God imputes righteousness apart from works:",
+          "parts": [
+            "But to him who does not work but believes on Him who justifies the ungodly, his faith is accounted for righteousness, just as David also describes the blessedness of the man to whom God imputes righteousness apart from works:",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5253"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "just as David also describes the blessedness of the man to whom God imputes righteousness apart from works:",
+          "parts": [
+            "just as David also describes the blessedness of the man to whom God imputes righteousness apart from works:",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5253"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Does",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "Does"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "How then was it accounted?",
+          "parts": [
+            "How then was it accounted?"
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And he received the sign of circumcision, a seal of the righteousness of the faith which he had while still",
+          "parts": [
+            "And he received the sign of circumcision, a seal of the righteousness of the faith which",
+            {
+              "style": "ITALIC",
+              "text": "he had while still"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "and the father of circumcision to those who not only are",
+          "parts": [
+            "and the father of circumcision to those who not only",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "For the promise that he would be the heir of the world was not to Abraham or to his seed through the law, but through the righteousness of faith. For if those who are of the law are heirs, faith is made void and the promise made of no effect, because the law brings about wrath; for where there is no law there is no transgression.",
+          "parts": [
+            "For the promise that he would be the heir of the world",
+            {
+              "style": "ITALIC",
+              "text": "was"
+            },
+            "not to Abraham or to his seed through the law, but through the righteousness of faith.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5255"
+            },
+            "For if those who are of the law",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "heirs, faith is made void and the promise made of no effect, because the law brings about wrath; for where there is no law",
+            {
+              "style": "ITALIC",
+              "text": "there is"
+            },
+            "no transgression."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "For if those who are of the law are",
+          "parts": [
+            "For if those who are of the law",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "because the law brings about wrath; for where there is no law there is",
+          "parts": [
+            "because the law brings about wrath; for where there is no law",
+            {
+              "style": "ITALIC",
+              "text": "there is"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Therefore it is of faith that it might be according to grace, so that the promise might be sure to all the seed, not only to those who are of the law, but also to those who are of the faith of Abraham, who is the father of us all (as it is written, “I have made you a father of many nations” a ) in the presence of Him whom he believed—God, who gives life to the dead and calls those things which do not exist as though they did; who, contrary to hope, in hope believed, so that he became the father of many nations, according to what was spoken, “So shall your descendants be.” a And not being weak in faith, he did not consider his own body, already dead (since he was about a hundred years old), and the deadness of Sarah's womb.",
+          "parts": [
+            "Therefore",
+            {
+              "style": "ITALIC",
+              "text": "it is"
+            },
+            "of faith that",
+            {
+              "style": "ITALIC",
+              "text": "it might be"
+            },
+            "according to grace, so that the promise might be sure to all the seed, not only to those who are of the law, but also to those who are of the faith of Abraham, who is the father of us all (as it is written,",
+            {
+              "style": "ITALIC",
+              "text": "“I have made you a father of many nations”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1510"
+            },
+            ") in the presence of Him whom he believed—God, who gives life to the dead and calls those things which do not exist as though they did; who, contrary to hope, in hope believed, so that he became the father of many nations, according to what was spoken,",
+            {
+              "style": "ITALIC",
+              "text": "“So shall your descendants be.”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1511"
+            },
+            "And not being weak in faith, he did not consider his own body, already dead (since he was about a hundred years old), and the deadness of Sarah's womb."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "(as it is written, “I have made you a father of many nations”",
+          "parts": [
+            "(as it is written,",
+            {
+              "style": "ITALIC",
+              "text": "“I have made you a father of many nations”"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "who, contrary to hope, in hope believed, so that he became the father of many nations, according to what was spoken, “So shall your descendants be.”",
+          "parts": [
+            "who, contrary to hope, in hope believed, so that he became the father of many nations, according to what was spoken,",
+            {
+              "style": "ITALIC",
+              "text": "“So shall your descendants be.”"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "And not being weak in faith, he did not consider his own body, already dead (since he was about a hundred years old), and the deadness of Sarah's womb.",
+          "parts": [
+            "And not being weak in faith, he did not consider his own body, already dead (since he was about a hundred years old), and the deadness of Sarah's womb."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "He did not waver at the promise of God through unbelief, but was strengthened in faith, giving glory to God,",
+          "parts": [
+            "He did not waver at the promise of God through unbelief, but was strengthened in faith, giving glory to God,"
+          ]
+        },
+        {
+          "num": 21,
+          "text": "and being fully convinced that what He had promised He was also able to perform.",
+          "parts": [
+            "and being fully convinced that what He had promised He was also able to perform."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "And therefore “it was accounted to him for righteousness.”",
+          "parts": [
+            "And therefore",
+            {
+              "style": "ITALIC",
+              "text": "“it was accounted to him for righteousness.”"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "Now it was not written for his sake alone that it was imputed to him, but also for us.",
+          "parts": [
+            "Now it was not written for his sake alone that it was imputed to him, but also for us."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "but also for us.",
+          "parts": [
+            "but also for us."
+          ]
+        },
+        {
+          "num": 25,
+          "text": "who was delivered up because of our offenses, and was raised because of our justification.",
+          "parts": [
+            "who was delivered up because of our offenses, and was raised because of our justification.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5256"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 5,
+      "verses_count": 21,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Therefore, having been justified by faith, we have a peace with God through our Lord Jesus Christ, through whom also we have access by faith into this grace in which we stand, and rejoice in hope of the glory of God.",
+          "parts": [
+            "Therefore, having been justified by faith, we have",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1512"
+            },
+            "peace with God through our Lord Jesus Christ,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5257"
+            },
+            "through whom also we have access by faith into this grace in which we stand, and rejoice in hope of the glory of God."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "And not only that,",
+          "parts": [
+            "And not only",
+            {
+              "style": "ITALIC",
+              "text": "that,"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "and perseverance, character; and character, hope.",
+          "parts": [
+            "and perseverance, character; and character, hope."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Now hope does not disappoint, because the love of God has been poured out in our hearts by the Holy Spirit who was given to us.",
+          "parts": [
+            "Now hope does not disappoint, because the love of God has been poured out in our hearts by the Holy Spirit who was given to us.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5258"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "For when we were still without strength, in due time Christ died for the ungodly. For scarcely for a righteous man will one die; yet perhaps for a good man someone would even dare to die.",
+          "parts": [
+            "For when we were still without strength, in due time Christ died for the ungodly.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5259"
+            },
+            "For scarcely for a righteous man will one die; yet perhaps for a good man someone would even dare to die."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For scarcely for a righteous man will one die; yet perhaps for a good man someone would even dare to die.",
+          "parts": [
+            "For scarcely for a righteous man will one die; yet perhaps for a good man someone would even dare to die."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "But God demonstrates His own love toward us, in that while we were still sinners, Christ died for us.",
+          "parts": [
+            "But God demonstrates His own love toward us, in that while we were still sinners, Christ died for us."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Much more then, having now been justified by His blood, we shall be saved from wrath through Him.",
+          "parts": [
+            "Much more then, having now been justified by His blood, we shall be saved from wrath through Him."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "For if when we were enemies we were reconciled to God through the death of His Son, much more, having been reconciled, we shall be saved by His life.",
+          "parts": [
+            "For if when we were enemies we were reconciled to God through the death of His Son, much more, having been reconciled, we shall be saved by His life.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5260"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And not only that,",
+          "parts": [
+            "And not only",
+            {
+              "style": "ITALIC",
+              "text": "that,"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Therefore, just as through one man sin entered the world, and death through sin, and thus death spread to all men, because all sinned— (For until the law sin was in the world, but sin is not imputed when there is no law. Nevertheless death reigned from Adam to Moses, even over those who had not sinned according to the likeness of the transgression of Adam, who is a type of Him who was to come. But the free gift is not like the offense.",
+          "parts": [
+            "Therefore, just as through one man sin entered the world, and death through sin, and thus death spread to all men, because all sinned—",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5261"
+            },
+            "(For until the law sin was in the world, but sin is not imputed when there is no law.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5262"
+            },
+            "Nevertheless death reigned from Adam to Moses, even over those who had not sinned according to the likeness of the transgression of Adam, who is a type of Him who was to come.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5263"
+            },
+            "But the free gift",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "not like the offense."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "(For until the law sin was in the world, but sin is not imputed when there is no law.",
+          "parts": [
+            "(For until the law sin was in the world, but sin is not imputed when there is no law.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5262"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Nevertheless death reigned from Adam to Moses, even over those who had not sinned according to the likeness of the transgression of Adam, who is a type of Him who was to come.",
+          "parts": [
+            "Nevertheless death reigned from Adam to Moses, even over those who had not sinned according to the likeness of the transgression of Adam, who is a type of Him who was to come.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5263"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "But the free gift is",
+          "parts": [
+            "But the free gift",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "And the gift is",
+          "parts": [
+            "And the gift",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For if by the one man's offense death reigned through the one, much more those who receive abundance of grace and of the gift of righteousness will reign in life through the One, Jesus Christ.)",
+          "parts": [
+            "For if by the one man's offense death reigned through the one, much more those who receive abundance of grace and of the gift of righteousness will reign in life through the One, Jesus Christ.)"
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Therefore, as through one man's offense judgment came to all men, resulting in condemnation, even so through one Man's righteous act the free gift came to all men, resulting in justification of life. † For as by one man's disobedience many were made sinners, so also by one Man's obedience many will be made righteous.",
+          "parts": [
+            "Therefore, as through one man's offense",
+            {
+              "style": "ITALIC",
+              "text": "judgment came"
+            },
+            "to all men, resulting in condemnation, even so through one Man's righteous act",
+            {
+              "style": "ITALIC",
+              "text": "the free gift came"
+            },
+            "to all men, resulting in justification of life.",
+            {
+              "style": "CROSS_REF",
+              "text": "†",
+              "ref_id": "r1513"
+            },
+            "For as by one man's disobedience many were made sinners, so also by one Man's obedience many will be made righteous.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5265"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For as by one man's disobedience many were made sinners, so also by one Man's obedience many will be made righteous.",
+          "parts": [
+            "For as by one man's disobedience many were made sinners, so also by one Man's obedience many will be made righteous.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5265"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Moreover the law entered that the offense might abound.",
+          "parts": [
+            "Moreover the law entered that the offense might abound."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "so that as sin reigned in death, even so grace might reign through righteousness to eternal life through Jesus Christ our Lord.",
+          "parts": [
+            "so that as sin reigned in death, even so grace might reign through righteousness to eternal life through Jesus Christ our Lord."
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 6,
+      "verses_count": 23,
+      "verses": [
+        {
+          "num": 1,
+          "text": "What shall we say then?",
+          "parts": [
+            "What shall we say then?"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "Certainly not!",
+          "parts": [
+            "Certainly not!"
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Or do you not know that as many of us as were baptized into Christ Jesus were baptized into His death?",
+          "parts": [
+            "Or do you not know that as many of us as were baptized into Christ Jesus were baptized into His death?",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5269"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Therefore we were buried with Him through baptism into death, that just as Christ was raised from the dead by the glory of the Father, even so we also should walk in newness of life.",
+          "parts": [
+            "Therefore we were buried with Him through baptism into death, that just as Christ was raised from the dead by the glory of the Father, even so we also should walk in newness of life."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "For if we have been united together in the likeness of His death, certainly we also shall be in the likeness of His resurrection, knowing this, that our old man was crucified with Him, that the body of sin might be done away with, that we should no longer be slaves of sin. For he who has died has been freed from sin. Now if we died with Christ, we believe that we shall also live with Him, knowing that Christ, having been raised from the dead, dies no more.",
+          "parts": [
+            "For if we have been united together in the likeness of His death, certainly we also shall be",
+            {
+              "style": "ITALIC",
+              "text": "in the likeness"
+            },
+            "of",
+            {
+              "style": "ITALIC",
+              "text": "His"
+            },
+            "resurrection,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5270"
+            },
+            "knowing this, that our old man was crucified with",
+            {
+              "style": "ITALIC",
+              "text": "Him,"
+            },
+            "that the body of sin might be done away with, that we should no longer be slaves of sin.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5271"
+            },
+            "For he who has died has been freed from sin.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5272"
+            },
+            "Now if we died with Christ, we believe that we shall also live with Him,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5273"
+            },
+            "knowing that Christ, having been raised from the dead, dies no more."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "knowing this, that our old man was crucified with Him,",
+          "parts": [
+            "knowing this, that our old man was crucified with",
+            {
+              "style": "ITALIC",
+              "text": "Him,"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For he who has died has been freed from sin.",
+          "parts": [
+            "For he who has died has been freed from sin.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5272"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Now if we died with Christ, we believe that we shall also live with Him,",
+          "parts": [
+            "Now if we died with Christ, we believe that we shall also live with Him,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5273"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "knowing that Christ, having been raised from the dead, dies no more.",
+          "parts": [
+            "knowing that Christ, having been raised from the dead, dies no more."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "For the death",
+          "parts": [
+            "For",
+            {
+              "style": "ITALIC",
+              "text": "the death"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Likewise you also, reckon yourselves to be dead indeed to sin, but alive to God in Christ Jesus our Lord.",
+          "parts": [
+            "Likewise you also, reckon yourselves to be dead indeed to sin, but alive to God in Christ Jesus our Lord.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5275"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Therefore do not let sin reign in your mortal body, that you should obey it in its lusts. And do not present your members as instruments of unrighteousness to sin, but present yourselves to God as being alive from the dead, and your members as instruments of righteousness to God. For sin shall not have dominion over you, for you are not under law but under grace.",
+          "parts": [
+            "Therefore do not let sin reign in your mortal body, that you should obey it in its lusts.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5276"
+            },
+            "And do not present your members",
+            {
+              "style": "ITALIC",
+              "text": "as"
+            },
+            "instruments of unrighteousness to sin, but present yourselves to God as being alive from the dead, and your members",
+            {
+              "style": "ITALIC",
+              "text": "as"
+            },
+            "instruments of righteousness to God.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5277"
+            },
+            "For sin shall not have dominion over you, for you are not under law but under grace."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "And do not present your members as",
+          "parts": [
+            "And do not present your members",
+            {
+              "style": "ITALIC",
+              "text": "as"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "For sin shall not have dominion over you, for you are not under law but under grace.",
+          "parts": [
+            "For sin shall not have dominion over you, for you are not under law but under grace."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "What then?",
+          "parts": [
+            "What then?"
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Do you not know that to whom you present yourselves slaves to obey, you are that one's slaves whom you obey, whether of sin leading",
+          "parts": [
+            "Do you not know that to whom you present yourselves slaves to obey, you are that one's slaves whom you obey, whether of sin",
+            {
+              "style": "ITALIC",
+              "text": "leading"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "But God be thanked that though",
+          "parts": [
+            "But God be thanked that",
+            {
+              "style": "ITALIC",
+              "text": "though"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "And having been set free from sin, you became slaves of righteousness. †",
+          "parts": [
+            "And having been set free from sin, you became slaves of righteousness.",
+            {
+              "style": "CROSS_REF",
+              "text": "†",
+              "ref_id": "r1514"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "I speak in human terms",
+          "parts": [
+            "I speak in human",
+            {
+              "style": "ITALIC",
+              "text": "terms"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "For when you were slaves of sin, you were free in regard to righteousness. † What fruit did you have then in the things of which you are now ashamed?",
+          "parts": [
+            "For when you were slaves of sin, you were free in regard to righteousness.",
+            {
+              "style": "CROSS_REF",
+              "text": "†",
+              "ref_id": "r1515"
+            },
+            "What fruit did you have then in the things of which you are now ashamed?"
+          ]
+        },
+        {
+          "num": 21,
+          "text": "What fruit did you have then in the things of which you are now ashamed?",
+          "parts": [
+            "What fruit did you have then in the things of which you are now ashamed?"
+          ]
+        },
+        {
+          "num": 22,
+          "text": "But now having been set free from sin, and having become slaves of God, you have your fruit to holiness, and the end, everlasting life.",
+          "parts": [
+            "But now having been set free from sin, and having become slaves of God, you have your fruit to holiness, and the end, everlasting life.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5283"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "For the wages of sin is",
+          "parts": [
+            "For the wages of sin",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 7,
+      "verses_count": 25,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Or do you not know, brethren (for I speak to those who know the law), that the law has dominion over a man as long as he lives? For the woman who has a husband is bound by the law to her husband as long as he lives.",
+          "parts": [
+            "Or do you not know, brethren (for I speak to those who know the law), that the law has dominion over a man as long as he lives?",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5285"
+            },
+            "For the woman who has a husband is bound by the law to",
+            {
+              "style": "ITALIC",
+              "text": "her"
+            },
+            "husband as long as he lives."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "So then if, while her",
+          "parts": [
+            "So then if, while",
+            {
+              "style": "ITALIC",
+              "text": "her"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Therefore, my brethren, you also have become dead to the law through the body of Christ, that you may be married to another—to Him who was raised from the dead, that we should bear fruit to God.",
+          "parts": [
+            "Therefore, my brethren, you also have become dead to the law through the body of Christ, that you may be married to another—to Him who was raised from the dead, that we should bear fruit to God."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "For when we were in the flesh, the sinful passions which were aroused by the law were at work in our members to bear fruit to death.",
+          "parts": [
+            "For when we were in the flesh, the sinful passions which were aroused by the law were at work in our members to bear fruit to death.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5286"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "But now we have been delivered from the law, having died to what we were held by, so that we should serve in the newness of the Spirit and not in",
+          "parts": [
+            "But now we have been delivered from the law, having died to what we were held by, so that we should serve in the newness of the Spirit and not",
+            {
+              "style": "ITALIC",
+              "text": "in"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "What shall we say then?",
+          "parts": [
+            "What shall we say then?"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "But sin, taking opportunity by the commandment, produced in me all manner of",
+          "parts": [
+            "But sin, taking opportunity by the commandment, produced in me all",
+            {
+              "style": "ITALIC",
+              "text": "manner of "
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "I was alive once without the law, but when the commandment came, sin revived and I died.",
+          "parts": [
+            "I was alive once without the law, but when the commandment came, sin revived and I died."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "And the commandment, which was",
+          "parts": [
+            "And the commandment, which",
+            {
+              "style": "ITALIC",
+              "text": "was"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "For sin, taking occasion by the commandment, deceived me, and by it killed me.",
+          "parts": [
+            "For sin, taking occasion by the commandment, deceived me, and by it killed",
+            {
+              "style": "ITALIC",
+              "text": "me."
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Therefore the law is",
+          "parts": [
+            "Therefore the law",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Has then what is good become death to me?",
+          "parts": [
+            "Has then what is good become death to me?"
+          ]
+        },
+        {
+          "num": 14,
+          "text": "For we know that the law is spiritual, but I am carnal, sold under sin.",
+          "parts": [
+            "For we know that the law is spiritual, but I am carnal, sold under sin."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "For what I am doing, I do not understand.",
+          "parts": [
+            "For what I am doing, I do not understand."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "If, then, I do what I will not to do, I agree with the law that it is",
+          "parts": [
+            "If, then, I do what I will not to do, I agree with the law that",
+            {
+              "style": "ITALIC",
+              "text": "it is"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "But now, it is",
+          "parts": [
+            "But now,",
+            {
+              "style": "ITALIC",
+              "text": "it is"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "For I know that in me (that is, in my flesh) nothing good dwells; for to will is present with me, but how",
+          "parts": [
+            "For I know that in me (that is, in my flesh) nothing good dwells; for to will is present with me, but",
+            {
+              "style": "ITALIC",
+              "text": "how"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For the good that I will to do,",
+          "parts": [
+            "For the good that I will",
+            {
+              "style": "ITALIC",
+              "text": "to do,"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Now if I do what I will not to do,",
+          "parts": [
+            "Now if I do what I will not",
+            {
+              "style": "ITALIC",
+              "text": "to do,"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "I find then a law, that evil is present with me, the one who wills to do good.",
+          "parts": [
+            "I find then a law, that evil is present with me, the one who wills to do good."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "For I delight in the law of God according to the inward man.",
+          "parts": [
+            "For I delight in the law of God according to the inward man."
+          ]
+        },
+        {
+          "num": 23,
+          "text": "But I see another law in my members, warring against the law of my mind, and bringing me into captivity to the law of sin which is in my members.",
+          "parts": [
+            "But I see another law in my members, warring against the law of my mind, and bringing me into captivity to the law of sin which is in my members."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "O wretched man that I am!",
+          "parts": [
+            "O wretched man that I am!"
+          ]
+        },
+        {
+          "num": 25,
+          "text": "I thank God—through Jesus Christ our Lord!",
+          "parts": [
+            "I thank God—through Jesus Christ our Lord!",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5292"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 8,
+      "verses_count": 39,
+      "verses": [
+        {
+          "num": 1,
+          "text": "There",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "There"
+            }
+          ]
+        },
+        {
+          "num": 2,
+          "text": "For the law of the Spirit of life in Christ Jesus has made me free from the law of sin and death.",
+          "parts": [
+            "For the law of the Spirit of life in Christ Jesus has made me free from the law of sin and death."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For what the law could not do in that it was weak through the flesh, God did",
+          "parts": [
+            "For what the law could not do in that it was weak through the flesh, God",
+            {
+              "style": "ITALIC",
+              "text": "did"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "that the righteous requirement of the law might be fulfilled in us who do not walk according to the flesh but according to the Spirit.",
+          "parts": [
+            "that the righteous requirement of the law might be fulfilled in us who do not walk according to the flesh but according to the Spirit."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "For those who live according to the flesh set their minds on the things of the flesh, but those who live",
+          "parts": [
+            "For those who live according to the flesh set their minds on the things of the flesh, but those",
+            {
+              "style": "ITALIC",
+              "text": "who live"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "For to be carnally minded is",
+          "parts": [
+            "For to be carnally minded",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Because the carnal mind is",
+          "parts": [
+            "Because the carnal mind",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "So then, those who are in the flesh cannot please God.",
+          "parts": [
+            "So then, those who are in the flesh cannot please God."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "But you are not in the flesh but in the Spirit, if indeed the Spirit of God dwells in you.",
+          "parts": [
+            "But you are not in the flesh but in the Spirit, if indeed the Spirit of God dwells in you."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "And if Christ is",
+          "parts": [
+            "And if Christ",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "But if the Spirit of Him who raised Jesus from the dead dwells in you, He who raised Christ from the dead will also give life to your mortal bodies through His Spirit who dwells in you.",
+          "parts": [
+            "But if the Spirit of Him who raised Jesus from the dead dwells in you, He who raised Christ from the dead will also give life to your mortal bodies through His Spirit who dwells in you."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Therefore, brethren, we are debtors—not to the flesh, to live according to the flesh.",
+          "parts": [
+            "Therefore, brethren, we are debtors—not to the flesh, to live according to the flesh."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "For if you live according to the flesh you will die; but if by the Spirit you put to death the deeds of the body, you will live.",
+          "parts": [
+            "For if you live according to the flesh you will die; but if by the Spirit you put to death the deeds of the body, you will live.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5298"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "For as many as are led by the Spirit of God, these are sons of God.",
+          "parts": [
+            "For as many as are led by the Spirit of God, these are sons of God.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5299"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "For you did not receive the spirit of bondage again to fear, but you received the Spirit of adoption by whom we cry out, “Abba, Father.”",
+          "parts": [
+            "For you did not receive the spirit of bondage again to fear, but you received the Spirit of adoption by whom we cry out, “Abba, Father.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5300"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "The Spirit Himself bears witness with our spirit that we are children of God,",
+          "parts": [
+            "The Spirit Himself bears witness with our spirit that we are children of God,"
+          ]
+        },
+        {
+          "num": 17,
+          "text": "and if children, then heirs—heirs of God and joint heirs with Christ, if indeed we suffer with Him,",
+          "parts": [
+            "and if children, then heirs—heirs of God and joint heirs with Christ, if indeed we suffer with",
+            {
+              "style": "ITALIC",
+              "text": "Him,"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "For I consider that the sufferings of this present time are not worthy to be compared with the glory which shall be revealed in us. For the earnest expectation of the creation eagerly waits for the revealing of the sons of God.",
+          "parts": [
+            "For I consider that the sufferings of this present time are not worthy",
+            {
+              "style": "ITALIC",
+              "text": "to be compared"
+            },
+            "with the glory which shall be revealed in us.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5302"
+            },
+            "For the earnest expectation of the creation eagerly waits for the revealing of the sons of God."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For the earnest expectation of the creation eagerly waits for the revealing of the sons of God.",
+          "parts": [
+            "For the earnest expectation of the creation eagerly waits for the revealing of the sons of God."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "For the creation was subjected to futility, not willingly, but because of Him who subjected it",
+          "parts": [
+            "For the creation was subjected to futility, not willingly, but because of Him who subjected",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "because the creation itself also will be delivered from the bondage of corruption into the glorious liberty of the children of God.",
+          "parts": [
+            "because the creation itself also will be delivered from the bondage of corruption into the glorious liberty of the children of God.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5303"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "For we know that the whole creation groans and labors with birth pangs together until now.",
+          "parts": [
+            "For we know that the whole creation groans and labors with birth pangs together until now."
+          ]
+        },
+        {
+          "num": 23,
+          "text": "Not only that,",
+          "parts": [
+            "Not only",
+            {
+              "style": "ITALIC",
+              "text": "that, "
+            }
+          ]
+        },
+        {
+          "num": 24,
+          "text": "For we were saved in this hope, but hope that is seen is not hope; for why does one still hope for what he sees?",
+          "parts": [
+            "For we were saved in this hope, but hope that is seen is not hope; for why does one still hope for what he sees?",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5304"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "But if we hope for what we do not see, we eagerly wait for it",
+          "parts": [
+            "But if we hope for what we do not see, we eagerly wait for",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            }
+          ]
+        },
+        {
+          "num": 26,
+          "text": "Likewise the Spirit also helps in our weaknesses.",
+          "parts": [
+            "Likewise the Spirit also helps in our weaknesses."
+          ]
+        },
+        {
+          "num": 27,
+          "text": "Now He who searches the hearts knows what the mind of the Spirit is,",
+          "parts": [
+            "Now He who searches the hearts knows what the mind of the Spirit",
+            {
+              "style": "ITALIC",
+              "text": "is,"
+            }
+          ]
+        },
+        {
+          "num": 28,
+          "text": "And we know that all things work together for good to those who love God, to those who are the called according to His purpose. For whom He foreknew, He also predestined to be conformed to the image of His Son, that He might be the firstborn among many brethren.",
+          "parts": [
+            "And we know that all things work together for good to those who love God, to those who are the called according to",
+            {
+              "style": "ITALIC",
+              "text": "His"
+            },
+            "purpose.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5306"
+            },
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx316"
+            },
+            "For whom He foreknew, He also predestined",
+            {
+              "style": "ITALIC",
+              "text": "to be"
+            },
+            "conformed to the image of His Son, that He might be the firstborn among many brethren."
+          ]
+        },
+        {
+          "num": 29,
+          "text": "For whom He foreknew, He also predestined to be",
+          "parts": [
+            "For whom He foreknew, He also predestined",
+            {
+              "style": "ITALIC",
+              "text": "to be"
+            }
+          ]
+        },
+        {
+          "num": 30,
+          "text": "Moreover whom He predestined, these He also called; whom He called, these He also justified; and whom He justified, these He also glorified.",
+          "parts": [
+            "Moreover whom He predestined, these He also called; whom He called, these He also justified; and whom He justified, these He also glorified."
+          ]
+        },
+        {
+          "num": 31,
+          "text": "What then shall we say to these things?",
+          "parts": [
+            "What then shall we say to these things?"
+          ]
+        },
+        {
+          "num": 32,
+          "text": "He who did not spare His own Son, but delivered Him up for us all, how shall He not with Him also freely give us all things?",
+          "parts": [
+            "He who did not spare His own Son, but delivered Him up for us all, how shall He not with Him also freely give us all things?"
+          ]
+        },
+        {
+          "num": 33,
+          "text": "Who shall bring a charge against God's elect?",
+          "parts": [
+            "Who shall bring a charge against God's elect?"
+          ]
+        },
+        {
+          "num": 34,
+          "text": "Who is",
+          "parts": [
+            "Who",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 35,
+          "text": "Who shall separate us from the love of Christ?",
+          "parts": [
+            "Who shall separate us from the love of Christ?"
+          ]
+        },
+        {
+          "num": 36,
+          "text": "As it is written:",
+          "parts": [
+            "As it is written:"
+          ]
+        },
+        {
+          "num": 37,
+          "text": "Yet in all these things we are more than conquerors through Him who loved us.",
+          "parts": [
+            "Yet in all these things we are more than conquerors through Him who loved us."
+          ]
+        },
+        {
+          "num": 38,
+          "text": "For I am persuaded that neither death nor life, nor angels nor principalities nor powers, nor things present nor things to come,",
+          "parts": [
+            "For I am persuaded that neither death nor life, nor angels nor principalities nor powers, nor things present nor things to come,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5308"
+            }
+          ]
+        },
+        {
+          "num": 39,
+          "text": "nor height nor depth, nor any other created thing, shall be able to separate us from the love of God which is in Christ Jesus our Lord.",
+          "parts": [
+            "nor height nor depth, nor any other created thing, shall be able to separate us from the love of God which is in Christ Jesus our Lord."
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 9,
+      "verses_count": 33,
+      "verses": [
+        {
+          "num": 1,
+          "text": "I tell the truth in Christ, I am not lying, my conscience also bearing me witness in the Holy Spirit, that I have great sorrow and continual grief in my heart.",
+          "parts": [
+            "I tell the truth in Christ, I am not lying, my conscience also bearing me witness in the Holy Spirit,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5309"
+            },
+            "that I have great sorrow and continual grief in my heart."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For I could wish that I myself were accursed from Christ for my brethren, my countrymen a",
+          "parts": [
+            "For I could wish that I myself were accursed from Christ for my brethren, my countrymen",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1516"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "who are Israelites, to whom pertain",
+          "parts": [
+            "who are Israelites, to whom",
+            {
+              "style": "ITALIC",
+              "text": "pertain"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "of whom are",
+          "parts": [
+            "of whom",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "But it is not that the word of God has taken no effect.",
+          "parts": [
+            "But it is not that the word of God has taken no effect."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "nor are they",
+          "parts": [
+            "nor",
+            {
+              "style": "ITALIC",
+              "text": "are they"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "That is, those who are",
+          "parts": [
+            "That is, those who",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For this is",
+          "parts": [
+            "For this",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "And not only this, but when Rebecca also had conceived by one man, even by our father Isaac (for the children not yet being born, nor having done any good or evil, that the purpose of God according to election might stand, not of works but of Him who calls), it was said to her, “The older shall serve the younger.” a As it is written, “Jacob I have loved, but Esau I have hated.” a",
+          "parts": [
+            "And not only",
+            {
+              "style": "ITALIC",
+              "text": "this,"
+            },
+            "but when Rebecca also had conceived by one man,",
+            {
+              "style": "ITALIC",
+              "text": "even"
+            },
+            "by our father Isaac",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5311"
+            },
+            "(for",
+            {
+              "style": "ITALIC",
+              "text": "the children"
+            },
+            "not yet being born, nor having done any good or evil, that the purpose of God according to election might stand, not of works but of Him who calls), it was said to her,",
+            {
+              "style": "ITALIC",
+              "text": "“The older shall serve the younger.”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1517"
+            },
+            "As it is written,",
+            {
+              "style": "ITALIC",
+              "text": "“Jacob I have loved, but Esau I have hated.”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1518"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "(for the children",
+          "parts": [
+            "(for",
+            {
+              "style": "ITALIC",
+              "text": "the children"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "it was said to her, “The older shall serve the younger.”",
+          "parts": [
+            "it was said to her,",
+            {
+              "style": "ITALIC",
+              "text": "“The older shall serve the younger.”"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "As it is written, “Jacob I have loved, but Esau I have hated.”",
+          "parts": [
+            "As it is written,",
+            {
+              "style": "ITALIC",
+              "text": "“Jacob I have loved, but Esau I have hated.”"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "What shall we say then?",
+          "parts": [
+            "What shall we say then?"
+          ]
+        },
+        {
+          "num": 15,
+          "text": "For He says to Moses, “I will have mercy on whomever I will have mercy, and I will have compassion on whomever I will have compassion.”",
+          "parts": [
+            "For He says to Moses,",
+            {
+              "style": "ITALIC",
+              "text": "“I will have mercy on whomever I will have mercy, and I will have compassion on whomever I will have compassion.”"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "So then it is",
+          "parts": [
+            "So then",
+            {
+              "style": "ITALIC",
+              "text": "it is"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "For the Scripture says to the Pharaoh, “For this very purpose I have raised you up, that I may show My power in you, and that My name may be declared in all the earth.”",
+          "parts": [
+            "For the Scripture says to the Pharaoh,",
+            {
+              "style": "ITALIC",
+              "text": "“For this very purpose I have raised you up, that I may show My power in you, and that My name may be declared in all the earth.”"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Therefore He has mercy on whom He wills, and whom He wills He hardens.",
+          "parts": [
+            "Therefore He has mercy on whom He wills, and whom He wills He hardens."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "You will say to me then, “Why does He still find fault?",
+          "parts": [
+            "You will say to me then, “Why does He still find fault?"
+          ]
+        },
+        {
+          "num": 20,
+          "text": "But indeed, O man, who are you to reply against God?",
+          "parts": [
+            "But indeed, O man, who are you to reply against God?"
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Does not the potter have power over the clay, from the same lump to make one vessel for honor and another for dishonor?",
+          "parts": [
+            "Does not the potter have power over the clay, from the same lump to make one vessel for honor and another for dishonor?"
+          ]
+        },
+        {
+          "num": 22,
+          "text": "What",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "What"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "and that He might make known the riches of His glory on the vessels of mercy, which He had prepared beforehand for glory,",
+          "parts": [
+            "and that He might make known the riches of His glory on the vessels of mercy, which He had prepared beforehand for glory,"
+          ]
+        },
+        {
+          "num": 24,
+          "text": "even us whom He called, not of the Jews only, but also of the Gentiles?",
+          "parts": [
+            "even us whom He called, not of the Jews only, but also of the Gentiles?"
+          ]
+        },
+        {
+          "num": 25,
+          "text": "As He says also in Hosea:",
+          "parts": [
+            "As He says also in Hosea:"
+          ]
+        },
+        {
+          "num": 27,
+          "text": "Isaiah also cries out concerning Israel: a",
+          "parts": [
+            "Isaiah also cries out concerning Israel:",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1519"
+            }
+          ]
+        },
+        {
+          "num": 29,
+          "text": "And as Isaiah said before:",
+          "parts": [
+            "And as Isaiah said before:"
+          ]
+        },
+        {
+          "num": 30,
+          "text": "What shall we say then?",
+          "parts": [
+            "What shall we say then?"
+          ]
+        },
+        {
+          "num": 31,
+          "text": "but Israel, pursuing the law of righteousness, has not attained to the law of righteousness. a",
+          "parts": [
+            "but Israel, pursuing the law of righteousness, has not attained to the law of righteousness.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1520"
+            }
+          ]
+        },
+        {
+          "num": 32,
+          "text": "Why?",
+          "parts": [
+            "Why?"
+          ]
+        },
+        {
+          "num": 33,
+          "text": "As it is written:",
+          "parts": [
+            "As it is written:"
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 10,
+      "verses_count": 21,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Brethren, my heart's desire and prayer to God for Israel a is that they may be saved. For I bear them witness that they have a zeal for God, but not according to knowledge.",
+          "parts": [
+            "Brethren, my heart's desire and prayer to God for Israel",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1521"
+            },
+            "is that they may be saved.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5317"
+            },
+            "For I bear them witness that they have a zeal for God, but not according to knowledge."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For they being ignorant of God's righteousness, and seeking to establish their own righteousness, have not submitted to the righteousness of God.",
+          "parts": [
+            "For they being ignorant of God's righteousness, and seeking to establish their own righteousness, have not submitted to the righteousness of God."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "For Christ is",
+          "parts": [
+            "For Christ",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "For Moses writes about the righteousness which is of the law, “The man who does those things shall live by them.” a But the righteousness of faith speaks in this way, “Do not say in your heart, ‘Who will ascend into heaven?’ ” a (that is, to bring Christ down from above ) or, “ ‘Who will descend into the abyss?’ ” a (that is, to bring Christ up from the dead).",
+          "parts": [
+            "For Moses writes about the righteousness which is of the law,",
+            {
+              "style": "ITALIC",
+              "text": "“The man who does those things shall live by them.”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1522"
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5319"
+            },
+            "But the righteousness of faith speaks in this way,",
+            {
+              "style": "ITALIC",
+              "text": "“Do not say in your heart, ‘Who will ascend into heaven?’ ”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1523"
+            },
+            "(that is, to bring Christ down",
+            {
+              "style": "ITALIC",
+              "text": "from above"
+            },
+            ") or,",
+            {
+              "style": "ITALIC",
+              "text": "“ ‘Who will descend into the abyss?’ ”"
+            },
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1524"
+            },
+            "(that is, to bring Christ up from the dead)."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "But the righteousness of faith speaks in this way, “Do not say in your heart, ‘Who will ascend into heaven?’ ”",
+          "parts": [
+            "But the righteousness of faith speaks in this way,",
+            {
+              "style": "ITALIC",
+              "text": "“Do not say in your heart, ‘Who will ascend into heaven?’ ”"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "or, “ ‘Who will descend into the abyss?’ ”",
+          "parts": [
+            "or,",
+            {
+              "style": "ITALIC",
+              "text": "“ ‘Who will descend into the abyss?’ ”"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "But what does it say?",
+          "parts": [
+            "But what does it say?"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "that if you confess with your mouth the Lord Jesus and believe in your heart that God has raised Him from the dead, you will be saved.",
+          "parts": [
+            "that if you confess with your mouth the Lord Jesus and believe in your heart that God has raised Him from the dead, you will be saved.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5320"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "For with the heart one believes unto righteousness, and with the mouth confession is made unto salvation.",
+          "parts": [
+            "For with the heart one believes unto righteousness, and with the mouth confession is made unto salvation."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "For the Scripture says, “Whoever believes on Him will not be put to shame.”",
+          "parts": [
+            "For the Scripture says,",
+            {
+              "style": "ITALIC",
+              "text": "“Whoever believes on Him will not be put to shame.”"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "For there is no distinction between Jew and Greek, for the same Lord over all is rich to all who call upon Him.",
+          "parts": [
+            "For there is no distinction between Jew and Greek, for the same Lord over all is rich to all who call upon Him."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "For “whoever calls on the name of the LORD shall be saved.”",
+          "parts": [
+            "For",
+            {
+              "style": "ITALIC",
+              "text": "“whoever calls on the name of the LORD shall be saved.”"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "How then shall they call on Him in whom they have not believed?",
+          "parts": [
+            "How then shall they call on Him in whom they have not believed?"
+          ]
+        },
+        {
+          "num": 15,
+          "text": "And how shall they preach unless they are sent?",
+          "parts": [
+            "And how shall they preach unless they are sent?"
+          ]
+        },
+        {
+          "num": 16,
+          "text": "But they have not all obeyed the gospel.",
+          "parts": [
+            "But they have not all obeyed the gospel."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "So then faith comes",
+          "parts": [
+            "So then faith",
+            {
+              "style": "ITALIC",
+              "text": "comes"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "But I say, have they not heard?",
+          "parts": [
+            "But I say, have they not heard?"
+          ]
+        },
+        {
+          "num": 19,
+          "text": "But I say, did Israel not know?",
+          "parts": [
+            "But I say, did Israel not know?"
+          ]
+        },
+        {
+          "num": 20,
+          "text": "But Isaiah is very bold and says:",
+          "parts": [
+            "But Isaiah is very bold and says:"
+          ]
+        },
+        {
+          "num": 21,
+          "text": "But to Israel he says:",
+          "parts": [
+            "But to Israel he says:"
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 11,
+      "verses_count": 36,
+      "verses": [
+        {
+          "num": 1,
+          "text": "I say then, has God cast away His people?",
+          "parts": [
+            "I say then, has God cast away His people?"
+          ]
+        },
+        {
+          "num": 2,
+          "text": "God has not cast away His people whom He foreknew.",
+          "parts": [
+            "God has not cast away His people whom He foreknew."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "“LORD, they have killed Your prophets and torn down Your altars, and I alone am left, and they seek my life”",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "“LORD, they have killed Your prophets and torn down Your altars, and I alone am left, and they seek my life”"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "But what does the divine response say to him?",
+          "parts": [
+            "But what does the divine response say to him?"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Even so then, at this present time there is a remnant according to the election of grace.",
+          "parts": [
+            "Even so then, at this present time there is a remnant according to the election of grace."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "And if by grace, then it is",
+          "parts": [
+            "And if by grace, then",
+            {
+              "style": "ITALIC",
+              "text": "it is"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "What then?",
+          "parts": [
+            "What then?"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Just as it is written:",
+          "parts": [
+            "Just as it is written:"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "And David says:",
+          "parts": [
+            "And David says:"
+          ]
+        },
+        {
+          "num": 11,
+          "text": "I say then, have they stumbled that they should fall?",
+          "parts": [
+            "I say then, have they stumbled that they should fall?"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Now if their fall is",
+          "parts": [
+            "Now if their fall",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "For I speak to you Gentiles; inasmuch as I am an apostle to the Gentiles, I magnify my ministry, if by any means I may provoke to jealousy those who are my flesh and save some of them.",
+          "parts": [
+            "For I speak to you Gentiles; inasmuch as I am an apostle to the Gentiles, I magnify my ministry, if by any means I may provoke to jealousy",
+            {
+              "style": "ITALIC",
+              "text": "those who are"
+            },
+            "my flesh and save some of them."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "if by any means I may provoke to jealousy those who are",
+          "parts": [
+            "if by any means I may provoke to jealousy",
+            {
+              "style": "ITALIC",
+              "text": "those who are"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "For if their being cast away is",
+          "parts": [
+            "For if their being cast away",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "For if the firstfruit is holy, the lump is also holy; and if the root is holy, so are the branches. And if some of the branches were broken off, and you, being a wild olive tree, were grafted in among them, and with them became a partaker of the root and fatness of the olive tree, do not boast against the branches.",
+          "parts": [
+            "For if the firstfruit",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "holy, the lump",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "also",
+            {
+              "style": "ITALIC",
+              "text": "holy;"
+            },
+            "and if the root",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "holy, so",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "the branches.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5325"
+            },
+            "And if some of the branches were broken off, and you, being a wild olive tree, were grafted in among them, and with them became a partaker of the root and fatness of the olive tree, do not boast against the branches."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "And if some of the branches were broken off, and you, being a wild olive tree, were grafted in among them, and with them became a partaker of the root and fatness of the olive tree,",
+          "parts": [
+            "And if some of the branches were broken off, and you, being a wild olive tree, were grafted in among them, and with them became a partaker of the root and fatness of the olive tree,"
+          ]
+        },
+        {
+          "num": 18,
+          "text": "do not boast against the branches.",
+          "parts": [
+            "do not boast against the branches."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "You will say then, “Branches were broken off that I might be grafted in.” Well said. Because of unbelief they were broken off, and you stand by faith.",
+          "parts": [
+            "You will say then, “Branches were broken off that I might be grafted in.” Well",
+            {
+              "style": "ITALIC",
+              "text": "said."
+            },
+            "Because of unbelief they were broken off, and you stand by faith."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Well said.",
+          "parts": [
+            "Well",
+            {
+              "style": "ITALIC",
+              "text": "said."
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "For if God did not spare the natural branches, He may not spare you either.",
+          "parts": [
+            "For if God did not spare the natural branches, He may not spare you either."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "Therefore consider the goodness and severity of God: on those who fell, severity; but toward you, goodness, a",
+          "parts": [
+            "Therefore consider the goodness and severity of God: on those who fell, severity; but toward you, goodness,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1525"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "And they also, if they do not continue in unbelief, will be grafted in, for God is able to graft them in again.",
+          "parts": [
+            "And they also, if they do not continue in unbelief, will be grafted in, for God is able to graft them in again."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "For if you were cut out of the olive tree which is wild by nature, and were grafted contrary to nature into a cultivated olive tree, how much more will these, who are",
+          "parts": [
+            "For if you were cut out of the olive tree which is wild by nature, and were grafted contrary to nature into a cultivated olive tree, how much more will these, who",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "For I do not desire, brethren, that you should be ignorant of this mystery, lest you should be wise in your own opinion, that blindness in part has happened to Israel until the fullness of the Gentiles has come in. And so all Israel will be saved, a as it is written:",
+          "parts": [
+            "For I do not desire, brethren, that you should be ignorant of this mystery, lest you should be wise in your own opinion, that blindness in part has happened to Israel until the fullness of the Gentiles has come in.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5327"
+            },
+            "And so all Israel will be saved,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1526"
+            },
+            "as it is written:"
+          ]
+        },
+        {
+          "num": 26,
+          "text": "And so all Israel will be saved, a",
+          "parts": [
+            "And so all Israel will be saved,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1527"
+            }
+          ]
+        },
+        {
+          "num": 28,
+          "text": "Concerning the gospel they are enemies for your sake, but concerning the election they are beloved for the sake of the fathers.",
+          "parts": [
+            "Concerning the gospel",
+            {
+              "style": "ITALIC",
+              "text": "they are"
+            },
+            "enemies for your sake, but concerning the election",
+            {
+              "style": "ITALIC",
+              "text": "they are"
+            },
+            "beloved for the sake of the fathers."
+          ]
+        },
+        {
+          "num": 29,
+          "text": "For the gifts and the calling of God are",
+          "parts": [
+            "For the gifts and the calling of God",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            }
+          ]
+        },
+        {
+          "num": 30,
+          "text": "For as you were once disobedient to God, yet have now obtained mercy through their disobedience,",
+          "parts": [
+            "For as you were once disobedient to God, yet have now obtained mercy through their disobedience,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5328"
+            }
+          ]
+        },
+        {
+          "num": 31,
+          "text": "even so these also have now been disobedient, that through the mercy shown you they also may obtain mercy.",
+          "parts": [
+            "even so these also have now been disobedient, that through the mercy shown you they also may obtain mercy."
+          ]
+        },
+        {
+          "num": 32,
+          "text": "For God has committed them all to disobedience, that He might have mercy on all.",
+          "parts": [
+            "For God has committed them all to disobedience, that He might have mercy on all."
+          ]
+        },
+        {
+          "num": 33,
+          "text": "Oh, the depth of the riches both of the wisdom and knowledge of God!",
+          "parts": [
+            "Oh, the depth of the riches both of the wisdom and knowledge of God!"
+          ]
+        },
+        {
+          "num": 36,
+          "text": "For of Him and through Him and to Him are all things, to whom be glory forever.",
+          "parts": [
+            "For of Him and through Him and to Him",
+            {
+              "style": "ITALIC",
+              "text": "are"
+            },
+            "all things, to whom",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            },
+            "glory forever."
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 12,
+      "verses_count": 21,
+      "verses": [
+        {
+          "num": 1,
+          "text": "I beseech you therefore, brethren, by the mercies of God, that you present your bodies a living sacrifice, holy, acceptable to God, which is your reasonable service. † And do not be conformed to this world, but be transformed by the renewing of your mind, that you may prove what is that good and acceptable and perfect will of God.",
+          "parts": [
+            "I beseech you therefore, brethren, by the mercies of God, that you present your bodies a living sacrifice, holy, acceptable to God,",
+            {
+              "style": "ITALIC",
+              "text": "which is"
+            },
+            "your reasonable service.",
+            {
+              "style": "CROSS_REF",
+              "text": "†",
+              "ref_id": "r1528"
+            },
+            "And do not be conformed to this world, but be transformed by the renewing of your mind, that you may prove what",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "that good and acceptable and perfect will of God.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5330"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For I say, through the grace given to me, to everyone who is among you, not to think of himself more highly than he ought to think, but to think soberly, as God has dealt to each one a measure of faith. For as we have many members in one body, but all the members do not have the same function, so we, being many, are one body in Christ, and individually members of one another.",
+          "parts": [
+            "For I say, through the grace given to me, to everyone who is among you, not to think",
+            {
+              "style": "ITALIC",
+              "text": "of himself"
+            },
+            "more highly than he ought to think, but to think soberly, as God has dealt to each one a measure of faith.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5331"
+            },
+            "For as we have many members in one body, but all the members do not have the same function, so we,",
+            {
+              "style": "ITALIC",
+              "text": "being"
+            },
+            "many, are one body in Christ, and individually members of one another."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "For as we have many members in one body, but all the members do not have the same function,",
+          "parts": [
+            "For as we have many members in one body, but all the members do not have the same function,"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "so we, being",
+          "parts": [
+            "so we,",
+            {
+              "style": "ITALIC",
+              "text": "being"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Having then gifts differing according to the grace that is given to us, let us use them:",
+          "parts": [
+            "Having then gifts differing according to the grace that is given to us,",
+            {
+              "style": "ITALIC",
+              "text": "let us use them:"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "or ministry, let us use it",
+          "parts": [
+            "or ministry,",
+            {
+              "style": "ITALIC",
+              "text": "let us use it"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "he who exhorts, in exhortation; he who gives, with liberality; he who leads, with diligence; he who shows mercy, with cheerfulness.",
+          "parts": [
+            "he who exhorts, in exhortation; he who gives, with liberality; he who leads, with diligence; he who shows mercy, with cheerfulness."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Let",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "Let"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Be",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "Be"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "not lagging in diligence, fervent in spirit, serving the Lord;",
+          "parts": [
+            "not lagging in diligence, fervent in spirit, serving the Lord;"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "rejoicing in hope, patient in tribulation, continuing steadfastly in prayer;",
+          "parts": [
+            "rejoicing in hope, patient in tribulation, continuing steadfastly in prayer;"
+          ]
+        },
+        {
+          "num": 13,
+          "text": "distributing to the needs of the saints, given to hospitality.",
+          "parts": [
+            "distributing to the needs of the saints, given to hospitality."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Bless those who persecute you; bless and do not curse.",
+          "parts": [
+            "Bless those who persecute you; bless and do not curse."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Rejoice with those who rejoice, and weep with those who weep.",
+          "parts": [
+            "Rejoice with those who rejoice, and weep with those who weep."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Be of the same mind toward one another.",
+          "parts": [
+            "Be of the same mind toward one another."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Repay no one evil for evil.",
+          "parts": [
+            "Repay no one evil for evil."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "If it is possible, as much as depends on you, live peaceably with all men.",
+          "parts": [
+            "If it is possible, as much as depends on you, live peaceably with all men."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Beloved, do not avenge yourselves, but rather",
+          "parts": [
+            "Beloved, do not avenge yourselves, but",
+            {
+              "style": "ITALIC",
+              "text": "rather"
+            }
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Therefore",
+          "parts": [
+            "Therefore"
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Do not be overcome by evil, but overcome evil with good.",
+          "parts": [
+            "Do not be overcome by evil, but overcome evil with good."
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 13,
+      "verses_count": 14,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Let every soul be subject to the governing authorities.",
+          "parts": [
+            "Let every soul be subject to the governing authorities."
+          ]
+        },
+        {
+          "num": 2,
+          "text": "Therefore whoever resists the authority resists the ordinance of God, and those who resist will bring judgment on themselves.",
+          "parts": [
+            "Therefore whoever resists the authority resists the ordinance of God, and those who resist will bring judgment on themselves."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For rulers are not a terror to good works, but to evil.",
+          "parts": [
+            "For rulers are not a terror to good works, but to evil."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "For he is God's minister to you for good.",
+          "parts": [
+            "For he is God's minister to you for good."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Therefore you",
+          "parts": [
+            "Therefore",
+            {
+              "style": "ITALIC",
+              "text": "you"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "For because of this you also pay taxes, for they are God's ministers attending continually to this very thing.",
+          "parts": [
+            "For because of this you also pay taxes, for they are God's ministers attending continually to this very thing."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Render therefore to all their due: taxes to whom taxes are due,",
+          "parts": [
+            "Render therefore to all their due: taxes to whom taxes",
+            {
+              "style": "ITALIC",
+              "text": "are due,"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Owe no one anything except to love one another, for he who loves another has fulfilled the law.",
+          "parts": [
+            "Owe no one anything except to love one another, for he who loves another has fulfilled the law."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For the commandments, “You shall not commit adultery,” “You shall not murder,”",
+          "parts": [
+            "For the commandments,",
+            {
+              "style": "ITALIC",
+              "text": "“You shall not commit adultery,” “You shall not murder,”"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Love does no harm to a neighbor; therefore love is",
+          "parts": [
+            "Love does no harm to a neighbor; therefore love",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            }
+          ]
+        },
+        {
+          "num": 11,
+          "text": "And do this, knowing the time, that now it is high time to awake out of sleep; for now our salvation is nearer than when we first believed. The night is far spent, the day is at hand.",
+          "parts": [
+            "And",
+            {
+              "style": "ITALIC",
+              "text": "do"
+            },
+            "this, knowing the time, that now",
+            {
+              "style": "ITALIC",
+              "text": "it is"
+            },
+            "high time to awake out of sleep; for now our salvation",
+            {
+              "style": "ITALIC",
+              "text": "is"
+            },
+            "nearer than when we",
+            {
+              "style": "ITALIC",
+              "text": "first"
+            },
+            "believed.",
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx317"
+            },
+            "The night is far spent, the day is at hand."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "The night is far spent, the day is at hand.",
+          "parts": [
+            "The night is far spent, the day is at hand."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Let us walk properly, as in the day, not in revelry and drunkenness, not in lewdness and lust, not in strife and envy.",
+          "parts": [
+            "Let us walk properly, as in the day, not in revelry and drunkenness, not in lewdness and lust, not in strife and envy."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "But put on the Lord Jesus Christ, and make no provision for the flesh, to fulfill its",
+          "parts": [
+            "But put on the Lord Jesus Christ, and make no provision for the flesh, to",
+            {
+              "style": "ITALIC",
+              "text": "fulfill its"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 14,
+      "verses_count": 23,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Receive one who is weak in the faith, but not to disputes over doubtful things. For one believes he may eat all things, but he who is weak eats only vegetables.",
+          "parts": [
+            "Receive one who is weak in the faith,",
+            {
+              "style": "ITALIC",
+              "text": "but"
+            },
+            "not to disputes over doubtful things.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5338"
+            },
+            "For one believes he may eat all things, but he who is weak eats",
+            {
+              "style": "ITALIC",
+              "text": "only"
+            },
+            "vegetables."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Let not him who eats despise him who does not eat, and let not him who does not eat judge him who eats; for God has received him.",
+          "parts": [
+            "Let not him who eats despise him who does not eat, and let not him who does not eat judge him who eats; for God has received him."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Who are you to judge another's servant?",
+          "parts": [
+            "Who are you to judge another's servant?"
+          ]
+        },
+        {
+          "num": 5,
+          "text": "One person esteems one day above another; another esteems every day alike. Let each be fully convinced in his own mind.",
+          "parts": [
+            "One person esteems",
+            {
+              "style": "ITALIC",
+              "text": "one"
+            },
+            "day above another; another esteems every day",
+            {
+              "style": "ITALIC",
+              "text": "alike."
+            },
+            "Let each be fully convinced in his own mind."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "He who observes the day, observes it",
+          "parts": [
+            "He who observes the day, observes",
+            {
+              "style": "ITALIC",
+              "text": "it"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "For none of us lives to himself, and no one dies to himself.",
+          "parts": [
+            "For none of us lives to himself, and no one dies to himself.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5339"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "For if we live, we live to the Lord; and if we die, we die to the Lord.",
+          "parts": [
+            "For if we live, we live to the Lord; and if we die, we die to the Lord."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "For to this end Christ died and rose a",
+          "parts": [
+            "For to this end Christ died and rose",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1529"
+            }
+          ]
+        },
+        {
+          "num": 10,
+          "text": "But why do you judge your brother?",
+          "parts": [
+            "But why do you judge your brother?"
+          ]
+        },
+        {
+          "num": 11,
+          "text": "For it is written:",
+          "parts": [
+            "For it is written:"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "So then each of us shall give account of himself to God.",
+          "parts": [
+            "So then each of us shall give account of himself to God."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Therefore let us not judge one another anymore, but rather resolve this, not to put a stumbling block or a cause to fall in our",
+          "parts": [
+            "Therefore let us not judge one another anymore, but rather resolve this, not to put a stumbling block or a cause to fall in",
+            {
+              "style": "ITALIC",
+              "text": "our"
+            }
+          ]
+        },
+        {
+          "num": 14,
+          "text": "I know and am convinced by the Lord Jesus that there is nothing unclean of itself; but to him who considers anything to be unclean, to him it is unclean.",
+          "parts": [
+            "I know and am convinced by the Lord Jesus that",
+            {
+              "style": "ITALIC",
+              "text": "there is"
+            },
+            "nothing unclean of itself; but to him who considers anything to be unclean, to him",
+            {
+              "style": "ITALIC",
+              "text": "it is"
+            },
+            "unclean."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Yet if your brother is grieved because of your",
+          "parts": [
+            "Yet if your brother is grieved because of",
+            {
+              "style": "ITALIC",
+              "text": "your"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Therefore do not let your good be spoken of as evil;",
+          "parts": [
+            "Therefore do not let your good be spoken of as evil;"
+          ]
+        },
+        {
+          "num": 17,
+          "text": "for the kingdom of God is not eating and drinking, but righteousness and peace and joy in the Holy Spirit.",
+          "parts": [
+            "for the kingdom of God is not eating and drinking, but righteousness and peace and joy in the Holy Spirit."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "For he who serves Christ in these things a",
+          "parts": [
+            "For he who serves Christ in these things",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1530"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "Therefore let us pursue the things which make for peace and the things by which one may edify another.",
+          "parts": [
+            "Therefore let us pursue the things",
+            {
+              "style": "ITALIC",
+              "text": "which make"
+            },
+            "for peace and the things by which one may edify another."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "Do not destroy the work of God for the sake of food.",
+          "parts": [
+            "Do not destroy the work of God for the sake of food."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "It is",
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "It is"
+            }
+          ]
+        },
+        {
+          "num": 22,
+          "text": "Do you have faith? a",
+          "parts": [
+            "Do you have faith?",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1531"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "But he who doubts is condemned if he eats, because he does",
+          "parts": [
+            "But he who doubts is condemned if he eats, because",
+            {
+              "style": "ITALIC",
+              "text": "he does"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 15,
+      "verses_count": 33,
+      "verses": [
+        {
+          "num": 1,
+          "text": "We then who are strong ought to bear with the scruples of the weak, and not to please ourselves. Let each of us please his neighbor for his good, leading to edification.",
+          "parts": [
+            "We then who are strong ought to bear with the scruples of the weak, and not to please ourselves.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5342"
+            },
+            "Let each of us please",
+            {
+              "style": "ITALIC",
+              "text": "his"
+            },
+            "neighbor for",
+            {
+              "style": "ITALIC",
+              "text": "his"
+            },
+            "good, leading to edification."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "For even Christ did not please Himself; but as it is written, “The reproaches of those who reproached You fell on Me.”",
+          "parts": [
+            "For even Christ did not please Himself; but as it is written,",
+            {
+              "style": "ITALIC",
+              "text": "“The reproaches of those who reproached You fell on Me.”"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "text": "For whatever things were written before were written for our learning, that we through the patience and comfort of the Scriptures might have hope.",
+          "parts": [
+            "For whatever things were written before were written for our learning, that we through the patience and comfort of the Scriptures might have hope.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5343"
+            }
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Now may the God of patience and comfort grant you to be like-minded toward one another, according to Christ Jesus,",
+          "parts": [
+            "Now may the God of patience and comfort grant you to be like-minded toward one another, according to Christ Jesus,"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "that you may with one mind and",
+          "parts": [
+            "that you may with one mind",
+            {
+              "style": "ITALIC",
+              "text": "and"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Therefore receive one another, just as Christ also received us, a to the glory of God.",
+          "parts": [
+            "Therefore receive one another, just as Christ also received us,",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1532"
+            },
+            "to the glory of God."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Now I say that Jesus Christ has become a servant to the circumcision for the truth of God, to confirm the promises made",
+          "parts": [
+            "Now I say that Jesus Christ has become a servant to the circumcision for the truth of God, to confirm the promises",
+            {
+              "style": "ITALIC",
+              "text": "made"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "and that the Gentiles might glorify God for His",
+          "parts": [
+            "and that the Gentiles might glorify God for",
+            {
+              "style": "ITALIC",
+              "text": "His"
+            }
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Now may the God of hope fill you with all joy and peace in believing, that you may abound in hope by the power of the Holy Spirit.",
+          "parts": [
+            "Now may the God of hope fill you with all joy and peace in believing, that you may abound in hope by the power of the Holy Spirit."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Now I myself am confident concerning you, my brethren, that you also are full of goodness, filled with all knowledge, able also to admonish one another. a Nevertheless, brethren, I have written more boldly to you on some points, as reminding you, because of the grace given to me by God, that I might be a minister of Jesus Christ to the Gentiles, ministering the gospel of God, that the offering of the Gentiles might be acceptable, sanctified by the Holy Spirit. Therefore I have reason to glory in Christ Jesus in the things which pertain to God.",
+          "parts": [
+            "Now I myself am confident concerning you, my brethren, that you also are full of goodness, filled with all knowledge, able also to admonish one another.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1533"
+            },
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5345"
+            },
+            "Nevertheless, brethren, I have written more boldly to you on",
+            {
+              "style": "ITALIC",
+              "text": "some"
+            },
+            "points, as reminding you, because of the grace given to me by God, that I might be a minister of Jesus Christ to the Gentiles, ministering the gospel of God, that the offering of the Gentiles might be acceptable, sanctified by the Holy Spirit.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5346"
+            },
+            "Therefore I have reason to glory in Christ Jesus in the things",
+            {
+              "style": "ITALIC",
+              "text": "which pertain"
+            },
+            "to God."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Nevertheless, brethren, I have written more boldly to you on some",
+          "parts": [
+            "Nevertheless, brethren, I have written more boldly to you on",
+            {
+              "style": "ITALIC",
+              "text": "some"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "that I might be a minister of Jesus Christ to the Gentiles, ministering the gospel of God, that the offering of the Gentiles might be acceptable, sanctified by the Holy Spirit.",
+          "parts": [
+            "that I might be a minister of Jesus Christ to the Gentiles, ministering the gospel of God, that the offering of the Gentiles might be acceptable, sanctified by the Holy Spirit.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5346"
+            }
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Therefore I have reason to glory in Christ Jesus in the things which pertain",
+          "parts": [
+            "Therefore I have reason to glory in Christ Jesus in the things",
+            {
+              "style": "ITALIC",
+              "text": "which pertain"
+            }
+          ]
+        },
+        {
+          "num": 18,
+          "text": "For I will not dare to speak of any of those things which Christ has not accomplished through me, in word and deed, to make the Gentiles obedient—",
+          "parts": [
+            "For I will not dare to speak of any of those things which Christ has not accomplished through me, in word and deed, to make the Gentiles obedient—",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5347"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "in mighty signs and wonders, by the power of the Spirit of God, so that from Jerusalem and round about to Illyricum I have fully preached the gospel of Christ.",
+          "parts": [
+            "in mighty signs and wonders, by the power of the Spirit of God, so that from Jerusalem and round about to Illyricum I have fully preached the gospel of Christ."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "And so I have made it my aim to preach the gospel, not where Christ was named, lest I should build on another man's foundation,",
+          "parts": [
+            "And so I have made it my aim to preach the gospel, not where Christ was named, lest I should build on another man's foundation,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5348"
+            }
+          ]
+        },
+        {
+          "num": 21,
+          "text": "but as it is written:",
+          "parts": [
+            "but as it is written:"
+          ]
+        },
+        {
+          "num": 22,
+          "text": "For this reason I also have been much hindered from coming to you.",
+          "parts": [
+            "For this reason I also have been much hindered from coming to you."
+          ]
+        },
+        {
+          "num": 23,
+          "text": "But now no longer having a place in these parts, and having a great desire these many years to come to you,",
+          "parts": [
+            "But now no longer having a place in these parts, and having a great desire these many years to come to you,"
+          ]
+        },
+        {
+          "num": 24,
+          "text": "whenever I journey to Spain, I shall come to you. a",
+          "parts": [
+            "whenever I journey to Spain, I shall come to you.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1534"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "But now I am going to Jerusalem to minister to the saints.",
+          "parts": [
+            "But now I am going to Jerusalem to minister to the saints."
+          ]
+        },
+        {
+          "num": 26,
+          "text": "For it pleased those from Macedonia and Achaia to make a certain contribution for the poor among the saints who are in Jerusalem.",
+          "parts": [
+            "For it pleased those from Macedonia and Achaia to make a certain contribution for the poor among the saints who are in Jerusalem."
+          ]
+        },
+        {
+          "num": 27,
+          "text": "It pleased them indeed, and they are their debtors.",
+          "parts": [
+            "It pleased them indeed, and they are their debtors."
+          ]
+        },
+        {
+          "num": 28,
+          "text": "Therefore, when I have performed this and have sealed to them this fruit, I shall go by way of you to Spain.",
+          "parts": [
+            "Therefore, when I have performed this and have sealed to them this fruit, I shall go by way of you to Spain."
+          ]
+        },
+        {
+          "num": 29,
+          "text": "But I know that when I come to you, I shall come in the fullness of the blessing of the gospel a",
+          "parts": [
+            "But I know that when I come to you, I shall come in the fullness of the blessing of the gospel",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1535"
+            }
+          ]
+        },
+        {
+          "num": 30,
+          "text": "Now I beg you, brethren, through the Lord Jesus Christ, and through the love of the Spirit, that you strive together with me in prayers to God for me, that I may be delivered from those in Judea who do not believe, and that my service for Jerusalem may be acceptable to the saints, that I may come to you with joy by the will of God, and may be refreshed together with you.",
+          "parts": [
+            "Now I beg you, brethren, through the Lord Jesus Christ, and through the love of the Spirit, that you strive together with me in prayers to God for me, that I may be delivered from those in Judea who do not believe, and that my service for Jerusalem may be acceptable to the saints, that I may come to you with joy by the will of God, and may be refreshed together with you."
+          ]
+        },
+        {
+          "num": 31,
+          "text": "that I may be delivered from those in Judea who do not believe, and that my service for Jerusalem may be acceptable to the saints,",
+          "parts": [
+            "that I may be delivered from those in Judea who do not believe, and that my service for Jerusalem may be acceptable to the saints,"
+          ]
+        },
+        {
+          "num": 32,
+          "text": "that I may come to you with joy by the will of God, and may be refreshed together with you.",
+          "parts": [
+            "that I may come to you with joy by the will of God, and may be refreshed together with you."
+          ]
+        },
+        {
+          "num": 33,
+          "text": "Now the God of peace be",
+          "parts": [
+            "Now the God of peace",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 16,
+      "verses_count": 27,
+      "verses": [
+        {
+          "num": 1,
+          "text": "I commend to you Phoebe our sister, who is a servant of the church in Cenchrea, that you may receive her in the Lord in a manner worthy of the saints, and assist her in whatever business she has need of you; for indeed she has been a helper of many and of myself also.",
+          "parts": [
+            "I commend to you Phoebe our sister, who is a servant of the church in Cenchrea,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5350"
+            },
+            "that you may receive her in the Lord in a manner worthy of the saints, and assist her in whatever business she has need of you; for indeed she has been a helper of many and of myself also."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "Greet Priscilla and Aquila, my fellow workers in Christ Jesus, who risked their own necks for my life, to whom not only I give thanks, but also all the churches of the Gentiles.",
+          "parts": [
+            "Greet Priscilla and Aquila, my fellow workers in Christ Jesus,",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5351"
+            },
+            "who risked their own necks for my life, to whom not only I give thanks, but also all the churches of the Gentiles."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "who risked their own necks for my life, to whom not only I give thanks, but also all the churches of the Gentiles.",
+          "parts": [
+            "who risked their own necks for my life, to whom not only I give thanks, but also all the churches of the Gentiles."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Likewise greet",
+          "parts": [
+            "Likewise",
+            {
+              "style": "ITALIC",
+              "text": "greet"
+            }
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Greet Mary, who labored much for us.",
+          "parts": [
+            "Greet Mary, who labored much for us.",
+            {
+              "style": "LITURGY_NOTE",
+              "note_id": "fx318"
+            }
+          ]
+        },
+        {
+          "num": 7,
+          "text": "Greet Andronicus and Junia, my countrymen and my fellow prisoners, who are of note among the apostles, who also were in Christ before me.",
+          "parts": [
+            "Greet Andronicus and Junia, my countrymen and my fellow prisoners, who are of note among the apostles, who also were in Christ before me.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5352"
+            }
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Greet Amplias, my beloved in the Lord.",
+          "parts": [
+            "Greet Amplias, my beloved in the Lord."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Greet Urbanus, our fellow worker in Christ, and Stachys, my beloved.",
+          "parts": [
+            "Greet Urbanus, our fellow worker in Christ, and Stachys, my beloved."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Greet Apelles, approved in Christ.",
+          "parts": [
+            "Greet Apelles, approved in Christ."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "Greet Herodion, my countryman. a",
+          "parts": [
+            "Greet Herodion, my countryman.",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1536"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Greet Tryphena and Tryphosa, who have labored in the Lord.",
+          "parts": [
+            "Greet Tryphena and Tryphosa, who have labored in the Lord."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Greet Rufus, chosen in the Lord, and his mother and mine.",
+          "parts": [
+            "Greet Rufus, chosen in the Lord, and his mother and mine."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "Greet Asyncritus, Phlegon, Hermas, Patrobas, Hermes, and the brethren who are with them.",
+          "parts": [
+            "Greet Asyncritus, Phlegon, Hermas, Patrobas, Hermes, and the brethren who are with them."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Greet Philologus and Julia, Nereus and his sister, and Olympas, and all the saints who are with them.",
+          "parts": [
+            "Greet Philologus and Julia, Nereus and his sister, and Olympas, and all the saints who are with them."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Greet one another with a holy kiss.",
+          "parts": [
+            "Greet one another with a holy kiss."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Now I urge you, brethren, note those who cause divisions and offenses, contrary to the doctrine which you learned, and avoid them. For those who are such do not serve our Lord Jesus a Christ, but their own belly, and by smooth words and flattering speech deceive the hearts of the simple.",
+          "parts": [
+            "Now I urge you, brethren, note those who cause divisions and offenses, contrary to the doctrine which you learned, and avoid them.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5353"
+            },
+            "For those who are such do not serve our Lord Jesus",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1537"
+            },
+            "Christ, but their own belly, and by smooth words and flattering speech deceive the hearts of the simple."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "For those who are such do not serve our Lord Jesus a",
+          "parts": [
+            "For those who are such do not serve our Lord Jesus",
+            {
+              "style": "CROSS_REF",
+              "text": "a",
+              "ref_id": "r1538"
+            }
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For your obedience has become known to all.",
+          "parts": [
+            "For your obedience has become known to all."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "And the God of peace will crush Satan under your feet shortly.",
+          "parts": [
+            "And the God of peace will crush Satan under your feet shortly."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Timothy, my fellow worker, and Lucius, Jason, and Sosipater, my countrymen, greet you.",
+          "parts": [
+            "Timothy, my fellow worker, and Lucius, Jason, and Sosipater, my countrymen, greet you."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "I, Tertius, who wrote this epistle, greet you in the Lord.",
+          "parts": [
+            "I, Tertius, who wrote",
+            {
+              "style": "ITALIC",
+              "text": "this"
+            },
+            "epistle, greet you in the Lord.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5354"
+            }
+          ]
+        },
+        {
+          "num": 23,
+          "text": "Gaius, my host and the host of the whole church, greets you.",
+          "parts": [
+            "Gaius, my host and",
+            {
+              "style": "ITALIC",
+              "text": "the host"
+            },
+            "of the whole church, greets you."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "The grace of our Lord Jesus Christ be",
+          "parts": [
+            "The grace of our Lord Jesus Christ",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            }
+          ]
+        },
+        {
+          "num": 25,
+          "text": "Now to Him who is able to establish you according to my gospel and the preaching of Jesus Christ, according to the revelation of the mystery kept secret since the world began but now made manifest, and by the prophetic Scriptures made known to all nations, according to the commandment of the everlasting God, for obedience to the faith— to God, alone wise, be glory through Jesus Christ forever.",
+          "parts": [
+            "Now to Him who is able to establish you according to my gospel and the preaching of Jesus Christ, according to the revelation of the mystery kept secret since the world began",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f5355"
+            },
+            "but now made manifest, and by the prophetic Scriptures made known to all nations, according to the commandment of the everlasting God, for obedience to the faith— to God, alone wise,",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            },
+            "glory through Jesus Christ forever."
+          ]
+        },
+        {
+          "num": 26,
+          "text": "but now made manifest, and by the prophetic Scriptures made known to all nations, according to the commandment of the everlasting God, for obedience to the faith—",
+          "parts": [
+            "but now made manifest, and by the prophetic Scriptures made known to all nations, according to the commandment of the everlasting God, for obedience to the faith—"
+          ]
+        },
+        {
+          "num": 27,
+          "text": "to God, alone wise, be",
+          "parts": [
+            "to God, alone wise,",
+            {
+              "style": "ITALIC",
+              "text": "be"
+            }
+          ]
+        }
+      ],
+      "headers": []
+    }
+  ],
+  "lessons": [
+    {
+      "title": "Judgment of Each Conscience",
+      "entries": [
+        {
+          "parts": [
+            "T H E B A S I S O F G O D’S",
+            {
+              "style": "LINE_BREAK",
+              "text": "\n"
+            },
+            "J U D G M E N T"
+          ]
+        },
+        {
+          "parts": [
+            {
+              "style": "BOLD",
+              "text": "E"
+            },
+            "ven as believing Christians, we must not take the outcome of God’s final judgment for granted. In every Divine Liturgy Orthodox Christians pray, “For a good defense before the dread Judgment Seat of Christ, let us pray to the Lord: Lord have mercy.” Romans 2:2–16 describes God’s judgment, showing how we can prepare ourselves for it. God’s righteous judgment will be:"
+          ]
+        },
+        {
+          "parts": [
+            "1",
+            {
+              "style": "ITALIC",
+              "text": "According to truth "
+            },
+            "( 2:2, 3 ): Nothing is hidden from God. He sees everything and knows the truth about each of us. One of mankind’s great self-deceptions is to say, “Who sees us?” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Is 29:15",
+              "ref_id": "r1539"
+            },
+            ") and think there is no judgment."
+          ]
+        },
+        {
+          "parts": [
+            "2",
+            {
+              "style": "ITALIC",
+              "text": "According to impenitent hearts "
+            },
+            "( 2:4, 5 ): An unrepentant or hard heart despises God’s goodness, treasuring up the wrath of God at the judgment. A repentant heart, on the other hand, is grateful for God’s patience and abides in Christ, practicing a lifetime of repentance, which produces confidence before Him at the judgment (",
+            {
+              "style": "CROSS_REF",
+              "text": "1Jn 2:28",
+              "ref_id": "r1540"
+            },
+            ")."
+          ]
+        },
+        {
+          "parts": [
+            "3",
+            {
+              "style": "ITALIC",
+              "text": "According to our deeds "
+            },
+            "( 2:6–15 ): The “doing good” referred to in 2:7 is not an attempt to gain merit with God. Rather, it is the unity of intentions with actions, faith with works. Even unbelievers are rewarded for good works, apart from spiritual understanding ( 2:14, 15 ). But note the following:"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "The Jews’ Unfaithfulness",
+      "entries": [
+        {
+          "parts": [
+            "T H E L A W"
+          ]
+        },
+        {
+          "parts": [
+            {
+              "style": "BOLD",
+              "text": "O"
+            },
+            "ne key to understanding Romans is to distinguish properly between the several ways Paul uses the word “law” in this epistle."
+          ]
+        },
+        {
+          "parts": [
+            "1",
+            {
+              "style": "ITALIC",
+              "text": "The Mosaic Law "
+            },
+            "(",
+            {
+              "style": "CROSS_REF",
+              "text": "2:12, 13",
+              "ref_id": "r1541"
+            },
+            ") was written by God on tablets of stone (",
+            {
+              "style": "CROSS_REF",
+              "text": "2Co 3:3, 7",
+              "ref_id": "r1542"
+            },
+            ") and given to the Jews through Moses. This Law reveals God’s righteousness to prepare men for the Messiah and for God’s grace. When Paul speaks of “the law,” he is most often referring to the Mosaic Law."
+          ]
+        },
+        {
+          "parts": [
+            "The Law is good, but cannot be kept. It is revelation from God, but not an end in itself. The purpose of the Mosaic Law is (a) to reveal the difference between good and evil; (b) to make the world accountable to God ( 3:19 ); (c) to manifest sin ( 3:20 ); and (d) to be a schoolmaster to lead us to Christ (",
+            {
+              "style": "CROSS_REF",
+              "text": "Gal 3:24",
+              "ref_id": "r1543"
+            },
+            "). Though it is not opposed to the grace of God, the Law cannot save us or make us righteous."
+          ]
+        },
+        {
+          "parts": [
+            "2",
+            {
+              "style": "ITALIC",
+              "text": "The natural law "
+            },
+            "( 2:14, 15 ) has been “written” by God in the heart of every human who has ever lived as the voice of conscience. It is a reliable guide to God’s righteousness for those who are pure in heart; but it can be dulled or obscured completely by habitual sin."
+          ]
+        },
+        {
+          "parts": [
+            "3",
+            {
+              "style": "ITALIC",
+              "text": "The law of works "
+            },
+            "( 3:27 ) is our attempt to establish righteousness before God on the basis of keeping the natural law and/or the Mosaic Law. This law reveals human weakness and sin."
+          ]
+        },
+        {
+          "parts": [
+            "4",
+            {
+              "style": "ITALIC",
+              "text": "The law of faith "
+            },
+            "( 3:27 ) is the synergy, the cooperation, of our faithfulness with God’s. It alone is the means by which we attain the righteousness of God. God has been revealing His righteousness by this law little by little since the time of creation, but now has revealed it fully in Christ. As both the natural law and the Mosaic Law bear witness to this law of faith, so those who become righteous by grace through faith fulfill in Christ both the natural and the Mosaic Law."
+          ]
+        },
+        {
+          "parts": [
+            "5",
+            {
+              "style": "ITALIC",
+              "text": "The law of sin "
+            },
+            "( 7:25 ; 8:2 ) is the power of the sinful passions in our mortal humanity. Passions—desires for such things as food, sex, praise, possessions—are natural; their sinful overindulgence is not. Carnal (physical) passions are especially strong. They aid the unnatural domination of the body over the soul. Sometimes carnal passions overpower the will. The law of sin coupled with the Mosaic Law breeds intense warfare between sin and righteousness. Only God’s grace can bring victory for righteousness."
+          ]
+        },
+        {
+          "parts": [
+            "6",
+            {
+              "style": "ITALIC",
+              "text": "The law of the Spirit "
+            },
+            "( 8:2 ) is also called “the law of Christ” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Gal 6:2",
+              "ref_id": "r1544"
+            },
+            ") and “the law of liberty” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Jam 1:25",
+              "ref_id": "r1545"
+            },
+            ";",
+            {
+              "style": "CROSS_REF",
+              "text": "2:12",
+              "ref_id": "r1546"
+            },
+            "). It is the power and life of the Holy Spirit active in those who by faith in Christ live out their baptism and chrismation to the fullest possible degree. This makes the righteousness of God gained by faith real in one’s life. Coupled with the law of faith, the law of the Spirit defeats the law of sin and fulfills the natural and Mosaic Law. It orients one’s innermost being toward God and restores the power of the spirit over the flesh, the soul over the body."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Righteousness as a Living Reality",
+      "entries": [
+        {
+          "parts": [
+            "J U S T I F I C A T I O N B Y F A I T H"
+          ]
+        },
+        {
+          "parts": [
+            {
+              "style": "BOLD",
+              "text": "F"
+            },
+            "or most of church history, salvation was seen as comprehending all of life: Christians believed in Christ, were baptized, and were nurtured in their salvation in the Church. Key doctrines of the faith centered around the Holy Trinity, the Incarnation of the Son of God, the atonement."
+          ]
+        },
+        {
+          "parts": [
+            "In Western Europe during the sixteenth century and before, however, justifiable concern arose among the Reformers over a prevailing understanding that salvation depended on human works of merit, and not on the grace and mercy of God. Their rediscovery of Romans 5 lead to the slogan",
+            {
+              "style": "ITALIC",
+              "text": "sola fides"
+            },
+            ": justification by",
+            {
+              "style": "ITALIC",
+              "text": "faith alone"
+            },
+            "."
+          ]
+        },
+        {
+          "parts": [
+            "This Reformation debate in the West raised the question for the Orthodox East: Why this new polarization of faith and works? It had been settled since the apostolic era that salvation was granted by the mercy of God to righteous men and women. Those baptized into Christ were called to believe in Him",
+            {
+              "style": "ITALIC",
+              "text": "and "
+            },
+            "do good works. An opposition of faith",
+            {
+              "style": "ITALIC",
+              "text": "versus "
+            },
+            "works was unprecedented in Orthodox thought."
+          ]
+        },
+        {
+          "parts": [
+            "The Orthodox understanding of justification differs from the Protestant in several ways."
+          ]
+        },
+        {
+          "parts": [
+            "1",
+            {
+              "style": "ITALIC",
+              "text": "Justification and the new covenant"
+            },
+            ". When Orthodox Christians approach the doctrine of salvation, the discussion centers around the new covenant. Justification—being or becoming righteous—by faith in God is part of being brought into a covenant relationship with Him. Whereas Israel was under the old covenant, in which salvation came through faith as revealed in the law, the Church is under the new covenant. Salvation comes through faith in Christ, who fulfills the law. We receive the gift of the Holy Spirit, who dwells in us, leading us to the knowledge of God the Father. Rather than justification as a legal acquittal before God, Orthodox believers see justification by faith as a covenant relationship with Him, centered in union with Christ ( Rom 6:1–6 )."
+          ]
+        },
+        {
+          "parts": [
+            "2",
+            {
+              "style": "ITALIC",
+              "text": "Justification and God’s mercy"
+            },
+            ". Orthodoxy emphasizes it is first God’s mercy—not our faith—that saves us. “Therefore, having been justified by faith, we have peace with God through our Lord Jesus Christ, through whom also we have access by faith into this grace in which we stand, and rejoice in hope of the glory of God” ( Rom 5:1, 2 ). It is God who initiates or makes the new covenant with us."
+          ]
+        },
+        {
+          "parts": [
+            "3",
+            {
+              "style": "ITALIC",
+              "text": "Justification by faith is dynamic, not static"
+            },
+            ". For Orthodox Christians, faith is living, dynamic, continuous—never static or merely point-in-time. Faith is not something a Christian exercises only at one critical moment, expecting it to cover all the rest of his life. True faith is not just a decision, it’s a way of life. Thus, the Orthodox Christian sees salvation in at least three aspects: (a) I have been saved, being joined to Christ in Holy Baptism; (b) I am being saved, growing in Christ through the sacramental life of the Church; and (c) I will be saved, by the mercy of God at the Last Judgment."
+          ]
+        },
+        {
+          "parts": [
+            "Justification by faith, though not the major New Testament doctrine for Orthodox as it is for Protestants, poses no problem. But justification by faith",
+            {
+              "style": "ITALIC",
+              "text": "alone "
+            },
+            "brings up an objection. It contradicts Scripture, which says, “You see then that a man is justified by works, and not by faith only” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Jam 2:24",
+              "ref_id": "r1547"
+            },
+            "). We are “justified by faith apart from the deeds of the law” ( Rom 3:28 ), but nowhere does the Bible say we are justified by faith “alone.” On the contrary, “faith by itself, if it does not have works, is dead” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Jam 2:17",
+              "ref_id": "r1548"
+            },
+            ")."
+          ]
+        },
+        {
+          "parts": [
+            "As Christians we are no longer under the demands of the Old Testament law (",
+            {
+              "style": "CROSS_REF",
+              "text": "Rom 3:20",
+              "ref_id": "r1549"
+            },
+            "), for Christ has fulfilled the law (",
+            {
+              "style": "CROSS_REF",
+              "text": "Gal 2:21",
+              "ref_id": "r1550"
+            },
+            ";",
+            {
+              "style": "CROSS_REF",
+              "text": "3:5, 24",
+              "ref_id": "r1551"
+            },
+            "). By God’s mercy, we are brought into a new covenant relationship with Him. We who believe are granted entrance into His Kingdom by His grace. Through His mercy, we are justified by faith and empowered by God for good works or deeds of righteousness that bring glory to Him."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Baptism: Dead to Sin, Alive in Christ",
+      "entries": [
+        {
+          "parts": [
+            "H O L Y B A P T I S M"
+          ]
+        },
+        {
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "What is baptism? "
+            },
+            "Simply put, baptism is our death, burial, and resurrection in union with Jesus Christ. It is a rite of passage, given by Christ to the Church as an entrance into the Kingdom of God and eternal life."
+          ]
+        },
+        {
+          "parts": [
+            "The apostle Paul describes the promise of God in this “mystery,” as most Orthodox call it, most succinctly when he writes, “Therefore we were buried with Him through baptism into death, that just as Christ was raised from the dead by the glory of the Father, even so we also should walk in newness of life” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Rom 6:4",
+              "ref_id": "r1552"
+            },
+            "). To baptize (Gr.",
+            {
+              "style": "ITALIC",
+              "text": "baptizo"
+            },
+            ") literally means “to immerse, to put into.” Historically, the Orthodox Church has baptized by triple immersion, “in the name of the Father and of the Son and of the Holy Spirit” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Mt 28:19",
+              "ref_id": "r1553"
+            },
+            ")."
+          ]
+        },
+        {
+          "parts": [
+            "In the Old Testament, baptism was pictured by the passage of God’s people with Moses through the Red Sea (",
+            {
+              "style": "CROSS_REF",
+              "text": "1Co 10:1, 2",
+              "ref_id": "r1554"
+            },
+            "). John the Baptist, the last prophet of the old covenant, baptized in water for repentance (",
+            {
+              "style": "CROSS_REF",
+              "text": "Mk 1:4",
+              "ref_id": "r1555"
+            },
+            ";",
+            {
+              "style": "CROSS_REF",
+              "text": "Acts 19:4",
+              "ref_id": "r1556"
+            },
+            "). Jesus received John’s baptism, thereby transforming the water and baptism itself. In the new covenant, baptism is the means by which we enter the Kingdom of God (",
+            {
+              "style": "CROSS_REF",
+              "text": "Jn 3:5",
+              "ref_id": "r1557"
+            },
+            "), are joined to Christ (",
+            {
+              "style": "CROSS_REF",
+              "text": "Rom. 6:3",
+              "ref_id": "r1558"
+            },
+            "), and are granted the remission of our sins and the gift of the Holy Spirit (",
+            {
+              "style": "CROSS_REF",
+              "text": "Acts 2:38",
+              "ref_id": "r1559"
+            },
+            ")."
+          ]
+        },
+        {
+          "parts": [
+            {
+              "style": "ITALIC",
+              "text": "What results from baptism? "
+            },
+            "From the start, the Church has understood baptism as:"
+          ]
+        },
+        {
+          "parts": [
+            "1",
+            {
+              "style": "ITALIC",
+              "text": "A first and second dying"
+            },
+            ". Our first dying with Christ in baptism was our death with Him on the Cross. In the fourth century, St. Cyril of Jerusalem instructed his new converts, “You were led by the hand to the holy pool of divine baptism . . . and each of you was asked if he believed in the Name of the Father, and of the Son, and of the Holy Ghost. And you made that saving confession, you descended into the water and came up again three times. In the very same moment you died and were born.”"
+          ]
+        },
+        {
+          "parts": [
+            "The second death of baptism is continual—dying to sin daily as we walk in newness of life. St. Paul writes to the Colossians concerning baptism (",
+            {
+              "style": "CROSS_REF",
+              "text": "Col 2:12",
+              "ref_id": "r1560"
+            },
+            ") and concludes by saying, “Therefore put to death your members which are on the earth: fornication, uncleanness, passion, evil desire, and covetousness, which is idolatry” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Col 3:5",
+              "ref_id": "r1561"
+            },
+            ")."
+          ]
+        },
+        {
+          "parts": [
+            "2",
+            {
+              "style": "ITALIC",
+              "text": "The resurrection of righteousness"
+            },
+            ". This is our life in Christ, our new birth and entrance into God’s Kingdom (",
+            {
+              "style": "CROSS_REF",
+              "text": "Jn 3:3",
+              "ref_id": "r1562"
+            },
+            "), our “newness of life” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Rom 6:4",
+              "ref_id": "r1563"
+            },
+            "). It is our being joined to Christ in His glorified humanity and indwelt by God Himself (",
+            {
+              "style": "CROSS_REF",
+              "text": "Jn 14:23",
+              "ref_id": "r1564"
+            },
+            "). Our relationship with God is not something static, a legal fiction given to us by a Divine Judge. Rather, this is a dynamic and real life in Christ, holding the promise of everlasting life. Our resurrection to new life now forms a prelude to the resurrection of our body at Christ’s second coming."
+          ]
+        },
+        {
+          "parts": [
+            "3",
+            {
+              "style": "ITALIC",
+              "text": "An intimate and continual communion with God"
+            },
+            ". We are raised to new life for a purpose: union and communion with God. In this sense, baptism is the beginning of eternal life. For this reason, Peter writes that baptism now saves us (",
+            {
+              "style": "CROSS_REF",
+              "text": "1Pt 3:21",
+              "ref_id": "r1565"
+            },
+            ")—it is not the mere removal of dirt from our bodies, but provides us with “a good conscience toward God.”"
+          ]
+        },
+        {
+          "parts": [
+            "Because of these promises, the priest prays for the newly baptized, thanking God, “who have given us, unworthy though we be, blessed purification through holy water, and divine sanctification through life-giving chrismation, and who now also have been pleased to bring new life to Your servant newly illuminated by water and the Spirit, and granted remission of sins—voluntary and involuntary.”"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Unbelief of the Jews Despite God's Blessings",
+      "entries": [
+        {
+          "parts": [
+            "I S G O D F A I T H F U L T O",
+            {
+              "style": "LINE_BREAK",
+              "text": "\n"
+            },
+            "I S R A E L?"
+          ]
+        },
+        {
+          "parts": [
+            {
+              "style": "BOLD",
+              "text": "I"
+            },
+            "n the early chapters of Romans ( 1—8 ), Paul expounds the gospel of God’s righteousness for the salvation of all who believe in Christ, both Jews and Gentiles. In the middle chapters of the epistle ( 9—11 ), he grapples with the perplexing theme of the Jews’ unbelief in their own promised Messiah. This matter not only causes Paul great anguish, but also raises questions about God’s faithfulness to the Jewish people."
+          ]
+        },
+        {
+          "parts": [
+            "An accusation was circulating in the first century that God had not kept His promises to Israel—that He had unjustly abandoned His chosen people in favor of idol-worshipping Gentiles. Although many Jews believed in Christ, the majority of the Jewish people adhered to their old leaders and traditions. Meanwhile, increasing numbers of Gentiles were becoming Christians."
+          ]
+        },
+        {
+          "parts": [
+            "How was one to view these developments? What was God’s plan for Jews and Gentiles in this decisive period of the history of salvation? Why were most Jews unresponsive or opposed to the gospel while Gentiles were becoming the majority in the young Church?"
+          ]
+        },
+        {
+          "parts": [
+            "Paul’s letter to the Romans indicates how important such questions were to Christians in the sixth decade of the first century. Has God been fair to Israel? Paul’s conclusion is yes: He has been faithful to Israel, and through them to the Gentiles. God’s unchanging faithfulness is seen in several ways."
+          ]
+        },
+        {
+          "parts": [
+            "1",
+            {
+              "style": "ITALIC",
+              "text": "Through Paul "
+            },
+            "(",
+            {
+              "style": "CROSS_REF",
+              "text": "Rom 9:1–3",
+              "ref_id": "r1566"
+            },
+            "). God miraculously saved the Jewish zealot Saul (",
+            {
+              "style": "CROSS_REF",
+              "text": "Acts 9:1–22",
+              "ref_id": "r1567"
+            },
+            "), who later, as Paul the Apostle, confesses, “I am indeed a Jew” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Acts 22:3",
+              "ref_id": "r1568"
+            },
+            "). The faithfulness of God to Israel and to the Gentiles is witnessed “in the Holy Spirit” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Rom 9:1",
+              "ref_id": "r1569"
+            },
+            ") through Paul, who is even willing to be “accursed from Christ” ( 9:3 ) if by that Israel could be saved."
+          ]
+        },
+        {
+          "parts": [
+            "2",
+            {
+              "style": "ITALIC",
+              "text": "Through Providence "
+            },
+            "(",
+            {
+              "style": "CROSS_REF",
+              "text": "Rom 9:4, 5",
+              "ref_id": "r1570"
+            },
+            "). God the Father shows His sovereign care for both Israel and the Gentiles through bestowing on them His adoption, glory, covenants, law, service (Gr.",
+            {
+              "style": "ITALIC",
+              "text": "latreia, "
+            },
+            "a reference to proper worship) and promises. The gospel itself came to “the Jew first” (",
+            {
+              "style": "CROSS_REF",
+              "text": "Rom 1:16",
+              "ref_id": "r1571"
+            },
+            ") and then to the Gentile."
+          ]
+        },
+        {
+          "parts": [
+            "3",
+            {
+              "style": "ITALIC",
+              "text": "Through the patriarchs "
+            },
+            "(",
+            {
+              "style": "CROSS_REF",
+              "text": "Rom 9:6–13",
+              "ref_id": "r1572"
+            },
+            "). God has been faithful to Israel and thus to the Gentiles through His servants Abraham (v. 7 ), Isaac (v. 10 ), and Jacob (v. 13 ). As Isaac’s birth came by the promise of God (vv. 6–9 ), so the new birth comes to us by His promise. For just as it was possible to be in the nation of Israel but not truly a child of God, so being born into a Christian home, church, and culture does not",
+            {
+              "style": "ITALIC",
+              "text": "de facto "
+            },
+            "guarantee our faithfulness. We must, like Isaac, be born of God’s promise. For the Christian this new birth comes from the watery womb of baptism, with the injunction that we grow to serve the Lord with all our heart, mind, and strength."
+          ]
+        },
+        {
+          "parts": [
+            "4",
+            {
+              "style": "ITALIC",
+              "text": "Through the prophets "
+            },
+            "(",
+            {
+              "style": "CROSS_REF",
+              "text": "Rom 9:14–29",
+              "ref_id": "r1573"
+            },
+            "). Beginning with Moses (v. 15 ) and including Hosea (vv. 25, 26 ) and Isaiah (vv. 27–29 ), the prophets reveal God’s faithfulness in His sovereign mercy and election of His faithful—Jew and Gentile alike. The “potter” has “power over the clay” (v. 21 ) “that He might make known the riches of His glory on the vessels of mercy” (v. 23 )."
+          ]
+        },
+        {
+          "parts": [
+            "We therefore conclude that God is faithful to Israel as He is to the Gentiles. But we also see that to benefit from His faithfulness to us, we must be faithful to Him."
+          ]
+        }
+      ]
+    }
+  ]
+}

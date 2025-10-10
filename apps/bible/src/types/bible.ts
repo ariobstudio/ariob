@@ -4,6 +4,10 @@
 export type VersePart =
   | string                                    // Plain text (90% of cases)
   | { italic: string }                        // Italic text
+  | { oblique: string }                       // Oblique text (prophecies/quotes)
+  | { divine_name: string }                   // LORD in Old Testament
+  | { small_caps: string }                    // JESUS in New Testament
+  | { line_break: true }                      // Line break
   | { text: string; cross_ref: string }       // Cross reference
   | { footnote: string }                      // Footnote marker
   | { liturgy: string };                      // Liturgy note marker

@@ -1,0 +1,699 @@
+{
+  "en_name": "Ecclesiastes",
+  "local_name": "Ecclesiastes",
+  "abr": "ecc",
+  "ch_count": 11,
+  "chapters": [
+    {
+      "chapter_num": 1,
+      "verses_count": 17,
+      "verses": [
+        {
+          "num": 1,
+          "text": "The words of the Preacher, the son of David, king of Israel in Jerusalem.",
+          "parts": [
+            "The words of the Preacher, the son of David, king of Israel in Jerusalem.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f2535"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "I, the Preacher, was king over Israel in Jerusalem. I gave my heart to seek out and to prepare myself in wisdom concerning all the things done under heaven; for God has given painful distraction to the sons of men to be occupied therewith.",
+          "parts": [
+            "I, the Preacher, was king over Israel in Jerusalem.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f2539"
+            },
+            "I gave my heart to seek out and to prepare myself in wisdom concerning all the things done under heaven; for God has given painful distraction to the sons of men to be occupied therewith."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "I gave my heart to seek out and to prepare myself in wisdom concerning all the things done under heaven; for God has given painful distraction to the sons of men to be occupied therewith.",
+          "parts": [
+            "I gave my heart to seek out and to prepare myself in wisdom concerning all the things done under heaven; for God has given painful distraction to the sons of men to be occupied therewith."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "I beheld all the works done under the sun, and behold, all is vanity and is the choice of one's spirit.",
+          "parts": [
+            "I beheld all the works done under the sun, and behold, all is vanity and is the choice of one's spirit.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f2540"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "I spoke in my heart, saying, “Behold, I have become great, and have acquired wisdom beyond all before me in Jerusalem; and my heart has experienced much wisdom and knowledge.” I gave my heart to know wisdom and knowledge, to learn proverbs and understanding.",
+          "parts": [
+            "I spoke in my heart, saying, “Behold, I have become great, and have acquired wisdom beyond all before me in Jerusalem; and my heart has experienced much wisdom and knowledge.” I gave my heart to know wisdom and knowledge, to learn proverbs and understanding."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "I gave my heart to know wisdom and knowledge, to learn proverbs and understanding.",
+          "parts": [
+            "I gave my heart to know wisdom and knowledge, to learn proverbs and understanding."
+          ]
+        }
+      ],
+      "headers": [
+        "The Vanity of Life",
+        "Futility of Man's Wisdom",
+        "The Vanity of Merriment"
+      ]
+    },
+    {
+      "chapter_num": 2,
+      "verses_count": 26,
+      "verses": [
+        {
+          "num": 1,
+          "text": "I said in my heart, “Come now, I will test you with merriment and see if this is good; and behold, this, too, is vanity.” I said concerning laughter, “This is madness,” and concerning merriment, “What does this accomplish?” I searched in my heart that I might excite my flesh as with wine.",
+          "parts": [
+            "I said in my heart, “Come now, I will test you with merriment and see if this is good; and behold, this, too, is vanity.”",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f2543"
+            },
+            "I said concerning laughter, “This is madness,” and concerning merriment, “What does this accomplish?” I searched in my heart that I might excite my flesh as with wine."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "I made my works great; I built myself houses and planted vineyards for myself.",
+          "parts": [
+            "I made my works great; I built myself houses and planted vineyards for myself."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "I made myself gardens and parks and planted all kinds of fruit trees in them.",
+          "parts": [
+            "I made myself gardens and parks and planted all kinds of fruit trees in them."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "I made pools of water for myself from which to water growing trees.",
+          "parts": [
+            "I made pools of water for myself from which to water growing trees."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "I acquired male and female servants, and servants were born in my house; and I had abundant possessions of herds and flocks, more than all before me in Jerusalem.",
+          "parts": [
+            "I acquired male and female servants, and servants were born in my house; and I had abundant possessions of herds and flocks, more than all before me in Jerusalem."
+          ]
+        },
+        {
+          "num": 8,
+          "text": "I also gathered silver and gold for myself and the abundant treasures of kings and countries.",
+          "parts": [
+            "I also gathered silver and gold for myself and the abundant treasures of kings and countries."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "So I became great and advanced beyond all before me in Jerusalem; my wisdom established me.",
+          "parts": [
+            "So I became great and advanced beyond all before me in Jerusalem; my wisdom established me."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Thus I have hated life, because the work done under the sun was evil before me; for all is vanity and is the choice of one's spirit.",
+          "parts": [
+            "Thus I have hated life, because the work done under the sun was evil before me; for all is vanity and is the choice of one's spirit."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "Then I hated all my labor in which I toiled under the sun, for I must leave it to the man who comes after me.",
+          "parts": [
+            "Then I hated all my labor in which I toiled under the sun, for I must leave it to the man who comes after me."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For who knows whether he shall be a wise man or a senseless man?",
+          "parts": [
+            "For who knows whether he shall be a wise man or a senseless man?"
+          ]
+        },
+        {
+          "num": 20,
+          "text": "So I turned my heart and despaired of all the labor wherein I toiled under the sun.",
+          "parts": [
+            "So I turned my heart and despaired of all the labor wherein I toiled under the sun."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "For there is a man whose labor is with wisdom, knowledge, and courage, yet this man shall give his portion to one who has not labored therein.",
+          "parts": [
+            "For there is a man whose labor is with wisdom, knowledge, and courage, yet this man shall give his portion to one who has not labored therein."
+          ]
+        },
+        {
+          "num": 22,
+          "text": "For what does a man have for all his labor and his purpose of heart wherein he labors under the sun?",
+          "parts": [
+            "For what does a man have for all his labor and his purpose of heart wherein he labors under the sun?"
+          ]
+        },
+        {
+          "num": 23,
+          "text": "For all his days are sorrowful, and the distraction of life is his, for even in the night his heart takes no rest.",
+          "parts": [
+            "For all his days are sorrowful, and the distraction of life is his, for even in the night his heart takes no rest."
+          ]
+        },
+        {
+          "num": 24,
+          "text": "There is nothing better for a man than that he should eat and drink and that his soul should enjoy good in his labor.",
+          "parts": [
+            "There is nothing better for a man than that he should eat and drink and that his soul should enjoy good in his labor."
+          ]
+        },
+        {
+          "num": 25,
+          "text": "For who will eat or who will drink without Him?",
+          "parts": [
+            "For who will eat or who will drink without Him?"
+          ]
+        },
+        {
+          "num": 26,
+          "text": "And He gives wisdom, knowledge, and gladness to a man who is good in His sight.",
+          "parts": [
+            "And He gives wisdom, knowledge, and gladness to a man who is good in His sight."
+          ]
+        }
+      ],
+      "headers": [
+        "Wisdom Excels Foolishness",
+        "A Time for Everything"
+      ]
+    },
+    {
+      "chapter_num": 3,
+      "verses_count": 22,
+      "verses": [
+        {
+          "num": 1,
+          "text": "To everything there is a season, and a time for every matter under heaven:",
+          "parts": [
+            "To everything there is a season, and a time for every matter under heaven:",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f2547"
+            }
+          ]
+        },
+        {
+          "num": 9,
+          "text": "What profit has the worker from all his labors?",
+          "parts": [
+            "What profit has the worker from all his labors?"
+          ]
+        },
+        {
+          "num": 10,
+          "text": "I have seen altogether the tasks which God has given to the sons of men to be engaged in.",
+          "parts": [
+            "I have seen altogether the tasks which God has given to the sons of men to be engaged in."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "He made everything beautiful in its time, and He indeed put eternity in their hearts in such a way that man may not find out the work God made from the beginning to the end.",
+          "parts": [
+            "He made everything beautiful in its time, and He indeed put eternity in their hearts in such a way that man may not find out the work God made from the beginning to the end."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "I know there is nothing better for them than to rejoice and do good in their lives.",
+          "parts": [
+            "I know there is nothing better for them than to rejoice and do good in their lives."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Indeed, every man should eat and drink and experience the good in all his labor—this is God's gift to him.",
+          "parts": [
+            "Indeed, every man should eat and drink and experience the good in all his labor—this is God's gift to him."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "I said in my heart, “Concerning the speech of the sons of men, God will judge them so as to show them that indeed, they are themselves like animals.” For what happens to the sons of men also happens to animals: one thing befalls them; as is the death of the one, so also is the death of the other, and there is one breath to all.",
+          "parts": [
+            "I said in my heart, “Concerning the speech of the sons of men, God will judge them so as to show them that indeed, they are themselves like animals.” For what happens to the sons of men also happens to animals: one thing befalls them; as is the death of the one, so also is the death of the other, and there is one breath to all."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For what happens to the sons of men also happens to animals: one thing befalls them; as is the death of the one, so also is the death of the other, and there is one breath to all.",
+          "parts": [
+            "For what happens to the sons of men also happens to animals: one thing befalls them; as is the death of the one, so also is the death of the other, and there is one breath to all."
+          ]
+        },
+        {
+          "num": 20,
+          "text": "All go to one place: all are from the dust, and all return to the dust.",
+          "parts": [
+            "All go to one place: all are from the dust, and all return to the dust."
+          ]
+        },
+        {
+          "num": 21,
+          "text": "Who knows the spirit of the sons of men, whether it goes upward, and the spirit of the animal, whether it goes downward to the earth?",
+          "parts": [
+            "Who knows the spirit of the sons of men, whether it goes upward, and the spirit of the animal, whether it goes downward to the earth?"
+          ]
+        },
+        {
+          "num": 22,
+          "text": "So I saw that there was no good except that a man should rejoice in his works; for that is his portion.",
+          "parts": [
+            "So I saw that there was no good except that a man should rejoice in his works; for that is his portion."
+          ]
+        }
+      ],
+      "headers": [
+        "The Gifts of God",
+        "God Judges All",
+        "Those Oppressed"
+      ]
+    },
+    {
+      "chapter_num": 4,
+      "verses_count": 17,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Then I returned and saw all the oppressions done under the sun.",
+          "parts": [
+            "Then I returned and saw all the oppressions done under the sun."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "Again I saw all the labor and all the courage of the worker, that this is the zeal of a man because of his companion.",
+          "parts": [
+            "Again I saw all the labor and all the courage of the worker, that this is the zeal of a man because of his companion."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Walk carefully when you go to the house of God.",
+          "parts": [
+            "Walk carefully when you go to the house of God."
+          ]
+        }
+      ],
+      "headers": [
+        "The Treasure of Friendship",
+        "An Unlikely King",
+        "Draw Near to God",
+        "The Vanity of Riches"
+      ]
+    },
+    {
+      "chapter_num": 5,
+      "verses_count": 19,
+      "verses": [
+        {
+          "num": 5,
+          "text": "Do not let your mouth cause your flesh to sin, and do not say in the presence of God, “It was a mistake.” Why should God be angry at your voice, and destroy the work of your hands?",
+          "parts": [
+            "Do not let your mouth cause your flesh to sin, and do not say in the presence of God, “It was a mistake.” Why should God be angry at your voice, and destroy the work of your hands?"
+          ]
+        },
+        {
+          "num": 6,
+          "text": "For in a multitude of dreams there are vanities and many words, but you should fear God.",
+          "parts": [
+            "For in a multitude of dreams there are vanities and many words, but you should fear God."
+          ]
+        },
+        {
+          "num": 7,
+          "text": "If you see the oppression of the poor and the violation of judgment and righteousness in the land, do not marvel at the matter; for there is a high official to watch over a high official, and higher ones over them!",
+          "parts": [
+            "If you see the oppression of the poor and the violation of judgment and righteousness in the land, do not marvel at the matter; for there is a high official to watch over a high official, and higher ones over them!"
+          ]
+        },
+        {
+          "num": 8,
+          "text": "Moreover, the abundance of the earth is for all: even a king depends on work in the field.",
+          "parts": [
+            "Moreover, the abundance of the earth is for all: even a king depends on work in the field."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Behold, I have seen good: It is a fine thing for a man to experience goodness in all his labor in which he toils all the days of his life that God has given him; for it is his portion.",
+          "parts": [
+            "Behold, I have seen good: It is a fine thing for a man to experience goodness in all his labor in which he toils all the days of his life that God has given him; for it is his portion."
+          ]
+        },
+        {
+          "num": 18,
+          "text": "As for every man to whom God has given wealth, possessions, and authority—to eat from it, to receive his portion, and to rejoice in his labor—this is the gift of God.",
+          "parts": [
+            "As for every man to whom God has given wealth, possessions, and authority—to eat from it, to receive his portion, and to rejoice in his labor—this is the gift of God."
+          ]
+        },
+        {
+          "num": 19,
+          "text": "For he will not remember the many days of his life, because God distracted him in the merriment of his heart.",
+          "parts": [
+            "For he will not remember the many days of his life, because God distracted him in the merriment of his heart."
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 6,
+      "verses_count": 12,
+      "verses": [
+        {
+          "num": 1,
+          "text": "There is an evil I have seen under the sun, and it is abundant among men: A man to whom God shall give wealth, possessions, and glory, so he lacks nothing for his life from all the things he shall desire; yet God does not give him power to eat of it, but a stranger consumes it.",
+          "parts": [
+            "There is an evil I have seen under the sun, and it is abundant among men:",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f2556"
+            },
+            "A man to whom God shall give wealth, possessions, and glory, so he lacks nothing for his life from all the things he shall desire; yet God does not give him power to eat of it, but a stranger consumes it."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "If a man begets a hundred children, and he shall live many years—however many the days of his years shall be—yet his soul is not to be filled with goodness, and he also has no burial.",
+          "parts": [
+            "If a man begets a hundred children, and he shall live many years—however many the days of his years shall be—yet his soul is not to be filled with goodness, and he also has no burial."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "for it came in futility and departs in darkness; and its name shall be covered with darkness.",
+          "parts": [
+            "for it came in futility and departs in darkness; and its name shall be covered with darkness."
+          ]
+        },
+        {
+          "num": 5,
+          "text": "Though it has not seen the sun or known anything, it has more rest than that man.",
+          "parts": [
+            "Though it has not seen the sun or known anything, it has more rest than that man."
+          ]
+        },
+        {
+          "num": 6,
+          "text": "Even if he lived a thousand years twice, but has not seen goodness, do not all go to one place?",
+          "parts": [
+            "Even if he lived a thousand years twice, but has not seen goodness, do not all go to one place?"
+          ]
+        },
+        {
+          "num": 12,
+          "text": "For who knows what is good for man in his life?",
+          "parts": [
+            "For who knows what is good for man in his life?"
+          ]
+        }
+      ],
+      "headers": [
+        "The Value of Wisdom"
+      ]
+    },
+    {
+      "chapter_num": 7,
+      "verses_count": 1,
+      "verses": [
+        {
+          "num": 1,
+          "text": "A good name is better than good olive oil,",
+          "parts": [
+            "A good name is better than good olive oil,"
+          ]
+        }
+      ],
+      "headers": [
+        "Obey Those Who Rule",
+        "Death Visits All"
+      ]
+    },
+    {
+      "chapter_num": 8,
+      "verses_count": 17,
+      "verses": [
+        {
+          "num": 2,
+          "text": "Keep the king's commandment and spare no effort for the sake of your oath to God.",
+          "parts": [
+            "Keep the king's commandment and spare no effort for the sake of your oath to God."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "You will go out from his presence, but do not stand with an evil thing, for the king will do whatever he pleases.",
+          "parts": [
+            "You will go out from his presence, but do not stand with an evil thing, for the king will do whatever he pleases."
+          ]
+        },
+        {
+          "num": 9,
+          "text": "I saw all this and gave my heart to every work done under the sun wherein one man has authority over another man to injure him.",
+          "parts": [
+            "I saw all this and gave my heart to every work done under the sun wherein one man has authority over another man to injure him."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Then I saw the ungodly buried in their tombs and brought from their holy place and praised in the city for what they had done.",
+          "parts": [
+            "Then I saw the ungodly buried in their tombs and brought from their holy place and praised in the city for what they had done."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "For no controversy comes quickly against those who do evil; therefore, the heart of the sons of men is fully determined within them to do evil.",
+          "parts": [
+            "For no controversy comes quickly against those who do evil; therefore, the heart of the sons of men is fully determined within them to do evil.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f2565"
+            }
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Whoever sins does evil from that time on and for a long time afterwards; nevertheless, I know that it shall be well for those who fear God so long as they have fear before Him.",
+          "parts": [
+            "Whoever sins does evil from that time on and for a long time afterwards; nevertheless, I know that it shall be well for those who fear God so long as they have fear before Him."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "But it shall not be well with the ungodly man; he will not prolong his days, which are as a shadow, because he does not have fear before God.",
+          "parts": [
+            "But it shall not be well with the ungodly man; he will not prolong his days, which are as a shadow, because he does not have fear before God."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "There is a vanity that is done on earth: there are the righteous as when the work of the ungodly overtakes them, and there are the ungodly as when the work of the righteous overtakes them.",
+          "parts": [
+            "There is a vanity that is done on earth: there are the righteous as when the work of the ungodly overtakes them, and there are the ungodly as when the work of the righteous overtakes them."
+          ]
+        },
+        {
+          "num": 15,
+          "text": "So I praised merriment, because a man has nothing better to do under the sun than to eat, drink, and be merry; for this will be present with him in his labor all the days of his life that God gives him under the sun.",
+          "parts": [
+            "So I praised merriment, because a man has nothing better to do under the sun than to eat, drink, and be merry; for this will be present with him in his labor all the days of his life that God gives him under the sun.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f2566"
+            }
+          ]
+        },
+        {
+          "num": 16,
+          "text": "For this reason I committed my heart to know wisdom and to see the distractions done on earth; nevertheless, he receives no sleep, day or night.",
+          "parts": [
+            "For this reason I committed my heart to know wisdom and to see the distractions done on earth; nevertheless, he receives no sleep, day or night."
+          ]
+        },
+        {
+          "num": 17,
+          "text": "Then I saw all the works of God, that a man cannot discover how He does His work under the sun.",
+          "parts": [
+            "Then I saw all the works of God, that a man cannot discover how He does His work under the sun."
+          ]
+        }
+      ],
+      "headers": []
+    },
+    {
+      "chapter_num": 9,
+      "verses_count": 16,
+      "verses": [
+        {
+          "num": 1,
+          "text": "For I gave my heart to all this, and my heart saw all this, that the righteous and the wise and their works are in the hand of God.",
+          "parts": [
+            "For I gave my heart to all this, and my heart saw all this, that the righteous and the wise and their works are in the hand of God."
+          ]
+        },
+        {
+          "num": 3,
+          "text": "There is this evil in everything done under the sun, that one event happens to all.",
+          "parts": [
+            "There is this evil in everything done under the sun, that one event happens to all."
+          ]
+        },
+        {
+          "num": 4,
+          "text": "For who has fellowship with all the living?",
+          "parts": [
+            "For who has fellowship with all the living?"
+          ]
+        },
+        {
+          "num": 9,
+          "text": "Experience life with the wife whom you love all the days of your vain life which He gave you under the sun all your days of vanity; for that is your portion in life and in the labor you performed under the sun.",
+          "parts": [
+            "Experience life with the wife whom you love all the days of your vain life which He gave you under the sun all your days of vanity; for that is your portion in life and in the labor you performed under the sun."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "Whatever your hand finds to do, do it with all your might; for there is no work or reasoning or knowledge or wisdom in Hades where you are going.",
+          "parts": [
+            "Whatever your hand finds to do, do it with all your might; for there is no work or reasoning or knowledge or wisdom in Hades where you are going."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "I returned and saw under the sun that:",
+          "parts": [
+            "I returned and saw under the sun that:"
+          ]
+        },
+        {
+          "num": 13,
+          "text": "I saw this wisdom under the sun, and it is great to me.",
+          "parts": [
+            "I saw this wisdom under the sun, and it is great to me."
+          ]
+        },
+        {
+          "num": 14,
+          "text": "There was a little city with a few men in it; and a great king came against it and surrounded it and built great barricades around it.",
+          "parts": [
+            "There was a little city with a few men in it; and a great king came against it and surrounded it and built great barricades around it.",
+            {
+              "style": "FOOTNOTE",
+              "note_id": "f2571"
+            }
+          ]
+        },
+        {
+          "num": 15,
+          "text": "Now there was found in it a poor wise man, and by his wisdom he rescued the city; yet no one remembered that poor man.",
+          "parts": [
+            "Now there was found in it a poor wise man, and by his wisdom he rescued the city; yet no one remembered that poor man."
+          ]
+        },
+        {
+          "num": 16,
+          "text": "Then I said:",
+          "parts": [
+            "Then I said:"
+          ]
+        }
+      ],
+      "headers": [
+        "Wisdom Is Better Than Strength",
+        "Cast Your Bread upon the Water"
+      ]
+    },
+    {
+      "chapter_num": 11,
+      "verses_count": 1,
+      "verses": [
+        {
+          "num": 1,
+          "text": "Cast your bread upon the face of the water,",
+          "parts": [
+            "Cast your bread upon the face of the water,"
+          ]
+        }
+      ],
+      "headers": [
+        "Follow God in Your Youth"
+      ]
+    },
+    {
+      "chapter_num": 12,
+      "verses_count": 13,
+      "verses": [
+        {
+          "num": 9,
+          "text": "Because the Preacher was wise more than others, he taught the people knowledge; and the ear will search out his well-ordered proverbs.",
+          "parts": [
+            "Because the Preacher was wise more than others, he taught the people knowledge; and the ear will search out his well-ordered proverbs."
+          ]
+        },
+        {
+          "num": 10,
+          "text": "The Preacher sought diligently to find desirable words, and what was written is upright; they are words of truth.",
+          "parts": [
+            "The Preacher sought diligently to find desirable words, and what was written is upright; they are words of truth."
+          ]
+        },
+        {
+          "num": 11,
+          "text": "The words of the wise are like pointed sticks, like nails firmly fastened; they are given from the collections and abound from them by one Shepherd.",
+          "parts": [
+            "The words of the wise are like pointed sticks, like nails firmly fastened; they are given from the collections and abound from them by one Shepherd."
+          ]
+        },
+        {
+          "num": 12,
+          "text": "Moreover, my son, guard yourself, for there is no end to the making of many books, and much study is weariness of the flesh.",
+          "parts": [
+            "Moreover, my son, guard yourself, for there is no end to the making of many books, and much study is weariness of the flesh."
+          ]
+        },
+        {
+          "num": 13,
+          "text": "Hear the conclusion of the whole matter:",
+          "parts": [
+            "Hear the conclusion of the whole matter:"
+          ]
+        }
+      ],
+      "headers": []
+    }
+  ],
+  "author": "The “Teacher” or “Preacher” has traditionally been identified as Solomon, because only he was the son of David, king of Israel in Jerusalem (1:1, 12), who achieved great fame for his wisdom, wealth, and achievements (12:9–12; 3Kg 10:23, 24).",
+  "date": "According to Jewish tradition, Solomon wrote the Song of Songs in his youth, Proverbs in his middle years, and Ecclesiastes in his old age. Following this line of reasoning, he would have written this book about 935 BC.",
+  "theme": "Without God, all of life is vanity."
+}
