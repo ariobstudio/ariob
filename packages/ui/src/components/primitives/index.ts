@@ -6,3 +6,4 @@ export {
 } from './scrollable';
 export { List, listVariants } from './list';
 export { ListItem, listItemVariants } from './list-item';
+export { Text, textVariants } from './text';

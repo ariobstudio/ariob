@@ -1,0 +1,42 @@
+{
+  "name": "@ariob/senterej",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./engine": {
+      "types": "./engine/index.d.ts",
+      "default": "./engine/index.js"
+    },
+    "./engine/*": {
+      "types": "./engine/*.d.ts",
+      "default": "./engine/*.js"
+    },
+    "./ui": {
+      "types": "./ui/index.d.ts",
+      "default": "./ui/index.js"
+    },
+    "./ui/*": {
+      "types": "./ui/*.d.ts",
+      "default": "./ui/*.js"
+    },
+    "./p2p": {
+      "types": "./p2p/index.d.ts",
+      "default": "./p2p/index.js"
+    },
+    "./p2p/*": {
+      "types": "./p2p/*.d.ts",
+      "default": "./p2p/*.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "engine": ["./engine/index.d.ts"],
+      "engine/*": ["./engine/*.d.ts"],
+      "ui": ["./ui/index.d.ts"],
+      "ui/*": ["./ui/*.d.ts"],
+      "p2p": ["./p2p/index.d.ts"],
+      "p2p/*": ["./p2p/*.d.ts"]
+    }
+  }
+}
