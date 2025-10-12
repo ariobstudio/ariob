@@ -1,7 +1,7 @@
 import { useTheme, Tabs, TabsList, TabsTrigger, TabsContent, Column } from '@ariob/ui';
-import { StreamTest } from './components/StreamTest';
 import { AuthTest } from './components/AuthTest';
 import { CrudTest } from './components/CrudTest';
+import { IncrementalTest } from './components/IncrementalTest';
 
 export function App() {
   const { withTheme } = useTheme();
@@ -11,15 +11,15 @@ export function App() {
       withTheme("bg-background pt-safe-top w-full h-full", "dark bg-background pt-safe-top w-full h-full")
     }>
       <Column className="w-full h-full">
-        <Tabs defaultValue="counter" className="w-full h-full">
+        <Tabs defaultValue="test" className="w-full h-full">
           <TabsList className="mx-4 mt-4">
-            <TabsTrigger value="counter">Counter</TabsTrigger>
+            <TabsTrigger value="test">Test</TabsTrigger>
             <TabsTrigger value="auth">Auth</TabsTrigger>
             <TabsTrigger value="crud">CRUD</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="counter">
-            <StreamTest />
+          <TabsContent value="test">
+            <IncrementalTest />
           </TabsContent>
 
           <TabsContent value="auth">

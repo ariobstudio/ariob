@@ -1,227 +1,72 @@
 /**
  * CrudTest Component
  *
- * Demonstrates CRUD operations with FRP streams
- * - Create thing
- * - List things using map() operator
- * - Update thing
- * - Delete thing
+ * Demonstrates CRUD operations with Gun + Zod validation
  */
 
-import { useState, useEffect, useMemo } from 'react';
-import { createThingStore, useThing, map, useStream, put, remove, stream, once } from '@ariob/core';
+import { useState } from 'react';
+import { createGraph, useSet, z } from '@ariob/core';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@ariob/ui';
 import { Button } from '@ariob/ui';
 import { Column, Row, Text } from '@ariob/ui';
 import { Input } from '@ariob/ui';
 import { TextArea } from '@ariob/ui';
 
-// Define a simple Note type (avoiding Zod to prevent type instantiation issues)
-interface Note {
-  id: string;
-  soul: string;
-  schema: string;
-  createdAt: number;
-  updatedAt?: number;
-  public: boolean;
-  createdBy?: string;
-  title: string;
-  content?: string;
-}
+// Define Zod schema for runtime validation
+const noteSchema = z.object({
+  title: z.string().min(1, 'Title is required'),
+  content: z.string().optional(),
+  createdAt: z.number(),
+});
 
-// Create a simple note service without Zod (for testing purposes)
-const createNoteService = () => {
-  const generateId = () => Math.random().toString(36).substring(2, 15);
+type Note = z.infer<typeof noteSchema>;
 
-  return {
-    async create(data: { title: string; content?: string }) {
-      const id = generateId();
-      const note: Note = {
-        id,
-        soul: `notes/${id}`,
-        schema: 'note',
-        createdAt: Date.now(),
-        public: true,
-        ...data,
-      };
+// Create graph instance (at app level)
+const graph = createGraph({
+  peers: ['http://localhost:8765/gun'],
+  localStorage: true
+});
+(globalThis as any).gun = graph;
 
-      return new Promise<{ ok: boolean; data?: Note; error?: string }>((resolve) => {
-        put(`notes/${id}`, note).subscribe({
-          next: (result) => {
-            if (result.ok) {
-              resolve({ ok: true, data: note });
-            } else {
-              resolve({ ok: false, error: result.err });
-            }
-          },
-        });
-      });
-    },
-
-    async update(id: string, updates: Partial<Note>) {
-      const current = await once<Note>(`notes/${id}`);
-      if (!current) {
-        return { ok: false, error: 'Note not found' };
-      }
-
-      const updated: Note = {
-        ...current,
-        ...updates,
-        updatedAt: Date.now(),
-      };
-
-      return new Promise<{ ok: boolean; data?: Note; error?: string }>((resolve) => {
-        put(`notes/${id}`, updated).subscribe({
-          next: (result) => {
-            if (result.ok) {
-              resolve({ ok: true, data: updated });
-            } else {
-              resolve({ ok: false, error: result.err });
-            }
-          },
-        });
-      });
-    },
-
-    async remove(id: string) {
-      return new Promise<{ ok: boolean; error?: string }>((resolve) => {
-        remove(`notes/${id}`).subscribe({
-          next: (result) => {
-            resolve(result);
-          },
-        });
-      });
-    },
-  };
-};
-
-const noteService = createNoteService();
 
 export function CrudTest() {
-  // Form state
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
-  const [editMode, setEditMode] = useState(false);
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  // Stream for listing notes using map() operator
-  const notesStream = useMemo(
-    () => map<Note>('notes'),
-    []
+  // Use original useSet hook - simple and works!
+  const { items, add, remove, isLoading, error } = useSet<Note>(
+    graph.get('my-notes')
   );
 
-  // Subscribe to notes stream
-  useEffect(() => {
-    const subscription = notesStream.subscribe({
-      next: ({ key, value }) => {
-        setNotes(prev => {
-          const existing = prev.findIndex(n => n.id === value.id);
-          if (existing >= 0) {
-            const updated = [...prev];
-            updated[existing] = value;
-            return updated;
-          }
-          return [...prev, value];
-        });
-      },
-      error: (err) => {
-        console.error('Stream error:', err);
-        setError(err.message);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [notesStream]);
-
-  // Handle create
+  // Handle create with Zod validation
   const handleCreate = async () => {
     if (!title) return;
 
-    setLoading(true);
-    setError(null);
+    try {
+      const note = {
+        title,
+        content: content || undefined,
+        createdAt: Date.now(),
+      };
+      console.log('note', note);
+      // Validate with Zod before adding
+      noteSchema.parse(note);
 
-    const result = await noteService.create({
-      title,
-      content: content || undefined,
-    });
+      console.log('note after validation', note);
 
-    setLoading(false);
-
-    if (result.ok) {
-      console.log('Note created:', result.data);
+      await add(note);
       setTitle('');
       setContent('');
-    } else {
-      console.error('Create failed:', result.error);
-      setError(result.error || 'Failed to create note');
-    }
-  };
-
-  // Handle update
-  const handleUpdate = async () => {
-    if (!selectedNoteId || !title) return;
-
-    setLoading(true);
-    setError(null);
-
-    const result = await noteService.update(selectedNoteId, {
-      title,
-      content: content || undefined,
-    });
-
-    setLoading(false);
-
-    if (result.ok) {
-      console.log('Note updated:', result.data);
-      setEditMode(false);
-      setTitle('');
-      setContent('');
-      setSelectedNoteId(null);
-    } else {
-      console.error('Update failed:', result.error);
-      setError(result.error || 'Failed to update note');
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        console.error('Validation error:', err.errors);
+      }
     }
   };
 
   // Handle delete
-  const handleDelete = async (noteId: string) => {
-    setLoading(true);
-    setError(null);
-
-    const result = await noteService.remove(noteId);
-
-    setLoading(false);
-
-    if (result.ok) {
-      console.log('Note deleted');
-      setNotes(prev => prev.filter(n => n.id !== noteId));
-      if (selectedNoteId === noteId) {
-        setSelectedNoteId(null);
-        setEditMode(false);
-      }
-    } else {
-      console.error('Delete failed:', result.error);
-      setError(result.error || 'Failed to delete note');
-    }
-  };
-
-  // Handle edit
-  const handleEdit = (note: Note) => {
-    setSelectedNoteId(note.id);
-    setTitle(note.title);
-    setContent(note.content || '');
-    setEditMode(true);
-  };
-
-  // Cancel edit
-  const handleCancel = () => {
-    setSelectedNoteId(null);
-    setEditMode(false);
-    setTitle('');
-    setContent('');
+  const handleDelete = async (id: string) => {
+    await remove(id);
   };
 
   return (
@@ -230,7 +75,7 @@ export function CrudTest() {
         <CardHeader>
           <CardTitle>CRUD Test</CardTitle>
           <CardDescription>
-            Testing create, read, update, and delete operations
+            Simple CRUD with Gun + Zod validation
           </CardDescription>
         </CardHeader>
       </Card>
@@ -238,19 +83,19 @@ export function CrudTest() {
       {error && (
         <Card>
           <CardContent>
-            <Text variant="destructive">Error: {error}</Text>
+            <Text variant="destructive">Error: {error.message}</Text>
           </CardContent>
         </Card>
       )}
 
       <Card>
         <CardHeader>
-          <CardTitle>{editMode ? 'Update Note' : 'Create Note'}</CardTitle>
+          <CardTitle>Create Note</CardTitle>
         </CardHeader>
         <CardContent>
           <Column spacing="sm">
             <Column spacing="xs">
-              <Text size="sm">Title</Text>
+              <Text size="sm">Title *</Text>
               <Input
                 value={title}
                 onChange={setTitle}
@@ -260,80 +105,61 @@ export function CrudTest() {
 
             <Column spacing="xs">
               <Text size="sm">Content</Text>
-              <TextArea
+              <Input
                 value={content}
                 onChange={setContent}
                 placeholder="Enter note content"
               />
             </Column>
 
-            <Row spacing="sm" width="full">
-              <Button
-                onClick={editMode ? handleUpdate : handleCreate}
-                className="flex-1"
-              >
-                {editMode ? 'Update' : 'Create'}
-              </Button>
-              {editMode && (
-                <Button
-                  onClick={handleCancel}
-                  variant="secondary"
-                  className="flex-1"
-                >
-                  Cancel
-                </Button>
-              )}
-            </Row>
+            <Button
+              onClick={handleCreate}
+              disabled={isLoading || !title}
+            >
+              Create
+            </Button>
           </Column>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Notes List (using map() stream)</CardTitle>
+          <CardTitle>Notes List</CardTitle>
           <CardDescription>
-            Real-time list using FRP map() operator
+            {items.length} note{items.length !== 1 ? 's' : ''}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {loading ? (
+          {isLoading && items.length === 0 ? (
             <Text variant="muted">Loading notes...</Text>
-          ) : notes.length === 0 ? (
+          ) : items.length === 0 ? (
             <Text variant="muted">No notes yet. Create one above!</Text>
           ) : (
             <Column spacing="sm">
-              {notes.map((note) => (
-                <Card key={note.id}>
+              {items.map(({ id, data }) => (
+                <Card key={id}>
                   <CardContent>
                     <Column spacing="xs">
                       <Row spacing="xs" className="justify-between items-start">
                         <Column spacing="xs" className="flex-1">
-                          <Text weight="semibold">{note.title}</Text>
-                          {note.content && (
+                          <Text weight="semibold">{data.title}</Text>
+                          {data.content && (
                             <Text variant="muted" size="sm">
-                              {note.content}
+                              {data.content}
                             </Text>
                           )}
                           <Text variant="muted" size="xs">
-                            Created: {new Date(note.createdAt).toLocaleString()}
+                            {new Date(data.createdAt).toLocaleString()}
                           </Text>
                         </Column>
-                        <Row spacing="xs">
-                          <Button
-                            onClick={() => handleEdit(note)}
-                            variant="outline"
-                            size="sm"
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            onClick={() => handleDelete(note.id)}
-                            variant="destructive"
-                            size="sm"
-                          >
-                            Delete
-                          </Button>
-                        </Row>
+                        <Button
+                          onClick={() => handleDelete(id)}
+                          variant="destructive"
+                          size="sm"
+                          disabled={isLoading}
+                        >
+                          Delete
+                        </Button>
                       </Row>
                     </Column>
                   </CardContent>
@@ -351,16 +177,16 @@ export function CrudTest() {
         <CardContent>
           <Column spacing="xs">
             <Text variant="muted" size="sm">
-              • Uses map() operator for real-time list streaming
+              • Simple useSet() hook from @ariob/core
             </Text>
             <Text variant="muted" size="sm">
-              • useThing hook for individual note operations
+              • Optional Zod validation before add()
             </Text>
             <Text variant="muted" size="sm">
-              • Creates notes with title and content
+              • Real-time sync via Gun.js
             </Text>
             <Text variant="muted" size="sm">
-              • Updates and deletes in real-time
+              • UNIX philosophy: do one thing well
             </Text>
           </Column>
         </CardContent>

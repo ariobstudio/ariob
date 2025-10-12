@@ -1,87 +1,83 @@
 /**
  * AuthTest Component
  *
- * Demonstrates the authentication flow using useWho hook
- * - Sign up
- * - Login
- * - View profile
- * - Update profile
+ * Demonstrates the authentication flow using the new Graph API
+ * - Create account
+ * - Login with keys
+ * - View user info
  * - Logout
  */
 
 import { useState } from 'react';
-import { useWho } from '@ariob/core';
+import { createGraph, useAuth, useKeys } from '@ariob/core';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@ariob/ui';
 import { Button } from '@ariob/ui';
 import { Column, Row, Text } from '@ariob/ui';
 import { Input } from '@ariob/ui';
 
+// Create graph instance
+const graph = createGraph({
+  peers: ['wss://localhost:8765/gun'],
+  localStorage: false
+});
+
 export function AuthTest() {
-  const { user, isLoading, error, signup, login, logout, isAuthenticated } = useWho();
+  const { user, isLoggedIn, login, create, logout } = useAuth(graph);
+  const keys = useKeys();
 
   // Form state
   const [alias, setAlias] = useState('');
   const [passphrase, setPassphrase] = useState('');
-  const [displayName, setDisplayName] = useState('');
   const [isSignupMode, setIsSignupMode] = useState(true);
+  const [operationError, setOperationError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Handle signup
   const handleSignup = async () => {
-    if (!alias || !passphrase) return;
+    if (!alias || !passphrase) {
+      setOperationError('Please enter both alias and passphrase');
+      return;
+    }
 
-    const result = await signup({
-      method: 'traditional',
-      alias,
-      passphrase,
-    });
+    setOperationError(null);
+    setSuccessMessage(null);
 
-    result.match(
-      (user) => {
-        console.log('Signup successful:', user);
-        setAlias('');
-        setPassphrase('');
-      },
-      (error) => {
-        console.error('Signup failed:', error);
-      }
-    );
+    try {
+      await create(alias, passphrase);
+      setSuccessMessage(`Welcome, ${alias}! Account created successfully.`);
+      setAlias('');
+      setPassphrase('');
+    } catch (error: any) {
+      setOperationError(error.message || 'Signup failed. User may already exist.');
+    }
   };
 
   // Handle login
   const handleLogin = async () => {
-    if (!alias || !passphrase) return;
+    if (!alias || !passphrase) {
+      setOperationError('Please enter both alias and passphrase');
+      return;
+    }
 
-    const result = await login({
-      method: 'traditional',
-      alias,
-      passphrase,
-    });
+    setOperationError(null);
+    setSuccessMessage(null);
 
-    result.match(
-      (user) => {
-        console.log('Login successful:', user);
-        setAlias('');
-        setPassphrase('');
-      },
-      (error) => {
-        console.error('Login failed:', error);
-      }
-    );
+    try {
+      await login(alias, passphrase);
+      setSuccessMessage(`Welcome back, ${alias}!`);
+      setAlias('');
+      setPassphrase('');
+    } catch (error: any) {
+      setOperationError(error.message || 'Login failed. Please check your credentials.');
+    }
   };
 
   // Handle logout
   const handleLogout = () => {
     logout();
-    setDisplayName('');
+    setSuccessMessage('Logged out successfully');
+    setTimeout(() => setSuccessMessage(null), 3000);
   };
-
-  if (isLoading) {
-    return (
-      <Column spacing="md" className="p-4">
-        <Text>Loading authentication...</Text>
-      </Column>
-    );
-  }
 
   return (
     <Column spacing="md" className="p-4">
@@ -89,20 +85,28 @@ export function AuthTest() {
         <CardHeader>
           <CardTitle>Authentication Test</CardTitle>
           <CardDescription>
-            Testing user signup, login, profile, and logout
+            Testing user signup, login, and logout with the new Graph API
           </CardDescription>
         </CardHeader>
       </Card>
 
-      {error && (
+      {operationError && (
         <Card>
           <CardContent>
-            <Text variant="destructive">Error: {error.message}</Text>
+            <Text variant="destructive">{operationError}</Text>
           </CardContent>
         </Card>
       )}
 
-      {!isAuthenticated ? (
+      {successMessage && (
+        <Card>
+          <CardContent>
+            <Text className="text-green-600">{successMessage}</Text>
+          </CardContent>
+        </Card>
+      )}
+
+      {!isLoggedIn ? (
         <Card>
           <CardContent>
             <Column spacing="lg">
@@ -146,13 +150,35 @@ export function AuthTest() {
                   {isSignupMode ? 'Sign Up' : 'Login'}
                 </Button>
                 <Button
-                  onClick={() => setIsSignupMode(!isSignupMode)}
+                  onClick={() => {
+                    setIsSignupMode(!isSignupMode);
+                    setOperationError(null);
+                    setSuccessMessage(null);
+                  }}
                   variant="secondary"
                   className="flex-1"
                 >
                   {isSignupMode ? 'Switch to Login' : 'Switch to Sign Up'}
                 </Button>
               </Row>
+
+              {keys && (
+                <Card>
+                  <CardContent>
+                    <Column spacing="xs">
+                      <Text weight="semibold" size="xs">
+                        Generated Key Pair
+                      </Text>
+                      <Text variant="muted" size="xs" className="truncate">
+                        Public Key: {keys.pub.substring(0, 30)}...
+                      </Text>
+                      <Text variant="muted" size="xs">
+                        Keys are generated automatically and securely stored
+                      </Text>
+                    </Column>
+                  </CardContent>
+                </Card>
+              )}
             </Column>
           </CardContent>
         </Card>
@@ -168,59 +194,24 @@ export function AuthTest() {
                   <Text weight="semibold" size="sm">
                     Alias:
                   </Text>
-                  <Text size="sm">{user?.alias}</Text>
+                  <Text size="sm">{user?.alias || 'N/A'}</Text>
                 </Row>
                 <Row spacing="xs">
                   <Text weight="semibold" size="sm">
                     Public Key:
                   </Text>
                   <Text size="xs" variant="muted" className="truncate">
-                    {user?.pub?.substring(0, 20)}...
+                    {keys?.pub ? `${keys.pub.substring(0, 20)}...` : 'N/A'}
                   </Text>
                 </Row>
-                {user?.displayName && (
-                  <Row spacing="xs">
-                    <Text weight="semibold" size="sm">
-                      Display Name:
-                    </Text>
-                    <Text size="sm">{user.displayName}</Text>
-                  </Row>
-                )}
                 <Row spacing="xs">
                   <Text weight="semibold" size="sm">
-                    Created:
+                    Status:
                   </Text>
-                  <Text size="xs" variant="muted">
-                    {user?.createdAt
-                      ? new Date(user.createdAt).toLocaleString()
-                      : 'N/A'}
+                  <Text size="sm" className="text-green-600">
+                    ✓ Authenticated
                   </Text>
                 </Row>
-              </Column>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Profile Update</CardTitle>
-              <CardDescription>Update your profile information</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Column spacing="sm">
-                <Column spacing="xs">
-                  <Text size="sm">Display Name</Text>
-                  <Input
-                    value={displayName}
-                    onChange={setDisplayName}
-                    placeholder="Enter display name"
-                  />
-                </Column>
-                <Button onClick={() => console.log('Update profile:', displayName)}>
-                  Update Profile
-                </Button>
-                <Text variant="muted" size="xs">
-                  Note: Profile update functionality to be implemented
-                </Text>
               </Column>
             </CardContent>
           </Card>
@@ -242,16 +233,19 @@ export function AuthTest() {
         <CardContent>
           <Column spacing="xs">
             <Text variant="muted" size="sm">
-              • Uses useWho() hook for authentication
+              • Uses createGraph() to initialize Gun instance
+            </Text>
+            <Text variant="muted" size="sm">
+              • useAuth() hook for authentication management
+            </Text>
+            <Text variant="muted" size="sm">
+              • useKeys() hook for automatic key pair generation
             </Text>
             <Text variant="muted" size="sm">
               • Traditional method (alias + passphrase)
             </Text>
             <Text variant="muted" size="sm">
-              • Stores credentials securely
-            </Text>
-            <Text variant="muted" size="sm">
-              • Auto-restores session on reload
+              • Credentials stored securely with Gun SEA
             </Text>
           </Column>
         </CardContent>

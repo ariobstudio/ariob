@@ -1,86 +1,62 @@
-// Core Gun exports
-export { gun, sea } from './gun/core/gun';
-export type { GunInstance, SEA, KeyPair, GunUser, GunChain } from './gun/core/types';
+/**
+ * @ariob/core
+ *
+ * Gun.js wrapper with type-safe React hooks
+ */
 
-// Schema exports
-export * from './gun/schema/thing.schema';
-export * from './gun/schema/who.schema';
-export * from './gun/schema/errors';
+// Graph factory
+export { createGraph } from './gun/graph';
 
-// Pure utility exports (NEW - Phase 1)
-export { soul, parse, stamp, random, extract } from './gun/lib/utils';
-export { storage, Web as WebStorage, Native as NativeStorage } from './gun/lib/storage';
-export type { Storage } from './gun/lib/storage';
+// Hooks
+export { useNode } from './hooks/useNode';
+export { useSet } from './hooks/useSet';
+export { useAuth } from './hooks/useAuth';
+export { useKeys } from './hooks/useKeys';
 
-// Freeze module exports (NEW - Immutable data)
-export { freeze, thaw, hash, list, link, resolve } from './gun/lib/freeze';
-export type { Frozen, FreezeOptions, ThawOptions } from './gun/lib/freeze';
+// Store
+export { useAuthStore } from './store/auth';
 
-// Adapter exports (NEW - Phase 1)
+// Result type system
+export { Result, isOk, isErr } from './utils/result';
+export type { Ok, Err } from './utils/result';
+
+// SEA cryptography helpers
 export {
-  adapt,
-  Gun as GunAdapter,
-  User as UserAdapter,
-  Memory as MemoryAdapter,
-} from './gun/adapters';
-export type { Adapter, AdapterOptions } from './gun/adapters';
+  encrypt,
+  decrypt,
+  work,
+  secret,
+  sign,
+  verify,
+  pair,
+  certify,
+} from './utils/helpers';
 
-// Service exports (NEW - Phase 2)
-export {
-  make,
-  service,
-  validator,
-  manager,
-} from './gun/services/thing';
+// Type exports
 export type {
-  ThingService,
-  ServiceOptions,
-  ServiceConfig,
-  Validator,
-  Manager,
-  PrepareOptions,
-} from './gun/services/thing';
+  GunInstance,
+  GunOptions,
+  IGunChainReference,
+  GunUser,
+  KeyPair
+} from './gun/graph';
 
-// Legacy service exports (DEPRECATED - for backward compatibility)
-export { make as makeThingService, soul as createSoul } from './gun/services/thing.service';
 export type {
-  ThingService as LegacyThingService,
-  ServiceOptions as LegacyServiceOptions,
-} from './gun/services/thing.service';
+  UseNodeResult
+} from './hooks/useNode';
 
-// Who service exports (NEW - Phase 2.2)
-export {
-  who,
-  service as whoService,
-  credentials,
-  auth,
-  profile,
-} from './gun/services/who';
 export type {
-  WhoService,
-  CredentialsManager,
-  AuthManager,
-  AuthResult,
-  AuthMode,
-  ProfileManager,
-  Who,
-  Credentials,
-  AuthRequest,
-  ProfileUpdate,
-} from './gun/services/who';
+  UseSetResult,
+  CollectionItem
+} from './hooks/useSet';
 
-// Legacy Who service export (DEPRECATED - for backward compatibility)
-export { who as legacyWho } from './gun/services/who.service';
+export type {
+  UseAuthResult,
+  AuthResult
+} from './hooks/useAuth';
 
-// State exports (NEW - Phase 3)
-export { store } from './gun/state/factory';
-export type { Store, BaseState, BaseActions, StoreOptions } from './gun/state/factory';
-export { createThingStore } from './gun/state/thing.store';
-export { useWhoStore } from './gun/state/who.store';
-export type { ThingStore } from './gun/state/thing.store';
-export type { WhoStore } from './gun/state/who.store';
+export type {
+  UserInfo
+} from './store/auth';
 
-// Hook exports
-export { useThing } from './gun/hooks/useThing';
-export { useThingList } from './gun/hooks/useThingList';
-export { useWho } from './gun/hooks/useWho';
+export { z } from 'zod';
