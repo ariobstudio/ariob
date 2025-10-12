@@ -1,80 +1,118 @@
-import { useState, useCallback, useEffect } from '@lynx-js/react';
-import { useThing, useWhoStore } from '@ariob/core';
+import { useState, useCallback, useMemo } from '@lynx-js/react';
+import { useNode } from '@ariob/core';
 import { createGame as engineCreateGame, makeMove as engineMakeMove } from '@ariob/senterej/engine';
-import { useSessionStore } from '../store';
-import { createSession, joinSession, updateGameState } from '../service';
-import { thingToSession } from '../schema';
+import { gunDataToSession } from '../schema';
 /**
  * Hook for managing game sessions using core infrastructure
  */
 export function useGameSession(options) {
-    console.log('----[useGameSession.ts][Hook called][useGameSession initializing][for session management]');
-    console.log('----[useGameSession.ts][Options][Hook options received][for]', options);
-    console.log('----[useGameSession.ts][Calling useWhoStore][Getting user from who store][for authentication]');
-    const { user } = useWhoStore();
-    console.log('----[useGameSession.ts][User from store][useWhoStore returned][for]', user);
+    const { graph, playerName } = options;
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [currentSessionId, setCurrentSessionId] = useState(options.sessionId);
-    const [optimisticSession, setOptimisticSession] = useState(null);
-    const [generatedAnonId] = useState(() => `anon-${Date.now()}`);
-    console.log('----[useGameSession.ts][State initialized][Local state setup][for]', { loading, error, currentSessionId });
-    // Use core useThing hook to watch session
-    console.log('----[useGameSession.ts][Calling useThing][Watching session thing][for]', currentSessionId || null);
-    const { item: sessionThing } = useThing(useSessionStore, currentSessionId || null);
-    console.log('----[useGameSession.ts][useThing result][Session thing from store][for]', sessionThing);
-    // Convert thing to session
-    const sessionFromStore = sessionThing ? thingToSession(sessionThing) : null;
-    const session = sessionFromStore ?? optimisticSession;
-    console.log('----[useGameSession.ts][Session converted][thingToSession result][for]', session);
+    // Generate a stable user ID for this session
+    const [userId] = useState(() => `user-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    // Get Gun reference for the current session
+    const sessionRef = useMemo(() => {
+        if (!currentSessionId)
+            return null;
+        return graph.get('senterej').get('sessions').get(currentSessionId);
+    }, [graph, currentSessionId]);
+    // Use core useNode hook to subscribe to session updates
+    const { data: sessionData, put, isLoading: sessionLoading } = useNode(sessionRef);
+    // Convert Gun data to GameSession
+    const session = useMemo(() => {
+        if (!sessionData)
+            return null;
+        try {
+            return gunDataToSession(sessionData);
+        }
+        catch (err) {
+            console.error('Failed to parse session data:', err);
+            return null;
+        }
+    }, [sessionData]);
     // Determine local player
-    const userId = (user === null || user === void 0 ? void 0 : user.pub) || generatedAnonId;
-    console.log('----[useGameSession.ts][User ID][Determined user identifier][for]', userId);
-    const localPlayer = session?.players.green?.id === userId ? 'green' :
-        session?.players.gold?.id === userId ? 'gold' :
-            null;
-    console.log('----[useGameSession.ts][Local player][Determined player side][for]', localPlayer);
+    const localPlayer = useMemo(() => {
+        if (!session)
+            return null;
+        if (session.players.green?.id === userId)
+            return 'green';
+        if (session.players.gold?.id === userId)
+            return 'gold';
+        return null;
+    }, [session, userId]);
     const createGame = useCallback(async () => {
-        console.log('----[useGameSession.ts][createGame hook called][Starting game creation in hook][for P2P session setup]');
-        console.log('----[useGameSession.ts][User ID][Current user identifier][for]', userId);
-        console.log('----[useGameSession.ts][Player name][Name to use for session][for]', options.playerName);
         setLoading(true);
         setError(null);
         try {
-            console.log('----[useGameSession.ts][Creating initial state][Calling engine createGame][for game board initialization]');
+            const sessionId = `session-${Date.now()}-${Math.random().toString(36).slice(2)}`;
             const initialState = engineCreateGame();
-            console.log('----[useGameSession.ts][Initial state created][Game engine state ready][for]', initialState);
-            console.log('----[useGameSession.ts][Creating session][Calling service createSession][for Gun storage]');
-            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('createSession timed out after 5 seconds')), 5000));
-            const sessionThing = await Promise.race([
-                createSession(options.playerName, userId, initialState),
-                timeoutPromise
-            ]);
-            console.log('----[useGameSession.ts][Session created][Service returned session thing][for]', sessionThing);
-            setCurrentSessionId(sessionThing.id);
-            console.log('----[useGameSession.ts][Session ID set][Updated local state][for]', sessionThing.id);
-            setOptimisticSession(thingToSession(sessionThing));
-            console.log('----[useGameSession.ts][Optimistic session set][Local session state][for]', sessionThing.id);
-            return sessionThing.id;
+            const playerInfo = {
+                id: userId,
+                pub: userId,
+                name: playerName,
+                joinedAt: Date.now(),
+            };
+            // Create session reference
+            const newSessionRef = graph.get('senterej').get('sessions').get(sessionId);
+            // Use useNode's put to store session data
+            const tempNode = { data: null, put: newSessionRef.put.bind(newSessionRef) };
+            await tempNode.put({
+                id: sessionId,
+                createdAt: Date.now(),
+                greenPlayer: JSON.stringify(playerInfo),
+                gameState: JSON.stringify(initialState),
+                status: 'waiting',
+            });
+            setCurrentSessionId(sessionId);
+            return sessionId;
         }
         catch (err) {
-            console.error('----[useGameSession.ts][Error occurred][Exception during creation][for debugging]', err);
             const error = err instanceof Error ? err : new Error(String(err));
             setError(error);
             return undefined;
         }
         finally {
             setLoading(false);
-            console.log('----[useGameSession.ts][Loading complete][Finished create game flow][for UI state]');
         }
-    }, [options.playerName, userId]);
+    }, [graph, playerName, userId]);
     const joinGame = useCallback(async (sessionId) => {
         setLoading(true);
         setError(null);
         try {
-            const joinedThing = await joinSession(sessionId, options.playerName, userId);
+            // Get session ref and check if it exists
+            const joinRef = graph.get('senterej').get('sessions').get(sessionId);
+            const currentData = await new Promise((resolve, reject) => {
+                joinRef.once((data) => {
+                    if (!data)
+                        reject(new Error('Session not found'));
+                    else
+                        resolve(data);
+                });
+            });
+            if (currentData.goldPlayer) {
+                throw new Error('Game is full');
+            }
+            const playerInfo = {
+                id: userId,
+                pub: userId,
+                name: playerName,
+                joinedAt: Date.now(),
+            };
+            // Update session with gold player using Gun's put
+            await new Promise((resolve, reject) => {
+                joinRef.put({
+                    goldPlayer: JSON.stringify(playerInfo),
+                    status: 'playing',
+                }, (ack) => {
+                    if (ack.err)
+                        reject(new Error(ack.err));
+                    else
+                        resolve();
+                });
+            });
             setCurrentSessionId(sessionId);
-            setOptimisticSession(thingToSession(joinedThing));
         }
         catch (err) {
             const error = err instanceof Error ? err : new Error(String(err));
@@ -84,7 +122,7 @@ export function useGameSession(options) {
         finally {
             setLoading(false);
         }
-    }, [options.playerName, userId]);
+    }, [graph, playerName, userId]);
     const makeMove = useCallback(async (from, to) => {
         if (!session || !currentSessionId) {
             throw new Error('Not in a game session');
@@ -103,28 +141,22 @@ export function useGameSession(options) {
             if (!newState) {
                 throw new Error('Invalid move');
             }
-            // Update in Gun
-            await updateGameState(currentSessionId, newState);
+            // Update in Gun using put from useNode
+            await put({ gameState: JSON.stringify(newState) });
         }
         catch (err) {
             const error = err instanceof Error ? err : new Error(String(err));
             setError(error);
             throw error;
         }
-    }, [session, currentSessionId, localPlayer]);
+    }, [put, session, currentSessionId, localPlayer]);
     const leaveGame = useCallback(() => {
         setCurrentSessionId(undefined);
         setError(null);
-        setOptimisticSession(null);
     }, []);
-    useEffect(() => {
-        if (sessionFromStore && optimisticSession) {
-            setOptimisticSession(null);
-        }
-    }, [sessionFromStore, optimisticSession]);
     return {
         session,
-        loading,
+        loading: loading || sessionLoading,
         error,
         localPlayer,
         createGame,

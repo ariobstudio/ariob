@@ -17,6 +17,7 @@ import {
   AlertDescription,
 } from '@ariob/ui';
 import { useGameSession } from '@ariob/senterej/p2p';
+import { useGraph } from '../GraphContext';
 
 interface LobbyScreenProps {
   onGameStart: (sessionId: string) => void;
@@ -24,9 +25,11 @@ interface LobbyScreenProps {
 }
 
 export function LobbyScreen({ onGameStart, onBack }: LobbyScreenProps) {
+  const graph = useGraph();
   const [playerName, setPlayerName] = React.useState('Player');
 
   const { createGame, session, loading, error } = useGameSession({
+    graph,
     playerName,
   });
 

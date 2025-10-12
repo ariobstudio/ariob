@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { ThingSchema } from '@ariob/core';
 import type { GameState } from '@ariob/senterej/engine';
 
 /**
@@ -15,27 +14,8 @@ export const PlayerInfoSchema = z.object({
 export type PlayerInfo = z.infer<typeof PlayerInfoSchema>;
 
 /**
- * Game Session Schema
- * Extends Thing to use core infrastructure
- */
-export const GameSessionSchema = ThingSchema.extend({
-  schema: z.literal('senterej/session'),
-
-  // Players stored as JSON strings to avoid Gun.js serialization issues
-  greenPlayer: z.string().optional(), // JSON.stringify(PlayerInfo)
-  goldPlayer: z.string().optional(), // JSON.stringify(PlayerInfo)
-
-  // Game state stored as JSON string to avoid Gun.js serialization issues
-  gameState: z.string(), // JSON.stringify(GameState)
-
-  // Session metadata
-  status: z.enum(['waiting', 'playing', 'ended']),
-});
-
-export type GameSessionThing = z.infer<typeof GameSessionSchema>;
-
-/**
- * Helper to convert GameSessionThing to GameSession for backwards compatibility
+ * Game Session
+ * Represents a P2P game session in Gun
  */
 export interface GameSession {
   id: string;
@@ -45,31 +25,48 @@ export interface GameSession {
     gold?: PlayerInfo;
   };
   state: GameState;
+  status?: 'waiting' | 'playing' | 'ended';
 }
 
-export function thingToSession(thing: GameSessionThing): GameSession {
+/**
+ * Game Session stored in Gun
+ * Uses JSON strings to avoid Gun serialization issues
+ */
+export interface GameSessionGunData {
+  id: string;
+  createdAt: number;
+  greenPlayer?: string; // JSON.stringify(PlayerInfo)
+  goldPlayer?: string; // JSON.stringify(PlayerInfo)
+  gameState: string; // JSON.stringify(GameState)
+  status: 'waiting' | 'playing' | 'ended';
+}
+
+/**
+ * Convert Gun data to GameSession
+ */
+export function gunDataToSession(data: GameSessionGunData): GameSession {
   return {
-    id: thing.id,
-    createdAt: thing.createdAt,
+    id: data.id,
+    createdAt: data.createdAt,
     players: {
-      green: thing.greenPlayer ? JSON.parse(thing.greenPlayer) : undefined,
-      gold: thing.goldPlayer ? JSON.parse(thing.goldPlayer) : undefined,
+      green: data.greenPlayer ? JSON.parse(data.greenPlayer) : undefined,
+      gold: data.goldPlayer ? JSON.parse(data.goldPlayer) : undefined,
     },
-    state: JSON.parse(thing.gameState),
+    state: JSON.parse(data.gameState),
+    status: data.status,
   };
 }
 
-export function sessionToThing(session: GameSession, soul: string): GameSessionThing {
+/**
+ * Convert GameSession to Gun data
+ */
+export function sessionToGunData(session: GameSession): GameSessionGunData {
   return {
     id: session.id,
-    soul,
-    schema: 'senterej/session',
     createdAt: session.createdAt,
-    updatedAt: Date.now(),
-    public: true,
     greenPlayer: session.players.green ? JSON.stringify(session.players.green) : undefined,
     goldPlayer: session.players.gold ? JSON.stringify(session.players.gold) : undefined,
     gameState: JSON.stringify(session.state),
-    status: session.players.green && session.players.gold ? 'playing' : 'waiting',
+    status: session.status || (session.players.green && session.players.gold ? 'playing' : 'waiting'),
   };
 }

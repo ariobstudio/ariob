@@ -9,7 +9,7 @@
  */
 
 import { useState } from 'react';
-import { createGraph, useAuth, useKeys } from '@ariob/core';
+import { createGraph, useAuth, useKeys, Result } from '@ariob/core';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@ariob/ui';
 import { Button } from '@ariob/ui';
 import { Column, Row, Text } from '@ariob/ui';
@@ -42,14 +42,21 @@ export function AuthTest() {
     setOperationError(null);
     setSuccessMessage(null);
 
-    try {
+    const result = await Result.fromAsync(async () => {
       await create(alias, passphrase);
-      setSuccessMessage(`Welcome, ${alias}! Account created successfully.`);
-      setAlias('');
-      setPassphrase('');
-    } catch (error: any) {
-      setOperationError(error.message || 'Signup failed. User may already exist.');
-    }
+      return alias;
+    });
+
+    Result.match(result, {
+      ok: (username) => {
+        setSuccessMessage(`Welcome, ${username}! Account created successfully.`);
+        setAlias('');
+        setPassphrase('');
+      },
+      error: (error) => {
+        setOperationError(error.message || 'Signup failed. User may already exist.');
+      }
+    });
   };
 
   // Handle login
@@ -62,14 +69,21 @@ export function AuthTest() {
     setOperationError(null);
     setSuccessMessage(null);
 
-    try {
+    const result = await Result.fromAsync(async () => {
       await login(alias, passphrase);
-      setSuccessMessage(`Welcome back, ${alias}!`);
-      setAlias('');
-      setPassphrase('');
-    } catch (error: any) {
-      setOperationError(error.message || 'Login failed. Please check your credentials.');
-    }
+      return alias;
+    });
+
+    Result.match(result, {
+      ok: (username) => {
+        setSuccessMessage(`Welcome back, ${username}!`);
+        setAlias('');
+        setPassphrase('');
+      },
+      error: (error) => {
+        setOperationError(error.message || 'Login failed. Please check your credentials.');
+      }
+    });
   };
 
   // Handle logout

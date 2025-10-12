@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { ThingSchema } from '@ariob/core';
 /**
  * Player Info Schema
  */
@@ -10,41 +9,30 @@ export const PlayerInfoSchema = z.object({
     joinedAt: z.number(),
 });
 /**
- * Game Session Schema
- * Extends Thing to use core infrastructure
+ * Convert Gun data to GameSession
  */
-export const GameSessionSchema = ThingSchema.extend({
-    schema: z.literal('senterej/session'),
-    // Players
-    greenPlayer: PlayerInfoSchema.optional(),
-    goldPlayer: PlayerInfoSchema.optional(),
-    // Game state stored as JSON string to avoid Gun.js serialization issues
-    gameState: z.string(), // JSON.stringify(GameState)
-    // Session metadata
-    status: z.enum(['waiting', 'playing', 'ended']),
-});
-export function thingToSession(thing) {
+export function gunDataToSession(data) {
     return {
-        id: thing.id,
-        createdAt: thing.createdAt,
+        id: data.id,
+        createdAt: data.createdAt,
         players: {
-            green: thing.greenPlayer,
-            gold: thing.goldPlayer,
+            green: data.greenPlayer ? JSON.parse(data.greenPlayer) : undefined,
+            gold: data.goldPlayer ? JSON.parse(data.goldPlayer) : undefined,
         },
-        state: JSON.parse(thing.gameState),
+        state: JSON.parse(data.gameState),
+        status: data.status,
     };
 }
-export function sessionToThing(session, soul) {
+/**
+ * Convert GameSession to Gun data
+ */
+export function sessionToGunData(session) {
     return {
         id: session.id,
-        soul,
-        schema: 'senterej/session',
         createdAt: session.createdAt,
-        updatedAt: Date.now(),
-        public: true,
-        greenPlayer: session.players.green,
-        goldPlayer: session.players.gold,
+        greenPlayer: session.players.green ? JSON.stringify(session.players.green) : undefined,
+        goldPlayer: session.players.gold ? JSON.stringify(session.players.gold) : undefined,
         gameState: JSON.stringify(session.state),
-        status: session.players.green && session.players.gold ? 'playing' : 'waiting',
+        status: session.status || (session.players.green && session.players.gold ? 'playing' : 'waiting'),
     };
 }

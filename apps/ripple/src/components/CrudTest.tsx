@@ -5,7 +5,7 @@
  */
 
 import { useState } from 'react';
-import { createGraph, useSet, z } from '@ariob/core';
+import { createGraph, useSet, z, Result } from '@ariob/core';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@ariob/ui';
 import { Button } from '@ariob/ui';
 import { Column, Row, Text } from '@ariob/ui';
@@ -23,7 +23,9 @@ type Note = z.infer<typeof noteSchema>;
 
 // Create graph instance (at app level)
 const graph = createGraph({
-  peers: ['http://localhost:8765/gun'],
+  peers: [
+    'http://localhost:8765/gun',
+  ],
   localStorage: true
 });
 (globalThis as any).gun = graph;
@@ -42,31 +44,46 @@ export function CrudTest() {
   const handleCreate = async () => {
     if (!title) return;
 
-    try {
-      const note = {
-        title,
-        content: content || undefined,
-        createdAt: Date.now(),
-      };
-      console.log('note', note);
-      // Validate with Zod before adding
-      noteSchema.parse(note);
+    const note = {
+      title,
+      content: content || undefined,
+      createdAt: Date.now(),
+    };
+    console.log('note', note);
 
-      console.log('note after validation', note);
+    // Validate with Result.parse() instead of try-catch
+    const validationResult = Result.parse(noteSchema, note);
 
-      await add(note);
-      setTitle('');
-      setContent('');
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        console.error('Validation error:', err.errors);
+    Result.match(validationResult, {
+      ok: async (validatedNote) => {
+        console.log('note after validation', validatedNote);
+
+        const addResult = await Result.fromAsync(async () => {
+          await add(validatedNote);
+        });
+
+        if (addResult.ok) {
+          setTitle('');
+          setContent('');
+        } else {
+          console.error('Add error:', addResult.error);
+        }
+      },
+      error: async (zodError) => {
+        console.error('Validation error:', zodError.errors);
       }
-    }
+    });
   };
 
   // Handle delete
   const handleDelete = async (id: string) => {
-    await remove(id);
+    const result = await Result.fromAsync(async () => {
+      await remove(id);
+    });
+
+    if (!result.ok) {
+      console.error('Delete error:', result.error);
+    }
   };
 
   return (
