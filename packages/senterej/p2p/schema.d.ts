@@ -21,100 +21,8 @@ export declare const PlayerInfoSchema: z.ZodObject<{
 }>;
 export type PlayerInfo = z.infer<typeof PlayerInfoSchema>;
 /**
- * Game Session Schema
- * Extends Thing to use core infrastructure
- */
-export declare const GameSessionSchema: z.ZodObject<{
-    id: z.ZodString;
-    soul: z.ZodString;
-    createdAt: z.ZodNumber;
-    updatedAt: z.ZodOptional<z.ZodNumber>;
-    public: z.ZodBoolean;
-    createdBy: z.ZodOptional<z.ZodString>;
-} & {
-    schema: z.ZodLiteral<"senterej/session">;
-    greenPlayer: z.ZodOptional<z.ZodObject<{
-        id: z.ZodString;
-        pub: z.ZodString;
-        name: z.ZodString;
-        joinedAt: z.ZodNumber;
-    }, "strip", z.ZodTypeAny, {
-        id: string;
-        pub: string;
-        name: string;
-        joinedAt: number;
-    }, {
-        id: string;
-        pub: string;
-        name: string;
-        joinedAt: number;
-    }>>;
-    goldPlayer: z.ZodOptional<z.ZodObject<{
-        id: z.ZodString;
-        pub: z.ZodString;
-        name: z.ZodString;
-        joinedAt: z.ZodNumber;
-    }, "strip", z.ZodTypeAny, {
-        id: string;
-        pub: string;
-        name: string;
-        joinedAt: number;
-    }, {
-        id: string;
-        pub: string;
-        name: string;
-        joinedAt: number;
-    }>>;
-    gameState: z.ZodString;
-    status: z.ZodEnum<["waiting", "playing", "ended"]>;
-}, "strip", z.ZodTypeAny, {
-    id: string;
-    createdAt: number;
-    soul: string;
-    schema: "senterej/session";
-    public: boolean;
-    status: "ended" | "waiting" | "playing";
-    gameState: string;
-    updatedAt?: number | undefined;
-    createdBy?: string | undefined;
-    greenPlayer?: {
-        id: string;
-        pub: string;
-        name: string;
-        joinedAt: number;
-    } | undefined;
-    goldPlayer?: {
-        id: string;
-        pub: string;
-        name: string;
-        joinedAt: number;
-    } | undefined;
-}, {
-    id: string;
-    createdAt: number;
-    soul: string;
-    schema: "senterej/session";
-    public: boolean;
-    status: "ended" | "waiting" | "playing";
-    gameState: string;
-    updatedAt?: number | undefined;
-    createdBy?: string | undefined;
-    greenPlayer?: {
-        id: string;
-        pub: string;
-        name: string;
-        joinedAt: number;
-    } | undefined;
-    goldPlayer?: {
-        id: string;
-        pub: string;
-        name: string;
-        joinedAt: number;
-    } | undefined;
-}>;
-export type GameSessionThing = z.infer<typeof GameSessionSchema>;
-/**
- * Helper to convert GameSessionThing to GameSession for backwards compatibility
+ * Game Session
+ * Represents a P2P game session in Gun
  */
 export interface GameSession {
     id: string;
@@ -124,6 +32,25 @@ export interface GameSession {
         gold?: PlayerInfo;
     };
     state: GameState;
+    status?: 'waiting' | 'playing' | 'ended';
 }
-export declare function thingToSession(thing: GameSessionThing): GameSession;
-export declare function sessionToThing(session: GameSession, soul: string): GameSessionThing;
+/**
+ * Game Session stored in Gun
+ * Uses JSON strings to avoid Gun serialization issues
+ */
+export interface GameSessionGunData {
+    id: string;
+    createdAt: number;
+    greenPlayer?: string;
+    goldPlayer?: string;
+    gameState: string;
+    status: 'waiting' | 'playing' | 'ended';
+}
+/**
+ * Convert Gun data to GameSession
+ */
+export declare function gunDataToSession(data: GameSessionGunData): GameSession;
+/**
+ * Convert GameSession to Gun data
+ */
+export declare function sessionToGunData(session: GameSession): GameSessionGunData;

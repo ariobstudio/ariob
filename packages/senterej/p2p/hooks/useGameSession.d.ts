@@ -1,6 +1,8 @@
+import type { GunInstance } from '@ariob/core';
 import type { Position } from '@ariob/senterej/engine';
 import type { GameSession } from '../schema';
 export interface UseGameSessionOptions {
+    graph: GunInstance;
     sessionId?: string;
     playerName: string;
 }

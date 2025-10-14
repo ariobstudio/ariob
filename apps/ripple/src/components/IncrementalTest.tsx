@@ -5,7 +5,7 @@
  */
 
 import { useState } from 'react';
-import { createGraph } from '@ariob/core';
+import { createGraph, Result } from '@ariob/core';
 import { Card, CardHeader, CardTitle, CardContent } from '@ariob/ui';
 import { Button, Column, Row, Text } from '@ariob/ui';
 
@@ -21,35 +21,55 @@ export function IncrementalTest() {
     setTestResults(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${result}`]);
   };
 
-  // Test 1: Direct Gun.set() - You said this works
-  const test1_DirectSet = () => {
-    addResult('Test 1: Direct gun.set()...');
-    graph.get('notes').set({
-      title: "Test Note " + Date.now(),
-      content: "This is a test",
-      createdAt: Date.now()
-    }, (ack: any) => {
-      if (ack.err) {
-        addResult(`❌ Test 1 FAILED: ${ack.err}`);
-      } else {
-        addResult(`✅ Test 1 PASSED: gun.set() worked!`);
-      }
+  // Test 1: Direct Gun.set() with Result pattern
+  const test1_DirectSet = async () => {
+    addResult('Test 1: Direct gun.set() with Result pattern...');
+
+    const result = await Result.fromAsync(() =>
+      new Promise<void>((resolve, reject) => {
+        graph.get('notes').set({
+          title: "Test Note " + Date.now(),
+          content: "This is a test",
+          createdAt: Date.now()
+        }, (ack: any) => {
+          if (ack.err) {
+            reject(new Error(ack.err));
+          } else {
+            resolve();
+          }
+        });
+      })
+    );
+
+    Result.match(result, {
+      ok: () => addResult(`✅ Test 1 PASSED: gun.set() worked with Result!`),
+      error: (err) => addResult(`❌ Test 1 FAILED: ${err.message}`)
     });
   };
 
-  // Test 2: Direct Gun.get().put()
-  const test2_DirectPut = () => {
-    addResult('Test 2: Direct gun.put()...');
+  // Test 2: Direct Gun.get().put() with Result pattern
+  const test2_DirectPut = async () => {
+    addResult('Test 2: Direct gun.put() with Result pattern...');
     const id = 'test-counter-' + Date.now();
-    graph.get(id).put({
-      value: 42,
-      timestamp: Date.now()
-    }, (ack: any) => {
-      if (ack.err) {
-        addResult(`❌ Test 2 FAILED: ${ack.err}`);
-      } else {
-        addResult(`✅ Test 2 PASSED: gun.put() worked!`);
-      }
+
+    const result = await Result.fromAsync(() =>
+      new Promise<void>((resolve, reject) => {
+        graph.get(id).put({
+          value: 42,
+          timestamp: Date.now()
+        }, (ack: any) => {
+          if (ack.err) {
+            reject(new Error(ack.err));
+          } else {
+            resolve();
+          }
+        });
+      })
+    );
+
+    Result.match(result, {
+      ok: () => addResult(`✅ Test 2 PASSED: gun.put() worked with Result!`),
+      error: (err) => addResult(`❌ Test 2 FAILED: ${err.message}`)
     });
   };
 

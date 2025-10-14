@@ -16,6 +16,7 @@ import { Board, GameInfo, MoveHistory } from '@ariob/senterej/ui';
 import { getValidMoves } from '@ariob/senterej/engine';
 import type { Position } from '@ariob/senterej/engine';
 import { useGameSession } from '@ariob/senterej/p2p';
+import { useGraph } from '../GraphContext';
 
 interface GameScreenProps {
   sessionId: string;
@@ -23,7 +24,9 @@ interface GameScreenProps {
 }
 
 export function GameScreen({ sessionId, onLeave }: GameScreenProps) {
+  const graph = useGraph();
   const { session, makeMove, leaveGame, localPlayer, error } = useGameSession({
+    graph,
     sessionId,
     playerName: 'Player',
   });

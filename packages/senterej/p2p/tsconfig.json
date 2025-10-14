@@ -6,6 +6,7 @@
     "declaration": true,
     "sourceMap": false,
     "declarationMap": false,
+    "composite": false,
     "jsx": "react-jsx",
     "skipLibCheck": true,
     "module": "ESNext",
