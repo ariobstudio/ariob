@@ -65,12 +65,16 @@ export function useGameSession(options: UseGameSessionOptions): UseGameSessionRe
   }, [session, userId]);
 
   const createGame = useCallback(async (): Promise<string | undefined> => {
+    console.log('[useGameSession] createGame called', { userId, playerName });
     setLoading(true);
     setError(null);
 
     try {
       const sessionId = `session-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      console.log('[useGameSession] Generated sessionId:', sessionId);
+
       const initialState = engineCreateGame();
+      console.log('[useGameSession] Created initial game state');
 
       const playerInfo: PlayerInfo = {
         id: userId,
@@ -78,24 +82,41 @@ export function useGameSession(options: UseGameSessionOptions): UseGameSessionRe
         name: playerName,
         joinedAt: Date.now(),
       };
+      console.log('[useGameSession] Player info:', playerInfo);
 
       // Create session reference
       const newSessionRef = graph.get('senterej').get('sessions').get(sessionId);
+      console.log('[useGameSession] Created Gun reference path: senterej/sessions/' + sessionId);
 
-      // Use useNode's put to store session data
-      const tempNode = { data: null, put: newSessionRef.put.bind(newSessionRef) } as any;
-
-      await tempNode.put({
+      const sessionData = {
         id: sessionId,
         createdAt: Date.now(),
         greenPlayer: JSON.stringify(playerInfo),
         gameState: JSON.stringify(initialState),
         status: 'waiting',
+      };
+      console.log('[useGameSession] Session data to store:', sessionData);
+
+      // Use Gun's put directly with callback
+      await new Promise<void>((resolve, reject) => {
+        console.log('[useGameSession] Calling Gun.put()...');
+        newSessionRef.put(sessionData, (ack: any) => {
+          console.log('[useGameSession] Gun.put() callback:', ack);
+          if (ack.err) {
+            console.error('[useGameSession] Gun.put() error:', ack.err);
+            reject(new Error(ack.err));
+          } else {
+            console.log('[useGameSession] Gun.put() success!');
+            resolve();
+          }
+        });
       });
 
+      console.log('[useGameSession] Setting currentSessionId to:', sessionId);
       setCurrentSessionId(sessionId);
       return sessionId;
     } catch (err) {
+      console.error('[useGameSession] createGame error:', err);
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);
       return undefined;

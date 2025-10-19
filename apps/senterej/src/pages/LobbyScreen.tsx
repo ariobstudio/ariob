@@ -24,9 +24,25 @@ interface LobbyScreenProps {
   onBack: () => void;
 }
 
+// Try creating Gun directly like in ripple app - LOCAL ONLY (no peers)
+import { createGraph } from '@ariob/core';
+const directGraph = createGraph({
+  localStorage: true
+  // NO peers - test local-only like IncrementalTest
+});
+(globalThis as any).gun = directGraph;
+
 export function LobbyScreen({ onGameStart, onBack }: LobbyScreenProps) {
   const graph = useGraph();
   const [playerName, setPlayerName] = React.useState('Player');
+
+  // Test direct graph
+  React.useEffect(() => {
+    console.log('[LobbyScreen] Testing direct graph...');
+    directGraph.get('direct-test').put({ test: 'direct', timestamp: Date.now() }, (ack: any) => {
+      console.log('[LobbyScreen] Direct graph ack:', ack);
+    });
+  }, []);
 
   const { createGame, session, loading, error } = useGameSession({
     graph,
@@ -38,9 +54,37 @@ export function LobbyScreen({ onGameStart, onBack }: LobbyScreenProps) {
   const [hasNavigated, setHasNavigated] = React.useState(false);
 
   const handleCreateGame = async () => {
-    if (!createGame || loading) return;
-    const id = await createGame();
-    if (!id) return;
+    console.log('[LobbyScreen] handleCreateGame called', { hasCreateGame: !!createGame, loading });
+    if (!createGame || loading) {
+      console.log('[LobbyScreen] Cannot create game - missing createGame or loading');
+      return;
+    }
+    try {
+      console.log('[LobbyScreen] Calling createGame()...');
+      console.log('[LobbyScreen] createGame function:', createGame);
+
+      // Direct Gun test - bypass the hook
+      console.log('[LobbyScreen] DIRECT GUN TEST - Writing to Gun directly...');
+      const testSessionId = `test-${Date.now()}`;
+      const testRef = graph.get('senterej').get('sessions').get(testSessionId);
+      await new Promise<void>((resolve, reject) => {
+        testRef.put({ id: testSessionId, test: 'direct write', timestamp: Date.now() }, (ack: any) => {
+          console.log('[LobbyScreen] Direct Gun.put() ack:', ack);
+          if (ack.err) reject(new Error(ack.err));
+          else resolve();
+        });
+      });
+      console.log('[LobbyScreen] DIRECT GUN TEST COMPLETE');
+
+      const id = await createGame();
+      console.log('[LobbyScreen] createGame() returned:', id);
+      if (!id) {
+        console.log('[LobbyScreen] No session ID returned');
+        return;
+      }
+    } catch (err) {
+      console.error('[LobbyScreen] Error in handleCreateGame:', err);
+    }
   };
 
   React.useEffect(() => {

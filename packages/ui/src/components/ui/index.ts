@@ -13,3 +13,11 @@ export { Icon, type IconProps } from './icon';
 export { Input } from './input';
 export { TextArea } from './textarea';
 export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants, tabsTriggerVariants } from './tabs';
+export {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetBody,
+} from './sheet';
