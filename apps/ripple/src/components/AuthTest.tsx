@@ -18,7 +18,7 @@ import { Input } from '@ariob/ui';
 // Create graph instance
 const graph = createGraph({
   peers: ['wss://localhost:8765/gun'],
-  localStorage: false
+  localStorage: true
 });
 
 export function AuthTest() {

@@ -58,7 +58,7 @@ const textVariants = cva('', {
 interface ButtonProps
   extends ViewProps,
     VariantProps<typeof buttonVariants> {
-  icon?: keyof typeof lucideGlyphs;
+  icon?: React.ReactNode;
   disabled?: boolean;
   onClick?: () => void;
 }
@@ -72,7 +72,7 @@ function Button({ className, variant, size, icon, onClick, disabled, children, .
       // disabled={disabled}
       {...props}
     >
-      {icon && <Icon className={cn(textVariants({ variant }))} name={icon} />}
+      {icon && icon as React.ReactNode}
       {children && (
         <text className={cn(textVariants({ variant, size, className }))}>
           {children}

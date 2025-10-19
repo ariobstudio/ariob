@@ -3,7 +3,7 @@ import lucideGlyphs from '../../lib/lucide.json';
 import { cn } from '../../lib/utils';
 import { type VariantProps, cva } from 'class-variance-authority';
 
-const iconVariants = cva('flex items-center justify-center', {
+const iconVariants = cva('', {
   variants: {
     size: {
       default: 'text-base',
@@ -21,10 +21,9 @@ export type IconProps = {
   name: keyof typeof lucideGlyphs;
   size?: VariantProps<typeof iconVariants>['size'];
   className?: string;
-  style?: React.CSSProperties;
 };
 
-export const Icon = ({ name, size, className, style, ...props }: IconProps & TextProps) => {
+export const Icon = ({ name, size, className, ...props }: IconProps & TextProps) => {
   const glyphCode = lucideGlyphs[name];
   const glyph = glyphCode ? String.fromCodePoint(glyphCode) : '?';
   return (
@@ -33,6 +32,7 @@ export const Icon = ({ name, size, className, style, ...props }: IconProps & Tex
       style={{
         fontFamily: 'Icon',
         lineHeight: 1,
+        textAlign: 'center',
       }}
       {...props}
     >

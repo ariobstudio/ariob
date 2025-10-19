@@ -12,6 +12,8 @@ export { useNode } from './hooks/useNode';
 export { useSet } from './hooks/useSet';
 export { useAuth } from './hooks/useAuth';
 export { useKeys } from './hooks/useKeys';
+export { default as useTapLock } from './hooks/useTapLock';
+export { default as useDragWithIntersection } from './hooks/useDragWithIntersection';
 
 // Store
 export { useAuthStore } from './store/auth';
@@ -58,5 +60,15 @@ export type {
 export type {
   UserInfo
 } from './store/auth';
+
+export type {
+  TapLockDirection,
+  UseTapLockOptions
+} from './hooks/useTapLock';
+
+export type {
+  DragState,
+  UseDragWithIntersectionOptions
+} from './hooks/useDragWithIntersection';
 
 export { z } from 'zod';

@@ -3450,6 +3450,7 @@
   USE((module) => {
     var Gun = USE('./root');
     Gun.Mesh = USE('./mesh');
+  
 
     // TODO: resync upon reconnect online/offline
     //window.ononline = window.onoffline = function(){ console.log('online?', navigator.onLine) }
@@ -3538,6 +3539,7 @@
       u;
   })(USE, './websocket');
   USE((module) => {
+    'background only';
     if (typeof Gun === 'undefined') {
       return;
     }
@@ -3546,7 +3548,29 @@
       store,
       u;
     try {
-      store = NativeModules.NativeLocalStorageModule;
+      var nativeStore = NativeModules.NativeLocalStorageModule;
+      // Polyfill native module to match localStorage API
+      if (nativeStore) {
+        var cache = {};
+        store = {
+          setItem: function (k, v) {
+            cache[k] = v;
+            nativeStore.setStorageItem(k, v);
+          },
+          removeItem: function (k) {
+            delete cache[k];
+            nativeStore.setStorageItem(k, '');
+          },
+          getItem: function (k) {
+            if (cache[k] !== u) return cache[k];
+            // Initialize from native storage
+            nativeStore.getStorageItem(k, function(v) {
+              cache[k] = v;
+            });
+            return cache[k] || null;
+          },
+        };
+      }
     } catch (e) {}
     if (!store) {
       Gun.log('Warning: No localStorage exists to persist data to!');
@@ -3600,7 +3624,7 @@
       try {
         disk = lg[opt.prefix] =
           lg[opt.prefix] ||
-          JSON.parse((size = store.getStorageItem(opt.prefix))) ||
+          JSON.parse((size = store.getItem(opt.prefix))) ||
           {}; // TODO: Perf! This will block, should we care, since limited to 5MB anyways?
       } catch (e) {
         disk = lg[opt.prefix] = {};
@@ -3668,7 +3692,7 @@
         acks = [];
         json(disk, (err, tmp) => {
           try {
-            !err && store.setStorageItem(opt.prefix, tmp);
+            !err && store.setItem(opt.prefix, tmp);
           } catch (e) {
             err = stop = e || 'localStorage failure';
           }

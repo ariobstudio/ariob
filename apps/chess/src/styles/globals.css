@@ -55,6 +55,55 @@
       hsl(0 0% 10.1961% / 0.1);
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 10.1961% / 0.25);
     --tracking-normal: 0.025em;
+
+    /* ========================================
+       Senterej Theme - Indigo Color Palette
+       ======================================== */
+
+    /* Board Colors */
+    --board-light: #c7d2fe;        /* indigo-200 */
+    --board-dark: #818cf8;         /* indigo-400 */
+
+    /* Highlight Colors */
+    --highlight-last-move: rgba(165, 180, 252, 0.5);     /* indigo-300 with 50% opacity */
+    --highlight-selection: rgba(99, 102, 241, 0.35);     /* indigo-500 with 35% opacity */
+    --highlight-valid-move: rgba(79, 70, 229, 0.25);     /* indigo-600 with 25% opacity */
+    --highlight-capture: rgba(79, 70, 229, 0.4);         /* indigo-600 with 40% opacity */
+
+    /* UI Colors */
+    --ui-header-bg: #4f46e5;       /* indigo-600 */
+    --ui-header-border: #4338ca;   /* indigo-700 */
+    --ui-header-text: #ffffff;
+    --ui-header-subtitle: #e0e7ff; /* indigo-100 */
+    --ui-bg: #f9fafb;              /* gray-50 */
+    --ui-border: #e5e7eb;          /* gray-200 */
+
+    /* Button Colors */
+    --btn-primary-bg: #ffffff;
+    --btn-primary-text: #4f46e5;   /* indigo-600 */
+    --btn-primary-hover: #eef2ff;  /* indigo-50 */
+    --btn-info-bg: #6366f1;        /* indigo-500 */
+    --btn-info-hover: #818cf8;     /* indigo-400 */
+
+    /* Status Colors */
+    --status-check-bg: #fffbeb;    /* amber-50 */
+    --status-check-border: #fde68a; /* amber-200 */
+    --status-check-text: #b45309;  /* amber-700 */
+    --status-check-icon: #f59e0b;  /* amber-500 */
+    --status-win-icon: #6366f1;    /* indigo-500 */
+    --status-win-text: #4f46e5;    /* indigo-600 */
+
+    /* Dialog Colors */
+    --dialog-overlay: rgba(0, 0, 0, 0.6);
+    --dialog-bg: #ffffff;
+    --dialog-border: #e5e7eb;      /* gray-200 */
+    --dialog-accent-bg: #eef2ff;   /* indigo-50 */
+    --dialog-accent-border: #e0e7ff; /* indigo-100 */
+    --dialog-section-bg: #f9fafb;  /* gray-50 */
+
+    /* Shadow */
+    --shadow-board: 0 4px 20px rgba(79, 70, 229, 0.15);
+    --shadow-dialog: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
 
   .dark {
@@ -172,7 +221,84 @@
   }
 }
 
-/* Sheet/Bottom Sheet animations */
+/* Chess piece animations - smooth and subtle - chess.com inspired */
+@keyframes pieceAppear {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pieceMove {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  25% {
+    transform: scale(1.12) translateY(-4px);
+  }
+  50% {
+    transform: scale(1.08) translateY(-2px);
+  }
+  75% {
+    transform: scale(1.02) translateY(0);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pieceSelect {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1.03);
+  }
+}
+
+/* Drag animations - smooth piece interactions */
+@keyframes pieceLift {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0.9;
+  }
+}
+
+@keyframes pieceDrop {
+  0% {
+    transform: scale(1.15);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes squarePulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Bottom sheet animations */
 @keyframes slideUp {
   from {
     transform: translateY(100%);
@@ -188,24 +314,6 @@
   }
   to {
     transform: translateY(100%);
-  }
-}
-
-@keyframes slideDownIn {
-  from {
-    transform: translateY(-100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideUpOut {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-100%);
   }
 }
 

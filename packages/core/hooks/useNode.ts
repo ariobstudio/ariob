@@ -76,15 +76,23 @@ export function useNode<T = any>(
     setIsLoading(true);
     setError(null);
 
+    console.log('[useNode] Setting up subscription for ref');
+
     if (!ref) {
+      console.log('[useNode] No ref provided, skipping subscription');
       setIsLoading(false);
       setData(null);
       return;
     }
 
     // Subscribe to node updates
-    const unsubscribe = ref.on(async (nodeData: any) => {
-      if (!isMountedRef.current) return;
+    console.log('[useNode] Calling ref.on()...');
+    ref.on(async (nodeData: any) => {
+      console.log('[useNode] Data received:', nodeData);
+      if (!isMountedRef.current) {
+        console.log('[useNode] Component unmounted, ignoring data');
+        return;
+      }
 
       try {
         // Handle null/undefined data
@@ -128,11 +136,12 @@ export function useNode<T = any>(
       }
     });
 
-    // Cleanup function
+    // Cleanup function - Gun's .on() returns the chain, call .off() on ref
     return () => {
+      console.log('[useNode] Cleanup - unsubscribing from ref');
       isMountedRef.current = false;
-      if (unsubscribe && typeof unsubscribe.off === 'function') {
-        unsubscribe.off();
+      if (ref && typeof ref.off === 'function') {
+        ref.off();
       }
     };
   }, [ref, keys]);

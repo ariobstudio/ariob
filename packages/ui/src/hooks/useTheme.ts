@@ -13,6 +13,7 @@ const applyThemeClass = (theme: Theme) => {
   // @ts-ignore lynx is provided by runtime
   if (typeof lynx === 'undefined') return;
 
+  // @ts-ignore lynx is provided by runtime
   const isDark = theme === 'Dark' || (theme === 'Auto' && lynx.__globalProps?.theme === 'Dark');
 
   // @ts-ignore lynx is provided by runtime
