@@ -73,6 +73,7 @@ function Scrollable({
   showScrollbar,
   onScrollEnd,
   onScrollStart,
+  children,
   ...props
 }: ScrollableProps) {
   // Determine scroll direction props based on direction variant
@@ -107,7 +108,7 @@ function Scrollable({
       bindscrollend={onScrollEnd}
       {...props}
     >
-      {props.children}
+      {children}
     </scroll-view>
   );
 }

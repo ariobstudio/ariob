@@ -4,7 +4,9 @@ type Theme = 'Light' | 'Dark' | 'Auto';
 
 interface ThemeState {
   currentTheme: Theme;
+  theme: 'light' | 'dark';
   setTheme: (theme: Theme) => void;
+  toggleTheme: () => void;
   withTheme: <T>(light: T, dark: T) => T;
   isDarkMode: () => boolean;
 }
@@ -29,6 +31,10 @@ const applyThemeClass = (theme: Theme) => {
 export const useTheme = create<ThemeState>((set, get) => ({
   currentTheme: 'Auto',
 
+  get theme() {
+    return get().isDarkMode() ? 'dark' : 'light';
+  },
+
   setTheme: (theme: Theme) => {
     const { currentTheme } = get();
     if (currentTheme === theme) {
@@ -38,6 +44,12 @@ export const useTheme = create<ThemeState>((set, get) => ({
     set({ currentTheme: theme });
     applyThemeClass(theme);
     NativeModules.ExplorerModule.saveThemePreferences('preferredTheme', theme);
+  },
+
+  toggleTheme: () => {
+    const { currentTheme } = get();
+    const newTheme = currentTheme === 'Dark' ? 'Light' : 'Dark';
+    get().setTheme(newTheme);
   },
 
   withTheme: <T>(light: T, dark: T): T => {

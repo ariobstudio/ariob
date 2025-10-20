@@ -89,6 +89,63 @@ declare module '@lynx-js/types' {
     isNotchScreen: boolean;
   }
 
+  interface TextProps extends StandardProps {
+    children?: React.ReactNode;
+    className?: string;
+  }
+
+  interface ViewProps extends StandardProps {
+    children?: React.ReactNode;
+    className?: string;
+  }
+
+  interface InputProps extends StandardProps {
+    value?: string;
+    placeholder?: string;
+    disabled?: boolean;
+    type?: string;
+    keyboardAvoid?: boolean;
+    bindinput?: (e: BaseEvent) => void;
+    bindblur?: (e: BaseEvent) => void;
+    bindfocus?: (e: BaseEvent) => void;
+  }
+
+  interface TextAreaProps extends StandardProps {
+    value?: string;
+    placeholder?: string;
+    disabled?: boolean;
+    rows?: number;
+    bindinput?: (e: BaseEvent) => void;
+    bindblur?: (e: BaseEvent) => void;
+    bindfocus?: (e: BaseEvent) => void;
+    'auto-height'?: boolean;
+  }
+
+  interface ImageProps extends StandardProps {
+    src?: string;
+    alt?: string;
+    className?: string;
+  }
+
+  interface ScrollViewProps extends StandardProps {
+    children?: React.ReactNode;
+    className?: string;
+    bindscroll?: (e: BaseEvent) => void;
+    bindscrollend?: (e: BaseEvent) => void;
+  }
+
+  interface ListProps extends StandardProps {
+    children?: React.ReactNode;
+    className?: string;
+    bindscroll?: (e: BaseEvent) => void;
+    bindscrollend?: (e: BaseEvent) => void;
+  }
+
+  interface PageProps extends StandardProps {
+    children?: React.ReactNode;
+    className?: string;
+  }
+
   interface IntrinsicElements extends Lynx.IntrinsicElements {
     input: InputProps;
     textarea: TextAreaProps;
@@ -96,7 +153,8 @@ declare module '@lynx-js/types' {
     image: ImageProps;
     scrollview: ScrollViewProps;
     view: ViewProps;
-
+    list: ListProps;
+    page: PageProps;
   }
 }
 

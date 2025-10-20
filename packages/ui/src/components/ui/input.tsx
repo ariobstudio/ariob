@@ -13,14 +13,21 @@ interface InputProps extends Omit<NativeInputProps, 'disabled' | 'type'> {
 }
 
 function Input({ className, type = 'text', onChange, onBlur, onFocus, ...props }: InputProps) {
+  const handleInput = (e: any) => {
+    'background only';
+    if (onChange) {
+      onChange(e.detail.value);
+    }
+  };
+
   return (
     <input
       type={type}
       className={cn(
-        'border-input flex w-full min-w-0 rounded-none border bg-transparent px-3 py-1 text-base shadow-xs transition-colors outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 text-foreground placeholder:text-muted-foreground placeholder:opacity-60',
+        'border-input flex h-11 w-full min-w-0 rounded-lg border bg-transparent px-3 py-2 text-base shadow-xs transition-colors outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 text-foreground placeholder:text-muted-foreground placeholder:opacity-60',
         className,
       )}
-      bindinput={onChange ? (e: any) => onChange(e.detail.value) : undefined}
+      bindinput={handleInput}
       bindblur={onBlur}
       bindfocus={onFocus}
       {...props}

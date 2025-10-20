@@ -1,36 +1,117 @@
-import { useTheme, Tabs, TabsList, TabsTrigger, TabsContent, Column } from '@ariob/ui';
-import { AuthTest } from './components/AuthTest';
-import { CrudTest } from './components/CrudTest';
-import { IncrementalTest } from './components/IncrementalTest';
+import { useState, useEffect } from '@lynx-js/react';
+import { graph, useAuth } from '@ariob/core';
+import { Column, Text, useTheme } from '@ariob/ui';
+import { Welcome } from './screens/Welcome';
+import { CreateAccount } from './screens/CreateAccount';
+import { Login } from './screens/Login';
+import { Chat } from './screens/Chat';
+
+type Screen = 'welcome' | 'create-account' | 'login' | 'chat';
 
 export function App() {
+  const g = graph();
+  const { isLoggedIn, recall } = useAuth(g);
+  const [currentScreen, setCurrentScreen] = useState<Screen>('welcome');
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  // Auto-login: Check for stored keys on mount
+  useEffect(() => {
+    'background only';
+    const attemptAutoLogin = async () => {
+      console.log('[App] Checking for stored session...');
+      const result = await recall();
+
+      if (result.ok) {
+        console.log('[App] ✓ Auto-login successful');
+        setCurrentScreen('chat');
+      } else {
+        console.log('[App] No stored session, showing welcome screen');
+      }
+
+      setIsCheckingAuth(false);
+    };
+
+    attemptAutoLogin();
+  }, [recall]);
+
+  // Navigate to chat when logged in
+  const handleAuthSuccess = () => {
+    'background only';
+    setCurrentScreen('chat');
+  };
+
+  // Show loading state while checking for stored session
   const { withTheme } = useTheme();
+  if (isCheckingAuth) {
+    return (
+      <page className={withTheme('bg-background w-full h-full', 'dark bg-background w-full h-full')}>
+        <Column className="w-full h-full items-center justify-center" spacing="md">
+          <Text variant="muted" size="sm">
+            Loading...
+          </Text>
+        </Column>
+      </page>
+    );
+  }
 
-  return (
-    <page className={
-      withTheme("bg-background pt-safe-top w-full h-full", "dark bg-background pt-safe-top w-full h-full")
-    }>
-      <Column className="w-full h-full">
-        <Tabs defaultValue="test" className="w-full h-full">
-          <TabsList className="mx-4 mt-4">
-            <TabsTrigger value="test">Test</TabsTrigger>
-            <TabsTrigger value="auth">Auth</TabsTrigger>
-            <TabsTrigger value="crud">CRUD</TabsTrigger>
-          </TabsList>
+  // If logged in, show chat directly
+  if (isLoggedIn) {
+    return (
+      <Chat
+        onLogout={() => {
+          'background only';
+          setCurrentScreen('welcome');
+        }}
+      />
+    );
+  }
 
-          <TabsContent value="test">
-            <IncrementalTest />
-          </TabsContent>
+  // Otherwise, show onboarding flow
+  switch (currentScreen) {
+    case 'create-account':
+      return (
+        <CreateAccount
+          onBack={() => {
+            'background only';
+            setCurrentScreen('welcome');
+          }}
+          onSuccess={handleAuthSuccess}
+        />
+      );
 
-          <TabsContent value="auth">
-            <AuthTest />
-          </TabsContent>
+    case 'login':
+      return (
+        <Login
+          onBack={() => {
+            'background only';
+            setCurrentScreen('welcome');
+          }}
+          onSuccess={handleAuthSuccess}
+        />
+      );
 
-          <TabsContent value="crud">
-            <CrudTest />
-          </TabsContent>
-        </Tabs>
-      </Column>
-    </page>
-  )
+    case 'chat':
+      return (
+        <Chat
+          onLogout={() => {
+            'background only';
+            setCurrentScreen('welcome');
+          }}
+        />
+      );
+
+    default:
+      return (
+        <Welcome
+          onCreateAccount={() => {
+            'background only';
+            setCurrentScreen('create-account');
+          }}
+          onLogin={() => {
+            'background only';
+            setCurrentScreen('login');
+          }}
+        />
+      );
+  }
 }

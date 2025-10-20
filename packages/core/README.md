@@ -3,12 +3,12 @@
 <div align="center">
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
-[![Gun.js](https://img.shields.io/badge/Gun.js-2C3E50?style=for-the-badge&logo=javascript&logoColor=white)](https://gun.eco/)
+[![Gun.js](https://img.shields.io/badge/Gun.js-1E1E1E?style=for-the-badge&logo=javascript&logoColor=white)](https://gun.eco/)
+[![Zustand](https://img.shields.io/badge/Zustand-443E38?style=for-the-badge&logo=react&logoColor=white)](https://zustand-demo.pmnd.rs/)
 
-A minimal, type-safe Gun.js wrapper for React applications.
+Minimal, modular Gun.js primitives for LynxJS applications with Result-based error handling.
 
-[Quick Start](#-quick-start) • [API Reference](#-api-reference) • [Examples](#-examples) • [Documentation](#-documentation)
+[Quick Start](#-quick-start) • [Core Primitives](#-core-primitives) • [API Reference](#-api-reference) • [Examples](#-examples) • [Architecture](#-architecture)
 
 </div>
 
@@ -16,30 +16,38 @@ A minimal, type-safe Gun.js wrapper for React applications.
 
 ## 🎯 Overview
 
-**@ariob/core** is a minimal wrapper around Gun.js that provides a type-safe, React-friendly API for building decentralized real-time applications.
+**@ariob/core** is a radically simplified Gun.js wrapper that distills distributed data synchronization into 8 minimal, composable primitives. Built for LynxJS applications, it embraces functional programming principles with Result monads, opt-in persistence, and background-thread safety.
 
 ### Why @ariob/core?
 
-- **🎨 Simple & Clean**: Minimal abstraction over Gun.js primitives
-- **🔒 Type-Safe**: Full TypeScript support with generic types
-- **⚡ Real-time**: Automatic synchronization across devices
-- **🔐 Encrypted**: Optional end-to-end encryption with SEA
-- **🪝 Hook-Based**: Convex-inspired React hooks for ergonomic data access
-- **🌐 Decentralized**: Peer-to-peer by nature, no central server required
+- **🎯 Minimal API** — 8 core primitives, one-word function names following Gun conventions
+- **🔒 Type-Safe** — Full TypeScript support with Zod schema validation
+- **⚡ Result Monad** — Explicit error handling with `Result<T, E>` pattern
+- **📦 Modular** — Import only what you need, zero coupling
+- **🧵 Thread-Safe** — Lazy-loaded SEA for background thread compatibility
+- **💾 Opt-in Persistence** — Zustand middleware for localStorage control
+- **🎨 React-Ready** — Simple hooks for UI integration
+- **🔐 Cryptography** — Full SEA support (pair/sign/verify/encrypt/decrypt)
 
 ## ✨ Features
 
-- **Graph API** — `createGraph()` for Gun instance creation
-- **Single Nodes** — `useNode()` for individual data points
-- **Collections** — `useSet()` for managing arrays/lists
-- **Authentication** — `useAuth()` for user management
-- **Encryption** — `useKeys()` for automatic encryption/decryption
-- **Result Type** — Type-safe error handling with `Result<T, E>`
-- **SEA Cryptography** — Full SEA API with Result-based helpers
-- **Validation** — Zod integration for schema validation
-- **Real-time Sync** — Automatic updates across all connected peers
-- **TypeScript** — Complete type safety with generics
-- **Zero Config** — Works out of the box with sensible defaults
+### Core Capabilities
+- **Schema Validation** — Zod-based Thing & Who schemas with generic extensions
+- **Graph Management** — Singleton + instance pattern for Gun instances
+- **Node Operations** — CRUD for single objects with schema validation
+- **Collection Management** — Sets/maps with typed items and subscriptions
+- **Cryptography** — All SEA functions wrapped in Result monad
+- **Authentication** — Create/login/logout/recall with keypair management
+- **Error Handling** — Result type for composable error handling
+- **Background Safety** — SEA lazy-loaded for thread isolation
+
+### Design Philosophy
+- **One Word Functions** — `pair()`, `sign()`, `verify()`, `encrypt()`, `decrypt()`
+- **Result-Oriented** — All operations return `Result<T, Error>`
+- **Schema-First** — Validate with Zod before Gun operations
+- **Immutable State** — Zustand stores never mutate
+- **Lazy Everything** — Gun/SEA loaded only when needed
+- **No Magic** — Explicit over implicit, simple over clever
 
 ## 📦 Installation
 
@@ -54,1176 +62,1347 @@ npm install @ariob/core
 yarn add @ariob/core
 ```
 
+### Prerequisites
+
+- `@lynx-js/react` (peer dependency)
+- `zustand` ^5.0.2
+- `zod` ^3.23.8
+- Gun.js (included)
+
 ## 🚀 Quick Start
 
-```typescript
-import { createGraph, useNode, useSet, useAuth } from '@ariob/core';
+### 30-Second Example
 
-// 1. Create a graph instance
-const graph = createGraph({
-  peers: ['https://gun-relay.example.com/gun'], // Optional peer servers
-  localStorage: true // Optional persistence
+```typescript
+import {
+  graph, node, collection, auth, pair, Result,
+  Thing, Who, z
+} from '@ariob/core';
+
+// 1. Schema - Define your data types
+const TodoSchema = Thing.extend({
+  title: z.string(),
+  done: z.boolean()
 });
 
-// 2. Use in your React components
-function TodoApp() {
-  const { user, isLoggedIn, login } = useAuth(graph);
-  const todosRef = graph.user().get('todos');
-  const { items, add, update, remove } = useSet(todosRef);
+// 2. Graph - Get the singleton instance
+const g = graph();
 
-  const handleAddTodo = async () => {
-    await add({
-      title: 'Learn @ariob/core',
-      done: false,
-      createdAt: Date.now()
-    });
-  };
+// 3. Node - Single object management
+const todoNode = node('todo-1');
+const ref = g.get('todos').get('todo-1');
+todoNode.on(ref, TodoSchema);
 
-  return (
-    <div>
-      {isLoggedIn ? (
-        <>
-          <h1>Hello, {user.alias}!</h1>
-          <button onClick={handleAddTodo}>Add Todo</button>
-          <ul>
-            {items.map(({ id, data }) => (
-              <li key={id}>
-                <input
-                  type="checkbox"
-                  checked={data.done}
-                  onChange={() => update(id, { done: !data.done })}
-                />
-                {data.title}
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : (
-        <button onClick={() => login('alice', 'password123')}>
-          Login
-        </button>
-      )}
-    </div>
-  );
+// Later in your component
+const todo = todoNode.get(); // { title: string, done: boolean } | null
+
+// 4. Collection - Sets/maps management
+const todoColl = collection('todos');
+todoColl.map(g.get('todos'), TodoSchema);
+
+const todos = todoColl.get(); // Item<Todo>[]
+
+// 5. Crypto - Generate keypair
+const pairResult = await pair();
+if (pairResult.ok) {
+  const keys = pairResult.value; // { pub, priv, epub, epriv }
 }
-```
 
-> ★ **Insight**: Think of Gun as a graph database where every node has a unique path. `useNode()` subscribes to a single node, while `useSet()` subscribes to all children of a node, perfect for collections.
-
-## 📚 API Reference
-
-### createGraph()
-
-Factory function to create a Gun instance.
-
-```typescript
-const graph = createGraph(options?: GunOptions)
-```
-
-**Options:**
-- `peers?: string[]` — Relay server URLs for peer-to-peer sync
-- `localStorage?: boolean` — Enable browser persistence (default: false)
-- `radisk?: boolean` — Enable RadixDB storage adapter (default: false)
-
-**Examples:**
-
-```typescript
-// Local-only (no sync)
-const graph = createGraph();
-
-// With peer sync
-const graph = createGraph({
-  peers: ['wss://gun-relay.example.com/gun']
+// 6. Auth - Create account
+const result = await auth(g).create('alice');
+await Result.match(result, {
+  ok: (user) => console.log('Created:', user.alias),
+  error: (err) => console.error('Failed:', err.message)
 });
 
-// With persistence
-const graph = createGraph({
-  localStorage: true
-});
-```
-
----
-
-### useNode()
-
-Hook for single node operations. Subscribes to real-time updates.
-
-```typescript
-const result = useNode<T>(ref: GunNode, keys?: KeyPair)
-```
-
-**Returns:**
-- `data: T | null` — Current node data
-- `put: (data: Partial<T> | null) => Promise<void>` — Update node
-- `remove: () => Promise<void>` — Delete node
-- `isLoading: boolean` — Loading state
-- `error: Error | null` — Error state
-
-**Examples:**
-
-```typescript
-// Read and update a user profile
-interface Profile {
-  name: string;
-  bio: string;
-  avatar?: string;
-}
-
-function UserProfile() {
-  const graph = createGraph();
-  const profileRef = graph.user().get('profile');
-  const { data, put, isLoading } = useNode<Profile>(profileRef);
-
-  const updateName = async (name: string) => {
-    await put({ name });
-  };
-
-  if (isLoading) return <div>Loading...</div>;
-
-  return (
-    <div>
-      <h1>{data?.name}</h1>
-      <p>{data?.bio}</p>
-      <button onClick={() => updateName('Alice')}>
-        Update Name
-      </button>
-    </div>
-  );
-}
-```
-
-```typescript
-// With encryption
-const keys = useKeys();
-const secretRef = graph.user().get('secrets');
-const { data, put } = useNode(secretRef, keys);
-
-// Data is automatically encrypted when written
-await put({ apiKey: 'secret123' });
-
-// And automatically decrypted when read
-console.log(data.apiKey); // 'secret123'
-```
-
----
-
-### useSet()
-
-Hook for collection operations. Manages arrays of items with real-time sync.
-
-```typescript
-const result = useSet<T>(ref: GunNode, keys?: KeyPair)
-```
-
-**Returns:**
-- `items: Array<{ id: string, data: T }>` — Collection items
-- `add: (data: T, id?: string) => Promise<void>` — Add new item
-- `update: (id: string, data: Partial<T>) => Promise<void>` — Update item
-- `remove: (id: string) => Promise<void>` — Remove item
-- `isLoading: boolean` — Loading state
-- `error: Error | null` — Error state
-
-**Examples:**
-
-```typescript
-// Manage a todo list
-interface Todo {
-  title: string;
-  done: boolean;
-  createdAt: number;
-}
-
-function TodoList() {
-  const graph = createGraph();
-  const todosRef = graph.get('todos');
-  const { items, add, update, remove } = useSet<Todo>(todosRef);
-
-  const addTodo = async (title: string) => {
-    await add({
-      title,
-      done: false,
-      createdAt: Date.now()
-    });
-  };
-
-  return (
-    <div>
-      <button onClick={() => addTodo('New task')}>Add Todo</button>
-      <ul>
-        {items.map(({ id, data }) => (
-          <li key={id}>
-            <input
-              type="checkbox"
-              checked={data.done}
-              onChange={() => update(id, { done: !data.done })}
-            />
-            {data.title}
-            <button onClick={() => remove(id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-```
-
-> ★ **Insight**: The `items` array is sorted by Gun's internal ordering. For custom sorting, use standard JavaScript array methods: `[...items].sort((a, b) => a.data.createdAt - b.data.createdAt)`.
-
----
-
-### useAuth()
-
-Hook for authentication management with Gun SEA.
-
-```typescript
-const auth = useAuth(graph: Gun)
-```
-
-**Returns:**
-- `user: UserInfo | null` — Current user info (pub, epub, alias)
-- `isLoggedIn: boolean` — Login status
-- `keys: KeyPair | null` — User's cryptographic keys
-- `login: (alias: string, password: string) => Promise<void>` — Login with credentials
-- `loginWithKeys: (pair: KeyPair) => Promise<void>` — Login with key pair
-- `create: (alias: string, password: string) => Promise<void>` — Create new user
-- `logout: () => void` — Logout current user
-
-**Examples:**
-
-```typescript
-// Traditional authentication
-function LoginForm() {
-  const graph = createGraph();
-  const { login, create, isLoggedIn, user } = useAuth(graph);
-  const [alias, setAlias] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleLogin = async () => {
-    try {
-      await login(alias, password);
-      console.log('Logged in as', user?.alias);
-    } catch (error) {
-      console.error('Login failed:', error);
-    }
-  };
-
-  const handleSignup = async () => {
-    try {
-      await create(alias, password);
-      console.log('Account created!');
-    } catch (error) {
-      console.error('Signup failed:', error);
-    }
-  };
-
-  if (isLoggedIn) {
-    return <div>Welcome, {user?.alias}!</div>;
-  }
-
-  return (
-    <div>
-      <input value={alias} onChange={e => setAlias(e.target.value)} />
-      <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-      <button onClick={handleLogin}>Login</button>
-      <button onClick={handleSignup}>Sign Up</button>
-    </div>
-  );
-}
-```
-
-```typescript
-// Key-based authentication
-function KeyAuth() {
-  const graph = createGraph();
-  const { loginWithKeys, logout, isLoggedIn } = useAuth(graph);
-
-  const handleImportKeys = async (file: File) => {
-    const text = await file.text();
-    const keys = JSON.parse(text);
-    await loginWithKeys(keys);
-  };
-
-  return isLoggedIn ? (
-    <button onClick={logout}>Logout</button>
-  ) : (
-    <input type="file" onChange={e => handleImportKeys(e.target.files[0])} />
-  );
-}
-```
-
----
-
-### useKeys()
-
-Hook for cryptographic key generation. Used for encryption/decryption.
-
-```typescript
-const keys = useKeys(existingKeys?: KeyPair)
-```
-
-**Returns:** `KeyPair | null` — Generated or provided key pair
-
-**Examples:**
-
-```typescript
-// Generate new keys
-function KeyManager() {
-  const keys = useKeys();
-
-  const exportKeys = () => {
-    const json = JSON.stringify(keys);
-    const blob = new Blob([json], { type: 'application/json' });
-    // ... download logic
-  };
-
-  return (
-    <div>
-      <p>Public Key: {keys?.pub.slice(0, 20)}...</p>
-      <button onClick={exportKeys}>Export Keys</button>
-    </div>
-  );
-}
-```
-
-```typescript
-// Use existing keys
-function EncryptedData() {
-  const savedKeys = loadKeysFromStorage();
-  const keys = useKeys(savedKeys);
-
-  const dataRef = graph.user().get('encrypted-data');
-  const { data, put } = useNode(dataRef, keys);
-
-  // Data is automatically encrypted/decrypted
-  await put({ secret: 'confidential' });
-}
-```
-
----
-
-### Result Type System
-
-Type-safe error handling inspired by Rust's `Result<T, E>`. Makes errors explicit in function signatures.
-
-```typescript
-import { Result, isOk, isErr } from '@ariob/core';
-```
-
-**Core Functions:**
-
-- `Result.ok(value)` — Create successful result
-- `Result.error(error)` — Create error result
-- `Result.parse(schema, data)` — Validate with Zod schema
-- `Result.match(result, { ok, error })` — Pattern matching
-- `Result.map(result, fn)` — Transform success value
-- `Result.chain(result, fn)` — Chain operations
-- `Result.all(results)` — Combine multiple results
-- `isOk(result)` — Type guard for success
-- `isErr(result)` — Type guard for error
-
-**Examples:**
-
-```typescript
-import { Result } from '@ariob/core';
-import { z } from 'zod';
-
-// Validation with Zod
-const UserSchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  age: z.number().min(18)
-});
-
-function validateUser(data: unknown) {
-  const result = Result.parse(UserSchema, data);
-
-  if (result.ok) {
-    console.log('Valid user:', result.value);
-    // TypeScript knows result.value is User
-  } else {
-    console.error('Validation failed:', result.error.issues);
-    // TypeScript knows result.error is ZodError
-  }
-}
-
-// Pattern matching
-const result = Result.parse(UserSchema, userData);
-
-Result.match(result, {
-  ok: (user) => console.log('Welcome', user.name),
-  error: (err) => console.error('Invalid:', err.issues)
-});
-
-// Transform values
-const ageResult = Result.map(result, (user) => user.age);
-
-// Chain operations
-const encrypted = Result.chain(
-  Result.parse(UserSchema, data),
-  (user) => encrypt(user, keys)
-);
-
-// Combine multiple results
-const results = Result.all([
-  Result.parse(schema1, data1),
-  Result.parse(schema2, data2),
-  Result.parse(schema3, data3)
-]);
-
-if (results.ok) {
-  const [val1, val2, val3] = results.value;
-}
-```
-
-> ★ **Insight**: Result types make errors explicit and type-safe. Unlike try-catch, you can't forget to handle errors—TypeScript forces you to check `result.ok` before accessing the value.
-
----
-
-### SEA Cryptography
-
-Complete Gun SEA (Security, Encryption, Authorization) API with Result-based error handling.
-
-```typescript
-import { encrypt, decrypt, work, secret, sign, verify, pair, certify } from '@ariob/core';
-```
-
-#### encrypt()
-
-Encrypts data using SEA encryption.
-
-```typescript
-const result = await encrypt(data: any, keys: KeyPair): Promise<Result<any, Error>>
-```
-
-**Example:**
-
-```typescript
-const keys = await pair();
-const encrypted = await encrypt({ secret: 'confidential' }, keys.value);
-
+// 7. Result - Error handling
+const encrypted = await encrypt(data, keys);
 if (encrypted.ok) {
   console.log('Encrypted:', encrypted.value);
+} else {
+  console.error('Error:', encrypted.error.message);
 }
 ```
 
-#### decrypt()
+## 📚 Core Primitives
 
-Decrypts data using SEA decryption.
+### 1. Schema — Thing & Who
+
+**Thing** is the base schema for any object in the Gun universe. **Who** extends Thing with cryptographic identity (keypair).
 
 ```typescript
-const result = await decrypt(data: any, keys: KeyPair): Promise<Result<any, Error>>
+import { Thing, Who, z } from '@ariob/core';
+
+// Basic Thing schema
+const TodoSchema = Thing.extend({
+  title: z.string(),
+  done: z.boolean(),
+  created: z.number()
+});
+
+type Todo = z.infer<typeof TodoSchema>;
+// { '#'?: string, title: string, done: boolean, created: number }
+
+// Who schema for authenticated entities
+const ProfileSchema = Who.extend({
+  name: z.string(),
+  bio: z.string().optional(),
+  avatar: z.string().url().optional()
+});
+
+type Profile = z.infer<typeof ProfileSchema>;
+// {
+//   '#'?: string,
+//   pub: string,
+//   epub: string,
+//   alias: string,
+//   name: string,
+//   bio?: string,
+//   avatar?: string
+// }
 ```
 
-**Example:**
+**Key Points:**
+- Thing contains only `'#'` (Gun soul/ID)
+- Who extends Thing with `pub`, `epub`, `alias`
+- Use `.extend()` to add your own fields
+- Schemas compose naturally with Zod
+
+**Why?**
+Following Gun/SEA conventions: every node has a soul (`#`), authenticated nodes have keypairs. This separation makes the type system mirror Gun's graph structure.
+
+---
+
+### 2. Graph — Singleton + Instances
+
+The **graph** is your entry point to Gun. Use the singleton for shared state, or create isolated instances for testing.
 
 ```typescript
-const decrypted = await decrypt(encryptedData, keys);
+import { graph, createGraph } from '@ariob/core';
 
-Result.match(decrypted, {
-  ok: (data) => console.log('Decrypted:', data),
-  error: (err) => console.error('Decryption failed:', err)
+// Get the singleton (lazy-initialized)
+const g = graph();
+
+// Initialize with options (first call only)
+const g = graph({
+  peers: ['http://localhost:8765/gun'],
+  localStorage: true,
+  radisk: true
+});
+
+// Create isolated instance
+const testGraph = createGraph({
+  peers: ['http://test-server/gun']
+});
+
+// Gun API available
+g.get('todos').get('todo-1').once((data) => {
+  console.log('Data:', data);
 });
 ```
 
-#### work()
+**Key Points:**
+- `graph()` returns singleton, safe to call multiple times
+- Options only apply on first call
+- `createGraph()` returns new instance
+- All Gun methods available
 
-Performs proof-of-work hashing (PBKDF2).
+**Why Singleton?**
+Most apps need one shared Gun instance. Singleton pattern ensures all parts of your app use the same graph, avoiding data inconsistencies.
 
-```typescript
-const result = await work(data: any, salt?: string): Promise<Result<string, Error>>
-```
+---
 
-**Example:**
+### 3. Node — Single Object Management
 
-```typescript
-// Hash a password
-const hashed = await work('password123', 'optional-salt');
-
-if (hashed.ok) {
-  // Store hashed.value safely
-  console.log('Hash:', hashed.value);
-}
-```
-
-#### secret()
-
-Generates shared secret using ECDH (Elliptic Curve Diffie-Hellman).
+**node** manages subscriptions to individual Gun nodes with schema validation and Result-based puts.
 
 ```typescript
-const result = await secret(theirEpub: string, myPair: KeyPair): Promise<Result<string, Error>>
-```
+import { node, graph } from '@ariob/core';
+import { z } from 'zod';
 
-**Example:**
+const TodoSchema = z.object({
+  title: z.string(),
+  done: z.boolean()
+});
 
-```typescript
-// Create shared encryption key between two users
-const sharedSecret = await secret(alicePublicKey, bobKeys);
+const g = graph();
+const ref = g.get('todos').get('todo-1');
+const todoNode = node('todo-1');
 
-if (sharedSecret.ok) {
-  // Use sharedSecret.value to encrypt messages between Alice and Bob
-}
-```
+// Subscribe with schema validation
+todoNode.on(ref, TodoSchema);
 
-#### sign()
+// Get current data (reactive in React)
+const todo = todoNode.get(); // { title: string, done: boolean } | null
 
-Signs data cryptographically.
+// Check loading state
+const loading = todoNode.loading(); // boolean
 
-```typescript
-const result = await sign(data: any, pair: KeyPair): Promise<Result<any, Error>>
-```
+// Put data (validated)
+const result = await todoNode.put(ref, {
+  title: 'Buy milk',
+  done: false
+}, TodoSchema);
 
-**Example:**
-
-```typescript
-const message = { text: 'Hello, world!', timestamp: Date.now() };
-const signed = await sign(message, userKeys);
-
-if (signed.ok) {
-  // signed.value contains the signature
-  await graph.get('messages').set(signed.value);
-}
-```
-
-#### verify()
-
-Verifies a signature.
-
-```typescript
-const result = await verify(signature: any, pub: string | KeyPair): Promise<Result<any, Error>>
-```
-
-**Example:**
-
-```typescript
-const verified = await verify(signedMessage, userPublicKey);
-
-if (verified.ok) {
-  console.log('Verified message:', verified.value);
+if (result.ok) {
+  console.log('Saved!');
 } else {
-  console.error('Invalid signature');
+  console.error('Error:', result.error.message);
+}
+
+// Unsubscribe
+todoNode.off();
+```
+
+**React Hook:**
+
+```typescript
+import { useNode } from '@ariob/core';
+
+function TodoView() {
+  const g = graph();
+  const { data, loading, error, on, put, off } = useNode('todo-1');
+
+  useEffect(() => {
+    const ref = g.get('todos').get('todo-1');
+    on(ref, TodoSchema);
+    return () => off();
+  }, []);
+
+  if (loading) return <text>Loading...</text>;
+  if (error) return <text>Error: {error.message}</text>;
+  if (!data) return <text>No data</text>;
+
+  return <text>{data.title} - {data.done ? '✓' : '○'}</text>;
 }
 ```
 
-#### pair()
+**Key Points:**
+- Subscribe with `.on()`, unsubscribe with `.off()`
+- Optional schema validates incoming data
+- `.get()` returns current state
+- `.put()` validates and saves, returns Result
+- Hook provides reactive data access
 
-Generates a new cryptographic key pair.
+**Persistence:**
 
 ```typescript
-const result = await pair(): Promise<Result<KeyPair, Error>>
+// Enable localStorage persistence
+const todoNode = node('todo-1', { persist: true });
 ```
 
-**Example:**
+---
+
+### 4. Collection — Sets/Maps Management
+
+**collection** manages subscriptions to Gun sets (collections of objects) with full CRUD operations.
 
 ```typescript
-const keys = await pair();
+import { collection, graph, type Item } from '@ariob/core';
+import { z } from 'zod';
 
-if (keys.ok) {
-  console.log('Public key:', keys.value.pub);
-  console.log('Encryption key:', keys.value.epub);
-  // Save keys.value securely
+const TodoSchema = z.object({
+  title: z.string(),
+  done: z.boolean()
+});
+
+const g = graph();
+const ref = g.get('todos');
+const todoColl = collection('todos');
+
+// Subscribe to collection
+todoColl.map(ref, TodoSchema);
+
+// Get all items
+const todos = todoColl.get(); // Item<Todo>[]
+// [
+//   { id: 'abc123', data: { title: 'Buy milk', done: false } },
+//   { id: 'def456', data: { title: 'Walk dog', done: true } }
+// ]
+
+// Add item (creates new node)
+const addResult = await todoColl.set(ref, {
+  title: 'Write docs',
+  done: false
+}, TodoSchema);
+
+// Update specific item
+const updateResult = await todoColl.update(ref, 'abc123', {
+  title: 'Buy milk',
+  done: true
+}, TodoSchema);
+
+// Delete item
+const delResult = await todoColl.del(ref, 'abc123');
+
+// Check state
+const loading = todoColl.loading();
+const error = todoColl.error();
+
+// Unsubscribe
+todoColl.off();
+```
+
+**React Hook:**
+
+```typescript
+import { useCollection } from '@ariob/core';
+
+function TodoList() {
+  const g = graph();
+  const { items, loading, error, map, set, update, del, off } = useCollection('todos');
+
+  useEffect(() => {
+    const ref = g.get('todos');
+    map(ref, TodoSchema);
+    return () => off();
+  }, []);
+
+  const handleAdd = async () => {
+    await set(g.get('todos'), {
+      title: 'New todo',
+      done: false
+    }, TodoSchema);
+  };
+
+  const handleToggle = async (id: string, item: Todo) => {
+    await update(g.get('todos'), id, {
+      ...item,
+      done: !item.done
+    }, TodoSchema);
+  };
+
+  const handleDelete = async (id: string) => {
+    await del(g.get('todos'), id);
+  };
+
+  if (loading) return <text>Loading...</text>;
+
+  return (
+    <view>
+      {items.map(({ id, data }) => (
+        <view key={id}>
+          <text>{data.title}</text>
+          <button onTap={() => handleToggle(id, data)}>
+            {data.done ? 'Undo' : 'Done'}
+          </button>
+          <button onTap={() => handleDelete(id)}>Delete</button>
+        </view>
+      ))}
+      <button onTap={handleAdd}>Add Todo</button>
+    </view>
+  );
 }
 ```
 
-#### certify()
+**Key Points:**
+- `.map()` subscribes to all items in set
+- `.get()` returns array of `Item<T>` with `{ id, data }`
+- `.set()` adds new item to collection
+- `.update()` modifies specific item by ID
+- `.del()` removes item (sets to null)
+- All operations return Result for error handling
 
-Creates a certificate for selective authorization.
+---
+
+### 5. Crypto — SEA Primitives
+
+All Gun SEA cryptography functions wrapped with Result monad and lazy-loading for background thread safety.
+
+#### Generate Keypair
 
 ```typescript
-const result = await certify(
-  certificants: any,
-  policy: any,
-  authority: KeyPair,
-  cb?: any
-): Promise<Result<any, Error>>
+import { pair } from '@ariob/core';
+
+const result = await pair();
+
+if (result.ok) {
+  const keys = result.value;
+  // {
+  //   pub: string,   // Public signing key
+  //   priv: string,  // Private signing key
+  //   epub: string,  // Public encryption key
+  //   epriv: string  // Private encryption key
+  // }
+} else {
+  console.error('Failed to generate keypair:', result.error);
+}
 ```
 
-**Example:**
+#### Sign & Verify
 
 ```typescript
-// Grant write access to specific users
-const cert = await certify(
-  [userPublicKey],
-  { '+': '*', '.': 'posts' }, // Can write to 'posts'
+import { sign, verify } from '@ariob/core';
+
+// Sign data
+const signResult = await sign({ message: 'hello' }, keys);
+
+if (signResult.ok) {
+  const signature = signResult.value;
+
+  // Verify signature
+  const verifyResult = await verify(signature, keys.pub);
+
+  if (verifyResult.ok) {
+    console.log('Verified data:', verifyResult.value);
+  }
+}
+```
+
+#### Encrypt & Decrypt
+
+```typescript
+import { encrypt, decrypt } from '@ariob/core';
+
+// Encrypt data
+const encryptResult = await encrypt({ secret: 'password' }, keys);
+
+if (encryptResult.ok) {
+  const encrypted = encryptResult.value; // SEA encrypted string
+
+  // Decrypt data
+  const decryptResult = await decrypt(encrypted, keys);
+
+  if (decryptResult.ok) {
+    console.log('Decrypted:', decryptResult.value); // { secret: 'password' }
+  }
+}
+```
+
+#### Proof of Work (Hashing)
+
+```typescript
+import { work } from '@ariob/core';
+
+// Hash password with salt
+const hashResult = await work('my-password', 'salt-123');
+
+if (hashResult.ok) {
+  const hash = hashResult.value; // Proof-of-work hash string
+}
+```
+
+#### Shared Secret (ECDH)
+
+```typescript
+import { secret } from '@ariob/core';
+
+// Generate shared secret for encrypted communication
+const secretResult = await secret(theirPublicKey, myKeys);
+
+if (secretResult.ok) {
+  const sharedSecret = secretResult.value;
+  // Use sharedSecret for symmetric encryption
+}
+```
+
+#### Certify (Authorization)
+
+```typescript
+import { certify } from '@ariob/core';
+
+// Grant write access to specific path
+const certResult = await certify(
+  ['*'], // All users (or specific public keys)
+  { '+': '*', '.': 'todos' }, // Can write to 'todos' path
   authorityKeys
 );
 
-if (cert.ok) {
-  // Share cert.value with the user
+if (certResult.ok) {
+  const certificate = certResult.value;
+  // Share certificate with users
 }
 ```
 
-> ★ **Insight**: SEA functions are cryptographically secure and work in both browser and Node.js. Use `work()` for password hashing, `secret()` for end-to-end encryption between users, and `certify()` for fine-grained access control.
+**Helper Functions:**
+
+```typescript
+import { encryptData, decryptData, isEncrypted } from '@ariob/core';
+
+// Encrypt (no Result, throws on error)
+const encrypted = await encryptData(data, keys);
+
+// Decrypt (no Result, returns original if not encrypted)
+const decrypted = await decryptData(encrypted, keys);
+
+// Check if data is encrypted
+if (isEncrypted(data)) {
+  console.log('Data is SEA encrypted');
+}
+```
+
+**Key Points:**
+- All crypto functions return `Result<T, Error>`
+- Lazy-loaded SEA for background thread safety
+- Helper functions (`encryptData`, `decryptData`) for convenience
+- Full TypeScript support with KeyPair type
 
 ---
 
-### useAuthStore()
+### 6. Auth — Authentication
 
-Zustand store for advanced auth state management.
+Simple authentication with Gun user system. Supports create/login/logout/recall with automatic keypair management.
+
+#### Create Account
 
 ```typescript
-const store = useAuthStore()
+import { auth, graph } from '@ariob/core';
+
+const g = graph();
+
+// Create new account (generates keypair automatically)
+const result = await auth(g).create('alice');
+
+await Result.match(result, {
+  ok: (user) => {
+    console.log('Created account:', user.alias);
+    console.log('Public key:', user.pub);
+    console.log('Encryption key:', user.epub);
+  },
+  error: (err) => {
+    console.error('Failed to create:', err.message);
+  }
+});
 ```
 
-**Returns:**
-- `user: UserInfo | null` — Current user
-- `keys: KeyPair | null` — Current keys
-- `isLoggedIn: boolean` — Login status
-- `setUser: (user: UserInfo) => void` — Update user
-- `setKeys: (keys: KeyPair) => void` — Update keys
-- `reset: () => void` — Clear auth state
-
-> ⚠️ **Note**: This is a low-level API. Most users should use `useAuth()` instead.
-
-## 💡 Real-World Examples
-
-### Real-time Chat Room
+#### Login with Keypair
 
 ```typescript
-import { createGraph, useSet, useAuth } from '@ariob/core';
+// Login with existing keys
+const loginResult = await auth(g).login(savedKeys);
 
-interface Message {
-  text: string;
-  author: string;
-  timestamp: number;
-}
-
-function ChatRoom({ roomId }: { roomId: string }) {
-  const graph = createGraph({
-    peers: ['wss://gun-relay.example.com/gun']
-  });
-
-  const { user, isLoggedIn } = useAuth(graph);
-  const messagesRef = graph.get('rooms').get(roomId).get('messages');
-  const { items: messages, add } = useSet<Message>(messagesRef);
-
-  const [text, setText] = useState('');
-
-  const sendMessage = async () => {
-    if (!text.trim() || !isLoggedIn) return;
-
-    await add({
-      text,
-      author: user.alias,
-      timestamp: Date.now()
-    });
-
-    setText('');
-  };
-
-  // Sort messages by timestamp
-  const sortedMessages = [...messages].sort(
-    (a, b) => a.data.timestamp - b.data.timestamp
-  );
-
-  return (
-    <div>
-      <div>
-        {sortedMessages.map(({ id, data }) => (
-          <div key={id}>
-            <strong>{data.author}</strong>: {data.text}
-            <small>{new Date(data.timestamp).toLocaleTimeString()}</small>
-          </div>
-        ))}
-      </div>
-
-      {isLoggedIn && (
-        <div>
-          <input
-            value={text}
-            onChange={e => setText(e.target.value)}
-            onKeyPress={e => e.key === 'Enter' && sendMessage()}
-          />
-          <button onClick={sendMessage}>Send</button>
-        </div>
-      )}
-    </div>
-  );
+if (loginResult.ok) {
+  console.log('Logged in as:', loginResult.value.alias);
 }
 ```
 
-### Encrypted User Profile
+#### Logout
 
 ```typescript
-import { createGraph, useNode, useKeys, useAuth } from '@ariob/core';
+// Logout current user
+auth(g).logout();
+```
 
-interface Profile {
-  name: string; // Public
-  bio: string; // Public
-  email: string; // Private
-  phone: string; // Private
+#### Recall Session
+
+```typescript
+// Restore session from localStorage (if persisted)
+const recallResult = await auth(g).recall();
+
+if (recallResult.ok) {
+  console.log('Session restored:', recallResult.value.alias);
+} else {
+  // No session to restore
 }
+```
 
-function ProfileEditor() {
-  const graph = createGraph();
-  const { isLoggedIn } = useAuth(graph);
-  const keys = useKeys();
+#### React Hook
 
-  const profileRef = graph.user().get('profile');
-  const { data, put, isLoading } = useNode<Profile>(profileRef, keys);
+```typescript
+import { useAuth, graph } from '@ariob/core';
 
-  const [formData, setFormData] = useState<Profile>({
-    name: '',
-    bio: '',
-    email: '',
-    phone: ''
-  });
+function AuthView() {
+  const g = graph();
+  const { user, keys, isLoggedIn, create, login, logout, recall } = useAuth(g);
 
   useEffect(() => {
-    if (data) {
-      setFormData(data);
-    }
-  }, [data]);
+    // Try to restore session on mount
+    recall();
+  }, []);
 
-  const handleSave = async () => {
-    // Email and phone are automatically encrypted
-    await put(formData);
-  };
-
-  if (!isLoggedIn) return <div>Please login</div>;
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoggedIn) {
+    return (
+      <view>
+        <text>Logged in as: {user?.alias}</text>
+        <button onTap={logout}>Logout</button>
+      </view>
+    );
+  }
 
   return (
-    <div>
-      <input
-        placeholder="Name (public)"
-        value={formData.name}
-        onChange={e => setFormData({ ...formData, name: e.target.value })}
-      />
-      <textarea
-        placeholder="Bio (public)"
-        value={formData.bio}
-        onChange={e => setFormData({ ...formData, bio: e.target.value })}
-      />
-      <input
-        placeholder="Email (encrypted)"
-        value={formData.email}
-        onChange={e => setFormData({ ...formData, email: e.target.value })}
-      />
-      <input
-        placeholder="Phone (encrypted)"
-        value={formData.phone}
-        onChange={e => setFormData({ ...formData, phone: e.target.value })}
-      />
-      <button onClick={handleSave}>Save Profile</button>
-    </div>
+    <view>
+      <button onTap={() => create('alice')}>Create Account</button>
+    </view>
   );
 }
 ```
 
-### Validated Note Taking
+**Key Points:**
+- `create()` generates keypair and authenticates
+- `login()` authenticates with existing keypair
+- `logout()` clears session
+- `recall()` restores from localStorage
+- Hook provides reactive auth state
+- Automatic persistence with Zustand
+
+**Auth Store:**
 
 ```typescript
-import { createGraph, useSet, Result } from '@ariob/core';
-import { z } from 'zod';
+import { useAuthStore } from '@ariob/core';
 
-// Define schema for validation
-const NoteSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  content: z.string().optional(),
-  createdAt: z.number(),
-  tags: z.array(z.string()).optional()
-});
-
-type Note = z.infer<typeof NoteSchema>;
-
-function NotesApp() {
-  const graph = createGraph();
-  const notesRef = graph.user().get('notes');
-  const { items, add } = useSet<Note>(notesRef);
-
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-
-  const handleCreate = async () => {
-    // Validate before saving
-    const result = Result.parse(NoteSchema, {
-      title,
-      content: content || undefined,
-      createdAt: Date.now()
-    });
-
-    // Pattern matching for clean error handling
-    await Result.match(result, {
-      ok: async (validNote) => {
-        await add(validNote);
-        setTitle('');
-        setContent('');
-        console.log('Note saved!');
-      },
-      error: (err) => {
-        console.error('Validation failed:', err.issues);
-        // Show user-friendly error messages
-        err.issues.forEach(issue => {
-          alert(`${issue.path.join('.')}: ${issue.message}`);
-        });
-      }
-    });
-  };
-
-  return (
-    <div>
-      <input
-        placeholder="Title"
-        value={title}
-        onChange={e => setTitle(e.target.value)}
-      />
-      <textarea
-        placeholder="Content (optional)"
-        value={content}
-        onChange={e => setContent(e.target.value)}
-      />
-      <button onClick={handleCreate}>Save Note</button>
-
-      <div>
-        {items.map(({ id, data }) => (
-          <div key={id}>
-            <h3>{data.title}</h3>
-            <p>{data.content}</p>
-            <small>{new Date(data.createdAt).toLocaleString()}</small>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+// Access store directly
+const authState = useAuthStore.getState();
+console.log('User:', authState.user);
+console.log('Keys:', authState.keys);
 ```
-
-> ★ **Insight**: Using `Result.parse()` with Zod ensures data is validated before saving. No try-catch needed—just clean pattern matching with full type safety.
 
 ---
 
-### Collaborative Counter
+### 7. Result — Error Handling
+
+**Result** is a type-safe monad for handling success/failure without exceptions. Inspired by Rust's `Result<T, E>`.
+
+#### Basic Usage
 
 ```typescript
-import { createGraph, useNode } from '@ariob/core';
+import { Result, isOk, isErr } from '@ariob/core';
 
-interface Counter {
-  value: number;
-  lastUpdated: number;
+// Create Result
+const success = Result.ok(42);
+const failure = Result.error('Something went wrong');
+
+// Check type
+if (isOk(success)) {
+  console.log('Value:', success.value); // 42
 }
 
-function CollaborativeCounter() {
-  const graph = createGraph({
-    peers: ['wss://gun-relay.example.com/gun']
-  });
-
-  const counterRef = graph.get('shared-counter');
-  const { data: counter, put, isLoading } = useNode<Counter>(counterRef);
-
-  const increment = async () => {
-    await put({
-      value: (counter?.value ?? 0) + 1,
-      lastUpdated: Date.now()
-    });
-  };
-
-  const reset = async () => {
-    await put({
-      value: 0,
-      lastUpdated: Date.now()
-    });
-  };
-
-  if (isLoading && !counter) return <div>Loading...</div>;
-
-  return (
-    <div>
-      <h1>{counter?.value ?? 0}</h1>
-      {counter?.lastUpdated && (
-        <small>Updated: {new Date(counter.lastUpdated).toLocaleTimeString()}</small>
-      )}
-      <button onClick={increment}>+1</button>
-      <button onClick={reset}>Reset</button>
-    </div>
-  );
+if (isErr(failure)) {
+  console.log('Error:', failure.error); // 'Something went wrong'
 }
 ```
 
-> ★ **Insight**: All connected peers see updates in real-time. When one user increments the counter, all other users' UIs update automatically!
-
-## 🔐 TypeScript Support
-
-**@ariob/core** is written in TypeScript and provides complete type definitions.
-
-### Generic Types
-
-All hooks support generic types for full type safety:
+#### Pattern Matching
 
 ```typescript
-interface Todo {
-  title: string;
-  done: boolean;
-  tags?: string[];
+// Match on Result
+const message = Result.match(result, {
+  ok: (value) => `Success: ${value}`,
+  error: (error) => `Failed: ${error.message}`
+});
+```
+
+#### Transformations
+
+```typescript
+// Map value
+const doubled = Result.map(Result.ok(5), x => x * 2);
+// Ok(10)
+
+// Map error
+const withContext = Result.mapError(
+  Result.error('Failed'),
+  err => `Database error: ${err}`
+);
+// Err('Database error: Failed')
+
+// Chain operations
+const result = Result.chain(
+  Result.ok(5),
+  x => Result.ok(x * 2)
+);
+// Ok(10)
+```
+
+#### Error Recovery
+
+```typescript
+// Unwrap with default
+const value = Result.unwrapOr(result, 0);
+
+// Unwrap or throw
+try {
+  const value = Result.unwrap(result);
+} catch (err) {
+  console.error('Result was Err');
+}
+```
+
+#### Combining Results
+
+```typescript
+// All must succeed
+const results = Result.all([
+  Result.ok(1),
+  Result.ok(2),
+  Result.ok(3)
+]);
+// Ok([1, 2, 3])
+
+// Collect all errors
+const results = Result.collect([
+  Result.ok(1),
+  Result.error('err1'),
+  Result.error('err2')
+]);
+// Err(['err1', 'err2'])
+```
+
+#### From Functions
+
+```typescript
+// Catch exceptions
+const result = Result.from(() => JSON.parse(jsonString));
+
+if (result.ok) {
+  console.log('Parsed:', result.value);
+} else {
+  console.error('Parse error:', result.error.message);
 }
 
-// Type-safe node operations
-const { data, put } = useNode<Todo>(todoRef);
+// From async functions
+const result = await Result.fromAsync(async () => {
+  const response = await fetch('/api/data');
+  return response.json();
+});
+```
 
-// TypeScript knows data is Todo | null
-if (data) {
-  console.log(data.title); // ✅ OK
-  console.log(data.invalid); // ❌ Type error
-}
+#### Schema Validation
 
-// put() only accepts Todo-compatible data
-await put({ title: 'New', done: false }); // ✅ OK
-await put({ invalid: 'field' }); // ❌ Type error
+```typescript
+import { z } from 'zod';
 
-// Type-safe collection operations
-const { items, add } = useSet<Todo>(todosRef);
-
-// items is Array<{ id: string, data: Todo }>
-items.forEach(({ id, data }) => {
-  console.log(data.title); // ✅ OK
+const UserSchema = z.object({
+  name: z.string(),
+  age: z.number()
 });
 
-// add() only accepts Todo objects
-await add({ title: 'Task', done: false }); // ✅ OK
-await add({ wrong: 'type' }); // ❌ Type error
+const result = Result.parse(UserSchema, data);
+
+if (result.ok) {
+  console.log('Valid user:', result.value);
+  // TypeScript knows: { name: string, age: number }
+} else {
+  console.error('Validation error:', result.error.issues);
+  // ZodError with detailed validation errors
+}
 ```
 
-### Type Exports
+**Key Points:**
+- Never throws exceptions
+- Type-safe with discriminated unions
+- Composable transformations
+- Pattern matching support
+- Integrates with Zod validation
+
+---
+
+### 8. Index — Clean Exports
+
+All primitives exported from single entry point:
 
 ```typescript
-import type {
-  Gun,
-  GunNode,
-  GunUser,
-  GunOptions,
-  KeyPair,
-  UserInfo,
-  UseNodeResult,
-  UseSetResult,
-  CollectionItem,
-  // Result types
-  Result,
-  Ok,
-  Err
+import {
+  // Schema
+  Thing, Who, z,
+
+  // Graph
+  graph, createGraph, useGraphStore,
+
+  // Node
+  node, useNode, useNodeStore, createNodeStore,
+
+  // Collection
+  collection, useCollection, useCollectionStore, createCollectionStore,
+
+  // Crypto
+  pair, sign, verify, encrypt, decrypt, work, secret, certify,
+  encryptData, decryptData, isEncrypted,
+
+  // Auth
+  auth, useAuth, useAuthStore, create, login, logout, recall,
+
+  // Result
+  Result, isOk, isErr,
+
+  // Types
+  type KeyPair,
+  type GunInstance,
+  type GunUser,
+  type User,
+  type Item,
+  type Ok,
+  type Err
 } from '@ariob/core';
 ```
 
-## 🎯 Best Practices
+## 🎯 Advanced Patterns
 
-### 1. Create Graph Instance at App Level
+### Custom Schemas
 
-Don't create a new graph in every component. Create once and pass down or use React Context.
+Extend Thing/Who with domain-specific fields:
 
 ```typescript
-// ✅ Good: Create once
-const graph = createGraph({ localStorage: true });
+import { Thing, Who, z } from '@ariob/core';
 
-function App() {
-  return <TodoList graph={graph} />;
+// Blog post
+const PostSchema = Thing.extend({
+  title: z.string().min(1),
+  content: z.string(),
+  author: z.string(), // pub key
+  published: z.boolean(),
+  created: z.number(),
+  updated: z.number().optional()
+});
+
+// User profile
+const ProfileSchema = Who.extend({
+  displayName: z.string(),
+  bio: z.string().max(280),
+  avatar: z.string().url().optional(),
+  followers: z.number().default(0),
+  following: z.number().default(0)
+});
+
+// Validated operations
+const postNode = node('post-123');
+postNode.on(ref, PostSchema);
+
+const result = await postNode.put(ref, {
+  title: 'Hello World',
+  content: 'My first post',
+  author: user.pub,
+  published: true,
+  created: Date.now()
+}, PostSchema);
+```
+
+### Persistence Configuration
+
+Control localStorage persistence per store:
+
+```typescript
+// Node with persistence
+const persistentNode = node('user-settings', { persist: true });
+
+// Collection with persistence
+const persistentColl = collection('favorites', { persist: true });
+
+// Auth already persists by default
+const { user, keys } = useAuth(graph());
+```
+
+**How it Works:**
+Zustand middleware serializes state to localStorage, rehydrates on mount. Only data/items persisted, not subscriptions.
+
+### Error Handling Patterns
+
+#### Pattern 1: Match
+
+```typescript
+const result = await pair();
+
+await Result.match(result, {
+  ok: async (keys) => {
+    // Handle success
+    await saveKeys(keys);
+  },
+  error: async (err) => {
+    // Handle error
+    showError(err.message);
+  }
+});
+```
+
+#### Pattern 2: Early Return
+
+```typescript
+const result = await pair();
+
+if (!result.ok) {
+  console.error('Failed:', result.error.message);
+  return;
 }
 
-// ❌ Bad: Creates new instance on every render
-function TodoList() {
-  const graph = createGraph(); // New instance!
-  // ...
+// TypeScript knows result.value exists
+const keys = result.value;
+```
+
+#### Pattern 3: Unwrap with Default
+
+```typescript
+const keys = Result.unwrapOr(result, null);
+
+if (!keys) {
+  // Handle no keys
+  return;
+}
+
+// Use keys
+```
+
+#### Pattern 4: Chain Operations
+
+```typescript
+const result = await Result.fromAsync(async () => {
+  const pairResult = await pair();
+  const keys = Result.unwrap(pairResult);
+
+  const signResult = await sign(data, keys);
+  const signature = Result.unwrap(signResult);
+
+  return signature;
+});
+
+if (result.ok) {
+  console.log('Signature:', result.value);
 }
 ```
 
-### 2. Use Encryption for Private Data
+### Testing Patterns
 
-Always use `useKeys()` with `useNode()` or `useSet()` for sensitive data.
+#### Isolated Graphs
 
 ```typescript
-// ✅ Good: Encrypted
-const keys = useKeys();
-const { data, put } = useNode(privateRef, keys);
-await put({ secretData: 'value' });
+import { createGraph } from '@ariob/core';
 
-// ⚠️ Caution: Unencrypted (public data)
-const { data, put } = useNode(publicRef);
-await put({ publicData: 'value' });
+describe('TodoList', () => {
+  let testGraph: GunInstance;
+
+  beforeEach(() => {
+    // Create isolated graph for each test
+    testGraph = createGraph({ localStorage: false });
+  });
+
+  it('should add todo', async () => {
+    const todoColl = collection('test-todos');
+    const ref = testGraph.get('todos');
+
+    todoColl.map(ref, TodoSchema);
+
+    const result = await todoColl.set(ref, {
+      title: 'Test todo',
+      done: false
+    }, TodoSchema);
+
+    expect(result.ok).toBe(true);
+  });
+});
 ```
 
-### 3. Handle Loading States
-
-Always check `isLoading` before rendering data-dependent UI.
+#### Mock Results
 
 ```typescript
-// ✅ Good: Handles loading
-const { data, isLoading } = useNode(ref);
+// Mock crypto functions
+jest.mock('@ariob/core', () => ({
+  ...jest.requireActual('@ariob/core'),
+  pair: jest.fn(() => Promise.resolve(
+    Result.ok({
+      pub: 'test-pub',
+      priv: 'test-priv',
+      epub: 'test-epub',
+      epriv: 'test-epriv'
+    })
+  ))
+}));
+```
 
-if (isLoading && !data) {
-  return <div>Loading...</div>;
+### Schema Composition
+
+Reuse schemas across your app:
+
+```typescript
+// Base schemas
+const TimestampSchema = z.object({
+  created: z.number(),
+  updated: z.number().optional()
+});
+
+const AuthorSchema = z.object({
+  authorId: z.string(),
+  authorName: z.string()
+});
+
+// Composed schemas
+const PostSchema = Thing.merge(TimestampSchema).merge(AuthorSchema).extend({
+  title: z.string(),
+  content: z.string()
+});
+
+const CommentSchema = Thing.merge(TimestampSchema).merge(AuthorSchema).extend({
+  postId: z.string(),
+  text: z.string()
+});
+```
+
+### Background Thread Safety
+
+SEA is lazy-loaded to ensure thread safety:
+
+```typescript
+'background only';
+
+// This works in background thread
+import { pair, sign, encrypt } from '@ariob/core';
+
+const keys = await pair(); // Lazy-loads SEA
+const signature = await sign(data, keys.value);
+const encrypted = await encrypt(data, keys.value);
+```
+
+**Why?**
+LynxJS runs heavy operations in background thread. Lazy-loading SEA prevents main thread blocking and ensures crypto operations are thread-safe.
+
+## 📖 API Reference
+
+### Schema
+
+| Export | Type | Description |
+|--------|------|-------------|
+| `Thing` | `ZodObject` | Base schema with optional `#` (soul) |
+| `Who` | `ZodObject` | Thing + `pub`, `epub`, `alias` |
+| `z` | Re-export | Zod for schema building |
+
+### Graph
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `graph()` | `(options?: GunOptions) => GunInstance` | Get/init singleton graph |
+| `createGraph()` | `(options?: GunOptions) => GunInstance` | Create isolated graph |
+| `useGraphStore` | Zustand store | Direct store access |
+
+### Node
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `node()` | `(key: string, config?) => NodeAPI` | Create node manager |
+| `.on()` | `(ref, schema?) => void` | Subscribe to node |
+| `.off()` | `() => void` | Unsubscribe |
+| `.get()` | `() => T \| null` | Get current data |
+| `.put()` | `(ref, data, schema?) => Promise<Result>` | Save data |
+| `.loading()` | `() => boolean` | Get loading state |
+| `.error()` | `() => Error \| null` | Get error state |
+| `useNode()` | `(key, config?) => NodeHook` | React hook |
+
+### Collection
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `collection()` | `(key: string, config?) => CollectionAPI` | Create collection manager |
+| `.map()` | `(ref, schema?) => void` | Subscribe to collection |
+| `.off()` | `() => void` | Unsubscribe |
+| `.get()` | `() => Item<T>[]` | Get all items |
+| `.set()` | `(ref, data, schema?) => Promise<Result>` | Add item |
+| `.update()` | `(ref, id, data, schema?) => Promise<Result>` | Update item |
+| `.del()` | `(ref, id) => Promise<Result>` | Delete item |
+| `.loading()` | `() => boolean` | Get loading state |
+| `.error()` | `() => Error \| null` | Get error state |
+| `useCollection()` | `(key, config?) => CollectionHook` | React hook |
+
+### Crypto
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `pair()` | `() => Promise<Result<KeyPair, Error>>` | Generate keypair |
+| `sign()` | `(data, pair) => Promise<Result<any, Error>>` | Sign data |
+| `verify()` | `(signature, pub) => Promise<Result<any, Error>>` | Verify signature |
+| `encrypt()` | `(data, keys) => Promise<Result<any, Error>>` | Encrypt data |
+| `decrypt()` | `(data, keys) => Promise<Result<any, Error>>` | Decrypt data |
+| `work()` | `(data, salt?) => Promise<Result<string, Error>>` | Proof-of-work hash |
+| `secret()` | `(theirEpub, myPair) => Promise<Result<string, Error>>` | Shared secret (ECDH) |
+| `certify()` | `(certificants, policy, authority) => Promise<Result<any, Error>>` | Create certificate |
+
+### Auth
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `auth()` | `(graph) => AuthAPI` | Create auth manager |
+| `.create()` | `(alias) => Promise<AuthResult>` | Create account |
+| `.login()` | `(keys) => Promise<AuthResult>` | Login with keys |
+| `.logout()` | `() => void` | Logout |
+| `.recall()` | `() => Promise<AuthResult>` | Recall session |
+| `create()` | `(alias, graph) => Promise<AuthResult>` | Standalone create |
+| `login()` | `(keys, graph) => Promise<AuthResult>` | Standalone login |
+| `logout()` | `(graph) => void` | Standalone logout |
+| `recall()` | `(graph) => Promise<AuthResult>` | Standalone recall |
+| `useAuth()` | `(graph) => AuthHook` | React hook |
+
+### Result
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `Result.ok()` | `<T>(value: T) => Ok<T>` | Create success |
+| `Result.error()` | `<E>(error: E) => Err<E>` | Create failure |
+| `Result.from()` | `<T>(fn) => Result<T, Error>` | Catch exceptions |
+| `Result.fromAsync()` | `<T>(fn) => Promise<Result<T, Error>>` | Catch async exceptions |
+| `Result.map()` | `<T, U>(result, fn) => Result<U, E>` | Transform value |
+| `Result.mapError()` | `<T, E, F>(result, fn) => Result<T, F>` | Transform error |
+| `Result.chain()` | `<T, U>(result, fn) => Result<U, E>` | Chain operations |
+| `Result.unwrap()` | `<T>(result) => T` | Get value or throw |
+| `Result.unwrapOr()` | `<T>(result, default) => T` | Get value or default |
+| `Result.match()` | `<T, E, R>(result, handlers) => R` | Pattern match |
+| `Result.all()` | `<T>(results) => Result<T[], E>` | All must succeed |
+| `Result.collect()` | `<T>(results) => Result<T[], E[]>` | Collect all errors |
+| `Result.parse()` | `<T>(schema, data) => Result<T, ZodError>` | Zod validation |
+| `isOk()` | `<T, E>(result) => result is Ok<T>` | Type guard |
+| `isErr()` | `<T, E>(result) => result is Err<E>` | Type guard |
+
+## 💡 Real-World Examples
+
+See the comprehensive examples in the [Quick Start](#-quick-start) and [Core Primitives](#-core-primitives) sections above for real-world usage patterns including:
+
+- Todo App with Authentication
+- Encrypted Messaging
+- Schema Validation
+- Error Handling
+
+## 🏗 Architecture
+
+### Design Decisions
+
+#### Why Result Monad?
+
+Traditional exception handling:
+```typescript
+try {
+  const keys = await pair();
+  const signature = await sign(data, keys);
+} catch (err) {
+  // Which operation failed?
+  // What type is err?
+}
+```
+
+Result monad:
+```typescript
+const pairResult = await pair();
+if (!pairResult.ok) {
+  // Type-safe error handling
+  console.error('Keypair generation failed:', pairResult.error.message);
+  return;
 }
 
-return <div>{data?.value}</div>;
+const signResult = await sign(data, pairResult.value);
+if (!signResult.ok) {
+  console.error('Signing failed:', signResult.error.message);
+  return;
+}
 
-// ❌ Bad: No loading state
-const { data } = useNode(ref);
-return <div>{data.value}</div>; // Crashes if data is null
+// TypeScript knows both succeeded
+const signature = signResult.value;
 ```
 
-### 4. Debounce Rapid Updates
+Benefits:
+- Explicit error handling
+- Type-safe error values
+- Composable operations
+- No hidden control flow
 
-For high-frequency updates (like typing), debounce your put operations.
+#### Why Zustand?
 
+Zustand provides:
+- Minimal boilerplate
+- No Provider wrapper
+- Direct store access
+- Persist middleware
+- React hooks
+- TypeScript-first
+
+Compared to Redux/Context:
 ```typescript
-import { useMemo } from 'react';
+// Redux: 100+ lines for store setup
+// Context: Provider wrapper hell
+// Zustand: 10 lines, done
 
-function TextEditor() {
-  const { data, put } = useNode(docRef);
+const useNodeStore = create<NodeStore>((set, get) => ({
+  nodes: {},
+  get: (key) => get().nodes[key]?.data ?? null
+}));
+```
 
-  // Debounce saves to every 1 second
-  const debouncedPut = useMemo(
-    () => debounce(put, 1000),
-    [put]
-  );
+#### Why Lazy-Loading SEA?
 
-  return (
-    <textarea
-      value={data?.text}
-      onChange={e => debouncedPut({ text: e.target.value })}
-    />
-  );
+LynxJS background threads:
+```typescript
+// ❌ Load SEA on main thread = UI freeze
+import SEA from './gun/lib/sea.js';
+
+// ✅ Lazy-load in background thread
+'background only';
+async function getSEA() {
+  const { default: SEA } = await import('./gun/lib/sea.js');
+  return SEA;
 }
 ```
 
-### 5. Clean Up Subscriptions
+SEA is heavy (~200kb), lazy-loading ensures:
+- Main thread never blocks
+- Background thread isolation
+- On-demand initialization
 
-Gun subscriptions are automatically cleaned up when components unmount. No manual cleanup needed!
+#### Why One-Word Functions?
 
+Following Gun conventions:
 ```typescript
-function MyComponent() {
-  const { data } = useNode(ref); // ✅ Auto cleanup on unmount
-  return <div>{data?.value}</div>;
-}
+// Gun API
+gun.get('users').put(data);
+
+// @ariob/core API
+node('user').put(ref, data);
+collection('todos').set(ref, item);
+
+// Crypto
+pair();
+sign();
+encrypt();
 ```
 
-## 🔧 Troubleshooting
+One-word functions:
+- Memorable
+- Scannable
+- Composable
+- Follow Unix philosophy
 
-### Data Not Syncing
+### Data Flow
 
-**Problem:** Changes aren't appearing on other devices.
-
-**Solution:** Ensure you're using the same peer server URL and node path.
-
-```typescript
-// ✅ Same peers and path
-const graph1 = createGraph({ peers: ['wss://peer.wallie.io/gun'] });
-const graph2 = createGraph({ peers: ['wss://peer.wallie.io/gun'] });
-graph1.get('shared-data'); // Both reference same node
-graph2.get('shared-data');
-
-// ❌ Different peers
-const graph1 = createGraph({ peers: ['wss://peer1.com/gun'] });
-const graph2 = createGraph({ peers: ['wss://peer2.com/gun'] });
+```
+┌──────────────────────────────────────────────────────────┐
+│                       React UI                           │
+│                  (useNode, useAuth)                      │
+└─────────────────────┬────────────────────────────────────┘
+                      │
+                      │ Subscribe/Commands
+                      │
+┌─────────────────────▼────────────────────────────────────┐
+│                  Zustand Stores                          │
+│        (useNodeStore, useAuthStore, etc.)                │
+└─────────────────────┬────────────────────────────────────┘
+                      │
+                      │ Gun References
+                      │
+┌─────────────────────▼────────────────────────────────────┐
+│                   Gun Graph                              │
+│               (Singleton Instance)                       │
+└─────────────────────┬────────────────────────────────────┘
+                      │
+                      │ WebSocket/LocalStorage
+                      │
+┌─────────────────────▼────────────────────────────────────┐
+│              Gun Network / Peers                         │
+│                (Distributed Sync)                        │
+└──────────────────────────────────────────────────────────┘
 ```
 
-### Encryption Errors
+### Module Organization
 
-**Problem:** `SEA.encrypt` or `SEA.decrypt` errors.
-
-**Solution:** Ensure keys are generated and valid before using encryption.
-
-```typescript
-// ✅ Good: Check keys exist
-const keys = useKeys();
-const { put } = useNode(ref, keys);
-
-if (keys) {
-  await put({ secret: 'value' });
-}
-
-// ❌ Bad: Keys might be null
-const keys = useKeys();
-const { put } = useNode(ref, keys); // Error if keys is null
-await put({ secret: 'value' });
+```
+@ariob/core/
+├── schema.ts       # Zod schemas (Thing, Who)
+├── graph.ts        # Gun instance management
+├── node.ts         # Single object operations
+├── collection.ts   # Set/map operations
+├── crypto.ts       # SEA cryptography
+├── auth.ts         # Authentication
+├── result.ts       # Result monad
+└── index.ts        # Clean exports
 ```
 
-### Type Errors with Gun
-
-**Problem:** TypeScript complains about Gun types.
-
-**Solution:** Use type assertions or the provided type exports.
-
-```typescript
-import type { GunNode } from '@ariob/core';
-
-// ✅ Type-safe
-const ref: GunNode = graph.get('data');
-const { data } = useNode(ref);
-
-// Or let TypeScript infer
-const ref = graph.get('data');
-const { data } = useNode(ref);
-```
-
-### Memory Leaks
-
-**Problem:** App performance degrades over time.
-
-**Solution:** Hooks automatically clean up subscriptions. Ensure you're not creating new graph instances in render loops.
-
-```typescript
-// ✅ Good: Single instance
-const graph = useMemo(() => createGraph(), []);
-
-// ❌ Bad: New instance every render
-const graph = createGraph(); // Memory leak!
-```
-
-## 📖 Philosophy
-
-**@ariob/core** follows the UNIX philosophy:
-
-- **Do one thing well**: Each hook has a single, clear purpose
-- **Composable**: Mix and match hooks as needed
-- **Minimal**: No unnecessary abstractions
-- **Stable**: Built on proven Gun.js primitives
+Each module:
+- Single responsibility
+- No cross-dependencies (except Result)
+- Background-thread safe
+- Fully typed
+- Tested independently
 
 ## 🧪 Testing
 
+### Unit Tests
+
 ```bash
-# Run tests
+# Run all tests
 pnpm test
 
-# Run tests in watch mode
+# Watch mode
 pnpm test:watch
 
-# Generate coverage report
+# Coverage
 pnpm test:coverage
+```
+
+### Integration Tests
+
+```typescript
+import { createGraph, node, collection } from '@ariob/core';
+
+describe('Todo Integration', () => {
+  let graph: GunInstance;
+
+  beforeEach(() => {
+    graph = createGraph({ localStorage: false });
+  });
+
+  it('should create and retrieve todo', async () => {
+    const todoNode = node('test-todo');
+    const ref = graph.get('todos').get('test-todo');
+
+    // Subscribe
+    todoNode.on(ref);
+
+    // Put data
+    const result = await todoNode.put(ref, {
+      title: 'Test',
+      done: false
+    });
+
+    expect(result.ok).toBe(true);
+
+    // Wait for sync
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    // Get data
+    const data = todoNode.get();
+    expect(data).toEqual({
+      title: 'Test',
+      done: false
+    });
+  });
+});
 ```
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these guidelines:
+Contributions welcome! Please follow these guidelines:
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Write tests for your changes
-4. Ensure all tests pass (`pnpm test`)
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
+1. **Code Style** — Follow existing patterns, one-word functions
+2. **Type Safety** — Full TypeScript coverage required
+3. **Result Pattern** — All fallible operations return Result
+4. **Background Safety** — Mark background-only code
+5. **Tests** — Unit tests for all primitives
+6. **Documentation** — JSDoc comments + examples
 
-### Development Guidelines
+### Development Workflow
 
-- Follow TypeScript strict mode
-- Add JSDoc comments to public APIs
-- Include usage examples in documentation
-- Write unit tests for new features
-- Use conventional commits
+```bash
+# Install dependencies
+pnpm install
+
+# Type check
+pnpm type-check
+
+# Run tests
+pnpm test
+
+# Build package
+pnpm build
+```
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+Private package - See repository root for license information.
+
+---
 
 ## 🙏 Acknowledgments
 
-- [Gun.js](https://gun.eco/) — Graph database and P2P sync
+- [Gun.js](https://gun.eco/) — Distributed graph database
 - [Zustand](https://zustand-demo.pmnd.rs/) — State management
-- [Zod](https://zod.dev/) — Runtime validation
-- [Convex](https://convex.dev/) — Inspiration for ergonomic hook design
+- [Zod](https://zod.dev/) — Schema validation
+- [Rust](https://www.rust-lang.org/) — Result type inspiration
 
 ---
 
 <div align="center">
 
-**Built with ❤️ for the Ariob ecosystem**
+**Built with ❤️ for distributed, encrypted applications**
 
 [Report Bug](https://github.com/ariobstudio/ariob/issues) • [Request Feature](https://github.com/ariobstudio/ariob/issues)
 

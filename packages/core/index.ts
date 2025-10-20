@@ -1,74 +1,74 @@
 /**
  * @ariob/core
  *
- * Gun.js wrapper with type-safe React hooks
+ * Minimal, modular Gun.js primitives for LynxJS.
+ * 8 core exports following Gun/SEA coding style.
  */
 
-// Graph factory
-export { createGraph } from './gun/graph';
+// ============================================================================
+// Core Primitives
+// ============================================================================
 
-// Hooks
-export { useNode } from './hooks/useNode';
-export { useSet } from './hooks/useSet';
-export { useAuth } from './hooks/useAuth';
-export { useKeys } from './hooks/useKeys';
-export { default as useTapLock } from './hooks/useTapLock';
-export { default as useDragWithIntersection } from './hooks/useDragWithIntersection';
+// Schema - Thing & Who base schemas
+export { Thing, Who } from './schema';
+export type { Thing as ThingType, Who as WhoType } from './schema';
 
-// Store
-export { useAuthStore } from './store/auth';
+// Graph - Singleton + instances
+export { graph, createGraph, graphStore } from './graph';
+export type { GunOptions, GunInstance, GunUser, IGunChainReference, KeyPair } from './graph';
 
-// Result type system
-export { Result, isOk, isErr } from './utils/result';
-export type { Ok, Err } from './utils/result';
+// Node - Single object management (imperative + reactive hooks)
+export { node, useNode, createNode } from './node';
+export type { NodeConfig } from './node';
 
-// SEA cryptography helpers
+// Collection - Sets/maps management (imperative + reactive hooks)
+export { collection, useCollection, createCollection } from './collection';
+export type { Item, CollectionConfig } from './collection';
+
+// Crypto - SEA primitives
 export {
+  pair,
+  sign,
+  verify,
   encrypt,
   decrypt,
   work,
   secret,
-  sign,
-  verify,
-  pair,
   certify,
-} from './utils/helpers';
+  encryptData,
+  decryptData,
+  isEncrypted,
+} from './crypto';
 
-// Type exports
-export type {
-  GunInstance,
-  GunOptions,
-  IGunChainReference,
-  GunUser,
-  KeyPair
-} from './gun/graph';
+// Auth - Authentication
+export { useAuth, authStore, createAccount, login, logout, recall } from './auth';
+export type { User, AuthResult } from './auth';
 
-export type {
-  UseNodeResult
-} from './hooks/useNode';
+// Result - Error handling
+export { Result, isOk, isErr } from './result';
+export type { Ok, Err } from './result';
 
-export type {
-  UseSetResult,
-  CollectionItem
-} from './hooks/useSet';
-
-export type {
-  UseAuthResult,
-  AuthResult
-} from './hooks/useAuth';
-
-export type {
-  UserInfo
-} from './store/auth';
-
-export type {
-  TapLockDirection,
-  UseTapLockOptions
-} from './hooks/useTapLock';
-
-export type {
-  DragState,
-  UseDragWithIntersectionOptions
-} from './hooks/useDragWithIntersection';
-
+// Zod - Schema validation
 export { z } from 'zod';
+
+// ============================================================================
+// Utility Hooks (Optional - separate import)
+// ============================================================================
+
+export { default as useTapLock } from './hooks/useTapLock';
+export { default as useInput } from './hooks/useInput';
+export { default as useDebounce } from './hooks/useDebounce';
+export { default as useIntersection } from './hooks/useIntersection';
+export { default as useMainThreadImperativeHandle } from './hooks/useMainThreadImperativeHandle';
+export { default as useTimeout } from './hooks/useTimeout';
+export { default as useTimeoutFn } from './hooks/useTimeoutFn';
+export { default as useUpdate } from './hooks/useUpdate';
+export { useKeyboard } from './hooks/useKeyboard';
+
+export type { TapLockDirection, UseTapLockOptions } from './hooks/useTapLock';
+export type { UseDebounceReturn } from './hooks/useDebounce';
+export type { InputEvent, InputInputEvent, UseInputOptions } from './hooks/useInput';
+export type { IntersectionObserverOptions } from './hooks/useIntersection';
+export type { UseTimeoutReturn } from './hooks/useTimeout';
+export type { UseTimeoutFnReturn } from './hooks/useTimeoutFn';
+export type { UseKeyboardResult } from './hooks/useKeyboard';

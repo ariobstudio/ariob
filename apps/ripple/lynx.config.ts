@@ -8,6 +8,12 @@ import { pluginTypeCheck } from '@rsbuild/plugin-type-check'
 const aiPackagePath = fileURLToPath(new URL('../../packages/ai/index.ts', import.meta.url))
 
 export default defineConfig({
+  source: {
+    // Single entry point - simple!
+    entry: {
+      main: './src/index.tsx',
+    },
+  },
   resolve: {
     alias: {
       '@ariob/ai': aiPackagePath,
@@ -16,8 +22,8 @@ export default defineConfig({
   plugins: [
     pluginQRCode({
       schema(url) {
-        // We use `?fullscreen=true` to open the page in LynxExplorer in full screen mode
-        return `${url}?fullscreen=true`
+        // Simple schema - just open the app fullscreen
+        return `${url}?fullscreen=true`;
       },
     }),
     pluginReactLynx(),

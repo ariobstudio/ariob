@@ -1,9 +1,7 @@
 import { type VariantProps, cva } from 'class-variance-authority';
 
 import * as React from '@lynx-js/react';
-import lucideGlyphs from '../../lib/lucide.json';
 import { cn } from '../../lib/utils';
-import { Icon } from './icon';
 import { type ViewProps } from '@lynx-js/types';
 
 const buttonVariants = cva(
@@ -60,17 +58,33 @@ interface ButtonProps
     VariantProps<typeof buttonVariants> {
   icon?: React.ReactNode;
   disabled?: boolean;
-  onClick?: () => void;
+  onTap?: () => void;
 }
 
-function Button({ className, variant, size, icon, onClick, disabled, children, ...props }: ButtonProps) {
+function Button({ className, variant, size, icon, onTap, disabled, children, ...props }: ButtonProps) {
+  const handleTap = () => {
+    'background only';
+    console.log('[Button] Tap detected');
+    console.log('[Button] - Disabled:', disabled);
+    console.log('[Button] - Has onTap handler:', !!onTap);
+    console.log('[Button] - Children:', children);
+
+    if (onTap && !disabled) {
+      console.log('[Button] Executing onTap callback');
+      onTap();
+    } else if (!onTap) {
+      console.warn('[Button] No onTap handler provided');
+    } else if (disabled) {
+      console.log('[Button] Button is disabled, ignoring tap');
+    }
+  };
+
   return (
   <view
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
-      bindtap={onClick}
-      // disabled={disabled}
-      {...props}
+      bindtap={handleTap}
+      {...(props as any)}
     >
       {icon && icon as React.ReactNode}
       {children && (

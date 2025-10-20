@@ -17,8 +17,10 @@ const iconVariants = cva('', {
   },
 });
 
+export type IconName = keyof typeof lucideGlyphs;
+
 export type IconProps = {
-  name: keyof typeof lucideGlyphs;
+  name: IconName;
   size?: VariantProps<typeof iconVariants>['size'];
   className?: string;
 };
