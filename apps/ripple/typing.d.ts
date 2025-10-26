@@ -130,8 +130,15 @@ declare module '@lynx-js/types' {
   interface ScrollViewProps extends StandardProps {
     children?: React.ReactNode;
     className?: string;
+    'scroll-orientation'?: 'vertical' | 'horizontal';
+    'enable-scroll'?: boolean;
+    'scroll-bar-enable'?: boolean;
+    'initial-scroll-offset'?: number;
+    'initial-scroll-to-index'?: number;
     bindscroll?: (e: BaseEvent) => void;
     bindscrollend?: (e: BaseEvent) => void;
+    'main-thread:ref'?: any;
+    'main-thread:bindscrollend'?: (e: any) => void;
   }
 
   interface ListProps extends StandardProps {
@@ -146,6 +153,28 @@ declare module '@lynx-js/types' {
     className?: string;
   }
 
+  interface SwiperProps extends StandardProps {
+    children?: React.ReactNode;
+    className?: string;
+    'indicator-dots'?: boolean;
+    autoplay?: boolean;
+    current?: number;
+    bindchange?: (e: BaseEvent) => void;
+  }
+
+  interface SwiperItemProps extends StandardProps {
+    children?: React.ReactNode;
+    className?: string;
+  }
+
+  interface PagerViewProps extends StandardProps {
+    children?: React.ReactNode;
+    className?: string;
+    'current-page'?: number;
+    'paging-enabled'?: boolean;
+    bindpagechange?: (e: BaseEvent) => void;
+  }
+
   interface IntrinsicElements extends Lynx.IntrinsicElements {
     input: InputProps;
     textarea: TextAreaProps;
@@ -155,6 +184,9 @@ declare module '@lynx-js/types' {
     view: ViewProps;
     list: ListProps;
     page: PageProps;
+    swiper: SwiperProps;
+    'swiper-item': SwiperItemProps;
+    'pager-view': PagerViewProps;
   }
 }
 

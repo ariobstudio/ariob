@@ -6,12 +6,18 @@
  */
 
 // Import native bridges for iOS/Android
+// CRITICAL: crypto.js must be loaded to provide WebCrypto polyfill and btoa/atob that handle Arrays
 import './gun/native/crypto.js';
 import './gun/native/websocket.js';
 import './gun/native/localStorage.js';
 import './gun/lib/yson.js';
 import Gun from './gun/lib/gun.js';
+// CRITICAL: Import our custom SEA with base64 fix
+import './gun/lib/sea.js';
+// Import Gun path extension for path-based navigation
+import './gun/lib/path.js';
 import { createStore } from './utils/createStore';
+import { getPeers } from './config';
 
 /**
  * Gun instance configuration options
@@ -37,6 +43,7 @@ export interface IGunChainReference<T = any> {
   once: (callback: (data: T, key: string) => void, options?: any) => IGunChainReference<T>;
   map: (options?: any) => IGunChainReference<T[]>;
   set: (data: T, callback?: (ack: any) => void) => IGunChainReference<T>;
+  path: (field: string | string[], delimiter?: string) => IGunChainReference<T>;
   off: () => void;
   then: (callback: (data: T) => void) => Promise<T>;
   [key: string]: any;
@@ -87,6 +94,8 @@ export interface KeyPair {
 interface GraphState {
   /** Default singleton graph instance */
   instance: GunInstance | null;
+  /** Current peer configuration */
+  peers: string[];
 }
 
 /**
@@ -94,6 +103,7 @@ interface GraphState {
  */
 const graphStore = createStore<GraphState>({
   instance: null,
+  peers: [],
 });
 
 /**
@@ -102,13 +112,60 @@ const graphStore = createStore<GraphState>({
 const graphActions = {
   init: (options?: GunOptions): GunInstance => {
     'background only';
-    console.log('[Graph] Initializing default graph with options:', options);
 
-    const gun = Gun(options) as unknown as GunInstance;
-    (globalThis as any).gun = gun;
+    // Load peers from config if not explicitly provided
+    const peers = options?.peers || getPeers();
 
-    graphStore.setState({ instance: gun });
+    // Validate peers array
+    if (!Array.isArray(peers)) {
+      console.error('[Graph] Peers must be an array, got:', typeof peers);
+      throw new Error('Peers must be an array');
+    }
+
+    if (peers.some(p => typeof p !== 'string')) {
+      console.error('[Graph] All peers must be strings');
+      throw new Error('All peers must be strings');
+    }
+
+    // Disable localStorage for now - LynxJS apps use in-memory storage
+    const finalOptions = {
+      ...options,
+      peers,
+      localStorage: false
+    };
+
+    const gun = Gun(finalOptions) as unknown as GunInstance;
+
+    // Store instance and peers
+    graphStore.setState({ instance: gun, peers });
+
     return gun;
+  },
+
+  addPeers: (peers: string[]): void => {
+    'background only';
+
+    // Validate input
+    if (!Array.isArray(peers) || peers.some(p => typeof p !== 'string')) {
+      console.error('[Graph] Invalid peers array');
+      throw new Error('Peers must be an array of strings');
+    }
+
+    const state = graphStore.getState();
+
+    if (!state.instance) {
+      graphActions.init({ peers });
+      return;
+    }
+
+    // Use Gun's .opt() to add peers dynamically
+    state.instance.opt({ peers });
+
+    // Update store with merged peer list
+    const currentPeers = state.peers || [];
+    const uniquePeers = Array.from(new Set([...currentPeers, ...peers]));
+
+    graphStore.setState({ peers: uniquePeers });
   },
 
   get: (): GunInstance => {
@@ -117,7 +174,6 @@ const graphActions = {
 
     // Lazy init if not already initialized
     if (!state.instance) {
-      console.log('[Graph] Lazy initializing default graph');
       return graphActions.init();
     }
 
@@ -176,10 +232,26 @@ export function graph(options?: GunOptions): GunInstance {
  */
 export function createGraph(options?: GunOptions): GunInstance {
   'background only';
-  console.log('[Graph] Creating new isolated instance with options:', options);
 
   const gun = Gun(options) as unknown as GunInstance;
   return gun;
+}
+
+/**
+ * Add peers to the existing Gun instance dynamically.
+ * Uses Gun's .opt() method to connect to new peers without recreating the instance.
+ *
+ * @param peers - Array of peer URLs to add
+ *
+ * @example
+ * ```typescript
+ * // Add new relay peers
+ * addPeersToGraph(['wss://relay1.com/gun', 'wss://relay2.com/gun']);
+ * ```
+ */
+export function addPeersToGraph(peers: string[]): void {
+  'background only';
+  graphActions.addPeers(peers);
 }
 
 // Export the store for advanced use cases

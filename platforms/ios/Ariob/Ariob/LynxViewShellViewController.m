@@ -10,6 +10,7 @@
 #import "DemoMediaResourceFetcher.h"
 #import "DemoTemplateResourceFetcher.h"
 #import "LynxExplorerInput.h"
+#import "LynxPagerView.h"
 #import "LynxSettingManager.h"
 #import "UIHelper.h"
 
@@ -99,6 +100,10 @@ NSString *const kBackButtonImageDark = @"back_dark";
     builder.fetcher = nil;
     // for homepage only
     [builder.config registerUI:LynxExplorerInput.class withName:@"explorer-input"];
+    
+    // Pager view
+    [builder.config registerUI:LynxPagerView.class withName:@"pager-view"];
+
     // Add fetchers
     builder.enableGenericResourceFetcher = true;
     builder.genericResourceFetcher = [[DemoGenericResourceFetcher alloc] init];

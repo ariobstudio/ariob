@@ -9,18 +9,20 @@
  */
 
 import { useState } from 'react';
-import { Column, Row, Text, Button, Input, Icon, useTheme } from '@ariob/ui';
-import { graph, useAuth, pair } from '@ariob/core';
+import { Column, Row, Text, Button, Input, Icon } from '@ariob/ui';
+import { PageLayout } from '../components/Layout';
+import type { IGunChainReference } from '@ariob/core';
+import { useAuth, pair } from '@ariob/core';
+import { saveProfile } from '../utils/profile';
 
 interface CreateAccountProps {
+  graph: IGunChainReference;
   onBack: () => void;
   onSuccess: () => void;
 }
 
-export function CreateAccount({ onBack, onSuccess }: CreateAccountProps) {
-  const { withTheme } = useTheme();
-  const g = graph();
-  const { create } = useAuth(g);
+export function CreateAccount({ graph, onBack, onSuccess }: CreateAccountProps) {
+  const { create } = useAuth(graph);
 
   const [step, setStep] = useState<'alias' | 'keys'>('alias');
   const [alias, setAlias] = useState('');
@@ -36,16 +38,32 @@ export function CreateAccount({ onBack, onSuccess }: CreateAccountProps) {
       return;
     }
 
+    console.log('>>>>> [CreateAccount] ========== KEY GENERATION ==========');
+    console.log('>>>>> [CreateAccount] Alias:', alias);
+    console.log('>>>>> [CreateAccount] Starting keypair generation...');
+
     setLoading(true);
     setError('');
 
     // Generate keypair
     const result = await pair();
 
+    console.log('>>>>> [CreateAccount] Pair result:', result.ok ? 'SUCCESS ✅' : 'FAILED ❌');
+
     if (result.ok) {
+      console.log('>>>>> [CreateAccount] 🔐 Keypair generated successfully');
+      console.log('>>>>> [CreateAccount]   Public key:', result.value.pub.substring(0, 50) + '...');
+      console.log('>>>>> [CreateAccount]   Private key length:', result.value.priv.length);
+      console.log('>>>>> [CreateAccount]   Encryption pub length:', result.value.epub.length);
+      console.log('>>>>> [CreateAccount]   Encryption priv length:', result.value.epriv.length);
+      console.log('>>>>> [CreateAccount] =================================================');
+
       setKeys(result.value);
       setStep('keys');
     } else {
+      console.log('>>>>> [CreateAccount] ❌ Key generation FAILED');
+      console.log('>>>>> [CreateAccount] Error:', result.error.message);
+      console.log('>>>>> [CreateAccount] =================================================');
       setError(result.error.message);
     }
 
@@ -56,15 +74,54 @@ export function CreateAccount({ onBack, onSuccess }: CreateAccountProps) {
     'background only';
     if (!keys) return;
 
+    console.log('>>>>> [CreateAccount] ========== ACCOUNT CREATION ==========');
+    console.log('>>>>> [CreateAccount] Alias:', alias);
+    console.log('>>>>> [CreateAccount] Public key:', keys.pub.substring(0, 50) + '...');
+    console.log('>>>>> [CreateAccount] Calling create()...');
+
     setLoading(true);
     setError('');
 
     // Create account with alias
     const result = await create(alias);
 
+    console.log('>>>>> [CreateAccount] Create result:', result.ok ? 'SUCCESS ✅' : 'FAILED ❌');
+
     if (result.ok) {
+      console.log('>>>>> [CreateAccount] ✅ Account created successfully');
+      console.log('>>>>> [CreateAccount] User object:', JSON.stringify(result.value).substring(0, 150));
+      console.log('>>>>> [CreateAccount] User pub:', result.value.pub ? result.value.pub.substring(0, 50) + '...' : 'N/A');
+
+      // Save profile data to user graph
+      const now = Date.now();
+      console.log('>>>>> [CreateAccount] ---------- SAVING PROFILE ----------');
+      console.log('>>>>> [CreateAccount] Profile data:', JSON.stringify({ alias, createdAt: now, updatedAt: now }));
+      console.log('>>>>> [CreateAccount] Calling saveProfile()...');
+
+      const profileResult = await saveProfile(graph, {
+        alias: alias,
+        createdAt: now,
+        updatedAt: now,
+      });
+
+      console.log('>>>>> [CreateAccount] Profile save result:', profileResult.ok ? 'SUCCESS ✅' : 'FAILED ❌');
+
+      if (!profileResult.ok) {
+        console.log('>>>>> [CreateAccount] ⚠️ Failed to save profile:', profileResult.error.message);
+        console.log('>>>>> [CreateAccount] Continuing anyway - profile can be updated later');
+        // Continue anyway - profile can be updated later
+      } else {
+        console.log('>>>>> [CreateAccount] ✅ Profile saved successfully');
+      }
+
+      console.log('>>>>> [CreateAccount] Calling onSuccess()...');
+      console.log('>>>>> [CreateAccount] =================================================');
       onSuccess();
     } else {
+      console.log('>>>>> [CreateAccount] ❌ Account creation FAILED');
+      console.log('>>>>> [CreateAccount] Error:', result.error.message);
+      console.log('>>>>> [CreateAccount] Error stack:', result.error.stack ? result.error.stack.substring(0, 200) : 'N/A');
+      console.log('>>>>> [CreateAccount] =================================================');
       setError(result.error.message);
     }
 
@@ -73,9 +130,9 @@ export function CreateAccount({ onBack, onSuccess }: CreateAccountProps) {
 
   if (step === 'alias') {
     return (
-      <page className={withTheme('bg-background w-full h-full', 'dark bg-background w-full h-full')}>
+      <PageLayout>
         {/* Top Header with Back Button */}
-        <view className="w-full px-4 py-3 flex flex-row items-start pt-safe-top border-b border-border">
+        <view className="w-full px-4 py-3 flex flex-row items-start border-b border-border">
           <Button
             onTap={() => {
               'background only';
@@ -127,7 +184,7 @@ export function CreateAccount({ onBack, onSuccess }: CreateAccountProps) {
             </Button>
           </Column>
         </Column>
-      </page>
+      </PageLayout>
     );
   }
 
@@ -146,9 +203,9 @@ export function CreateAccount({ onBack, onSuccess }: CreateAccountProps) {
   };
 
   return (
-    <page className={withTheme('bg-background w-full h-full', 'dark bg-background w-full h-full')}>
+    <PageLayout>
       {/* Top Header with Back Button */}
-      <view className="w-full px-4 py-3 flex flex-row items-start pt-safe-top border-b border-border">
+      <view className="w-full px-4 py-3 flex flex-row items-start border-b border-border">
         <Button
           onTap={() => {
             'background only';
@@ -231,6 +288,6 @@ export function CreateAccount({ onBack, onSuccess }: CreateAccountProps) {
           </Column>
         )}
       </Column>
-    </page>
+    </PageLayout>
   );
 }

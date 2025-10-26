@@ -1,13 +1,11 @@
 ;(function(){
+  'background only';
+  /* UNBUILD */
   function USE(arg, req) {
-    return req
-      ? req(arg)
-      : arg.slice
-        ? USE[R(arg)]
-        : (mod, path) => {
-            arg((mod = { exports: {} }));
-            USE[R(path)] = mod.exports;
-          };
+    return req? req(arg): arg.slice? USE[R(arg)] : (mod, path) => {
+      arg((mod = { exports: {} }));
+      USE[R(path)] = mod.exports;
+    };
     function R(p) {
       return p.split('/').slice(-1).toString().replace('.js', '');
     }
@@ -49,10 +47,10 @@
   })(USE, './https');
 
   ;USE(function(module){
-    var u;
+    // var u;
     // if(u+''== typeof btoa){
     //   if(u+'' == typeof Buffer){
-    //     try{ global.Buffer = require("buffer").Buffer }catch(e){ console.log("Please `npm install buffer` or add it to your package.json !") }
+    //     try{ global.Buffer = USE("buffer", 1).Buffer }catch(e){ console.log("Please `npm install buffer` or add it to your package.json !") }
     //   }
     //   global.btoa = function(data){ return Buffer.from(data, "binary").toString("base64") };
     //   global.atob = function(data){ return Buffer.from(data, "base64").toString("binary") };
@@ -180,13 +178,13 @@
     api.stringify = function(v,r,s){ return new Promise(function(res, rej){
       JSON.stringifyAsync(v,function(err, raw){ err? rej(err) : res(raw) },r,s);
     })}
-    if(SEA.window){
-      api.crypto = SEA.window.crypto || SEA.window.msCrypto
-      api.subtle = (api.crypto||o).subtle || (api.crypto||o).webkitSubtle;
-      api.TextEncoder = SEA.window.TextEncoder;
-      api.TextDecoder = SEA.window.TextDecoder;
-      api.random = (len) => api.Buffer.from(api.crypto.getRandomValues(new Uint8Array(api.Buffer.alloc(len))));
-    }
+    // if(SEA.window){
+    //   api.crypto = SEA.window.crypto || SEA.window.msCrypto
+    //   api.subtle = (api.crypto||o).subtle || (api.crypto||o).webkitSubtle;
+    //   api.TextEncoder = SEA.window.TextEncoder;
+    //   api.TextDecoder = SEA.window.TextDecoder;
+    //   api.random = (len) => api.Buffer.from(api.crypto.getRandomValues(new Uint8Array(api.Buffer.alloc(len))));
+    // }
     if(!api.TextDecoder)
     {
       const { TextEncoder, TextDecoder } = require('./text-encoding');
@@ -390,16 +388,27 @@
     var u;
 
     SEA.sign = SEA.sign || (async (data, pair, cb, opt) => { try {
+      console.log('>>>>> [SEA.sign] ========== SIGN REQUEST ==========');
+      console.log('>>>>> [SEA.sign] Input data type:', typeof data);
+      console.log('>>>>> [SEA.sign] Input data:', typeof data === 'object' ? JSON.stringify(data).substring(0, 200) : String(data).substring(0, 200));
+
       opt = opt || {};
       if(!(pair||opt).priv){
         if(!SEA.I){ throw 'No signing key.' }
         pair = await SEA.I(null, {what: data, how: 'sign', why: opt.why});
       }
       if(u === data){ throw '`undefined` not allowed.' }
+
+      console.log('>>>>> [SEA.sign] Parsing data with S.parse()...');
       var json = await S.parse(data);
+      console.log('>>>>> [SEA.sign] Parsed JSON (will be signed):', typeof json === 'string' ? json.substring(0, 200) : JSON.stringify(json).substring(0, 200));
+      console.log('>>>>> [SEA.sign] JSON type:', typeof json);
+      console.log('>>>>> [SEA.sign] JSON length:', typeof json === 'string' ? json.length : 'N/A');
+
       var check = opt.check = opt.check || json;
       if(SEA.verify && (SEA.opt.check(check) || (check && check.s && check.m))
       && u !== await SEA.verify(check, pair)){ // don't sign if we already signed it.
+        console.log('>>>>> [SEA.sign] Data already signed, returning existing signature');
         var r = await S.parse(check);
         if(!opt.raw){ r = 'SEA' + await shim.stringify(r) }
         if(cb){ try{ cb(r) }catch(e){console.log(e)} }
@@ -408,15 +417,27 @@
       var pub = pair.pub;
       var priv = pair.priv;
       var jwk = S.jwk(pub, priv);
+
+      console.log('>>>>> [SEA.sign] Hashing JSON for signature...');
       var hash = await sha(json);
+      console.log('>>>>> [SEA.sign] Hash (first 32 bytes hex):', Array.from(new Uint8Array(hash).slice(0, 32)).map(b => b.toString(16).padStart(2, '0')).join(''));
+
+      console.log('>>>>> [SEA.sign] Signing hash with ECDSA...');
       var sig = await (shim.ossl || shim.subtle).importKey('jwk', jwk, {name: 'ECDSA', namedCurve: 'P-256'}, false, ['sign'])
       .then((key) => (shim.ossl || shim.subtle).sign({name: 'ECDSA', hash: {name: 'SHA-256'}}, key, new Uint8Array(hash))) // privateKey scope doesn't leak out from here!
+
       var r = {m: json, s: shim.Buffer.from(sig, 'binary').toString(opt.encode || 'base64')}
+      console.log('>>>>> [SEA.sign] ✅ Signature created successfully');
+      console.log('>>>>> [SEA.sign]   Message (m):', typeof r.m === 'string' ? r.m.substring(0, 100) + '...' : JSON.stringify(r.m).substring(0, 100) + '...');
+      console.log('>>>>> [SEA.sign]   Signature (s):', r.s.substring(0, 50) + '...');
+      console.log('>>>>> [SEA.sign] ==================================================');
+
       if(!opt.raw){ r = 'SEA' + await shim.stringify(r) }
 
       if(cb){ try{ cb(r) }catch(e){console.log(e)} }
       return r;
     } catch(e) {
+      console.log('>>>>> [SEA.sign] ❌ ERROR:', e);
       console.log(e);
       SEA.err = e;
       if(SEA.throw){ throw e }
@@ -435,8 +456,19 @@
     var u;
 
     SEA.verify = SEA.verify || (async (data, pair, cb, opt) => { try {
+      console.log('>>>>> [SEA.verify] ========== VERIFY REQUEST ==========');
+      console.log('>>>>> [SEA.verify] Input data type:', typeof data);
+      console.log('>>>>> [SEA.verify] Input data:', typeof data === 'object' ? JSON.stringify(data).substring(0, 200) : String(data).substring(0, 200));
+
       var json = await S.parse(data);
+      console.log('>>>>> [SEA.verify] Parsed envelope:');
+      console.log('>>>>> [SEA.verify]   m (message):', typeof json.m === 'string' ? json.m.substring(0, 100) + '...' : JSON.stringify(json.m).substring(0, 100) + '...');
+      console.log('>>>>> [SEA.verify]   s (signature):', json.s ? json.s.substring(0, 50) + '...' : 'N/A');
+      console.log('>>>>> [SEA.verify]   Message type:', typeof json.m);
+      console.log('>>>>> [SEA.verify]   Message length:', typeof json.m === 'string' ? json.m.length : 'N/A');
+
       if(false === pair){ // don't verify!
+        console.log('>>>>> [SEA.verify] Skip verification requested (pair === false)');
         var raw = await S.parse(json.m);
         if(cb){ try{ cb(raw) }catch(e){console.log(e)} }
         return raw;
@@ -444,23 +476,40 @@
       opt = opt || {};
       // SEA.I // verify is free! Requires no user permission.
       var pub = pair.pub || pair;
+      console.log('>>>>> [SEA.verify] Public key:', typeof pub === 'string' ? pub.substring(0, 50) + '...' : pub);
+
       var key = SEA.opt.slow_leak? await SEA.opt.slow_leak(pub) : await (shim.ossl || shim.subtle).importKey('jwk', S.jwk(pub), {name: 'ECDSA', namedCurve: 'P-256'}, false, ['verify']);
+
+      console.log('>>>>> [SEA.verify] Hashing message for verification...');
       var hash = await sha(json.m);
+      console.log('>>>>> [SEA.verify] Hash (first 32 bytes hex):', Array.from(new Uint8Array(hash).slice(0, 32)).map(b => b.toString(16).padStart(2, '0')).join(''));
+
       var buf, sig, check, tmp; try{
+        console.log('>>>>> [SEA.verify] Verifying signature...');
         buf = shim.Buffer.from(json.s, opt.encode || 'base64'); // NEW DEFAULT!
         sig = new Uint8Array(buf);
         check = await (shim.ossl || shim.subtle).verify({name: 'ECDSA', hash: {name: 'SHA-256'}}, key, sig, new Uint8Array(hash));
+        console.log('>>>>> [SEA.verify] Verification result:', check);
         if(!check){ throw "Signature did not match." }
+        console.log('>>>>> [SEA.verify] ✅ Signature verified successfully!');
       }catch(e){
+        console.log('>>>>> [SEA.verify] ❌ Signature verification FAILED:', e);
+        console.log('>>>>> [SEA.verify]   This means the message was modified or signed with a different key');
         if(SEA.opt.fallback){
+          console.log('>>>>> [SEA.verify] Trying fallback verification...');
           return await SEA.opt.fall_verify(data, pair, cb, opt);
         }
+        console.log('>>>>> [SEA.verify] ==================================================');
+        throw e;
       }
       var r = check? await S.parse(json.m) : u;
+      console.log('>>>>> [SEA.verify] Parsed result:', typeof r === 'object' ? JSON.stringify(r).substring(0, 100) : r);
+      console.log('>>>>> [SEA.verify] ==================================================');
 
       if(cb){ try{ cb(r) }catch(e){console.log(e)} }
       return r;
     } catch(e) {
+      console.log('>>>>> [SEA.verify] ❌ EXCEPTION:', e);
       console.log(e); // mismatched owner FOR MARTTI
       SEA.err = e;
       if(SEA.throw){ throw e }
@@ -1311,7 +1360,11 @@
 
     function check(msg){ // REVISE / IMPROVE, NO NEED TO PASS MSG/EVE EACH SUB?
       var eve = this, at = eve.as, put = msg.put, soul = put['#'], key = put['.'], val = put[':'], state = put['>'], id = msg['#'], tmp;
-      if(!soul || !key){ return }
+
+
+      if(!soul || !key){
+        return
+      }
       if((msg._||'').faith && (at.opt||'').faith && 'function' == typeof msg._){
         SEA.opt.pack(put, function(raw){
         SEA.verify(raw, false, function(data){ // this is synchronous if false
@@ -1344,7 +1397,7 @@
       }
       if(0 <= soul.indexOf('#')){ // special case for content addressing immutable hashed data.
         check.hash(eve, msg, val, key, soul, at, no); return;
-      } 
+      }
       check.any(eve, msg, val, key, soul, at, no, at.user||''); return;
       eve.to.next(msg); // not handled
     }
@@ -1372,7 +1425,9 @@
       no("Alias not same!"); // that way nobody can tamper with the list of public keys.
     };
     check.pub = async function(eve, msg, val, key, soul, at, no, user, pub){ var tmp // Example: {_:#~asdf, hello:'world'~fdsa}}
+
       const raw = await S.parse(val) || {}
+
       const verify = (certificate, certificant, cb) => {
         if (certificate.m && certificate.s && certificant && pub)
           // now verify certificate
@@ -1408,12 +1463,17 @@
       }
       
       if ('pub' === key && '~' + pub === soul) {
-        if (val === pub) return eve.to.next(msg) // the account MUST match `pub` property that equals the ID of the public key.
+        if (val === pub) {
+          return eve.to.next(msg)
+        }
         return no("Account not same!")
       }
 
+
       if ((tmp = user.is) && tmp.pub && !raw['*'] && !raw['+'] && (pub === tmp.pub || (pub !== tmp.pub && ((msg._.msg || {}).opt || {}).cert))){
+
         SEA.opt.pack(msg.put, packed => {
+
           SEA.sign(packed, (user._).sea, async function(data) {
             if (u === data) return no(SEA.err || 'Signature fail.')
             msg.put[':'] = {':': tmp = SEA.opt.unpack(data.m), '~': data.s}
@@ -1422,8 +1482,11 @@
             // if writing to own graph, just allow it
             if (pub === user.is.pub) {
               if (tmp = link_is(val)) (at.sea.own[tmp] = at.sea.own[tmp] || {})[pub] = 1
+
               JSON.stringifyAsync(msg.put[':'], function(err,s){
-                if(err){ return no(err || "Stringify error.") }
+                if(err){
+                  return no(err || "Stringify error.")
+                }
                 msg.put[':'] = s;
                 return eve.to.next(msg);
               })
@@ -1450,6 +1513,7 @@
         })
         return;
       }
+
 
       SEA.opt.pack(msg.put, packed => {
         SEA.verify(packed, raw['*'] || pub, function(data){ var tmp;

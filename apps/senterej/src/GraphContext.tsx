@@ -17,7 +17,7 @@ export function GraphProvider({ children }: { children: React.ReactNode }) {
     // Testing local-only like ripple/IncrementalTest does
     graphRef.current = createGraph({
       localStorage: true,
-      // peers: ['http://localhost:8765/gun'], // Disabled to test local-only first
+      peers: ['http://localhost:8765/gun'], // Disabled to test local-only first
     });
     console.log('[GraphProvider] Gun instance created:', {
       hasGraph: !!graphRef.current,
