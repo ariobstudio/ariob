@@ -12,6 +12,7 @@
 #import "ExplorerModule.h"
 #import "TemplateProvider.h"
 #import "Ariob-Swift.h"
+#import "NativeWebSocketModule.h"
 
 @implementation LynxInitProcessor
 

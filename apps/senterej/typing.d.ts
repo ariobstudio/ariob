@@ -106,6 +106,14 @@ declare module '@lynx-js/types' {
     isNotchScreen: boolean;
   }
 
+  interface PagerViewProps extends StandardProps {
+    children?: React.ReactNode;
+    className?: string;
+    'current-page'?: number;
+    'paging-enabled'?: boolean;
+    bindpagechange?: (e: BaseEvent) => void;
+  }
+
   interface IntrinsicElements extends Lynx.IntrinsicElements {
     input: InputProps;
     textarea: TextAreaProps;
@@ -113,7 +121,7 @@ declare module '@lynx-js/types' {
     image: ImageProps;
     scrollview: ScrollViewProps;
     view: ViewProps;
-
+    'pager-view': PagerViewProps;
   }
 }
 

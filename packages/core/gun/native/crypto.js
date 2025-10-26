@@ -1,5 +1,5 @@
-// (() => {
-//   'background only';
+(() => {
+  'background only';
   /*
  * WebCrypto Polyfill - Bridge to Native Cryptography Module
  *
@@ -44,8 +44,8 @@
 // Native Module Initialization
 // ============================================================================
 
-const native = NativeModules?.NativeWebCryptoModule;
-
+const native = NativeModules.NativeWebCryptoModule;
+console.log('[WebCrypto Bridge] Installing native crypto bridge');
 
 // ============================================================================
 // CryptoKey Wrapper Class
@@ -91,14 +91,6 @@ class CryptoKey {
     this.type = type;
     this.extractable = extractable;
     this.usages = usages;
-
-    console.log('----[crypto] CryptoKey created:', {
-      handle: this._handle,
-      algorithm: this.algorithm?.name,
-      type: this.type,
-      extractable: this.extractable,
-      usages: this.usages
-    });
   }
 }
 
@@ -282,12 +274,6 @@ function arrayBufferToBase64(buffer) {
   const binaryString = uint8ArrayToBinaryString(uint8Array);
   const result = pureJsBtoa(binaryString);
 
-  console.log('----[crypto] arrayBufferToBase64:', {
-    inputLength: uint8Array.length,
-    outputLength: result.length,
-    preview: result.substring(0, 50) + (result.length > 50 ? '...' : '')
-  });
-
   return result;
 }
 
@@ -318,20 +304,11 @@ function arrayBufferToBase64(buffer) {
  * const uint8 = new Uint8Array(buffer); // [1, 2, 3, 4]
  */
 function base64ToArrayBuffer(base64) {
-  console.log('----[crypto] base64ToArrayBuffer:', {
-    inputLength: base64.length,
-    preview: base64.substring(0, 50) + (base64.length > 50 ? '...' : '')
-  });
-
   // Decode base64 in pure JavaScript (avoids bridge corruption)
   const binaryString = pureJsAtob(base64);
 
   // Convert binary string to Uint8Array
   const bytes = binaryStringToUint8Array(binaryString);
-
-  console.log('----[crypto] base64ToArrayBuffer result:', {
-    outputLength: bytes.length
-  });
 
   return bytes.buffer;
 }
@@ -356,11 +333,9 @@ function base64ToArrayBuffer(base64) {
  */
 function extractHandle(key) {
   if (key instanceof CryptoKey) {
-    console.log('----[crypto] Extracting handle from CryptoKey:', key._handle);
     return key._handle;
   }
   if (typeof key === 'string') {
-    console.log('----[crypto] Using string as handle:', key);
     return key;
   }
   throw new TypeError('Expected CryptoKey object or string handle');
@@ -427,7 +402,6 @@ function prepareAlgorithm(algorithm) {
   // This is needed for ECDH where algorithm.public is a CryptoKey
   if (alg.public instanceof CryptoKey) {
     alg.public = alg.public._handle;
-    console.log('----[crypto] Converted algorithm.public CryptoKey to handle');
   }
 
   // Convert binary parameters to base64
@@ -435,11 +409,9 @@ function prepareAlgorithm(algorithm) {
   for (const param of binaryParams) {
     if (alg[param] && (alg[param] instanceof ArrayBuffer || ArrayBuffer.isView(alg[param]))) {
       alg[param] = arrayBufferToBase64(alg[param]);
-      console.log(`----[crypto] Converted algorithm.${param} to base64`);
     }
   }
 
-  console.log('----[crypto] Prepared algorithm:', alg);
   return alg;
 }
 
@@ -578,24 +550,15 @@ if (!globalThis.crypto.subtle) globalThis.crypto.subtle = {};
  */
 crypto.subtle.digest = (algorithm, data) => {
   'background only';
-  console.log('----[crypto] digest called:', {
-    algorithm,
-    dataLength: data?.byteLength
-  });
 
   const alg = normalizeAlgorithm(algorithm);
   const dataBase64 = arrayBufferToBase64(data);
 
-  console.log('----[crypto] Calling native.digest');
   const resultBase64 = native.digest(alg, dataBase64);
 
   validateNativeResult(resultBase64, 'Digest');
 
   const result = base64ToArrayBuffer(resultBase64);
-  console.log('----[crypto] digest result:', {
-    resultLength: result.byteLength
-  });
-
   return Promise.resolve(result);
 };
 
@@ -642,26 +605,24 @@ crypto.subtle.digest = (algorithm, data) => {
  * console.log(keyPair.publicKey.type); // 'public'
  */
 crypto.subtle.generateKey = (algorithm, extractable, usages) => {
-  console.log('----[crypto] generateKey called:', {
-    algorithm,
-    extractable,
-    usages
-  });
-
   const alg = prepareAlgorithm(algorithm);
   const usageArray = Array.from(usages || []);
 
-  console.log('----[crypto] Calling native.generateKey');
+  console.log('[crypto.js] 🔑 generateKey() called:', alg.name);
+
   const result = native.generateKey(alg, !!extractable, usageArray);
 
   if (result.error) {
     throw new Error(`generateKey failed: ${result.error}`);
   }
 
-  console.log('----[crypto] native.generateKey result:', result);
-
   // Handle asymmetric key pair (ECDSA, ECDH)
   if (result.privateKey && result.publicKey) {
+    console.log('[crypto.js] ✓ Generated key pair handles:', {
+      priv: result.privateKey,
+      pub: result.publicKey
+    });
+
     const privateKey = new CryptoKey(
       result.privateKey,
       alg,
@@ -737,14 +698,6 @@ crypto.subtle.generateKey = (algorithm, extractable, usages) => {
  * );
  */
 crypto.subtle.importKey = (format, keyData, algorithm, extractable, usages) => {
-  console.log('----[crypto] importKey called:', {
-    format,
-    keyDataType: typeof keyData,
-    algorithm,
-    extractable,
-    usages
-  });
-
   const alg = prepareAlgorithm(algorithm);
   const usageArray = Array.from(usages || []);
 
@@ -753,7 +706,6 @@ crypto.subtle.importKey = (format, keyData, algorithm, extractable, usages) => {
   // Convert raw binary format to base64
   if (format === 'raw' || format === 'spki' || format === 'pkcs8') {
     param = arrayBufferToBase64(keyData);
-    console.log('----[crypto] Converted raw keyData to base64');
   }
   // Parse JWK string if needed
   else if (format === 'jwk' && typeof keyData === 'string') {
@@ -764,7 +716,8 @@ crypto.subtle.importKey = (format, keyData, algorithm, extractable, usages) => {
     }
   }
 
-  console.log('----[crypto] Calling native.importKey');
+  console.log('[crypto.js] 📥 importKey() called:', { format, hasD: !!(param?.d), x: param?.x?.substring(0, 20) + '...' });
+
   const handle = native.importKey(format, param, alg, !!extractable, usageArray);
 
   // Validate handle format
@@ -772,7 +725,7 @@ crypto.subtle.importKey = (format, keyData, algorithm, extractable, usages) => {
     throw new Error(`importKey failed: ${handle}`);
   }
 
-  console.log('----[crypto] native.importKey returned handle:', handle);
+  console.log('[crypto.js] ✓ Imported key handle:', handle);
 
   // Determine key type from format and data
   const type = determineKeyType(format, param);
@@ -808,31 +761,18 @@ crypto.subtle.importKey = (format, keyData, algorithm, extractable, usages) => {
  * console.log(new Uint8Array(rawKey)); // Key bytes
  */
 crypto.subtle.exportKey = (format, key) => {
-  console.log('----[crypto] exportKey called:', {
-    format,
-    keyType: key?.type,
-    keyAlgorithm: key?.algorithm?.name,
-    extractable: key?.extractable
-  });
-
   if (!key.extractable) {
     throw new Error('Key is not extractable');
   }
 
   const handle = extractHandle(key);
+  console.log('[crypto.js] 📤 exportKey() called:', { format, keyType: key.type, handle });
 
-  console.log('----[crypto] Calling native.exportKey');
   const result = native.exportKey(format, handle);
 
   if (result.error) {
     throw new Error(`exportKey failed: ${result.error}`);
   }
-
-  console.log('----[crypto] native.exportKey result type:', {
-    hasRaw: !!result.raw,
-    hasJwk: !!result.kty,
-    format
-  });
 
   // Handle raw format - convert base64 to ArrayBuffer
   if (format === 'raw' && result.raw) {
@@ -844,7 +784,14 @@ crypto.subtle.exportKey = (format, key) => {
   if (format === 'jwk') {
     // Remove internal fields from result
     const { raw, error, ...jwk } = result;
-    console.log('----[crypto] Returning JWK:', jwk);
+    console.log('[crypto.js] ✓ Exported JWK:', {
+      kty: jwk.kty,
+      crv: jwk.crv,
+      hasD: !!jwk.d,
+      d: jwk.d ? jwk.d.substring(0, 20) + '...' : undefined,
+      x: jwk.x?.substring(0, 20) + '...',
+      y: jwk.y?.substring(0, 20) + '...'
+    });
     return Promise.resolve(jwk);
   }
 
@@ -876,27 +823,34 @@ crypto.subtle.exportKey = (format, key) => {
  * );
  */
 crypto.subtle.sign = (algorithm, key, data) => {
-  console.log('----[crypto] sign called:', {
-    algorithm,
-    keyType: key?.type,
-    dataLength: data?.byteLength
-  });
 
   if (key.type !== 'private') {
     throw new Error('Sign operation requires a private key');
   }
 
   const alg = prepareAlgorithm(algorithm);
+
+  // CRITICAL: For ECDSA, use raw format (IEEE P1363) to match WebCrypto standard
+  // GUN SEA expects 64-byte raw signatures (32-byte r + 32-byte s), not DER format
+  if (alg.name === 'ECDSA') {
+    alg.format = 'raw';
+  }
+
   const handle = extractHandle(key);
+
+  // Log the data being signed (it's the hash from SEA.js)
+  const dataBytes = new Uint8Array(data);
+  const dataHex = Array.from(dataBytes.slice(0, 32)).map(b => b.toString(16).padStart(2, '0')).join('');
+
   const dataBase64 = arrayBufferToBase64(data);
 
-  console.log('----[crypto] Calling native.sign');
   const signatureBase64 = native.sign(alg, handle, dataBase64);
+
 
   validateNativeResult(signatureBase64, 'Sign');
 
   const signature = base64ToArrayBuffer(signatureBase64);
-  console.log('----[crypto] sign result length:', signature.byteLength);
+  const sigBytes = new Uint8Array(signature);
 
   return Promise.resolve(signature);
 };
@@ -926,30 +880,26 @@ crypto.subtle.sign = (algorithm, key, data) => {
  * }
  */
 crypto.subtle.verify = (algorithm, key, signature, data) => {
-  console.log('----[crypto] verify called:', {
-    algorithm,
-    keyType: key?.type,
-    signatureLength: signature?.byteLength,
-    dataLength: data?.byteLength
-  });
-
   if (key.type !== 'public') {
     throw new Error('Verify operation requires a public key');
   }
 
   const alg = prepareAlgorithm(algorithm);
+
+  // CRITICAL: For ECDSA, use raw format (IEEE P1363) to match WebCrypto standard
+  // GUN SEA expects 64-byte raw signatures (32-byte r + 32-byte s), not DER format
+  if (alg.name === 'ECDSA') {
+    alg.format = 'raw';
+  }
+
   const handle = extractHandle(key);
   const signatureBase64 = arrayBufferToBase64(signature);
   const dataBase64 = arrayBufferToBase64(data);
 
-  console.log('----[crypto] Calling native.verify');
   const result = native.verify(alg, handle, signatureBase64, dataBase64);
-
-  console.log('----[crypto] native.verify raw result:', result, 'type:', typeof result);
 
   // Handle different return types from bridge (boolean, number, boxed number)
   const isValid = result === 1 || result === true || result?.valueOf?.() === 1;
-  console.log('----[crypto] verify result:', isValid);
 
   return Promise.resolve(isValid);
 };
@@ -987,12 +937,6 @@ crypto.subtle.verify = (algorithm, key, signature, data) => {
  * );
  */
 crypto.subtle.encrypt = (algorithm, key, data) => {
-  console.log('----[crypto] encrypt called:', {
-    algorithm,
-    keyType: key?.type,
-    dataLength: data?.byteLength
-  });
-
   if (key.type !== 'secret') {
     throw new Error('Encrypt operation requires a secret key');
   }
@@ -1001,13 +945,11 @@ crypto.subtle.encrypt = (algorithm, key, data) => {
   const handle = extractHandle(key);
   const dataBase64 = arrayBufferToBase64(data);
 
-  console.log('----[crypto] Calling native.encrypt');
   const ciphertextBase64 = native.encrypt(alg, handle, dataBase64);
 
   validateNativeResult(ciphertextBase64, 'Encrypt');
 
   const ciphertext = base64ToArrayBuffer(ciphertextBase64);
-  console.log('----[crypto] encrypt result length:', ciphertext.byteLength);
 
   return Promise.resolve(ciphertext);
 };
@@ -1040,12 +982,6 @@ crypto.subtle.encrypt = (algorithm, key, data) => {
  * );
  */
 crypto.subtle.decrypt = (algorithm, key, data) => {
-  console.log('----[crypto] decrypt called:', {
-    algorithm,
-    keyType: key?.type,
-    dataLength: data?.byteLength
-  });
-
   if (key.type !== 'secret') {
     throw new Error('Decrypt operation requires a secret key');
   }
@@ -1054,13 +990,11 @@ crypto.subtle.decrypt = (algorithm, key, data) => {
   const handle = extractHandle(key);
   const dataBase64 = arrayBufferToBase64(data);
 
-  console.log('----[crypto] Calling native.decrypt');
   const plaintextBase64 = native.decrypt(alg, handle, dataBase64);
 
   validateNativeResult(plaintextBase64, 'Decrypt');
 
   const plaintext = base64ToArrayBuffer(plaintextBase64);
-  console.log('----[crypto] decrypt result length:', plaintext.byteLength);
 
   return Promise.resolve(plaintext);
 };
@@ -1108,30 +1042,21 @@ crypto.subtle.decrypt = (algorithm, key, data) => {
  * );
  */
 crypto.subtle.deriveBits = (algorithm, baseKey, length) => {
-  console.log('----[crypto] deriveBits called:', {
-    algorithm,
-    baseKeyType: baseKey?.type,
-    length
-  });
-
   const alg = prepareAlgorithm(algorithm);
 
   // Special handling for PBKDF2 - extract key material from JWK if needed
   let keyParam = baseKey;
   if (alg.name?.toUpperCase() === 'PBKDF2' && baseKey && baseKey.k) {
     keyParam = { rawData: baseKey.k };
-    console.log('----[crypto] Converted PBKDF2 baseKey from JWK format');
   } else {
     keyParam = extractHandle(baseKey);
   }
 
-  console.log('----[crypto] Calling native.deriveBits');
   const bitsBase64 = native.deriveBits(alg, keyParam, length);
 
   validateNativeResult(bitsBase64, 'deriveBits');
 
   const bits = base64ToArrayBuffer(bitsBase64);
-  console.log('----[crypto] deriveBits result length:', bits.byteLength);
 
   return Promise.resolve(bits);
 };
@@ -1182,14 +1107,6 @@ crypto.subtle.deriveBits = (algorithm, baseKey, length) => {
  * );
  */
 crypto.subtle.deriveKey = (algorithm, baseKey, derivedKeyAlgorithm, extractable, usages) => {
-  console.log('----[crypto] deriveKey called:', {
-    algorithm,
-    baseKeyType: baseKey?.type,
-    derivedKeyAlgorithm,
-    extractable,
-    usages
-  });
-
   const alg = prepareAlgorithm(algorithm);
   const derivedAlg = prepareAlgorithm(derivedKeyAlgorithm);
 
@@ -1197,7 +1114,6 @@ crypto.subtle.deriveKey = (algorithm, baseKey, derivedKeyAlgorithm, extractable,
   let keyParam = baseKey;
   if (alg.name?.toUpperCase() === 'PBKDF2' && baseKey && baseKey.k) {
     keyParam = { rawData: baseKey.k };
-    console.log('----[crypto] Converted PBKDF2 baseKey from JWK format');
   } else {
     keyParam = extractHandle(baseKey);
   }
@@ -1205,14 +1121,12 @@ crypto.subtle.deriveKey = (algorithm, baseKey, derivedKeyAlgorithm, extractable,
   // Calculate derived key length from algorithm
   const keyLength = derivedAlg.length || 256;
 
-  console.log('----[crypto] Calling native.deriveBits to derive key');
   const bitsBase64 = native.deriveBits(alg, keyParam, keyLength);
 
   validateNativeResult(bitsBase64, 'deriveKey');
 
   const bits = base64ToArrayBuffer(bitsBase64);
 
-  console.log('----[crypto] Importing derived bits as key');
   // Import the derived bits as a new key
   return crypto.subtle.importKey(
     'raw',
@@ -1257,8 +1171,6 @@ crypto.getRandomValues = (typedArray) => {
     throw new DOMException('Requested length exceeds 65536', 'QuotaExceededError');
   }
 
-  console.log('----[crypto] getRandomValues called:', { length });
-
   const randomBase64 = native.getRandomValues(length);
   const randomBytes = base64ToArrayBuffer(randomBase64);
 
@@ -1282,8 +1194,6 @@ crypto.getRandomValues = (typedArray) => {
  * console.log(salt); // Uint8Array of 16 random bytes
  */
 crypto.randomBytes = (length) => {
-  console.log('----[crypto] randomBytes called:', { length });
-
   if (length > 65536) {
     throw new Error('Requested length exceeds 65536');
   }
@@ -1339,8 +1249,6 @@ globalThis.btoa = (input) => {
     str = String(input);
   }
 
-  console.log('----[crypto] btoa called:', { inputLength: str.length, inputType: typeof input });
-
   // Use pure JS implementation (no bridge call)
   return pureJsBtoa(str);
 };
@@ -1368,8 +1276,6 @@ globalThis.btoa = (input) => {
  * console.log(bytes); // Uint8Array [1, 2, 3, 4]
  */
 globalThis.atob = (input) => {
-  console.log('----[crypto] atob called:', { inputLength: String(input).length });
-
   // Use pure JS implementation (no bridge call)
   return pureJsAtob(String(input));
 };
@@ -1404,7 +1310,6 @@ globalThis.TextEncoder = globalThis.TextEncoder || class TextEncoder {
    * // bytes is Uint8Array [84, 101, 115, 116]
    */
   encode(str) {
-    console.log('----[crypto] TextEncoder.encode called:', { length: str.length });
     const encoded = native.textEncode(str);
     const bytes = base64ToArrayBuffer(encoded);
     return new Uint8Array(bytes);
@@ -1439,7 +1344,6 @@ globalThis.TextDecoder = globalThis.TextDecoder || class TextDecoder {
    */
   decode(buffer) {
     const data = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
-    console.log('----[crypto] TextDecoder.decode called:', { length: data.length });
     const base64 = arrayBufferToBase64(data);
     const result = native.textDecode(base64);
 
@@ -1456,4 +1360,4 @@ globalThis.TextDecoder = globalThis.TextDecoder || class TextDecoder {
 // Make crypto available globally
 globalThis.crypto = crypto;
 
-// })();
+})();

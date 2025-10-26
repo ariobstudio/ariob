@@ -15,10 +15,20 @@ export { ConfirmDialog, type ConfirmDialogProps } from './confirm-dialog';
 export { EmptyState, emptyStateVariants } from './empty-state';
 export { Icon, type IconProps } from './icon';
 export { Input } from './input';
+export { PagerView, type PagerViewProps } from './pager-view';
 export { SearchInput } from './search-input';
 export { Spinner, type SpinnerProps } from './spinner';
 export { TextArea } from './textarea';
-export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants, tabsTriggerVariants } from './tabs';
+export {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  TabsPanel,
+  SwipeableTabsContent,
+  tabsListVariants,
+  tabsTriggerVariants,
+} from './tabs';
 export {
   Sheet,
   SheetContent,

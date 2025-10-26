@@ -5,18 +5,19 @@
  */
 
 import { useState } from 'react';
-import { Column, Text, Button, Input, Icon, useTheme } from '@ariob/ui';
-import { graph, useAuth } from '@ariob/core';
+import { Column, Text, Button, Input, Icon } from '@ariob/ui';
+import { PageLayout } from '../components/Layout';
+import type { IGunChainReference } from '@ariob/core';
+import { useAuth } from '@ariob/core';
 
 interface LoginProps {
+  graph: IGunChainReference;
   onBack: () => void;
   onSuccess: () => void;
 }
 
-export function Login({ onBack, onSuccess }: LoginProps) {
-  const { withTheme } = useTheme();
-  const g = graph();
-  const { login } = useAuth(g);
+export function Login({ graph, onBack, onSuccess }: LoginProps) {
+  const { login } = useAuth(graph);
 
   const [keysInput, setKeysInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,27 +30,56 @@ export function Login({ onBack, onSuccess }: LoginProps) {
       return;
     }
 
+    console.log('>>>>> [Login] ========== LOGIN ATTEMPT ==========');
+    console.log('>>>>> [Login] Keys input length:', keysInput.length);
+
     setLoading(true);
     setError('');
 
     try {
       // Parse the keypair JSON
+      console.log('>>>>> [Login] Parsing keypair JSON...');
       const keys = JSON.parse(keysInput);
+
+      console.log('>>>>> [Login] JSON parsed successfully');
+      console.log('>>>>> [Login] Keys object keys:', Object.keys(keys));
+      console.log('>>>>> [Login] Public key:', keys.pub ? keys.pub.substring(0, 50) + '...' : 'MISSING');
 
       // Validate required fields
       if (!keys.pub || !keys.priv || !keys.epub || !keys.epriv) {
+        console.log('>>>>> [Login] ❌ Validation FAILED - missing required fields');
+        console.log('>>>>> [Login]   Has pub:', !!keys.pub);
+        console.log('>>>>> [Login]   Has priv:', !!keys.priv);
+        console.log('>>>>> [Login]   Has epub:', !!keys.epub);
+        console.log('>>>>> [Login]   Has epriv:', !!keys.epriv);
+        console.log('>>>>> [Login] =================================================');
         throw new Error('Invalid keypair format. Missing required fields.');
       }
+
+      console.log('>>>>> [Login] ✅ Keypair validation passed');
+      console.log('>>>>> [Login] Calling login()...');
 
       // Login with keypair
       const result = await login(keys);
 
+      console.log('>>>>> [Login] Login result:', result.ok ? 'SUCCESS ✅' : 'FAILED ❌');
+
       if (result.ok) {
+        console.log('>>>>> [Login] ✅ Login successful');
+        console.log('>>>>> [Login] User pub:', result.value.pub ? result.value.pub.substring(0, 50) + '...' : 'N/A');
+        console.log('>>>>> [Login] Calling onSuccess()...');
+        console.log('>>>>> [Login] =================================================');
         onSuccess();
       } else {
+        console.log('>>>>> [Login] ❌ Login FAILED');
+        console.log('>>>>> [Login] Error:', result.error.message);
+        console.log('>>>>> [Login] =================================================');
         setError(result.error.message);
       }
     } catch (err) {
+      console.log('>>>>> [Login] ❌ EXCEPTION during login');
+      console.log('>>>>> [Login] Error:', err instanceof Error ? err.message : String(err));
+      console.log('>>>>> [Login] =================================================');
       setError(err instanceof Error ? err.message : 'Invalid keypair JSON');
     }
 
@@ -57,9 +87,9 @@ export function Login({ onBack, onSuccess }: LoginProps) {
   };
 
   return (
-    <page className={withTheme('bg-background w-full h-full', 'dark bg-background w-full h-full')}>
+    <PageLayout>
       {/* Top Header with Back Button */}
-      <view className="w-full px-4 py-3 pt-safe-top border-b border-border">
+      <view className="w-full px-4 py-3 border-b border-border">
         <Button
           onTap={() => {
             'background only';
@@ -123,6 +153,6 @@ export function Login({ onBack, onSuccess }: LoginProps) {
           </Button>
         </Column>
       </Column>
-    </page>
+    </PageLayout>
   );
 }

@@ -9,8 +9,9 @@
     "./gun/*": "./gun/*"
   },
   "dependencies": {
+    "@lynx-js/react": "^0.114.3",
+    "@lynx-js/types": "3.4.11",
     "@lynx-js/websocket": "^0.0.4",
-    "neverthrow": "^8.2.0",
     "zod": "^3.24.4",
     "zustand": "^5.0.4"
   },

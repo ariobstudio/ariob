@@ -10,8 +10,10 @@
     "preview": "rspeedy preview"
   },
   "dependencies": {
+    "@ariob/core": "workspace:*",
+    "@ariob/ripple": "workspace:*",
     "@ariob/ui": "workspace:*",
-    "@lynx-js/react": "^0.114.0",
+    "@lynx-js/react": "^0.114.1",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.0",
     "@tanstack/react-router": "^1.133.13",

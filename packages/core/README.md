@@ -6,7 +6,7 @@
 [![Gun.js](https://img.shields.io/badge/Gun.js-1E1E1E?style=for-the-badge&logo=javascript&logoColor=white)](https://gun.eco/)
 [![Zustand](https://img.shields.io/badge/Zustand-443E38?style=for-the-badge&logo=react&logoColor=white)](https://zustand-demo.pmnd.rs/)
 
-Minimal, modular Gun.js primitives for LynxJS applications with Result-based error handling.
+Production-ready Gun.js primitives for LynxJS with DAM-aware mesh monitoring, environment-based peer management, and Result-based error handling.
 
 [Quick Start](#-quick-start) • [Core Primitives](#-core-primitives) • [API Reference](#-api-reference) • [Examples](#-examples) • [Architecture](#-architecture)
 
@@ -16,7 +16,7 @@ Minimal, modular Gun.js primitives for LynxJS applications with Result-based err
 
 ## 🎯 Overview
 
-**@ariob/core** is a radically simplified Gun.js wrapper that distills distributed data synchronization into 8 minimal, composable primitives. Built for LynxJS applications, it embraces functional programming principles with Result monads, opt-in persistence, and background-thread safety.
+**@ariob/core** is a production-ready Gun.js wrapper that distills distributed data synchronization into minimal, composable primitives. Built for LynxJS applications with deep understanding of Gun's DAM/HAM/SEA architecture, it provides mesh network monitoring, environment-based peer management, and Result-based error handling for robust P2P applications.
 
 ### Why @ariob/core?
 
@@ -40,6 +40,8 @@ Minimal, modular Gun.js primitives for LynxJS applications with Result-based err
 - **Authentication** — Create/login/logout/recall with keypair management
 - **Error Handling** — Result type for composable error handling
 - **Background Safety** — SEA lazy-loaded for thread isolation
+- **DAM Monitoring** — Real-time peer health and message flow tracking
+- **Peer Management** — Environment-based configuration (dev/staging/prod)
 
 ### Design Philosophy
 - **One Word Functions** — `pair()`, `sign()`, `verify()`, `encrypt()`, `decrypt()`
@@ -825,6 +827,178 @@ import {
 } from '@ariob/core';
 ```
 
+---
+
+### 8. Config — Peer Management
+
+**Environment-based peer configuration** for easy switching between development, staging, and production relays.
+
+#### Peer Profiles
+
+```typescript
+import { loadProfile, getCurrentProfile, PEER_PROFILES } from '@ariob/core';
+
+// Load production relays
+loadProfile('prod');
+
+// Check current environment
+const profile = getCurrentProfile();
+console.log('Using profile:', profile); // 'prod'
+
+// Available profiles:
+// - 'local': http://localhost:8765/gun
+// - 'dev': LAN IP for iOS simulator
+// - 'staging': wss://staging-relay.ariob.com/gun
+// - 'prod': Multiple production relays with redundancy
+
+// View all profiles
+console.log(PEER_PROFILES);
+```
+
+#### Dynamic Peer Management
+
+```typescript
+import { getPeers, setPeers, addPeer, removePeer } from '@ariob/core';
+
+// Get current peers
+const peers = getPeers();
+console.log('Connected to:', peers);
+
+// Add a peer dynamically
+addPeer('wss://relay.example.com/gun');
+
+// Remove a peer
+removePeer('http://localhost:8765/gun');
+
+// Set peers directly
+setPeers(['wss://relay1.com/gun', 'wss://relay2.com/gun']);
+
+// Reset to defaults
+resetPeers();
+```
+
+**Key Points:**
+- Profiles persist to localStorage
+- Easy environment switching
+- Supports multiple relays for redundancy
+- Gun.opt() used for dynamic peer addition
+
+---
+
+### 9. Mesh — DAM-Aware Monitoring
+
+**Real-time visibility** into Gun's mesh network (DAM layer) for production monitoring and debugging.
+
+#### Initialize Monitoring
+
+```typescript
+import { initMeshMonitoring } from '@ariob/core';
+
+// Call once during app initialization
+initMeshMonitoring();
+```
+
+#### React Hooks
+
+```typescript
+import { useMesh, usePeer } from '@ariob/core';
+
+function NetworkStatus() {
+  const { peers, totalIn, totalOut, monitoring } = useMesh();
+  const connected = peers.filter(p => p.connected).length;
+
+  return (
+    <view>
+      <text>Network: {monitoring ? '✓' : '✗'}</text>
+      <text>Peers: {connected}/{peers.length}</text>
+      <text>Messages: ↓{totalIn} ↑{totalOut}</text>
+    </view>
+  );
+}
+
+function PeerMonitor({ url }: { url: string }) {
+  const peer = usePeer(url);
+
+  if (!peer) return <text>Peer not found</text>;
+
+  return (
+    <view>
+      <text>{peer.url}</text>
+      <text>{peer.connected ? '🟢' : '🔴'}</text>
+      <text>Last seen: {new Date(peer.lastSeen).toLocaleTimeString()}</text>
+      <text>↓{peer.messagesIn} ↑{peer.messagesOut}</text>
+    </view>
+  );
+}
+```
+
+#### Imperative API
+
+```typescript
+import {
+  getPeerStatus,
+  getAllPeers,
+  addMeshPeer,
+  removeMeshPeer,
+  resetMeshStats
+} from '@ariob/core';
+
+// Get specific peer status
+const status = getPeerStatus('http://localhost:8765/gun');
+console.log('Connected:', status?.connected);
+
+// Get all peers
+const allPeers = getAllPeers();
+console.log('Total peers:', allPeers.length);
+
+// Add peer dynamically (also updates config)
+addMeshPeer('wss://relay.example.com/gun');
+
+// Remove from tracking
+removeMeshPeer('wss://old-relay.com/gun');
+
+// Reset message counters
+resetMeshStats();
+```
+
+**Key Points:**
+- Hooks into Gun's `'in'` and `'out'` events
+- Tracks message flow per peer
+- Real-time connection status
+- Useful for offline detection and debugging
+- Zero impact on Gun performance
+
+**Production Use Cases:**
+```typescript
+// Offline indicator
+function OfflineIndicator() {
+  const { peers } = useMesh();
+  const hasConnection = peers.some(p => p.connected);
+
+  if (hasConnection) return null;
+
+  return (
+    <view className="offline-banner">
+      <text>⚠️ Offline - changes will sync when reconnected</text>
+    </view>
+  );
+}
+
+// Message rate monitoring
+function useMessageRateMonitor(threshold = 1000) {
+  const { totalOut } = useMesh();
+
+  useEffect(() => {
+    'background only';
+    if (totalOut > threshold) {
+      console.warn('High message rate detected:', totalOut);
+    }
+  }, [totalOut, threshold]);
+}
+```
+
+---
+
 ## 🎯 Advanced Patterns
 
 ### Custom Schemas
@@ -1292,6 +1466,8 @@ One-word functions:
 ├── collection.ts   # Set/map operations
 ├── crypto.ts       # SEA cryptography
 ├── auth.ts         # Authentication
+├── config.ts       # Peer management & profiles
+├── mesh.ts         # DAM-aware monitoring
 ├── result.ts       # Result monad
 └── index.ts        # Clean exports
 ```

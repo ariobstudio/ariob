@@ -20,10 +20,15 @@
     "build:chat": "turbo run build --filter=chat",
     "bundle:ios": "./scripts/bundle-ios.sh",
     "bundle:ios:help": "./scripts/bundle-ios.sh --help",
-    "bundle:android": "./scripts/bundle-android.sh"
+    "bundle:android": "./scripts/bundle-android.sh",
+    "relay": "pnpm run --filter=relay start"
   },
   "packageManager": "pnpm@8.15.4",
   "devDependencies": {
     "turbo": "^2.5.2"
+  },
+  "dependencies": {
+    "cluster": "^0.7.7",
+    "gun": "^0.2020.1241"
   }
 }

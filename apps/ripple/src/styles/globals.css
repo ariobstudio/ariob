@@ -55,6 +55,21 @@
       hsl(0 0% 10.1961% / 0.1);
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 10.1961% / 0.25);
     --tracking-normal: 0.025em;
+
+    /* Ripple-specific: Degree color temperatures */
+    --degree-0-tint: rgba(255, 245, 230, 0.3); /* Warm yellow */
+    --degree-1-tint: transparent;              /* Neutral */
+    --degree-2-tint: rgba(230, 240, 255, 0.3); /* Cool blue */
+
+    /* Ripple-specific: Focus lens */
+    --focus-scale: 1.02;
+    --focus-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    --focus-duration: 300ms;
+
+    /* Ripple-specific: Media signatures */
+    --accent-strip-width: 2px;
+    --corner-chamfer: 4px;
+    --corner-round: 8px;
   }
 
   .dark {
@@ -108,6 +123,11 @@
     --shadow-xl: 0 1px 3px 0px hsl(0 0% 10.1961% / 0.1), 0 8px 10px -1px
       hsl(0 0% 10.1961% / 0.1);
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 10.1961% / 0.25);
+
+    /* Ripple-specific: Degree color temperatures (dark mode) */
+    --degree-0-tint: rgba(255, 245, 230, 0.1); /* Warm yellow (dimmed) */
+    --degree-1-tint: transparent;              /* Neutral */
+    --degree-2-tint: rgba(230, 240, 255, 0.1); /* Cool blue (dimmed) */
   }
 
   * {
@@ -169,6 +189,54 @@
   }
   50% {
     opacity: 0.6;
+  }
+}
+
+/* Ripple-specific animations */
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes focusLens {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  100% {
+    transform: scale(var(--focus-scale));
+    box-shadow: var(--focus-shadow);
+  }
+}
+
+@keyframes degreeShift {
+  0% {
+    background-color: var(--prev-degree-tint, transparent);
+  }
+  100% {
+    background-color: var(--current-degree-tint, transparent);
+  }
+}
+
+@keyframes focusPulse {
+  0% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.005);
+  }
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
   }
 }
 

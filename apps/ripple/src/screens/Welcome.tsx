@@ -5,7 +5,8 @@
  * Choose between creating a new account or logging in.
  */
 
-import { Column, Text, Button, useTheme, cn } from '@ariob/ui';
+import { Column, Text, Button, useTheme } from '@ariob/ui';
+import { PageLayout } from '../components/Layout';
 import illustrationLight from '../assets/illustration-light.png';
 import illustrationDark from '../assets/illustration-dark.png';
 
@@ -15,11 +16,10 @@ interface WelcomeProps {
 }
 
 export function Welcome({ onCreateAccount, onLogin }: WelcomeProps) {
-  const { theme, withTheme } = useTheme();
+  const { theme } = useTheme();
 
   return (
-    <page className={
-      cn(withTheme('', 'dark'), "bg-background w-full h-full pb-safe-bottom pt-safe-top")}>
+    <PageLayout>
       <Column className="w-full h-full p-8 justify-around items-center" spacing="xl">
         {/* Illustration */}
         <image
@@ -71,6 +71,6 @@ export function Welcome({ onCreateAccount, onLogin }: WelcomeProps) {
           <Text variant="primary" size="xs" weight={"bold"}> Privacy Policy </Text>
         </Text>
       </Column>
-    </page>
+    </PageLayout>
   );
 }

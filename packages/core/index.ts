@@ -14,7 +14,7 @@ export { Thing, Who } from './schema';
 export type { Thing as ThingType, Who as WhoType } from './schema';
 
 // Graph - Singleton + instances
-export { graph, createGraph, graphStore } from './graph';
+export { graph, createGraph, graphStore, addPeersToGraph } from './graph';
 export type { GunOptions, GunInstance, GunUser, IGunChainReference, KeyPair } from './graph';
 
 // Node - Single object management (imperative + reactive hooks)
@@ -50,6 +50,39 @@ export type { Ok, Err } from './result';
 
 // Zod - Schema validation
 export { z } from 'zod';
+
+// Store - State management utilities
+export { createStore, useStore, useStoreSelector } from './utils/createStore';
+export type { Store } from './utils/createStore';
+
+// Config - Configuration management
+export {
+  getPeers,
+  setPeers,
+  addPeer,
+  removePeer,
+  resetPeers,
+  getPeerConfig,
+  DEFAULT_PEERS,
+  PEER_PROFILES,
+  loadProfile,
+  getCurrentProfile,
+} from './config';
+export type { PeerConfig, PeerProfile } from './config';
+
+// Mesh - DAM layer peer management and monitoring
+export {
+  initMeshMonitoring,
+  getPeerStatus,
+  getAllPeers,
+  addPeer as addMeshPeer,
+  removePeer as removeMeshPeer,
+  resetMeshStats,
+  useMesh,
+  usePeer,
+  meshStore,
+} from './mesh';
+export type { PeerStatus } from './mesh';
 
 // ============================================================================
 // Utility Hooks (Optional - separate import)

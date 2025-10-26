@@ -1,10 +1,10 @@
 import Foundation
 import CryptoKit
-import CommonCrypto         // PBKDF2
+import CommonCrypto
 import Security             // SecKey import/export
 
 // Import Insecure hashing for SHA-1 (legacy compatibility)
-import enum CryptoKit.Insecure
+//import enum CryptoKit.Insecure
 
 // MARK: - Internal Errors
 
@@ -374,8 +374,8 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
             let hash: Data
 
             switch name {
-                case "SHA-1":
-                    hash = Data(Insecure.SHA1.hash(data: data))
+//                case "SHA-1":
+//                    hash = Data(Insecure.SHA1.hash(data: data))
                 case "SHA-256":
                     hash = Data(SHA256.hash(data: data))
                 case "SHA-384":
@@ -514,24 +514,36 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
         extractable: Bool,
         keyUsages: [String]
     ) -> NSDictionary {
+        print("[WebCrypto] 🔑 generateKey() called")
+        print("[WebCrypto]   Algorithm: \(algorithm)")
+        print("[WebCrypto]   Extractable: \(extractable)")
+        print("[WebCrypto]   Key usages: \(keyUsages)")
+
         do {
             let name = try Self.algName(from: algorithm)
+            print("[WebCrypto]   Algorithm name: \(name)")
 
             switch name {
             case "AES-GCM":
                 let len = (algorithm["length"] as? Int) ?? 256
                 guard [128,192,256].contains(len) else { throw WCError.badParam("length") }
+                print("[WebCrypto]   Generating AES-GCM key, length: \(len) bits")
 
                 let keyData = SymmetricKey(size: .init(bitCount: len))
                 let h = KeyStore.shared.put(keyData)
+                print("[WebCrypto]   ✅ Generated AES-GCM key, handle: \(h)")
 
                 return ["secretKeyHandle": h]
 
             case "ECDSA":
+                print("[WebCrypto]   Generating ECDSA P-256 keypair...")
                 let priv = P256.Signing.PrivateKey()
                 let pub  = priv.publicKey
                 let privHandle = KeyStore.shared.put(priv)
                 let pubHandle = KeyStore.shared.put(pub)
+                print("[WebCrypto]   ✅ Generated ECDSA keypair")
+                print("[WebCrypto]      Private key handle: \(privHandle)")
+                print("[WebCrypto]      Public key handle: \(pubHandle)")
 
                 return [
                     "privateKey": privHandle,
@@ -539,19 +551,26 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
                 ]
 
             case "ECDH":
+                print("[WebCrypto]   Generating ECDH P-256 keypair...")
                 let priv = P256.KeyAgreement.PrivateKey()
                 let pub  = priv.publicKey
                 let privHandle = KeyStore.shared.put(priv)
                 let pubHandle = KeyStore.shared.put(pub)
+                print("[WebCrypto]   ✅ Generated ECDH keypair")
+                print("[WebCrypto]      Private key handle: \(privHandle)")
+                print("[WebCrypto]      Public key handle: \(pubHandle)")
 
                 return [
                     "privateKey": privHandle,
                     "publicKey" : pubHandle
                 ]
 
-            default: throw WCError.unsupportedAlg(name)
+            default:
+                print("[WebCrypto]   ❌ Unsupported algorithm: \(name)")
+                throw WCError.unsupportedAlg(name)
             }
         } catch {
+            print("[WebCrypto]   ❌ ERROR: \(error)")
             return ["error": "\(error)"]
         }
     }
@@ -1105,11 +1124,33 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
         keyHandle: String,
         data msgB64: String
     ) -> String {
+
         do {
             let priv: P256.Signing.PrivateKey = try KeyStore.shared.get(keyHandle, as: P256.Signing.PrivateKey.self)
+
             let msg = try Data(base64Encoded: msgB64).unwrap("Bad base64")
 
-            let sig = try priv.signature(for: msg)
+            // CRITICAL: Replicate WebCrypto double-hashing behavior
+            //
+            // WebCrypto Spec Behavior:
+            // 1. SEA.js pre-hashes: message → hash1 (SHA-256)
+            // 2. crypto.subtle.sign({name: 'ECDSA', hash: 'SHA-256'}) receives hash1
+            // 3. WebCrypto automatically hashes hash1 again: hash1 → hash2 (SHA-256)
+            // 4. WebCrypto signs hash2
+            //
+            // CryptoKit Implementation (1:1 match to WebCrypto):
+            // 1. Receive hash1 from SEA.js (32 bytes of pre-hashed data)
+            // 2. Hash it again using SHA-256: hash1 → hash2
+            // 3. Create a SHA256.Digest from hash2
+            // 4. Sign the digest (CryptoKit will NOT hash again when given a Digest)
+            // Result: Signature over SHA256(SHA256(message)) ✓
+            //
+            // NOTE: We use signature(for: SHA256.Digest) NOT signature(for: Data)
+            // because signature(for: Data) would hash the raw bytes, giving us
+            // triple-hashing instead of double-hashing.
+            let hash2 = SHA256.hash(data: msg)  // Second hash to match WebCrypto
+
+            let sig = try priv.signature(for: hash2)  // Sign the digest without hashing again
 
             // Check if algorithm requests raw format (for SEA.js compatibility)
             let useRawFormat = algorithm["format"] as? String == "raw"
@@ -1120,6 +1161,7 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
             } else {
                 sigData = sig.derRepresentation
             }
+
 
             let result = sigData.base64EncodedString()
             return result
@@ -1160,31 +1202,72 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
         signature sigB64: String,
         data msgB64: String
     ) -> NSNumber {
+        print("[WebCrypto] 🔍 verify() called")
+        print("[WebCrypto]   Algorithm: \(algorithm)")
+        print("[WebCrypto]   Key handle: \(keyHandle)")
+        print("[WebCrypto]   Signature (base64): \(sigB64.prefix(40))...")
+        print("[WebCrypto]   Data (base64): \(msgB64.prefix(40))...")
+
         do {
             let pub: P256.Signing.PublicKey = try KeyStore.shared.get(keyHandle, as: P256.Signing.PublicKey.self)
+            print("[WebCrypto]   ✅ Retrieved public key from KeyStore")
+
             let msg = try Data(base64Encoded: msgB64).unwrap("Bad base64")
+            print("[WebCrypto]   Data length: \(msg.count) bytes")
+            print("[WebCrypto]   Data (hex first 32 bytes): \(msg.prefix(32).map { String(format: "%02x", $0) }.joined())")
 
             guard let sigData = Data(base64Encoded: sigB64) else {
+                print("[WebCrypto]   ❌ ERROR: Invalid signature base64")
                 throw WCError.badParam("Invalid signature base64")
             }
+
+            print("[WebCrypto]   Signature length: \(sigData.count) bytes")
+            print("[WebCrypto]   Signature (hex first 32 bytes): \(sigData.prefix(32).map { String(format: "%02x", $0) }.joined())")
 
             let sig: P256.Signing.ECDSASignature
 
             // Try to parse as DER first (standard format)
             if let derSig = try? P256.Signing.ECDSASignature(derRepresentation: sigData) {
                 sig = derSig
+                print("[WebCrypto]   ✅ Parsed signature as DER format")
             }
             // If DER fails, try raw format (64 bytes: 32-byte r + 32-byte s)
             else if sigData.count == 64, let rawSig = try? P256.Signing.ECDSASignature(rawRepresentation: sigData) {
                 sig = rawSig
+                print("[WebCrypto]   ✅ Parsed signature as raw format (IEEE P1363)")
             }
             // Last resort: try to parse signature data as compact representation
             else {
                 // Assume it might be in some other format, try raw if 64 bytes
+                print("[WebCrypto]   ⚠️  Attempting to parse signature as raw (fallback)")
                 sig = try P256.Signing.ECDSASignature(rawRepresentation: sigData)
             }
 
-            let isValid = pub.isValidSignature(sig, for: msg)
+            // CRITICAL: Replicate WebCrypto double-hashing behavior
+            //
+            // WebCrypto Spec Behavior:
+            // 1. SEA.js pre-hashes: message → hash1 (SHA-256)
+            // 2. crypto.subtle.verify({name: 'ECDSA', hash: 'SHA-256'}) receives hash1
+            // 3. WebCrypto automatically hashes hash1 again: hash1 → hash2 (SHA-256)
+            // 4. WebCrypto verifies signature over hash2
+            //
+            // CryptoKit Implementation (1:1 match to WebCrypto):
+            // 1. Receive hash1 from SEA.js (32 bytes of pre-hashed data)
+            // 2. Hash it again using SHA-256: hash1 → hash2
+            // 3. Create a SHA256.Digest from hash2
+            // 4. Verify the signature (CryptoKit will NOT hash again when given a Digest)
+            // Result: Verify signature over SHA256(SHA256(message)) ✓
+            //
+            // NOTE: We use isValidSignature(for: SHA256.Digest) NOT isValidSignature(for: Data)
+            // because isValidSignature(for: Data) would hash the raw bytes, giving us
+            // triple-hashing instead of double-hashing.
+            print("[WebCrypto]   🔄 Applying double-hash (WebCrypto spec compliance)")
+            let hash2 = SHA256.hash(data: msg)  // Second hash to match WebCrypto
+            print("[WebCrypto]   Hash2 (SHA256 of input): \(hash2.map { String(format: "%02x", $0) }.joined())")
+
+            let isValid = pub.isValidSignature(sig, for: hash2)  // Verify against the digest
+            print("[WebCrypto]   Verification result: \(isValid)")
+
             return NSNumber(value: isValid)
         } catch {
             return 0
@@ -1420,9 +1503,10 @@ public final class NativeWebCryptoModule: NSObject, LynxModule {
                 let prf: CCPBKDFAlgorithm = (hashName == "SHA-256") ? UInt32(kCCPRFHmacAlgSHA256)
                                                                     : UInt32(kCCPRFHmacAlgSHA512)
 
-                // Default to 32 bytes (256 bits) if length not specified
-                // Common output lengths: 16 (AES-128), 24 (AES-192), 32 (AES-256)
-                let outputLength = length?.intValue ?? 32
+                // CRITICAL: length parameter is in BITS per WebCrypto standard, convert to bytes
+                // Default to 256 bits = 32 bytes if length not specified
+                // Common output lengths: 128 bits (AES-128), 192 bits (AES-192), 256 bits (AES-256)
+                let outputLength = (length?.intValue ?? 256) / 8  // Convert bits to bytes
                 var output = Data(count: outputLength)
 
                 // Call CommonCrypto's PBKDF2 implementation
