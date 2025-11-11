@@ -14,6 +14,7 @@ import { type ViewProps } from '@lynx-js/types';
 import { type VariantProps, cva } from 'class-variance-authority';
 
 import { cn } from '../../lib/utils';
+import type { LynxReactNode } from '../../types/react';
 
 // Context for managing active tab
 interface TabsContextValue {
@@ -54,6 +55,7 @@ function Tabs({ defaultValue, value: controlledValue, onValueChange, className, 
 
   const value = controlledValue !== undefined ? controlledValue : internalValue;
   const handleValueChange = (newValue: string) => {
+    'background only';
     if (controlledValue === undefined) {
       setInternalValue(newValue);
     }
@@ -86,7 +88,7 @@ const tabsListVariants = cva(
   {
     variants: {
       variant: {
-        contained: 'gap-1 p-1 rounded-lg bg-muted',
+        contained: 'gap-1 p-1 rounded-md bg-muted',
         scrollable: 'gap-0 border-b border-border relative',
       },
       orientation: {
@@ -191,6 +193,7 @@ function TabsTrigger({ value: triggerValue, disabled, className, children, ...pr
   const isActive = value === triggerValue;
 
   const handleClick = () => {
+    'background only';
     if (!disabled) {
       onValueChange(triggerValue);
     }
@@ -215,9 +218,9 @@ function TabsTrigger({ value: triggerValue, disabled, className, children, ...pr
 /**
  * TabsPanel - Content panel for a tab
  *
- * Displays content when its value matches the active tab.
+ * Displays content when its value matches the active tab with smooth fade animation.
  * Use within SwipeableTabsContent for swipeable behavior,
- * or standalone for simple tab switching.
+ * or standalone for simple tab switching with animations.
  *
  * @example
  * <TabsPanel value="tab1">
@@ -230,15 +233,43 @@ interface TabsPanelProps extends ViewProps {
 
 function TabsPanel({ value: contentValue, className, children, ...props }: TabsPanelProps) {
   const { value } = useTabsContext();
+  const [isExiting, setIsExiting] = React.useState(false);
+  const [shouldRender, setShouldRender] = React.useState(value === contentValue);
+  const previousValue = React.useRef(value);
 
-  if (value !== contentValue) {
+  React.useEffect(() => {
+    if (value === contentValue) {
+      // Tab is becoming active - mount immediately and fade in
+      setShouldRender(true);
+      setIsExiting(false);
+    } else if (previousValue.current === contentValue && value !== contentValue) {
+      // Tab was active and is becoming inactive - start exit animation
+      setIsExiting(true);
+      // Unmount after animation completes
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+        setIsExiting(false);
+      }, 200); // Match animation duration
+      return () => clearTimeout(timer);
+    }
+
+    previousValue.current = value;
+  }, [value, contentValue]);
+
+  if (!shouldRender) {
     return null;
   }
+
+  const isActive = value === contentValue;
 
   return (
     <view
       data-slot="tabs-panel"
       className={cn('mt-2', className)}
+      style={{
+        animation: isExiting ? 'fadeOut 0.2s ease-out' : (isActive ? 'fadeIn 0.2s ease-in' : 'none'),
+        opacity: isExiting ? 0 : (isActive ? 1 : 0),
+      }}
       {...props}
     >
       {children}
@@ -269,14 +300,14 @@ const TabsContent = TabsPanel;
  * </SwipeableTabsContent>
  */
 interface SwipeableTabsContentProps extends ViewProps {
-  children: React.ReactNode;
+  children: LynxReactNode;
 }
 
 function SwipeableTabsContent({ className, children, ...props }: SwipeableTabsContentProps) {
   const { onValueChange } = useTabsContext();
 
-  // Convert children to array (LynxJS compatible way)
-  const childrenArray = Array.isArray(children) ? children : [children];
+  // Convert children to array - avoid circular references by accessing via index
+  const childrenArray = Array.isArray(children) ? children : children ? [children] : [];
 
   // Map of valid degree values
   const degreeValues = ['0', '1', '2'];
@@ -298,7 +329,7 @@ function SwipeableTabsContent({ className, children, ...props }: SwipeableTabsCo
   return (
     <scroll-view
       data-slot="swipeable-tabs-content"
-      className={cn('flex-1 w-full overflow-hidden', className)}
+      className={cn('flex-1 w-full', className)}
       scroll-orientation="horizontal"
       enable-scroll={true}
       scroll-bar-enable={false}
@@ -311,7 +342,7 @@ function SwipeableTabsContent({ className, children, ...props }: SwipeableTabsCo
       }}
       {...props}
     >
-      {childrenArray.map((child: any, index: number) => (
+      {childrenArray.map((_child: any, index: number) => (
         <view
           key={degreeValues[index] || index}
           data-degree={degreeValues[index]}
@@ -325,8 +356,8 @@ function SwipeableTabsContent({ className, children, ...props }: SwipeableTabsCo
             scrollSnapStop: 'always',
           }}
         >
-          {/* Render panel content directly */}
-          {child}
+          {/* Render panel content directly - access by index to avoid circular refs */}
+          {childrenArray[index]}
         </view>
       ))}
     </scroll-view>

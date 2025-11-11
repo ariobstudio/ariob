@@ -57,8 +57,6 @@ interface CollectionStore {
  * Create a collection store
  */
 function createCollectionStore() {
-  'background only';
-
   const store = createStore<CollectionStore>({
     collections: {},
     subs: new Map(),
@@ -73,8 +71,6 @@ function createCollectionStore() {
      * Subscribe to a Gun collection
      */
     map: <T>(key: string, ref: IGunChainReference, schema?: z.ZodSchema<T>) => {
-      'background only';
-
       const state = store.getState();
 
       // Cleanup existing subscription
@@ -91,9 +87,29 @@ function createCollectionStore() {
 
       console.log('[Collection] Subscribing:', key);
 
-      // Subscribe to Gun collection
+      // Use .once() to detect initial state (empty or populated)
+      // This fires immediately, even for empty collections
+      ref.once((initialData: any) => {
+        // If collection is empty or doesn't exist, set loading: false immediately
+        if (!initialData || Object.keys(initialData).filter(k => !k.startsWith('_')).length === 0) {
+          console.log('[Collection] Initial state: empty');
+          const currentState = store.getState();
+          store.setState({
+            collections: {
+              ...currentState.collections,
+              [key]: {
+                items: [],
+                loading: false,
+                error: null,
+              },
+            },
+          });
+        }
+        // If collection has items, .map().on() below will handle them
+      });
+
+      // Subscribe to Gun collection for reactive updates
       ref.map().on((raw: any, id: string) => {
-        'background only';
         console.log('[Collection] Item received:', key, id, raw);
 
         try {
@@ -194,7 +210,6 @@ function createCollectionStore() {
      * Unsubscribe from a Gun collection
      */
     off: (key: string) => {
-      'background only';
       console.log('[Collection] Unsubscribing:', key);
 
       const state = store.getState();
@@ -216,8 +231,6 @@ function createCollectionStore() {
      * Add item to a Gun collection
      */
     set: async <T>(key: string, ref: IGunChainReference, data: T, schema?: z.ZodSchema<T>) => {
-      'background only';
-
       try {
         // Validate with schema if provided
         if (schema) {
@@ -250,8 +263,6 @@ function createCollectionStore() {
      * Update item in collection
      */
     update: async <T>(key: string, ref: IGunChainReference, id: string, data: T, schema?: z.ZodSchema<T>) => {
-      'background only';
-
       try {
         // Validate with schema if provided
         if (schema) {
@@ -284,8 +295,6 @@ function createCollectionStore() {
      * Delete item from collection
      */
     del: async (key: string, ref: IGunChainReference, id: string) => {
-      'background only';
-
       try {
         // Delete by setting to null
         await new Promise<void>((resolve, reject) => {
@@ -363,8 +372,6 @@ const useCollectionStore = createCollectionStore();
  * ```
  */
 export function collection<T = any>(key: string, config?: CollectionConfig) {
-  'background only';
-
   const store = useCollectionStore;
 
   return {
@@ -430,8 +437,6 @@ export function collection<T = any>(key: string, config?: CollectionConfig) {
  * Hook for using collection in React components
  */
 export function useCollection<T = any>(key: string, config?: CollectionConfig) {
-  'background only';
-
   const store = useCollectionStore;
 
   const items = useStoreSelector(
@@ -488,16 +493,11 @@ export function useCollection<T = any>(key: string, config?: CollectionConfig) {
  * ```
  */
 export function createCollection<T = any>(key: string, schema?: z.ZodSchema<T>) {
-  'background only';
-
   return function useCreatedCollection() {
-    'background only';
-
     const store = useCollectionStore;
 
     // Auto-subscribe on mount
     useEffect(() => {
-      'background only';
       // Import graph at runtime to avoid circular deps
       const { graph } = require('./graph');
       const g = graph();
@@ -522,7 +522,6 @@ export function createCollection<T = any>(key: string, schema?: z.ZodSchema<T>) 
     );
 
     const set = useCallback(async (data: T) => {
-      'background only';
       const { graph } = require('./graph');
       const g = graph();
       const ref = g.get(key);
@@ -531,7 +530,6 @@ export function createCollection<T = any>(key: string, schema?: z.ZodSchema<T>) 
     }, []);
 
     const update = useCallback(async (id: string, data: T) => {
-      'background only';
       const { graph } = require('./graph');
       const g = graph();
       const ref = g.get(key);
@@ -540,7 +538,6 @@ export function createCollection<T = any>(key: string, schema?: z.ZodSchema<T>) 
     }, []);
 
     const del = useCallback(async (id: string) => {
-      'background only';
       const { graph } = require('./graph');
       const g = graph();
       const ref = g.get(key);

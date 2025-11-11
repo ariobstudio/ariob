@@ -16,38 +16,64 @@ import rookBlack from '../assets/pieces/rook-black.png';
 import pawnWhite from '../assets/pieces/pawn-white.png';
 import pawnBlack from '../assets/pieces/pawn-black.png';
 
-// Mapping: Senterej piece types to image files
-// Convention: white = green player, black = gold player
+// Mapping: Both Senterej and Standard piece types to image files
+// Convention: white images for white player, black images for black player
 export const PIECE_IMAGES: Record<PieceType, Record<Player, string>> = {
+  // Senterej pieces (Ethiopian chess)
   negus: {
     // King
-    green: kingWhite,
-    gold: kingBlack,
+    white: kingWhite,
+    black: kingBlack,
   },
   fers: {
     // Minister/Vizier (uses queen image)
-    green: queenWhite,
-    gold: queenBlack,
+    white: queenWhite,
+    black: queenBlack,
   },
   saba: {
     // Elephant (uses bishop image)
-    green: bishopWhite,
-    gold: bishopBlack,
+    white: bishopWhite,
+    black: bishopBlack,
   },
   ferese: {
     // Knight
-    green: knightWhite,
-    gold: knightBlack,
+    white: knightWhite,
+    black: knightBlack,
   },
   der: {
     // Rook
-    green: rookWhite,
-    gold: rookBlack,
+    white: rookWhite,
+    black: rookBlack,
   },
   medeq: {
     // Pawn
-    green: pawnWhite,
-    gold: pawnBlack,
+    white: pawnWhite,
+    black: pawnBlack,
+  },
+  // Standard chess pieces (International chess)
+  king: {
+    white: kingWhite,
+    black: kingBlack,
+  },
+  queen: {
+    white: queenWhite,
+    black: queenBlack,
+  },
+  bishop: {
+    white: bishopWhite,
+    black: bishopBlack,
+  },
+  knight: {
+    white: knightWhite,
+    black: knightBlack,
+  },
+  rook: {
+    white: rookWhite,
+    black: rookBlack,
+  },
+  pawn: {
+    white: pawnWhite,
+    black: pawnBlack,
   },
 };
 

@@ -44,6 +44,10 @@ export {
 export { useAuth, authStore, createAccount, login, logout, recall } from './auth';
 export type { User, AuthResult } from './auth';
 
+// User Profile - Profile management
+export { useUserProfile } from './userProfile';
+export type { UserProfile } from './userProfile';
+
 // Result - Error handling
 export { Result, isOk, isErr } from './result';
 export type { Ok, Err } from './result';
@@ -54,6 +58,9 @@ export { z } from 'zod';
 // Store - State management utilities
 export { createStore, useStore, useStoreSelector } from './utils/createStore';
 export type { Store } from './utils/createStore';
+
+// LocalStorage - Native storage wrapper
+export { LocalStorage, getStorage, getLocalStorage, useLocalStorage } from './localStorage';
 
 // Config - Configuration management
 export {
@@ -88,20 +95,20 @@ export type { PeerStatus } from './mesh';
 // Utility Hooks (Optional - separate import)
 // ============================================================================
 
-export { default as useTapLock } from './hooks/useTapLock';
+// Platform-agnostic hooks (work in React, React Native, and LynxJS)
 export { default as useInput } from './hooks/useInput';
 export { default as useDebounce } from './hooks/useDebounce';
 export { default as useIntersection } from './hooks/useIntersection';
-export { default as useMainThreadImperativeHandle } from './hooks/useMainThreadImperativeHandle';
 export { default as useTimeout } from './hooks/useTimeout';
-export { default as useTimeoutFn } from './hooks/useTimeoutFn';
-export { default as useUpdate } from './hooks/useUpdate';
-export { useKeyboard } from './hooks/useKeyboard';
 
-export type { TapLockDirection, UseTapLockOptions } from './hooks/useTapLock';
 export type { UseDebounceReturn } from './hooks/useDebounce';
 export type { InputEvent, InputInputEvent, UseInputOptions } from './hooks/useInput';
 export type { IntersectionObserverOptions } from './hooks/useIntersection';
 export type { UseTimeoutReturn } from './hooks/useTimeout';
 export type { UseTimeoutFnReturn } from './hooks/useTimeoutFn';
-export type { UseKeyboardResult } from './hooks/useKeyboard';
+
+// NOTE: LynxJS-specific hooks are NOT exported from main package to avoid breaking React Native/Expo
+// Import these directly in LynxJS apps:
+//   import useTapLock from '@ariob/core/lynx/hooks/useTapLock';
+//   import useMainThreadImperativeHandle from '@ariob/core/lynx/hooks/useMainThreadImperativeHandle';
+//   import { useKeyboard } from '@ariob/core/lynx/hooks/useKeyboard';

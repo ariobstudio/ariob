@@ -2,6 +2,7 @@ import * as React from '@lynx-js/react';
 import { type ViewProps } from '@lynx-js/types';
 import { cn } from '../../lib/utils';
 import { Icon } from './icon';
+import type { LynxReactNode } from '../../types/react';
 
 interface SheetContextValue {
   open: boolean;
@@ -21,7 +22,7 @@ function useSheetContext() {
 interface SheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  children: React.ReactNode;
+  children: LynxReactNode;
 }
 
 function Sheet({ open, onOpenChange, children }: SheetProps) {
@@ -35,7 +36,7 @@ function Sheet({ open, onOpenChange, children }: SheetProps) {
 interface SheetContentProps extends ViewProps {
   side?: 'bottom' | 'top';
   className?: string;
-  children: React.ReactNode;
+  children: LynxReactNode;
 }
 
 function SheetContent({ side = 'bottom', className, children, ...props }: SheetContentProps) {
@@ -65,22 +66,44 @@ function SheetContent({ side = 'bottom', className, children, ...props }: SheetC
     }, 300); // Match animation duration
   };
 
+  const handleOverlayTap = () => {
+    'background only';
+    handleClose();
+  };
+
   const handleTouchStart = (e: any) => {
+    'background only';
     if (isClosing) return;
-    startY.current = e.touches?.[0]?.clientY || 0;
+
+    // LynxJS touch event structure: try both e.detail.touches and e.touches
+    const touches = e.detail?.touches || e.touches;
+    if (!touches || touches.length === 0) return;
+
+    const touch = touches[0];
+    const yPos = touch.pageY || touch.clientY || 0;
+    startY.current = yPos;
     setIsDragging(true);
   };
 
   const handleTouchMove = (e: any) => {
+    'background only';
     if (!isDragging || isClosing) return;
-    const currentY = e.touches?.[0]?.clientY || 0;
+
+    // LynxJS touch event structure
+    const touches = e.detail?.touches || e.touches;
+    if (!touches || touches.length === 0) return;
+
+    const touch = touches[0];
+    const currentY = touch.pageY || touch.clientY || 0;
     const diff = side === 'bottom' ? currentY - startY.current : startY.current - currentY;
+
     if (diff > 0) {
       setDragY(diff);
     }
   };
 
   const handleTouchEnd = () => {
+    'background only';
     if (isClosing) return;
 
     if (dragY > 100) {
@@ -113,7 +136,7 @@ function SheetContent({ side = 'bottom', className, children, ...props }: SheetC
           opacity: isClosing ? 0 : 1,
           transition: isClosing ? 'opacity 0.3s ease-out' : 'none',
         }}
-        bindtap={handleClose}
+        bindtap={handleOverlayTap}
       />
 
       {/* Sheet Content */}
@@ -131,7 +154,7 @@ function SheetContent({ side = 'bottom', className, children, ...props }: SheetC
           boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
           animation: slideAnimation,
           maxHeight: '85vh',
-          overflow: 'hidden',
+          // LynxJS doesn't support overflow property
           transform: transformValue,
           transition: isClosing ? 'transform 0.3s ease-out' : (isDragging ? 'none' : 'transform 0.2s ease-out'),
         }}
@@ -150,11 +173,16 @@ interface SheetHeaderProps extends ViewProps {
   showHandle?: boolean;
   showClose?: boolean;
   className?: string;
-  children?: React.ReactNode;
+  children?: LynxReactNode;
 }
 
 function SheetHeader({ showHandle = true, showClose = true, className, children, ...props }: SheetHeaderProps) {
   const { onOpenChange } = useSheetContext();
+
+  const handleCloseClick = () => {
+    'background only';
+    onOpenChange(false);
+  };
 
   return (
     <>
@@ -180,7 +208,7 @@ function SheetHeader({ showHandle = true, showClose = true, className, children,
         {children}
         {showClose && (
           <view
-            bindtap={() => onOpenChange(false)}
+            bindtap={handleCloseClick}
             className="h-9 w-9 flex items-center justify-center rounded-full"
             style={{ cursor: 'pointer' }}
           >
@@ -194,7 +222,7 @@ function SheetHeader({ showHandle = true, showClose = true, className, children,
 
 interface SheetTitleProps {
   className?: string;
-  children: React.ReactNode;
+  children: LynxReactNode;
 }
 
 function SheetTitle({ className, children }: SheetTitleProps) {
@@ -207,7 +235,7 @@ function SheetTitle({ className, children }: SheetTitleProps) {
 
 interface SheetDescriptionProps {
   className?: string;
-  children: React.ReactNode;
+  children: LynxReactNode;
 }
 
 function SheetDescription({ className, children }: SheetDescriptionProps) {
@@ -220,18 +248,22 @@ function SheetDescription({ className, children }: SheetDescriptionProps) {
 
 interface SheetBodyProps extends ViewProps {
   className?: string;
-  children: React.ReactNode;
+  children: LynxReactNode;
 }
 
 function SheetBody({ className, children, ...props }: SheetBodyProps) {
+  // LynxJS doesn't support overflow-y-auto, use scroll-view for scrolling
   return (
-    <view
-      className={cn('px-6 pb-6 overflow-y-auto', className)}
+    <scroll-view
+      className={cn('px-6 pb-6', className)}
       style={{ maxHeight: 'calc(85vh - 60px)' }}
+      scroll-orientation="vertical"
+      enable-scroll={true}
+      scroll-bar-enable={false}
       {...props}
     >
       {children}
-    </view>
+    </scroll-view>
   );
 }
 

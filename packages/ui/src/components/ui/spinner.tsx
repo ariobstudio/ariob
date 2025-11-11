@@ -1,8 +1,37 @@
 import * as React from '@lynx-js/react';
 import { cn } from '../../lib/utils';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-export interface SpinnerProps {
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+const spinnerVariants = cva(
+  'rounded-full border-solid',
+  {
+    variants: {
+      size: {
+        sm: 'border-2',
+        md: 'border-2',
+        lg: 'border-[3px]',
+        xl: 'border-4',
+      },
+      color: {
+        // Standalone colors (visible on background)
+        default: 'border-foreground',
+        primary: 'border-primary',
+        muted: 'border-muted-foreground',
+        destructive: 'border-destructive',
+        // Button colors (for use on colored backgrounds)
+        'on-primary': 'border-primary-foreground',
+        'on-destructive': 'border-destructive-foreground',
+        'on-secondary': 'border-secondary-foreground',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+      color: 'default',
+    },
+  }
+);
+
+export interface SpinnerProps extends VariantProps<typeof spinnerVariants> {
   className?: string;
 }
 
@@ -13,8 +42,9 @@ const sizeMap = {
   xl: 48,
 };
 
-export function Spinner({ size = 'md', className }: SpinnerProps) {
-  const dimension = sizeMap[size];
+export function Spinner({ size = 'md', color = 'default', className }: SpinnerProps) {
+  const spinnerSize = (size || 'md') as keyof typeof sizeMap;
+  const dimension = sizeMap[spinnerSize];
 
   return (
     <view
@@ -25,13 +55,16 @@ export function Spinner({ size = 'md', className }: SpinnerProps) {
       }}
     >
       <view
+        data-slot="spinner"
+        className={cn(spinnerVariants({ size: spinnerSize, color }))}
         style={{
           width: `${dimension}px`,
           height: `${dimension}px`,
-          border: '2px solid var(--muted)',
-          borderTopColor: 'var(--primary)',
-          borderRadius: '50%',
-          animation: 'spin 0.8s linear infinite',
+          borderTopColor: 'transparent',
+          animationName: 'spin',
+          animationDuration: '0.8s',
+          animationTimingFunction: 'linear',
+          animationIterationCount: 'infinite',
         }}
       />
     </view>

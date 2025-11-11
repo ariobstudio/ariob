@@ -68,8 +68,6 @@ const meshStore = createStore<MeshState>({
  * ```
  */
 export function initMeshMonitoring(): void {
-  'background only';
-
   const state = meshStore.getState();
   if (state.monitoring) {
     return; // Already initialized
@@ -79,7 +77,6 @@ export function initMeshMonitoring(): void {
 
   // Monitor outgoing messages
   gun.on('out', (msg: any) => {
-    'background only';
     const state = meshStore.getState();
     meshStore.setState({
       totalMessagesOut: state.totalMessagesOut + 1,
@@ -92,7 +89,6 @@ export function initMeshMonitoring(): void {
 
   // Monitor incoming messages
   gun.on('in', (msg: any) => {
-    'background only';
     const state = meshStore.getState();
     meshStore.setState({
       totalMessagesIn: state.totalMessagesIn + 1,
@@ -138,7 +134,6 @@ export function initMeshMonitoring(): void {
  * ```
  */
 export function getPeerStatus(url: string): PeerStatus | null {
-  'background only';
   return meshStore.getState().peers[url] || null;
 }
 
@@ -154,7 +149,6 @@ export function getPeerStatus(url: string): PeerStatus | null {
  * ```
  */
 export function getAllPeers(): PeerStatus[] {
-  'background only';
   return Object.values(meshStore.getState().peers);
 }
 
@@ -180,8 +174,6 @@ export function getAllPeers(): PeerStatus[] {
  * ```
  */
 export function addPeer(url: string): void {
-  'background only';
-
   const gun = graph();
   gun.opt({ peers: [url] });
 
@@ -216,8 +208,6 @@ export function addPeer(url: string): void {
  * ```
  */
 export function removePeer(url: string): void {
-  'background only';
-
   const state = meshStore.getState();
   const { [url]: removed, ...rest } = state.peers;
 
@@ -313,8 +303,6 @@ export function usePeer(url: string) {
  * ```
  */
 export function resetMeshStats(): void {
-  'background only';
-
   const state = meshStore.getState();
   const resetPeers: Record<string, PeerStatus> = {};
 

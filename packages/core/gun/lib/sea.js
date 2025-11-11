@@ -195,7 +195,7 @@
     api.subtle = globalThis.crypto.subtle
     api.TextEncoder = globalThis.TextEncoder
     api.TextDecoder = globalThis.TextDecoder
-    api.random = (len) => api.Buffer.from(globalThis.crypto.randomBytes(len))
+    api.random = (len) => api.Buffer.from(globalThis.crypto.getRandomValues(new Uint8Array(api.Buffer.alloc(len))))
     api.ossl = api.subtle = globalThis.crypto.subtle 
     module.exports = api
   })(USE, './shim');

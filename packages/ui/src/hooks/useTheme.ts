@@ -1,10 +1,15 @@
 import { create } from 'zustand';
 
-type Theme = 'Light' | 'Dark' | 'Auto';
+export enum Theme {
+  Light = 'light',
+  Dark = 'dark',
+  Auto = 'auto',
+}
 
+type ThemeType = 'light' | 'dark' | 'auto';
 interface ThemeState {
   currentTheme: Theme;
-  theme: 'light' | 'dark';
+  theme: ThemeType;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
   withTheme: <T>(light: T, dark: T) => T;
@@ -16,7 +21,7 @@ const applyThemeClass = (theme: Theme) => {
   if (typeof lynx === 'undefined') return;
 
   // @ts-ignore lynx is provided by runtime
-  const isDark = theme === 'Dark' || (theme === 'Auto' && lynx.__globalProps?.theme === 'Dark');
+  const isDark = theme === Theme.Dark || (theme === Theme.Auto && lynx.__globalProps?.theme === Theme.Dark);
 
   // @ts-ignore lynx is provided by runtime
   lynx
@@ -29,10 +34,10 @@ const applyThemeClass = (theme: Theme) => {
 };
 
 export const useTheme = create<ThemeState>((set, get) => ({
-  currentTheme: 'Auto',
+  currentTheme: Theme.Auto,
 
   get theme() {
-    return get().isDarkMode() ? 'dark' : 'light';
+    return get().isDarkMode() ? Theme.Dark : Theme.Light;
   },
 
   setTheme: (theme: Theme) => {
@@ -48,28 +53,28 @@ export const useTheme = create<ThemeState>((set, get) => ({
 
   toggleTheme: () => {
     const { currentTheme } = get();
-    const newTheme = currentTheme === 'Dark' ? 'Light' : 'Dark';
+    const newTheme = currentTheme === Theme.Dark ? Theme.Light : Theme.Dark;
     get().setTheme(newTheme);
   },
 
   withTheme: <T>(light: T, dark: T): T => {
     const { currentTheme } = get();
-    if (currentTheme !== 'Auto') {
-      return currentTheme === 'Light' ? light : dark;
+    if (currentTheme !== Theme.Auto) {
+      return currentTheme === Theme.Light ? light : dark;
     }
     // For Auto theme, detect system theme via Lynx global props
     // @ts-ignore lynx is provided by runtime
     const systemTheme = typeof lynx !== 'undefined' && lynx.__globalProps?.theme;
-    return systemTheme === 'Dark' ? dark : light;
+    return systemTheme === Theme.Dark ? dark : (light as unknown as T);
   },
 
   isDarkMode: (): boolean => {
     const { currentTheme } = get();
-    if (currentTheme !== 'Auto') {
-      return currentTheme === 'Dark';
+    if (currentTheme !== Theme.Auto) {
+      return currentTheme === Theme.Dark;
     }
     // @ts-ignore lynx is provided by runtime
     const systemTheme = typeof lynx !== 'undefined' && lynx.__globalProps?.theme;
-    return systemTheme === 'Dark';
+    return systemTheme === Theme.Dark;
   },
 }));

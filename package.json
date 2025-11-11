@@ -23,12 +23,16 @@
     "bundle:android": "./scripts/bundle-android.sh",
     "relay": "pnpm run --filter=relay start"
   },
-  "packageManager": "pnpm@8.15.4",
+  "packageManager": "pnpm@10.20.0",
+  "pnpm": {
+    "overrides": {
+      "react": "19.1.0",
+      "react-dom": "19.1.0",
+      "zod": "^3.24.4",
+      "zustand": "^5.0.4"
+    }
+  },
   "devDependencies": {
     "turbo": "^2.5.2"
-  },
-  "dependencies": {
-    "cluster": "^0.7.7",
-    "gun": "^0.2020.1241"
   }
 }

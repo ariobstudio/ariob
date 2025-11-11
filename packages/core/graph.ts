@@ -8,14 +8,39 @@
 // Import native bridges for iOS/Android
 // CRITICAL: crypto.js must be loaded to provide WebCrypto polyfill and btoa/atob that handle Arrays
 import './gun/native/crypto.js';
-import './gun/native/websocket.js';
-import './gun/native/localStorage.js';
+
+// Conditionally import Lynx-specific native bridges
+// WebSocket and localStorage are only needed in LynxJS environment
+// React Native/Expo have built-in WebSocket and don't use synchronous localStorage
+(() => {
+  try {
+    // Check if we're in LynxJS environment (has lynx global and specific native modules)
+    if (typeof globalThis !== 'undefined' &&
+        (globalThis as any).lynx !== undefined) {
+      // Only import these in LynxJS environment
+      require('./gun/native/websocket.js');
+      require('./gun/native/localStorage.js');
+      console.log('[Graph] Loaded LynxJS native bridges');
+    } else {
+      console.log('[Graph] Skipping LynxJS native bridges (not in Lynx environment)');
+    }
+  } catch (e) {
+    console.warn('[Graph] Could not load Lynx native bridges:', e);
+  }
+})();
+
 import './gun/lib/yson.js';
+
+// Import Gun FIRST before extensions
 import Gun from './gun/lib/gun.js';
-// CRITICAL: Import our custom SEA with base64 fix
+
+// CRITICAL: Import our custom SEA with base64 fix AFTER Gun
 import './gun/lib/sea.js';
-// Import Gun path extension for path-based navigation
+
+// Import Gun path extension AFTER Gun is loaded
+// This allows path.js to properly extend Gun.chain
 import './gun/lib/path.js';
+
 import { createStore } from './utils/createStore';
 import { getPeers } from './config';
 
@@ -111,8 +136,6 @@ const graphStore = createStore<GraphState>({
  */
 const graphActions = {
   init: (options?: GunOptions): GunInstance => {
-    'background only';
-
     // Load peers from config if not explicitly provided
     const peers = options?.peers || getPeers();
 
@@ -135,7 +158,7 @@ const graphActions = {
     };
 
     const gun = Gun(finalOptions) as unknown as GunInstance;
-
+    (globalThis as any).gun = gun;
     // Store instance and peers
     graphStore.setState({ instance: gun, peers });
 
@@ -143,8 +166,6 @@ const graphActions = {
   },
 
   addPeers: (peers: string[]): void => {
-    'background only';
-
     // Validate input
     if (!Array.isArray(peers) || peers.some(p => typeof p !== 'string')) {
       console.error('[Graph] Invalid peers array');
@@ -169,7 +190,6 @@ const graphActions = {
   },
 
   get: (): GunInstance => {
-    'background only';
     const state = graphStore.getState();
 
     // Lazy init if not already initialized
@@ -200,7 +220,6 @@ const graphActions = {
  * ```
  */
 export function graph(options?: GunOptions): GunInstance {
-  'background only';
   const state = graphStore.getState();
 
   // If options provided and instance doesn't exist, init with options
@@ -231,8 +250,6 @@ export function graph(options?: GunOptions): GunInstance {
  * ```
  */
 export function createGraph(options?: GunOptions): GunInstance {
-  'background only';
-
   const gun = Gun(options) as unknown as GunInstance;
   return gun;
 }
@@ -250,7 +267,6 @@ export function createGraph(options?: GunOptions): GunInstance {
  * ```
  */
 export function addPeersToGraph(peers: string[]): void {
-  'background only';
   graphActions.addPeers(peers);
 }
 

@@ -4,18 +4,19 @@ import * as React from '@lynx-js/react';
 
 import { cn } from '../../lib/utils';
 import { Text } from '../primitives/text';
+import type { LynxReactNode } from '../../types/react';
 
 const avatarVariants = cva(
-  'relative flex items-center justify-center shrink-0 overflow-hidden rounded-full bg-muted',
+  'relative flex items-center justify-center shrink-0',
   {
     variants: {
       size: {
-        xs: 'h-6 w-6 min-w-6',
-        sm: 'h-8 w-8 min-w-8',
-        default: 'h-10 w-10 min-w-10',
-        lg: 'h-12 w-12 min-w-12',
-        xl: 'h-16 w-16 min-w-16',
-        '2xl': 'h-20 w-20 min-w-20',
+        xs: 'h-8 w-8 min-w-8',
+        sm: 'h-12 w-12 min-w-12',
+        default: 'h-16 w-16 min-w-16',
+        lg: 'h-20 w-20 min-w-20',
+        xl: 'h-24 w-24 min-w-24',
+        '2xl': 'h-28 w-28 min-w-28',
       },
     },
     defaultVariants: {
@@ -53,7 +54,7 @@ interface AvatarProps extends ViewProps, VariantProps<typeof avatarVariants> {
   /**
    * Custom fallback content
    */
-  fallback?: React.ReactNode;
+  fallback?: LynxReactNode;
 }
 
 /**
@@ -83,13 +84,18 @@ function Avatar({
   return (
     <view
       data-slot="avatar"
-      className={cn(avatarVariants({ size }), className)}
+      className={cn(
+        avatarVariants({ size }),
+        'rounded-full bg-muted',
+        // Ensure content is properly constrained within circular boundary
+        className
+      )}
       {...props}
     >
       {src ? (
         <image
           src={src}
-          className="h-full w-full object-cover"
+          className="h-full w-full rounded-full object-cover"
           mode="aspectFill"
         />
       ) : fallback ? (
@@ -105,8 +111,9 @@ function Avatar({
         </Text>
       )}
 
+      {/* Online status indicator - positioned outside the circular boundary */}
       {online && (
-        <view className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background bg-green-500" />
+        <view className="absolute bottom-0 right-0 h-5 w-5 rounded-full border-2 border-background bg-green-500" />
       )}
     </view>
   );

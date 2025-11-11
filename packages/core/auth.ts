@@ -38,8 +38,6 @@ const STORAGE_KEY = 'auth-store';
  * Load persisted state from localStorage
  */
 function loadPersistedState(): AuthState {
-  'background only';
-
   try {
     if (typeof globalThis.localStorage !== 'undefined') {
       const stored = globalThis.localStorage.getItem(STORAGE_KEY);
@@ -67,8 +65,6 @@ function loadPersistedState(): AuthState {
  * Save state to localStorage
  */
 function persistState(state: AuthState) {
-  'background only';
-
   try {
     if (typeof globalThis.localStorage !== 'undefined') {
       globalThis.localStorage.setItem(
@@ -108,8 +104,6 @@ let storeInitialized = false;
  * Lazy initialize store with persisted state
  */
 function ensureStoreInitialized() {
-  'background only';
-
   if (storeInitialized) return;
   storeInitialized = true;
 
@@ -124,7 +118,6 @@ function ensureStoreInitialized() {
 
   // Subscribe to changes and persist
   authStore.subscribe(() => {
-    'background only';
     persistState(authStore.getState());
   });
 }
@@ -134,7 +127,6 @@ function ensureStoreInitialized() {
  */
 const authActions = {
   setUser: (user: User | null) => {
-    'background only';
     const current = authStore.getState().user;
 
     // Deduplicate - only update if values actually changed
@@ -150,13 +142,11 @@ const authActions = {
   },
 
   setKeys: (keys: KeyPair | null) => {
-    'background only';
     authStore.setState({ keys });
     persistState(authStore.getState());
   },
 
   reset: () => {
-    'background only';
     authStore.setState({
       user: null,
       keys: null,
@@ -187,8 +177,6 @@ export type AuthResult = Result<User, Error>;
  * ```
  */
 export async function createAccount(alias: string, graph: IGunChainReference): Promise<AuthResult> {
-  'background only';
-
   return new Promise(async (resolve) => {
     console.log('[Auth] Creating account for alias:', alias);
 
@@ -215,8 +203,6 @@ export async function createAccount(alias: string, graph: IGunChainReference): P
       console.log('[Auth] Authenticating with generated keypair...');
 
       userRef.auth(keys, async (ack: any) => {
-        'background only';
-
         if (ack.err) {
           console.error('[Auth] Authentication failed:', ack.err);
           resolve(Result.error(new Error(ack.err)));
@@ -299,8 +285,6 @@ export async function createAccount(alias: string, graph: IGunChainReference): P
  * ```
  */
 export async function login(keys: KeyPair, graph: IGunChainReference): Promise<AuthResult> {
-  'background only';
-
   return new Promise((resolve) => {
     console.log('[Auth] Logging in with keypair, pub:', keys.pub);
 
@@ -311,8 +295,6 @@ export async function login(keys: KeyPair, graph: IGunChainReference): Promise<A
 
     const userRef = graph.user();
     userRef.auth(keys, async (ack: any) => {
-      'background only';
-
       if (ack.err) {
         console.error('[Auth] Login failed:', ack.err);
         resolve(Result.error(new Error(ack.err)));
@@ -376,8 +358,6 @@ export async function login(keys: KeyPair, graph: IGunChainReference): Promise<A
         }, 2000); // 2 second timeout
 
         userRef.get('alias').once((alias: string) => {
-          'background only';
-
           if (!aliasResolved) {
             aliasResolved = true;
             clearTimeout(timeoutId);
@@ -414,7 +394,6 @@ export async function login(keys: KeyPair, graph: IGunChainReference): Promise<A
  * ```
  */
 export function logout(graph: IGunChainReference): void {
-  'background only';
   console.log('[Auth] Logging out');
 
   if (graph.user) {
@@ -441,7 +420,6 @@ export function logout(graph: IGunChainReference): void {
  * ```
  */
 export async function recall(graph: IGunChainReference): Promise<AuthResult> {
-  'background only';
   console.log('[Auth] Attempting to recall session');
 
   const state = authStore.getState();
@@ -459,8 +437,6 @@ export async function recall(graph: IGunChainReference): Promise<AuthResult> {
 
     const userRef = graph.user();
     userRef.auth(state.keys!, async (ack: any) => {
-      'background only';
-
       if (ack.err) {
         console.error('[Auth] Recall authentication failed:', ack.err);
         resolve(Result.error(new Error(ack.err)));
@@ -540,7 +516,6 @@ export async function recall(graph: IGunChainReference): Promise<AuthResult> {
 export function useAuth(graph: IGunChainReference) {
   // Ensure store is initialized with persisted state on first access
   useState(() => {
-    'background only';
     ensureStoreInitialized();
   });
 

@@ -1,0 +1,15 @@
+{
+  "coordinates": {
+    "enabled": true,
+    "files": ["a", "b", "c", "d", "e", "f", "g", "h"],
+    "ranks": ["8", "7", "6", "5", "4", "3", "2", "1"],
+    "style": {
+      "textClass": "text-[10px] font-medium uppercase tracking-[0.3em] text-muted-foreground",
+      "mutedTextClass": "text-[10px] font-medium text-muted-foreground"
+    },
+    "offset": {
+      "files": 8,
+      "ranks": 10
+    }
+  }
+}

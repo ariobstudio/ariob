@@ -3,6 +3,7 @@ import type { ViewProps } from '@lynx-js/types';
 import type * as React from '@lynx-js/react';
 
 import { cn } from '../../lib/utils';
+import type { LynxReactNode } from '../../types/react';
 
 const textVariants = cva('', {
   variants: {
@@ -75,7 +76,7 @@ const textVariants = cva('', {
 interface TextProps
   extends Omit<ViewProps, 'children'>,
     VariantProps<typeof textVariants> {
-  children?: React.ReactNode;
+  children?: LynxReactNode;
   /**
    * Truncate text with ellipsis (single line)
    */

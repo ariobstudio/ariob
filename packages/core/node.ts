@@ -47,8 +47,6 @@ interface NodeStore {
  * Create a node store
  */
 function createNodeStore() {
-  'background only';
-
   const store = createStore<NodeStore>({
     nodes: {},
     subs: new Map(),
@@ -63,8 +61,6 @@ function createNodeStore() {
      * Subscribe to a Gun node
      */
     on: <T>(key: string, ref: IGunChainReference, schema?: z.ZodSchema<T>) => {
-      'background only';
-
       const state = store.getState();
 
       // Cleanup existing subscription
@@ -83,7 +79,6 @@ function createNodeStore() {
 
       // Subscribe to Gun node
       ref.on((raw: any) => {
-        'background only';
         console.log('[Node] Data received:', key, raw);
 
         try {
@@ -157,7 +152,6 @@ function createNodeStore() {
      * Unsubscribe from a Gun node
      */
     off: (key: string) => {
-      'background only';
       console.log('[Node] Unsubscribing:', key);
 
       const state = store.getState();
@@ -179,8 +173,6 @@ function createNodeStore() {
      * Put data to a Gun node
      */
     put: async <T>(key: string, ref: IGunChainReference, data: T, schema?: z.ZodSchema<T>) => {
-      'background only';
-
       try {
         // Validate with schema if provided
         if (schema) {
@@ -260,8 +252,6 @@ const useNodeStore = createNodeStore();
  * ```
  */
 export function node<T = any>(key: string, config?: NodeConfig) {
-  'background only';
-
   const store = useNodeStore;
 
   return {
@@ -313,8 +303,6 @@ export function node<T = any>(key: string, config?: NodeConfig) {
  * Hook for using node in React components
  */
 export function useNode<T = any>(key: string, config?: NodeConfig) {
-  'background only';
-
   const store = useNodeStore;
 
   const data = useStoreSelector(
@@ -365,16 +353,11 @@ export function useNode<T = any>(key: string, config?: NodeConfig) {
  * ```
  */
 export function createNode<T = any>(key: string, schema?: z.ZodSchema<T>) {
-  'background only';
-
   return function useCreatedNode() {
-    'background only';
-
     const store = useNodeStore;
 
     // Auto-subscribe on mount
     useEffect(() => {
-      'background only';
       // Import graph at runtime to avoid circular deps
       const { graph } = require('./graph');
       const g = graph();
@@ -399,7 +382,6 @@ export function createNode<T = any>(key: string, schema?: z.ZodSchema<T>) {
     );
 
     const put = useCallback(async (data: T) => {
-      'background only';
       const { graph } = require('./graph');
       const g = graph();
       const ref = g.get(key);

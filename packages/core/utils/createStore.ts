@@ -26,8 +26,6 @@ export function createStore<T>(initialState: T): Store<T> {
   const getState = () => state;
 
   const setState = (partial: Partial<T> | ((state: T) => Partial<T>)) => {
-    'background only';
-
     const newPartial = typeof partial === 'function' ? partial(state) : partial;
     state = { ...state, ...newPartial };
 
@@ -36,7 +34,6 @@ export function createStore<T>(initialState: T): Store<T> {
   };
 
   const subscribe = (listener: Listener) => {
-    'background only';
     listeners.add(listener);
     return () => {
       listeners.delete(listener);
@@ -57,10 +54,7 @@ export function useStore<T>(store: Store<T>): T {
   const [state, setState] = useState(store.getState());
 
   useEffect(() => {
-    'background only';
-
     const handleChange = () => {
-      'background only';
       setState(store.getState());
     };
 
@@ -80,10 +74,7 @@ export function useStoreSelector<T, R>(
   const [selected, setSelected] = useState(() => selector(store.getState()));
 
   useEffect(() => {
-    'background only';
-
     const handleChange = () => {
-      'background only';
       setSelected(selector(store.getState()));
     };
 

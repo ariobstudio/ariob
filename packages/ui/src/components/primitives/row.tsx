@@ -3,6 +3,7 @@ import type { ViewProps } from '@lynx-js/types';
 import type * as React from '@lynx-js/react';
 
 import { cn } from '../../lib/utils';
+import type { LynxReactNode } from '../../types/react';
 
 const rowVariants = cva('flex flex-row', {
   variants: {
@@ -60,7 +61,7 @@ const rowVariants = cva('flex flex-row', {
 interface RowProps
   extends ViewProps,
     VariantProps<typeof rowVariants> {
-  children?: React.ReactNode;
+  children?: LynxReactNode;
 }
 
 function Row({

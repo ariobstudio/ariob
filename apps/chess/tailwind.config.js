@@ -7,6 +7,11 @@ const config = {
     '../../packages/ui/src/**/*.{ts,tsx}',
   ],
   ...sharedConfig,
+  theme: {
+    extend: {
+      ...sharedConfig.theme?.extend,
+    },
+  },
 };
 
 export default config;

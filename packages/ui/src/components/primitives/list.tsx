@@ -1,14 +1,15 @@
 import { type VariantProps, cva } from 'class-variance-authority';
-import type { ViewProps } from '@lynx-js/types';
+import type { BaseEvent, StandardProps } from '@lynx-js/types';
 import * as React from '@lynx-js/react';
-
 import { cn } from '../../lib/utils';
+import type { LynxReactNode } from '../../types/react';
 
 const listVariants = cva('', {
   variants: {
-    direction: {
-      vertical: 'flex flex-col',
-      horizontal: 'flex flex-row',
+    type: {
+      single: '',
+      flow: '',
+      waterfall: '',
     },
     gap: {
       none: '',
@@ -38,84 +39,250 @@ const listVariants = cva('', {
       fit: 'h-fit',
       screen: 'h-screen',
     },
-    variant: {
-      default: '',
-      bordered: 'border border-border rounded-lg',
-      elevated: 'bg-card shadow-md rounded-lg',
-      inset: 'bg-muted/50 rounded-lg',
-    },
-    showScrollbar: {
-      auto: '',
-      hidden: 'scrollbar-hide',
-      visible: 'scrollbar-default',
-    },
   },
   defaultVariants: {
-    direction: 'vertical',
+    type: 'single',
     gap: 'none',
     padding: 'none',
     width: 'full',
-    height: 'auto',
-    variant: 'default',
-    showScrollbar: 'auto',
+    height: 'full',
   },
 });
 
-interface ListComponentProps<T = any>
-  extends Omit<ViewProps, 'data'>,
+interface ListProps<T = any>
+  extends Omit<StandardProps, 'children'>,
     VariantProps<typeof listVariants> {
+  /**
+   * List layout type
+   * - single: Single column/row
+   * - flow: Multi-column/row flow
+   * - waterfall: Waterfall/masonry layout
+   * @default 'single'
+   */
+  type?: 'single' | 'flow' | 'waterfall';
+  /**
+   * Number of columns (flow/waterfall) or rows
+   * @default 1
+   */
+  spanCount?: number;
+  /**
+   * Scroll direction
+   * @default 'vertical'
+   */
+  direction?: 'vertical' | 'horizontal';
+  /**
+   * Enable user scrolling
+   * @default true
+   */
+  enableScroll?: boolean;
+  /**
+   * Show scroll bar
+   * @default true
+   */
+  showScrollbar?: boolean;
+  /**
+   * Enable bounce effect at edges
+   * @default true
+   */
+  bounces?: boolean;
+  /**
+   * Main axis gap (between rows/columns)
+   * @example '10px' | '20rpx'
+   */
+  mainAxisGap?: string;
+  /**
+   * Cross axis gap (between columns/rows)
+   * @example '10px' | '20rpx'
+   */
+  crossAxisGap?: string;
+  /**
+   * Number of items to preload off-screen
+   * @default 0
+   */
+  preloadBufferCount?: number;
+  /**
+   * Scroll event throttle in ms
+   * @default 200
+   */
+  scrollEventThrottle?: number;
+  /**
+   * Initial scroll index
+   */
+  initialScrollIndex?: number;
+  /**
+   * Number of items from top before firing scrolltoupper
+   */
+  upperThresholdItemCount?: number;
+  /**
+   * Number of items from bottom before firing scrolltolower
+   */
+  lowerThresholdItemCount?: number;
+  /**
+   * Enable sticky positioning
+   */
+  sticky?: boolean;
+  /**
+   * Sticky offset distance
+   */
+  stickyOffset?: number;
+  /**
+   * Data array for rendering
+   */
   data?: T[];
-  renderItem?: (item: T, index: number) => React.ReactNode;
+  /**
+   * Render function for each item
+   */
+  renderItem?: (item: T, index: number) => LynxReactNode;
+  /**
+   * Extract unique key for each item
+   */
   keyExtractor?: (item: T, index: number) => string;
+  /**
+   * Callback when reaching bottom threshold
+   */
   onEndReached?: () => void;
-  onEndReachedThreshold?: number;
-  onScroll?: () => void;
+  /**
+   * Callback during scroll
+   */
+  onScroll?: (e: BaseEvent) => void;
+  /**
+   * Callback when reaching upper threshold
+   */
+  onScrollToUpper?: (e: BaseEvent) => void;
+  /**
+   * Callback when reaching lower threshold
+   */
+  onScrollToLower?: (e: BaseEvent) => void;
+  /**
+   * Callback on scroll state change
+   */
+  onScrollStateChange?: (e: BaseEvent) => void;
+  /**
+   * Callback after layout completes
+   */
+  onLayoutComplete?: (e: BaseEvent) => void;
+  /**
+   * Callback on item press
+   */
   onItemPress?: (item: T, index: number) => void;
-  emptyComponent?: React.ReactNode;
-  headerComponent?: React.ReactNode;
-  footerComponent?: React.ReactNode;
+  /**
+   * Component to show when data is empty
+   */
+  emptyComponent?: LynxReactNode;
+  /**
+   * Header component
+   */
+  headerComponent?: LynxReactNode;
+  /**
+   * Footer component
+   */
+  footerComponent?: LynxReactNode;
+  /**
+   * Direct children (alternative to data/renderItem)
+   */
+  children?: LynxReactNode;
 }
 
+/**
+ * List - High-performance virtualized list using native list element
+ *
+ * Based on Lynx list element with proper recycling and virtualization
+ *
+ * @see https://lynxjs.org/api/elements/built-in/list
+ *
+ * @example
+ * ```tsx
+ * <List
+ *   data={items}
+ *   type="flow"
+ *   spanCount={2}
+ *   renderItem={(item) => <Card>{item.title}</Card>}
+ *   keyExtractor={(item) => item.id}
+ *   onEndReached={loadMore}
+ * />
+ * ```
+ */
 function List<T = any>({
   className,
-  direction,
+  type = 'single',
+  spanCount = 1,
+  direction = 'vertical',
   gap,
   padding,
   width,
   height,
-  variant,
-  showScrollbar,
+  enableScroll = true,
+  showScrollbar = true,
+  bounces = true,
+  mainAxisGap,
+  crossAxisGap,
+  preloadBufferCount = 0,
+  scrollEventThrottle = 200,
+  initialScrollIndex,
+  upperThresholdItemCount,
+  lowerThresholdItemCount,
+  sticky = false,
+  stickyOffset = 0,
   data = [],
   renderItem,
   keyExtractor,
   onEndReached,
-  onEndReachedThreshold,
   onScroll,
+  onScrollToUpper,
+  onScrollToLower,
+  onScrollStateChange,
+  onLayoutComplete,
   onItemPress,
   emptyComponent,
   headerComponent,
   footerComponent,
   children,
   ...props
-}: ListComponentProps<T>) {
+}: ListProps<T>) {
+  // Handle onEndReached with onScrollToLower
+  const handleScrollToLower = React.useCallback(
+    (e: BaseEvent) => {
+      onScrollToLower?.(e);
+      onEndReached?.();
+    },
+    [onScrollToLower, onEndReached]
+  );
+
   // If renderItem is provided, use data-driven rendering
   if (renderItem && data.length > 0) {
     return (
       <list
         data-slot="list"
+        list-type={type}
+        span-count={spanCount}
+        scroll-orientation={direction}
+        enable-scroll={enableScroll}
+        scroll-bar-enable={showScrollbar}
+        bounces={bounces}
+        list-main-axis-gap={mainAxisGap}
+        list-cross-axis-gap={crossAxisGap}
+        preload-buffer-count={preloadBufferCount}
+        scroll-event-throttle={scrollEventThrottle}
+        initial-scroll-index={initialScrollIndex}
+        upper-threshold-item-count={upperThresholdItemCount}
+        lower-threshold-item-count={lowerThresholdItemCount}
+        sticky={sticky}
+        sticky-offset={stickyOffset}
+        bindscroll={onScroll}
+        bindscrolltoupper={onScrollToUpper}
+        bindscrolltolower={handleScrollToLower}
+        bindscrollstatechange={onScrollStateChange}
+        bindlayoutcomplete={onLayoutComplete}
         className={cn(
           listVariants({
-            direction,
+            type,
             gap,
             padding,
             width,
             height,
-            variant,
-            showScrollbar,
-            className,
           }),
+          className
         )}
-        bindscroll={onScroll}
         {...props}
       >
         {headerComponent}
@@ -125,6 +292,7 @@ function List<T = any>({
             <list-item
               key={key}
               item-key={key}
+              recyclable={true}
               data-slot="list-item-wrapper"
               bindtap={() => onItemPress?.(item, index)}
             >
@@ -142,19 +310,36 @@ function List<T = any>({
     return (
       <list
         data-slot="list"
+        list-type={type}
+        span-count={spanCount}
+        scroll-orientation={direction}
+        enable-scroll={enableScroll}
+        scroll-bar-enable={showScrollbar}
+        bounces={bounces}
+        list-main-axis-gap={mainAxisGap}
+        list-cross-axis-gap={crossAxisGap}
+        preload-buffer-count={preloadBufferCount}
+        scroll-event-throttle={scrollEventThrottle}
+        initial-scroll-index={initialScrollIndex}
+        upper-threshold-item-count={upperThresholdItemCount}
+        lower-threshold-item-count={lowerThresholdItemCount}
+        sticky={sticky}
+        sticky-offset={stickyOffset}
+        bindscroll={onScroll}
+        bindscrolltoupper={onScrollToUpper}
+        bindscrolltolower={handleScrollToLower}
+        bindscrollstatechange={onScrollStateChange}
+        bindlayoutcomplete={onLayoutComplete}
         className={cn(
           listVariants({
-            direction,
+            type,
             gap,
             padding,
             width,
             height,
-            variant,
-            showScrollbar,
-            className,
           }),
+          className
         )}
-        bindscroll={onScroll}
         {...props}
       >
         {headerComponent}
@@ -168,17 +353,20 @@ function List<T = any>({
   return (
     <list
       data-slot="list"
+      list-type={type}
+      span-count={spanCount}
+      scroll-orientation={direction}
+      enable-scroll={false}
       className={cn(
         listVariants({
-          direction,
+          type,
           gap,
           padding,
           width,
           height,
-          variant,
-          showScrollbar,
-          className,
         }),
+        'flex items-center justify-center',
+        className
       )}
       {...props}
     >
@@ -192,3 +380,4 @@ function List<T = any>({
 }
 
 export { List, listVariants };
+export type { ListProps };

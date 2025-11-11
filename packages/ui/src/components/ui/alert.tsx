@@ -1,16 +1,18 @@
 import * as React from '@lynx-js/react';
+import type { ViewProps } from '@lynx-js/types';
 import { type VariantProps, cva } from 'class-variance-authority';
 
 import { cn } from '../../lib/utils';
+import type { LynxReactNode } from '../../types/react';
 
 const alertVariants = cva(
-  'relative w-full rounded-lg border border-border px-4 py-3 flex items-start gap-3',
+  'relative w-full rounded-md border px-4 py-3 flex flex-col items-start gap-3',
   {
     variants: {
       variant: {
-        default: 'bg-card',
+        default: 'bg-background border-border text-foreground',
         destructive:
-          'bg-card *:data-[slot=alert-description]:text-destructive/90',
+          'bg-destructive/10 border-destructive dark:border-destructive [&*text]:text-destructive [&*text]:opacity-100',
       },
     },
     defaultVariants: {
@@ -19,54 +21,32 @@ const alertVariants = cva(
   },
 );
 
-const textVariants = cva('text-sm', {
-  variants: {
-    variant: {
-      default: 'text-card-foreground',
-      destructive: 'text-destructive',
-    },
-  },
-  defaultVariants: {
-    variant: 'default',
-  },
-});
 function Alert({
   className,
   variant,
-  onDismiss,
+  children,
   ...props
-}: React.ComponentProps<'view'> & VariantProps<typeof alertVariants> & {
-  onDismiss?: () => void;
-}) {
+}: ViewProps & VariantProps<typeof alertVariants>) {
   return (
     <view
       data-slot="alert"
       className={cn(alertVariants({ variant }), className)}
+      {...props}
     >
-      <view className="flex-1">
-        <text className={cn(textVariants({ variant }), className)}>
-          {props.children}
-        </text>
-      </view>
-      {onDismiss && (
-        <view
-          className="flex-shrink-0 cursor-pointer opacity-70 hover:opacity-100"
-          bindtap={onDismiss}
-        >
-          <text className={cn(textVariants({ variant }), 'text-base')}>✕</text>
-        </view>
-      )}
+      {children}
     </view>
   );
 }
 
-function AlertTitle({ className, ...props }: React.ComponentProps<'view'>) {
+function AlertTitle({ className, icon, ...props }: ViewProps & { icon?: LynxReactNode }) {
   return (
     <view
       data-slot="alert-title"
-      className={cn('col-start-2 line-clamp-1 min-h-4', className)}
+      className={cn('mb-1 flex flex-row items-center gap-2 leading-none tracking-tight [&_text]:font-medium', className)}
+      {...props}
     >
-      <text className="font-medium tracking-tight">{props.children}</text>
+      {icon && (icon as LynxReactNode)}
+      <text className="font-semibold">{props.children}</text>
     </view>
   );
 }
@@ -74,16 +54,18 @@ function AlertTitle({ className, ...props }: React.ComponentProps<'view'>) {
 function AlertDescription({
   className,
   ...props
-}: React.ComponentProps<'view'>) {
+}: ViewProps) {
   return (
     <view
       data-slot="alert-description"
-      className={cn(
-        'flex-1 grid justify-items-start gap-1 text-sm [&_p]:leading-relaxed',
-        className,
-      )}
+      className={cn('text-sm [&_text]:leading-relaxed', className)}
+      {...props}
     >
-      <text className="text-muted-foreground whitespace-pre-wrap break-words">{props.children}</text>
+      {typeof props.children === 'string' ? (
+        <text className="text-sm opacity-90">{props.children}</text>
+      ) : (
+        props.children
+      )}
     </view>
   );
 }

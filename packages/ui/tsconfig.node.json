@@ -6,7 +6,6 @@
     // Rspeedy uses Node.js's module resolution
     "module": "node16",
     "moduleResolution": "node16",
-    "erasableSyntaxOnly": true,
 
     // Node.js 18+
     "lib": ["es2023"],

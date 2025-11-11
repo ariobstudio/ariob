@@ -1,6 +1,7 @@
 import * as React from '@lynx-js/react';
 import type { PieceType, Player, Position } from '../types';
 import { Piece } from './Piece';
+import { cn } from '@ariob/ui';
 
 interface MiniBoardProps {
   pieceType: PieceType;
@@ -20,7 +21,7 @@ export const MiniBoard: React.FC<MiniBoardProps> = React.memo(({
   pieceType,
   validMoves,
   piecePosition,
-  player = 'green',
+  player = 'white',
 }) => {
   const isValidMove = React.useCallback((row: number, col: number) => {
     return validMoves.some(move => move.row === row && move.col === col);
@@ -41,7 +42,7 @@ export const MiniBoard: React.FC<MiniBoardProps> = React.memo(({
   }), [pieceType, player, piecePosition]);
 
   return (
-    <view className="w-full" style={{ aspectRatio: '1' }}>
+    <view className="w-full aspect-square">
       <view className="w-full h-full flex flex-col">
         {ROWS.map((row) => (
           <view key={row} className="flex flex-row flex-1">
@@ -53,11 +54,10 @@ export const MiniBoard: React.FC<MiniBoardProps> = React.memo(({
               return (
                 <view
                   key={`${row}-${col}`}
-                  className="flex-1 relative"
-                  style={{
-                    backgroundColor: isLight ? '#c7d2fe' : '#818cf8', // indigo-200 / indigo-400 - matches main board
-                    border: '0.5px solid #a5b4fc', // indigo-300
-                  }}
+                  className={cn(
+                    'flex-1 relative border border-border',
+                    isLight ? 'bg-board-light' : 'bg-board-dark'
+                  )}
                 >
                   {/* Show piece at its position */}
                   {hasPiece && (
@@ -86,11 +86,11 @@ export const MiniBoard: React.FC<MiniBoardProps> = React.memo(({
                       }}
                     >
                       <view
+                        className="rounded-full bg-primary"
                         style={{
                           width: '30%',
                           height: '30%',
-                          borderRadius: '50%',
-                          backgroundColor: 'rgba(99, 102, 241, 0.5)', // indigo-500 with opacity
+                          opacity: 0.5,
                         }}
                       />
                     </view>

@@ -28,6 +28,29 @@
     --chart-3: #2437a7;
     --chart-4: #d5efb8;
     --chart-5: #d9ec9c;
+    /* Board theme tokens */
+    --board-indigo-light: #c7d2fe;
+    --board-indigo-dark: #818cf8;
+    --board-classic-light: #f0e6d2;
+    --board-classic-dark: #b58863;
+    --board-green-light: #d4f4dd;
+    --board-green-dark: #86cb92;
+    --board-blue-light: #dae3f3;
+    --board-blue-dark: #8fadc7;
+    --board-purple-light: #e9d5ff;
+    --board-purple-dark: #c084fc;
+    --board-gray-light: #e5e7eb;
+    --board-gray-dark: #9ca3af;
+    --board-classic-light-dark: #d4a574;
+    --board-classic-dark-dark: #8b5a3c;
+    --board-green-light-dark: #86cb92;
+    --board-green-dark-dark: #4d7c59;
+    --board-blue-light-dark: #8fadc7;
+    --board-blue-dark-dark: #5a7a94;
+    --board-purple-light-dark: #c084fc;
+    --board-purple-dark-dark: #9333ea;
+    --board-gray-light-dark: #71717a;
+    --board-gray-dark-dark: #3f3f46;
     --sidebar: #fbfbfb;
     --sidebar-foreground: #252525;
     --sidebar-primary: #343434;
@@ -55,55 +78,6 @@
       hsl(0 0% 10.1961% / 0.1);
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 10.1961% / 0.25);
     --tracking-normal: 0.025em;
-
-    /* ========================================
-       Senterej Theme - Indigo Color Palette
-       ======================================== */
-
-    /* Board Colors */
-    --board-light: #c7d2fe;        /* indigo-200 */
-    --board-dark: #818cf8;         /* indigo-400 */
-
-    /* Highlight Colors */
-    --highlight-last-move: rgba(165, 180, 252, 0.5);     /* indigo-300 with 50% opacity */
-    --highlight-selection: rgba(99, 102, 241, 0.35);     /* indigo-500 with 35% opacity */
-    --highlight-valid-move: rgba(79, 70, 229, 0.25);     /* indigo-600 with 25% opacity */
-    --highlight-capture: rgba(79, 70, 229, 0.4);         /* indigo-600 with 40% opacity */
-
-    /* UI Colors */
-    --ui-header-bg: #4f46e5;       /* indigo-600 */
-    --ui-header-border: #4338ca;   /* indigo-700 */
-    --ui-header-text: #ffffff;
-    --ui-header-subtitle: #e0e7ff; /* indigo-100 */
-    --ui-bg: #f9fafb;              /* gray-50 */
-    --ui-border: #e5e7eb;          /* gray-200 */
-
-    /* Button Colors */
-    --btn-primary-bg: #ffffff;
-    --btn-primary-text: #4f46e5;   /* indigo-600 */
-    --btn-primary-hover: #eef2ff;  /* indigo-50 */
-    --btn-info-bg: #6366f1;        /* indigo-500 */
-    --btn-info-hover: #818cf8;     /* indigo-400 */
-
-    /* Status Colors */
-    --status-check-bg: #fffbeb;    /* amber-50 */
-    --status-check-border: #fde68a; /* amber-200 */
-    --status-check-text: #b45309;  /* amber-700 */
-    --status-check-icon: #f59e0b;  /* amber-500 */
-    --status-win-icon: #6366f1;    /* indigo-500 */
-    --status-win-text: #4f46e5;    /* indigo-600 */
-
-    /* Dialog Colors */
-    --dialog-overlay: rgba(0, 0, 0, 0.6);
-    --dialog-bg: #ffffff;
-    --dialog-border: #e5e7eb;      /* gray-200 */
-    --dialog-accent-bg: #eef2ff;   /* indigo-50 */
-    --dialog-accent-border: #e0e7ff; /* indigo-100 */
-    --dialog-section-bg: #f9fafb;  /* gray-50 */
-
-    /* Shadow */
-    --shadow-board: 0 4px 20px rgba(79, 70, 229, 0.15);
-    --shadow-dialog: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
 
   .dark {
@@ -131,6 +105,19 @@
     --chart-3: #e89830;
     --chart-4: #b857db;
     --chart-5: #e23664;
+    /* Board theme tokens for dark mode */
+    --board-indigo-light: #27272a;
+    --board-indigo-dark: #fafafa;
+    --board-classic-light: var(--board-classic-light-dark);
+    --board-classic-dark: var(--board-classic-dark-dark);
+    --board-green-light: var(--board-green-light-dark);
+    --board-green-dark: var(--board-green-dark-dark);
+    --board-blue-light: var(--board-blue-light-dark);
+    --board-blue-dark: var(--board-blue-dark-dark);
+    --board-purple-light: var(--board-purple-light-dark);
+    --board-purple-dark: var(--board-purple-dark-dark);
+    --board-gray-light: var(--board-gray-light-dark);
+    --board-gray-dark: var(--board-gray-dark-dark);
     --sidebar: #18181b;
     --sidebar-foreground: #f4f4f5;
     --sidebar-primary: #1d41d8;
@@ -213,83 +200,6 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
-/* Chess piece animations - smooth and subtle - chess.com inspired */
-@keyframes pieceAppear {
-  0% {
-    transform: scale(0.85);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.02);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes pieceMove {
-  0% {
-    transform: scale(1) translateY(0);
-  }
-  25% {
-    transform: scale(1.12) translateY(-4px);
-  }
-  50% {
-    transform: scale(1.08) translateY(-2px);
-  }
-  75% {
-    transform: scale(1.02) translateY(0);
-  }
-  100% {
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes pieceSelect {
-  0% {
-    transform: scale(1);
-  }
-  40% {
-    transform: scale(1.08);
-  }
-  100% {
-    transform: scale(1.03);
-  }
-}
-
-/* Drag animations - smooth piece interactions */
-@keyframes pieceLift {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1.15);
-    opacity: 0.9;
-  }
-}
-
-@keyframes pieceDrop {
-  0% {
-    transform: scale(1.15);
-    opacity: 0.9;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes squarePulse {
   0%, 100% {
     opacity: 1;
   }

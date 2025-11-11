@@ -47,7 +47,7 @@ export function ChatInput({
   return (
     <view
       id="composer-panel"
-      className="flex-shrink-0 px-4 pt-2 pb-8 bg-card backdrop-blur-xl"
+      className="flex-shrink-0 px-4 pt-2 pb-8 bg-card"
     >
       {errorMessage ? (
         <Alert

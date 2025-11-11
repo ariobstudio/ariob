@@ -1,4 +1,4 @@
-import { useCallback, useState } from '@lynx-js/react';
+import { useCallback, useState } from 'react';
 import type { BaseEvent } from '@lynx-js/types';
 
 export type InputInputEvent = {

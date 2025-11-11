@@ -1,6 +1,7 @@
 // Senterej Game Engine - Core Logic
 
-import type { GameState, Piece, Position, Player, PieceType } from './types';
+import type { GameState, Piece, Position, Player, PieceType, GamePhase } from './types';
+import { boardToFEN } from './engine/fen';
 
 // Helper: Check if position is within board bounds
 export function isValidPosition(pos: Position): boolean {
@@ -21,16 +22,16 @@ export function createInitialBoard(): (Piece | null)[][] {
   // Senterej starting position (king is to the right of center)
   const backRow: PieceType[] = ['der', 'ferese', 'saba', 'fers', 'negus', 'saba', 'ferese', 'der'];
 
-  // Gold pieces (top, rows 0-1)
+  // Black pieces (top, rows 0-1)
   for (let col = 0; col < 8; col++) {
-    board[0][col] = { type: backRow[col], player: 'gold', position: { row: 0, col } };
-    board[1][col] = { type: 'medeq', player: 'gold', position: { row: 1, col } };
+    board[0][col] = { type: backRow[col], player: 'black', position: { row: 0, col } };
+    board[1][col] = { type: 'medeq', player: 'black', position: { row: 1, col } };
   }
 
-  // Green pieces (bottom, rows 6-7)
+  // White pieces (bottom, rows 6-7)
   for (let col = 0; col < 8; col++) {
-    board[6][col] = { type: 'medeq', player: 'green', position: { row: 6, col } };
-    board[7][col] = { type: backRow[col], player: 'green', position: { row: 7, col } };
+    board[6][col] = { type: 'medeq', player: 'white', position: { row: 6, col } };
+    board[7][col] = { type: backRow[col], player: 'white', position: { row: 7, col } };
   }
 
   return board;
@@ -115,7 +116,7 @@ export function getPossibleMoves(
       break;
 
     case 'medeq': // Pawn - forward one square, captures diagonally (no double move)
-      const direction = piece.player === 'green' ? -1 : 1;
+      const direction = piece.player === 'white' ? -1 : 1;
       const forward = { row: row + direction, col };
 
       // Forward move
@@ -157,7 +158,7 @@ export function isInCheck(player: Player, board: (Piece | null)[][]): boolean {
   if (!kingPos) return false;
 
   // Check if any opponent piece can attack the king
-  const opponent = player === 'green' ? 'gold' : 'green';
+  const opponent = player === 'white' ? 'black' : 'white';
   for (let r = 0; r < 8; r++) {
     for (let c = 0; c < 8; c++) {
       const piece = board[r][c];
@@ -211,7 +212,7 @@ export function makeMove(
   }
 
   // Switch turn
-  const nextPlayer = piece.player === 'green' ? 'gold' : 'green';
+  const nextPlayer = piece.player === 'white' ? 'black' : 'white';
 
   // Check if opponent is in check/checkmate
   const opponentInCheck = isInCheck(nextPlayer, newBoard);
@@ -243,6 +244,13 @@ export function makeMove(
     checkmate = !hasLegalMove;
   }
 
+  // Determine game phase and move count
+  const moveCount = (state.moveCount || 0) + 1;
+  const phase: GamePhase = moveCount < 4 ? 'werera' : 'normal';
+
+  // Generate FEN for current position
+  const fen = boardToFEN(newBoard, nextPlayer, phase, moveCount);
+
   return {
     ...state,
     board: newBoard,
@@ -254,20 +262,30 @@ export function makeMove(
     checkmate,
     winner: checkmate ? piece.player : null,
     lastMove: { from, to },
+    fen,
+    phase,
+    moveCount,
   };
 }
 
 // Create initial game state
 export function createGame(): GameState {
+  const board = createInitialBoard();
+  const initialFEN = boardToFEN(board, 'white', 'werera', 0);
+
   return {
-    board: createInitialBoard(),
-    currentPlayer: 'green',
+    board,
+    currentPlayer: 'white',
+    variant: 'senterej', // Default to Senterej variant
     selectedSquare: null,
     validMoves: [],
-    capturedPieces: { green: [], gold: [] },
+    capturedPieces: { white: [], black: [] },
     check: null,
     checkmate: false,
     winner: null,
     lastMove: null,
+    fen: initialFEN,
+    phase: 'werera',
+    moveCount: 0,
   };
 }

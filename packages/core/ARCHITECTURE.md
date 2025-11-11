@@ -870,6 +870,490 @@ function App() {
 
 ---
 
+## Practical Graph Patterns
+
+### Common Data Structures
+
+#### User Profile with Relationships
+
+```typescript
+import { node, collection, graph } from '@ariob/core';
+import { z } from 'zod';
+
+// Define schemas
+const UserSchema = z.object({
+  alias: z.string(),
+  pub: z.string(),
+  bio: z.string().optional(),
+  avatar: z.string().optional(),
+});
+
+const PostSchema = z.object({
+  id: z.string(),
+  content: z.string(),
+  author: z.string(),
+  created: z.number(),
+});
+
+// Create user node
+const user = node(`users/${userPub}`, { schema: UserSchema });
+user.set({ alias: 'alice', pub: userPub, bio: 'Developer' });
+
+// User's posts collection
+const posts = collection(`users/${userPub}/posts`, { schema: PostSchema });
+
+// User's friends set
+const g = graph();
+g.get('users').get(userPub).get('friends').set(
+  g.get('users').get(friendPub)
+);
+```
+
+#### Feed Aggregation
+
+```typescript
+// Aggregate posts from multiple sources
+const feedItems = collection('feed', {
+  schema: z.discriminatedUnion('type', [
+    z.object({ type: z.literal('post'), ...PostSchema.shape }),
+    z.object({ type: z.literal('message'), ...MessageSchema.shape }),
+  ]),
+});
+
+// Add to feed
+g.get('feed').set(g.get('posts').get(postId));
+g.get('feed').set(g.get('messages').get(messageId));
+
+// Query feed
+feedItems.map().on((item) => {
+  if (item.type === 'post') {
+    // Render post
+  } else {
+    // Render message
+  }
+});
+```
+
+#### Threaded Comments
+
+```typescript
+// Comment with parent reference
+const CommentSchema = z.object({
+  id: z.string(),
+  text: z.string(),
+  author: z.string(),
+  parentId: z.string().optional(), // Parent comment
+  postId: z.string(),
+  created: z.number(),
+});
+
+// Add comment to post
+g.get('posts').get(postId).get('comments').set(
+  g.get('comments').get(commentId)
+);
+
+// Add reply to comment
+g.get('comments').get(parentCommentId).get('replies').set(
+  g.get('comments').get(replyId)
+);
+```
+
+### Querying Patterns
+
+#### Find by Index
+
+```typescript
+// Index posts by date
+const dateKey = new Date().toISOString().split('T')[0]; // 2025-01-15
+g.get('posts-by-date').get(dateKey).set(
+  g.get('posts').get(postId)
+);
+
+// Query posts from today
+g.get('posts-by-date').get(dateKey).map().on((post) => {
+  console.log('Today's post:', post.content);
+});
+```
+
+#### Find by Multiple Criteria
+
+```typescript
+// Index by author AND date
+g.get('posts-by-author').get(userPub).get(dateKey).set(
+  g.get('posts').get(postId)
+);
+
+// Query Alice's posts from today
+g.get('posts-by-author').get('alice').get(dateKey).map().on((post) => {
+  console.log('Alice's post:', post.content);
+});
+```
+
+---
+
+## Data Modeling Cookbook
+
+### When to Use Each Gun Method
+
+#### `.get()` - Navigate to Node
+
+Use for traversing the graph and accessing specific nodes:
+
+```typescript
+// ✅ Navigate to specific user
+gun.get('users').get('alice');
+
+// ✅ Traverse path
+gun.get('company').get('acme').get('address').get('city');
+
+// ✅ Chain multiple gets
+gun.get('posts').get(postId).get('comments').get(commentId);
+```
+
+**When to use:** Navigation, path traversal, accessing specific nodes.
+
+#### `.put()` - Write/Update Data
+
+Use for setting scalar values or small objects:
+
+```typescript
+// ✅ Set user data
+gun.get('users').get('alice').put({
+  name: 'Alice',
+  age: 30,
+});
+
+// ✅ Update single field
+gun.get('users').get('alice').put({ bio: 'New bio' });
+
+// ❌ DON'T use for collections
+gun.get('users').put(alice); // Overwrites entire users node!
+```
+
+**When to use:** Writing data, updating fields, setting values.
+**Important:** Use partial updates only - Gun merges automatically.
+
+#### `.set()` - Add to Collection
+
+Use for adding items to sets/collections:
+
+```typescript
+// ✅ Add to set
+gun.get('users').get('alice').get('posts').set(post);
+gun.get('users').get('alice').get('friends').set(friendRef);
+
+// ✅ Multiple items
+employees.set(alice);
+employees.set(bob);
+employees.set(carol);
+
+// ❌ DON'T use put for collections
+friends.put(bob); // Overwrites previous friends!
+```
+
+**When to use:** Collections, sets, lists of items, many-to-many relationships.
+
+#### `.map()` - Iterate Collection
+
+Use for iterating over sets:
+
+```typescript
+// ✅ Iterate all items
+gun.get('posts').map().on((post, id) => {
+  console.log('Post:', post.content);
+});
+
+// ✅ With once (non-reactive)
+gun.get('users').map().once((user, pub) => {
+  console.log('User:', user.alias);
+});
+```
+
+**When to use:** Iterating sets, processing collections, rendering lists.
+
+#### `.on()` vs `.once()`
+
+```typescript
+// .on() - Subscribe to changes (reactive)
+gun.get('users').get('alice').on((data) => {
+  // Called on every update
+  updateUI(data);
+});
+
+// .once() - Read once (non-reactive)
+gun.get('config').get('appName').once((name) => {
+  // Called only once
+  console.log('App:', name);
+});
+```
+
+**Use `.on()` for:** Live data, user-generated content, real-time updates.
+**Use `.once()` for:** Static data, configuration, initial load.
+
+### Structuring User Data
+
+```typescript
+// User root
+gun.get('users').get(userPub).put({
+  alias: 'alice',
+  pub: userPub,
+  epub: userEpub,
+  created: Date.now(),
+});
+
+// Separate concerns into sub-nodes
+gun.get('users').get(userPub).get('profile').put({
+  bio: 'Developer',
+  avatar: 'https://...',
+  location: 'San Francisco',
+});
+
+gun.get('users').get(userPub).get('settings').put({
+  theme: 'dark',
+  notifications: true,
+  language: 'en',
+});
+
+// Collections as sets
+gun.get('users').get(userPub).get('posts').set(postRef);
+gun.get('users').get(userPub).get('friends').set(friendRef);
+```
+
+---
+
+## Performance Patterns
+
+### 1. Partial Updates
+
+Only update what changes - Gun merges automatically:
+
+```typescript
+// ✅ EFFICIENT - Only sends changed field
+user.get('profile').put({ bio: 'New bio' });
+
+// ❌ INEFFICIENT - Re-sends entire object
+user.get('profile').once((profile) => {
+  profile.bio = 'New bio';
+  user.get('profile').put(profile); // Wasteful!
+});
+```
+
+### 2. Streaming Optimization
+
+Gun returns one level deep. Traverse explicitly for nested data:
+
+```typescript
+// ❌ Only gets references
+gun.get('company').get('acme').once((data) => {
+  console.log(data); // { name: 'ACME', address: { '#': 'ref' } }
+});
+
+// ✅ Traverse to get actual data
+gun.get('company').get('acme').get('address').once((address) => {
+  console.log(address); // { street: '123 Main', city: 'SF' }
+});
+```
+
+### 3. Efficient Graph Traversal
+
+Use indexes to avoid scanning entire collections:
+
+```typescript
+// ❌ SLOW - Scans all posts
+gun.get('posts').map().once((post) => {
+  if (post.author === 'alice') {
+    // Show post
+  }
+});
+
+// ✅ FAST - Uses index
+gun.get('posts-by-author').get('alice').map().once((post) => {
+  // Only Alice's posts
+});
+```
+
+### 4. Debounce Rapid Updates
+
+Batch frequent updates to reduce network traffic:
+
+```typescript
+import { useDebounce } from '@ariob/core';
+
+function SearchBox() {
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, 300);
+
+  useEffect(() => {
+    // Only search after user stops typing
+    gun.get('search').put({ query: debouncedQuery });
+  }, [debouncedQuery]);
+}
+```
+
+### 5. Pagination
+
+Don't load entire collections - use limits:
+
+```typescript
+// ✅ PAGINATED
+const pageSize = 20;
+let count = 0;
+
+gun.get('posts').map().once((post) => {
+  if (count++ < pageSize) {
+    renderPost(post);
+  }
+});
+
+// ✅ TIME-BASED PAGINATION
+const cutoff = Date.now() - (7 * 24 * 60 * 60 * 1000); // 7 days ago
+gun.get('posts').map().once((post) => {
+  if (post.created > cutoff) {
+    renderPost(post);
+  }
+});
+```
+
+### 6. Caching Strategy
+
+Use `.once()` for data that doesn't change:
+
+```typescript
+// Cache user data locally
+const userCache = new Map();
+
+function getUser(pub: string) {
+  if (userCache.has(pub)) {
+    return Promise.resolve(userCache.get(pub));
+  }
+
+  return new Promise((resolve) => {
+    gun.get('users').get(pub).once((user) => {
+      userCache.set(pub, user);
+      resolve(user);
+    });
+  });
+}
+```
+
+---
+
+## Production Checklist
+
+### Before Deployment
+
+#### 1. Peer Configuration
+
+```typescript
+import { loadProfile, PEER_PROFILES } from '@ariob/core';
+
+// Set production relays
+loadProfile('prod');
+
+// Verify peers are configured
+console.log('Relays:', PEER_PROFILES.prod.peers);
+// Should have 2-3 redundant relays
+```
+
+#### 2. Error Handling
+
+```typescript
+// Use Result monad for critical operations
+const result = await createAccount('alice');
+if (!result.ok) {
+  console.error('Account creation failed:', result.error);
+  showErrorToUser(result.error.message);
+  return;
+}
+
+// Handle Gun callbacks
+g.get('data').put(value, (ack) => {
+  if (ack.err) {
+    console.error('Write failed:', ack.err);
+  }
+});
+```
+
+#### 3. Offline Support
+
+```typescript
+import { useMesh } from '@ariob/core';
+
+function OfflineIndicator() {
+  const { peers } = useMesh();
+  const isOnline = peers.some(p => p.connected);
+
+  if (!isOnline) {
+    return <view>⚠️ Offline - changes will sync when reconnected</view>;
+  }
+  return null;
+}
+```
+
+#### 4. Data Validation
+
+```typescript
+// Always validate with Zod before writing
+const result = UserSchema.safeParse(userData);
+if (!result.success) {
+  console.error('Invalid data:', result.error);
+  return;
+}
+
+gun.get('users').get(pub).put(result.data);
+```
+
+#### 5. Monitoring
+
+```typescript
+import { initMeshMonitoring, useMesh } from '@ariob/core';
+
+// Initialize monitoring on app start
+initMeshMonitoring();
+
+// Monitor message flow
+function NetworkMonitor() {
+  const { totalIn, totalOut, peers } = useMesh();
+
+  // Alert if no peers connected
+  if (peers.filter(p => p.connected).length === 0) {
+    console.warn('No peers connected!');
+  }
+
+  // Alert if message rate too high (possible loop)
+  if (totalOut > 10000) {
+    console.error('High message rate detected!');
+  }
+}
+```
+
+#### 6. Security
+
+```typescript
+// Never expose private keys
+if (process.env.NODE_ENV === 'production') {
+  // Don't log keys
+  console.log('User pub:', user.pub); // ✅ OK
+  // console.log('User keys:', keys); // ❌ NEVER
+}
+
+// Encrypt sensitive data
+import { encrypt, decrypt } from '@ariob/core';
+
+const encrypted = await encrypt(sensitiveData, secret);
+gun.get('private').put(encrypted);
+```
+
+### Performance Targets
+
+- **Initial Load:** <3 seconds
+- **Navigation:** <300ms between screens
+- **Network Round-trip:** <500ms for relay
+- **Message Rate:** <1000 msgs/minute sustained
+- **Memory:** <50MB for typical session
+
+---
+
 ## Summary
 
 **@ariob/core** is a production-ready Gun.js wrapper designed around:
@@ -888,6 +1372,7 @@ Use this architecture doc alongside `API.md` for implementation details and `REA
 
 **Next Steps**:
 
+- Read [GRAPH_GUIDE.md](./GRAPH_GUIDE.md) for comprehensive graph modeling patterns
 - Read [API.md](./API.md) for detailed API reference
 - See [README.md](./README.md) for usage examples
 - Check [examples/](./examples/) for real-world patterns

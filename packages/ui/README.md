@@ -21,10 +21,13 @@ A comprehensive UI component library for Lynx applications with Tailwind CSS sty
 - 🎯 **Platform-agnostic** - Components work consistently across all Lynx-supported platforms
 - 🎨 **Tailwind-powered** - Full Tailwind CSS integration with custom presets
 - 🔄 **Variant System** - Flexible component variants using class-variance-authority
-- 🌙 **Dark Mode Support** - Built-in theming with light, dark, and auto modes
+- 🌙 **Dark Mode Support** - Built-in theming with light, dark, and auto modes using theme variables
 - 📦 **Tree-shakeable** - Import only what you need with zero side effects
 - 🔒 **Type-safe** - Full TypeScript support with comprehensive type definitions
 - ♿ **Accessible** - ARIA attributes and keyboard navigation support
+- 🎯 **Radius Variants** - Customizable border radius for all UI components
+- 📱 **Mobile-First** - Optimized default sizes for touch targets (h-10, size-6)
+- ⚡ **Dual-Thread Optimized** - Proper thread directives for LynxJS architecture
 
 ## 🏗 Architecture
 
@@ -68,7 +71,38 @@ The package is organized into distinct modules for better maintainability and di
 2. **Composition over Configuration** - Components are composable building blocks
 3. **Consistent API** - All components follow similar patterns for props and variants
 4. **Performance** - Optimized for mobile with efficient rendering and minimal re-renders
-5. **Developer Experience** - Intuitive APIs with excellent TypeScript support
+5. **Mobile-First** - Default sizes optimized for touch targets (40px minimum)
+6. **Developer Experience** - Intuitive APIs with excellent TypeScript support
+
+### LynxJS Dual-Thread Architecture
+
+All components in this library are optimized for LynxJS's dual-thread architecture:
+
+- **Main Thread** - Handles UI rendering, animations, and touch gestures
+- **Background Thread** - Manages React lifecycle, state updates, and business logic
+
+**Thread Directives:**
+
+```tsx
+// Background thread - for state management and callbacks
+const handleChange = (value: string) => {
+  'background only';
+  setState(value);
+  onValueChange?.(value);
+};
+
+// Main thread - for touch/gesture handling
+const handleTouchStart = (e: any) => {
+  'main thread';
+  setIsPressed(true);
+};
+```
+
+**Best Practices:**
+- ✅ All state updates run on background thread
+- ✅ Touch/gesture handlers run on main thread for smooth interactions
+- ✅ Network calls and heavy computation on background thread
+- ✅ Animations and visual updates on main thread
 
 ## 🛠 Installation
 
@@ -123,67 +157,260 @@ High-level, feature-rich components for building user interfaces.
 
 #### Button
 
-Multi-variant button component with icon support.
+Multi-variant button component with icon support, customizable radius, and mobile-optimized sizes.
 
 ```tsx
 import { Button } from '@ariob/ui';
 
-// Basic usage
-<Button variant="default" size="lg">
+// Basic usage with mobile-optimized default size (h-10)
+<Button variant="default">
   Click me
 </Button>
 
-// With icon
-<Button variant="outline" icon="settings">
-  Settings
+// Size variants (mobile-first)
+<Button size="sm">Small (h-9)</Button>
+<Button size="default">Default (h-10)</Button>
+<Button size="lg">Large (h-11)</Button>
+
+// Icon buttons (increased for touch targets)
+<Button size="icon"><Icon name="heart" /></Button>         // size-10 (40px)
+<Button size="icon-sm"><Icon name="star" /></Button>       // size-9 (36px)
+<Button size="icon-lg"><Icon name="settings" /></Button>   // size-11 (44px)
+
+// With icon and text
+<Button variant="outline">
+  <Icon name="settings" />
+  <text>Settings</text>
 </Button>
 
-// Icon-only button
-<Button variant="ghost" size="icon" icon="x" />
+// With loading state
+<Button loading>Processing</Button>
+
+// Custom radius
+<Button radius="full">Pill Button</Button>
+<Button radius="none">Sharp Button</Button>
 ```
 
 **Props:**
 - `variant`: `default | destructive | outline | secondary | ghost | link`
-- `size`: `sm | default | lg | icon`
-- `icon`: Lucide icon name (optional)
+- `size`: `sm | default | lg | icon | icon-sm | icon-lg` (default: `default`)
+  - `default`: h-10 (40px) - optimized for mobile touch
+  - `sm`: h-9 (36px)
+  - `lg`: h-11 (44px)
+  - `icon`: size-10 (40px)
+  - `icon-sm`: size-9 (36px)
+  - `icon-lg`: size-11 (44px)
+- `radius`: `none | sm | md | lg | full` (default: `md`)
+- `icon`: React.ReactNode (optional)
+- `loading`: boolean - Shows spinner
 - `disabled`: boolean
-- `onClick`: () => void
+- `onTap`: () => void
+
+**Mobile-First Design:**
+The default button height has been increased from 36px (h-9) to 40px (h-10) to meet mobile touch target guidelines. Icon buttons are now 40px by default instead of 36px.
 
 #### Input
 
-Form input with theme integration and validation states.
+Form input with theme integration, dark mode support, mobile-optimized sizes, and customizable radius.
 
 ```tsx
 import { Input } from '@ariob/ui';
 
+// Basic usage with mobile-optimized default size (h-10)
 <Input
   type="email"
   placeholder="Enter email"
   value={email}
-  onChangeText={setEmail}
-  aria-invalid={hasError}
+  onChange={setEmail}
+/>
+
+// Size variants (mobile-first)
+<Input size="sm" placeholder="Small (h-9)" />
+<Input size="default" placeholder="Default (h-10)" />
+<Input size="lg" placeholder="Large (h-11)" />
+
+// Custom radius
+<Input radius="full" placeholder="Pill input" />
+<Input radius="none" placeholder="Sharp input" />
+```
+
+**Props:**
+- `type`: `text | email | password | number | tel | digit`
+- `placeholder`: string
+- `value`: string
+- `onChange`: (value: string) => void
+- `size`: `sm | default | lg` (default: `default`)
+  - `sm`: h-9 (36px)
+  - `default`: h-10 (40px) - optimized for mobile
+  - `lg`: h-11 (44px)
+- `radius`: `none | sm | md | lg | full` (default: `md`)
+- `disabled`: boolean
+- `onFocus`: () => void
+- `onBlur`: () => void
+
+**Dark Mode Support:**
+Uses theme variables (`bg-background`, `text-foreground`, `border-input`, `placeholder:text-muted-foreground`) that automatically adapt to light/dark themes.
+
+#### InputGroup
+
+Flexible input group component for enhanced input fields with addons, icons, and buttons.
+
+```tsx
+import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupButton, InputGroupText, Icon } from '@ariob/ui';
+
+// Search input with icons
+<InputGroup>
+  <InputGroupAddon align="inline-start">
+    <Icon name="search" />
+  </InputGroupAddon>
+  <InputGroupInput placeholder="Search..." />
+  <InputGroupAddon align="inline-end">
+    <InputGroupButton size="icon-xs" onTap={handleClear}>
+      <Icon name="x" />
+    </InputGroupButton>
+  </InputGroupAddon>
+</InputGroup>
+
+// URL input with text prefix
+<InputGroup>
+  <InputGroupAddon align="inline-start">
+    <InputGroupText>https://</InputGroupText>
+  </InputGroupAddon>
+  <InputGroupInput placeholder="example.com" />
+</InputGroup>
+
+// Email input with icon
+<InputGroup>
+  <InputGroupAddon align="inline-start">
+    <Icon name="mail" />
+  </InputGroupAddon>
+  <InputGroupInput placeholder="you@example.com" type="email" />
+</InputGroup>
+```
+
+**InputGroup Props:**
+- Standard `ViewProps`
+
+**InputGroupAddon Props:**
+- `align`: `inline-start | inline-end | block-start | block-end` (default: `inline-start`)
+
+**InputGroupButton Props:**
+- `size`: `xs | sm | icon-xs | icon-sm` (default: `xs`)
+- `variant`: Standard button variants
+- `onTap`: () => void
+
+**InputGroupText Props:**
+- Standard `ViewProps`
+- Automatically wraps string children in `<text>` elements
+
+**InputGroupInput Props:**
+- Same as Input component but borderless
+
+#### SearchInput
+
+Specialized search input with built-in search icon, loading state, and clear button.
+
+```tsx
+import { SearchInput } from '@ariob/ui';
+
+// Basic search
+<SearchInput
+  placeholder="Search components..."
+  value={query}
+  onChange={setQuery}
+/>
+
+// With loading state
+<SearchInput
+  value={query}
+  onChange={setQuery}
+  loading={isSearching}
+/>
+
+// Custom clear handler
+<SearchInput
+  value={query}
+  onChange={setQuery}
+  onClear={handleClearSearch}
 />
 ```
 
 **Props:**
-- `type`: `text | email | password | number | tel | url`
-- `placeholder`: string
 - `value`: string
-- `onChangeText`: (text: string) => void
-- `aria-invalid`: boolean (shows error state)
+- `placeholder`: string
+- `onChange`: (value: string) => void
+- `onClear`: () => void (optional - defaults to clearing value)
+- `onFocus`: () => void
+- `onBlur`: () => void
+- `loading`: boolean - Shows loading spinner instead of clear button
 - `disabled`: boolean
+
+**Features:**
+- Built-in search icon on the left
+- Automatic clear button when value is present
+- Loading spinner replaces clear button when loading
+- Mobile-optimized height (h-10)
+- Full dark mode support
+
+#### TextArea
+
+Multi-line text input with fixed height or auto-expanding modes.
+
+```tsx
+import { TextArea } from '@ariob/ui';
+
+// Fixed height (default behavior)
+<TextArea
+  placeholder="Enter your message..."
+  rows={3}
+  value={message}
+  onChange={setMessage}
+/>
+
+// Auto-height (expands with content)
+<TextArea
+  placeholder="This will expand as you type..."
+  autoHeight
+  rows={2}
+/>
+
+// Size variants
+<TextArea size="sm" placeholder="Small textarea" />
+<TextArea size="default" placeholder="Default textarea" />
+<TextArea size="lg" placeholder="Large textarea" />
+```
+
+**Props:**
+- `value`: string
+- `placeholder`: string
+- `onChange`: (value: string) => void
+- `rows`: number - Number of visible text lines (default: 3)
+- `autoHeight`: boolean - Whether to expand with content (default: false)
+- `size`: `sm | default | lg` - Affects padding
+- `radius`: `none | sm | md | lg` (default: `md`)
+- `disabled`: boolean
+- `onFocus`: () => void
+- `onBlur`: () => void
+
+**Important:**
+`autoHeight` is disabled by default to prevent unexpected expansion. Only enable it when you want the textarea to grow dynamically with content.
 
 #### Card
 
-Compound component for content containers.
+Compound component for content containers with customizable radius.
 
 ```tsx
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@ariob/ui';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from '@ariob/ui';
 
-<Card>
+<Card radius="lg">
   <CardHeader>
     <CardTitle>Dashboard</CardTitle>
     <CardDescription>Your activity overview</CardDescription>
+    <CardAction>
+      <Button variant="ghost">
+        <Icon name="ellipsis-vertical" />
+      </Button>
+    </CardAction>
   </CardHeader>
   <CardContent>
     {/* Content here */}
@@ -193,6 +420,9 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
   </CardFooter>
 </Card>
 ```
+
+**Card Props:**
+- `radius`: `none | sm | md | lg | full` (default: `md`)
 
 #### Icon
 
@@ -213,6 +443,79 @@ import { Icon } from '@ariob/ui';
 - `size`: `xs | sm | default | lg | xl` or number
 - `className`: Additional Tailwind classes
 
+#### Badge
+
+Status indicators and labels with customizable variants and radius.
+
+```tsx
+import { Badge, Icon } from '@ariob/ui';
+
+// Basic badges
+<Badge variant="default">Default</Badge>
+<Badge variant="secondary">Secondary</Badge>
+<Badge variant="destructive">Destructive</Badge>
+<Badge variant="outline">Outline</Badge>
+<Badge variant="success">Success</Badge>
+<Badge variant="warning">Warning</Badge>
+
+// With icon
+<Badge variant="success">
+  <Icon name="check" />
+  <text>Verified</text>
+</Badge>
+
+// Custom radius
+<Badge radius="none">Sharp Badge</Badge>
+<Badge radius="md">Rounded Badge</Badge>
+```
+
+**Props:**
+- `variant`: `default | secondary | destructive | outline | success | warning`
+- `radius`: `none | sm | md | lg | full` (default: `full`)
+
+#### Checkbox
+
+Checkbox component with mobile-optimized sizes and customizable radius.
+
+```tsx
+import { Checkbox } from '@ariob/ui';
+
+// Basic usage with mobile-optimized default size (24px)
+<Checkbox
+  checked={checked}
+  onCheckedChange={setChecked}
+/>
+
+// Size variants (mobile-first)
+<Checkbox size="sm" checked />      // 20px (size-5)
+<Checkbox size="default" checked /> // 24px (size-6) - optimized for mobile
+<Checkbox size="lg" checked />      // 28px (size-7)
+
+// Different radius options
+<Checkbox radius="none" checked />  // Square checkbox
+<Checkbox radius="sm" checked />    // Slightly rounded
+<Checkbox radius="md" checked />    // More rounded (default)
+<Checkbox radius="lg" checked />    // Very rounded
+<Checkbox radius="full" checked />  // Circular checkbox
+
+// Indeterminate state
+<Checkbox indeterminate />
+```
+
+**Props:**
+- `checked`: boolean
+- `onCheckedChange`: (checked: boolean) => void
+- `size`: `sm | default | lg` (default: `default`)
+  - `sm`: size-5 (20px)
+  - `default`: size-6 (24px) - optimized for mobile touch
+  - `lg`: size-7 (28px)
+- `radius`: `none | sm | md | lg | full` (default: `md`)
+- `disabled`: boolean
+- `indeterminate`: boolean
+
+**Mobile-First Design:**
+The default checkbox size has been increased from 20px to 24px for better mobile touch targets.
+
 #### Alert
 
 Notification component for displaying messages.
@@ -230,6 +533,140 @@ import { Alert, AlertDescription, AlertTitle } from '@ariob/ui';
 
 **Props:**
 - `variant`: `default | destructive | warning | success`
+
+#### Tabs
+
+Tab navigation component with contained and scrollable variants, plus swipeable content support.
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsPanel, SwipeableTabsContent } from '@ariob/ui';
+
+// Basic contained tabs
+<Tabs value={activeTab} onValueChange={setActiveTab}>
+  <TabsList variant="contained">
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="details">Details</TabsTrigger>
+    <TabsTrigger value="settings">Settings</TabsTrigger>
+  </TabsList>
+  <TabsPanel value="overview">
+    <text>Overview content</text>
+  </TabsPanel>
+  <TabsPanel value="details">
+    <text>Details content</text>
+  </TabsPanel>
+  <TabsPanel value="settings">
+    <text>Settings content</text>
+  </TabsPanel>
+</Tabs>
+
+// Scrollable tabs for many options
+<Tabs defaultValue="tab1">
+  <TabsList variant="scrollable">
+    <TabsTrigger value="tab1">Home</TabsTrigger>
+    <TabsTrigger value="tab2">Profile</TabsTrigger>
+    <TabsTrigger value="tab3">Messages</TabsTrigger>
+    <TabsTrigger value="tab4">Notifications</TabsTrigger>
+    <TabsTrigger value="tab5">Settings</TabsTrigger>
+  </TabsList>
+  <TabsPanel value="tab1">{/* content */}</TabsPanel>
+  {/* ... */}
+</Tabs>
+
+// Swipeable tab content (full-width horizontal scroll)
+<Tabs value={activeTab} onValueChange={setActiveTab}>
+  <TabsList variant="scrollable">
+    <TabsTrigger value="0">Beginner</TabsTrigger>
+    <TabsTrigger value="1">Intermediate</TabsTrigger>
+    <TabsTrigger value="2">Advanced</TabsTrigger>
+  </TabsList>
+  <SwipeableTabsContent>
+    <view>{/* Beginner content */}</view>
+    <view>{/* Intermediate content */}</view>
+    <view>{/* Advanced content */}</view>
+  </SwipeableTabsContent>
+</Tabs>
+```
+
+**Tabs Props:**
+- `value`: string - Controlled active tab value
+- `defaultValue`: string - Default active tab for uncontrolled mode
+- `onValueChange`: (value: string) => void
+
+**TabsList Props:**
+- `variant`: `contained | scrollable` (default: `contained`)
+- `orientation`: `horizontal | vertical` (default: `horizontal`)
+
+**TabsTrigger Props:**
+- `value`: string - Unique identifier for this tab
+- `disabled`: boolean
+
+**Features:**
+- Material Design-compliant tab navigation
+- Contained variant: tabs in a rounded background container
+- Scrollable variant: horizontally scrollable with animated indicator
+- Swipeable content with native scroll physics
+- Automatic active state management
+- Full dark mode support
+
+#### Sheet
+
+Bottom sheet/modal component with swipe-to-dismiss gestures.
+
+```tsx
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetBody } from '@ariob/ui';
+
+function ShareDialog() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button onTap={() => setOpen(true)}>Share</Button>
+
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent side="bottom">
+          <SheetHeader showHandle showClose>
+            <SheetTitle>Share Document</SheetTitle>
+            <SheetDescription>
+              Choose how you want to share this document
+            </SheetDescription>
+          </SheetHeader>
+          <SheetBody>
+            <Column spacing="md">
+              <Button variant="outline">
+                <Icon name="mail" />
+                <text>Email</text>
+              </Button>
+              <Button variant="outline">
+                <Icon name="link" />
+                <text>Copy Link</text>
+              </Button>
+            </Column>
+          </SheetBody>
+        </SheetContent>
+      </Sheet>
+    </>
+  );
+}
+```
+
+**Sheet Props:**
+- `open`: boolean - Controls visibility
+- `onOpenChange`: (open: boolean) => void
+
+**SheetContent Props:**
+- `side`: `bottom | top` (default: `bottom`)
+
+**SheetHeader Props:**
+- `showHandle`: boolean - Show drag handle (default: true)
+- `showClose`: boolean - Show close button (default: true)
+
+**Features:**
+- Smooth slide-in/slide-out animations
+- Swipe-to-dismiss with drag threshold (100px)
+- Touch gesture handling on main thread for smooth UX
+- Semi-transparent overlay with fade animation
+- Max height of 85vh to prevent full-screen takeover
+- Proper close animation cleanup
 
 ### Layout Primitives
 
@@ -334,6 +771,69 @@ import { List, ListItem } from '@ariob/ui';
 - `icon`: string - Leading icon name
 - `arrow`: boolean - Show trailing arrow
 - `onPress`: () => void - Press handler
+
+#### Carousel
+
+Native horizontal pager component for page-based navigation with swipe gestures.
+
+```tsx
+import { Carousel } from '@ariob/ui';
+
+// Controlled mode
+function PagedContent() {
+  const [page, setPage] = useState(0);
+
+  return (
+    <>
+      <text>Current Page: {page + 1} of 3</text>
+
+      <Carousel currentPage={page} onPageChange={setPage}>
+        <view className="w-full h-full bg-primary/10 flex items-center justify-center">
+          <text className="text-2xl font-bold">Page 1</text>
+        </view>
+        <view className="w-full h-full bg-secondary/10 flex items-center justify-center">
+          <text className="text-2xl font-bold">Page 2</text>
+        </view>
+        <view className="w-full h-full bg-accent/10 flex items-center justify-center">
+          <text className="text-2xl font-bold">Page 3</text>
+        </view>
+      </Carousel>
+
+      <Row spacing="sm">
+        <Button onTap={() => setPage(0)}>Page 1</Button>
+        <Button onTap={() => setPage(1)}>Page 2</Button>
+        <Button onTap={() => setPage(2)}>Page 3</Button>
+      </Row>
+    </>
+  );
+}
+
+// Uncontrolled mode
+<Carousel defaultPage={0} onPageChange={(page) => console.log('Page:', page)}>
+  <view>Page 1</view>
+  <view>Page 2</view>
+  <view>Page 3</view>
+</Carousel>
+```
+
+**Props:**
+- `currentPage`: number - Current page index (0-based) for controlled mode
+- `defaultPage`: number - Default page for uncontrolled mode (default: 0)
+- `onPageChange`: (page: number) => void - Callback when page changes
+- `pagingEnabled`: boolean - Whether paging is enabled (default: true)
+
+**Features:**
+- Native iOS paging with smooth momentum
+- Automatic gesture conflict resolution (vertical scroll vs horizontal paging)
+- Controlled and uncontrolled modes
+- Proper dual-thread optimization with `'background only'` directive
+- Each child automatically wrapped in a full-width/height container
+
+**Use Cases:**
+- Onboarding flows
+- Image galleries
+- Step-by-step wizards
+- Dashboard panels
 
 ## 🎨 Theming
 

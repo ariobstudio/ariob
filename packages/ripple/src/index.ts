@@ -31,3 +31,15 @@ export type { FeedConfig } from './feed';
 // Relationships - Friend graph management
 export { relationships, useRelationships } from './relationships';
 export type { Friend, RelationshipsStore } from './relationships';
+
+// Profile - User profile management
+export {
+  profile,
+  saveProfile,
+  getProfile,
+  updateProfile,
+  deleteProfile,
+  useProfile,
+  ProfileSchema,
+} from './profile';
+export type { UserProfile } from './profile';
