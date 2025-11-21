@@ -9,7 +9,7 @@
 
 import React from 'react';
 import { Pressable, View } from 'react-native';
-import { StyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 import { Text } from '../primitives/Text';
 import { Avatar } from './Avatar';
 import { Card } from '../primitives/Card';
@@ -35,12 +35,10 @@ export interface FeedItemProps {
 }
 
 export const FeedItem: React.FC<FeedItemProps> = ({ item, onPress }) => {
-  const { theme } = useStyles();
   const { data } = item;
 
   // Visual differentiation by type
-  const radius = data.type === 'thread' ? 'soft' : data.type === 'post' ? 'subtle' : 'sharp';
-  const backgroundColor = data.type === 'thread' ? theme.colors.surface : theme.colors.depth;
+  const radius = data.type === 'thread' ? 12 : data.type === 'post' ? 6 : 0;
 
   const formatTime = (timestamp: number) => {
     const now = Date.now();
@@ -64,7 +62,8 @@ export const FeedItem: React.FC<FeedItemProps> = ({ item, onPress }) => {
           radius={radius}
           style={[
             styles.container,
-            { backgroundColor },
+            data.type === 'thread' && styles.threadBackground,
+            data.type === 'post' && styles.postBackground,
             pressed && styles.pressed,
             data.unread && styles.unread,
           ]}
@@ -77,17 +76,17 @@ export const FeedItem: React.FC<FeedItemProps> = ({ item, onPress }) => {
             />
 
             <View style={styles.headerText}>
-              <Text variant="body" weight="semibold" color="cream">
+              <Text variant="body" weight="600">
                 {data.authorAlias || data.author || 'Unknown'}
               </Text>
-              <Text variant="mono" color="ash">
+              <Text variant="caption">
                 {formatTime(data.created)}
               </Text>
             </View>
 
             {/* Type indicator (subtle icon or label) */}
             <View style={styles.typeIndicator}>
-              <Text variant="label" color="ash">
+              <Text variant="label">
                 {data.type === 'thread' ? 'DM' : data.type === 'post' ? 'POST' : 'NOTE'}
               </Text>
             </View>
@@ -97,7 +96,6 @@ export const FeedItem: React.FC<FeedItemProps> = ({ item, onPress }) => {
           <View style={styles.content}>
             <Text
               variant="body"
-              color="cream"
               numberOfLines={4}
               style={styles.contentText}
             >
@@ -119,51 +117,49 @@ const styles = StyleSheet.create((theme) => ({
   container: {
     marginBottom: theme.spacing.md,
   },
-
+  threadBackground: {
+    backgroundColor: theme.colors.surface,
+  },
+  postBackground: {
+    backgroundColor: theme.colors.surfaceElevated,
+  },
   pressed: {
     opacity: 0.8,
     transform: [{ scale: 0.98 }],
   },
-
   unread: {
-    borderColor: theme.colors.cream,
+    borderColor: theme.colors.text,
     borderWidth: 1.5,
   },
-
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: theme.spacing.sm,
     marginBottom: theme.spacing.md,
   },
-
   headerText: {
     flex: 1,
     gap: theme.spacing.xs,
   },
-
   typeIndicator: {
     paddingHorizontal: theme.spacing.sm,
     paddingVertical: theme.spacing.xs,
-    backgroundColor: theme.colors.ripple,
-    borderRadius: theme.borderRadius.subtle,
+    backgroundColor: theme.colors.surfaceElevated,
+    borderRadius: theme.borderRadius.sm,
   },
-
   content: {
     gap: theme.spacing.sm,
   },
-
   contentText: {
-    lineHeight: theme.fontSizes.body * theme.lineHeights.relaxed,
+    lineHeight: 22,
   },
-
   unreadIndicator: {
     position: 'absolute',
     top: theme.spacing.md,
     right: theme.spacing.md,
     width: 8,
     height: 8,
-    borderRadius: theme.borderRadius.circle,
-    backgroundColor: theme.colors.cream,
+    borderRadius: theme.borderRadius.full,
+    backgroundColor: theme.colors.text,
   },
 }));

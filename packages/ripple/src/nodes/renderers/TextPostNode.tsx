@@ -7,11 +7,13 @@
  * - immersive: Not supported (uses full view)
  */
 
-import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+// import React from 'react';
+import { View, Pressable } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import { Ionicons } from '@expo/vector-icons';
 import type { Post } from '../../schemas';
 import type { NodeRenderer, NodeRenderProps } from '../types';
+import { Card, Text, Button } from '@ariob/components';
 
 // Helper to format timestamps
 function formatTime(timestamp: number): string {
@@ -32,58 +34,60 @@ function formatTime(timestamp: number): string {
  */
 function PreviewView({ data, nodeId, onPress }: NodeRenderProps<Post>) {
   return (
-    <Pressable onPress={onPress} style={styles.previewContainer}>
-      {/* Author Header */}
-      <View style={styles.previewHeader}>
-        <View style={styles.avatar}>
-          <Text style={styles.avatarText}>
-            {(data.authorAlias || data.author || '?').charAt(0).toUpperCase()}
-          </Text>
-        </View>
-
-        <View style={styles.previewMeta}>
-          <View style={styles.authorRow}>
-            <Text style={styles.authorName} numberOfLines={1}>
-              {data.authorAlias || data.author}
+    <Pressable onPress={onPress}>
+      <Card variant="flat" padding="medium" style={styles.previewContainer}>
+        {/* Author Header */}
+        <View style={styles.previewHeader}>
+          <View style={styles.avatar}>
+            <Text variant="bodySmall" style={styles.avatarText}>
+              {(data.authorAlias || data.author || '?').charAt(0).toUpperCase()}
             </Text>
-            <Text style={styles.dot}>·</Text>
-            <Text style={styles.timestamp}>{formatTime(data.created)}</Text>
+          </View>
+
+          <View style={styles.previewMeta}>
+            <View style={styles.authorRow}>
+              <Text variant="label" style={styles.authorName} numberOfLines={1}>
+                {data.authorAlias || data.author}
+              </Text>
+              <Text variant="bodySmall" style={styles.dot}>·</Text>
+              <Text variant="bodySmall" style={styles.timestamp}>{formatTime(data.created)}</Text>
+            </View>
           </View>
         </View>
-      </View>
 
-      {/* Content Preview */}
-      <Text style={styles.previewContent} numberOfLines={4}>
-        {data.content}
-      </Text>
+        {/* Content Preview */}
+        <Text variant="body" style={styles.previewContent} numberOfLines={4}>
+          {data.content}
+        </Text>
 
-      {/* Tags */}
-      {data.tags && data.tags.length > 0 && (
-        <View style={styles.tagsRow}>
-          {data.tags.slice(0, 3).map((tag, idx) => (
-            <Text key={idx} style={styles.tag}>
-              #{tag}
-            </Text>
-          ))}
-          {data.tags.length > 3 && <Text style={styles.tagMore}>+{data.tags.length - 3}</Text>}
-        </View>
-      )}
+        {/* Tags */}
+        {data.tags && data.tags.length > 0 && (
+          <View style={styles.tagsRow}>
+            {data.tags.slice(0, 3).map((tag, idx) => (
+              <Text key={idx} variant="bodySmall" style={styles.tag}>
+                #{tag}
+              </Text>
+            ))}
+            {data.tags.length > 3 && <Text variant="bodySmall" style={styles.tagMore}>+{data.tags.length - 3}</Text>}
+          </View>
+        )}
 
-      {/* Quick Stats */}
-      <View style={styles.previewStats}>
-        <View style={styles.statItem}>
-          <Ionicons name="chatbubble-outline" size={14} color="#8E8E93" />
-          <Text style={styles.statText}>0</Text>
+        {/* Quick Stats */}
+        <View style={styles.previewStats}>
+          <View style={styles.statItem}>
+            <Ionicons name="chatbubble-outline" size={14} color={styles.iconColor.color} />
+            <Text variant="bodySmall" style={styles.statText}>0</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Ionicons name="heart-outline" size={14} color={styles.iconColor.color} />
+            <Text variant="bodySmall" style={styles.statText}>0</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Ionicons name="repeat-outline" size={14} color={styles.iconColor.color} />
+            <Text variant="bodySmall" style={styles.statText}>0</Text>
+          </View>
         </View>
-        <View style={styles.statItem}>
-          <Ionicons name="heart-outline" size={14} color="#8E8E93" />
-          <Text style={styles.statText}>0</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Ionicons name="repeat-outline" size={14} color="#8E8E93" />
-          <Text style={styles.statText}>0</Text>
-        </View>
-      </View>
+      </Card>
     </Pressable>
   );
 }
@@ -97,30 +101,30 @@ function FullView({ data, nodeId, navigation }: NodeRenderProps<Post>) {
       {/* Author Header */}
       <View style={styles.fullHeader}>
         <View style={styles.avatarLarge}>
-          <Text style={styles.avatarTextLarge}>
+          <Text variant="h3" style={styles.avatarTextLarge}>
             {(data.authorAlias || data.author || '?').charAt(0).toUpperCase()}
           </Text>
         </View>
 
         <View style={styles.fullHeaderText}>
-          <Text style={styles.fullAuthorName}>{data.authorAlias || data.author}</Text>
-          <Text style={styles.fullTimestamp}>{formatTime(data.created)}</Text>
+          <Text variant="h4" style={styles.fullAuthorName}>{data.authorAlias || data.author}</Text>
+          <Text variant="bodySmall" style={styles.fullTimestamp}>{formatTime(data.created)}</Text>
         </View>
 
         <Pressable style={styles.moreButton}>
-          <Ionicons name="ellipsis-horizontal" size={20} color="#8E8E93" />
+          <Ionicons name="ellipsis-horizontal" size={20} color={styles.iconColor.color} />
         </Pressable>
       </View>
 
       {/* Full Content */}
-      <Text style={styles.fullContent}>{data.content}</Text>
+      <Text variant="bodyLarge" style={styles.fullContent}>{data.content}</Text>
 
       {/* Media (if any) */}
       {data.media && data.media.length > 0 && (
         <View style={styles.mediaContainer}>
           {data.media.map((item, idx) => (
             <View key={idx} style={styles.mediaPlaceholder}>
-              <Ionicons name="image-outline" size={32} color="#8E8E93" />
+              <Ionicons name="image-outline" size={32} color={styles.iconColor.color} />
             </View>
           ))}
         </View>
@@ -131,7 +135,7 @@ function FullView({ data, nodeId, navigation }: NodeRenderProps<Post>) {
         <View style={styles.fullTagsRow}>
           {data.tags.map((tag, idx) => (
             <Pressable key={idx} style={styles.fullTag}>
-              <Text style={styles.fullTagText}>#{tag}</Text>
+              <Text variant="bodySmall" style={styles.fullTagText}>#{tag}</Text>
             </Pressable>
           ))}
         </View>
@@ -139,43 +143,43 @@ function FullView({ data, nodeId, navigation }: NodeRenderProps<Post>) {
 
       {/* Engagement Stats */}
       <View style={styles.engagementStats}>
-        <Text style={styles.engagementStatText}>
-          <Text style={styles.engagementNumber}>0</Text> reactions
+        <Text variant="bodySmall" style={styles.engagementStatText}>
+          <Text variant="label" style={styles.engagementNumber}>0</Text> reactions
         </Text>
-        <Text style={styles.engagementStatText}>
-          <Text style={styles.engagementNumber}>0</Text> comments
+        <Text variant="bodySmall" style={styles.engagementStatText}>
+          <Text variant="label" style={styles.engagementNumber}>0</Text> comments
         </Text>
-        <Text style={styles.engagementStatText}>
-          <Text style={styles.engagementNumber}>0</Text> shares
+        <Text variant="bodySmall" style={styles.engagementStatText}>
+          <Text variant="label" style={styles.engagementNumber}>0</Text> shares
         </Text>
       </View>
 
       {/* Action Buttons */}
       <View style={styles.actionButtons}>
         <Pressable style={styles.actionButton}>
-          <Ionicons name="chatbubble-outline" size={22} color="#FFFFFF" />
-          <Text style={styles.actionButtonText}>Comment</Text>
+          <Ionicons name="chatbubble-outline" size={22} color={styles.actionIconColor.color} />
+          <Text variant="label" style={styles.actionButtonText}>Comment</Text>
         </Pressable>
 
         <Pressable style={styles.actionButton}>
-          <Ionicons name="heart-outline" size={22} color="#FFFFFF" />
-          <Text style={styles.actionButtonText}>Like</Text>
+          <Ionicons name="heart-outline" size={22} color={styles.actionIconColor.color} />
+          <Text variant="label" style={styles.actionButtonText}>Like</Text>
         </Pressable>
 
         <Pressable style={styles.actionButton}>
-          <Ionicons name="repeat-outline" size={24} color="#FFFFFF" />
-          <Text style={styles.actionButtonText}>Share</Text>
+          <Ionicons name="repeat-outline" size={24} color={styles.actionIconColor.color} />
+          <Text variant="label" style={styles.actionButtonText}>Share</Text>
         </Pressable>
 
         <Pressable style={styles.actionButton}>
-          <Ionicons name="share-outline" size={22} color="#FFFFFF" />
+          <Ionicons name="share-outline" size={22} color={styles.actionIconColor.color} />
         </Pressable>
       </View>
 
       {/* Comments Section Placeholder */}
       <View style={styles.commentsSection}>
-        <Text style={styles.commentsTitle}>Comments</Text>
-        <Text style={styles.commentsEmpty}>No comments yet. Be the first!</Text>
+        <Text variant="h4" style={styles.commentsTitle}>Comments</Text>
+        <Text variant="body" style={styles.commentsEmpty}>No comments yet. Be the first!</Text>
       </View>
     </View>
   );
@@ -190,33 +194,28 @@ export const TextPostNodeRenderer: NodeRenderer<Post> = {
   // No immersive view for text posts
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   // Preview Styles
   previewContainer: {
-    backgroundColor: '#1C1C1E',
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#38383A',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    marginBottom: 1, // Separator
+    borderRadius: 0, // List style
   },
   previewHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: theme.spacing.xs,
   },
   avatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#2C2C2E',
+    backgroundColor: theme.colors.surfaceElevated,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
+    marginRight: theme.spacing.sm,
   },
   avatarText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
+    color: theme.colors.text,
   },
   previewMeta: {
     flex: 1,
@@ -227,24 +226,18 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   authorName: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#FFFFFF',
+    color: theme.colors.text,
     flex: 1,
   },
   dot: {
-    fontSize: 15,
-    color: '#8E8E93',
+    color: theme.colors.textTertiary,
   },
   timestamp: {
-    fontSize: 13,
-    color: '#8E8E93',
+    color: theme.colors.textTertiary,
   },
   previewContent: {
-    fontSize: 15,
-    lineHeight: 20,
-    color: '#FFFFFF',
-    marginBottom: 8,
+    color: theme.colors.text,
+    marginBottom: theme.spacing.sm,
     paddingLeft: 52,
   },
   tagsRow: {
@@ -252,15 +245,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 8,
     paddingLeft: 52,
-    marginBottom: 8,
+    marginBottom: theme.spacing.sm,
   },
   tag: {
-    fontSize: 14,
-    color: '#0A84FF',
+    color: theme.colors.primary,
   },
   tagMore: {
-    fontSize: 14,
-    color: '#8E8E93',
+    color: theme.colors.textTertiary,
   },
   previewStats: {
     flexDirection: 'row',
@@ -273,70 +264,65 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   statText: {
-    fontSize: 13,
-    color: '#8E8E93',
+    color: theme.colors.textTertiary,
+  },
+  iconColor: {
+    color: theme.colors.textTertiary,
   },
 
   // Full View Styles
   fullContainer: {
-    backgroundColor: '#000000',
+    backgroundColor: theme.colors.background,
     flex: 1,
   },
   fullHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    padding: theme.spacing.md,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#38383A',
+    borderBottomColor: theme.colors.border,
   },
   avatarLarge: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#2C2C2E',
+    backgroundColor: theme.colors.surfaceElevated,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
+    marginRight: theme.spacing.sm,
   },
   avatarTextLarge: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#FFFFFF',
+    color: theme.colors.text,
   },
   fullHeaderText: {
     flex: 1,
   },
   fullAuthorName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
+    color: theme.colors.text,
     marginBottom: 2,
   },
   fullTimestamp: {
-    fontSize: 13,
-    color: '#8E8E93',
+    color: theme.colors.textTertiary,
   },
   moreButton: {
     padding: 8,
   },
   fullContent: {
-    fontSize: 17,
-    lineHeight: 24,
-    color: '#FFFFFF',
-    padding: 16,
+    color: theme.colors.text,
+    padding: theme.spacing.md,
   },
   mediaContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 2,
-    paddingHorizontal: 16,
-    marginBottom: 16,
+    paddingHorizontal: theme.spacing.md,
+    marginBottom: theme.spacing.md,
   },
   mediaPlaceholder: {
     width: '48%',
     aspectRatio: 1,
-    backgroundColor: '#2C2C2E',
-    borderRadius: 8,
+    backgroundColor: theme.colors.surfaceElevated,
+    borderRadius: theme.borderRadius.subtle,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -344,44 +330,41 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
-    paddingHorizontal: 16,
-    marginBottom: 16,
+    paddingHorizontal: theme.spacing.md,
+    marginBottom: theme.spacing.md,
   },
   fullTag: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    backgroundColor: '#0A84FF15',
+    backgroundColor: `${theme.colors.primary}15`,
     borderRadius: 16,
   },
   fullTagText: {
-    fontSize: 14,
-    color: '#0A84FF',
+    color: theme.colors.primary,
     fontWeight: '500',
   },
   engagementStats: {
     flexDirection: 'row',
     gap: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
-    borderColor: '#38383A',
+    borderColor: theme.colors.border,
   },
   engagementStatText: {
-    fontSize: 14,
-    color: '#8E8E93',
+    color: theme.colors.textTertiary,
   },
   engagementNumber: {
-    fontWeight: '600',
-    color: '#FFFFFF',
+    color: theme.colors.text,
   },
   actionButtons: {
     flexDirection: 'row',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
     gap: 12,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#38383A',
+    borderBottomColor: theme.colors.border,
   },
   actionButton: {
     flex: 1,
@@ -392,23 +375,21 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   actionButtonText: {
-    fontSize: 14,
-    color: '#FFFFFF',
-    fontWeight: '500',
+    color: theme.colors.text,
+  },
+  actionIconColor: {
+    color: theme.colors.text,
   },
   commentsSection: {
-    padding: 16,
+    padding: theme.spacing.md,
   },
   commentsTitle: {
-    fontSize: 17,
-    fontWeight: '600',
-    color: '#FFFFFF',
-    marginBottom: 12,
+    color: theme.colors.text,
+    marginBottom: theme.spacing.sm,
   },
   commentsEmpty: {
-    fontSize: 15,
-    color: '#8E8E93',
+    color: theme.colors.textTertiary,
     textAlign: 'center',
     paddingVertical: 32,
   },
-});
+}));

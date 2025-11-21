@@ -1,12 +1,10 @@
 /**
  * @ariob/components
  *
- * Generic UI component library with Liquid Monochrome design system.
- * Built for React Native with unistyles.
+ * Generic UI component library for Ariob.
+ * Built for React Native with Unistyles.
+ * Theme is provided by the parent app via Unistyles configuration.
  */
-
-// Theme
-export * from './theme';
 
 // Primitives
 export * from './primitives';

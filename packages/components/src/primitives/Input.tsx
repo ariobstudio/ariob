@@ -1,10 +1,6 @@
-/**
- * Input - Text input with refined aesthetic
- */
-
 import React, { useState } from 'react';
 import { TextInput, TextInputProps, View, Animated } from 'react-native';
-import { StyleSheet, useStyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 import { Text } from './Text';
 
 export interface InputProps extends TextInputProps {
@@ -20,7 +16,6 @@ export const Input: React.FC<InputProps> = ({
   style,
   ...props
 }) => {
-  const { theme } = useStyles();
   const [isFocused, setIsFocused] = useState(false);
   const focusAnim = React.useRef(new Animated.Value(0)).current;
 
@@ -42,23 +37,17 @@ export const Input: React.FC<InputProps> = ({
     }).start();
   };
 
-  const borderColor = focusAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [theme.colors.mist, theme.colors.cream],
-  });
-
   return (
     <View style={[styles.container, fullWidth && styles.fullWidth]}>
       {label && (
-        <Text variant="label" color="pearl" style={styles.label}>
+        <Text variant="label" style={styles.label}>
           {label}
         </Text>
       )}
 
-      <Animated.View style={[styles.inputWrapper, { borderColor }]}>
+      <Animated.View style={[styles.inputWrapper]}>
         <TextInput
           style={[styles.input, style]}
-          placeholderTextColor={theme.colors.ash}
           onFocus={handleFocus}
           onBlur={handleBlur}
           {...props}
@@ -66,7 +55,7 @@ export const Input: React.FC<InputProps> = ({
       </Animated.View>
 
       {error && (
-        <Text variant="caption" color="pearl" style={styles.error}>
+        <Text variant="caption" style={styles.error}>
           {error}
         </Text>
       )}
@@ -89,21 +78,21 @@ const styles = StyleSheet.create((theme) => ({
 
   inputWrapper: {
     borderWidth: 1,
-    borderRadius: theme.borderRadius.soft,
+    borderRadius: theme.borderRadius.md,
     backgroundColor: theme.colors.surface,
-    borderColor: theme.colors.mist,
+    borderColor: theme.colors.border,
   },
 
   input: {
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.md,
-    fontSize: theme.fontSizes.body,
-    fontFamily: theme.fonts.serif.regular,
-    color: theme.colors.cream,
+    fontSize: 16,
+    color: theme.colors.text,
     minHeight: 48,
   },
 
   error: {
     marginTop: theme.spacing.xs,
+    color: theme.colors.error || '#FF3B30',
   },
 }));

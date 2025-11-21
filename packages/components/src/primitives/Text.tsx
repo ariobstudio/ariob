@@ -1,5 +1,5 @@
 /**
- * Text - Primitive text component with Liquid Monochrome typography
+ * Text - Primitive text component using Unistyles theme
  */
 
 import React from 'react';
@@ -7,19 +7,16 @@ import { Text as RNText, TextProps as RNTextProps } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 export interface TextProps extends RNTextProps {
-  variant?: 'hero' | 'display' | 'title' | 'large' | 'body' | 'small' | 'caption' | 'mono' | 'label';
-  weight?: 'light' | 'regular' | 'medium' | 'semibold' | 'bold';
-  color?: 'cream' | 'pearl' | 'ash' | 'shadow' | 'accent';
-  align?: 'left' | 'center' | 'right';
-  mono?: boolean;
+  variant?: 
+    | 'h1' | 'h2' | 'h3' | 'h4'
+    | 'bodyLarge' | 'body' | 'bodySmall'
+    | 'label' | 'caption';
+  weight?: '300' | '400' | '500' | '600' | '700';
 }
 
 export const Text: React.FC<TextProps> = ({
   variant = 'body',
-  weight = 'regular',
-  color = 'cream',
-  align = 'left',
-  mono = false,
+  weight,
   style,
   ...props
 }) => {
@@ -27,11 +24,8 @@ export const Text: React.FC<TextProps> = ({
     <RNText
       style={[
         styles.base,
-        styles[variant],
-        styles[`weight_${weight}`],
-        styles[`color_${color}`],
-        { textAlign: align },
-        mono && styles.mono,
+        variant && styles[variant],
+        weight && { fontWeight: weight },
         style,
       ]}
       {...props}
@@ -41,69 +35,61 @@ export const Text: React.FC<TextProps> = ({
 
 const styles = StyleSheet.create((theme) => ({
   base: {
-    color: theme.colors.cream,
-    fontFamily: theme.fonts.serif.regular,
-    letterSpacing: theme.letterSpacing.normal,
+    color: theme.colors.text,
   },
 
-  // Variants
-  hero: {
-    fontSize: theme.fontSizes.hero,
-    lineHeight: theme.fontSizes.hero * theme.lineHeights.tight,
-    fontFamily: theme.fonts.serif.bold,
-    letterSpacing: theme.letterSpacing.tight,
+  // Heading Variants
+  h1: {
+    fontSize: 32,
+    lineHeight: 38,
+    fontWeight: '700',
+    letterSpacing: -0.5,
   },
-  display: {
-    fontSize: theme.fontSizes.display,
-    lineHeight: theme.fontSizes.display * theme.lineHeights.tight,
-    fontFamily: theme.fonts.serif.semibold,
+  h2: {
+    fontSize: 28,
+    lineHeight: 34,
+    fontWeight: '700',
+    letterSpacing: -0.5,
   },
-  title: {
-    fontSize: theme.fontSizes.title,
-    lineHeight: theme.fontSizes.title * theme.lineHeights.normal,
-    fontFamily: theme.fonts.serif.semibold,
+  h3: {
+    fontSize: 24,
+    lineHeight: 30,
+    fontWeight: '600',
   },
-  large: {
-    fontSize: theme.fontSizes.large,
-    lineHeight: theme.fontSizes.large * theme.lineHeights.relaxed,
+  h4: {
+    fontSize: 20,
+    lineHeight: 26,
+    fontWeight: '600',
+  },
+
+  // Body Variants
+  bodyLarge: {
+    fontSize: 18,
+    lineHeight: 24,
+    fontWeight: '400',
   },
   body: {
-    fontSize: theme.fontSizes.body,
-    lineHeight: theme.fontSizes.body * theme.lineHeights.relaxed,
+    fontSize: 16,
+    lineHeight: 22,
+    fontWeight: '400',
   },
-  small: {
-    fontSize: theme.fontSizes.small,
-    lineHeight: theme.fontSizes.small * theme.lineHeights.normal,
+  bodySmall: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '400',
+  },
+
+  // Label & Caption
+  label: {
+    fontSize: 14,
+    lineHeight: 18,
+    fontWeight: '600',
+    letterSpacing: 0.3,
   },
   caption: {
-    fontSize: theme.fontSizes.caption,
-    lineHeight: theme.fontSizes.caption * theme.lineHeights.normal,
+    fontSize: 12,
+    lineHeight: 16,
+    fontWeight: '400',
+    color: theme.colors.textSecondary,
   },
-  mono: {
-    fontFamily: theme.fonts.mono.regular,
-    fontSize: theme.fontSizes.mono,
-    lineHeight: theme.fontSizes.mono * theme.lineHeights.normal,
-    letterSpacing: theme.letterSpacing.wide,
-  },
-  label: {
-    fontFamily: theme.fonts.mono.medium,
-    fontSize: theme.fontSizes.label,
-    lineHeight: theme.fontSizes.label * theme.lineHeights.tight,
-    letterSpacing: theme.letterSpacing.widest,
-    textTransform: 'uppercase',
-  },
-
-  // Weights
-  weight_light: { fontFamily: theme.fonts.serif.light },
-  weight_regular: { fontFamily: theme.fonts.serif.regular },
-  weight_medium: { fontFamily: theme.fonts.serif.medium },
-  weight_semibold: { fontFamily: theme.fonts.serif.semibold },
-  weight_bold: { fontFamily: theme.fonts.serif.bold },
-
-  // Colors
-  color_cream: { color: theme.colors.cream },
-  color_pearl: { color: theme.colors.pearl },
-  color_ash: { color: theme.colors.ash },
-  color_shadow: { color: theme.colors.shadow },
-  color_accent: { color: theme.colors.accent },
 }));

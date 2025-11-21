@@ -90,6 +90,7 @@ export function useFeed(config: FeedConfig) {
     loading: collection.isLoading,
     error: collection.error,
     post,
+    refresh: collection.refetch,
   };
 }
 

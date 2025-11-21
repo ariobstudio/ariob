@@ -194,6 +194,7 @@ export default function OnboardingScreen() {
   };
 
   const handleCreate = async () => {
+    console.log('[DEBUG] handleCreate called, name:', name);
     if (!name.trim()) {
       setError('Please enter your alias.');
       return;
@@ -204,7 +205,9 @@ export default function OnboardingScreen() {
 
     try {
       // Create identity
+      console.log('[DEBUG] Calling create()');
       const result = await create(name.trim());
+      console.log('[DEBUG] create() result:', result.ok);
 
       if (!result.ok) {
         console.error('[Onboarding] Create failed:', result.error);
@@ -217,6 +220,7 @@ export default function OnboardingScreen() {
       const g = graph();
       const userRef = g.user();
       const keypair = userRef._.sea;
+      console.log('[DEBUG] Keypair retrieved:', !!keypair);
 
       if (keypair) {
         const keysJson = JSON.stringify({
@@ -226,6 +230,7 @@ export default function OnboardingScreen() {
           epriv: keypair.epriv,
         });
         await AsyncStorage.setItem('userKeys', keysJson);
+        console.log('[DEBUG] Saved userKeys to AsyncStorage');
       }
 
       // Initialize profile
@@ -235,8 +240,11 @@ export default function OnboardingScreen() {
         createdAt: timestamp,
         updatedAt: timestamp,
       });
+      console.log('[DEBUG] Profile initialized');
 
       await AsyncStorage.setItem('hasOnboarded', 'true');
+      console.log('[DEBUG] Set hasOnboarded=true');
+      console.log('[DEBUG] Replacing with /(tabs)');
       router.replace('/(tabs)');
     } catch (err) {
       console.error('[Onboarding] Unexpected error:', err);

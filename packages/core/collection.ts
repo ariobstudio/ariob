@@ -618,6 +618,15 @@ export function useCollection<T = any>(config: CollectionConfig<T>) {
     [path, graph]
   );
 
+  /**
+   * Refresh data from Gun
+   */
+  const refetch = useCallback(() => {
+    const g = graph || getGraph();
+    const ref = g.get(path);
+    collectionStore.map(path, ref, schema, sort);
+  }, [path, schema, sort, graph]);
+
   return {
     /** Array of items (sorted by ID lexicographically) */
     items: items as Item<T>[],
@@ -648,6 +657,9 @@ export function useCollection<T = any>(config: CollectionConfig<T>) {
 
     /** Remove item from collection */
     remove,
+
+    /** Refresh data from Gun */
+    refetch,
   };
 }
 

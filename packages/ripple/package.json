@@ -12,7 +12,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@ariob/core": "workspace:*"
+    "@ariob/core": "workspace:*",
+    "@ariob/components": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.3.24",

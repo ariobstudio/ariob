@@ -1,9 +1,4 @@
-/**
- * @ariob/core
- *
- * Minimal, modular Gun.js primitives for LynxJS.
- * 8 core exports following Gun/SEA coding style.
- */
+/*** @ariob/core ***/
 
 // ============================================================================
 // Core Primitives
@@ -109,12 +104,3 @@ export type { InputEvent, InputInputEvent, UseInputOptions } from './hooks/useIn
 export type { IntersectionObserverOptions } from './hooks/useIntersection';
 export type { UseTimeoutReturn } from './hooks/useTimeout';
 export type { UseTimeoutFnReturn } from './hooks/useTimeoutFn';
-
-// NOTE: LynxJS-specific utilities are NOT exported from main package to avoid breaking React Native/Expo
-// Import these directly in LynxJS apps if needed:
-//   import { isLynxJS, loadLynxBridges } from '@ariob/core/lynx/env';
-//   import useTapLock from '@ariob/core/lynx/hooks/useTapLock';
-//   import useMainThreadImperativeHandle from '@ariob/core/lynx/hooks/useMainThreadImperativeHandle';
-//   import { useKeyboard } from '@ariob/core/lynx/hooks/useKeyboard';
-//
-// Note: loadLynxBridges() is called automatically by graph.ts, no manual setup needed.
