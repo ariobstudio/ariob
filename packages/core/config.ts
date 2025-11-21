@@ -35,8 +35,6 @@ export interface PeerConfig {
  * ```
  */
 export function getPeers(): string[] {
-  'background only';
-
   try {
     // Check if localStorage is available
     if (typeof globalThis.localStorage === 'undefined') {
@@ -84,8 +82,6 @@ export function getPeers(): string[] {
  * ```
  */
 export function setPeers(peers: string[]): void {
-  'background only';
-
   try {
     // Check if localStorage is available
     if (typeof globalThis.localStorage === 'undefined') {
@@ -121,8 +117,6 @@ export function setPeers(peers: string[]): void {
  * ```
  */
 export function addPeer(peer: string): void {
-  'background only';
-
   const currentPeers = getPeers();
 
   // Don't add duplicates
@@ -147,8 +141,6 @@ export function addPeer(peer: string): void {
  * ```
  */
 export function removePeer(peer: string): void {
-  'background only';
-
   const currentPeers = getPeers();
   const updatedPeers = currentPeers.filter((p) => p !== peer);
 
@@ -170,7 +162,6 @@ export function removePeer(peer: string): void {
  * ```
  */
 export function resetPeers(): void {
-  'background only';
   setPeers([...DEFAULT_PEERS]);
   console.log('[Config] Reset peers to defaults');
 }
@@ -187,7 +178,6 @@ export function resetPeers(): void {
  * ```
  */
 export function getPeerConfig(): PeerConfig {
-  'background only';
   return { peers: getPeers() };
 }
 
@@ -253,8 +243,6 @@ export const PEER_PROFILES: Record<string, PeerProfile> = {
  * ```
  */
 export function loadProfile(profileName: keyof typeof PEER_PROFILES): void {
-  'background only';
-
   const profile = PEER_PROFILES[profileName];
   if (!profile) {
     throw new Error(`Unknown profile: ${profileName}`);
@@ -281,8 +269,6 @@ export function loadProfile(profileName: keyof typeof PEER_PROFILES): void {
  * ```
  */
 export function getCurrentProfile(): string | null {
-  'background only';
-
   const currentPeers = getPeers();
 
   for (const [name, profile] of Object.entries(PEER_PROFILES)) {

@@ -1,308 +1,204 @@
 /**
- * Auth - Authentication Store & Hook
+ * Auth - Authentication System
  *
- * Unified authentication management with Gun user system.
- * Flow: alias → keypair → authenticate → persist
+ * - create(username, password?) - Create account
+ * - auth(usernameOrKeys, password?) - Smart authentication (detects keypair vs password)
+ * - leave() - Clear session
+ * - recall() - Restore session
+ * - useAuth() - Reactive hook
  */
 
-import { useCallback, useEffect, useState } from 'react';
-import type { IGunChainReference, KeyPair } from './graph';
+import type { KeyPair } from './graph';
+import { graph as getGraph } from './graph';
 import { Result } from './result';
+import { define } from './utils/store';
 import { pair as generatePair } from './crypto';
-import { createStore, useStoreSelector } from './utils/createStore';
 
-/**
- * User info
- */
+// ============================================================================
+// Types
+// ============================================================================
+
 export interface User {
   pub: string;
   epub: string;
   alias: string;
 }
 
-/**
- * Auth store state
- */
 interface AuthState {
-  /** Current authenticated user */
   user: User | null;
-  /** User's cryptographic keys */
-  keys: KeyPair | null;
-  /** Whether user is logged in */
-  isLoggedIn: boolean;
+  isAuthenticated: boolean;
 }
 
-const STORAGE_KEY = 'auth-store';
+export type AuthResult = Result<User, Error>;
+
+// ============================================================================
+// Store
+// ============================================================================
+
+export const authStore = define<AuthState>({
+  user: null,
+  isAuthenticated: false,
+});
+
+// ============================================================================
+// Internal Helpers
+// ============================================================================
 
 /**
- * Load persisted state from localStorage
+ * Extract user info from Gun user reference
  */
-function loadPersistedState(): AuthState {
-  'background only';
-
-  try {
-    if (typeof globalThis.localStorage !== 'undefined') {
-      const stored = globalThis.localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        return {
-          user: parsed.user || null,
-          keys: parsed.keys || null,
-          isLoggedIn: !!parsed.user,
-        };
-      }
-    }
-  } catch (err) {
-    console.error('[Auth] Failed to load persisted state:', err);
-  }
+function getUserFromRef(userRef: any, alias?: string): User | null {
+  if (!userRef.is) return null;
 
   return {
-    user: null,
-    keys: null,
-    isLoggedIn: false,
-  };
+    pub: userRef.is.pub,
+    epub: userRef.is.epub,
+    alias: userRef.is.alias || alias || 'unknown',
+  } as User;
 }
 
 /**
- * Save state to localStorage
+ * Update auth store with user data
  */
-function persistState(state: AuthState) {
-  'background only';
-
-  try {
-    if (typeof globalThis.localStorage !== 'undefined') {
-      globalThis.localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({
-          user: state.user,
-          keys: state.keys,
-        })
-      );
-    }
-  } catch (err) {
-    console.error('[Auth] Failed to persist state:', err);
-  }
-}
-
-/**
- * Default empty state for initial render
- */
-const defaultState: AuthState = {
-  user: null,
-  keys: null,
-  isLoggedIn: false,
-};
-
-/**
- * Auth store with localStorage persistence
- * Initialize with empty state, will be loaded on first access
- */
-const authStore = createStore<AuthState>(defaultState);
-
-/**
- * Flag to track if store has been initialized
- */
-let storeInitialized = false;
-
-/**
- * Lazy initialize store with persisted state
- */
-function ensureStoreInitialized() {
-  'background only';
-
-  if (storeInitialized) return;
-  storeInitialized = true;
-
-  // Load persisted state
-  const persistedState = loadPersistedState();
-  console.log('[Auth] Store initialized with persisted state:', !!persistedState.user);
-
-  // Set initial state if we have persisted data
-  if (persistedState.user) {
-    authStore.setState(persistedState);
-  }
-
-  // Subscribe to changes and persist
-  authStore.subscribe(() => {
-    'background only';
-    persistState(authStore.getState());
+function setAuthenticated(user: User | null) {
+  authStore.setState({
+    user,
+    isAuthenticated: !!user,
   });
 }
 
 /**
- * Auth store actions
+ * Check if value is a KeyPair object
  */
-const authActions = {
-  setUser: (user: User | null) => {
-    'background only';
-    const current = authStore.getState().user;
+function isKeyPair(value: any): value is KeyPair {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    typeof value.pub === 'string' &&
+    typeof value.priv === 'string' &&
+    typeof value.epub === 'string' &&
+    typeof value.epriv === 'string'
+  );
+}
 
-    // Deduplicate - only update if values actually changed
-    if (current?.pub === user?.pub && current?.alias === user?.alias) {
-      return;
-    }
-
-    authStore.setState({
-      user,
-      isLoggedIn: user !== null,
-    });
-    persistState(authStore.getState());
-  },
-
-  setKeys: (keys: KeyPair | null) => {
-    'background only';
-    authStore.setState({ keys });
-    persistState(authStore.getState());
-  },
-
-  reset: () => {
-    'background only';
-    authStore.setState({
-      user: null,
-      keys: null,
-      isLoggedIn: false,
-    });
-    persistState(authStore.getState());
-  },
-};
+// ============================================================================
+// Core API
+// ============================================================================
 
 /**
- * Auth result
- */
-export type AuthResult = Result<User, Error>;
-
-/**
- * Create account with alias (generates keypair automatically)
+ * Create account with username and optional password
  *
- * @param alias - Username/alias for the account
- * @param graph - Gun graph instance
- * @returns Result containing user info or error
+ * @param username - Username/alias
+ * @param password - Optional password (if omitted, generates keypair and uses key-based auth)
+ * @returns Result with user info or error
  *
  * @example
- * ```typescript
- * const result = await createAccount('alice', graph());
- * if (result.ok) {
- *   console.log('Account created:', result.value);
- * }
+ * ```ts
+ * // Password-based account
+ * const result = await create('alice', 'secret123');
+ *
+ * // Key-based account (generates keypair automatically)
+ * const result = await create('alice');
  * ```
  */
-export async function createAccount(alias: string, graph: IGunChainReference): Promise<AuthResult> {
-  'background only';
+export async function create(username: string, password?: string): Promise<AuthResult> {
+  const graph = getGraph();
 
-  return new Promise(async (resolve) => {
-    console.log('[Auth] Creating account for alias:', alias);
+  if (!graph.user) {
+    return Result.error(new Error('Gun user() not available'));
+  }
 
-    if (!graph.user) {
-      resolve(Result.error(new Error('Gun user() not available')));
-      return;
+  // If no password provided, generate keypair and use key-based auth
+  if (!password) {
+    const pairResult = await generatePair();
+    if (!pairResult.ok) {
+      console.error('[Auth] Failed to generate keypair:', pairResult.error);
+      return Result.error(new Error('Failed to generate keypair: ' + pairResult.error?.message));
     }
 
-    try {
-      // Generate keypair
-      console.log('[Auth] Generating keypair...');
-      const pairResult = await generatePair();
-      if (!pairResult.ok) {
-        resolve(Result.error(pairResult.error));
-        return;
-      }
+    const keys = pairResult.value;
 
-      const keys = pairResult.value;
-      console.log('[Auth] Keypair generated, pub:', keys.pub);
-
-      // For pre-generated keypairs, we use auth() which handles both new and existing users
-      // GUN will implicitly create the user on first write to user space
+    // Create account with keypair
+    return new Promise((resolve) => {
       const userRef = graph.user();
-      console.log('[Auth] Authenticating with generated keypair...');
 
-      userRef.auth(keys, async (ack: any) => {
-        'background only';
-
+      userRef.create(keys, username, (ack: any) => {
         if (ack.err) {
-          console.error('[Auth] Authentication failed:', ack.err);
+          console.error('[Auth] Create failed:', ack.err);
           resolve(Result.error(new Error(ack.err)));
           return;
         }
 
-        console.log('[Auth] ✓ Authenticated with keypair');
-
-        // Update Gun user data with alias and profile
-        if (userRef.is) {
-          // CRITICAL: Wait for SEA keys to be loaded before resolving
-          // This ensures subsequent profile writes will succeed
-          const waitForSEA = () => {
-            return new Promise<void>((resolveSEA) => {
-              const checkSEA = () => {
-                if ((userRef as any)._ && (userRef as any)._.sea) {
-                  console.log('[Auth] ✓ SEA keys loaded');
-                  resolveSEA();
-                } else {
-                  console.log('[Auth] Waiting for SEA keys...');
-                  setTimeout(checkSEA, 100); // Poll every 100ms
-                }
-              };
-              checkSEA();
-            });
-          };
-
-          // Wait for SEA keys with timeout
-          const seaTimeout = new Promise<void>((_, reject) =>
-            setTimeout(() => reject(new Error('SEA keys timeout')), 5000)
-          );
-
-          try {
-            await Promise.race([waitForSEA(), seaTimeout]);
-          } catch (err) {
-            console.error('[Auth] SEA keys failed to load:', err);
-            resolve(Result.error(new Error('Failed to initialize cryptographic keys')));
+        // Authenticate with the generated keys
+        userRef.auth(keys, (authAck: any) => {
+          if (authAck.err) {
+            console.error('[Auth] Auto-auth after create failed:', authAck.err);
+            resolve(Result.error(new Error(authAck.err)));
             return;
           }
 
-          const user: User = {
-            pub: userRef.is.pub,
-            epub: userRef.is.epub,
-            alias: alias,
-          };
+          const user = getUserFromRef(userRef, username);
+          if (!user) {
+            resolve(Result.error(new Error('Failed to get user data after creation')));
+            return;
+          }
 
-          // Save alias to Gun
-          userRef.get('alias').put(alias);
-
-          // Update store
-          authActions.setUser(user);
-          authActions.setKeys(keys);
-
-          console.log('[Auth] ✓ Account created successfully with SEA keys ready');
+          setAuthenticated(user);
+          console.log('[Auth] ✓ Account created with keypair:', user.alias);
+          console.log('[Auth] ℹ️  Save your keys to login later:', keys);
           resolve(Result.ok(user));
-        } else {
-          resolve(Result.error(new Error('Authentication succeeded but user info not available')));
-        }
-      }); // Close auth callback
-    } catch (err) {
-      console.error('[Auth] Error creating account:', err);
-      resolve(Result.error(err instanceof Error ? err : new Error(String(err))));
-    }
+        });
+      });
+    });
+  }
+
+  // Password-based account creation
+  return new Promise((resolve) => {
+    const userRef = graph.user();
+
+    userRef.create(username, password, (ack: any) => {
+      if (ack.err) {
+        console.error('[Auth] Create failed:', ack.err);
+        resolve(Result.error(new Error(ack.err)));
+        return;
+      }
+
+      const user = getUserFromRef(userRef, username);
+      if (!user) {
+        resolve(Result.error(new Error('Failed to get user data after creation')));
+        return;
+      }
+
+      setAuthenticated(user);
+      console.log('[Auth] ✓ Account created:', user.alias);
+      resolve(Result.ok(user));
+    });
   });
 }
 
 /**
- * Login with existing keypair
+ * Smart authentication - detects keypair vs password automatically
  *
- * @param keys - Cryptographic keypair
- * @param graph - Gun graph instance
- * @returns Result containing user info or error
+ * @param usernameOrKeys - Either username (string) or keypair (object)
+ * @param password - Required password when using username (omit when using keypair)
+ * @returns Result with user info or error
  *
  * @example
- * ```typescript
- * const result = await login(savedKeys, graph());
- * if (result.ok) {
- *   console.log('Logged in:', result.value);
- * }
+ * ```ts
+ * // Password-based auth (password required!)
+ * const result = await auth('alice', 'secret123');
+ *
+ * // Keypair-based auth
+ * const keys = { pub, priv, epub, epriv };
+ * const result = await auth(keys);
  * ```
  */
-export async function login(keys: KeyPair, graph: IGunChainReference): Promise<AuthResult> {
-  'background only';
-
+export async function auth(
+  usernameOrKeys: string | KeyPair,
+  password?: string
+): Promise<AuthResult> {
   return new Promise((resolve) => {
-    console.log('[Auth] Logging in with keypair, pub:', keys.pub);
+    const graph = getGraph();
 
     if (!graph.user) {
       resolve(Result.error(new Error('Gun user() not available')));
@@ -310,271 +206,152 @@ export async function login(keys: KeyPair, graph: IGunChainReference): Promise<A
     }
 
     const userRef = graph.user();
-    userRef.auth(keys, async (ack: any) => {
-      'background only';
 
-      if (ack.err) {
-        console.error('[Auth] Login failed:', ack.err);
-        resolve(Result.error(new Error(ack.err)));
-        return;
-      }
-
-      console.log('[Auth] ✓ Login successful');
-
-      if (userRef.is) {
-        // CRITICAL: Wait for SEA keys to be loaded before resolving
-        const waitForSEA = () => {
-          return new Promise<void>((resolveSEA) => {
-            const checkSEA = () => {
-              if ((userRef as any)._ && (userRef as any)._.sea) {
-                console.log('[Auth] ✓ SEA keys loaded');
-                resolveSEA();
-              } else {
-                console.log('[Auth] Waiting for SEA keys...');
-                setTimeout(checkSEA, 100); // Poll every 100ms
-              }
-            };
-            checkSEA();
-          });
-        };
-
-        // Wait for SEA keys with timeout
-        const seaTimeout = new Promise<void>((_, reject) =>
-          setTimeout(() => reject(new Error('SEA keys timeout')), 5000)
-        );
-
-        try {
-          await Promise.race([waitForSEA(), seaTimeout]);
-        } catch (err) {
-          console.error('[Auth] SEA keys failed to load:', err);
-          resolve(Result.error(new Error('Failed to initialize cryptographic keys')));
+    // Detect authentication type
+    if (isKeyPair(usernameOrKeys)) {
+      // Keypair-based authentication
+      userRef.auth(usernameOrKeys, (ack: any) => {
+        if (ack.err) {
+          console.error('[Auth] Key auth failed:', ack.err);
+          resolve(Result.error(new Error(ack.err)));
           return;
         }
 
-        // Try to get alias from Gun with timeout
-        let aliasResolved = false;
+        const user = getUserFromRef(userRef);
+        if (!user) {
+          resolve(Result.error(new Error('Failed to get user data after key auth')));
+          return;
+        }
 
-        // Set a timeout in case alias never loads
-        const timeoutId = setTimeout(() => {
-          if (!aliasResolved) {
-            aliasResolved = true;
-            console.log('[Auth] ⚠ Alias load timeout, using pub as fallback');
+        setAuthenticated(user);
+        console.log('[Auth] ✓ Authenticated with keys:', user.pub.substring(0, 20) + '...');
+        resolve(Result.ok(user));
+      });
+    } else {
+      // Username/password authentication
+      const username = usernameOrKeys;
 
-            const user: User = {
-              pub: userRef.is!.pub,
-              epub: userRef.is!.epub,
-              alias: userRef.is!.pub, // fallback to pub
-            };
-
-            // Update store
-            authActions.setUser(user);
-            authActions.setKeys(keys);
-
-            console.log('[Auth] ✓ User data loaded (timeout) with SEA keys ready');
-            resolve(Result.ok(user));
-          }
-        }, 2000); // 2 second timeout
-
-        userRef.get('alias').once((alias: string) => {
-          'background only';
-
-          if (!aliasResolved) {
-            aliasResolved = true;
-            clearTimeout(timeoutId);
-
-            const user: User = {
-              pub: userRef.is!.pub,
-              epub: userRef.is!.epub,
-              alias: alias || userRef.is!.pub, // fallback to pub if no alias
-            };
-
-            // Update store
-            authActions.setUser(user);
-            authActions.setKeys(keys);
-
-            console.log('[Auth] ✓ User data loaded with SEA keys ready');
-            resolve(Result.ok(user));
-          }
-        });
-      } else {
-        resolve(Result.error(new Error('Login succeeded but user info not available')));
+      // Security: Require password for username/password auth
+      if (!password) {
+        console.error('[Auth] Password required for username/password authentication');
+        resolve(Result.error(new Error('Password required for username/password authentication')));
+        return;
       }
-    });
+
+      userRef.auth(username, password, (ack: any) => {
+        if (ack.err) {
+          console.error('[Auth] Login failed:', ack.err);
+          resolve(Result.error(new Error(ack.err)));
+          return;
+        }
+
+        const user = getUserFromRef(userRef, username);
+        if (!user) {
+          resolve(Result.error(new Error('Failed to get user data after login')));
+          return;
+        }
+
+        setAuthenticated(user);
+        console.log('[Auth] ✓ Logged in:', user.alias);
+        resolve(Result.ok(user));
+      });
+    }
   });
 }
 
 /**
- * Logout current user
- *
- * @param graph - Gun graph instance
+ * Leave (logout) current user
+ * Following Gun's naming: gun.user().leave()
  *
  * @example
- * ```typescript
- * logout(graph());
+ * ```ts
+ * leave();
+ * console.log('Logged out');
  * ```
  */
-export function logout(graph: IGunChainReference): void {
-  'background only';
-  console.log('[Auth] Logging out');
+export function leave(): void {
+  const graph = getGraph();
 
   if (graph.user) {
     const userRef = graph.user();
     userRef.leave();
   }
 
-  authActions.reset();
+  setAuthenticated(null);
   console.log('[Auth] ✓ Logged out');
 }
 
 /**
- * Recall session from localStorage
+ * Restore session from Gun's session storage
  *
- * @param graph - Gun graph instance
- * @returns Result containing user info or error
+ * @returns Result with user info or error
  *
  * @example
- * ```typescript
- * const result = await recall(graph());
+ * ```ts
+ * const result = await recall();
  * if (result.ok) {
- *   console.log('Session recalled:', result.value);
+ *   console.log('Session restored:', result.value.alias);
  * }
  * ```
  */
-export async function recall(graph: IGunChainReference): Promise<AuthResult> {
-  'background only';
-  console.log('[Auth] Attempting to recall session');
-
-  const state = authStore.getState();
-
-  if (!state.keys || !state.user) {
-    return Result.error(new Error('No session to recall'));
-  }
-
-  // Re-authenticate with Gun using stored keys
+export async function recall(): Promise<AuthResult> {
   return new Promise((resolve) => {
+    const graph = getGraph();
+
     if (!graph.user) {
       resolve(Result.error(new Error('Gun user() not available')));
       return;
     }
 
     const userRef = graph.user();
-    userRef.auth(state.keys!, async (ack: any) => {
-      'background only';
 
+    userRef.recall({ sessionStorage: true }, (ack: any) => {
       if (ack.err) {
-        console.error('[Auth] Recall authentication failed:', ack.err);
-        resolve(Result.error(new Error(ack.err)));
+        resolve(Result.error(new Error('No session found')));
         return;
       }
 
-      console.log('[Auth] ✓ Session recalled successfully');
-
-      // CRITICAL: Wait for SEA keys to be loaded before resolving
-      const waitForSEA = () => {
-        return new Promise<void>((resolveSEA) => {
-          const checkSEA = () => {
-            if ((userRef as any)._ && (userRef as any)._.sea) {
-              console.log('[Auth] ✓ SEA keys loaded');
-              resolveSEA();
-            } else {
-              console.log('[Auth] Waiting for SEA keys...');
-              setTimeout(checkSEA, 100); // Poll every 100ms
-            }
-          };
-          checkSEA();
-        });
-      };
-
-      // Wait for SEA keys with timeout
-      const seaTimeout = new Promise<void>((_, reject) =>
-        setTimeout(() => reject(new Error('SEA keys timeout')), 5000)
-      );
-
-      try {
-        await Promise.race([waitForSEA(), seaTimeout]);
-      } catch (err) {
-        console.error('[Auth] SEA keys failed to load:', err);
-        resolve(Result.error(new Error('Failed to initialize cryptographic keys')));
+      const user = getUserFromRef(userRef);
+      if (!user) {
+        resolve(Result.error(new Error('Failed to restore session')));
         return;
       }
 
-      // Use the stored user info instead of fetching from Gun
-      // This ensures we keep the original alias
-      console.log('[Auth] ✓ Session recalled with SEA keys ready');
-      resolve(Result.ok(state.user!));
+      setAuthenticated(user);
+      console.log('[Auth] ✓ Session restored:', user.alias);
+      resolve(Result.ok(user));
     });
   });
 }
 
+// ============================================================================
+// React Hook
+// ============================================================================
+
 /**
- * Hook for using auth in React components
+ * Reactive auth state hook
  *
- * @param graph - Gun graph instance
- * @returns Auth functions and current state
+ * @returns Current authentication state
  *
  * @example
- * ```typescript
- * function MyComponent() {
- *   const g = graph();
- *   const { user, isLoggedIn, create, login, logout, recall } = useAuth(g);
+ * ```tsx
+ * function Profile() {
+ *   const auth = useAuth();
  *
- *   const handleCreate = async () => {
- *     const result = await create('alice');
- *     if (result.ok) {
- *       console.log('Created:', result.value);
- *     }
- *   };
+ *   if (!auth.isAuthenticated) {
+ *     return <LoginForm />;
+ *   }
  *
- *   return (
- *     <view>
- *       {isLoggedIn ? (
- *         <text>Logged in as: {user?.alias}</text>
- *       ) : (
- *         <button onTap={handleCreate}>Create Account</button>
- *       )}
- *     </view>
- *   );
+ *   return <div>Welcome {auth.user?.alias}!</div>;
  * }
  * ```
  */
-export function useAuth(graph: IGunChainReference) {
-  // Ensure store is initialized with persisted state on first access
-  useState(() => {
-    'background only';
-    ensureStoreInitialized();
-  });
-
-  const user = useStoreSelector(authStore, (s) => s.user);
-  const keys = useStoreSelector(authStore, (s) => s.keys);
-  const isLoggedIn = useStoreSelector(authStore, (s) => s.isLoggedIn);
-
-  const create = useCallback(
-    (alias: string) => createAccount(alias, graph),
-    [graph]
-  );
-
-  const loginWithKeys = useCallback(
-    (keys: KeyPair) => login(keys, graph),
-    [graph]
-  );
-
-  const logoutUser = useCallback(() => logout(graph), [graph]);
-
-  const recallSession = useCallback(() => recall(graph), [graph]);
-
-  // Note: Gun .on('auth') event listener removed - auth state is managed
-  // directly by createAccount() and login() functions to prevent re-render loops
+export function useAuth() {
+  const user = authStore((s) => s.user);
+  const isAuthenticated = authStore((s) => s.isAuthenticated);
 
   return {
     user,
-    keys,
-    isLoggedIn,
-    create,
-    login: loginWithKeys,
-    logout: logoutUser,
-    recall: recallSession,
+    isAuthenticated,
   };
 }
-
-// Export store for advanced use
-export { authStore };

@@ -360,7 +360,7 @@ export const App = () => {
 
   const composerBaseOffset = 32;
   const composerInset = composerBaseOffset;
-  const chatSurfaceClass = 'bg-background backdrop-blur-lg';
+  const chatSurfaceClass = 'bg-background';
 
   const inputPlaceholder = selectedModelLoaded
     ? 'Type a message...'

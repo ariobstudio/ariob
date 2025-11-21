@@ -7,6 +7,7 @@ import { Column } from '../primitives/column';
 import { Text } from '../primitives/text';
 import { Icon } from './icon';
 import type { IconName } from './icon';
+import type { LynxReactNode } from '../../types/react';
 
 const emptyStateVariants = cva(
   'flex items-center justify-center w-full',
@@ -32,7 +33,7 @@ interface EmptyStateProps extends ViewProps, VariantProps<typeof emptyStateVaria
   /**
    * Custom icon component
    */
-  customIcon?: React.ReactNode;
+  customIcon?: LynxReactNode;
   /**
    * Title text
    */
@@ -44,7 +45,7 @@ interface EmptyStateProps extends ViewProps, VariantProps<typeof emptyStateVaria
   /**
    * Action button or element
    */
-  action?: React.ReactNode;
+  action?: LynxReactNode;
   /**
    * Icon size
    */

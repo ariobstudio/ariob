@@ -1439,9 +1439,393 @@ if (error) {
 
 ---
 
+## Advanced Patterns
+
+### Error Handling with Result
+
+#### Pattern 1: Early Return
+
+```typescript
+async function createPost(content: string) {
+  const pairResult = await pair();
+  if (!pairResult.ok) return pairResult; // Propagate error
+
+  const signResult = await sign(content, pairResult.value);
+  if (!signResult.ok) return signResult; // Propagate error
+
+  const signature = signResult.value;
+  // Continue with signed content...
+
+  return Result.ok({ content, signature });
+}
+```
+
+#### Pattern 2: Match with Default
+
+```typescript
+const userResult = await getUser(pub);
+const userName = userResult.ok
+  ? userResult.value.alias
+  : 'Anonymous';
+```
+
+#### Pattern 3: Chain Operations
+
+```typescript
+const result = await pair()
+  .then(pairResult =>
+    pairResult.ok
+      ? sign(data, pairResult.value)
+      : Promise.resolve(pairResult)
+  );
+
+if (!result.ok) {
+  console.error('Operation failed:', result.error);
+}
+```
+
+#### Pattern 4: Validate then Write
+
+```typescript
+async function saveUser(userData: unknown) {
+  // Validate first
+  const validation = UserSchema.safeParse(userData);
+  if (!validation.success) {
+    return Result.error(new Error('Invalid user data'));
+  }
+
+  // Then write
+  const g = graph();
+  return new Promise((resolve) => {
+    g.get('users').get(userPub).put(validation.data, (ack) => {
+      if (ack.err) {
+        resolve(Result.error(new Error(ack.err)));
+      } else {
+        resolve(Result.ok(undefined));
+      }
+    });
+  });
+}
+```
+
+### Testing Patterns
+
+#### Isolated Graph Instances
+
+```typescript
+import { createGraph } from '@ariob/core';
+
+describe('User Operations', () => {
+  let testGraph: IGunChainReference;
+
+  beforeEach(() => {
+    // Create isolated graph for each test
+    testGraph = createGraph({
+      peers: [], // No network peers for isolation
+      localStorage: false, // No persistence
+    });
+  });
+
+  it('should create user node', () => {
+    const user = node('users/alice');
+    user.on(testGraph.get('users').get('alice'), UserSchema);
+    user.set({ name: 'Alice', age: 30 });
+
+    const data = user.get();
+    expect(data).toEqual({ name: 'Alice', age: 30 });
+  });
+});
+```
+
+#### Mock Result Values
+
+```typescript
+// Mock successful result
+const mockSuccess = <T>(value: T): Ok<T> => ({
+  ok: true,
+  value,
+});
+
+// Mock error result
+const mockError = <E>(error: E): Err<E> => ({
+  ok: false,
+  error,
+});
+
+// Use in tests
+it('should handle pair generation', async () => {
+  const mockPair = mockSuccess({
+    pub: 'mock-pub',
+    priv: 'mock-priv',
+    epub: 'mock-epub',
+    epriv: 'mock-epriv',
+  });
+
+  // Test logic that depends on pair result
+});
+```
+
+#### Integration Testing
+
+```typescript
+import { graph, node, useAuth } from '@ariob/core';
+import { renderHook, act } from '@testing-library/react';
+
+describe('Auth Integration', () => {
+  it('should create and recall user', async () => {
+    const g = graph();
+    const { result } = renderHook(() => useAuth(g));
+
+    // Create account
+    await act(async () => {
+      const createResult = await result.current.create('testuser');
+      expect(createResult.ok).toBe(true);
+    });
+
+    // Verify logged in
+    expect(result.current.isLoggedIn).toBe(true);
+    expect(result.current.user?.alias).toBe('testuser');
+
+    // Logout
+    await act(async () => {
+      await result.current.logout();
+    });
+
+    expect(result.current.isLoggedIn).toBe(false);
+
+    // Recall session
+    await act(async () => {
+      await result.current.recall();
+    });
+
+    expect(result.current.isLoggedIn).toBe(true);
+  });
+});
+```
+
+### Performance Optimization
+
+#### Batch Updates
+
+```typescript
+// ❌ BAD - Multiple separate updates
+users.forEach(user => {
+  g.get('users').get(user.pub).put(user);
+});
+
+// ✅ GOOD - Batch in transaction-like pattern
+const updates = users.map(user =>
+  () => g.get('users').get(user.pub).put(user)
+);
+
+// Execute with delay between batches
+for (let i = 0; i < updates.length; i++) {
+  updates[i]();
+  if (i % 10 === 0) {
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+}
+```
+
+#### Cache Frequently Accessed Data
+
+```typescript
+const userCache = new Map<string, User>();
+
+async function getUser(pub: string): Promise<User | null> {
+  // Check cache first
+  if (userCache.has(pub)) {
+    return userCache.get(pub)!;
+  }
+
+  // Fetch from Gun
+  return new Promise((resolve) => {
+    graph().get('users').get(pub).once((data) => {
+      if (data) {
+        const user = UserSchema.parse(data);
+        userCache.set(pub, user);
+        resolve(user);
+      } else {
+        resolve(null);
+      }
+    });
+  });
+}
+```
+
+#### Unsubscribe Properly
+
+```typescript
+import { useEffect } from '@lynx-js/react';
+
+function MyComponent() {
+  const todosColl = collection('todos');
+
+  useEffect(() => {
+    const g = graph();
+    const ref = g.get('todos');
+
+    // Subscribe
+    todosColl.map(ref, TodoSchema);
+
+    // Cleanup: IMPORTANT!
+    return () => {
+      todosColl.off(); // Prevents memory leaks
+    };
+  }, []);
+
+  // ...
+}
+```
+
+### Production Patterns
+
+#### Environment-based Configuration
+
+```typescript
+import { loadProfile } from '@ariob/core';
+
+// In app initialization
+const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+loadProfile(env);
+
+// Now graph() uses the correct peers automatically
+const g = graph();
+```
+
+#### Error Boundaries for Gun Operations
+
+```typescript
+import { useEffect, useState } from '@lynx-js/react';
+
+function SafeGunComponent() {
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    try {
+      const g = graph();
+      g.get('data').on((data) => {
+        // Process data
+      });
+    } catch (err) {
+      setError(err as Error);
+      console.error('Gun operation failed:', err);
+    }
+  }, []);
+
+  if (error) {
+    return <text>Error: {error.message}</text>;
+  }
+
+  // Normal render
+}
+```
+
+#### Offline Detection
+
+```typescript
+import { useMesh } from '@ariob/core';
+
+function NetworkStatus() {
+  const { peers } = useMesh();
+  const isOnline = peers.some(p => p.connected);
+
+  return (
+    <view className={isOnline ? 'status-online' : 'status-offline'}>
+      {isOnline ? '🟢 Connected' : '🔴 Offline'}
+    </view>
+  );
+}
+```
+
+#### Rate Limiting
+
+```typescript
+import { useDebounce } from '@ariob/core';
+
+function SearchComponent() {
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, 500);
+
+  useEffect(() => {
+    if (debouncedQuery) {
+      // Only search after user stops typing for 500ms
+      performSearch(debouncedQuery);
+    }
+  }, [debouncedQuery]);
+
+  return (
+    <input
+      value={query}
+      onChangeText={setQuery}
+      placeholder="Search..."
+    />
+  );
+}
+```
+
+### Schema Composition Patterns
+
+#### Extend Base Schemas
+
+```typescript
+import { Thing, Who, z } from '@ariob/core';
+
+// Base content schema
+const BaseContent = Thing.extend({
+  content: z.string(),
+  created: z.number(),
+  author: z.string(),
+});
+
+// Specific content types
+const PostSchema = BaseContent.extend({
+  type: z.literal('post'),
+  title: z.string(),
+  tags: z.array(z.string()).optional(),
+});
+
+const CommentSchema = BaseContent.extend({
+  type: z.literal('comment'),
+  postId: z.string(),
+  parentId: z.string().optional(),
+});
+
+// Discriminated union
+const ContentSchema = z.discriminatedUnion('type', [
+  PostSchema,
+  CommentSchema,
+]);
+```
+
+#### Validate Nested Structures
+
+```typescript
+const AddressSchema = z.object({
+  street: z.string(),
+  city: z.string(),
+  country: z.string(),
+  zip: z.string(),
+});
+
+const CompanySchema = Thing.extend({
+  name: z.string(),
+  address: AddressSchema,
+  employees: z.array(z.string()), // Array of pubs
+});
+```
+
+---
+
 ## Examples
 
 See `/apps/ripple/src/screens/TestScreen.tsx` for a comprehensive test harness demonstrating all hooks with real-world usage patterns.
+
+### Additional Resources
+
+- [GRAPH_GUIDE.md](./GRAPH_GUIDE.md) - Comprehensive graph modeling guide with Mermaid diagrams
+- [ARCHITECTURE.md](./ARCHITECTURE.md) - System architecture and design decisions
+- [README.md](./README.md) - Quick start and overview
 
 ---
 

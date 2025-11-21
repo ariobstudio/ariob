@@ -1,18 +1,18 @@
 import { type VariantProps, cva } from 'class-variance-authority';
-import type { ViewProps } from '@lynx-js/types';
+import type { StandardProps } from '@lynx-js/types';
 import * as React from '@lynx-js/react';
-
 import { cn } from '../../lib/utils';
+import type { LynxReactNode } from '../../types/react';
 
 const listItemVariants = cva(
   'flex items-center transition-all duration-200 outline-none',
   {
     variants: {
       variant: {
-        default: 'hover:bg-accent/50 active:bg-accent/70',
-        ghost: 'hover:bg-muted/50 active:bg-muted/70',
+        default: '',
+        ghost: '',
         bordered: 'border-b border-border last:border-b-0',
-        card: 'bg-card border border-border rounded-lg shadow-sm hover:shadow-md',
+        card: 'bg-card border border-border rounded-lg shadow-sm',
         none: '',
       },
       size: {
@@ -48,21 +48,103 @@ const listItemVariants = cva(
 );
 
 interface ListItemProps
-  extends ViewProps,
+  extends Omit<StandardProps, 'children'>,
     VariantProps<typeof listItemVariants> {
+  /**
+   * Unique key for list item (required when used in <list>)
+   */
+  itemKey?: string;
+  /**
+   * Allow node recycling for performance
+   * @default true
+   */
+  recyclable?: boolean;
+  /**
+   * Reuse identifier for grouping similar items
+   */
+  reuseIdentifier?: string;
+  /**
+   * Estimated size for placeholder before render
+   */
+  estimatedSize?: number;
+  /**
+   * Sticky at top
+   */
+  stickyTop?: boolean;
+  /**
+   * Sticky at bottom
+   */
+  stickyBottom?: boolean;
+  /**
+   * Occupy full row/column in multi-column layouts
+   */
+  fullSpan?: boolean;
+  /**
+   * Press handler
+   */
   onPress?: () => void;
+  /**
+   * Whether item is selected
+   */
   selected?: boolean;
+  /**
+   * Whether item is disabled
+   */
   disabled?: boolean;
-  leftElement?: React.ReactNode;
-  rightElement?: React.ReactNode;
+  /**
+   * Left element (icon, avatar, etc.)
+   */
+  leftElement?: LynxReactNode;
+  /**
+   * Right element (chevron, badge, etc.)
+   */
+  rightElement?: LynxReactNode;
+  /**
+   * Title text
+   */
   title?: string;
+  /**
+   * Subtitle text
+   */
   subtitle?: string;
+  /**
+   * Description text
+   */
   description?: string;
-  children?: React.ReactNode;
+  /**
+   * Children content
+   */
+  children?: LynxReactNode;
 }
 
+/**
+ * ListItem - High-performance list item using native list-item element
+ *
+ * Should be used as direct child of <list> for proper virtualization and recycling
+ *
+ * @see https://lynxjs.org/api/elements/built-in/list
+ *
+ * @example
+ * ```tsx
+ * <ListItem
+ *   itemKey="item-1"
+ *   title="Item Title"
+ *   subtitle="Item subtitle"
+ *   leftElement={<Icon name="check" />}
+ *   rightElement={<Icon name="chevron-right" />}
+ *   onPress={() => console.log('pressed')}
+ * />
+ * ```
+ */
 function ListItem({
   className,
+  itemKey,
+  recyclable = true,
+  reuseIdentifier,
+  estimatedSize,
+  stickyTop,
+  stickyBottom,
+  fullSpan,
   variant,
   size,
   state,
@@ -79,6 +161,11 @@ function ListItem({
   children,
   ...props
 }: ListItemProps) {
+  // Generate fallback key if not provided (item-key is required by Lynx)
+  const finalItemKey = React.useMemo(() => {
+    return itemKey || `list-item-${Math.random().toString(36).substr(2, 9)}`;
+  }, [itemKey]);
+
   // Determine the state based on props
   const itemState = React.useMemo(() => {
     if (disabled) return 'disabled';
@@ -92,10 +179,31 @@ function ListItem({
     }
   }, [disabled, onPress]);
 
+  const [isPressed, setIsPressed] = React.useState(false);
+
+  const handleTouchStart = () => {
+    'main thread';
+    if (!disabled) {
+      setIsPressed(true);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    'main thread';
+    setIsPressed(false);
+  };
+
   // If title/subtitle provided, render structured content
   if (title || subtitle || description) {
     return (
-      <view
+      <list-item
+        item-key={finalItemKey}
+        recyclable={recyclable}
+        reuse-identifier={reuseIdentifier}
+        estimated-main-axis-size-px={estimatedSize}
+        sticky-top={stickyTop}
+        sticky-bottom={stickyBottom}
+        full-span={fullSpan}
         data-slot="list-item"
         className={cn(
           listItemVariants({
@@ -104,10 +212,13 @@ function ListItem({
             state: itemState,
             align,
             direction,
-            className,
           }),
+          isPressed && !disabled && 'bg-accent/70',
+          className
         )}
         bindtap={handlePress}
+        bindtouchstart={handleTouchStart}
+        bindtouchend={handleTouchEnd}
         {...props}
       >
         {leftElement && (
@@ -157,13 +268,20 @@ function ListItem({
             {rightElement}
           </view>
         )}
-      </view>
+      </list-item>
     );
   }
 
   // If no structured content, render children directly
   return (
-    <view
+    <list-item
+      item-key={finalItemKey}
+      recyclable={recyclable}
+      reuse-identifier={reuseIdentifier}
+      estimated-main-axis-size-px={estimatedSize}
+      sticky-top={stickyTop}
+      sticky-bottom={stickyBottom}
+      full-span={fullSpan}
       data-slot="list-item"
       className={cn(
         listItemVariants({
@@ -172,10 +290,13 @@ function ListItem({
           state: itemState,
           align,
           direction,
-          className,
         }),
+        isPressed && !disabled && 'bg-accent/70',
+        className
       )}
       bindtap={handlePress}
+      bindtouchstart={handleTouchStart}
+      bindtouchend={handleTouchEnd}
       {...props}
     >
       {leftElement && (
@@ -193,8 +314,9 @@ function ListItem({
           {rightElement}
         </view>
       )}
-    </view>
+    </list-item>
   );
 }
 
 export { ListItem, listItemVariants };
+export type { ListItemProps };

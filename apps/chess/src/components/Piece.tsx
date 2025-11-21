@@ -12,7 +12,6 @@ export const Piece: React.FC<PieceProps> = ({ piece }) => {
   return (
     <image
       src={imageSource}
-      auto-size={true}
       mode="aspectFit"
       style={{ width: '100%', height: '100%' }}
       data-piece-type={piece.type}

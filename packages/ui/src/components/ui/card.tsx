@@ -1,17 +1,35 @@
 import * as React from '@lynx-js/react';
 import { type ViewProps } from '@lynx-js/types';
+import { type VariantProps, cva } from 'class-variance-authority';
 
 import { cn } from '../../lib/utils';
 
-function Card({ className, ...props }: ViewProps) {
+const cardVariants = cva(
+  'bg-card text-card-foreground flex flex-col gap-6 border border-border py-6 shadow-sm',
+  {
+    variants: {
+      radius: {
+        none: 'rounded-none',
+        sm: 'rounded-sm',
+        md: 'rounded-md',
+        lg: 'rounded-lg',
+        full: 'rounded-full',
+      },
+    },
+    defaultVariants: {
+      radius: 'md',
+    },
+  }
+);
+
+interface CardProps extends ViewProps, VariantProps<typeof cardVariants> {}
+
+function Card({ className, radius, ...props }: CardProps) {
   const { children, ...rest } = props;
   return (
     <view
       data-slot="card"
-      className={cn(
-        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border border-border py-6',
-        className,
-      )}
+      className={cn(cardVariants({ radius }), className)}
       {...rest}
     >
       {children}
@@ -20,15 +38,36 @@ function Card({ className, ...props }: ViewProps) {
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<'view'>) {
+  // Separate CardAction from other children
+  const children = Array.isArray(props.children) ? props.children : [props.children];
+  const actionChild = children.find(
+    (child: any) => child?.props?.['data-slot'] === 'card-action'
+  );
+  const otherChildren = children.filter(
+    (child: any) => child?.props?.['data-slot'] !== 'card-action'
+  );
+
+  const hasAction = !!actionChild;
+
   return (
     <view
       data-slot="card-header"
       className={cn(
-        '@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6',
+        'px-6',
+        hasAction ? 'flex flex-row items-start justify-between gap-4' : 'flex flex-col gap-2',
         className,
       )}
     >
-      {props.children}
+      {hasAction ? (
+        <>
+          <view className="flex flex-col gap-2 flex-1 min-w-0">
+            {otherChildren}
+          </view>
+          {actionChild}
+        </>
+      ) : (
+        props.children
+      )}
     </view>
   );
 }
@@ -37,7 +76,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<'view'>) {
   return (
     <text
       data-slot="card-title"
-      className={cn('leading-none font-semibold', className)}
+      className={cn('text-lg leading-none font-semibold', className)}
     >
       {props.children}
     </text>
@@ -62,7 +101,10 @@ function CardAction({ className, ...props }: React.ComponentProps<'view'>) {
   return (
     <view
       data-slot="card-action"
-      className={cn('col-start-2 self-start justify-self-end', className)}
+      className={cn(
+        'shrink-0',
+        className
+      )}
     >
       {props.children}
     </view>

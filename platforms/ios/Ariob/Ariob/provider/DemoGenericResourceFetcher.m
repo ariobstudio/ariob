@@ -6,21 +6,27 @@
 
 @implementation DemoGenericResourceFetcher
 + (NSString*)resolveLocalAssetPath:(NSString*)urlString {
-  if ([urlString containsString:@"static/font/"] ||
-      [urlString containsString:@"static/images/"] ||
-      [urlString containsString:@"static/icons/"]) {
+  NSString* resourcesPath = [[NSBundle mainBundle] resourcePath];
+  NSString* filename = [urlString lastPathComponent];
+  NSString* fullPath = nil;
 
-    NSString* filename = [urlString lastPathComponent];
+  // Determine subdirectory based on URL path
+  if ([urlString containsString:@"static/font/"]) {
+    fullPath = [[[resourcesPath stringByAppendingPathComponent:@"Resource"]
+                 stringByAppendingPathComponent:@"font"]
+                 stringByAppendingPathComponent:filename];
+  } else if ([urlString containsString:@"static/image/"]) {
+    fullPath = [[[resourcesPath stringByAppendingPathComponent:@"Resource"]
+                 stringByAppendingPathComponent:@"image"]
+                 stringByAppendingPathComponent:filename];
+  } else if ([urlString containsString:@"static/icons/"]) {
+    fullPath = [[[resourcesPath stringByAppendingPathComponent:@"Resource"]
+                 stringByAppendingPathComponent:@"icons"]
+                 stringByAppendingPathComponent:filename];
+  }
 
-    NSString* resourcesPath = [[NSBundle mainBundle] resourcePath];
-    NSString* fullPath = [[[resourcesPath stringByAppendingPathComponent:@"Resource"]
-                           stringByAppendingPathComponent:@"icons"]
-                           stringByAppendingPathComponent:filename];
-
-
-    if ([[NSFileManager defaultManager] fileExistsAtPath:fullPath]) {
-      return fullPath;
-    }
+  if (fullPath && [[NSFileManager defaultManager] fileExistsAtPath:fullPath]) {
+    return fullPath;
   }
 
   return nil;

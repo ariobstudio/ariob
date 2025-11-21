@@ -1,9 +1,4 @@
-/**
- * @ariob/core
- *
- * Minimal, modular Gun.js primitives for LynxJS.
- * 8 core exports following Gun/SEA coding style.
- */
+/*** @ariob/core ***/
 
 // ============================================================================
 // Core Primitives
@@ -14,16 +9,19 @@ export { Thing, Who } from './schema';
 export type { Thing as ThingType, Who as WhoType } from './schema';
 
 // Graph - Singleton + instances
-export { graph, createGraph, graphStore, addPeersToGraph } from './graph';
+export { init, graph, createGraph, graphStore, addPeersToGraph } from './graph';
 export type { GunOptions, GunInstance, GunUser, IGunChainReference, KeyPair } from './graph';
 
 // Node - Single object management (imperative + reactive hooks)
-export { node, useNode, createNode } from './node';
+export { node, useNode } from './node';
 export type { NodeConfig } from './node';
 
 // Collection - Sets/maps management (imperative + reactive hooks)
-export { collection, useCollection, createCollection } from './collection';
-export type { Item, CollectionConfig } from './collection';
+export { collection, useCollection, collectionStore } from './collection';
+export type { Item, CollectionConfig, SortDirection } from './collection';
+
+// Lex - Lexical ordering utilities for Gun
+export { lex } from './lex';
 
 // Crypto - SEA primitives
 export {
@@ -41,8 +39,12 @@ export {
 } from './crypto';
 
 // Auth - Authentication
-export { useAuth, authStore, createAccount, login, logout, recall } from './auth';
+export { useAuth, authStore, create, auth, leave, recall } from './auth';
 export type { User, AuthResult } from './auth';
+
+// User Profile - Profile management
+export { useUserProfile } from './userProfile';
+export type { UserProfile } from './userProfile';
 
 // Result - Error handling
 export { Result, isOk, isErr } from './result';
@@ -51,9 +53,12 @@ export type { Ok, Err } from './result';
 // Zod - Schema validation
 export { z } from 'zod';
 
-// Store - State management utilities
-export { createStore, useStore, useStoreSelector } from './utils/createStore';
-export type { Store } from './utils/createStore';
+// Store - Zustand-powered state management
+export { store, define } from './utils/store';
+export type { Store } from './utils/store';
+
+// LocalStorage - Native storage wrapper
+export { LocalStorage, getStorage, getLocalStorage, useLocalStorage } from './localStorage';
 
 // Config - Configuration management
 export {
@@ -88,20 +93,14 @@ export type { PeerStatus } from './mesh';
 // Utility Hooks (Optional - separate import)
 // ============================================================================
 
-export { default as useTapLock } from './hooks/useTapLock';
+// Platform-agnostic hooks (work in React, React Native, and LynxJS)
 export { default as useInput } from './hooks/useInput';
 export { default as useDebounce } from './hooks/useDebounce';
 export { default as useIntersection } from './hooks/useIntersection';
-export { default as useMainThreadImperativeHandle } from './hooks/useMainThreadImperativeHandle';
 export { default as useTimeout } from './hooks/useTimeout';
-export { default as useTimeoutFn } from './hooks/useTimeoutFn';
-export { default as useUpdate } from './hooks/useUpdate';
-export { useKeyboard } from './hooks/useKeyboard';
 
-export type { TapLockDirection, UseTapLockOptions } from './hooks/useTapLock';
 export type { UseDebounceReturn } from './hooks/useDebounce';
 export type { InputEvent, InputInputEvent, UseInputOptions } from './hooks/useInput';
 export type { IntersectionObserverOptions } from './hooks/useIntersection';
 export type { UseTimeoutReturn } from './hooks/useTimeout';
 export type { UseTimeoutFnReturn } from './hooks/useTimeoutFn';
-export type { UseKeyboardResult } from './hooks/useKeyboard';

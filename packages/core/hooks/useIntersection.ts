@@ -1,4 +1,4 @@
-import { useEffect, useState } from '@lynx-js/react';
+import { useEffect, useState } from 'react';
 import type { ObserveCallback, ObserveCallbackResult } from '@lynx-js/types';
 
 export type IntersectionObserverOptions = {
@@ -12,8 +12,6 @@ const useIntersection = (
   seletor: string,
   options: IntersectionObserverOptions,
 ): ObserveCallbackResult | null => {
-  'background only';
-
   const [
     intersectionObserveCallbackResult,
     setIntersectionObserveCallbackResult,

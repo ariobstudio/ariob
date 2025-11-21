@@ -1,4 +1,3 @@
-"background only";
 /**
  * Crypto - SEA Cryptography Primitives
  *
@@ -17,7 +16,6 @@ import { Result } from './result';
  * @internal
  */
 function getSEA(): any {
-  'background only';
   return SEA;
 }
 
@@ -34,7 +32,6 @@ function getSEA(): any {
  * ```
  */
 export async function encryptData(data: any, keys?: KeyPair): Promise<any> {
-  'background only';
   if (!keys) {
     return data;
   }
@@ -61,7 +58,6 @@ export async function encryptData(data: any, keys?: KeyPair): Promise<any> {
  * ```
  */
 export async function decryptData(data: any, keys?: KeyPair): Promise<any> {
-  'background only';
   if (!keys || !data) {
     return data;
   }
@@ -101,7 +97,6 @@ export async function decryptData(data: any, keys?: KeyPair): Promise<any> {
  * ```
  */
 export async function encrypt(data: any, keys: KeyPair): Promise<Result<any, Error>> {
-  'background only';
   try {
     const SEA = getSEA();
     const encrypted = await SEA.encrypt(data, keys.epriv);
@@ -130,7 +125,6 @@ export async function encrypt(data: any, keys: KeyPair): Promise<Result<any, Err
  * ```
  */
 export async function decrypt(data: any, keys: KeyPair): Promise<Result<any, Error>> {
-  'background only';
   try {
     const SEA = getSEA();
     const decrypted = await SEA.decrypt(data, keys.epriv);
@@ -159,7 +153,6 @@ export async function decrypt(data: any, keys: KeyPair): Promise<Result<any, Err
  * ```
  */
 export async function work(data: any, salt?: string): Promise<Result<string, Error>> {
-  'background only';
   try {
     const SEA = getSEA();
     const hash = await SEA.work(data, salt);
@@ -188,7 +181,6 @@ export async function work(data: any, salt?: string): Promise<Result<string, Err
  * ```
  */
 export async function secret(theirEpub: string, myPair: KeyPair): Promise<Result<string, Error>> {
-  'background only';
   try {
     const SEA = getSEA();
     const sharedSecret = await SEA.secret(theirEpub, myPair);
@@ -217,7 +209,6 @@ export async function secret(theirEpub: string, myPair: KeyPair): Promise<Result
  * ```
  */
 export async function sign(data: any, pair: KeyPair): Promise<Result<any, Error>> {
-  'background only';
   try {
     const SEA = getSEA();
     const signature = await SEA.sign(data, pair);
@@ -246,7 +237,6 @@ export async function sign(data: any, pair: KeyPair): Promise<Result<any, Error>
  * ```
  */
 export async function verify(signature: any, pub: string | KeyPair): Promise<Result<any, Error>> {
-  'background only';
   try {
     const SEA = getSEA();
     const verified = await SEA.verify(signature, pub);
@@ -275,7 +265,6 @@ export async function verify(signature: any, pub: string | KeyPair): Promise<Res
  * ```
  */
 export async function pair(): Promise<Result<KeyPair, Error>> {
-  'background only';
   try {
     const SEA = getSEA();
     const keyPair = await SEA.pair();
@@ -319,7 +308,6 @@ export async function certify(
   authority: KeyPair,
   cb?: any
 ): Promise<Result<any, Error>> {
-  'background only';
   try {
     const SEA = getSEA();
     const certificate = await new Promise((resolve, reject) => {

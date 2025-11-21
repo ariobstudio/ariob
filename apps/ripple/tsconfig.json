@@ -1,51 +1,22 @@
 {
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "@lynx-js/react",
-
-    "module": "esnext",
-    "moduleResolution": "bundler",
-
     "strict": true,
-    "isolatedModules": true,
-    "verbatimModuleSyntax": true,
-
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@assets/*": ["assets/*"],
-      "@ariob/ai": ["../../packages/ai/index.ts"],
-      "@ariob/ui": ["../../packages/ui/src/index.ts"],
-      "@ariob/ui/*": ["../../packages/ui/src/*"]
-    },
-    "baseUrl": "."
+      "@ariob/core": ["../../packages/core/index.ts"],
+      "@ariob/webcrypto": ["../../packages/webcrypto/index.ts"],
+      "@ariob/ripple": ["../../packages/ripple/index.ts"]
+    }
   },
-  "exclude": ["dist/"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
-
-
-// {
-//   "compilerOptions": {
-//     "strict": true,
-//     "isolatedModules": true,
-//     "verbatimModuleSyntax": true,
-
-//     "esModuleInterop": true,
-//     "skipLibCheck": true,
-    // "paths": {
-    //   "@/*": ["./src/*"],
-    //   "@ariob/ai": ["../../packages/ai/index.ts"],
-    //   "@ariob/ui": ["../../packages/ui/src/index.ts"],
-    //   "@ariob/ui/*": ["../../packages/ui/src/*"]
-    // },
-//     "baseUrl": ".",
-//     "noEmit": true,
-//   },
-//   "references": [
-//     { "path": "./tsconfig.node.json" },
-//     { "path": "./src" },
-//   ],
-//   "files": [],
-// }

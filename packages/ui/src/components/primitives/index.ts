@@ -1,5 +1,11 @@
+export { Layout } from './layout';
+export type { LayoutProps } from './layout';
+
 export { Column, columnVariants } from './column';
 export { Row, rowVariants } from './row';
+export { Stack, stackVariants } from './stack';
+export type { StackProps } from './stack';
+
 export {
   Scrollable,
   scrollableVariants,

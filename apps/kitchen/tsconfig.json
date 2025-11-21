@@ -1,0 +1,55 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "@lynx-js/react",
+
+    "module": "esnext",
+    "moduleResolution": "bundler",
+
+    "strict": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+
+    "paths": {
+      "@/*": ["./src/*"],
+      "@assets/*": ["assets/*"],
+      "@ariob/ai": ["../../packages/ai/index.ts"],
+      "@ariob/ui": ["../../packages/ui/src/index.ts"],
+      "@ariob/ui/*": ["../../packages/ui/src/*"]
+    },
+    "baseUrl": ".",
+    "types": ["@ariob/ui/typing.d.ts"]
+  },
+  "include": ["src", "typing.d.ts", "../../packages/ui/typing.d.ts", "../../packages/ui/src/**/*"],
+  "exclude": ["dist/"]
+}
+
+
+// {
+//   "compilerOptions": {
+//     "strict": true,
+//     "isolatedModules": true,
+//     "verbatimModuleSyntax": true,
+
+//     "esModuleInterop": true,
+//     "skipLibCheck": true,
+    // "paths": {
+    //   "@/*": ["./src/*"],
+    //   "@ariob/ai": ["../../packages/ai/index.ts"],
+    //   "@ariob/ui": ["../../packages/ui/src/index.ts"],
+    //   "@ariob/ui/*": ["../../packages/ui/src/*"]
+    // },
+//     "baseUrl": ".",
+//     "noEmit": true,
+//   },
+//   "references": [
+//     { "path": "./tsconfig.node.json" },
+//     { "path": "./src" },
+//   ],
+//   "files": [],
+// }

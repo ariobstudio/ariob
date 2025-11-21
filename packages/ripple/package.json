@@ -12,7 +12,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@ariob/core": "workspace:*"
+    "@ariob/core": "workspace:*",
+    "@ariob/components": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.3.24",
@@ -20,7 +21,7 @@
     "zod": "^3.23.8"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
+    "react": "^18.0.0 || ^19.0.0",
     "zod": "^3.23.8"
   },
   "engines": {

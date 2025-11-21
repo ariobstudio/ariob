@@ -2,6 +2,8 @@ import * as React from '@lynx-js/react';
 import type { Position, Piece as PieceType } from '../types';
 import { Piece } from './Piece';
 import { positionsEqual } from '../engine';
+import { cn } from '@ariob/ui';
+import { useSettings, BOARD_THEMES } from '../store/settings';
 
 interface SquareProps {
   position: Position;
@@ -10,6 +12,10 @@ interface SquareProps {
   isValidMove: boolean;
   onPress: () => void;
   lastMove: { from: Position; to: Position } | null;
+  rankLabel?: string;
+  fileLabel?: string;
+  rankClassName?: string;
+  fileClassName?: string;
 }
 
 export const Square: React.FC<SquareProps> = ({
@@ -19,9 +25,15 @@ export const Square: React.FC<SquareProps> = ({
   isValidMove,
   onPress,
   lastMove,
+  rankLabel,
+  fileLabel,
+  rankClassName,
+  fileClassName,
 }) => {
+  const boardTheme = useSettings((state) => state.boardTheme);
+  const themeColors = BOARD_THEMES[boardTheme];
 
-  // Indigo theme checkerboard
+  // Determine square color
   const isLight = (position.row + position.col) % 2 === 0;
 
   // Check if this square is part of the last move
@@ -29,87 +41,82 @@ export const Square: React.FC<SquareProps> = ({
   const isLastMoveTo = lastMove && positionsEqual(position, lastMove.to);
   const isPartOfLastMove = isLastMoveFrom || isLastMoveTo;
 
-  // Build animation style for pieces - chess.com inspired smooth animations
-  const pieceAnimationStyle = isLastMoveTo
-    ? 'pieceMove 0.25s cubic-bezier(0.4, 0.0, 0.2, 1)'
-    : isSelected
-    ? 'pieceSelect 0.18s cubic-bezier(0.4, 0.0, 0.2, 1)'
-    : undefined;
+  // Build animation class for pieces - chess.com inspired smooth animations
+  // Apply theme colors dynamically
+  const lightColor = themeColors.lightSquare;
+  const darkColor = themeColors.darkSquare;
 
   return (
     <view
-      className="flex-1 aspect-square items-center justify-center relative"
+      className={cn(
+        'relative flex h-full w-full items-center justify-center',
+        isLight ? 'bg-board-light' : 'bg-board-dark',
+        isSelected && 'ring-2 ring-primary/60'
+      )}
       style={{
-        backgroundColor: isLight ? '#c7d2fe' : '#818cf8', // indigo-200 / indigo-400
+        backgroundColor: isLight ? lightColor : darkColor,
       }}
       bindtap={onPress}
     >
-      {/* Last move highlight */}
       {isPartOfLastMove && (
         <view
-          className="absolute top-0 left-0 right-0 bottom-0"
-          style={{
-            backgroundColor: 'rgba(165, 180, 252, 0.5)', // indigo-300 alpha
-            animation: 'fadeIn 0.2s ease-out',
-          }}
+          className="pointer-events-none absolute top-0 right-0 bottom-0 left-0 border-2 border-accent/50"
         />
       )}
 
-      {/* Selected square highlight */}
-      {isSelected && (
+      {rankLabel && (
+        <text
+          className={cn('pointer-events-none absolute left-1 top-1 text-[9px] font-semibold text-muted-foreground', rankClassName)}
+        >
+          {rankLabel}
+        </text>
+      )}
+
+      {fileLabel && (
+        <text
+          className={cn('pointer-events-none absolute bottom-1 right-1 text-[9px] font-semibold text-muted-foreground', fileClassName)}
+        >
+          {fileLabel}
+        </text>
+      )}
+
+      {isValidMove && !piece && (
         <view
-          className="absolute top-0 left-0 right-0 bottom-0"
+          className="pointer-events-none rounded-full bg-primary/45"
           style={{
-            backgroundColor: 'rgba(99, 102, 241, 0.35)', // indigo-500 alpha
-            animation: 'fadeIn 0.15s ease-out',
+            width: '24%',
+            height: '24%',
           }}
         />
       )}
 
-      {/* Piece */}
+      {isValidMove && piece && (
+        <view
+          style={{
+            position: 'absolute',
+            top: '10%',
+            right: '10%',
+            bottom: '10%',
+            left: '10%',
+          }}
+          className="pointer-events-none rounded-full border-2 border-primary/45"
+        />
+      )}
+
       {piece && (
         <view
-          className="relative"
+          className="absolute flex items-center justify-center"
           style={{
-            width: '88%',
-            height: '88%',
-            animation: pieceAnimationStyle,
-            zIndex: 10,
-            pointerEvents: 'none', // Let touch events pass through to square
+            top: '0px',
+            left: '0px',
+            width: '100%',
+            height: '100%',
+            padding: '8%',
+            pointerEvents: 'none',
           }}
         >
           <Piece piece={piece} />
         </view>
-      )}
-
-      {/* Valid move indicator - minimal dot with smooth fade */}
-      {isValidMove && !piece && (
-        <view
-          className="rounded-full relative"
-          style={{
-            width: '22%',
-            height: '22%',
-            backgroundColor: 'rgba(79, 70, 229, 0.25)', // indigo-600 alpha
-            zIndex: 5,
-            animation: 'scaleIn 0.2s cubic-bezier(0.4, 0.0, 0.2, 1)',
-          }}
-        />
-      )}
-
-      {/* Capture indicator - elegant ring with smooth fade */}
-      {isValidMove && piece && (
-        <view
-          className="absolute rounded-full"
-          style={{
-            top: '5%',
-            left: '5%',
-            right: '5%',
-            bottom: '5%',
-            border: '3px solid rgba(79, 70, 229, 0.4)', // indigo-600 alpha
-            zIndex: 5,
-            animation: 'scaleIn 0.2s cubic-bezier(0.4, 0.0, 0.2, 1)',
-          }}
-        />
       )}
     </view>
   );

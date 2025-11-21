@@ -108,46 +108,31 @@ export const PieceMovementCard: React.FC<PieceMovementCardProps> = React.memo(({
       className="flex-shrink-0 px-3"
       style={{ width: '100%' }}
     >
-      <view
-        className="rounded-2xl p-5"
-        style={{
-          backgroundColor: '#ffffff',
-          border: '2px solid #c7d2fe', // indigo-200 - matches light board squares
-          boxShadow: '0 4px 12px rgba(129, 140, 248, 0.2)', // indigo-400 shadow
-        }}
-      >
+      <view className="rounded-2xl border border-border bg-card shadow-lg p-5">
         <Column className="gap-4">
           {/* Piece name */}
           <view>
-            <text className="text-xl font-bold" style={{ color: '#4f46e5' }}> {/* indigo-600 */}
+            <text className="text-xl font-bold text-primary">
               {name}
             </text>
-            <text className="text-sm mt-1 text-gray-600">
+            <text className="text-sm mt-1 text-muted-foreground">
               {description}
             </text>
           </view>
 
           {/* Mini board showing movement */}
-          <view
-            className="rounded-xl overflow-hidden"
-            style={{
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-            }}
-          >
+          <view className="rounded-xl overflow-hidden shadow-md">
             <MiniBoard
               pieceType={pieceType}
               validMoves={pattern.moves}
               piecePosition={pattern.position}
-              player="green"
+              player="white"
             />
           </view>
 
           {/* Legend */}
-          <view
-            className="rounded-lg p-3"
-            style={{ backgroundColor: '#f9fafb' }} // gray-50
-          >
-            <text className="text-xs text-gray-600 text-center">
+          <view className="rounded-lg p-3 bg-muted">
+            <text className="text-xs text-muted-foreground text-center">
               Blue dots show possible moves
             </text>
           </view>

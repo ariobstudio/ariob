@@ -1,9 +1,32 @@
 /** @type {Partial<import('tailwindcss').Config>} */
 export const tailwindBaseConfig = {
   darkMode: 'media',
+  corePlugins: {
+    // Disable backdrop utilities (::backdrop pseudo-element not supported in LynxJS)
+    backdropOpacity: false,
+    backdropFilter: false,
+    // Disable placeholder variants (will handle with global CSS using LynxJS-native ::placeholder)
+    placeholderColor: false,
+    placeholderOpacity: false,
+  },
   theme: {
     extend: {
       colors: {
+        // Ariob Brand Colors - "Digital Sovereignty" Theme
+        brand: {
+          primary: "#2D3142",
+          'primary-light': "#4F5D75",
+          'primary-dark': "#1A1D2E",
+          secondary: "#FF6B6B",
+          'secondary-light': "#FF8787",
+          'secondary-dark': "#E65555",
+          accent: "#FFE66D",
+          'accent-light': "#FFF29C",
+          'accent-dark': "#F5D642",
+          success: "#06D6A0",
+          'success-light': "#38E1B3",
+          'success-dark': "#05BF8E",
+        },
         border: "var(--border)",
         input: "var(--input)",
         ring: "var(--ring)",
@@ -64,6 +87,13 @@ export const tailwindBaseConfig = {
         sans: ["var(--font-sans)"],
         serif: ["var(--font-serif)"],
         mono: ["var(--font-mono)"],
+      },
+      fontSize: {
+        'tiny': '0.875rem',
+        'xs': '1rem', 
+        'sm': '1.125rem',    
+        '2.5xl': '1.5rem',
+        'huge': '5rem',
       },
       keyframes: {
         'accordion-down': {

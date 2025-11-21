@@ -89,7 +89,7 @@ declare module '@lynx-js/types' {
     isNotchScreen: boolean;
   }
 
-  interface PagerViewProps extends StandardProps {
+  interface CarouselProps extends StandardProps {
     children?: React.ReactNode;
     className?: string;
     'current-page'?: number;
@@ -104,7 +104,7 @@ declare module '@lynx-js/types' {
     image: ImageProps;
     scrollview: ScrollViewProps;
     view: ViewProps;
-    'pager-view': PagerViewProps;
+    pager: PagerProps;
   }
 }
 

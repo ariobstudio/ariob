@@ -47,7 +47,7 @@ export function ChatHeader({
     currentTheme === 'Light' ? 'sun' : currentTheme === 'Dark' ? 'moon' : 'monitor';
 
   return (
-    <view className="flex-shrink-0 px-5 py-4 bg-card border-b border-border backdrop-blur-md">
+    <view className="flex-shrink-0 px-5 py-4 bg-card border-b border-border ">
       <view className="flex flex-col gap-3">
         {/* Top Row - Title, Status and Actions */}
         <view className="flex items-center justify-between">

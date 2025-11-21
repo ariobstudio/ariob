@@ -1,21 +1,81 @@
 /**
- * Collection Store
+ * Collection - Production-ready reactive Gun collection management
  *
- * Custom store for managing Gun collections (LynxJS-compatible).
- * Follows Gun's map/set API with Result-based error handling.
+ * Inspired by React Query and Convex for exceptional DX:
+ * - Hook-first API with automatic subscriptions
+ * - Type-safe with Zod schema validation
+ * - Built-in loading, error, and sync states
+ * - Lexical ordering integration for sorted collections
+ * - No manual Gun reference management
+ *
+ * @example Basic usage
+ * ```tsx
+ * import { useCollection, lex, z } from '@ariob/core';
+ *
+ * const TodoSchema = z.object({
+ *   title: z.string(),
+ *   done: z.boolean()
+ * });
+ *
+ * function TodoList() {
+ *   const todos = useCollection({
+ *     path: 'todos',
+ *     schema: TodoSchema,
+ *   });
+ *
+ *   if (todos.isLoading) return <Text>Loading...</Text>;
+ *   if (todos.isError) return <Text>Error: {todos.error?.message}</Text>;
+ *
+ *   return (
+ *     <View>
+ *       {todos.items.map(item => (
+ *         <Text key={item.id}>{item.data.title}</Text>
+ *       ))}
+ *       <Button onPress={() => todos.add({
+ *         title: 'New task',
+ *         done: false
+ *       }, lex.random('task'))}>
+ *         Add Task
+ *       </Button>
+ *     </View>
+ *   );
+ * }
+ * ```
+ *
+ * @example With lexical ordering
+ * ```tsx
+ * // Messages sorted newest first
+ * const messages = useCollection({
+ *   path: 'chat/messages',
+ *   schema: MessageSchema,
+ *   sort: 'asc', // Lex order (use reverse for newest first)
+ * });
+ *
+ * // Add message with reverse timestamp
+ * await messages.add(
+ *   { text: 'Hello!', user: 'alice' },
+ *   lex.reverse()
+ * );
+ * ```
  */
 
 import { useEffect, useCallback } from 'react';
-import { createStore, useStoreSelector } from './utils/createStore';
+import { define } from './utils/store';
+import { graph as getGraph } from './graph';
 import type { IGunChainReference } from './graph';
 import { Result } from './result';
 import type { z } from 'zod';
+import { lex } from './lex';
+
+// ============================================================================
+// Types
+// ============================================================================
 
 /**
  * Collection item with ID and data
  */
 export interface Item<T = any> {
-  /** Unique soul/ID of the item */
+  /** Unique soul/ID of the item (lexicographically sorted by Gun) */
   id: string;
   /** Item data */
   data: T;
@@ -25,21 +85,61 @@ export interface Item<T = any> {
  * Collection data state
  */
 interface CollectionData<T = any> {
-  /** Array of items */
+  /** Array of items (Gun maintains lexical order) */
   items: Item<T>[];
-  /** Whether data is loading */
-  loading: boolean;
+  /** Whether initial data is loading */
+  isLoading: boolean;
+  /** Whether there's an error */
+  isError: boolean;
   /** Error if any */
   error: Error | null;
+  /** Whether collection is synced with peers */
+  isSynced: boolean;
+  /** Whether collection is empty */
+  isEmpty: boolean;
 }
 
 /**
- * Collection configuration
+ * Sort direction for collections
  */
-export interface CollectionConfig {
-  /** Enable localStorage persistence */
-  persist?: boolean;
-  /** Gun graph instance to use (defaults to singleton) */
+export type SortDirection = 'asc' | 'desc';
+
+/**
+ * Configuration for useCollection hook
+ *
+ * @template T - The type of items in this collection
+ */
+export interface CollectionConfig<T = any> {
+  /**
+   * Gun collection path (e.g., 'todos' or 'users/alice/posts')
+   */
+  path: string;
+
+  /**
+   * Optional Zod schema for runtime validation
+   * Highly recommended for type safety and data integrity
+   */
+  schema?: z.ZodSchema<T>;
+
+  /**
+   * Sort direction for items
+   * - 'asc': Ascending lexical order (default)
+   * - 'desc': Descending lexical order
+   *
+   * @default 'asc'
+   */
+  sort?: SortDirection;
+
+  /**
+   * Enable/disable the subscription
+   * @default true
+   */
+  enabled?: boolean;
+
+  /**
+   * Custom Gun graph instance
+   * @default uses singleton graph instance
+   */
   graph?: IGunChainReference;
 }
 
@@ -47,69 +147,103 @@ export interface CollectionConfig {
  * Collection store state
  */
 interface CollectionStore {
-  /** Map of collection key to collection data */
+  /** Map of collection path to collection data */
   collections: Record<string, CollectionData>;
   /** Active subscriptions cleanup functions */
   subs: Map<string, () => void>;
 }
 
+// ============================================================================
+// Store
+// ============================================================================
+
 /**
  * Create a collection store
  */
 function createCollectionStore() {
-  'background only';
-
-  const store = createStore<CollectionStore>({
+  const store = define<CollectionStore>({
     collections: {},
     subs: new Map(),
   });
 
   return {
+    // Expose the Zustand store hook
+    useStore: store,
     getState: store.getState,
     setState: store.setState,
     subscribe: store.subscribe,
 
     /**
      * Subscribe to a Gun collection
+     *
+     * @internal
      */
-    map: <T>(key: string, ref: IGunChainReference, schema?: z.ZodSchema<T>) => {
-      'background only';
-
+    map: <T>(path: string, ref: IGunChainReference, schema?: z.ZodSchema<T>, sort: SortDirection = 'asc') => {
       const state = store.getState();
 
       // Cleanup existing subscription
-      const existing = state.subs.get(key);
+      const existing = state.subs.get(path);
       if (existing) existing();
 
       // Set loading state
       store.setState({
         collections: {
           ...state.collections,
-          [key]: { items: [], loading: true, error: null },
+          [path]: {
+            items: [],
+            isLoading: true,
+            isError: false,
+            error: null,
+            isSynced: false,
+            isEmpty: true,
+          },
         },
       });
 
-      console.log('[Collection] Subscribing:', key);
+      console.log('[Collection] 🔔 Subscribing:', path);
 
-      // Subscribe to Gun collection
+      // Check if collection is initially empty
+      ref.once((initialData: any) => {
+        if (!initialData || Object.keys(initialData).filter(k => !k.startsWith('_')).length === 0) {
+          console.log('[Collection] 📭 Initial state: empty');
+          const currentState = store.getState();
+          store.setState({
+            collections: {
+              ...currentState.collections,
+              [path]: {
+                items: [],
+                isLoading: false,
+                isError: false,
+                error: null,
+                isSynced: true,
+                isEmpty: true,
+              },
+            },
+          });
+        }
+      });
+
+      // Subscribe to collection for reactive updates
       ref.map().on((raw: any, id: string) => {
-        'background only';
-        console.log('[Collection] Item received:', key, id, raw);
+        console.log('[Collection] 📦 Item received:', path, id, raw);
 
         try {
+          const currentState = store.getState();
+          const coll = currentState.collections[path];
+          if (!coll) return;
+
           // Handle item deletion
           if (raw === null || raw === undefined) {
-            const currentState = store.getState();
-            const coll = currentState.collections[key];
-            if (!coll) return;
-
+            const newItems = coll.items.filter((item) => item.id !== id);
             store.setState({
               collections: {
                 ...currentState.collections,
-                [key]: {
+                [path]: {
                   ...coll,
-                  items: coll.items.filter((item) => item.id !== id),
-                  loading: false,
+                  items: newItems,
+                  isLoading: false,
+                  isSynced: true,
+                  isEmpty: newItems.length === 0,
                 },
               },
             });
@@ -134,11 +268,7 @@ function createCollectionStore() {
             data = result.value;
           }
 
-          // Update store
-          const currentState = store.getState();
-          const coll = currentState.collections[key];
-          if (!coll) return;
-
+          // Update or add item
           const existingIndex = coll.items.findIndex((item) => item.id === id);
           const newItem: Item = { id, data };
 
@@ -148,30 +278,45 @@ function createCollectionStore() {
             newItems = [...coll.items];
             newItems[existingIndex] = newItem;
           } else {
-            // Add new
+            // Add new (Gun maintains lexical order, but we sort client-side for consistency)
             newItems = [...coll.items, newItem];
           }
+
+          // Sort items by ID (lexical order)
+          newItems.sort((a, b) => {
+            if (sort === 'desc') {
+              return b.id.localeCompare(a.id);
+            }
+            return a.id.localeCompare(b.id);
+          });
 
           store.setState({
             collections: {
               ...currentState.collections,
-              [key]: {
+              [path]: {
                 items: newItems,
-                loading: false,
+                isLoading: false,
+                isError: false,
                 error: null,
+                isSynced: true,
+                isEmpty: false,
               },
             },
           });
         } catch (err) {
-          console.error('[Collection] Error processing item:', key, id, err);
+          console.error('[Collection] ❌ Error processing item:', path, id, err);
           const currentState = store.getState();
+          const coll = currentState.collections[path];
           store.setState({
             collections: {
               ...currentState.collections,
-              [key]: {
-                ...currentState.collections[key],
-                loading: false,
+              [path]: {
+                items: coll?.items ?? [],
+                isEmpty: coll?.isEmpty ?? true,
+                isLoading: false,
+                isError: true,
                 error: err instanceof Error ? err : new Error(String(err)),
+                isSynced: false,
               },
             },
           });
@@ -180,44 +325,44 @@ function createCollectionStore() {
 
       // Store cleanup
       const cleanup = () => {
-        console.log('[Collection] Cleanup:', key);
+        console.log('[Collection] 🧹 Cleanup:', path);
         const currentState = store.getState();
-        const { [key]: _, ...rest } = currentState.collections;
+        const { [path]: _, ...rest } = currentState.collections;
         store.setState({ collections: rest });
       };
 
       const currentState = store.getState();
-      currentState.subs.set(key, cleanup);
+      currentState.subs.set(path, cleanup);
     },
 
     /**
      * Unsubscribe from a Gun collection
+     *
+     * @internal
      */
-    off: (key: string) => {
-      'background only';
-      console.log('[Collection] Unsubscribing:', key);
+    off: (path: string) => {
+      console.log('[Collection] 🔕 Unsubscribing:', path);
 
       const state = store.getState();
-      const cleanup = state.subs.get(key);
+      const cleanup = state.subs.get(path);
       if (cleanup) {
         cleanup();
-        state.subs.delete(key);
+        state.subs.delete(path);
       }
     },
 
     /**
-     * Get items for a collection
-     */
-    get: (key: string) => {
-      return store.getState().collections[key]?.items ?? [];
-    },
-
-    /**
      * Add item to a Gun collection
+     *
+     * @internal
      */
-    set: async <T>(key: string, ref: IGunChainReference, data: T, schema?: z.ZodSchema<T>) => {
-      'background only';
-
+    add: async <T>(
+      path: string,
+      ref: IGunChainReference,
+      data: T,
+      id?: string,
+      schema?: z.ZodSchema<T>
+    ) => {
       try {
         // Validate with schema if provided
         if (schema) {
@@ -227,9 +372,12 @@ function createCollectionStore() {
           }
         }
 
-        // Add to Gun set
+        // Generate ID if not provided (use timestamp for lexical ordering)
+        const itemId = id || lex.time();
+
+        // Add to Gun set with specific ID
         await new Promise<void>((resolve, reject) => {
-          ref.set(data as any, (ack: any) => {
+          ref.get(itemId).put(data as any, (ack: any) => {
             if (ack.err) {
               reject(new Error(ack.err));
             } else {
@@ -238,32 +386,50 @@ function createCollectionStore() {
           });
         });
 
-        console.log('[Collection] Item added:', key);
-        return Result.ok(undefined);
+        console.log('[Collection] ✅ Item added:', path, itemId);
+        return Result.ok(itemId);
       } catch (err) {
-        console.error('[Collection] Error adding item:', key, err);
+        console.error('[Collection] ❌ Error adding item:', path, err);
         return Result.error(err instanceof Error ? err : new Error(String(err)));
       }
     },
 
     /**
      * Update item in collection
+     *
+     * @internal
      */
-    update: async <T>(key: string, ref: IGunChainReference, id: string, data: T, schema?: z.ZodSchema<T>) => {
-      'background only';
-
+    update: async <T>(
+      path: string,
+      ref: IGunChainReference,
+      id: string,
+      data: Partial<T>,
+      schema?: z.ZodSchema<T>
+    ) => {
       try {
+        // Get current data
+        const current = await new Promise<any>((resolve) => {
+          ref.get(id).once((d: any) => resolve(d));
+        });
+
+        if (!current) {
+          return Result.error(new Error('Item not found'));
+        }
+
+        // Merge updates
+        const merged = { ...current, ...data };
+
         // Validate with schema if provided
         if (schema) {
-          const result = Result.parse(schema, data);
+          const result = Result.parse(schema, merged);
           if (!result.ok) {
             return Result.error(new Error(`Schema validation failed: ${result.error.message}`));
           }
         }
 
-        // Update specific item
+        // Update Gun node
         await new Promise<void>((resolve, reject) => {
-          ref.get(id).put(data as any, (ack: any) => {
+          ref.get(id).put(merged as any, (ack: any) => {
             if (ack.err) {
               reject(new Error(ack.err));
             } else {
@@ -272,20 +438,20 @@ function createCollectionStore() {
           });
         });
 
-        console.log('[Collection] Item updated:', key, id);
+        console.log('[Collection] ✅ Item updated:', path, id);
         return Result.ok(undefined);
       } catch (err) {
-        console.error('[Collection] Error updating item:', key, id, err);
+        console.error('[Collection] ❌ Error updating item:', path, id, err);
         return Result.error(err instanceof Error ? err : new Error(String(err)));
       }
     },
 
     /**
-     * Delete item from collection
+     * Remove item from collection
+     *
+     * @internal
      */
-    del: async (key: string, ref: IGunChainReference, id: string) => {
-      'background only';
-
+    remove: async (path: string, ref: IGunChainReference, id: string) => {
       try {
         // Delete by setting to null
         await new Promise<void>((resolve, reject) => {
@@ -298,259 +464,451 @@ function createCollectionStore() {
           });
         });
 
-        console.log('[Collection] Item deleted:', key, id);
+        console.log('[Collection] ✅ Item removed:', path, id);
         return Result.ok(undefined);
       } catch (err) {
-        console.error('[Collection] Error deleting item:', key, id, err);
+        console.error('[Collection] ❌ Error removing item:', path, id, err);
         return Result.error(err instanceof Error ? err : new Error(String(err)));
       }
     },
 
     /**
-     * Get loading state
+     * Get collection state
+     *
+     * @internal
      */
-    loading: (key: string) => {
-      return store.getState().collections[key]?.loading ?? false;
-    },
-
-    /**
-     * Get error state
-     */
-    error: (key: string) => {
-      return store.getState().collections[key]?.error ?? null;
+    getCollectionState: (path: string): CollectionData => {
+      return (
+        store.getState().collections[path] ?? {
+          items: [],
+          isLoading: false,
+          isError: false,
+          error: null,
+          isSynced: false,
+          isEmpty: true,
+        }
+      );
     },
   };
 }
 
 /**
- * Default collection store (no persistence)
+ * Global collection store singleton
  */
-const useCollectionStore = createCollectionStore();
+const collectionStore = createCollectionStore();
+
+// ============================================================================
+// Hook API (Primary)
+// ============================================================================
 
 /**
- * Collection API - Simple interface for Gun collections
+ * Hook for reactive Gun collection management
  *
- * @example
- * ```typescript
- * import { collection, graph } from '@ariob/core';
- * import { z } from 'zod';
+ * Automatically subscribes to the collection and provides reactive items, loading, and error states.
+ * Inspired by React Query and Convex for excellent developer experience.
  *
- * const TodoSchema = z.object({
- *   title: z.string(),
- *   done: z.boolean()
+ * @template T - The type of items in this collection
+ * @param config - Collection configuration
+ * @returns Collection state and mutation methods
+ *
+ * @example Basic usage
+ * ```tsx
+ * const todos = useCollection({
+ *   path: 'todos',
+ *   schema: TodoSchema,
  * });
  *
- * // Subscribe to collection
- * const g = graph();
- * const ref = g.get('todos');
- * collection('todos').map(ref, TodoSchema);
+ * if (todos.isLoading) return <Text>Loading...</Text>;
+ * return todos.items.map(item => <Text key={item.id}>{item.data.title}</Text>);
+ * ```
  *
- * // In component
- * const todos = collection('todos').get();
- * const loading = collection('todos').loading();
+ * @example With mutations
+ * ```tsx
+ * const messages = useCollection({
+ *   path: 'chat/messages',
+ *   schema: MessageSchema,
+ *   sort: 'asc', // Use lex.reverse() for newest first
+ * });
  *
- * // Add item
- * await collection('todos').set(ref, { title: 'Buy milk', done: false }, TodoSchema);
+ * // Add with automatic ID
+ * await messages.add({ text: 'Hello!', user: 'alice' });
+ *
+ * // Add with custom lex ID (newest first)
+ * await messages.add(
+ *   { text: 'Hi!', user: 'bob' },
+ *   lex.reverse()
+ * );
  *
  * // Update item
- * await collection('todos').update(ref, 'item-id', { title: 'Buy milk', done: true }, TodoSchema);
+ * await messages.update('msg_123', { text: 'Updated!' });
  *
- * // Delete item
- * await collection('todos').del(ref, 'item-id');
+ * // Remove item
+ * await messages.remove('msg_123');
+ * ```
  *
- * // Unsubscribe
- * collection('todos').off();
+ * @example Conditional subscription
+ * ```tsx
+ * const posts = useCollection({
+ *   path: `users/${userId}/posts`,
+ *   schema: PostSchema,
+ *   enabled: !!userId, // Only subscribe when userId exists
+ * });
  * ```
  */
-export function collection<T = any>(key: string, config?: CollectionConfig) {
-  'background only';
+export function useCollection<T = any>(config: CollectionConfig<T>) {
+  const { path, schema, sort = 'asc', enabled = true, graph } = config;
 
-  const store = useCollectionStore;
+  // Subscribe/unsubscribe on mount/unmount
+  useEffect(() => {
+    if (!enabled) return;
+
+    const g = graph || getGraph();
+    const ref = g.get(path);
+
+    // Subscribe
+    collectionStore.map(path, ref, schema, sort);
+
+    // Cleanup on unmount
+    return () => collectionStore.off(path);
+  }, [path, enabled, sort]);
+
+  // Reactive selectors
+  const collState = collectionStore.useStore((s) => s.collections[path]);
+
+  const items = collState?.items ?? [];
+  const isLoading = collState?.isLoading ?? false;
+  const isError = collState?.isError ?? false;
+  const error = collState?.error ?? null;
+  const isSynced = collState?.isSynced ?? false;
+  const isEmpty = collState?.isEmpty ?? true;
+
+  /**
+   * Add item to collection
+   */
+  const add = useCallback(
+    async (data: T, id?: string) => {
+      const g = graph || getGraph();
+      const ref = g.get(path);
+      return collectionStore.add(path, ref, data, id, schema);
+    },
+    [path, schema, graph]
+  );
+
+  /**
+   * Update item in collection
+   */
+  const update = useCallback(
+    async (id: string, data: Partial<T>) => {
+      const g = graph || getGraph();
+      const ref = g.get(path);
+      return collectionStore.update(path, ref, id, data, schema);
+    },
+    [path, schema, graph]
+  );
+
+  /**
+   * Remove item from collection
+   */
+  const remove = useCallback(
+    async (id: string) => {
+      const g = graph || getGraph();
+      const ref = g.get(path);
+      return collectionStore.remove(path, ref, id);
+    },
+    [path, graph]
+  );
+
+  /**
+   * Refresh data from Gun
+   */
+  const refetch = useCallback(() => {
+    const g = graph || getGraph();
+    const ref = g.get(path);
+    collectionStore.map(path, ref, schema, sort);
+  }, [path, schema, sort, graph]);
 
   return {
-    /**
-     * Subscribe to this collection's items
-     */
-    map: (ref: IGunChainReference, schema?: z.ZodSchema<T>) => {
-      store.map(key, ref, schema);
-    },
-
-    /**
-     * Unsubscribe from this collection
-     */
-    off: () => {
-      store.off(key);
-    },
-
-    /**
-     * Get current items
-     */
-    get: (): Item<T>[] => {
-      return store.get(key);
-    },
-
-    /**
-     * Add item to collection
-     */
-    set: async (ref: IGunChainReference, data: T, schema?: z.ZodSchema<T>): Promise<Result<void, Error>> => {
-      return store.set(key, ref, data, schema);
-    },
-
-    /**
-     * Update item in collection
-     */
-    update: async (ref: IGunChainReference, id: string, data: T, schema?: z.ZodSchema<T>): Promise<Result<void, Error>> => {
-      return store.update(key, ref, id, data, schema);
-    },
-
-    /**
-     * Delete item from collection
-     */
-    del: async (ref: IGunChainReference, id: string): Promise<Result<void, Error>> => {
-      return store.del(key, ref, id);
-    },
-
-    /**
-     * Get loading state
-     */
-    loading: (): boolean => {
-      return store.loading(key);
-    },
-
-    /**
-     * Get error state
-     */
-    error: (): Error | null => {
-      return store.error(key);
-    },
-  };
-}
-
-/**
- * Hook for using collection in React components
- */
-export function useCollection<T = any>(key: string, config?: CollectionConfig) {
-  'background only';
-
-  const store = useCollectionStore;
-
-  const items = useStoreSelector(
-    { getState: store.getState, setState: store.setState, subscribe: store.subscribe },
-    (s) => s.collections[key]?.items ?? []
-  );
-  const loading = useStoreSelector(
-    { getState: store.getState, setState: store.setState, subscribe: store.subscribe },
-    (s) => s.collections[key]?.loading ?? false
-  );
-  const error = useStoreSelector(
-    { getState: store.getState, setState: store.setState, subscribe: store.subscribe },
-    (s) => s.collections[key]?.error ?? null
-  );
-
-  return {
+    /** Array of items (sorted by ID lexicographically) */
     items: items as Item<T>[],
-    loading,
+
+    /** Whether initial data is loading */
+    isLoading,
+
+    /** Whether there's an error */
+    isError,
+
+    /** Error object if isError is true */
     error,
-    map: (ref: IGunChainReference, schema?: z.ZodSchema<T>) => {
-      store.map(key, ref, schema);
-    },
-    off: () => {
-      store.off(key);
-    },
-    set: async (ref: IGunChainReference, data: T, schema?: z.ZodSchema<T>) => {
-      return store.set(key, ref, data, schema);
-    },
-    update: async (ref: IGunChainReference, id: string, data: T, schema?: z.ZodSchema<T>) => {
-      return store.update(key, ref, id, data, schema);
-    },
-    del: async (ref: IGunChainReference, id: string) => {
-      return store.del(key, ref, id);
-    },
+
+    /** Whether collection is synced with Gun peers */
+    isSynced,
+
+    /** Whether collection is empty */
+    isEmpty,
+
+    /** Number of items in collection */
+    count: items.length,
+
+    /** Add item to collection */
+    add,
+
+    /** Update item in collection */
+    update,
+
+    /** Remove item from collection */
+    remove,
+
+    /** Refresh data from Gun */
+    refetch,
   };
 }
 
+// ============================================================================
+// Factory API
+// ============================================================================
+
 /**
- * Create a reactive collection hook factory
+ * Create a typed collection hook factory
  *
- * @param key - Gun collection key
- * @param schema - Optional Zod schema for validation
- * @returns React hook that auto-subscribes to the collection
+ * Useful for creating reusable collection hooks with pre-configured schemas.
+ *
+ * @template T - The type of items in this collection
+ * @param path - Gun collection path
+ * @param schema - Zod schema for validation
+ * @param sort - Default sort direction
+ * @returns A React hook factory that auto-subscribes
  *
  * @example
- * ```typescript
- * const useMessages = createCollection('messages', MessageSchema);
+ * ```tsx
+ * // Create factory
+ * const TodoSchema = z.object({
+ *   title: z.string(),
+ *   done: z.boolean(),
+ * });
  *
- * function Component() {
- *   const { items, loading, error, set, del } = useMessages();
+ * const useTodos = createCollection('todos', TodoSchema);
  *
- *   return items.map(item => <Text key={item.id}>{item.data.text}</Text>);
+ * // Use in component
+ * function TodoList() {
+ *   const todos = useTodos();
+ *
+ *   return (
+ *     <View>
+ *       {todos.items.map(item => (
+ *         <Text key={item.id}>{item.data.title}</Text>
+ *       ))}
+ *       <Button onPress={() => todos.add({
+ *         title: 'New task',
+ *         done: false
+ *       })}>
+ *         Add
+ *       </Button>
+ *     </View>
+ *   );
  * }
  * ```
  */
-export function createCollection<T = any>(key: string, schema?: z.ZodSchema<T>) {
-  'background only';
-
-  return function useCreatedCollection() {
-    'background only';
-
-    const store = useCollectionStore;
-
-    // Auto-subscribe on mount
-    useEffect(() => {
-      'background only';
-      // Import graph at runtime to avoid circular deps
-      const { graph } = require('./graph');
-      const g = graph();
-      const ref = g.get(key);
-
-      store.map(key, ref, schema);
-      return () => store.off(key);
-    }, []);
-
-    // Reactive selectors
-    const items = useStoreSelector(
-      { getState: store.getState, setState: store.setState, subscribe: store.subscribe },
-      (s: any) => s.collections[key]?.items ?? []
-    );
-    const loading = useStoreSelector(
-      { getState: store.getState, setState: store.setState, subscribe: store.subscribe },
-      (s: any) => s.collections[key]?.loading ?? false
-    );
-    const error = useStoreSelector(
-      { getState: store.getState, setState: store.setState, subscribe: store.subscribe },
-      (s: any) => s.collections[key]?.error ?? null
-    );
-
-    const set = useCallback(async (data: T) => {
-      'background only';
-      const { graph } = require('./graph');
-      const g = graph();
-      const ref = g.get(key);
-
-      return store.set(key, ref, data, schema);
-    }, []);
-
-    const update = useCallback(async (id: string, data: T) => {
-      'background only';
-      const { graph } = require('./graph');
-      const g = graph();
-      const ref = g.get(key);
-
-      return store.update(key, ref, id, data, schema);
-    }, []);
-
-    const del = useCallback(async (id: string) => {
-      'background only';
-      const { graph } = require('./graph');
-      const g = graph();
-      const ref = g.get(key);
-
-      return store.del(key, ref, id);
-    }, []);
-
-    return { items: items as Item<T>[], loading, error, set, update, del };
+export function createCollection<T = any>(
+  path: string,
+  schema?: z.ZodSchema<T>,
+  sort: SortDirection = 'asc'
+) {
+  return function useCreatedCollection(options?: Omit<CollectionConfig<T>, 'path' | 'schema' | 'sort'>) {
+    return useCollection<T>({
+      path,
+      ...(schema ? { schema } : {}),
+      sort,
+      ...options,
+    });
   };
 }
 
+// ============================================================================
+// Imperative API (Advanced)
+// ============================================================================
+
+/**
+ * Imperative collection operations (advanced usage)
+ *
+ * For most use cases, prefer the `useCollection` hook.
+ * Use these methods for non-reactive contexts or advanced scenarios.
+ *
+ * @namespace collection
+ */
+export const collection = {
+  /**
+   * Add item to a Gun collection
+   *
+   * @template T - The type of the item
+   * @param path - Gun collection path
+   * @param data - Item data
+   * @param id - Optional item ID (auto-generated if not provided)
+   * @param schema - Optional Zod schema for validation
+   * @returns Result with item ID or error
+   *
+   * @example
+   * ```ts
+   * import { collection, lex } from '@ariob/core';
+   *
+   * // Add with auto-generated ID
+   * const result = await collection.add('todos', {
+   *   title: 'Buy milk',
+   *   done: false
+   * }, undefined, TodoSchema);
+   *
+   * // Add with custom lex ID (newest first)
+   * await collection.add(
+   *   'messages',
+   *   { text: 'Hello!', user: 'alice' },
+   *   lex.reverse(),
+   *   MessageSchema
+   * );
+   * ```
+   */
+  add: async <T>(path: string, data: T, id?: string, schema?: z.ZodSchema<T>) => {
+    const g = getGraph();
+    const ref = g.get(path);
+    return collectionStore.add(path, ref, data, id, schema);
+  },
+
+  /**
+   * Update item in a Gun collection
+   *
+   * @template T - The type of the item
+   * @param path - Gun collection path
+   * @param id - Item ID
+   * @param data - Partial item data to update
+   * @param schema - Optional Zod schema for validation
+   * @returns Result indicating success or error
+   *
+   * @example
+   * ```ts
+   * await collection.update('todos', 'todo-1', { done: true }, TodoSchema);
+   * ```
+   */
+  update: async <T>(path: string, id: string, data: Partial<T>, schema?: z.ZodSchema<T>) => {
+    const g = getGraph();
+    const ref = g.get(path);
+    return collectionStore.update(path, ref, id, data, schema);
+  },
+
+  /**
+   * Remove item from a Gun collection
+   *
+   * @param path - Gun collection path
+   * @param id - Item ID
+   * @returns Result indicating success or error
+   *
+   * @example
+   * ```ts
+   * await collection.remove('todos', 'todo-1');
+   * ```
+   */
+  remove: async (path: string, id: string) => {
+    const g = getGraph();
+    const ref = g.get(path);
+    return collectionStore.remove(path, ref, id);
+  },
+
+  /**
+   * Get all items from a Gun collection (one-time fetch)
+   *
+   * @template T - The type of items
+   * @param path - Gun collection path
+   * @param schema - Optional Zod schema for validation
+   * @param sort - Sort direction ('asc' or 'desc')
+   * @returns Promise with array of items
+   *
+   * @example
+   * ```ts
+   * const todos = await collection.list('todos', TodoSchema);
+   * console.log(todos.map(item => item.data.title));
+   * ```
+   */
+  list: async <T>(
+    path: string,
+    schema?: z.ZodSchema<T>,
+    sort: SortDirection = 'asc'
+  ): Promise<Item<T>[]> => {
+    return new Promise((resolve) => {
+      const g = getGraph();
+      const ref = g.get(path);
+      const items: Item<T>[] = [];
+
+      ref.map().once((raw: any, id: string) => {
+        if (!raw) return;
+
+        try {
+          // Clean Gun metadata
+          const clean: any = {};
+          for (const prop in raw) {
+            if (!prop.startsWith('_')) {
+              clean[prop] = raw[prop];
+            }
+          }
+
+          // Validate with schema if provided
+          let data = clean;
+          if (schema) {
+            const result = Result.parse(schema, clean);
+            if (!result.ok) {
+              console.error('[Collection] Schema validation failed:', result.error);
+              return;
+            }
+            data = result.value;
+          }
+
+          items.push({ id, data });
+        } catch (err) {
+          console.error('[Collection] Error reading item:', err);
+        }
+      });
+
+      // Wait a bit for all items to arrive, then sort and resolve
+      setTimeout(() => {
+        items.sort((a, b) => {
+          if (sort === 'desc') {
+            return b.id.localeCompare(a.id);
+          }
+          return a.id.localeCompare(b.id);
+        });
+        resolve(items);
+      }, 100);
+    });
+  },
+
+  /**
+   * Clear all items from a collection
+   *
+   * @param path - Gun collection path
+   * @returns Result indicating success or error
+   *
+   * @example
+   * ```ts
+   * await collection.clear('todos');
+   * ```
+   */
+  clear: async (path: string) => {
+    try {
+      const g = getGraph();
+      const ref = g.get(path);
+
+      // Get all item IDs
+      const items = await collection.list(path);
+
+      // Delete each item
+      for (const item of items) {
+        await collectionStore.remove(path, ref, item.id);
+      }
+
+      console.log('[Collection] ✅ Collection cleared:', path);
+      return Result.ok(undefined);
+    } catch (err) {
+      console.error('[Collection] ❌ Error clearing collection:', path, err);
+      return Result.error(err instanceof Error ? err : new Error(String(err)));
+    }
+  },
+};
+
 // Export store for advanced use
-export { useCollectionStore, createCollectionStore };
+export { collectionStore, createCollectionStore };

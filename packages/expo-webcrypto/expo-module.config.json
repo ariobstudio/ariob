@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["ExpoWebcryptoModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.webcrypto.ExpoWebcryptoModule"]
+  }
+}

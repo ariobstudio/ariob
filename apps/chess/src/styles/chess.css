@@ -1,0 +1,229 @@
+/**
+ * Senterej Chess - Game-Specific Styles
+ *
+ * This file contains all chess-specific colors, themes, and animations.
+ * Separated from globals.css to keep base theme clean and modular.
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Default Senterej board colors sourced from global tokens */
+    --board-light: var(--board-indigo-light);
+    --board-dark: var(--board-indigo-dark);
+  }
+
+  /* Board utility classes */
+  .bg-board-light {
+    background-color: var(--board-light);
+  }
+
+  .bg-board-dark {
+    background-color: var(--board-dark);
+  }
+
+  /* ========================================
+     Alternative Board Themes
+     ======================================== */
+
+  .theme-classic {
+    --board-light: var(--board-classic-light);
+    --board-dark: var(--board-classic-dark);
+  }
+
+  .theme-green {
+    --board-light: var(--board-green-light);
+    --board-dark: var(--board-green-dark);
+  }
+
+  .theme-blue {
+    --board-light: var(--board-blue-light);
+    --board-dark: var(--board-blue-dark);
+  }
+
+  .theme-purple {
+    --board-light: var(--board-purple-light);
+    --board-dark: var(--board-purple-dark);
+  }
+
+  .theme-gray {
+    --board-light: var(--board-gray-light);
+    --board-dark: var(--board-gray-dark);
+  }
+
+  /* ========================================
+     Dark Mode Overrides
+     ======================================== */
+
+  .dark {
+    --board-light: var(--board-indigo-light);
+    --board-dark: var(--board-indigo-dark);
+  }
+}
+
+/* ========================================
+   Chess Piece Animations
+   ======================================== */
+
+/* Chess piece animations - smooth and subtle - chess.com inspired */
+@keyframes pieceAppear {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pieceMove {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  30% {
+    transform: scale(1.10) translateY(-3px);
+  }
+  65% {
+    transform: scale(1.02) translateY(-1px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pieceSelect {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+
+/* Drag animations - smooth piece interactions */
+@keyframes pieceLift {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0.9;
+  }
+}
+
+@keyframes pieceDrop {
+  0% {
+    transform: scale(1.15);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes squarePulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Simple fade in */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Move indicator animations */
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Check pulse - attention grabbing but not distracting */
+@keyframes checkPulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* ========================================
+   Board Color Utility Classes
+   LynxJS doesn't support CSS variables in inline styles
+   Theme-aware classes that respond to data-theme attribute
+   ======================================== */
+
+@layer utilities {
+  /* Default theme - Indigo */
+}
+
+/* ========================================
+   Animation Utility Classes
+   LynxJS-compatible animation classes
+   ======================================== */
+
+@layer utilities {
+  .animate-piece-appear {
+    animation: pieceAppear 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .animate-piece-move {
+    animation: pieceMove 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .animate-piece-select {
+    animation: pieceSelect 0.18s cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .animate-piece-lift {
+    animation: pieceLift 0.12s ease-out;
+  }
+
+  .animate-piece-drop {
+    animation: pieceDrop 0.12s ease-out;
+  }
+
+  .animate-square-pulse {
+    animation: squarePulse 1.2s ease-in-out infinite;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .animate-fade-in-fast {
+    animation: fadeIn 0.15s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .animate-check-pulse {
+    animation: checkPulse 1.5s ease-in-out infinite;
+  }
+}

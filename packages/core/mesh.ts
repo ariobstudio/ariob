@@ -7,8 +7,9 @@
  * @module mesh
  */
 
-import { graph, graphStore } from './graph';
-import { createStore, useStoreSelector } from './utils/createStore';
+import React from 'react';
+import { graph } from './graph';
+import { define } from './utils/store';
 
 /**
  * Peer status tracking
@@ -47,7 +48,7 @@ interface MeshState {
 /**
  * Mesh store instance
  */
-const meshStore = createStore<MeshState>({
+const meshStore = define<MeshState>({
   peers: {},
   totalMessagesIn: 0,
   totalMessagesOut: 0,
@@ -68,8 +69,6 @@ const meshStore = createStore<MeshState>({
  * ```
  */
 export function initMeshMonitoring(): void {
-  'background only';
-
   const state = meshStore.getState();
   if (state.monitoring) {
     return; // Already initialized
@@ -78,8 +77,7 @@ export function initMeshMonitoring(): void {
   const gun = graph();
 
   // Monitor outgoing messages
-  gun.on('out', (msg: any) => {
-    'background only';
+  gun.on('out', () => {
     const state = meshStore.getState();
     meshStore.setState({
       totalMessagesOut: state.totalMessagesOut + 1,
@@ -91,8 +89,7 @@ export function initMeshMonitoring(): void {
   });
 
   // Monitor incoming messages
-  gun.on('in', (msg: any) => {
-    'background only';
+  gun.on('in', () => {
     const state = meshStore.getState();
     meshStore.setState({
       totalMessagesIn: state.totalMessagesIn + 1,
@@ -138,7 +135,6 @@ export function initMeshMonitoring(): void {
  * ```
  */
 export function getPeerStatus(url: string): PeerStatus | null {
-  'background only';
   return meshStore.getState().peers[url] || null;
 }
 
@@ -154,7 +150,6 @@ export function getPeerStatus(url: string): PeerStatus | null {
  * ```
  */
 export function getAllPeers(): PeerStatus[] {
-  'background only';
   return Object.values(meshStore.getState().peers);
 }
 
@@ -180,8 +175,6 @@ export function getAllPeers(): PeerStatus[] {
  * ```
  */
 export function addPeer(url: string): void {
-  'background only';
-
   const gun = graph();
   gun.opt({ peers: [url] });
 
@@ -216,8 +209,6 @@ export function addPeer(url: string): void {
  * ```
  */
 export function removePeer(url: string): void {
-  'background only';
-
   const state = meshStore.getState();
   const { [url]: removed, ...rest } = state.peers;
 
@@ -252,10 +243,15 @@ export function removePeer(url: string): void {
  * ```
  */
 export function useMesh() {
-  const peers = useStoreSelector(meshStore, (s) => Object.values(s.peers));
-  const totalIn = useStoreSelector(meshStore, (s) => s.totalMessagesIn);
-  const totalOut = useStoreSelector(meshStore, (s) => s.totalMessagesOut);
-  const monitoring = useStoreSelector(meshStore, (s) => s.monitoring);
+  // Get peers object (stable reference)
+  const peersObj = meshStore((s) => s.peers);
+  const totalIn = meshStore((s) => s.totalMessagesIn);
+  const totalOut = meshStore((s) => s.totalMessagesOut);
+  const monitoring = meshStore((s) => s.monitoring);
+
+  // Convert to array with useMemo to prevent infinite re-renders
+  // Object.values() creates a new array each time, triggering re-renders
+  const peers = React.useMemo(() => Object.values(peersObj), [peersObj]);
 
   // Auto-initialize monitoring on first use
   if (!monitoring) {
@@ -292,14 +288,14 @@ export function useMesh() {
  * ```
  */
 export function usePeer(url: string) {
-  const monitoring = useStoreSelector(meshStore, (s) => s.monitoring);
+  const monitoring = meshStore((s) => s.monitoring);
 
   // Auto-initialize monitoring on first use
   if (!monitoring) {
     initMeshMonitoring();
   }
 
-  return useStoreSelector(meshStore, (s) => s.peers[url] || null);
+  return meshStore((s) => s.peers[url] || null);
 }
 
 /**
@@ -313,8 +309,6 @@ export function usePeer(url: string) {
  * ```
  */
 export function resetMeshStats(): void {
-  'background only';
-
   const state = meshStore.getState();
   const resetPeers: Record<string, PeerStatus> = {};
 

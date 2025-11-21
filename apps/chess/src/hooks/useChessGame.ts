@@ -113,7 +113,7 @@ export function useChessGame(): UseChessGameReturn {
    * Get the current player name for display
    */
   const currentPlayerText = React.useMemo(
-    () => (gameState.currentPlayer === 'green' ? 'White' : 'Black'),
+    () => (gameState.currentPlayer === 'white' ? 'White' : 'Black'),
     [gameState.currentPlayer]
   );
 

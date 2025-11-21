@@ -1,4 +1,5 @@
-import * as React from 'react';
+// No React import needed in LynxJS
+import { useState, useCallback } from '@lynx-js/react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Column, List, ListItem, Row, Scrollable } from './index';
@@ -80,7 +81,6 @@ export function ScrollableExample() {
           direction="vertical"
           height="screen"
           padding="md"
-          spacing="sm"
           className="max-h-64 border border-border rounded-lg"
         >
           {Array.from({ length: 20 }, (_, i) => (
@@ -103,13 +103,13 @@ export function ScrollableExample() {
 
 // Example 3: High-Performance List with renderItem
 export function PerformantListExample() {
-  const [selectedItem, setSelectedItem] = React.useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
-  const handleItemPress = React.useCallback((item: (typeof sampleItems)[0]) => {
+  const handleItemPress = useCallback((item: (typeof sampleItems)[0]) => {
     setSelectedItem(item.id);
   }, []);
 
-  const renderItem = React.useCallback(
+  const renderItem = useCallback(
     (item: (typeof sampleItems)[0], index: number) => (
       <ListItem
         variant="bordered"
@@ -142,7 +142,6 @@ export function PerformantListExample() {
       </CardHeader>
       <CardContent>
         <List
-          variant="bordered"
           height="fit"
           className="max-h-80"
           data={sampleItems}
@@ -173,13 +172,13 @@ export function PerformantListExample() {
 
 // Example 4: List with Children (Manual ListItems)
 export function ManualListExample() {
-  const [activeStates, setActiveStates] = React.useState<boolean[]>(
+  const [activeStates, setActiveStates] = useState<boolean[]>(
     Array(5).fill(false),
   );
 
-  const toggleState = React.useCallback((index: number) => {
-    setActiveStates((prev) =>
-      prev.map((state, i) => (i === index ? !state : state)),
+  const toggleState = useCallback((index: number) => {
+    setActiveStates((prev: boolean[]) =>
+      prev.map((state: boolean, i: number) => (i === index ? !state : state)),
     );
   }, []);
 
@@ -189,7 +188,7 @@ export function ManualListExample() {
         <CardTitle>Manual List Example</CardTitle>
       </CardHeader>
       <CardContent>
-        <List variant="elevated" padding="sm" spacing="xs">
+        <List>
           {sampleItems.map((item, index) => (
             <ListItem
               key={item.id}
@@ -268,7 +267,7 @@ export function ComplexLayoutExample() {
             {/* Left sidebar */}
             <Column spacing="sm" className="w-64">
               <text className="font-medium">Quick Actions</text>
-              <List variant="bordered">
+              <List>
                 {['Create User', 'Generate Report', 'Export Data'].map(
                   (action) => (
                     <ListItem

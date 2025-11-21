@@ -1,14 +1,14 @@
 import * as React from '@lynx-js/react';
 import { Column, Row, Card, CardContent, CardHeader, CardTitle, Alert, AlertTitle, AlertDescription, cn } from '@ariob/ui';
-import type { GameState } from '../types';
+import type { GameState, Piece } from '../types';
 
 interface GameInfoProps {
   gameState: GameState;
 }
 
 export const GameInfo: React.FC<GameInfoProps> = ({ gameState }) => {
-  const currentPlayerText = gameState.currentPlayer === 'green' ? 'Green' : 'Gold';
-  const currentPlayerColor = gameState.currentPlayer === 'green' ? 'text-green-600' : 'text-yellow-600';
+  const currentPlayerText = gameState.currentPlayer === 'white' ? 'White' : 'Black';
+  const currentPlayerColor = gameState.currentPlayer === 'white' ? 'text-gray-800' : 'text-gray-600';
 
   return (
     <Column className="gap-4">
@@ -29,7 +29,7 @@ export const GameInfo: React.FC<GameInfoProps> = ({ gameState }) => {
         <Alert variant="destructive">
           <AlertTitle>Check!</AlertTitle>
           <AlertDescription>
-            {gameState.check === 'green' ? 'Green' : 'Gold'} King is in check!
+            {gameState.check === 'white' ? 'White' : 'Black'} King is in check!
           </AlertDescription>
         </Alert>
       )}
@@ -39,7 +39,7 @@ export const GameInfo: React.FC<GameInfoProps> = ({ gameState }) => {
         <Alert>
           <AlertTitle>Checkmate!</AlertTitle>
           <AlertDescription>
-            {gameState.winner === 'green' ? 'Green' : 'Gold'} wins!
+            {gameState.winner === 'white' ? 'White' : 'Black'} wins!
           </AlertDescription>
         </Alert>
       )}
@@ -51,16 +51,16 @@ export const GameInfo: React.FC<GameInfoProps> = ({ gameState }) => {
         </CardHeader>
         <CardContent>
           <Column className="gap-3">
-            {/* Green's Captures */}
+            {/* White's Captures */}
             <view>
               <text className="text-sm text-muted-foreground mb-1">
-                Green captured:
+                White captured:
               </text>
               <Row className="flex-wrap gap-1">
-                {gameState.capturedPieces.green.length === 0 ? (
+                {gameState.capturedPieces.white.length === 0 ? (
                   <text className="text-xs text-muted-foreground">None</text>
                 ) : (
-                  gameState.capturedPieces.green.map((piece, i) => (
+                  gameState.capturedPieces.white.map((piece: Piece, i: number) => (
                     <text key={i} className="text-sm">
                       {piece.type}
                     </text>
@@ -69,16 +69,16 @@ export const GameInfo: React.FC<GameInfoProps> = ({ gameState }) => {
               </Row>
             </view>
 
-            {/* Gold's Captures */}
+            {/* Black's Captures */}
             <view>
               <text className="text-sm text-muted-foreground mb-1">
-                Gold captured:
+                Black captured:
               </text>
               <Row className="flex-wrap gap-1">
-                {gameState.capturedPieces.gold.length === 0 ? (
+                {gameState.capturedPieces.black.length === 0 ? (
                   <text className="text-xs text-muted-foreground">None</text>
                 ) : (
-                  gameState.capturedPieces.gold.map((piece, i) => (
+                  gameState.capturedPieces.black.map((piece: Piece, i: number) => (
                     <text key={i} className="text-sm">
                       {piece.type}
                     </text>
