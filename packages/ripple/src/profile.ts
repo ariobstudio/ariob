@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useCallback, useState } from 'react';
-import { z, Result, type IGunChainReference, createStore, useStore } from '@ariob/core';
+import { z, Result, type IGunChainReference, define } from '@ariob/core';
 
 /**
  * User profile schema
@@ -32,11 +32,11 @@ interface ProfileStore {
   errors: Map<string, Error | null>;
 }
 
-const profileStore = createStore<ProfileStore>({
+const profileStore = define({
   profiles: new Map(),
   loading: new Map(),
   errors: new Map(),
-});
+} as ProfileStore);
 
 /**
  * Save profile data to user graph
@@ -67,7 +67,6 @@ export async function saveProfile(
   graph: IGunChainReference,
   data: Partial<UserProfile>
 ): Promise<Result<void, Error>> {
-  'background only';
 
   return new Promise((resolve) => {
     const userRef = graph.user();
@@ -122,7 +121,6 @@ export function useProfile(graph: IGunChainReference, userPub?: string) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    'background only';
 
     const userRef = graph.user();
 
@@ -140,7 +138,6 @@ export function useProfile(graph: IGunChainReference, userPub?: string) {
 
     // Subscribe to profile updates
     const subscription = profileRef.on((data: any) => {
-      'background only';
 
       if (data && typeof data === 'object') {
         // Filter out Gun metadata (keys starting with '_')
@@ -160,7 +157,6 @@ export function useProfile(graph: IGunChainReference, userPub?: string) {
 
     // Initial load timeout
     const timeoutId = setTimeout(() => {
-      'background only';
       setLoading(false);
     }, 2000);
 
@@ -202,7 +198,6 @@ export async function getProfile(
   graph: IGunChainReference,
   userPub?: string
 ): Promise<UserProfile | null> {
-  'background only';
 
   return new Promise((resolve) => {
     const userRef = graph.user();
@@ -217,7 +212,6 @@ export async function getProfile(
       : userRef.get('profile');
 
     profileRef.once((data: any) => {
-      'background only';
 
       if (data && typeof data === 'object') {
         // Filter out Gun metadata
@@ -236,7 +230,6 @@ export async function getProfile(
 
     // Timeout after 2 seconds
     setTimeout(() => {
-      'background only';
       resolve(null);
     }, 2000);
   });
@@ -265,7 +258,6 @@ export async function updateProfile(
   graph: IGunChainReference,
   updates: Partial<UserProfile>
 ): Promise<Result<void, Error>> {
-  'background only';
 
   // Add updatedAt timestamp if not provided
   const dataWithTimestamp = {
@@ -294,7 +286,6 @@ export async function updateProfile(
 export async function deleteProfile(
   graph: IGunChainReference
 ): Promise<Result<void, Error>> {
-  'background only';
 
   return new Promise((resolve) => {
     const userRef = graph.user();
@@ -317,7 +308,6 @@ export async function deleteProfile(
       };
 
       userRef.get('profile').put(nullProfile, (ack: any) => {
-        'background only';
 
         if (ack.err) {
           resolve(Result.error(new Error(ack.err)));

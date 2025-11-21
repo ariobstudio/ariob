@@ -6,28 +6,14 @@
  */
 
 // Import native bridges for iOS/Android
-// CRITICAL: crypto.js must be loaded to provide WebCrypto polyfill and btoa/atob that handle Arrays
+// CRITICAL: crypto.js must be loaded to provide WebCrypto polyfill
 import './gun/native/crypto.js';
 
 // Conditionally import Lynx-specific native bridges
 // WebSocket and localStorage are only needed in LynxJS environment
 // React Native/Expo have built-in WebSocket and don't use synchronous localStorage
-(() => {
-  try {
-    // Check if we're in LynxJS environment (has lynx global and specific native modules)
-    if (typeof globalThis !== 'undefined' &&
-        (globalThis as any).lynx !== undefined) {
-      // Only import these in LynxJS environment
-      require('./gun/native/websocket.js');
-      require('./gun/native/localStorage.js');
-      console.log('[Graph] Loaded LynxJS native bridges');
-    } else {
-      console.log('[Graph] Skipping LynxJS native bridges (not in Lynx environment)');
-    }
-  } catch (e) {
-    console.warn('[Graph] Could not load Lynx native bridges:', e);
-  }
-})();
+import { loadLynxBridges } from './lynx/env';
+loadLynxBridges();
 
 import './gun/lib/yson.js';
 
@@ -41,7 +27,7 @@ import './gun/lib/sea.js';
 // This allows path.js to properly extend Gun.chain
 import './gun/lib/path.js';
 
-import { createStore } from './utils/createStore';
+import { define } from './utils/store';
 import { getPeers } from './config';
 
 /**
@@ -126,7 +112,7 @@ interface GraphState {
 /**
  * Custom store for default graph singleton
  */
-const graphStore = createStore<GraphState>({
+const graphStore = define<GraphState>({
   instance: null,
   peers: [],
 });
@@ -200,6 +186,25 @@ const graphActions = {
     return state.instance;
   },
 };
+
+/**
+ * Initialize Gun at application startup.
+ * Call this once in your app entry point for explicit setup.
+ *
+ * @param options - Gun configuration options
+ * @returns Gun instance
+ *
+ * @example
+ * ```typescript
+ * // In App.tsx or index.ts
+ * import { init } from '@ariob/core';
+ *
+ * init({ peers: ['https://relay.example.com/gun'] });
+ * ```
+ */
+export function init(options?: GunOptions): GunInstance {
+  return graphActions.init(options);
+}
 
 /**
  * Get or initialize the default graph instance.

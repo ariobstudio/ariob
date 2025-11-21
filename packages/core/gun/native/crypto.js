@@ -108,10 +108,8 @@
   function loadLynxBridge() {
     try {
       const bridge = require('./crypto.lynx.js');
-      console.log('[WebCrypto Bridge] ✓ Loaded LynxJS polyfill');
       return { success: true, bridge, error: null };
     } catch (e) {
-      console.error('[WebCrypto Bridge] ✗ Failed to load LynxJS polyfill:', e.message);
       return { success: false, bridge: null, error: e };
     }
   }
@@ -127,10 +125,8 @@
   function loadExpoBridge() {
     try {
       const bridge = require('./crypto.expo.js');
-      console.log('[WebCrypto Bridge] ✓ Loaded Expo bridge');
       return { success: true, bridge, error: null };
     } catch (e) {
-      console.error('[WebCrypto Bridge] ✗ Failed to load Expo bridge:', e.message);
       return { success: false, bridge: null, error: e };
     }
   }
@@ -171,13 +167,10 @@
           globalThis.crypto.getRandomValues(buffer);
           return buffer;
         };
-        console.log('[WebCrypto Bridge] ✓ Added crypto.randomBytes shim');
       }
 
-      console.log('[WebCrypto Bridge] ✓ Using native browser WebCrypto API');
       return { success: true, error: null };
     } catch (e) {
-      console.error('[WebCrypto Bridge] ✗ Browser crypto validation failed:', e.message);
       return { success: false, error: e };
     }
   }
@@ -196,11 +189,7 @@
    * @returns {{environment: string, initialized: boolean, bridge: any, error: Error|null}}
    */
   function initializeCryptoBridge() {
-    console.log('[WebCrypto Bridge] Starting environment detection...');
-
-    // Priority 1: LynxJS (most specific)
     if (isLynxEnvironment()) {
-      console.log('[WebCrypto Bridge] Detected LynxJS environment');
       const result = loadLynxBridge();
       return {
         environment: 'lynx',
@@ -214,7 +203,6 @@
     // This must come before Expo check because Expo Web has both browser crypto
     // AND @ariob/webcrypto available, but we should use native browser crypto
     if (isWebEnvironment()) {
-      console.log('[WebCrypto Bridge] Detected Web/Browser environment');
       const result = validateWebCrypto();
       return {
         environment: 'web',
@@ -226,7 +214,6 @@
 
     // Priority 3: Expo/React Native (fallback for native mobile apps)
     if (isExpoEnvironment()) {
-      console.log('[WebCrypto Bridge] Detected Expo/React Native environment');
       const result = loadExpoBridge();
       return {
         environment: 'expo',
@@ -235,11 +222,6 @@
         error: result.error
       };
     }
-
-    // Fallback: No crypto available
-    console.warn('[WebCrypto Bridge] ⚠ No crypto implementation available');
-    console.warn('[WebCrypto Bridge] For Expo/React Native, install: @ariob/webcrypto');
-    console.warn('[WebCrypto Bridge] For LynxJS, ensure NativeWebCryptoModule is configured');
 
     return {
       environment: 'none',
@@ -254,14 +236,6 @@
   // ============================================================================
 
   const initResult = initializeCryptoBridge();
-
-  // Log final status
-  console.log('[WebCrypto Bridge] Environment:', initResult.environment);
-  console.log('[WebCrypto Bridge] Initialized:', initResult.initialized);
-
-  if (initResult.error) {
-    console.error('[WebCrypto Bridge] Error:', initResult.error.message);
-  }
 
   // ============================================================================
   // Module Exports (for debugging and testing)

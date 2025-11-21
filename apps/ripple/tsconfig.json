@@ -2,10 +2,12 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./src/*"],
+      "@ariob/core": ["../../packages/core/index.ts"],
+      "@ariob/webcrypto": ["../../packages/webcrypto/index.ts"],
+      "@ariob/ripple": ["../../packages/ripple/index.ts"]
     }
   },
   "include": [
@@ -13,5 +15,8 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

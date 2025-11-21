@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useCallback } from 'react';
-import { createStore, useStoreSelector, Result, z, type IGunChainReference, type User } from '@ariob/core';
+import { define, Result, z, type IGunChainReference, type User } from '@ariob/core';
 
 /**
  * Friend metadata schema
@@ -38,33 +38,31 @@ interface RelationshipsStore {
  * Create relationships store
  */
 function createRelationshipsStore() {
-  'background only';
 
-  const store = createStore<RelationshipsStore>({
+  const relationshipsStore = define({
     friends: {},
     loading: false,
     error: null,
     cleanup: null,
-  });
+  } as RelationshipsStore);
 
   return {
-    getState: store.getState,
-    setState: store.setState,
-    subscribe: store.subscribe,
+    getState: relationshipsStore.getState,
+    setState: relationshipsStore.setState,
+    subscribe: relationshipsStore.subscribe,
 
     /**
      * Subscribe to user's friends list
      */
     subscribeFriends: (userRef: IGunChainReference) => {
-      'background only';
 
-      const state = store.getState();
+      const state = relationshipsStore.getState();
 
       // Cleanup existing subscription
       if (state.cleanup) state.cleanup();
 
       // Set loading
-      store.setState({ loading: true, error: null });
+      relationshipsStore.setState({ loading: true, error: null });
 
       console.log('[Relationships] Subscribing to friends...');
 
@@ -73,14 +71,13 @@ function createRelationshipsStore() {
         .get('friends')
         .map()
         .on((raw: any, pub: string) => {
-          'background only';
 
           try {
             // Handle friend removal
             if (raw === null || raw === undefined) {
-              const currentState = store.getState();
+              const currentState = relationshipsStore.getState();
               const { [pub]: _, ...remaining } = currentState.friends;
-              store.setState({ friends: remaining, loading: false });
+              relationshipsStore.setState({ friends: remaining, loading: false });
               return;
             }
 
@@ -105,8 +102,8 @@ function createRelationshipsStore() {
             }
 
             // Update store
-            const currentState = store.getState();
-            store.setState({
+            const currentState = relationshipsStore.getState();
+            relationshipsStore.setState({
               friends: {
                 ...currentState.friends,
                 [pub]: result.value,
@@ -118,7 +115,7 @@ function createRelationshipsStore() {
             console.log('[Relationships] Friend updated:', pub, result.value.alias);
           } catch (err) {
             console.error('[Relationships] Error processing friend:', err);
-            store.setState({
+            relationshipsStore.setState({
               loading: false,
               error: err instanceof Error ? err : new Error(String(err)),
             });
@@ -129,21 +126,20 @@ function createRelationshipsStore() {
       const cleanup = () => {
         console.log('[Relationships] Cleanup');
         // Gun doesn't provide .off() for .map(), so we just clear state
-        store.setState({ friends: {}, loading: false, error: null });
+        relationshipsStore.setState({ friends: {}, loading: false, error: null });
       };
 
-      store.setState({ cleanup });
+      relationshipsStore.setState({ cleanup });
     },
 
     /**
      * Unsubscribe from friends list
      */
     off: () => {
-      'background only';
-      const state = store.getState();
+      const state = relationshipsStore.getState();
       if (state.cleanup) {
         state.cleanup();
-        store.setState({ cleanup: null });
+        relationshipsStore.setState({ cleanup: null });
       }
     },
 
@@ -151,7 +147,6 @@ function createRelationshipsStore() {
      * Add a friend
      */
     addFriend: async (userRef: IGunChainReference, friendPub: string, alias?: string) => {
-      'background only';
 
       try {
         const friend: Friend = {
@@ -190,7 +185,6 @@ function createRelationshipsStore() {
      * Remove a friend
      */
     removeFriend: async (userRef: IGunChainReference, friendPub: string) => {
-      'background only';
 
       try {
         // Remove from Gun by setting to null
@@ -216,7 +210,7 @@ function createRelationshipsStore() {
      * Get all friends
      */
     getFriends: (): Friend[] => {
-      const state = store.getState();
+      const state = relationshipsStore.getState();
       return Object.values(state.friends);
     },
 
@@ -224,7 +218,7 @@ function createRelationshipsStore() {
      * Get friend by public key
      */
     getFriend: (pub: string): Friend | null => {
-      const state = store.getState();
+      const state = relationshipsStore.getState();
       return state.friends[pub] ?? null;
     },
 
@@ -238,7 +232,7 @@ function createRelationshipsStore() {
       }
 
       // Degree 1: Direct friend
-      const state = store.getState();
+      const state = relationshipsStore.getState();
       const friend = state.friends[pub];
       if (friend && friend.degree === '1') {
         return 1;
@@ -257,7 +251,7 @@ function createRelationshipsStore() {
      * Check if user is a friend
      */
     isFriend: (pub: string): boolean => {
-      const state = store.getState();
+      const state = relationshipsStore.getState();
       return pub in state.friends;
     },
 
@@ -265,14 +259,14 @@ function createRelationshipsStore() {
      * Get loading state
      */
     loading: (): boolean => {
-      return store.getState().loading;
+      return relationshipsStore.getState().loading;
     },
 
     /**
      * Get error state
      */
     error: (): Error | null => {
-      return store.getState().error;
+      return relationshipsStore.getState().error;
     },
   };
 }
@@ -311,7 +305,6 @@ const useRelationshipsStore = createRelationshipsStore();
  * ```
  */
 export function relationships() {
-  'background only';
 
   const store = useRelationshipsStore;
 
@@ -392,35 +385,25 @@ export function relationships() {
  * Hook for using relationships in React components
  */
 export function useRelationships() {
-  'background only';
 
-  const store = useRelationshipsStore;
-
-  const friends = useStoreSelector(
-    { getState: store.getState, setState: store.setState, subscribe: store.subscribe },
-    (s: RelationshipsStore) => Object.values(s.friends)
-  );
-  const loading = useStoreSelector(
-    { getState: store.getState, setState: store.setState, subscribe: store.subscribe },
-    (s: RelationshipsStore) => s.loading
-  );
-  const error = useStoreSelector(
-    { getState: store.getState, setState: store.setState, subscribe: store.subscribe },
-    (s: RelationshipsStore) => s.error
-  );
+  // Use Zustand store with selectors
+  const friends = useRelationshipsStore((s) => Object.values(s.friends));
+  const loading = useRelationshipsStore((s) => s.loading);
+  const error = useRelationshipsStore((s) => s.error);
 
   return {
     friends,
     loading,
     error,
-    subscribe: (userRef: IGunChainReference) => store.subscribeFriends(userRef),
-    off: () => store.off(),
+    subscribe: (userRef: IGunChainReference) => relationships().subscribeFriends(userRef),
+    off: () => relationships().off(),
     addFriend: (userRef: IGunChainReference, friendPub: string, alias?: string) =>
-      store.addFriend(userRef, friendPub, alias),
-    removeFriend: (userRef: IGunChainReference, friendPub: string) => store.removeFriend(userRef, friendPub),
-    getFriend: (pub: string) => store.getFriend(pub),
-    getDegree: (pub: string, currentUserPub?: string) => store.getDegree(pub, currentUserPub),
-    isFriend: (pub: string) => store.isFriend(pub),
+      relationships().addFriend(userRef, friendPub, alias),
+    removeFriend: (userRef: IGunChainReference, friendPub: string) =>
+      relationships().removeFriend(userRef, friendPub),
+    getFriend: (pub: string) => relationships().getFriend(pub),
+    getDegree: (pub: string, currentUserPub?: string) => relationships().getDegree(pub, currentUserPub),
+    isFriend: (pub: string) => relationships().isFriend(pub),
   };
 }
 

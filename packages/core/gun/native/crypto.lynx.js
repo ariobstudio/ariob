@@ -57,7 +57,6 @@ try {
       const { default: ExcryptoModule } = require('@ariob/webcrypto');
       if (ExcryptoModule) {
         native = ExcryptoModule;
-        console.log('[WebCrypto Bridge] Using @ariob/webcrypto module (Expo)');
       }
     } catch (e) {
       // @ariob/webcrypto not available, continue to fallback
@@ -67,14 +66,13 @@ try {
   // Fallback to LynxJS NativeModules
   if (!native && typeof NativeModules !== 'undefined') {
     native = NativeModules.NativeWebCryptoModule;
-    console.log('[WebCrypto Bridge] Using NativeWebCryptoModule (Lynx)');
   }
 
   if (!native) {
-    console.warn('[WebCrypto Bridge] No native crypto module found, crypto operations may fail');
+    throw new Error('No native crypto module found');
   }
 } catch (e) {
-  console.error('[WebCrypto Bridge] Error initializing native crypto:', e);
+  throw new Error('Error initializing native crypto:', e);
 }
 
 // ============================================================================

@@ -531,19 +531,19 @@ export async function createAccount(alias: string, graph: IGunChainReference) {
 @ariob/core uses Zustand for reactive state management:
 
 ```typescript
-import { createStore, useStoreSelector } from './utils/createStore';
+import { define } from './utils/store';
 
-// Create store
-const authStore = createStore<AuthState>({
+// Create store (Convex-style naming)
+const authStore = define<AuthState>({
   user: null,
   keys: null,
   isLoggedIn: false,
 });
 
-// Subscribe in React
+// Subscribe in React with direct selectors
 export function useAuth() {
-  const user = useStoreSelector(authStore, (s) => s.user);
-  const isLoggedIn = useStoreSelector(authStore, (s) => s.isLoggedIn);
+  const user = authStore((s) => s.user);
+  const isLoggedIn = authStore((s) => s.isLoggedIn);
   return { user, isLoggedIn };
 }
 ```

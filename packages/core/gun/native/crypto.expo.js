@@ -18,8 +18,6 @@
  */
 
 (() => {
-  console.log('[WebCrypto Expo Bridge] Loading @ariob/webcrypto...');
-
   try {
     // Import the complete crypto object from @ariob/webcrypto
     const { crypto } = require('@ariob/webcrypto');
@@ -48,16 +46,7 @@
 
     // Assign to globalThis
     globalThis.crypto = crypto;
-
-    console.log('[WebCrypto Expo Bridge] ✓ Successfully loaded @ariob/webcrypto');
-    console.log('[WebCrypto Expo Bridge] ✓ crypto.subtle available:', !!crypto.subtle);
-    console.log('[WebCrypto Expo Bridge] ✓ crypto.getRandomValues available:', !!crypto.getRandomValues);
-    console.log('[WebCrypto Expo Bridge] ✓ crypto.randomBytes shim added:', !!crypto.randomBytes);
   } catch (error) {
-    console.error('[WebCrypto Expo Bridge] ✗ Failed to load @ariob/webcrypto:', error.message);
-    console.error('[WebCrypto Expo Bridge] Ensure the package is installed:');
-    console.error('[WebCrypto Expo Bridge]   npm install @ariob/webcrypto');
-    console.error('[WebCrypto Expo Bridge]   npx pod-install  # iOS only');
     throw error;
   }
 })();

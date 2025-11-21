@@ -1,4 +1,4 @@
-# Ripple - Ariob Expo Demo App
+# Kitchen - Ariob - Expo Demo App
 
 A demonstration Expo application showcasing the **@ariob/core** and **@ariob/webcrypto** packages working together in a real-world mobile environment.
 

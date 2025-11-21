@@ -14,16 +14,19 @@ export { Thing, Who } from './schema';
 export type { Thing as ThingType, Who as WhoType } from './schema';
 
 // Graph - Singleton + instances
-export { graph, createGraph, graphStore, addPeersToGraph } from './graph';
+export { init, graph, createGraph, graphStore, addPeersToGraph } from './graph';
 export type { GunOptions, GunInstance, GunUser, IGunChainReference, KeyPair } from './graph';
 
 // Node - Single object management (imperative + reactive hooks)
-export { node, useNode, createNode } from './node';
+export { node, useNode } from './node';
 export type { NodeConfig } from './node';
 
 // Collection - Sets/maps management (imperative + reactive hooks)
-export { collection, useCollection, createCollection } from './collection';
-export type { Item, CollectionConfig } from './collection';
+export { collection, useCollection, collectionStore } from './collection';
+export type { Item, CollectionConfig, SortDirection } from './collection';
+
+// Lex - Lexical ordering utilities for Gun
+export { lex } from './lex';
 
 // Crypto - SEA primitives
 export {
@@ -41,7 +44,7 @@ export {
 } from './crypto';
 
 // Auth - Authentication
-export { useAuth, authStore, createAccount, login, logout, recall } from './auth';
+export { useAuth, authStore, create, auth, leave, recall } from './auth';
 export type { User, AuthResult } from './auth';
 
 // User Profile - Profile management
@@ -55,9 +58,9 @@ export type { Ok, Err } from './result';
 // Zod - Schema validation
 export { z } from 'zod';
 
-// Store - State management utilities
-export { createStore, useStore, useStoreSelector } from './utils/createStore';
-export type { Store } from './utils/createStore';
+// Store - Zustand-powered state management
+export { store, define } from './utils/store';
+export type { Store } from './utils/store';
 
 // LocalStorage - Native storage wrapper
 export { LocalStorage, getStorage, getLocalStorage, useLocalStorage } from './localStorage';
@@ -107,8 +110,11 @@ export type { IntersectionObserverOptions } from './hooks/useIntersection';
 export type { UseTimeoutReturn } from './hooks/useTimeout';
 export type { UseTimeoutFnReturn } from './hooks/useTimeoutFn';
 
-// NOTE: LynxJS-specific hooks are NOT exported from main package to avoid breaking React Native/Expo
-// Import these directly in LynxJS apps:
+// NOTE: LynxJS-specific utilities are NOT exported from main package to avoid breaking React Native/Expo
+// Import these directly in LynxJS apps if needed:
+//   import { isLynxJS, loadLynxBridges } from '@ariob/core/lynx/env';
 //   import useTapLock from '@ariob/core/lynx/hooks/useTapLock';
 //   import useMainThreadImperativeHandle from '@ariob/core/lynx/hooks/useMainThreadImperativeHandle';
 //   import { useKeyboard } from '@ariob/core/lynx/hooks/useKeyboard';
+//
+// Note: loadLynxBridges() is called automatically by graph.ts, no manual setup needed.

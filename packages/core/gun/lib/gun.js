@@ -1,5 +1,4 @@
 ;(function(){
-	"background only";
   /* UNBUILD */
   function USE(arg, req) {
     return req? req(arg): arg.slice? USE[R(arg)] : (mod, path) => {
@@ -1976,6 +1975,7 @@
 
 			var env = Gun.window || {};
 			var websocket = opt.WebSocket || env.WebSocket || env.webkitWebSocket || env.mozWebSocket || globalThis.WebSocket;
+			console.log('>>>>> [GUN] websocket:', websocket.toString());
 			if(!websocket){ return }
 			opt.WebSocket = websocket;
 
