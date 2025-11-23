@@ -2,9 +2,9 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "baseUrl": ".",
+    "baseUrl": "",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["src/*"],
       "@ariob/core": ["../../packages/core/index.ts"],
       "@ariob/webcrypto": ["../../packages/webcrypto/index.ts"],
       "@ariob/ripple": ["../../packages/ripple/index.ts"]

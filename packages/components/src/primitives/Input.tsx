@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TextInput, TextInputProps, View, Animated } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
-import { Text } from './Text';
+import { Text } from '@ariob/components/src/primitives/Text';
 
 export interface InputProps extends TextInputProps {
   label?: string;

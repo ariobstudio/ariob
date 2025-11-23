@@ -2,7 +2,7 @@
  * Primitives - Base UI components
  */
 
-export * from './Text';
-export * from './Button';
-export * from './Input';
-export * from './Card';
+export * from '@ariob/components/src/primitives/Text';
+export * from '@ariob/components/src/primitives/Button';
+export * from '@ariob/components/src/primitives/Input';
+export * from '@ariob/components/src/primitives/Card';

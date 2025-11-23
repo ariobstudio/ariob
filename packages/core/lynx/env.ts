@@ -40,9 +40,6 @@ export function loadLynxBridges(): void {
       // Only import these in LynxJS environment
       require('../gun/native/websocket.js');
       require('../gun/native/localStorage.js');
-      console.log('[Lynx] Loaded LynxJS native bridges');
-    } else {
-      console.log('[Lynx] Skipping LynxJS native bridges (not in Lynx environment)');
     }
   } catch (e) {
     console.warn('[Lynx] Could not load Lynx native bridges:', e);

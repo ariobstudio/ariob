@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, PressableProps } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
-import { Text } from './Text';
+import { Text } from '@ariob/components/src/primitives/Text';
 
 export interface ButtonProps extends PressableProps {
   variant?: 'primary' | 'secondary' | 'ghost';

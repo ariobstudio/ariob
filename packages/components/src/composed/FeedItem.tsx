@@ -10,9 +10,9 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
-import { Text } from '../primitives/Text';
-import { Avatar } from './Avatar';
-import { Card } from '../primitives/Card';
+import { Text } from '@ariob/components/src/primitives/Text';
+import { Avatar } from '@ariob/components/src/composed/Avatar';
+import { Card } from '@ariob/components/src/primitives/Card';
 
 export type FeedItemType = 'post' | 'thread' | 'notification';
 

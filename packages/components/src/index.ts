@@ -7,10 +7,10 @@
  */
 
 // Primitives
-export * from './primitives';
+export * from '@ariob/components/src/primitives';
 
 // Composed
-export * from './composed';
+export * from '@ariob/components/src/composed';
 
 // Layouts
-export * from './layouts';
+export * from '@ariob/components/src/layouts';
