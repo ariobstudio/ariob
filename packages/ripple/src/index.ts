@@ -15,3 +15,6 @@ export * from './components';
 
 // Pill System
 export * from './pill';
+
+// Theme tokens
+export * from './styles';

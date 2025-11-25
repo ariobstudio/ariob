@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
 import { Avatar } from '../primitives/avatar';
 import { Badge } from '../primitives/badge';
+import { headerStyles as styles } from './header.styles';
 
 interface HeaderProps {
   author: string;
@@ -34,30 +34,3 @@ export const Header = ({ author, timestamp, avatar, variant = 'default', badges,
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row' as const,
-    marginBottom: 8,
-  },
-  meta: {
-    flex: 1,
-    marginLeft: 8,
-    justifyContent: 'center' as const,
-  },
-  authorRow: {
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
-    gap: 6,
-  },
-  author: {
-    color: '#E7E9EA',
-    fontWeight: 'bold' as const,
-    fontSize: 14,
-  },
-  timestamp: {
-    color: '#71767B',
-    fontSize: 10,
-    fontFamily: 'monospace',
-    marginTop: 2,
-  },
-});

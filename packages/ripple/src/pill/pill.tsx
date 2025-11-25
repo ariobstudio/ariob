@@ -1,9 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
-import { View, Pressable, Text } from 'react-native';
+import { View, Pressable, Text, useWindowDimensions } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  interpolateColor,
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import type { MetaAction } from './meta';
 import type { ActionType } from './actions';
 
@@ -30,9 +39,11 @@ const iconMap: Record<string, keyof typeof Ionicons.glyphMap> = {
 
 const SPRING_CONFIG = { damping: 16, stiffness: 180 };
 const COLLAPSE_CONFIG = { duration: 200 };
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export const Pill = ({ left, center, right, onAction, isActive }: PillProps) => {
   const insets = useSafeAreaInsets();
+  const { width: screenWidth } = useWindowDimensions();
   const expansion = useSharedValue(0);
   const [expandedAction, setExpandedAction] = useState<MetaAction | null>(null);
 
@@ -106,17 +117,68 @@ export const Pill = ({ left, center, right, onAction, isActive }: PillProps) => 
     }
   }, [center, left, right, expandedAction, collapseAction]);
 
+  const collapsedWidth = 180;
+  const expandedWidth = Math.min(screenWidth - 32, 360);
+  const collapsedRadius = 100;
+  const expandedRadius = 42;
+
+  const containerAnimatedStyle = useAnimatedStyle(() => {
+    
+    // Reset width and radius immediately when collapsed
+    if (expansion.value === 0) {
+      return {
+        width: collapsedWidth,
+        borderRadius: collapsedRadius,
+        transform: [{ translateY: 0 }],
+      };
+    }
+
+    const width = interpolate(
+      expansion.value,
+      [0, 1],
+      [collapsedWidth, expandedWidth],
+      Extrapolation.CLAMP,
+    );
+    const radius = interpolate(
+      expansion.value,
+      [0, 1],
+      [collapsedRadius, expandedRadius],
+      Extrapolation.CLAMP,
+    );
+    const translateY = interpolate(expansion.value, [0, 1], [0, -12], Extrapolation.CLAMP);
+
+    return {
+      width,
+      borderRadius: radius,
+      transform: [{ translateY }],
+    };
+  });
+
   const blurAnimatedStyle = useAnimatedStyle(() => ({
+    // When not expanded (value near 0), keep width at 100% of container
+    // When expanding, allow it to grow with the container
+    width: '100%',
     paddingBottom: 4 + expansion.value * 16,
-    borderRadius: 100 - expansion.value * 68, // 100 -> 32 when expanded
-    minWidth: expansion.value > 0.1 ? 220 : undefined, // Ensure wider card-like shape
-    width: expansion.value > 0.1 ? '100%' : undefined, // Allow full width expansion
-    maxWidth: 320, // Constrain max width
+    borderRadius: interpolate(
+      expansion.value,
+      [0, 1],
+      [collapsedRadius, expandedRadius],
+      Extrapolation.CLAMP,
+    ),
+    backgroundColor: interpolateColor(
+      expansion.value,
+      [0, 1],
+      ['rgba(22, 24, 28, 0.95)', 'rgba(18, 20, 24, 0.98)'],
+    ),
   }));
 
   const expandedSectionStyle = useAnimatedStyle(() => ({
     opacity: expansion.value,
     transform: [{ translateY: (1 - expansion.value) * 12 }],
+  }));
+
+  const backdropAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: expansion.value * 0.85,
   }));
 
   const renderSide = (action?: MetaAction | null) => (
@@ -188,14 +250,16 @@ export const Pill = ({ left, center, right, onAction, isActive }: PillProps) => 
   return (
     <View pointerEvents="box-none" style={styles.host}>
       {expandedAction && (
-        <Pressable
-          style={styles.backdrop}
+        <AnimatedPressable
+          style={[styles.backdrop, backdropAnimatedStyle]}
           onPress={() => collapseAction()}
           accessibilityRole="button"
           accessibilityLabel="Close expanded actions"
         />
       )}
-      <Animated.View style={[styles.container, { bottom: insets.bottom + 16 }]}>
+      <Animated.View
+        style={[styles.container, { bottom: insets.bottom + 16 }, containerAnimatedStyle]}
+      >
         <Animated.View style={[styles.blur, blurAnimatedStyle]}>
           {expandedAction?.children?.length ? (
             <Animated.View style={[styles.expandedSection, expandedSectionStyle]}>

@@ -21,7 +21,7 @@ interface FullViewData {
   isProfileView?: boolean;
 }
 
-interface PillState {
+export interface PillState {
   viewDegree: number;
   hasProfile: boolean;
   fullViewData: FullViewData | null;
@@ -96,32 +96,35 @@ const strategies: PillStrategy[] = [
   FeedStrategy,
 ];
 
+const resolveAction = (actionType: ActionType): MetaAction => {
+  const base = actions[actionType];
+  if (!base) {
+    console.warn(`@ariob/ripple: unknown action "${actionType}"`);
+    return { icon: '?', action: actionType, label: 'Unknown' };
+  }
+
+  const childActions = base.children?.map(resolveAction);
+  return {
+    icon: base.icon,
+    label: base.label,
+    action: actionType,
+    ...(childActions && childActions.length ? { children: childActions } : {}),
+  };
+};
+
+export const resolveMetaActions = (state: PillState): MetaActions => {
+  const strategy = strategies.find((s) => s.shouldActivate(state)) || FeedStrategy;
+  return strategy.getActions(state, resolveAction);
+};
+
 export const useMetaActions = (
   viewDegree: number, 
   hasProfile: boolean, 
   fullViewData: FullViewData | null,
   focusedNodeId: string | null = null
 ): MetaActions => {
-  return useMemo(() => {
-    const resolveAction = (actionType: ActionType): MetaAction => {
-      const base = actions[actionType];
-      if (!base) {
-        console.warn(`@ariob/ripple: unknown action "${actionType}"`);
-        return { icon: '?', action: actionType, label: 'Unknown' };
-      }
-
-      const childActions = base.children?.map(resolveAction);
-      return {
-        icon: base.icon,
-        label: base.label,
-        action: actionType,
-        ...(childActions && childActions.length ? { children: childActions } : {}),
-      };
-    };
-
-    const state: PillState = { viewDegree, hasProfile, fullViewData, focusedNodeId };
-    const strategy = strategies.find(s => s.shouldActivate(state)) || FeedStrategy;
-
-    return strategy.getActions(state, resolveAction);
-  }, [viewDegree, hasProfile, fullViewData, focusedNodeId]);
+  return useMemo(
+    () => resolveMetaActions({ viewDegree, hasProfile, fullViewData, focusedNodeId }),
+    [viewDegree, hasProfile, fullViewData, focusedNodeId],
+  );
 };

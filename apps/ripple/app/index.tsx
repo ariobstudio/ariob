@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet, Pressable, Text, Platform } from 'react-native';
+import { View, FlatList, Pressable, Text, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { 
   useAnimatedKeyboard, 
@@ -8,8 +8,9 @@ import Animated, {
   useDerivedValue 
 } from 'react-native-reanimated';
 import { Node, Notification, Pill, useMetaActions, type ActionType, type NodeData, Avatar } from '@ariob/ripple';
-import { useAuth, create } from '@ariob/core';
+import { useAuth, create, leave } from '@ariob/core';
 import { router } from 'expo-router';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 // Initial companion node
 const INITIAL_COMPANION: NodeData = {
@@ -29,6 +30,56 @@ const INITIAL_COMPANION: NodeData = {
   },
 };
 
+const CREATION_NODE_ID = 'creation-node';
+const AUTH_NODE_ID = 'auth-node';
+const PROFILE_NODE_ID = 'profile-node';
+
+const buildCreationNode = (): NodeData => ({
+  id: CREATION_NODE_ID,
+  type: 'profile',
+  author: 'System',
+  timestamp: 'Now',
+  degree: 0,
+  profile: { avatar: '?', handle: 'Anchor Identity', mode: 'create' },
+});
+
+const buildAuthNode = (): NodeData => ({
+  id: AUTH_NODE_ID,
+  type: 'auth',
+  author: 'System',
+  timestamp: 'Now',
+  degree: 0,
+  auth: {},
+});
+
+const buildProfileNode = (alias: string, pub?: string): NodeData => {
+  const safeAlias = alias || 'You';
+  const avatar = safeAlias[0]?.toUpperCase() || 'Y';
+  return {
+    id: PROFILE_NODE_ID,
+    type: 'profile',
+    author: safeAlias,
+    timestamp: 'Just now',
+    degree: 0,
+    avatar,
+    handle: `@${safeAlias.replace(/\s+/g, '').toLowerCase()}`,
+    profile: {
+      avatar,
+      handle: `@${safeAlias.replace(/\s+/g, '').toLowerCase()}`,
+      pubkey: pub,
+      mode: 'view',
+    },
+  };
+};
+
+const upsertNode = (nodes: NodeData[], node: NodeData) => {
+  const filtered = nodes.filter((item) => item.id !== node.id);
+  return [...filtered, node];
+};
+
+const removeNodeById = (nodes: NodeData[], id: string) =>
+  nodes.filter((node) => node.id !== id);
+
 const DEGREES = [
   { id: 0, label: 'Me' },
   { id: 1, label: 'Friends' },
@@ -38,6 +89,7 @@ const DEGREES = [
 export default function Index() {
   const insets = useSafeAreaInsets();
   const keyboard = useAnimatedKeyboard();
+  const { theme } = useUnistyles();
   
   // Fast, snappy keyboard transition for node movement
   const keyboardHeight = useDerivedValue(() => {
@@ -58,22 +110,17 @@ export default function Index() {
   const [degree, setDegree] = useState(0);
   const [notification, setNotification] = useState<any>(null);
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
+  const hasProfile = feed.some(
+    (node) => node.id === PROFILE_NODE_ID || (node.type === 'profile' && node.profile?.mode === 'view'),
+  );
+  const meta = useMetaActions(degree, hasProfile, null, focusedNodeId);
 
-  const meta = useMetaActions(degree, isAuthenticated, null, focusedNodeId);
-
-  const handleAnchor = async (handle: string) => {
-    const result = await create(handle);
+  const handleAnchor = async (alias: string) => {
+    const result = await create(alias);
     if (result.ok) {
-      setFeed(prev => prev.map(n => 
-        n.id === 'creation-node' 
-        ? { 
-            ...n, 
-            type: 'profile', 
-            timestamp: 'Just now',
-            profile: { avatar: handle[0].toUpperCase(), handle: '@' + handle, mode: 'view' }
-          }
-        : n
-      ));
+      const profileNode = buildProfileNode(result.value.alias, result.value.pub);
+      setFeed((prev) => upsertNode(removeNodeById(prev, CREATION_NODE_ID), profileNode));
       setNotification(null);
       setFocusedNodeId(null);
     }
@@ -94,36 +141,78 @@ export default function Index() {
     }
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    setFeed((prev) => {
+      let next = prev.some((node) => node.id === INITIAL_COMPANION.id)
+        ? [...prev]
+        : [INITIAL_COMPANION, ...prev];
+      next = removeNodeById(next, PROFILE_NODE_ID);
+
+      if (!isAuthenticated || !user) {
+        next = removeNodeById(next, AUTH_NODE_ID);
+        next = removeNodeById(next, CREATION_NODE_ID);
+        return next;
+      }
+
+      const profileNode = buildProfileNode(user.alias || 'You', user.pub);
+      next = removeNodeById(next, AUTH_NODE_ID);
+      next = removeNodeById(next, CREATION_NODE_ID);
+      return upsertNode(next, profileNode);
+    });
+
+    if (!isAuthenticated) {
+      setFocusedNodeId(null);
+    }
+  }, [isAuthenticated, user?.alias, user?.pub]);
+
+  const openCreationNode = () => {
+    setFeed((prev) => {
+      if (prev.some((node) => node.id === CREATION_NODE_ID)) {
+        return prev;
+      }
+      return upsertNode(removeNodeById(prev, AUTH_NODE_ID), buildCreationNode());
+    });
+    setFocusedNodeId(CREATION_NODE_ID);
+  };
+
+  const openAuthNode = () => {
+    setFeed((prev) => {
+      if (prev.some((node) => node.id === AUTH_NODE_ID)) {
+        return prev;
+      }
+      return upsertNode(removeNodeById(prev, CREATION_NODE_ID), buildAuthNode());
+    });
+    setFocusedNodeId(AUTH_NODE_ID);
+  };
+
   const handleAction = (action: ActionType) => {
     switch (action) {
       case 'create':
         if (!isAuthenticated) {
-          setFeed(prev => {
-            if (prev.find(n => n.id === 'creation-node')) return prev;
-            const newNode = {
-              id: 'creation-node',
-              type: 'profile',
-              author: 'System',
-              timestamp: 'Now',
-              degree: 0,
-              profile: { avatar: '?', handle: 'Anchor Identity', mode: 'create' }
-            } as NodeData;
-            // Auto-focus creation node
-            setTimeout(() => setFocusedNodeId('creation-node'), 100);
-            return [...prev, newNode];
-          });
+          openCreationNode();
         } else {
-          // Handle regular creation
+          setIsCreating((prev) => !prev);
+          setFocusedNodeId(null);
         }
         return;
       case 'close':
-        if (focusedNodeId === 'creation-node') {
-          setFeed(prev => prev.filter(n => n.id !== 'creation-node'));
+        if (focusedNodeId === CREATION_NODE_ID || focusedNodeId === AUTH_NODE_ID) {
+          setFeed((prev) => prev.filter((n) => n.id !== focusedNodeId));
         }
         setFocusedNodeId(null);
+        setIsCreating(false);
         return;
       case 'settings':
-        router.push('/profile');
+        if (isAuthenticated) {
+          router.push('/profile');
+        }
+        return;
+      case 'auth_options':
+        if (!isAuthenticated) {
+          openAuthNode();
+        } else {
+          router.push('/import-keys');
+        }
         return;
       case 'profile_settings':
       case 'appearance':
@@ -132,17 +221,18 @@ export default function Index() {
       case 'find_friends':
       case 'trending':
       case 'search_global':
-      case 'auth_options':
       case 'more':
         console.log(`[Pill] ${action} tapped`);
         return;
       case 'log_out':
-        console.log('[Pill] log out requested');
+        leave();
         return;
       case 'reply_full':
       case 'edit_profile':
       case 'connect':
       case 'back':
+        console.log(`[Pill] action ${action} not wired yet`);
+        return;
       case 'options':
         console.log(`[Pill] action ${action} not wired yet`);
         return;
@@ -155,7 +245,13 @@ export default function Index() {
     if (item.type === 'message') {
       router.push(`/message/${item.id}`);
     } else if (item.type === 'profile') {
-      router.push('/profile');
+      if (isAuthenticated) {
+        router.push('/profile');
+      } else {
+        openCreationNode();
+      }
+    } else if (item.type === 'auth') {
+      router.push('/import-keys');
     } else {
       router.push(`/thread/${item.id}`);
     }
@@ -163,6 +259,24 @@ export default function Index() {
 
   const handleNodeFocus = (nodeId: string | null) => {
     setFocusedNodeId(nodeId);
+  };
+
+  const handleAvatarPress = (item: NodeData) => {
+    if (item.author === 'Ripple') {
+      router.push('/user/Ripple');
+    } else if (user && (item.author === user.alias || item.author === 'You')) {
+      if (isAuthenticated) {
+        router.push('/profile');
+      } else {
+        openCreationNode();
+      }
+    } else if (item.author) {
+      if (isAuthenticated) {
+        router.push(`/user/${item.author}`);
+      } else {
+        openCreationNode();
+      }
+    }
   };
 
   const handleReply = (nodeId: string, text: string) => {
@@ -187,6 +301,7 @@ export default function Index() {
       data={item} 
       isLast={index === 0}
       onPress={() => handleNodePress(item)}
+      onAvatarPress={() => handleAvatarPress(item)}
       onAnchor={handleAnchor}
       onFocus={handleNodeFocus}
       isFocused={focusedNodeId === item.id}
@@ -271,10 +386,10 @@ export default function Index() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: theme.colors.background,
   },
   filterContainer: {
     position: 'absolute' as const,
@@ -293,11 +408,11 @@ const styles = StyleSheet.create({
   },
   filter: {
     flexDirection: 'row' as const,
-    backgroundColor: 'rgba(22, 24, 28, 0.95)',
+    backgroundColor: theme.colors.surface,
     borderRadius: 100,
     padding: 3,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
+    borderColor: theme.colors.border,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
@@ -311,19 +426,19 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   filterActive: {
-    backgroundColor: '#E7E9EA',
+    backgroundColor: theme.colors.textPrimary,
   },
   filterText: {
     fontSize: 11,
     fontWeight: '600' as const,
-    color: '#71767B',
+    color: theme.colors.textSecondary,
   },
   filterTextActive: {
-    color: '#000',
+    color: theme.colors.background,
   },
   feedContainer: {
     paddingHorizontal: 12,
     paddingBottom: 100,
     paddingTop: 120,
   },
-});
+}));

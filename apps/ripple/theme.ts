@@ -59,11 +59,12 @@ export const theme = {
     xl: 32,
     xxl: 48,
   },
-  borderRadius: {
+  radii: {
     sm: 6,
     md: 12,
     lg: 18,
     xl: 24,
+    pill: 9999,
     full: 9999,
   },
   typography: {

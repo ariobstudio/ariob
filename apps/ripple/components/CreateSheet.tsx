@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: theme.spacing.lg,
     backgroundColor: `${theme.colors.text}05`,
-    borderRadius: theme.borderRadius.lg,
+    borderRadius: theme.radii.lg,
     borderWidth: 1,
     borderColor: `${theme.colors.border}40`,
   },

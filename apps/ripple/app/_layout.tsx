@@ -7,6 +7,7 @@ import { init } from '@ariob/core';
 import '../unistyles.config'; // Import theme config
 import { useEffect, useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
+import { useUnistyles } from 'react-native-unistyles';
 
 // Initialize Gun with AsyncStorage adapter
 // This connects the @ariob/core singleton to the native storage
@@ -35,6 +36,7 @@ const gun = init({
 
 export default function RootLayout() {
   const [isReady, setIsReady] = useState(false);
+  const { theme } = useUnistyles();
 
   useEffect(() => {
     // Wait for potential session restore or just general readiness
@@ -44,16 +46,16 @@ export default function RootLayout() {
 
   if (!isReady) {
     return (
-        <View style={{ flex: 1, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center' }}>
-            <ActivityIndicator size="large" color="#1D9BF0" />
+        <View style={{ flex: 1, backgroundColor: theme.colors.background, alignItems: 'center', justifyContent: 'center' }}>
+            <ActivityIndicator size="large" color={theme.colors.accent} />
         </View>
     );
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: theme.colors.background }}>
         <StatusBar style="light" />
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: theme.colors.background } }}>
           <Stack.Screen name="index" />
           <Stack.Screen name="onboarding" options={{ presentation: 'modal' }} />
         </Stack>

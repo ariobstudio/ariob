@@ -52,7 +52,7 @@ const stylesheet = StyleSheet.create((theme) => ({
     gap: theme.spacing.xs,
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.sm,
-    borderRadius: theme.borderRadius.full,
+    borderRadius: theme.radii.pill,
     borderWidth: 1,
     minWidth: 44,
     height: 40,

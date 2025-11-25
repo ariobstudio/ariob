@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { View, Text, Pressable, TextInput, ActivityIndicator } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
 import { Ionicons } from '@expo/vector-icons';
+import { messageStyles as styles } from './message.styles';
 
 export interface MessageData {
   id: string;
@@ -92,105 +92,3 @@ export const Message = ({ data, isThinking, onReply, onFocus, isFocused }: Messa
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    gap: 16,
-  },
-  focusedContainer: {
-    // Add visual cue for focus if needed
-  },
-  messages: {
-    gap: 8,
-  },
-  msgRow: {
-    flexDirection: 'row' as const,
-  },
-  msgLeft: {
-    justifyContent: 'flex-start' as const,
-  },
-  msgRight: {
-    justifyContent: 'flex-end' as const,
-  },
-  bubble: {
-    maxWidth: '85%',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 12,
-  },
-  bubbleMe: {
-    backgroundColor: '#1D9BF0',
-    borderBottomRightRadius: 2,
-  },
-  bubbleThem: {
-    backgroundColor: '#1F2226',
-    borderBottomLeftRadius: 2,
-    borderWidth: 1,
-    borderColor: '#2F3336',
-  },
-  bubbleThinking: {
-    backgroundColor: '#1F2226',
-    borderWidth: 1,
-    borderColor: '#2F3336',
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
-    gap: 6,
-  },
-  msgText: {
-    fontSize: 13,
-    lineHeight: 18,
-  },
-  textMe: {
-    color: '#FFF',
-  },
-  textThem: {
-    color: '#E7E9EA',
-  },
-  thinkingText: {
-    fontSize: 12,
-    color: '#71767B',
-  },
-  replySection: {
-    marginTop: 8,
-    paddingTop: 8,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.05)',
-  },
-  replyButton: {
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
-    gap: 8,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 100,
-    alignSelf: 'flex-start' as const,
-  },
-  replyButtonText: {
-    fontSize: 12,
-    fontWeight: '600' as const,
-    color: '#E7E9EA',
-  },
-  inputRow: {
-    flexDirection: 'row' as const,
-    gap: 8,
-  },
-  input: {
-    flex: 1,
-    backgroundColor: '#111',
-    color: '#E7E9EA',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#2F3336',
-  },
-  sendButton: {
-    backgroundColor: '#E7E9EA',
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    alignItems: 'center' as const,
-    justifyContent: 'center' as const,
-  },
-});

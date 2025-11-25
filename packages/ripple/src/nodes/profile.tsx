@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { View, Text, TextInput, Pressable, ActivityIndicator } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
 import { Ionicons } from '@expo/vector-icons';
+import { profileStyles as styles } from './profile.styles';
 
 export interface ProfileData {
   avatar: string;
   handle: string;
+  pubkey?: string;
   mode?: 'view' | 'create';
 }
 
@@ -75,131 +76,18 @@ export const Profile = ({ data, onAnchor }: ProfileProps) => {
         <Text style={styles.name}>{data.avatar}</Text>
         <Text style={styles.handle}>{data.handle}</Text>
         <View style={styles.badge}>
-          <Ionicons name="shield-checkmark" size={12} color="#00BA7C" />
+          <Ionicons name="shield-checkmark" size={12} style={styles.badgeIcon} />
           <Text style={styles.badgeText}>Identity Anchored</Text>
         </View>
+        {data.pubkey && (
+          <View style={styles.keyContainer}>
+            <Text style={styles.keyLabel}>Public Key</Text>
+            <Text numberOfLines={1} style={styles.keyValue}>
+              {data.pubkey}
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 12,
-    overflow: 'hidden',
-    backgroundColor: '#050505',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.05)',
-  },
-  bg: {
-    height: 60,
-    backgroundColor: 'rgba(0, 186, 124, 0.05)',
-    position: 'absolute' as const,
-    top: 0,
-    left: 0,
-    right: 0,
-  },
-  content: {
-    padding: 16,
-    alignItems: 'center' as const,
-  },
-  avatarLarge: {
-    width: 60,
-    height: 60,
-    borderRadius: 20,
-    backgroundColor: '#1F2226',
-    alignItems: 'center' as const,
-    justifyContent: 'center' as const,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 186, 124, 0.3)',
-    marginBottom: 8,
-  },
-  avatarCreate: {
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    borderColor: 'rgba(255,255,255,0.1)',
-    borderStyle: 'dashed' as const,
-  },
-  createTitle: {
-    color: '#E7E9EA',
-    fontWeight: 'bold' as const,
-    fontSize: 16,
-    marginBottom: 4,
-  },
-  createSubtitle: {
-    color: '#71767B',
-    fontSize: 12,
-    marginBottom: 16,
-  },
-  inputContainer: {
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
-    backgroundColor: '#16181C',
-    borderRadius: 100,
-    paddingHorizontal: 16,
-    paddingVertical: 4,
-    borderWidth: 1,
-    borderColor: '#2F3336',
-    width: '100%',
-  },
-  atSymbol: {
-    color: '#71767B',
-    fontSize: 14,
-    marginRight: 2,
-  },
-  input: {
-    flex: 1,
-    color: '#E7E9EA',
-    fontSize: 14,
-    fontWeight: '600' as const,
-    paddingVertical: 8,
-  },
-  anchorButton: {
-    backgroundColor: '#E7E9EA',
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    alignItems: 'center' as const,
-    justifyContent: 'center' as const,
-    marginLeft: 8,
-  },
-  anchorButtonDisabled: {
-    backgroundColor: '#2F3336',
-    opacity: 0.5,
-  },
-  avatarText: {
-    fontSize: 24,
-    color: '#00BA7C',
-    fontWeight: 'bold' as const,
-  },
-  name: {
-    color: '#E7E9EA',
-    fontWeight: 'bold' as const,
-    fontSize: 16,
-  },
-  handle: {
-    color: '#71767B',
-    fontSize: 12,
-    marginBottom: 8,
-    fontFamily: 'monospace',
-  },
-  badge: {
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
-    gap: 4,
-    backgroundColor: 'rgba(0, 186, 124, 0.1)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 186, 124, 0.2)',
-  },
-  badgeIcon: {
-    fontSize: 10,
-  },
-  badgeText: {
-    color: '#00BA7C',
-    fontSize: 10,
-    fontWeight: 'bold' as const,
-    textTransform: 'uppercase' as const,
-  },
-});

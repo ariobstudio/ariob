@@ -47,7 +47,7 @@ const stylesheet = StyleSheet.create((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: theme.colors.surface,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: theme.radii.md,
     paddingHorizontal: theme.spacing.md,
     marginBottom: theme.spacing.md,
   },
@@ -79,7 +79,7 @@ const stylesheet = StyleSheet.create((theme) => ({
   tabButton: {
     paddingVertical: theme.spacing.sm,
     paddingHorizontal: theme.spacing.md,
-    borderRadius: theme.borderRadius.full,
+    borderRadius: theme.radii.pill,
     backgroundColor: theme.colors.surface,
   },
   tabButtonActive: {
@@ -123,7 +123,7 @@ const stylesheet = StyleSheet.create((theme) => ({
     marginTop: theme.spacing.lg,
     padding: theme.spacing.lg,
     backgroundColor: theme.colors.surface,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: theme.radii.md,
     flexDirection: 'row',
     alignItems: 'center',
     gap: theme.spacing.md,
@@ -159,7 +159,7 @@ const stylesheet = StyleSheet.create((theme) => ({
     paddingVertical: theme.spacing.sm,
     paddingHorizontal: theme.spacing.md,
     backgroundColor: theme.colors.surfaceElevated,
-    borderRadius: theme.borderRadius.sm,
+    borderRadius: theme.radii.sm,
   },
   connectButtonText: {
     fontSize: 13,
@@ -171,7 +171,7 @@ const stylesheet = StyleSheet.create((theme) => ({
     marginTop: theme.spacing.lg,
     padding: theme.spacing.lg,
     backgroundColor: theme.colors.surface,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: theme.radii.md,
   },
   postHeader: {
     flexDirection: 'row',
