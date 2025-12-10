@@ -1,6 +1,49 @@
+/**
+ * ChatHeader - Real-time chat header with presence indicators
+ *
+ * Displays chat partner info, typing indicators, and live presence status.
+ * The header adapts to show different states based on the conversation
+ * and friend's activity.
+ *
+ * @example
+ * ```tsx
+ * <ChatHeader
+ *   friendName="Alice"
+ *   friendPresence="live"
+ *   honkState="idle"
+ *   isFriendTyping={false}
+ * />
+ *
+ * // With typing indicator
+ * <ChatHeader
+ *   friendName="Bob"
+ *   friendPresence="live"
+ *   honkState="friend"
+ *   isFriendTyping={true}
+ * />
+ * ```
+ *
+ * **Presence States:**
+ * - `live` - Friend is actively in chat (cyan ring around avatar)
+ * - `left` - Friend has left the conversation
+ *
+ * **Honk States:**
+ * - `idle` - Shows "Live Chat"
+ * - `me` - Shows "You're typing..."
+ * - `friend` - Shows "{name} is typing..."
+ *
+ * **Visual Elements:**
+ * - Back navigation button with shadow
+ * - Centered name and status label
+ * - Avatar with optional live ring and typing dots
+ *
+ * @see MessageBubble - Chat message components
+ * @see ImmersiveView - Parent container for chat
+ */
 import { View, Text, StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { theme, colors } from '../../theme';
 
 type FriendPresence = 'live' | 'left';
 type HonkState = 'idle' | 'me' | 'friend';
@@ -40,17 +83,17 @@ export function ChatHeader({
 
   const avatarCore = (
     <View style={[styles.avatar, { backgroundColor: palette.avatar }]}>
-      <Text style={styles.avatarText}>{friendName[0]}</Text>
+      <Text style={[styles.avatarText, { color: palette.accent }]}>{friendName[0]}</Text>
       {isFriendTyping && (
         <View
           style={[
             styles.typingPill,
-            { borderColor: palette.surface },
+            { borderColor: palette.surface, backgroundColor: palette.surface },
           ]}
         >
-          <View style={[styles.typingDot, styles.typingDot1]} />
-          <View style={[styles.typingDot, styles.typingDot2]} />
-          <View style={[styles.typingDot, styles.typingDot3]} />
+          <View style={[styles.typingDot, styles.typingDot1, { backgroundColor: palette.subtext }]} />
+          <View style={[styles.typingDot, styles.typingDot2, { backgroundColor: palette.subtext }]} />
+          <View style={[styles.typingDot, styles.typingDot3, { backgroundColor: palette.subtext }]} />
         </View>
       )}
     </View>
@@ -76,7 +119,7 @@ export function ChatHeader({
         onPress={() => router.back()}
         accessibilityRole="button"
         accessibilityLabel="Go back"
-        style={styles.navButton}
+        style={[styles.navButton, { backgroundColor: palette.navBg }]}
         activeOpacity={0.7}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       >
@@ -97,24 +140,25 @@ export function ChatHeader({
   );
 }
 
+// Using theme tokens for palettes
 const lightPalette = {
-  surface: '#F7F7FA',
-  title: '#1C1C1E',
-  subtext: '#8E8E93',
-  icon: '#1C1C1E',
-  avatar: '#E0F0FF',
-  accent: '#0A84FF',
-  bubble: '#5AC8FA',
+  surface: theme.colors.light.surface,
+  title: theme.colors.light.text,
+  subtext: theme.colors.light.textSecondary,
+  icon: theme.colors.light.text,
+  avatar: `${theme.colors.light.primary}20`,
+  accent: theme.colors.light.primary,
+  navBg: theme.colors.light.surface,
 };
 
 const darkPalette = {
-  surface: '#000000',
-  title: '#FFFFFF',
-  subtext: '#AEAEB2',
-  icon: '#FFFFFF',
-  avatar: '#1C1C1E',
-  accent: '#0A84FF',
-  bubble: '#64D2FF',
+  surface: theme.colors.background,
+  title: theme.colors.text,
+  subtext: theme.colors.textSecondary,
+  icon: theme.colors.text,
+  avatar: theme.colors.surfaceElevated,
+  accent: theme.colors.primary,
+  navBg: theme.colors.surfaceElevated,
 };
 
 const styles = StyleSheet.create({
@@ -122,10 +166,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: 'rgba(0,0,0,0.1)',
+    borderBottomColor: theme.colors.border,
   },
   navButton: {
     width: 46,
@@ -133,13 +177,8 @@ const styles = StyleSheet.create({
     borderRadius: 23,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
-    backgroundColor: '#FFFFFF',
-    shadowColor: '#000000',
-    shadowOpacity: 0.15,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 5,
+    marginRight: theme.spacing.sm,
+    ...theme.shadows.md,
   },
   headerCenter: {
     flex: 1,
@@ -157,7 +196,7 @@ const styles = StyleSheet.create({
   avatarWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 12,
+    marginLeft: theme.spacing.sm,
   },
   avatar: {
     width: 36,
@@ -171,7 +210,6 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#007AFF',
   },
   typingPill: {
     position: 'absolute',
@@ -183,14 +221,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 12,
-    backgroundColor: '#FFFFFF',
     borderWidth: 2,
   },
   typingDot: {
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#8E8E93',
     marginHorizontal: 1,
   },
   typingDot1: {
@@ -207,22 +243,5 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     borderWidth: 2,
     position: 'relative',
-  },
-  liveBubble: {
-    position: 'absolute',
-    borderRadius: 999,
-    opacity: 0.85,
-  },
-  liveBubblePrimary: {
-    width: 10,
-    height: 10,
-    top: -4,
-    right: -2,
-  },
-  liveBubbleSecondary: {
-    width: 6,
-    height: 6,
-    top: -10,
-    right: 4,
   },
 });

@@ -30,9 +30,8 @@ Native WebCrypto API polyfill for React Native and Expo using platform-native cr
 `@ariob/webcrypto` provides a standards-compliant W3C WebCrypto API implementation for React Native and Expo, leveraging native platform cryptography for maximum security and performance. It's designed to be a drop-in replacement for browser `crypto.subtle` APIs.
 
 **Key Benefits:**
-- ⚡ **10-100x faster** than pure JavaScript implementations
 - 🛡️ **Hardware-backed security** using CryptoKit (iOS) and KeyStore (Android)
-- 📱 **Cross-platform** support (iOS, Android, LynxJS)
+- 📱 **Cross-platform** support (iOS, Android)
 - 🔄 **Zero configuration** when used with `@ariob/core`
 - 📦 **Lightweight** with minimal dependencies
 - 🎯 **Standards-compliant** W3C WebCrypto API

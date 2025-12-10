@@ -1,0 +1,14 @@
+{
+  "name": "@ariob/the",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "THE framework renderer for LynxJS",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "peerDependencies": {
+    "@lynx-js/react": ">=0.100.0"
+  },
+  "private": true
+}

@@ -5,16 +5,8 @@
  * Provides default shared graph + ability to create custom instances.
  */
 
-// Import native bridges for iOS/Android
-// CRITICAL: crypto.js must be loaded to provide WebCrypto polyfill
+// Import native bridges for iOS/Android (Expo)
 import './gun/native/crypto.js';
-
-// Conditionally import Lynx-specific native bridges
-// WebSocket and localStorage are only needed in LynxJS environment
-// React Native/Expo have built-in WebSocket and don't use synchronous localStorage
-import { loadLynxBridges } from './lynx/env';
-loadLynxBridges();
-
 import './gun/lib/yson.js';
 
 // Import Gun FIRST before extensions
@@ -136,7 +128,7 @@ const graphActions = {
       throw new Error('All peers must be strings');
     }
 
-    // Disable localStorage for now - LynxJS apps use in-memory storage
+    // Disable localStorage - use SecureStore for persistence instead
     const finalOptions = {
       ...options,
       peers,

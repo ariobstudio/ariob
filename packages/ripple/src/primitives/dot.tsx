@@ -8,25 +8,25 @@ interface DotProps {
 
 export const Dot = ({ color, type }: DotProps) => {
   return (
-    <View 
+    <View
       style={[
         styles.dot,
-        { 
+        {
           backgroundColor: color,
-          borderColor: '#000',
           shadowColor: color,
         }
-      ]} 
+      ]}
     />
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   dot: {
     width: 14,
     height: 14,
     borderRadius: 7,
     borderWidth: 2,
+    borderColor: theme.colors.background,
     marginVertical: -2,
     zIndex: 1,
     shadowOffset: { width: 0, height: 0 },
@@ -34,5 +34,4 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
   },
-});
-
+}));

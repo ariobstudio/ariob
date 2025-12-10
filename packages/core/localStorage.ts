@@ -20,19 +20,10 @@ try {
   // Not available
 }
 
-// Conditionally import native localStorage bridge only in LynxJS environment
+// Platform detection (Expo uses SecureStore, Web uses localStorage)
 (() => {
-  try {
-    if (typeof globalThis !== 'undefined' &&
-        (globalThis as any).lynx !== undefined) {
-      require('./gun/native/localStorage');
-      console.log('[LocalStorage] Loaded LynxJS native bridge');
-    } else if (!ExpoSecureStore) {
-      // Only log this if we didn't find SecureStore, to avoid confusion
-      console.log('[LocalStorage] Using platform-native localStorage (web/Expo)');
-    }
-  } catch (e) {
-    console.warn('[LocalStorage] Could not load native bridge:', e);
+  if (!ExpoSecureStore && typeof globalThis !== 'undefined' && !globalThis.localStorage) {
+    console.log('[LocalStorage] Using platform-native localStorage');
   }
 })();
 

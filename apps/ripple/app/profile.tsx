@@ -6,7 +6,7 @@ import { Profile as ProfileCard } from '@ariob/ripple';
 import { useAuth, leave } from '@ariob/core';
 import { useState } from 'react';
 import { useUnistyles } from 'react-native-unistyles';
-import { profileScreenStyles as styles } from './styles/profile.styles';
+import { profileScreenStyles as styles } from '../styles/profile.styles';
 
 export default function ProfileSettings() {
   const insets = useSafeAreaInsets();

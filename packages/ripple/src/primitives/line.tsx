@@ -8,16 +8,15 @@ interface LineProps {
 
 export const Line = ({ visible = true, style }: LineProps) => {
   if (!visible) return null;
-  
+
   return <View style={[styles.line, style]} />;
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   line: {
     width: 2,
     flex: 1,
-    backgroundColor: '#222',
+    backgroundColor: theme.colors.borderSubtle,
     opacity: 0.5,
   },
-});
-
+}));

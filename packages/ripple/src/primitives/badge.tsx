@@ -7,28 +7,14 @@ interface BadgeProps {
 }
 
 export const Badge = ({ label, variant = 'default' }: BadgeProps) => {
-  const variantStyles = {
-    dm: styles.dmBadge,
-    ai: styles.aiBadge,
-    new: styles.newBadge,
-    default: styles.defaultBadge,
-  };
-  
-  const textVariants = {
-    dm: styles.dmText,
-    ai: styles.aiText,
-    new: styles.newText,
-    default: styles.defaultText,
-  };
-  
   return (
-    <View style={[styles.badge, variantStyles[variant]]}>
-      <Text style={[styles.text, textVariants[variant]]}>{label}</Text>
+    <View style={[styles.badge, styles[`${variant}Badge`]]}>
+      <Text style={[styles.text, styles[`${variant}Text`]]}>{label}</Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   badge: {
     paddingHorizontal: 4,
     paddingVertical: 1,
@@ -40,32 +26,31 @@ const styles = StyleSheet.create({
     fontWeight: 'bold' as const,
   },
   dmBadge: {
-    backgroundColor: 'rgba(29, 155, 240, 0.1)',
-    borderColor: 'rgba(29, 155, 240, 0.2)',
+    backgroundColor: `${theme.colors.indicator.message}15`,
+    borderColor: `${theme.colors.indicator.message}30`,
   },
   dmText: {
-    color: '#1D9BF0',
+    color: theme.colors.indicator.message,
   },
   aiBadge: {
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
-    borderColor: 'rgba(255, 215, 0, 0.2)',
+    backgroundColor: `${theme.colors.indicator.ai}15`,
+    borderColor: `${theme.colors.indicator.ai}30`,
   },
   aiText: {
-    color: '#FFD700',
+    color: theme.colors.indicator.ai,
   },
   newBadge: {
-    backgroundColor: 'rgba(120, 86, 255, 0.1)',
-    borderColor: 'rgba(120, 86, 255, 0.2)',
+    backgroundColor: `${theme.colors.indicator.auth}15`,
+    borderColor: `${theme.colors.indicator.auth}30`,
   },
   newText: {
-    color: '#7856FF',
+    color: theme.colors.indicator.auth,
   },
   defaultBadge: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: `${theme.colors.text}15`,
+    borderColor: `${theme.colors.text}20`,
   },
   defaultText: {
-    color: '#E7E9EA',
+    color: theme.colors.text,
   },
-});
-
+}));

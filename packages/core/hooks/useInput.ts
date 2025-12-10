@@ -1,70 +1,53 @@
 import { useCallback, useState } from 'react';
-import type { BaseEvent } from '@lynx-js/types';
 
-export type InputInputEvent = {
+/** Input event detail */
+export interface InputDetail {
   value: string;
-  selectionStart: number;
-  selectionEnd: number;
-  isComposing?: boolean;
-};
+  selectionStart?: number;
+  selectionEnd?: number;
+}
 
-export type InputEvent = BaseEvent<'bindinput', InputInputEvent>;
+/** Input event wrapper */
+export interface InputEvent {
+  detail: InputDetail;
+  nativeEvent?: any;
+}
 
-export type UseInputOptions<T = string> = {
-  onChange?:
-    | (() => void)
-    | ((value: T) => void)
-    | ((value: T, event: InputEvent) => void);
-  validator?:
-    | (() => boolean)
-    | ((value: T) => boolean)
-    | ((value: T, event: InputEvent) => boolean);
-  formatter?:
-    | (() => T)
-    | ((value: T) => T)
-    | ((value: T, event: InputEvent) => T);
-};
+/** Options for useInput hook */
+export interface UseInputOptions<T = string> {
+  onChange?: (value: T, event?: InputEvent) => void;
+  validate?: (value: T) => boolean;
+  format?: (value: T) => T;
+}
 
-function useInput<T = string>(initialValue: T, options?: UseInputOptions<T>) {
-  const [value, setValue] = useState<T>(initialValue);
+/** Hook for controlled text input. */
+function useInput<T = string>(initial: T, options?: UseInputOptions<T>) {
+  const [value, setValue] = useState<T>(initial);
 
   const reset = useCallback(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
-  const handleInput = useCallback(
-    (e: InputEvent) => {
-      const inputValue = e.detail.value as T;
-
-      const formattedValue = options?.formatter
-        ? options.formatter(inputValue, e)
-        : inputValue;
-
-      if (options?.validator) {
-        if (!options.validator(formattedValue, e)) {
-          return;
-        }
-      }
-
-      setValue(formattedValue);
-
-      if (options?.onChange) {
-        options.onChange(formattedValue, e);
-      }
-    },
-    [options],
-  );
+    setValue(initial);
+  }, [initial]);
 
   const clear = useCallback(() => {
     setValue('' as T);
   }, []);
 
-  return {
-    value,
-    reset,
-    clear,
-    handleInput,
-  };
+  const handle = useCallback(
+    (e: InputEvent | string) => {
+      const raw = typeof e === 'string' ? e : (e.detail?.value as T);
+      const formatted = options?.format ? options.format(raw) : raw;
+
+      if (options?.validate && !options.validate(formatted)) {
+        return;
+      }
+
+      setValue(formatted);
+      options?.onChange?.(formatted, typeof e === 'string' ? undefined : e);
+    },
+    [options],
+  );
+
+  return { value, reset, clear, handle };
 }
 
 export default useInput;

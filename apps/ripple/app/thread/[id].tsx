@@ -1,114 +1,253 @@
-import { useLocalSearchParams, router } from 'expo-router';
-import { View, StyleSheet, Text, Pressable } from 'react-native';
+import { useLocalSearchParams, router, useFocusEffect, useNavigation } from 'expo-router';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Node, Pill, useMetaActions, type ActionType, type NodeData } from '@ariob/ripple';
-import { useState, useEffect } from 'react';
-import { useAuth } from '@ariob/core';
-import Animated, { SlideInRight } from 'react-native-reanimated';
+import { useUnistyles, StyleSheet } from 'react-native-unistyles';
+import { Node, useBar, useMetaActions, type ActionType, type NodeData } from '@ariob/ripple';
+import { toast } from '@ariob/andromeda';
+import { useMemo, useCallback, useRef, useEffect } from 'react';
+import { useAuth, useNode, useCollection } from '@ariob/core';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { formatTimestamp } from '../../utils/mockData';
 
-// Mock data fetcher
-const getNode = (id: string): NodeData => {
-  return {
-    id,
-    type: 'message',
-    author: 'Ripple',
-    timestamp: 'Just now',
-    degree: 0,
-    avatar: 'sparkles',
-    message: {
-      id: 'msg-1',
-      messages: [
-        { id: 'r0', from: 'them', content: "This is the full thread view.", time: '00:00' },
-        { id: 'r1', from: 'them', content: "You navigated here from the feed.", time: 'Now' },
-      ],
-    },
-  };
-};
+// Bar height for calculating offset
+const BAR_HEIGHT = 60;
 
 export default function Thread() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
-  const { isAuthenticated } = useAuth();
-  
-  const [data, setData] = useState<NodeData | null>(null);
-  
-  useEffect(() => {
-    if (id) {
-      setData(getNode(id));
-    }
-  }, [id]);
+  const { theme } = useUnistyles();
+  const { isAuthenticated, user } = useAuth();
+  // Use selectors for stable function references - prevents infinite re-renders
+  const barConfigure = useBar((s) => s.configure);
+  const barSetCallbacks = useBar((s) => s.setCallbacks);
+  const barSetMode = useBar((s) => s.setMode);
+  const navigation = useNavigation();
 
-  // Full View Context for Pill
-  const fullViewData = {
+  // Fetch post from Gun graph
+  const { data: postData, isLoading, isError } = useNode({
+    path: `posts/${id}`,
+    enabled: !!id,
+  });
+
+  // Fetch replies for this post
+  const { items: replies, add: addReply } = useCollection({
+    path: `posts/${id}/replies`,
+    enabled: !!id,
+  });
+
+  // Convert Gun data to NodeData format
+  const data: NodeData | null = useMemo(() => {
+    if (!postData) return null;
+    return {
+      id: id!,
+      type: 'post',
+      author: postData.authorAlias || 'Unknown',
+      timestamp: postData.created ? formatTimestamp(postData.created) : 'Unknown',
+      degree: postData.degree ?? 1,
+      content: postData.content,
+      ...postData,
+    };
+  }, [id, postData]);
+
+  // Full View Context - memoize to prevent infinite re-renders
+  const fullViewData = useMemo(() => ({
     author: data?.author,
     type: data?.type,
-    isMe: false, // Check logic here later
-  };
+    isMe: false,
+  }), [data?.author, data?.type]);
 
   const meta = useMetaActions(0, isAuthenticated, fullViewData);
 
-  const handleAction = (action: ActionType) => {
+  // Memoize meta values to prevent useFocusEffect from re-running unnecessarily
+  const metaLeft = useMemo(() => meta.left ?? null, [meta.left?.name, meta.left?.icon]);
+  const metaMain = useMemo(() => meta.main ?? null, [meta.main?.name, meta.main?.icon]);
+  const metaRight = useMemo(() => meta.right ?? null, [meta.right?.name, meta.right?.icon]);
+
+  // Safe back navigation
+  const goBack = useCallback(() => {
+    if (navigation.canGoBack()) {
+      router.back();
+    } else {
+      router.replace('/');
+    }
+  }, [navigation]);
+
+  const handleAction = useCallback((action: ActionType) => {
     switch (action) {
       case 'back':
-        router.back();
+        goBack();
         return;
       case 'options':
         console.log('Options tapped');
         return;
+      case 'reply':
       case 'reply_full':
-        console.log('Reply full tapped');
+        barSetMode('input');
+        return;
+      case 'attach':
+        toast.info('Attachments coming soon');
         return;
       default:
         console.log('Thread action:', action);
     }
-  };
+  }, [goBack, barSetMode]);
 
-  if (!data) return null;
+  const handleSend = useCallback(async (text: string) => {
+    if (!isAuthenticated || !user) {
+      toast.error('Sign in to reply');
+      return;
+    }
+
+    try {
+      const result = await addReply({
+        content: text,
+        author: user.pub,
+        authorAlias: user.alias || 'Anonymous',
+        created: Date.now(),
+        parentId: id,
+      });
+
+      if (result.ok) {
+        toast.success('Reply sent');
+        barSetMode('action');
+      } else {
+        toast.error('Failed to send reply');
+      }
+    } catch (err) {
+      console.error('Reply error:', err);
+      toast.error('Failed to send reply');
+    }
+  }, [isAuthenticated, user, addReply, id, barSetMode]);
+
+  const handleCancel = useCallback(() => {
+    barSetMode('action');
+  }, [barSetMode]);
+
+  // Use ref to track if already configured - prevents infinite re-renders
+  const hasConfigured = useRef(false);
+  const configRef = useRef({ metaLeft, metaMain, metaRight, handleAction, handleSend, handleCancel });
+
+  // Update refs when values change
+  useEffect(() => {
+    configRef.current = { metaLeft, metaMain, metaRight, handleAction, handleSend, handleCancel };
+  });
+
+  // Static inputLeft config - created once
+  const inputLeftConfig = useMemo(() => ({ name: 'attach', icon: 'attach', label: 'Attach' } as const), []);
+
+  // Configure global Bar ONCE when focused
+  useFocusEffect(
+    useCallback(() => {
+      // Only configure once per focus
+      hasConfigured.current = false;
+
+      const configure = () => {
+        if (hasConfigured.current) return;
+        hasConfigured.current = true;
+
+        const { metaLeft: left, metaMain: center, metaRight: right } = configRef.current;
+
+        barConfigure({
+          mode: 'action',
+          left,
+          center,
+          right,
+          inputLeft: inputLeftConfig,
+          placeholder: 'Reply...',
+          persistInputMode: true, // Keep node visible when input opens (no backdrop)
+        });
+        barSetCallbacks({
+          onAction: (action: ActionType) => configRef.current.handleAction(action),
+          onSubmit: (text: string) => configRef.current.handleSend(text),
+          onCancel: () => configRef.current.handleCancel(),
+        });
+      };
+
+      // Delay slightly to avoid race with render
+      const timer = setTimeout(configure, 0);
+
+      return () => {
+        clearTimeout(timer);
+        hasConfigured.current = false;
+      };
+    }, [inputLeftConfig, barConfigure, barSetCallbacks])
+  );
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={theme.colors.accentGlow} />
+        <Text style={styles.loadingText}>Loading thread...</Text>
+      </View>
+    );
+  }
+
+  // No data or error state
+  if (!data) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>
+          {isError ? 'Failed to load thread' : 'Thread not found'}
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      <Animated.View 
-        style={[styles.content, { paddingTop: insets.top }]}
-        entering={SlideInRight}
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoid}
+        behavior="padding"
+        keyboardVerticalOffset={BAR_HEIGHT + insets.bottom + 12}
       >
-        <Node 
-          data={data} 
-          isLast={true}
-          // No press handler here to prevent recursion
-        />
-        
-        <View style={styles.comments}>
-          <Text style={styles.commentHeader}>Replies coming soon...</Text>
-        </View>
-      </Animated.View>
+        <View style={[styles.content, { paddingTop: insets.top, paddingBottom: BAR_HEIGHT + insets.bottom + 24 }]}>
+          <Node
+            data={data}
+            isLast={true}
+            transitionTag={`node-${id}`}
+          />
 
-      <Pill 
-        left={meta.left || undefined}
-        center={meta.center}
-        right={meta.right || undefined}
-        onAction={handleAction}
-      />
+          <View style={styles.comments}>
+            <Text style={styles.commentHeader}>Replies coming soon...</Text>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+      {/* Bar is rendered at layout level */}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: theme.colors.background,
+  },
+  keyboardAvoid: {
+    flex: 1,
   },
   content: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: theme.spacing.md,
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.background,
+  },
+  loadingText: {
+    marginTop: theme.spacing.sm,
+    color: theme.colors.textMuted,
+    fontSize: theme.typography.caption.fontSize,
   },
   comments: {
-    marginTop: 24,
-    paddingLeft: 24,
+    marginTop: theme.spacing.lg,
+    paddingLeft: theme.spacing.lg,
     opacity: 0.5,
   },
   commentHeader: {
-    color: '#71767B',
-    fontSize: 14,
+    color: theme.colors.textMuted,
+    fontSize: theme.typography.caption.fontSize,
   },
-});
-
+}));

@@ -1,3 +1,53 @@
+/**
+ * MessageBubble - Animated chat bubble with input support
+ *
+ * A versatile chat bubble component that supports both display and input modes.
+ * Features smooth height and typography animations as content changes.
+ *
+ * @example
+ * ```tsx
+ * // Display friend's message
+ * <MessageBubble
+ *   variant="friend"
+ *   text="Hello!"
+ *   size="medium"
+ * />
+ *
+ * // Editable input for user's message
+ * <MessageBubble
+ *   variant="me"
+ *   text={message}
+ *   size="large"
+ *   placeholder="Type a message..."
+ *   onChangeText={setMessage}
+ *   inputRef={inputRef}
+ * />
+ *
+ * // With typing state
+ * <MessageBubble
+ *   variant="me"
+ *   text={message}
+ *   size="medium"
+ *   isTyping={true}
+ * />
+ * ```
+ *
+ * **Variants:**
+ * - `me` - Blue bubble with TextInput (editable)
+ * - `friend` - Gray bubble with Text (read-only)
+ *
+ * **Sizes:**
+ * - `small` - 70-80px height, 18px font
+ * - `medium` - 130-140px height, 22px font
+ * - `large` - 200-220px height, 26px font
+ *
+ * **Animations:**
+ * - Height transitions with cubic easing (260ms)
+ * - Typography scales with cubic easing (220ms)
+ * - Typing state adds 20px height boost
+ *
+ * @see ChatHeader - Companion header component
+ */
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
 import {
   Animated,
@@ -9,6 +59,7 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
+import { theme } from '../../theme';
 
 export type BubbleSize = 'small' | 'medium' | 'large';
 
@@ -138,7 +189,6 @@ export function MessageBubble({
       style={[
         styles.bubbleBase,
         styles.meBubble,
-        isDark && styles.meBubbleDark,
         animatedStyle,
       ]}
     >
@@ -149,7 +199,7 @@ export function MessageBubble({
         onFocus={onFocus}
         onBlur={onBlur}
         placeholder={placeholder}
-        placeholderTextColor="rgba(255,255,255,0.6)"
+        placeholderTextColor={`${theme.colors.text}99`}
         style={[
           styles.input,
           styles.inputFullHeight,
@@ -163,7 +213,7 @@ export function MessageBubble({
         keyboardAppearance={isDark ? 'dark' : 'light'}
         autoCorrect
         autoCapitalize="sentences"
-        selectionColor="rgba(255,255,255,0.9)"
+        selectionColor={`${theme.colors.text}E6`}
         maxLength={maxLength}
         onSubmitEditing={onSubmitEditing}
         blurOnSubmit={Boolean(onSubmitEditing)}
@@ -175,39 +225,36 @@ export function MessageBubble({
 
 const styles = StyleSheet.create({
   bubbleBase: {
-    borderRadius: 26,
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    marginVertical: 10,
+    borderRadius: theme.radii.xl,
+    paddingHorizontal: theme.spacing.lg,
+    paddingVertical: theme.spacing.md,
+    marginVertical: theme.spacing.sm,
     minHeight: 60,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'stretch',
-    marginHorizontal: 24,
+    marginHorizontal: theme.spacing.xl,
     maxWidth: undefined,
   },
   friendBubble: {
-    backgroundColor: '#F2F2F7',
+    backgroundColor: theme.colors.light.surfaceElevated,
   },
   friendBubbleDark: {
-    backgroundColor: '#2C2C2E',
+    backgroundColor: theme.colors.surfaceElevated,
   },
   meBubble: {
-    backgroundColor: '#0A84FF',
-  },
-  meBubbleDark: {
-    backgroundColor: '#0A84FF',
+    backgroundColor: theme.colors.primary,
   },
   friendText: {
-    color: '#111111',
+    color: theme.colors.light.text,
     fontWeight: '500',
     textAlign: 'center',
   },
   friendTextDark: {
-    color: '#FFFFFF',
+    color: theme.colors.text,
   },
   input: {
-    color: '#FFFFFF',
+    color: theme.colors.text,
     fontWeight: '500',
     flex: 1,
   },

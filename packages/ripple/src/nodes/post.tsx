@@ -1,47 +1,58 @@
 import { View, Text } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 export interface PostData {
   content: string;
   image?: string;
+  authorAlias?: string; // Optional context
+  degree?: number;
 }
 
 interface PostProps {
   data: PostData;
 }
 
+/**
+ * Post Node - Clean, text-forward design
+ * 
+ * Removed heavy borders. Uses whitespace and typography hierarchy.
+ */
 export const Post = ({ data }: PostProps) => {
+  const { theme } = useUnistyles();
+
   return (
     <View style={styles.container}>
       <Text style={styles.content}>{data.content}</Text>
+      
       {data.image && (
         <View style={styles.imageContainer}>
-          <View style={styles.imagePlaceholder} />
+          <View style={[styles.imagePlaceholder, { backgroundColor: theme.colors.surfaceMuted }]} />
         </View>
       )}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
-    gap: 8,
+    gap: theme.spacing.md,
+    paddingVertical: theme.spacing.xs,
   },
   content: {
-    color: '#E7E9EA',
-    fontSize: 15,
-    lineHeight: 20,
+    color: theme.colors.textPrimary,
+    fontSize: theme.typography.body.fontSize,
+    lineHeight: theme.typography.body.lineHeight,
+    fontWeight: theme.typography.body.fontWeight,
+    letterSpacing: theme.typography.body.letterSpacing,
   },
   imageContainer: {
-    borderRadius: 12,
+    borderRadius: theme.radii.md, // Soft corners (16px)
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#2F3336',
+    marginTop: theme.spacing.xs,
   },
   imagePlaceholder: {
     width: '100%',
-    height: 200,
-    backgroundColor: '#1F2226',
+    aspectRatio: 16 / 9,
+    // Real implementation would use <Image />
   },
-});
-
+}));

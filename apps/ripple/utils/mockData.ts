@@ -437,3 +437,150 @@ export function formatTimestamp(timestamp: number): string {
   if (minutes > 0) return `${minutes}m ago`;
   return 'just now';
 }
+
+// ============================================================================
+// System Node IDs
+// ============================================================================
+
+/**
+ * Reserved node IDs for system nodes
+ */
+export const SYSTEM_NODE_IDS = {
+  INITIAL_COMPANION: 'message-ripple-genesis',
+  AI_MODEL_NODE: 'ai-model-setup',
+  CREATION_NODE: 'creation-node',
+  AUTH_NODE: 'auth-node',
+  PROFILE_NODE: 'profile-node',
+} as const;
+
+// ============================================================================
+// AI Companion Node
+// ============================================================================
+
+/**
+ * Message in a conversation thread
+ */
+export interface ConversationMessage {
+  id: string;
+  from: 'me' | 'them';
+  content: string;
+  time: string;
+}
+
+/**
+ * Node data structure for the feed
+ */
+/**
+ * AI Model option
+ */
+export interface AIModelOption {
+  id: string;
+  name: string;
+  description: string;
+  size: string;
+  ramRequired: string;
+}
+
+/**
+ * AI Model node data
+ */
+export interface AIModelData {
+  selectedModel: string | null;
+  downloadProgress: number;
+  isDownloading: boolean;
+  isReady: boolean;
+  error: string | null;
+  models: AIModelOption[];
+}
+
+export interface NodeData {
+  id: string;
+  type: 'message' | 'post' | 'profile' | 'auth' | 'sync' | 'ghost' | 'suggestion' | 'ai-model';
+  author: string;
+  timestamp: string;
+  degree: number;
+  avatar?: string;
+  message?: {
+    id: string;
+    messages: ConversationMessage[];
+  };
+  aiModel?: AIModelData;
+  [key: string]: unknown;
+}
+
+/**
+ * Default model options (matches @ariob/ml store)
+ * These are duplicated here for initial state before ML package loads
+ */
+export const DEFAULT_MODEL_OPTIONS: AIModelOption[] = [
+  {
+    id: 'smollm-135m',
+    name: 'SmolLM 135M',
+    description: 'Ultra-fast, works on all devices',
+    size: '~135MB',
+    ramRequired: '~500MB',
+  },
+  {
+    id: 'qwen-0.5b',
+    name: 'Qwen 0.5B',
+    description: 'Balanced quality and speed',
+    size: '~500MB',
+    ramRequired: '~1.5GB',
+  },
+  {
+    id: 'llama-3.2-1b',
+    name: 'LLaMA 3.2 1B',
+    description: 'Highest quality responses',
+    size: '~1GB',
+    ramRequired: '~3.2GB',
+  },
+];
+
+/**
+ * Initial AI Model node - shown for model selection
+ *
+ * This node appears before the AI companion can chat,
+ * allowing users to select which model to download.
+ */
+export const INITIAL_AI_MODEL_NODE: NodeData = {
+  id: SYSTEM_NODE_IDS.AI_MODEL_NODE,
+  type: 'ai-model',
+  author: 'Ripple',
+  timestamp: 'Setup',
+  degree: 0,
+  avatar: 'sparkles',
+  aiModel: {
+    selectedModel: null,
+    downloadProgress: 0,
+    isDownloading: false,
+    isReady: false,
+    error: null,
+    models: DEFAULT_MODEL_OPTIONS,
+  },
+};
+
+/**
+ * Initial AI companion node - the first message users see
+ *
+ * This is Ripple's welcome message for new users, appearing at the
+ * top of the feed when they first open the app.
+ *
+ * The companion provides context about the platform and prompts
+ * the user to anchor their identity.
+ */
+export const INITIAL_COMPANION: NodeData = {
+  id: SYSTEM_NODE_IDS.INITIAL_COMPANION,
+  type: 'message',
+  author: 'Ripple',
+  timestamp: 'Just now',
+  degree: 0,
+  avatar: 'sparkles',
+  message: {
+    id: 'msg-1',
+    messages: [
+      { id: 'r0', from: 'them', content: 'Protocol initialized.', time: '00:00' },
+      { id: 'r1', from: 'them', content: "Hi! I'm Ripple, your AI companion.", time: 'Now' },
+      { id: 'r2', from: 'them', content: "I'm connected to the mesh. Anchor your identity to start.", time: 'Now' },
+    ],
+  },
+};

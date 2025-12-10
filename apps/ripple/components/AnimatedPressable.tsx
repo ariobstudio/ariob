@@ -1,8 +1,39 @@
 /**
- * AnimatedPressable
+ * AnimatedPressable - Pressable wrapper with spring animations and haptics
  *
- * Reusable pressable component with built-in spring animations.
- * Provides haptic feedback and visual press states.
+ * A reusable touch target that combines spring scale animation with optional
+ * haptic feedback. Wraps content in an Animated.View and handles press states
+ * automatically.
+ *
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <AnimatedPressable onPress={() => console.log('Tapped!')}>
+ *   <Text>Tap me</Text>
+ * </AnimatedPressable>
+ *
+ * // Custom scale and haptics
+ * <AnimatedPressable
+ *   scaleDown={0.9}
+ *   hapticStyle={Haptics.ImpactFeedbackStyle.Medium}
+ *   onPress={handleSubmit}
+ * >
+ *   <SubmitButton />
+ * </AnimatedPressable>
+ *
+ * // Disable haptics
+ * <AnimatedPressable haptics={false} onPress={handleTap}>
+ *   <Card />
+ * </AnimatedPressable>
+ * ```
+ *
+ * **Props:**
+ * - `scaleDown` - Scale factor on press (default: 0.95)
+ * - `haptics` - Enable haptic feedback (default: true)
+ * - `hapticStyle` - Haptic intensity (default: Light)
+ *
+ * @see usePressAnimation - Underlying animation hook
+ * @see Bar - Context-aware floating action bar
  */
 
 import { type ReactNode } from 'react';

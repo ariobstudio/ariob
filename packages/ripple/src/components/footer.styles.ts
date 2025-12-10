@@ -17,3 +17,5 @@ export const footerStyles = StyleSheet.create((theme) => ({
   },
 }));
 
+
+

@@ -6,10 +6,10 @@ import { Dot } from '../primitives/dot';
 import { Shell } from '../primitives/shell';
 import { Header } from './header';
 import { Footer } from './footer';
-import { Post, Message, Profile, Auth, Sync, Ghost, Suggestion } from '../nodes';
-import type { PostData, MessageData, ProfileData, AuthData, SyncData, GhostData, SuggestionData } from '../nodes';
+import { Post, Message, Profile, Auth, Sync, Ghost, Suggestion, AIModel } from '../nodes';
+import type { PostData, MessageData, ProfileData, AuthData, SyncData, GhostData, SuggestionData, AIModelData } from '../nodes';
 
-export type NodeType = 'post' | 'message' | 'profile' | 'auth' | 'sync' | 'ghost' | 'suggestion';
+export type NodeType = 'post' | 'message' | 'profile' | 'auth' | 'sync' | 'ghost' | 'suggestion' | 'ai-model';
 
 export interface NodeData {
   id: string;
@@ -26,6 +26,7 @@ export interface NodeData {
   sync?: SyncData;
   ghost?: GhostData;
   suggestion?: SuggestionData;
+  aiModel?: AIModelData;
 }
 
 interface NodeProps {
@@ -35,19 +36,23 @@ interface NodeProps {
   onAvatarPress?: () => void;
   onSync?: () => void;
   isThinking?: boolean;
-  onReply?: (text: string) => void;
+  /** Called when user taps Reply on a message node */
+  onReplyPress?: () => void;
   onAnchor?: (handle: string) => void;
-  onFocus?: (nodeId: string | null) => void;
-  isFocused?: boolean;
+  /** Called when user selects an AI model */
+  onSelectModel?: (modelId: string) => void;
+  /** Shared element transition tag for navigation */
+  transitionTag?: string;
 }
 
-export const Node = ({ data, isLast, onPress, onAvatarPress, onSync, isThinking, onReply, onAnchor, onFocus, isFocused }: NodeProps) => {
+export const Node = ({ data, isLast, onPress, onAvatarPress, onSync, isThinking, onReplyPress, onAnchor, onSelectModel, transitionTag }: NodeProps) => {
   const getDotColor = () => {
     switch (data.type) {
       case 'profile': return '#00BA7C';
       case 'message': return data.author === 'Ripple' ? '#FFD700' : '#1D9BF0';
       case 'auth': return '#7856FF';
       case 'sync': return '#7856FF';
+      case 'ai-model': return '#00E5FF'; // Bioluminescent cyan for AI
       default: return '#E7E9EA';
     }
   };
@@ -71,7 +76,7 @@ export const Node = ({ data, isLast, onPress, onAvatarPress, onSync, isThinking,
       case 'post':
         return data.post ? <Post data={data.post} /> : null;
       case 'message':
-        return data.message ? <Message data={data.message} isThinking={isThinking} onReply={onReply} onFocus={() => onFocus?.(data.id)} isFocused={isFocused} /> : null;
+        return data.message ? <Message data={data.message} isThinking={isThinking} onReplyPress={onReplyPress} /> : null;
       case 'profile':
         return data.profile ? <Profile data={data.profile} onAnchor={onAnchor} /> : null;
       case 'auth':
@@ -82,6 +87,8 @@ export const Node = ({ data, isLast, onPress, onAvatarPress, onSync, isThinking,
         return data.ghost ? <Ghost data={data.ghost} /> : null;
       case 'suggestion':
         return data.suggestion ? <Suggestion data={data.suggestion} /> : null;
+      case 'ai-model':
+        return data.aiModel ? <AIModel data={data.aiModel} onSelectModel={onSelectModel} /> : null;
       default:
         return null;
     }
@@ -98,10 +105,11 @@ export const Node = ({ data, isLast, onPress, onAvatarPress, onSync, isThinking,
   };
   
   return (
-    <Animated.View 
+    <Animated.View
       style={styles.container}
-      entering={FadeIn.duration(300)} // Subtler entry animation
+      entering={FadeIn.duration(300)}
       layout={Layout.springify()}
+      sharedTransitionTag={transitionTag}
     >
       {/* Left Column */}
       <View style={styles.leftColumn}>

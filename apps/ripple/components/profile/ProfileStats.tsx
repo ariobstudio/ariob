@@ -1,7 +1,26 @@
 /**
- * ProfileStats - User statistics display
+ * ProfileStats - User statistics display row
  *
- * Shows posts, drafts, and connections counts
+ * A horizontal row displaying key user metrics with bold values and
+ * uppercase labels. Designed for profile headers.
+ *
+ * @example
+ * ```tsx
+ * <ProfileStats
+ *   postsCount={42}
+ *   draftsCount={3}
+ *   connectionsCount={156}
+ * />
+ * ```
+ *
+ * **Layout:**
+ * - Three evenly spaced stat columns
+ * - Large bold numbers (20px)
+ * - Small uppercase labels (12px)
+ * - 32px gap between columns
+ *
+ * @see ProfileHeader - Parent component
+ * @see StatsBar - Alternative horizontal stat layout
  */
 
 import React from 'react';

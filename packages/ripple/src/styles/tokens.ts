@@ -1,6 +1,6 @@
 import type { TextStyle } from 'react-native';
 
-type RipplePalette = {
+export type RipplePalette = {
   background: string;
   surface: string;
   surfaceElevated: string;
@@ -12,8 +12,23 @@ type RipplePalette = {
   textPrimary: string;
   textSecondary: string;
   textMuted: string;
+  // Shorthand aliases for convenience (Andromeda compatibility)
+  bg: string;
+  elevated: string;
+  muted: string;
+  dim: string;
+  faint: string;
+  text: string;
+  textTertiary: string;
+  warn: string;
+  glow: {
+    cyan: string;
+    teal: string;
+    blue: string;
+  };
   accent: string;
   accentSoft: string;
+  accentGlow: string; 
   success: string;
   warning: string;
   danger: string;
@@ -26,61 +41,118 @@ type RipplePalette = {
     ai: string;
     post: string;
   };
+  degree: {
+    0: string; // Me (Pink)
+    1: string; // Friends (Blue)
+    2: string; // World (Purple)
+    3: string; // Discover (Yellow)
+    4: string; // Noise (Gray)
+  };
 };
 
 const darkPalette: RipplePalette = {
   background: '#000000',
-  surface: '#0F1216',
-  surfaceElevated: '#16181C',
-  surfaceMuted: '#1F2226',
-  overlay: 'rgba(0,0,0,0.85)',
-  borderSubtle: 'rgba(255,255,255,0.04)',
-  border: 'rgba(255,255,255,0.08)',
-  borderStrong: 'rgba(255,255,255,0.15)',
-  textPrimary: '#E7E9EA',
-  textSecondary: '#A0A4AA',
-  textMuted: '#6B6F76',
-  accent: '#1D9BF0',
-  accentSoft: 'rgba(29,155,240,0.15)',
-  success: '#00BA7C',
-  warning: '#F5A524',
-  danger: '#F91880',
-  info: '#7A7FFF',
-  glass: 'rgba(16,18,22,0.9)',
+  surface: '#1C1C1E',   // iOS System Gray 6 Dark
+  surfaceElevated: '#2C2C2E',  // iOS System Gray 5 Dark
+  surfaceMuted: '#151517',     // Slightly lighter than black
+  overlay: 'rgba(0,0,0,0.7)',
+  borderSubtle: 'rgba(255,255,255,0.08)',
+  border: 'rgba(255,255,255,0.12)',
+  borderStrong: 'rgba(255,255,255,0.2)',
+  textPrimary: '#F5F5F7',      // Primary white
+  textSecondary: '#98989D',    // Secondary gray
+  textMuted: '#636366',        // Tertiary gray
+  
+  // Shorthand aliases (Andromeda compatibility)
+  bg: '#000000',
+  elevated: '#2C2C2E',
+  muted: '#151517',
+  dim: '#98989D',
+  faint: '#636366',
+  text: '#F5F5F7',
+  textTertiary: '#636366',
+  warn: '#FFD60A',
+  
+  glow: {
+    cyan: '#64D2FF',
+    teal: '#6AC4DC',
+    blue: '#409CFF',
+  },
+  accent: '#0A84FF',    // Vivid Blue
+  accentSoft: 'rgba(10,132,255,0.15)',
+  accentGlow: 'rgba(10,132,255,0.3)',
+  success: '#30D158',   // Green
+  warning: '#FFD60A',   // Yellow
+  danger: '#FF453A',    // Red
+  info: '#5E5CE6',      // Indigo
+  glass: 'rgba(30,30,30,0.8)',
+  
   indicator: {
-    profile: '#00BA7C',
-    message: '#1D9BF0',
-    auth: '#7856FF',
-    ai: '#FACC15',
-    post: '#E7E9EA',
+    profile: '#30D158',
+    message: '#0A84FF',
+    auth: '#5E5CE6',
+    ai: '#FF9F0A',
+    post: '#F5F5F7',
+  },
+  degree: {
+    0: '#FF375F',
+    1: '#64D2FF',
+    2: '#BF5AF2',
+    3: '#FFD60A',
+    4: '#8E8E93',
   },
 };
 
 const lightPalette: RipplePalette = {
-  background: '#F7F7FA',
-  surface: '#FFFFFF',
-  surfaceElevated: '#F2F3F7',
-  surfaceMuted: '#E8E9F0',
-  overlay: 'rgba(247,247,250,0.9)',
-  borderSubtle: 'rgba(15,18,22,0.04)',
-  border: 'rgba(15,18,22,0.08)',
-  borderStrong: 'rgba(15,18,22,0.15)',
-  textPrimary: '#1F2125',
-  textSecondary: '#4A4D52',
-  textMuted: '#6F737C',
-  accent: '#0A84FF',
-  accentSoft: 'rgba(10,132,255,0.15)',
-  success: '#0A915E',
-  warning: '#CB8600',
-  danger: '#D7265E',
-  info: '#3D5AFE',
-  glass: 'rgba(255,255,255,0.9)',
+  background: '#F5F5F7',        // iOS System Gray 6
+  surface: '#FFFFFF',           // Primary card background
+  surfaceElevated: '#FFFFFF',   // Elevated surface
+  surfaceMuted: '#F2F2F7',      // Secondary grouped background
+  overlay: 'rgba(0,0,0,0.4)',
+  borderSubtle: 'rgba(0,0,0,0.03)',
+  border: 'rgba(0,0,0,0.05)',
+  borderStrong: 'rgba(0,0,0,0.12)',
+  textPrimary: '#1D1D1F',       // Primary text (Near black)
+  textSecondary: '#86868B',     // Secondary text (Metal gray)
+  textMuted: '#AEAEB2',         // Tertiary gray
+
+  // Shorthand aliases (Andromeda compatibility)
+  bg: '#F5F5F7',
+  elevated: '#FFFFFF',
+  muted: '#F2F2F7',
+  dim: '#86868B',
+  faint: '#AEAEB2',
+  text: '#1D1D1F',
+  textTertiary: '#AEAEB2',
+  warn: '#FF9F0A',
+
+  glow: {
+    cyan: '#5AC8FA',
+    teal: '#30B0C7',
+    blue: '#007AFF',
+  },
+  accent: '#0071E3',    // Classic vibrant blue
+  accentSoft: 'rgba(0,113,227,0.1)',
+  accentGlow: 'rgba(0,113,227,0.2)',
+  success: '#34C759',   // Green
+  warning: '#FF9F0A',   // Orange
+  danger: '#FF3B30',    // Red
+  info: '#5856D6',      // Indigo
+  glass: 'rgba(255,255,255,0.85)',
+
   indicator: {
-    profile: '#0A915E',
-    message: '#0A84FF',
-    auth: '#7C4DFF',
-    ai: '#B8860B',
-    post: '#1F2125',
+    profile: '#34C759',
+    message: '#007AFF',
+    auth: '#5856D6',
+    ai: '#FF9500',
+    post: '#1D1D1F',
+  },
+  degree: {
+    0: '#FF2D55',
+    1: '#5AC8FA',
+    2: '#AF52DE',
+    3: '#FFCC00',
+    4: '#8E8E93',
   },
 };
 
@@ -101,10 +173,10 @@ export const rippleSpacing = {
 } as const;
 
 export const rippleRadii = {
-  sm: 6,
-  md: 12,
-  lg: 18,
-  xl: 24,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
   pill: 999,
 } as const;
 
@@ -120,42 +192,93 @@ export const rippleTypography: Record<
   TypographyScale
 > = {
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: '700',
     letterSpacing: -0.5,
   },
   heading: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
+    letterSpacing: -0.3,
   },
   body: {
-    fontSize: 15,
-    fontWeight: '500',
-    lineHeight: 20,
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 24,
+    letterSpacing: -0.2,
   },
   caption: {
-    fontSize: 12,
-    fontWeight: '500',
+    fontSize: 13,
+    fontWeight: '400',
+    letterSpacing: 0,
   },
   mono: {
-    fontSize: 11,
-    fontWeight: '600',
-    letterSpacing: 0.4,
+    fontSize: 12,
+    fontWeight: '500',
+    letterSpacing: 0,
   },
 };
 
 export const rippleEffects = {
   divider: {
-    subtle: 'rgba(255,255,255,0.03)',
-    strong: 'rgba(255,255,255,0.08)',
+    subtle: 'rgba(0,0,0,0.05)',
+    strong: 'rgba(0,0,0,0.1)',
   },
   outline: {
-    focus: 'rgba(29,155,240,0.45)',
+    focus: 'rgba(0,113,227,0.4)',
+    glow: 'rgba(90,200,250,0.3)',
   },
   glow: {
-    accent: 'rgba(29,155,240,0.35)',
-    success: 'rgba(0,186,124,0.35)',
+    accent: 'rgba(0,113,227,0.2)',
+    cyan: 'rgba(90,200,250,0.25)',
+    success: 'rgba(52,199,89,0.2)',
+    danger: 'rgba(255,59,48,0.2)',
   },
+  shadow: {
+    subtle: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.05,
+      shadowRadius: 6,
+      elevation: 2,
+    },
+    medium: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.08,
+      shadowRadius: 12,
+      elevation: 4,
+    },
+    strong: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 12 },
+      shadowOpacity: 0.12,
+      shadowRadius: 24,
+      elevation: 10,
+    },
+    glow: {
+      // Retain a very subtle glow capability if needed, but much softer
+      shadowColor: '#007AFF',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.15,
+      shadowRadius: 16,
+      elevation: 8,
+    },
+  },
+} as const;
+
+/**
+ * Spring animation presets for consistent motion across the app
+ */
+export const rippleSprings = {
+  /** Quick taps, button presses */
+  snappy: { damping: 20, stiffness: 300, mass: 0.5 },
+  /** Standard transitions - Apple style */
+  smooth: { damping: 30, stiffness: 350, mass: 1 },
+  /** Playful interactions */
+  bouncy: { damping: 15, stiffness: 200, mass: 1 },
+  /** Slow reveals, modals */
+  gentle: { damping: 25, stiffness: 120, mass: 1 },
 } as const;
 
 export const rippleBreakpoints = {
@@ -174,6 +297,10 @@ export interface RippleTheme {
   radii: typeof rippleRadii;
   typography: typeof rippleTypography;
   effects: typeof rippleEffects;
+  springs: typeof rippleSprings;
+  // Andromeda compatibility aliases
+  space: typeof rippleSpacing;
+  shadow: typeof rippleEffects.shadow;
 }
 
 export const createRippleTheme = (mode: RippleThemeMode): RippleTheme => ({
@@ -182,10 +309,13 @@ export const createRippleTheme = (mode: RippleThemeMode): RippleTheme => ({
   radii: rippleRadii,
   typography: rippleTypography,
   effects: rippleEffects,
+  springs: rippleSprings,
+  // Andromeda compatibility aliases
+  space: rippleSpacing,
+  shadow: rippleEffects.shadow,
 });
 
 export const rippleThemes: Record<RippleThemeMode, RippleTheme> = {
   dark: createRippleTheme('dark'),
   light: createRippleTheme('light'),
 };
-
