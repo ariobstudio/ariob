@@ -2,4 +2,4 @@
  * Layouts - Screen and container components
  */
 
-export * from './Screen';
+export * from '@ariob/components/src/layouts/Screen';

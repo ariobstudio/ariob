@@ -10,7 +10,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Animated } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
-import { Text } from '../primitives/Text';
+import { Text } from '@ariob/components/src/primitives/Text';
 
 type Degree = '0' | '1' | '2';
 

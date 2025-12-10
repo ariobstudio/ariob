@@ -1,136 +1,89 @@
 /**
- * @ariob/ripple
+ * @ariob/ripple - Graph-Native Social Feed System
  *
- * Ripple social network primitives for decentralized feed and relationships.
- * Built on @ariob/core Gun.js primitives.
+ * Small, composable, single-purpose modules following UNIX philosophy.
+ *
+ * ## Structure
+ * - **Nodes** - Content type components (Post, Message, Profile, Auth, etc.)
+ * - **Menu** - Action system with make helper, Bar, Context menu
+ * - **Components** - Shared components (Node renderer, Header, Footer)
+ * - **Primitives** - Base primitives (Shell)
+ * - **Gestures** - Gesture handlers (hold, tap, swipe)
+ * - **Hooks** - React hooks (useFeed, useNav)
+ * - **Config** - Configuration (degrees, paths)
+ * - **Styles** - Theme tokens and effects
+ *
+ * ## Usage
+ * ```tsx
+ * import { make, Bar, Context, Post, Shell } from '@ariob/ripple';
+ *
+ * // Create actions using make helper
+ * const actions = {
+ *   post: make('post', { icon: 'add', label: 'Post' }),
+ *   reply: make('reply', { icon: 'arrow-undo', label: 'Reply' }),
+ * };
+ * ```
  */
 
-// ============================================================================
-// Core Primitives
-// ============================================================================
+// ─────────────────────────────────────────────────────────────────────────────
+// Menu System (Actions, Bar, Context)
+// ─────────────────────────────────────────────────────────────────────────────
 
-// Schemas - Content types (Post, Message, FeedItem)
-export {
-  PostSchema,
-  MessageSchema,
-  ThreadMetadataSchema,
-  FeedItemSchema,
-  DegreeEnum,
-  isPost,
-  isThread,
-  createPost,
-  createMessage,
-  createThreadId,
-  ImagePostSchema,
-  VideoPostSchema,
-  PollSchema,
-  ShareSchema,
-  CommentSchema,
-  isImagePost,
-  isVideoPost,
-  isPoll,
-  isShare,
-  createImagePost,
-  createVideoPost,
-  createPoll,
-  createShare,
-  createComment,
-} from './schemas';
-export type {
-  Post,
-  Message,
-  ThreadMetadata,
-  FeedItem,
-  Degree,
-  ImagePost,
-  VideoPost,
-  Poll,
-  Share,
-  Comment,
-  MediaAttachment,
-  PollOption,
-} from './schemas';
+export * from './menu';
 
-// Feed - Unified feed with degree filtering
-export { feed, useFeed, DEGREE_NAMES } from './feed';
-export type { FeedConfig } from './feed';
+// Re-export make helper at top level for convenience
+export { make, type Def } from './menu/make';
 
-// Relationships - Friend graph management
-export { relationships, useRelationships } from './relationships';
-export type { Friend, RelationshipsStore } from './relationships';
+// ─────────────────────────────────────────────────────────────────────────────
+// Nodes (Content Types)
+// ─────────────────────────────────────────────────────────────────────────────
 
-// Profile - User profile management
-export {
-  profile,
-  saveProfile,
-  getProfile,
-  updateProfile,
-  deleteProfile,
-  useProfile,
-  ProfileSchema,
-} from './profile';
-export type { UserProfile } from './profile';
+export * from './nodes';
 
-// ============================================================================
-// Node System
-// ============================================================================
+// ─────────────────────────────────────────────────────────────────────────────
+// Components (Shared)
+// ─────────────────────────────────────────────────────────────────────────────
 
-// Node System - Modular content rendering
-export {
-  // Types
-  type ViewMode,
-  type NodeType,
-  type NodeRendererType,
-  type NodeRenderProps,
-  type NodeMetadata,
-  type NodeRegistryEntry,
-  type NodeNavigationContext,
-  type UseNodeRendererResult,
+export * from './components';
 
-  // Registry
-  registerNode,
-  registerNodes,
-  getNodeRenderer,
-  getNodeMetadata,
-  isNodeRegistered,
-  supportsImmersiveView,
-  renderNode,
-  getAllNodeTypes,
-  getAllNodes,
-  clearRegistry,
-  getRegistrySize,
+// ─────────────────────────────────────────────────────────────────────────────
+// Primitives (Base)
+// ─────────────────────────────────────────────────────────────────────────────
 
-  // Context & Navigation
-  NodeProvider,
-  useNodeNavigation,
-  useViewMode,
-  useCurrentNodeId,
+export * from './primitives';
 
-  // Hooks
-  useNodeRenderer,
-  useNodeRendererForType,
-  useNodeMetadata,
-  useShouldOpenImmersive,
-} from './nodes';
+// ─────────────────────────────────────────────────────────────────────────────
+// Gestures (Handlers)
+// ─────────────────────────────────────────────────────────────────────────────
 
-// Node Renderers
-export {
-  initializeNodeRenderers,
-  TextPostNodeRenderer,
-  ImagePostNodeRenderer,
-  VideoPostNodeRenderer,
-  PollNodeRenderer,
-  ShareNodeRenderer,
-  MessageThreadNodeRenderer,
-} from './nodes/renderers';
+export * from './gesture';
 
-// ============================================================================
-// Components
-// ============================================================================
+// ─────────────────────────────────────────────────────────────────────────────
+// Hooks (React)
+// ─────────────────────────────────────────────────────────────────────────────
 
-// NodeRenderer - Universal content renderer
-export { NodeRenderer } from './components/NodeRenderer';
-export type { NodeRendererProps } from './components/NodeRenderer';
+export * from './hooks';
 
-// FeedItem - Unified feed item component with visual differentiation
-export { FeedItemComponent } from './components/FeedItem';
+// ─────────────────────────────────────────────────────────────────────────────
+// Config (Settings)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export * from './config';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Styles (Tokens, Themes)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export * from './styles';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Schemas (Data Types)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export * from './schemas';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Transitions (Animations)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export * from './transitions';

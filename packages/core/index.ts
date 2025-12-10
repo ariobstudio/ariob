@@ -90,17 +90,16 @@ export {
 export type { PeerStatus } from './mesh';
 
 // ============================================================================
-// Utility Hooks (Optional - separate import)
+// Utility Hooks
 // ============================================================================
 
-// Platform-agnostic hooks (work in React, React Native, and LynxJS)
 export { default as useInput } from './hooks/useInput';
 export { default as useDebounce } from './hooks/useDebounce';
 export { default as useIntersection } from './hooks/useIntersection';
 export { default as useTimeout } from './hooks/useTimeout';
 
 export type { UseDebounceReturn } from './hooks/useDebounce';
-export type { InputEvent, InputInputEvent, UseInputOptions } from './hooks/useInput';
-export type { IntersectionObserverOptions } from './hooks/useIntersection';
+export type { InputEvent, InputDetail, UseInputOptions } from './hooks/useInput';
+export type { IntersectionResult, IntersectionOptions } from './hooks/useIntersection';
 export type { UseTimeoutReturn } from './hooks/useTimeout';
 export type { UseTimeoutFnReturn } from './hooks/useTimeoutFn';

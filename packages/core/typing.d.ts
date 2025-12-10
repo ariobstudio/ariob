@@ -1,8 +1,5 @@
 /**
- * @ariob/core - Framework-agnostic type declarations
- *
- * This file contains type declarations that work across all frameworks (LynxJS, Expo, React Native).
- * Platform-specific types are located in the `lynx/` folder.
+ * @ariob/core - Type declarations
  */
 
 declare global {

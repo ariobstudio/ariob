@@ -1,43 +1,40 @@
-import { useEffect, useState } from 'react';
-import type { ObserveCallback, ObserveCallbackResult } from '@lynx-js/types';
+import { useEffect, useState, useRef, type RefObject } from 'react';
+import { View } from 'react-native';
 
-export type IntersectionObserverOptions = {
-  thresholds?: [];
-  initialRatio?: number;
-  observeAll?: boolean;
-};
+/** Intersection result */
+export interface IntersectionResult {
+  visible: boolean;
+  ratio: number;
+}
 
-// For main-thread components IntersectionObserver implementation
-const useIntersection = (
-  seletor: string,
-  options: IntersectionObserverOptions,
-): ObserveCallbackResult | null => {
-  const [
-    intersectionObserveCallbackResult,
-    setIntersectionObserveCallbackResult,
-  ] = useState<ObserveCallbackResult | null>(null);
+/** Options for useIntersection hook */
+export interface IntersectionOptions {
+  threshold?: number;
+  rootMargin?: number;
+}
 
+/**
+ * Hook for visibility detection.
+ * Note: React Native doesn't have native IntersectionObserver.
+ * This provides a placeholder that always returns visible.
+ * For actual visibility, use onLayout or a library like react-native-intersection-observer.
+ */
+function useIntersection(
+  ref: RefObject<View>,
+  options?: IntersectionOptions,
+): IntersectionResult {
+  const [result, setResult] = useState<IntersectionResult>({
+    visible: true,
+    ratio: 1,
+  });
+
+  // Placeholder - always visible
+  // Real implementation would use measure() or a visibility library
   useEffect(() => {
-    if (typeof lynx?.createIntersectionObserver === 'function') {
-      const handler: ObserveCallback = (result: ObserveCallbackResult) => {
-        setIntersectionObserveCallbackResult(result);
-      };
+    setResult({ visible: true, ratio: 1 });
+  }, [ref, options]);
 
-      const observer = lynx.createIntersectionObserver(
-        { componentId: '' },
-        options,
-      );
-      observer.observe(seletor, handler);
-
-      return () => {
-        setIntersectionObserveCallbackResult(null);
-        observer.disconnect();
-      };
-    }
-    return () => {};
-  }, [seletor, options.thresholds, options.initialRatio, options.observeAll]);
-
-  return intersectionObserveCallbackResult;
-};
+  return result;
+}
 
 export default useIntersection;

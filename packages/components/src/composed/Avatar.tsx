@@ -5,7 +5,7 @@
 import React from 'react';
 import { View, Image, ImageProps } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
-import { Text } from '../primitives/Text';
+import { Text } from '@ariob/components/src/primitives/Text';
 
 export interface AvatarProps {
   uri?: string;

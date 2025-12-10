@@ -1,456 +1,374 @@
 # @ariob/ripple
 
-<div align="center">
+> Graph-native social primitives following UNIX philosophy
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Gun.js](https://img.shields.io/badge/Gun.js-1E1E1E?style=for-the-badge&logo=javascript&logoColor=white)](https://gun.eco/)
-
-Ripple social network primitives for decentralized feed and relationships.
-
-Built on [@ariob/core](../core) Gun.js primitives.
-
-</div>
+Small, composable modules for building decentralized social experiences.
 
 ---
 
-## 🎯 Overview
+## Overview
 
-**@ariob/ripple** provides the core primitives for building the Ripple decentralized social network. It extends @ariob/core with social-specific features like unified feeds, degree-based filtering, and relationship graphs.
+**@ariob/ripple** provides:
 
-### Key Features
-
-- **🌊 Unified Feed** — Mix posts and DM threads in chronological stream
-- **📐 Degree Filtering** — 0° (me), 1° (friends), 2° (extended network)
-- **👥 Social Graph** — Friend relationships with automatic degree calculation
-- **🔒 Type-Safe** — Full TypeScript support with Zod schemas
-- **⚡ Real-Time** — Gun.js P2P sync for instant updates
-- **📦 Modular** — Import only what you need
-
----
-
-## 📦 Installation
-
-```bash
-# This package is part of the Ariob monorepo
-# Install dependencies from the root:
-pnpm install
-```
-
-**Dependencies:**
-- `@ariob/core` - Gun.js primitives (workspace:*)
-- `zod` - Schema validation
+- **Menu** — Action system with `make` helper, Bar, Context menu
+- **Nodes** — Content types (Post, Message, Profile, Auth, etc.)
+- **Components** — Shared components (Node renderer, Header, Footer)
+- **Gestures** — Touch-first interactions (hold, tap, swipe)
+- **Hooks** — React hooks (useFeed, useNav)
+- **Config** — Degree and path definitions
+- **Styles** — Theme tokens and effects
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```typescript
-import { feed, relationships, createPost, createThreadId } from '@ariob/ripple';
-import { graph, useAuth } from '@ariob/core';
+import { make, Bar, Context, ActionsProvider } from '@ariob/ripple';
 
-const g = graph();
-const { user } = useAuth(g);
+// Create actions using the make helper
+const actions = {
+  post: make('post', { icon: 'add', label: 'Post' }),
+  reply: make('reply', { icon: 'arrow-undo', label: 'Reply' }),
+  config: make('config', {
+    icon: 'settings',
+    label: 'Settings',
+    sub: [
+      { name: 'profile', icon: 'person', label: 'Profile' },
+      { name: 'theme', icon: 'color-palette', label: 'Theme' },
+    ],
+  }),
+};
 
-// 1. Subscribe to friends feed (degree 1)
-feed({ degree: '1' }).subscribe(g);
-
-// 2. Get feed items
-const items = feed({ degree: '1' }).get();
-// [{ id: 'abc', data: { type: 'post', content: '...', ... } }, ...]
-
-// 3. Create a post
-const post = createPost({
-  content: 'Hello Ripple!',
-  author: user!.pub,
-  authorAlias: user!.alias,
-  degree: '1'
-});
-
-await feed({ degree: '1' }).post(g, post);
-
-// 4. Manage friends
-relationships().subscribe(g.user());
-await relationships().addFriend(g.user(), 'friend-pub-key', 'Alice');
-
-const friends = relationships().getFriends();
-console.log(`${friends.length} friends`);
-```
-
----
-
-## 📚 Core Primitives
-
-### 1. Schemas — Content Types
-
-Type-safe schemas for Ripple content using Zod.
-
-#### Post Schema
-
-```typescript
-import { PostSchema, createPost, type Post } from '@ariob/ripple';
-
-// Create a post
-const post = createPost({
-  content: 'This is my first post!',
-  author: user.pub,
-  authorAlias: user.alias,
-  degree: '1', // Visible to friends
-  tags: ['intro', 'hello']
-});
-
-// Validate
-const result = PostSchema.safeParse(post);
-if (result.success) {
-  console.log('Valid post:', result.data);
-}
-```
-
-**Post Fields:**
-- `type`: `'post'` (literal)
-- `content`: Post text (1-10,000 chars)
-- `author`: Author's public key
-- `authorAlias`: Author's display name (optional)
-- `created`: Unix timestamp (auto-generated)
-- `degree`: Visibility scope (`'0'` | `'1'` | `'2'`)
-- `tags`: Array of tags (optional)
-- `editedAt`: Edit timestamp (optional)
-
-#### Message Schema
-
-```typescript
-import { MessageSchema, createMessage, createThreadId, type Message } from '@ariob/ripple';
-
-// Create a DM
-const message = createMessage({
-  text: 'Hey, how are you?',
-  from: user.pub,
-  to: friend.pub,
-  threadId: createThreadId(user.pub, friend.pub)
-});
-
-// Validate
-const result = MessageSchema.safeParse(message);
-```
-
-**Message Fields:**
-- `type`: `'message'` (literal)
-- `text`: Message text (1-5,000 chars)
-- `from`: Sender's public key
-- `to`: Recipient's public key
-- `threadId`: Thread identifier
-- `created`: Unix timestamp (auto-generated)
-- `encrypted`: Encryption flag (default: `true`)
-- `read`: Read status (default: `false`)
-
-#### Feed Item Schema
-
-```typescript
-import { FeedItemSchema, isPost, isThread, type FeedItem } from '@ariob/ripple';
-
-// Discriminated union of content types
-const item: FeedItem = getFeedItem();
-
-// Type-safe narrowing
-if (isPost(item)) {
-  console.log('Post:', item.content);
-} else if (isThread(item)) {
-  console.log('Thread:', item.lastMessage);
-}
-```
-
----
-
-### 2. Feed — Unified Feed Management
-
-The **feed** primitive manages a unified stream of posts and DM threads with degree-based filtering.
-
-#### Basic Usage
-
-```typescript
-import { feed, useFeed, type Degree } from '@ariob/ripple';
-import { graph } from '@ariob/core';
-
-const g = graph();
-
-// Subscribe to feed
-feed({ degree: '1' }).subscribe(g);
-
-// Get items (sorted by timestamp, newest first)
-const items = feed({ degree: '1' }).get();
-
-// Create post
-await feed({ degree: '1' }).post(g, {
-  content: 'Hello world!',
-  author: user.pub,
-  authorAlias: user.alias,
-  degree: '1'
-});
-
-// Send DM
-await feed({ degree: '1' }).sendMessage(g, {
-  text: 'Private message',
-  from: user.pub,
-  to: friend.pub,
-  threadId: createThreadId(user.pub, friend.pub)
-});
-
-// Check state
-const loading = feed({ degree: '1' }).loading();
-const error = feed({ degree: '1' }).error();
-
-// Unsubscribe
-feed({ degree: '1' }).off();
-```
-
-#### React Hook
-
-```typescript
-import { useFeed } from '@ariob/ripple';
-import { useState } from 'react';
-
-function UnifiedFeed() {
-  const [degree, setDegree] = useState<Degree>('1');
-  const { items, loading, post, sendMessage } = useFeed({ degree });
-
-  if (loading) return <text>Loading...</text>;
-
+// Provide to app
+function App() {
   return (
-    <view>
-      {/* Degree filter */}
-      <view>
-        <button onTap={() => setDegree('0')}>Me</button>
-        <button onTap={() => setDegree('1')}>Friends</button>
-        <button onTap={() => setDegree('2')}>Extended</button>
-      </view>
-
-      {/* Feed */}
-      {items.map(({ id, data }) => (
-        <view key={id}>
-          {data.type === 'post' && (
-            <text>{data.content}</text>
-          )}
-          {data.type === 'thread' && (
-            <text>💬 {data.lastMessage}</text>
-          )}
-        </view>
-      ))}
-    </view>
-  );
-}
-```
-
-#### Degree System
-
-**0° (Me)** — Personal content
-- Private posts
-- Drafts
-- Personal notes
-
-**1° (Friends)** — Direct connections
-- Friend posts
-- Direct messages
-- Small groups
-
-**2° (Extended)** — Wider network
-- Friends-of-friends
-- Public content
-- Recommended posts
-
----
-
-### 3. Relationships — Social Graph
-
-The **relationships** primitive manages friend connections and calculates degrees of separation.
-
-#### Basic Usage
-
-```typescript
-import { relationships } from '@ariob/ripple';
-import { graph } from '@ariob/core';
-
-const g = graph();
-
-// Subscribe to friends
-relationships().subscribe(g.user());
-
-// Add friend
-await relationships().addFriend(g.user(), 'alice-pub-key', 'Alice');
-
-// Get all friends
-const friends = relationships().getFriends();
-// [{ pub: '...', alias: 'Alice', addedAt: 1234567890, degree: '1' }]
-
-// Check relationship
-const isMyFriend = relationships().isFriend('alice-pub-key');
-
-// Calculate degree
-const degree = relationships().getDegree('alice-pub-key', user.pub);
-// Returns: 0 (me) | 1 (friend) | 2 (friend-of-friend) | null (not connected)
-
-// Remove friend
-await relationships().removeFriend(g.user(), 'alice-pub-key');
-
-// Unsubscribe
-relationships().off();
-```
-
-#### React Hook
-
-```typescript
-import { useRelationships } from '@ariob/ripple';
-import { useEffect } from 'react';
-
-function FriendsList() {
-  const g = graph();
-  const { friends, loading, addFriend, removeFriend, getDegree } = useRelationships();
-
-  useEffect(() => {
-    relationships().subscribe(g.user());
-    return () => relationships().off();
-  }, []);
-
-  const handleAdd = async (pubKey: string, alias: string) => {
-    const result = await addFriend(g.user(), pubKey, alias);
-    if (!result.ok) {
-      alert('Failed: ' + result.error.message);
-    }
-  };
-
-  if (loading) return <text>Loading friends...</text>;
-
-  return (
-    <view>
-      {friends.map(friend => (
-        <view key={friend.pub}>
-          <text>{friend.alias}</text>
-          <text>Degree: {friend.degree}°</text>
-          <button onTap={() => removeFriend(g.user(), friend.pub)}>
-            Remove
-          </button>
-        </view>
-      ))}
-    </view>
+    <ActionsProvider config={{ actions, feedConfig, nodeMenus, onAction: handleAction }}>
+      <Feed />
+      <Bar />
+      <Context />
+    </ActionsProvider>
   );
 }
 ```
 
 ---
 
-## 🗺️ Gun.js Graph Structure
+## Architecture
 
-```
-gun/
-├── users/{pub}/
-│   ├── alias
-│   ├── pub
-│   ├── epub
-│   ├── friends/              # Set of friend pub keys
-│   │   └── {friendPub}       # Friend metadata
-│   └── posts/                # User's posts
-│       └── {postId}
-│
-├── global-feed/
-│   ├── 0-me/                 # Personal posts
-│   ├── 1-friends/            # Friends' posts
-│   └── 2-extended/           # Extended network
-│
-├── posts/{postId}            # Full post data
-│
-└── threads/{threadId}/       # DM threads
-    ├── participants/         # [pubA, pubB]
-    ├── lastMessage
-    ├── lastMessageAt
-    └── messages/{msgId}      # Encrypted messages
-```
-
----
-
-## 📖 API Reference
-
-### Schemas
-
-| Export | Type | Description |
-|--------|------|-------------|
-| `PostSchema` | `ZodObject` | Blog post with visibility scope |
-| `MessageSchema` | `ZodObject` | Direct message in thread |
-| `ThreadMetadataSchema` | `ZodObject` | DM thread preview info |
-| `FeedItemSchema` | `ZodUnion` | Discriminated union of content |
-| `DegreeEnum` | `ZodEnum` | `'0' \| '1' \| '2'` |
-| `createPost()` | Function | Post factory with timestamp |
-| `createMessage()` | Function | Message factory |
-| `createThreadId()` | Function | Generate thread ID from pub keys |
-| `isPost()` | Type guard | Check if FeedItem is Post |
-| `isThread()` | Type guard | Check if FeedItem is Thread |
-
-### Feed
-
-| Function | Signature | Description |
-|----------|-----------|-------------|
-| `feed()` | `(config: FeedConfig) => FeedAPI` | Create feed manager |
-| `.subscribe()` | `(graph) => void` | Subscribe to degree feed |
-| `.off()` | `() => void` | Unsubscribe |
-| `.get()` | `() => Item<FeedItem>[]` | Get sorted items |
-| `.post()` | `(graph, post) => Promise<Result>` | Create post |
-| `.sendMessage()` | `(graph, message) => Promise<Result>` | Send DM |
-| `.loading()` | `() => boolean` | Get loading state |
-| `.error()` | `() => Error \| null` | Get error state |
-| `useFeed()` | `(config) => FeedHook` | React hook |
-
-### Relationships
-
-| Function | Signature | Description |
-|----------|-----------|-------------|
-| `relationships()` | `() => RelationshipsAPI` | Create relationship manager |
-| `.subscribe()` | `(userRef) => void` | Subscribe to friends |
-| `.off()` | `() => void` | Unsubscribe |
-| `.addFriend()` | `(userRef, pub, alias?) => Promise<Result>` | Add friend |
-| `.removeFriend()` | `(userRef, pub) => Promise<Result>` | Remove friend |
-| `.getFriends()` | `() => Friend[]` | Get all friends |
-| `.getFriend()` | `(pub) => Friend \| null` | Get specific friend |
-| `.isFriend()` | `(pub) => boolean` | Check friendship |
-| `.getDegree()` | `(pub, currentUserPub?) => 0\|1\|2\|null` | Calculate separation |
-| `useRelationships()` | `() => RelationshipsHook` | React hook |
-
----
-
-## 🏗️ Architecture
-
-### Package Dependencies
+Following UNIX philosophy with protocol-first design:
 
 ```
 @ariob/ripple
-    ↓
-@ariob/core (graph, node, collection, auth, crypto, Result)
-    ↓
-Gun.js + SEA
+├── menu/                 # Action system
+│   ├── make.ts           # UNIX-style action factory
+│   ├── types.ts          # Protocol definitions
+│   ├── Provider.tsx      # Context provider
+│   ├── bar/              # Floating action bar
+│   ├── context.tsx       # Long-press menu
+│   └── __tests__/        # Jest tests
+├── nodes/                # Content types
+│   ├── styles.ts         # Consolidated styles
+│   ├── post.tsx
+│   ├── message.tsx
+│   └── ...
+├── components/           # Shared components
+├── primitives/           # Base primitives
+├── gesture/              # Gesture handlers
+├── hooks/                # React hooks
+├── config/               # Configuration
+└── styles/               # Theme tokens
 ```
 
-### Design Principles
+---
 
-- **Application-Specific** — Ripple social features, not general Gun.js primitives
-- **Thin Layer** — Builds on @ariob/core, minimal additional complexity
-- **Type-Safe** — Zod schemas for all content types
-- **Result Monad** — Explicit error handling, no exceptions
-- **Background-Thread Safe** — Works in LynxJS background threads
+## Make Helper
+
+UNIX-style factory for creating actions:
+
+```typescript
+import { make } from '@ariob/ripple';
+
+// Simple action
+const post = make('post', { icon: 'add', label: 'Post' });
+// { name: 'post', icon: 'add', label: 'Post' }
+
+// Action with submenu
+const config = make('config', {
+  icon: 'settings',
+  label: 'Settings',
+  sub: [
+    { name: 'profile', icon: 'person', label: 'Profile' },
+    { name: 'theme', icon: 'color-palette', label: 'Theme' },
+  ],
+});
+
+// Build action records
+const actions = {
+  post: make('post', { icon: 'add', label: 'Post' }),
+  reply: make('reply', { icon: 'arrow-undo', label: 'Reply' }),
+  save: make('save', { icon: 'bookmark-outline', label: 'Save' }),
+};
+```
 
 ---
 
-## 🤝 Contributing
+## Actions Provider
 
-This package is part of the Ariob monorepo. See the root README for contribution guidelines.
+Configure actions for your app:
+
+```typescript
+import { ActionsProvider, make, createFeedConfigs, createNodeMenus } from '@ariob/ripple';
+
+const config = {
+  // Actions created with make helper
+  actions: {
+    post: make('post', { icon: 'add', label: 'Post' }),
+    reply: make('reply', { icon: 'arrow-undo', label: 'Reply' }),
+    // ...
+  },
+
+  // Feed config per degree
+  feedConfig: createFeedConfigs({
+    0: { main: 'post', mainUnauthenticated: 'create', left: 'config', right: 'more' },
+    1: { main: 'post', right: 'find' },
+    2: { main: 'post', left: 'trend', right: 'search' },
+  }),
+
+  // Node menus per type
+  nodeMenus: createNodeMenus({
+    post: { quick: ['reply', 'save', 'share'], detail: ['reply'], opts: ['report'] },
+    message: { quick: ['reply', 'forward'], detail: ['reply'], opts: ['delete'] },
+  }),
+
+  // Action handler
+  onAction: (action, context) => {
+    switch (action) {
+      case 'post': router.push('/compose'); break;
+      case 'reply': router.push('/thread/' + context.node?.id); break;
+    }
+  },
+};
+
+<ActionsProvider config={config}>
+  <App />
+</ActionsProvider>
+```
 
 ---
 
-## 📄 License
+## Menu System
 
-Private package - See repository root for license information.
+### Action Bar
+
+Floating action bar with contextual actions:
+
+```typescript
+import { Bar, useBar } from '@ariob/ripple';
+
+// Add to layout
+<Bar />
+
+// Control programmatically
+const { setMode, setActions, setValue } = useBar();
+
+// Switch to input mode
+setMode('input');
+
+// Update actions
+setActions({
+  left: make('back', { icon: 'arrow-back', label: 'Back' }),
+  center: make('send', { icon: 'send', label: 'Send' }),
+});
+```
+
+### Context Menu
+
+Long-press floating menu:
+
+```typescript
+import { Context } from '@ariob/ripple';
+
+// Add to layout
+<Context />
+```
+
+### Hooks
+
+```typescript
+import { useFeedConfig, useNodeMenu, useAction } from '@ariob/ripple';
+
+// Get feed config for current degree
+const config = useFeedConfig(degree);
+// { main: 'post', left: 'config', right: 'more' }
+
+// Get menu for node type
+const menu = useNodeMenu('post');
+// { quick: ['reply', 'save'], detail: ['reply'], opts: ['report'] }
+
+// Get single action
+const action = useAction('post');
+// { name: 'post', icon: 'add', label: 'Post' }
+```
 
 ---
 
-<div align="center">
+## Five Degrees of Visibility
 
-**Built with ❤️ for decentralized social networking**
+| Degree | Name | Description |
+|--------|------|-------------|
+| 0 | Me | Personal posts, drafts, private notes |
+| 1 | Friends | Direct connections, DMs |
+| 2 | World | Friends-of-friends, public content |
+| 3 | Discover | Algorithmic recommendations |
+| 4 | Noise | Unfiltered, unverified content |
 
-[Ariob Monorepo](../../README.md) • [@ariob/core](../core/README.md)
+---
 
-</div>
+## Nodes
+
+Content type components with theme-aware styles:
+
+```typescript
+import { Post, Message, Profile, Auth, Sync, Ghost } from '@ariob/ripple';
+import { styles } from '@ariob/ripple/nodes';
+
+// Use consolidated styles
+const { post, message, auth, sync, ghost, profile, aiModel } = styles;
+```
+
+---
+
+## Gestures
+
+### Hold (Long-press)
+
+Opens context menu:
+
+```typescript
+import { Shell } from '@ariob/ripple';
+
+<Shell nodeRef={{ id: post.id, type: 'post' }}>
+  <PostContent />
+</Shell>
+```
+
+### Swipe
+
+Trigger actions with swipes:
+
+```typescript
+import { useSwipe } from '@ariob/ripple';
+
+const gesture = useSwipe(message, {
+  left: () => deleteMessage(message),
+  right: () => replyTo(message),
+});
+```
+
+---
+
+## Hooks
+
+### useFeed
+
+```typescript
+import { useFeed } from '@ariob/ripple';
+
+const { items, loading, error, post } = useFeed({
+  degree: '1',
+  enabled: true,
+});
+```
+
+### useNodeNavigation
+
+```typescript
+import { useNodeNavigation } from '@ariob/ripple';
+
+const { navigate, back, toProfile } = useNodeNavigation();
+
+navigate(nodeId, 'full');    // Thread detail
+toProfile(userId);           // User profile
+```
+
+---
+
+## Styles
+
+Theme-aware styles using Unistyles:
+
+```typescript
+import { rippleThemes, rippleSpacing, rippleRadii } from '@ariob/ripple/styles';
+
+// Themes
+rippleThemes.dark   // Dark theme
+rippleThemes.light  // Light theme
+
+// Spacing
+rippleSpacing.sm  // 8
+rippleSpacing.md  // 12
+
+// Colors
+rippleThemes.dark.colors.accent     // '#1D9BF0'
+rippleThemes.dark.colors.degree[1]  // '#00E5FF' (Friends)
+```
+
+---
+
+## Integration
+
+### With @ariob/andromeda
+
+```typescript
+import { toast } from '@ariob/andromeda';
+import { make, ActionsProvider } from '@ariob/ripple';
+
+const config = {
+  actions: { /* ... */ },
+  onAction: (action) => {
+    if (action === 'save') toast.success('Saved!');
+  },
+};
+```
+
+### With Expo Router
+
+```typescript
+// app/_layout.tsx
+import { Context as MenuContext, Bar, ActionsProvider } from '@ariob/ripple';
+import { actions, feedConfig, nodeMenus, handleAction } from '../config';
+
+export default function Layout() {
+  return (
+    <ActionsProvider config={{ actions, feedConfig, nodeMenus, onAction: handleAction }}>
+      <Stack />
+      <Bar />
+      <MenuContext />
+    </ActionsProvider>
+  );
+}
+```
+
+---
+
+## Documentation
+
+For comprehensive documentation with full API references, prop tables, and detailed examples:
+
+| Document | Description |
+|----------|-------------|
+| [README](../../docs/ripple/README.md) | Overview and quick start |
+| [SETUP](../../docs/ripple/SETUP.md) | Installation and configuration |
+| [MENU](../../docs/ripple/MENU.md) | Action system, Bar, Context, hooks |
+| [NODES](../../docs/ripple/NODES.md) | Content type components |
+| [GESTURES](../../docs/ripple/GESTURES.md) | Touch interaction handlers |
+| [HOOKS](../../docs/ripple/HOOKS.md) | React hooks reference |
+| [STYLES](../../docs/ripple/STYLES.md) | Theme tokens and effects |
+| [DEGREES](../../docs/ripple/DEGREES.md) | Five Degrees of Visibility |
+| [TROUBLESHOOTING](../../docs/ripple/TROUBLESHOOTING.md) | Common issues and solutions |
+
+---
+
+## License
+
+Private package - Ariob monorepo

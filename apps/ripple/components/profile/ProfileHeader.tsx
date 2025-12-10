@@ -1,5 +1,27 @@
 /**
- * ProfileHeader - Refined, editorial profile header
+ * ProfileHeader - Elegant profile header with editorial typography
+ *
+ * Displays user identity with large, light-weight typography following
+ * the Liquid Trust design aesthetic. Includes settings access and
+ * optional bio text.
+ *
+ * @example
+ * ```tsx
+ * <ProfileHeader
+ *   alias="alice"
+ *   bio="Building decentralized social networks"
+ *   onSettingsPress={() => router.push('/settings')}
+ * />
+ * ```
+ *
+ * **Design Notes:**
+ * - Name uses 40px font with light (300) weight for elegance
+ * - Settings icon is minimal, positioned top-right
+ * - Animated entrance with FadeInDown
+ * - Bio text has max-width constraint for readability
+ *
+ * @see ProfileStats - Companion component for follower counts
+ * @see ProfileTabs - Content tabs below the header
  */
 
 import { View, Text, StyleSheet } from 'react-native';

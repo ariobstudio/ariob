@@ -2,6 +2,6 @@
  * Composed - Higher-level components
  */
 
-export * from './Avatar';
-export * from './DegreeIndicator';
-export * from './FeedItem';
+export * from '@ariob/components/src/composed/Avatar';
+export * from '@ariob/components/src/composed/DegreeIndicator';
+export * from '@ariob/components/src/composed/FeedItem';

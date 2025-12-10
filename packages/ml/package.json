@@ -1,0 +1,26 @@
+{
+  "name": "@ariob/ml",
+  "version": "0.1.0",
+  "description": "On-device AI for Ariob using React Native ExecuTorch",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "@react-native-async-storage/async-storage": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "ai",
+    "llm",
+    "executorch",
+    "on-device",
+    "react-native"
+  ],
+  "license": "MIT"
+}
