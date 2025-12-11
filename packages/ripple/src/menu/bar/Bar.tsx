@@ -311,7 +311,6 @@ export function Bar(props: BarProps) {
                     onPress={() => handleAction(center)}
                     position="center"
                     animatedStyle={actionButtonsStyle}
-                    isMain
                   />
                 ) : null}
 

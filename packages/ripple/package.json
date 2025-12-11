@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@ariob/core": "workspace:*",
-    "@ariob/components": "workspace:*",
     "@ariob/andromeda": "workspace:*",
     "@ariob/store": "workspace:*"
   },

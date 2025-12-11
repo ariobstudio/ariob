@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import Animated, { FadeIn, Layout } from 'react-native-reanimated';
 import { Line } from '../primitives/line';
 import { Dot } from '../primitives/dot';
@@ -8,6 +8,7 @@ import { Header } from './header';
 import { Footer } from './footer';
 import { Post, Message, Profile, Auth, Sync, Ghost, Suggestion, AIModel } from '../nodes';
 import type { PostData, MessageData, ProfileData, AuthData, SyncData, GhostData, SuggestionData, AIModelData } from '../nodes';
+import type { RipplePalette } from '../styles/tokens';
 
 export type NodeType = 'post' | 'message' | 'profile' | 'auth' | 'sync' | 'ghost' | 'suggestion' | 'ai-model';
 
@@ -45,24 +46,37 @@ interface NodeProps {
   transitionTag?: string;
 }
 
+/**
+ * Get the dot color based on node type using theme tokens
+ */
+const getDotColor = (type: NodeType, author: string, colors: RipplePalette): string => {
+  switch (type) {
+    case 'profile':
+      return colors.indicator.profile;
+    case 'message':
+      return author === 'Ripple' ? colors.indicator.ai : colors.indicator.message;
+    case 'auth':
+      return colors.indicator.auth;
+    case 'sync':
+      return colors.indicator.auth;
+    case 'ai-model':
+      return colors.indicator.ai;
+    default:
+      return colors.textMuted;
+  }
+};
+
 export const Node = ({ data, isLast, onPress, onAvatarPress, onSync, isThinking, onReplyPress, onAnchor, onSelectModel, transitionTag }: NodeProps) => {
-  const getDotColor = () => {
-    switch (data.type) {
-      case 'profile': return '#00BA7C';
-      case 'message': return data.author === 'Ripple' ? '#FFD700' : '#1D9BF0';
-      case 'auth': return '#7856FF';
-      case 'sync': return '#7856FF';
-      case 'ai-model': return '#00E5FF'; // Bioluminescent cyan for AI
-      default: return '#E7E9EA';
-    }
-  };
-  
+  const { theme } = useUnistyles();
+
+  const dotColor = getDotColor(data.type, data.author, theme.colors);
+
   const getAvatarVariant = () => {
     if (data.author === 'Ripple') return 'companion';
     if (data.type === 'auth') return 'auth';
     return 'default';
   };
-  
+
   const getBadges = () => {
     const badges: Array<{ label: string; variant: 'dm' | 'ai' | 'new' }> = [];
     if (data.type === 'message' && data.author !== 'Ripple') badges.push({ label: 'DM', variant: 'dm' });
@@ -70,7 +84,7 @@ export const Node = ({ data, isLast, onPress, onAvatarPress, onSync, isThinking,
     if (data.type === 'suggestion') badges.push({ label: 'NEW', variant: 'new' });
     return badges;
   };
-  
+
   const renderBody = () => {
     switch (data.type) {
       case 'post':
@@ -93,9 +107,9 @@ export const Node = ({ data, isLast, onPress, onAvatarPress, onSync, isThinking,
         return null;
     }
   };
-  
+
   const showFooter = data.type === 'post';
-  
+
   const handlePress = () => {
     if (data.type === 'sync') {
       onSync?.();
@@ -103,24 +117,25 @@ export const Node = ({ data, isLast, onPress, onAvatarPress, onSync, isThinking,
       onPress?.();
     }
   };
-  
+
+  // Note: transitionTag prop reserved for future shared element transitions
+  // when react-native-screens native shared transitions are implemented
   return (
     <Animated.View
       style={styles.container}
       entering={FadeIn.duration(300)}
       layout={Layout.springify()}
-      sharedTransitionTag={transitionTag}
     >
       {/* Left Column */}
       <View style={styles.leftColumn}>
         <Line visible={true} style={{ height: 25, flex: 0 }} />
-        <Dot color={getDotColor()} />
+        <Dot color={dotColor} />
         <Line visible={!isLast} style={{ flex: 1 }} />
       </View>
-      
+
       {/* Right Column */}
       <View style={styles.rightColumn}>
-        <Shell 
+        <Shell
           onPress={handlePress}
           variant={data.type === 'ghost' ? 'ghost' : 'default'}
           style={styles.shellMargin}
@@ -141,7 +156,7 @@ export const Node = ({ data, isLast, onPress, onAvatarPress, onSync, isThinking,
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flexDirection: 'row' as const,
     width: '100%',
@@ -149,12 +164,12 @@ const styles = StyleSheet.create({
   leftColumn: {
     width: 16,
     alignItems: 'center' as const,
-    marginRight: 8,
+    marginRight: theme.spacing.sm,
   },
   rightColumn: {
     flex: 1,
   },
   shellMargin: {
-    marginBottom: 24,
+    marginBottom: theme.spacing.xxl,
   }
-});
+}));

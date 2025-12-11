@@ -23,7 +23,7 @@
  * ```
  */
 
-import { View, type ViewStyle } from 'react-native';
+import { View, type ViewStyle, type TextStyle } from 'react-native';
 import { Label } from '../atoms/Label';
 import { Input, type InputProps } from '../atoms/Input';
 import { Text } from '../atoms/Text';
@@ -83,5 +83,5 @@ const styles = {
   } as ViewStyle,
   message: {
     marginTop: space.xs,
-  } as ViewStyle,
+  } as TextStyle,
 };

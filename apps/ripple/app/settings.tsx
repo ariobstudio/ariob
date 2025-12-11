@@ -21,6 +21,7 @@ import {
   Share,
   Clipboard,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
@@ -169,7 +170,7 @@ export default function SettingsScreen() {
     if (newAlias.trim() && newAlias !== user?.alias) {
       // Save alias to Gun user profile
       const userRef = getGraph().user();
-      userRef.get('profile').get('alias').put(newAlias.trim(), (ack: any) => {
+      userRef.get('profile').get('alias').put({ alias: newAlias.trim() } as any, (ack: any) => {
         if (ack.err) {
           Alert.alert('Error', 'Failed to update username: ' + ack.err);
         } else {

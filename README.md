@@ -53,15 +53,17 @@ Ariob is a modern decentralized application platform built with React and LynxJS
 ```
 ariob/
 ├── apps/
-│   └── chat/            # ML-powered Lynx assistant experience
+│   ├── ripple/           # Main social app (Expo + React Native)
+│   └── kitchen/          # Component playground
 ├── packages/
-│   ├── ai/               # Native MLX bridge helpers
-│   ├── core/             # Gun.js services and stores
-│   └── ui/               # Shared component library & Tailwind config
-└── platforms/            # Platform-specific implementations
-    ├── web/              # Web platform
-    ├── android/          # Android platform (coming soon)
-    └── ios/              # iOS platform (coming soon)
+│   ├── core/             # Gun.js primitives, auth, crypto (@ariob/core)
+│   ├── ripple/           # Social UI components & gestures (@ariob/ripple)
+│   ├── andromeda/        # Design system & atoms (@ariob/andromeda)
+│   ├── store/            # State management utilities
+│   └── webcrypto/        # Native WebCrypto bridge
+└── docs/                 # Comprehensive documentation
+    ├── ripple/           # Ripple package docs
+    └── andromeda/        # Andromeda package docs
 ```
 
 ## 📋 Prerequisites
@@ -114,39 +116,44 @@ pnpm dev:chat
 
 ## 💻 Development
 
-### Core Application
+### Ripple Application
 
-The main application is located in `apps/chat/`. Key areas:
+The main social application is located in `apps/ripple/`. Key areas:
 
-- `src/components/` - React components
-- `src/services/` - Business logic and API services
-- `src/hooks/` - Custom React hooks
-- `src/schema/` - Data schemas and types
+- `app/` - Expo Router file-based navigation
+- `components/` - App-specific UI components
+- `styles/` - Unistyles theme-aware stylesheets
+- `theme/` - Design system configuration
+- `stores/` - Local state management
 
-### Core Package
+### Core Packages
 
-The `@ariob/core` package provides:
+| Package | Purpose |
+|---------|---------|
+| **@ariob/core** | Gun.js primitives, authentication, cryptography, state management |
+| **@ariob/ripple** | Social UI components (Node, Bar, Menu), gestures, hooks |
+| **@ariob/andromeda** | Design system atoms, molecules, organisms, themes |
 
-- Authentication services
-- Data management with Gun.js
-- Real-time state management
-- Type-safe APIs
-
-See [packages/core/README.md](packages/core/README.md) for detailed documentation.
+See individual package READMEs for detailed documentation.
 
 ## 📁 Project Structure
 
 ```
 ariob/
 ├── apps/
-│   ├── chat/           # Main React + Lynx application
-│   ├──── src/             # Feature code, routes, components
-│   └──── README.md        # App-specific docs
+│   ├── ripple/              # Main social app (Expo + React Native)
+│   │   ├── app/             # File-based routing (Expo Router)
+│   │   ├── components/      # App-specific components
+│   │   ├── styles/          # Unistyles style definitions
+│   │   └── theme/           # Theme configuration
+│   └── kitchen/             # Component playground
 ├── packages/
-│   ├── ai/                  # Native ML bridge helpers
-│   ├── core/                # Gun.js services + stores
-│   └── ui/                  # Shared UI kit & Tailwind config
-├── platforms/               # Platform-specific code (iOS, Android, Web)
+│   ├── core/                # @ariob/core - Gun.js, auth, crypto
+│   ├── ripple/              # @ariob/ripple - Social UI components
+│   ├── andromeda/           # @ariob/andromeda - Design system
+│   ├── store/               # State management utilities
+│   └── webcrypto/           # Native WebCrypto bridge
+├── docs/                    # Extended documentation
 ├── package.json
 ├── pnpm-workspace.yaml
 ├── tsconfig.json
@@ -155,12 +162,24 @@ ariob/
 
 ## 📚 Documentation
 
-- [Chat App Guide](apps/chat/README.md)
-- [UI Package Reference](packages/ui/README.md)
-- [Router Plugin Reference](packages/router/README.md)
-- [Core Package Reference](packages/core/README.md)
-- [Editor Package Reference](packages/editor/README.md)
-- [AI Package Reference](packages/ai/README.md)
+### Core Packages
+
+| Package | Description | Documentation |
+|---------|-------------|---------------|
+| **@ariob/core** | Gun.js primitives, authentication, cryptography | [README](packages/core/README.md) |
+| **@ariob/ripple** | Social UI components, gestures, menu system | [README](packages/ripple/README.md) |
+| **@ariob/andromeda** | Atomic design system, themes, atoms/molecules | [README](packages/andromeda/README.md) |
+
+### Applications
+
+| App | Description | Documentation |
+|-----|-------------|---------------|
+| **Ripple** | Main social application (Expo + React Native) | [README](apps/ripple/README.md) |
+
+### Extended Documentation
+
+- [Ripple Package Docs](docs/ripple/) — Components, gestures, hooks, styles
+- [Andromeda Package Docs](docs/andromeda/) — Theme system, atoms, molecules, organisms
 
 ## 📜 Available Scripts
 
@@ -169,15 +188,15 @@ ariob/
 | Command | Description |
 |---------|-------------|
 | `pnpm dev` | Start all services in development mode |
-| `pnpm dev:chat` | Start only the main application |
-| `pnpm dev:web` | Start web platform (when available) |
+| `pnpm dev:ripple` | Start the Ripple app |
+| `pnpm dev:kitchen` | Start the component playground |
 
 ### Building
 
 | Command | Description |
 |---------|-------------|
-| `pnpm build` | Build all applications |
-| `pnpm build:chat` | Build main application |
+| `pnpm build` | Build all packages |
+| `pnpm build:ripple` | Build Ripple app |
 
 ### Testing
 
@@ -204,20 +223,21 @@ ariob/
 
 ## 🧪 Testing
 
-We use Vitest with Lynx React Testing Library. Run tests with:
+We use Vitest for testing. Run tests with:
 
 ```bash
 # Run all tests
 pnpm test
 
-# Run with UI
-pnpm test:ui
+# Run tests for specific package
+pnpm --filter @ariob/ripple test
+pnpm --filter @ariob/core test
 
-# Run specific app tests
-pnpm --filter chat test
+# Run tests in watch mode
+pnpm test:watch
 ```
 
-See [apps/chat/src/test/README.md](apps/chat/src/test/README.md) for testing guidelines.
+Tests are located in each package's `src/__tests__/` directory.
 
 ## 🤝 Contributing
 

@@ -87,6 +87,8 @@ export interface UseRippleAIResult {
   isGenerating: boolean;
   /** Model download progress (0-1) */
   downloadProgress: number;
+  /** Whether the model is currently downloading */
+  isDownloading: boolean;
   /** Error message if something went wrong */
   error: string | null;
   /** Send a message to Ripple AI */

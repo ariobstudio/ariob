@@ -55,12 +55,10 @@ function App() {
 
 ## Architecture
 
-Following UNIX philosophy with protocol-first design:
-
 ```
 @ariob/ripple
 ├── menu/                 # Action system
-│   ├── make.ts           # UNIX-style action factory
+│   ├── make.ts           # Action factory
 │   ├── types.ts          # Protocol definitions
 │   ├── Provider.tsx      # Context provider
 │   ├── bar/              # Floating action bar
@@ -83,7 +81,7 @@ Following UNIX philosophy with protocol-first design:
 
 ## Make Helper
 
-UNIX-style factory for creating actions:
+Factory for creating actions:
 
 ```typescript
 import { make } from '@ariob/ripple';

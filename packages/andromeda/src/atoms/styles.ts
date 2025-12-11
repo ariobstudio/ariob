@@ -285,13 +285,16 @@ export const line = StyleSheet.create((t) => ({
 // Icon Styles
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Icon constants (not StyleSheet - these are values not styles)
+export const iconSizes = {
+  xs: 14,
+  sm: 18,
+  md: 22,
+  lg: 28,
+  xl: 36,
+} as const;
+
 export const icon = StyleSheet.create((t) => ({
-  // Sizes (in pixels)
-  xs: { size: 14 },
-  sm: { size: 18 },
-  md: { size: 22 },
-  lg: { size: 28 },
-  xl: { size: 36 },
   // Colors
   text: { color: t.colors.text },
   dim: { color: t.colors.dim },

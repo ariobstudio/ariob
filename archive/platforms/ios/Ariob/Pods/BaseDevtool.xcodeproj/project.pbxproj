@@ -1,0 +1,856 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		97DF6100000730 /* DevToolDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000140 /* DevToolDownloader.m */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000740 /* DevToolFileLoadUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000160 /* DevToolFileLoadUtils.mm */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000750 /* DevToolToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000180 /* DevToolToast.m */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000760 /* DevToolGlobalSlotIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97DF61000001A0 /* DevToolGlobalSlotIOS.mm */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000770 /* DevToolSlotIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97DF61000001C0 /* DevToolSlotIOS.mm */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000780 /* DevToolLogBox.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97DF61000001E0 /* DevToolLogBox.mm */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000790 /* DevToolLogBoxEnv.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000200 /* DevToolLogBoxEnv.mm */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF61000007A0 /* DevToolLogBoxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000230 /* DevToolLogBoxManager.m */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF61000007B0 /* DevToolLogBoxNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000250 /* DevToolLogBoxNotification.m */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF61000007C0 /* DevToolLogBoxOwner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000270 /* DevToolLogBoxOwner.mm */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF61000007D0 /* DevToolLogBoxProxy.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000290 /* DevToolLogBoxProxy.mm */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF61000007E0 /* abstract_devtool.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97DF61000002B0 /* abstract_devtool.cc */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF61000007F0 /* cdp_domain_agent_base.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97DF61000002C0 /* cdp_domain_agent_base.cc */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000800 /* devtool_global_slot_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97DF61000002E0 /* devtool_global_slot_ios.mm */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000810 /* devtool_slot_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000300 /* devtool_slot_ios.mm */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000820 /* devtool_global_slot.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000320 /* devtool_global_slot.cc */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000830 /* devtool_message_dispatcher.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000340 /* devtool_message_dispatcher.cc */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000840 /* devtool_slot.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000350 /* devtool_slot.cc */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000850 /* devtool_status.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000370 /* devtool_status.cc */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000860 /* global_message_channel.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000380 /* global_message_channel.cc */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000870 /* global_message_dispatcher.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97DF61000003A0 /* global_message_dispatcher.cc */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000880 /* inspector_client_delegate_base_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97DF61000003C0 /* inspector_client_delegate_base_impl.cc */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000890 /* script_manager_ng.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97DF61000003E0 /* script_manager_ng.cc */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF61000008A0 /* view_message_channel.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000470 /* view_message_channel.cc */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF61000008B0 /* view_message_dispatcher.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000490 /* view_message_dispatcher.cc */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF61000008C0 /* inspector_client_ng.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97DF61000004C0 /* inspector_client_ng.cc */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF61000008D0 /* json_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97DF61000005C0 /* json_reader.cpp */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF61000008E0 /* json_value.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97DF61000005E0 /* json_value.cpp */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF61000008F0 /* json_writer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000600 /* json_writer.cpp */; settings = {COMPILER_FLAGS = "-Wall -Wextra -Wno-unused-parameter -Wshorten-64-to-32 -fno-rtti"; }; };
+		97DF6100000900 /* backtrace.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000000D0 /* backtrace.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000910 /* lynx_assert.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000000E0 /* lynx_assert.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000920 /* lynx_error.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000000F0 /* lynx_error.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000930 /* alog_wrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000100 /* alog_wrapper.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000940 /* log_stream.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000110 /* log_stream.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000950 /* logging.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000120 /* logging.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000960 /* DevToolDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000130 /* DevToolDownloader.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000970 /* DevToolFileLoadUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000150 /* DevToolFileLoadUtils.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000980 /* DevToolToast.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000170 /* DevToolToast.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000990 /* DevToolGlobalSlotIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000190 /* DevToolGlobalSlotIOS.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF61000009A0 /* DevToolSlotIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000001B0 /* DevToolSlotIOS.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF61000009B0 /* DevToolLogBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000001D0 /* DevToolLogBox.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF61000009C0 /* DevToolLogBoxEnv.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000001F0 /* DevToolLogBoxEnv.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF61000009D0 /* DevToolLogBoxHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000210 /* DevToolLogBoxHelper.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF61000009E0 /* DevToolLogBoxManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000220 /* DevToolLogBoxManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF61000009F0 /* DevToolLogBoxNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000240 /* DevToolLogBoxNotification.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000A00 /* DevToolLogBoxOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000260 /* DevToolLogBoxOwner.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000A10 /* DevToolLogBoxProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000280 /* DevToolLogBoxProxy.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000A20 /* DevToolLogBoxResProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000002A0 /* DevToolLogBoxResProvider.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000A30 /* devtool_global_slot_ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000002D0 /* devtool_global_slot_ios.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000A40 /* devtool_slot_ios.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000002F0 /* devtool_slot_ios.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000A50 /* debug_router_message_subscriber.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000310 /* debug_router_message_subscriber.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000A60 /* devtool_global_slot.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000330 /* devtool_global_slot.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000A70 /* devtool_slot.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000360 /* devtool_slot.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000A80 /* global_message_channel.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000390 /* global_message_channel.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000A90 /* global_message_dispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000003B0 /* global_message_dispatcher.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000AA0 /* inspector_client_delegate_base_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000003D0 /* inspector_client_delegate_base_impl.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000AB0 /* script_manager_ng.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000003F0 /* script_manager_ng.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000AC0 /* abstract_devtool.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000400 /* abstract_devtool.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000AD0 /* base_devtool_export.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000410 /* base_devtool_export.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000AE0 /* cdp_domain_agent_base.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000420 /* cdp_domain_agent_base.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000AF0 /* devtool_message_dispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000430 /* devtool_message_dispatcher.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000B00 /* devtool_message_handler.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000440 /* devtool_message_handler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000B10 /* devtool_status.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000450 /* devtool_status.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000B20 /* message_sender.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000460 /* message_sender.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000B30 /* view_message_channel.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000480 /* view_message_channel.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000B40 /* view_message_dispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000004A0 /* view_message_dispatcher.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000B50 /* inspector_client_delegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000004B0 /* inspector_client_delegate.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000B60 /* inspector_client_ng.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000004D0 /* inspector_client_ng.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000B70 /* inspector_client_quickjs_delegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000004E0 /* inspector_client_quickjs_delegate.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000B80 /* inspector_client_v8_delegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000004F0 /* inspector_client_v8_delegate.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000B90 /* inspector_const.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000500 /* inspector_const.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000BA0 /* allocator.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000510 /* allocator.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000BB0 /* assertions.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000520 /* assertions.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000BC0 /* autolink.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000530 /* autolink.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000BD0 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000540 /* config.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000BE0 /* features.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000550 /* features.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000BF0 /* forwards.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000560 /* forwards.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000C00 /* json.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000570 /* json.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000C10 /* reader.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000580 /* reader.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000C20 /* value.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF6100000590 /* value.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000C30 /* version.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000005A0 /* version.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000C40 /* writer.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000005B0 /* writer.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000C50 /* json_tool.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000005D0 /* json_tool.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000C60 /* json_valueiterator.inl in Headers */ = {isa = PBXBuildFile; fileRef = 97DF61000005F0 /* json_valueiterator.inl */; settings = {ATTRIBUTES = (Project, ); }; };
+		97DF6100000CB0 /* BaseDevtool-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DF6100000CA0 /* BaseDevtool-dummy.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		97DF6100000CC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97DF6100000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 39F535CD6B827322ABE2D02881CA3256;
+			remoteInfo = "BaseDevtool-LynxBaseDevToolResources";
+		};
+		97DF6100000CF0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97DF6100000CE0 /* DebugRouter.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 42E8F82F4C188A1341C0E421F5B5CC12;
+			remoteInfo = DebugRouter;
+		};
+		97DF6100000D20 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97DF6100000D10 /* Lynx.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 36615FAD4092F8E4183B2F03B495FABE;
+			remoteInfo = Lynx;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		52BC8AAA66685B687F10A60561EAE4BC /* BaseDevtool */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = BaseDevtool; path = libBaseDevtool.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		97DF61000000D0 /* backtrace.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = backtrace.h; path = base/include/debug/backtrace.h; sourceTree = "<group>"; };
+		97DF61000000E0 /* lynx_assert.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = lynx_assert.h; path = base/include/debug/lynx_assert.h; sourceTree = "<group>"; };
+		97DF61000000F0 /* lynx_error.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = lynx_error.h; path = base/include/debug/lynx_error.h; sourceTree = "<group>"; };
+		97DF6100000100 /* alog_wrapper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = alog_wrapper.h; path = base/include/log/alog_wrapper.h; sourceTree = "<group>"; };
+		97DF6100000110 /* log_stream.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = log_stream.h; path = base/include/log/log_stream.h; sourceTree = "<group>"; };
+		97DF6100000120 /* logging.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = logging.h; path = base/include/log/logging.h; sourceTree = "<group>"; };
+		97DF6100000130 /* DevToolDownloader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DevToolDownloader.h; path = devtool/base_devtool/darwin/common/utils/DevToolDownloader.h; sourceTree = "<group>"; };
+		97DF6100000140 /* DevToolDownloader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DevToolDownloader.m; path = devtool/base_devtool/darwin/common/utils/DevToolDownloader.m; sourceTree = "<group>"; };
+		97DF6100000150 /* DevToolFileLoadUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DevToolFileLoadUtils.h; path = devtool/base_devtool/darwin/common/utils/DevToolFileLoadUtils.h; sourceTree = "<group>"; };
+		97DF6100000160 /* DevToolFileLoadUtils.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = DevToolFileLoadUtils.mm; path = devtool/base_devtool/darwin/common/utils/DevToolFileLoadUtils.mm; sourceTree = "<group>"; };
+		97DF6100000170 /* DevToolToast.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DevToolToast.h; path = devtool/base_devtool/darwin/common/utils/DevToolToast.h; sourceTree = "<group>"; };
+		97DF6100000180 /* DevToolToast.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DevToolToast.m; path = devtool/base_devtool/darwin/common/utils/DevToolToast.m; sourceTree = "<group>"; };
+		97DF6100000190 /* DevToolGlobalSlotIOS.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DevToolGlobalSlotIOS.h; path = devtool/base_devtool/darwin/ios/DevToolGlobalSlotIOS.h; sourceTree = "<group>"; };
+		97DF61000001A0 /* DevToolGlobalSlotIOS.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = DevToolGlobalSlotIOS.mm; path = devtool/base_devtool/darwin/ios/DevToolGlobalSlotIOS.mm; sourceTree = "<group>"; };
+		97DF61000001B0 /* DevToolSlotIOS.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DevToolSlotIOS.h; path = devtool/base_devtool/darwin/ios/DevToolSlotIOS.h; sourceTree = "<group>"; };
+		97DF61000001C0 /* DevToolSlotIOS.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = DevToolSlotIOS.mm; path = devtool/base_devtool/darwin/ios/DevToolSlotIOS.mm; sourceTree = "<group>"; };
+		97DF61000001D0 /* DevToolLogBox.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DevToolLogBox.h; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBox.h; sourceTree = "<group>"; };
+		97DF61000001E0 /* DevToolLogBox.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = DevToolLogBox.mm; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBox.mm; sourceTree = "<group>"; };
+		97DF61000001F0 /* DevToolLogBoxEnv.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DevToolLogBoxEnv.h; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBoxEnv.h; sourceTree = "<group>"; };
+		97DF6100000200 /* DevToolLogBoxEnv.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = DevToolLogBoxEnv.mm; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBoxEnv.mm; sourceTree = "<group>"; };
+		97DF6100000210 /* DevToolLogBoxHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DevToolLogBoxHelper.h; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBoxHelper.h; sourceTree = "<group>"; };
+		97DF6100000220 /* DevToolLogBoxManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DevToolLogBoxManager.h; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBoxManager.h; sourceTree = "<group>"; };
+		97DF6100000230 /* DevToolLogBoxManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DevToolLogBoxManager.m; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBoxManager.m; sourceTree = "<group>"; };
+		97DF6100000240 /* DevToolLogBoxNotification.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DevToolLogBoxNotification.h; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBoxNotification.h; sourceTree = "<group>"; };
+		97DF6100000250 /* DevToolLogBoxNotification.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DevToolLogBoxNotification.m; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBoxNotification.m; sourceTree = "<group>"; };
+		97DF6100000260 /* DevToolLogBoxOwner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DevToolLogBoxOwner.h; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBoxOwner.h; sourceTree = "<group>"; };
+		97DF6100000270 /* DevToolLogBoxOwner.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = DevToolLogBoxOwner.mm; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBoxOwner.mm; sourceTree = "<group>"; };
+		97DF6100000280 /* DevToolLogBoxProxy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DevToolLogBoxProxy.h; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBoxProxy.h; sourceTree = "<group>"; };
+		97DF6100000290 /* DevToolLogBoxProxy.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = DevToolLogBoxProxy.mm; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBoxProxy.mm; sourceTree = "<group>"; };
+		97DF61000002A0 /* DevToolLogBoxResProvider.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DevToolLogBoxResProvider.h; path = devtool/base_devtool/darwin/ios/logbox/DevToolLogBoxResProvider.h; sourceTree = "<group>"; };
+		97DF61000002B0 /* abstract_devtool.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = abstract_devtool.cc; path = devtool/base_devtool/native/abstract_devtool.cc; sourceTree = "<group>"; };
+		97DF61000002C0 /* cdp_domain_agent_base.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = cdp_domain_agent_base.cc; path = devtool/base_devtool/native/cdp_domain_agent_base.cc; sourceTree = "<group>"; };
+		97DF61000002D0 /* devtool_global_slot_ios.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = devtool_global_slot_ios.h; path = devtool/base_devtool/native/darwin/ios/devtool_global_slot_ios.h; sourceTree = "<group>"; };
+		97DF61000002E0 /* devtool_global_slot_ios.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = devtool_global_slot_ios.mm; path = devtool/base_devtool/native/darwin/ios/devtool_global_slot_ios.mm; sourceTree = "<group>"; };
+		97DF61000002F0 /* devtool_slot_ios.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = devtool_slot_ios.h; path = devtool/base_devtool/native/darwin/ios/devtool_slot_ios.h; sourceTree = "<group>"; };
+		97DF6100000300 /* devtool_slot_ios.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = devtool_slot_ios.mm; path = devtool/base_devtool/native/darwin/ios/devtool_slot_ios.mm; sourceTree = "<group>"; };
+		97DF6100000310 /* debug_router_message_subscriber.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = debug_router_message_subscriber.h; path = devtool/base_devtool/native/debug_router_message_subscriber.h; sourceTree = "<group>"; };
+		97DF6100000320 /* devtool_global_slot.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = devtool_global_slot.cc; path = devtool/base_devtool/native/devtool_global_slot.cc; sourceTree = "<group>"; };
+		97DF6100000330 /* devtool_global_slot.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = devtool_global_slot.h; path = devtool/base_devtool/native/devtool_global_slot.h; sourceTree = "<group>"; };
+		97DF6100000340 /* devtool_message_dispatcher.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = devtool_message_dispatcher.cc; path = devtool/base_devtool/native/devtool_message_dispatcher.cc; sourceTree = "<group>"; };
+		97DF6100000350 /* devtool_slot.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = devtool_slot.cc; path = devtool/base_devtool/native/devtool_slot.cc; sourceTree = "<group>"; };
+		97DF6100000360 /* devtool_slot.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = devtool_slot.h; path = devtool/base_devtool/native/devtool_slot.h; sourceTree = "<group>"; };
+		97DF6100000370 /* devtool_status.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = devtool_status.cc; path = devtool/base_devtool/native/devtool_status.cc; sourceTree = "<group>"; };
+		97DF6100000380 /* global_message_channel.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = global_message_channel.cc; path = devtool/base_devtool/native/global_message_channel.cc; sourceTree = "<group>"; };
+		97DF6100000390 /* global_message_channel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = global_message_channel.h; path = devtool/base_devtool/native/global_message_channel.h; sourceTree = "<group>"; };
+		97DF61000003A0 /* global_message_dispatcher.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = global_message_dispatcher.cc; path = devtool/base_devtool/native/global_message_dispatcher.cc; sourceTree = "<group>"; };
+		97DF61000003B0 /* global_message_dispatcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = global_message_dispatcher.h; path = devtool/base_devtool/native/global_message_dispatcher.h; sourceTree = "<group>"; };
+		97DF61000003C0 /* inspector_client_delegate_base_impl.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = inspector_client_delegate_base_impl.cc; path = devtool/base_devtool/native/js_inspect/inspector_client_delegate_base_impl.cc; sourceTree = "<group>"; };
+		97DF61000003D0 /* inspector_client_delegate_base_impl.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = inspector_client_delegate_base_impl.h; path = devtool/base_devtool/native/js_inspect/inspector_client_delegate_base_impl.h; sourceTree = "<group>"; };
+		97DF61000003E0 /* script_manager_ng.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = script_manager_ng.cc; path = devtool/base_devtool/native/js_inspect/script_manager_ng.cc; sourceTree = "<group>"; };
+		97DF61000003F0 /* script_manager_ng.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = script_manager_ng.h; path = devtool/base_devtool/native/js_inspect/script_manager_ng.h; sourceTree = "<group>"; };
+		97DF6100000400 /* abstract_devtool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = abstract_devtool.h; path = devtool/base_devtool/native/public/abstract_devtool.h; sourceTree = "<group>"; };
+		97DF6100000410 /* base_devtool_export.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = base_devtool_export.h; path = devtool/base_devtool/native/public/base_devtool_export.h; sourceTree = "<group>"; };
+		97DF6100000420 /* cdp_domain_agent_base.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = cdp_domain_agent_base.h; path = devtool/base_devtool/native/public/cdp_domain_agent_base.h; sourceTree = "<group>"; };
+		97DF6100000430 /* devtool_message_dispatcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = devtool_message_dispatcher.h; path = devtool/base_devtool/native/public/devtool_message_dispatcher.h; sourceTree = "<group>"; };
+		97DF6100000440 /* devtool_message_handler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = devtool_message_handler.h; path = devtool/base_devtool/native/public/devtool_message_handler.h; sourceTree = "<group>"; };
+		97DF6100000450 /* devtool_status.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = devtool_status.h; path = devtool/base_devtool/native/public/devtool_status.h; sourceTree = "<group>"; };
+		97DF6100000460 /* message_sender.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = message_sender.h; path = devtool/base_devtool/native/public/message_sender.h; sourceTree = "<group>"; };
+		97DF6100000470 /* view_message_channel.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = view_message_channel.cc; path = devtool/base_devtool/native/view_message_channel.cc; sourceTree = "<group>"; };
+		97DF6100000480 /* view_message_channel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = view_message_channel.h; path = devtool/base_devtool/native/view_message_channel.h; sourceTree = "<group>"; };
+		97DF6100000490 /* view_message_dispatcher.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = view_message_dispatcher.cc; path = devtool/base_devtool/native/view_message_dispatcher.cc; sourceTree = "<group>"; };
+		97DF61000004A0 /* view_message_dispatcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = view_message_dispatcher.h; path = devtool/base_devtool/native/view_message_dispatcher.h; sourceTree = "<group>"; };
+		97DF61000004B0 /* inspector_client_delegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = inspector_client_delegate.h; path = devtool/fundamentals/js_inspect/inspector_client_delegate.h; sourceTree = "<group>"; };
+		97DF61000004C0 /* inspector_client_ng.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = inspector_client_ng.cc; path = devtool/fundamentals/js_inspect/inspector_client_ng.cc; sourceTree = "<group>"; };
+		97DF61000004D0 /* inspector_client_ng.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = inspector_client_ng.h; path = devtool/fundamentals/js_inspect/inspector_client_ng.h; sourceTree = "<group>"; };
+		97DF61000004E0 /* inspector_client_quickjs_delegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = inspector_client_quickjs_delegate.h; path = devtool/fundamentals/js_inspect/inspector_client_quickjs_delegate.h; sourceTree = "<group>"; };
+		97DF61000004F0 /* inspector_client_v8_delegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = inspector_client_v8_delegate.h; path = devtool/fundamentals/js_inspect/inspector_client_v8_delegate.h; sourceTree = "<group>"; };
+		97DF6100000500 /* inspector_const.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = inspector_const.h; path = devtool/js_inspect/inspector_const.h; sourceTree = "<group>"; };
+		97DF6100000510 /* allocator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = allocator.h; path = third_party/jsoncpp/include/json/allocator.h; sourceTree = "<group>"; };
+		97DF6100000520 /* assertions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = assertions.h; path = third_party/jsoncpp/include/json/assertions.h; sourceTree = "<group>"; };
+		97DF6100000530 /* autolink.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = autolink.h; path = third_party/jsoncpp/include/json/autolink.h; sourceTree = "<group>"; };
+		97DF6100000540 /* config.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = config.h; path = third_party/jsoncpp/include/json/config.h; sourceTree = "<group>"; };
+		97DF6100000550 /* features.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = features.h; path = third_party/jsoncpp/include/json/features.h; sourceTree = "<group>"; };
+		97DF6100000560 /* forwards.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = forwards.h; path = third_party/jsoncpp/include/json/forwards.h; sourceTree = "<group>"; };
+		97DF6100000570 /* json.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = json.h; path = third_party/jsoncpp/include/json/json.h; sourceTree = "<group>"; };
+		97DF6100000580 /* reader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = reader.h; path = third_party/jsoncpp/include/json/reader.h; sourceTree = "<group>"; };
+		97DF6100000590 /* value.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = value.h; path = third_party/jsoncpp/include/json/value.h; sourceTree = "<group>"; };
+		97DF61000005A0 /* version.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = version.h; path = third_party/jsoncpp/include/json/version.h; sourceTree = "<group>"; };
+		97DF61000005B0 /* writer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = writer.h; path = third_party/jsoncpp/include/json/writer.h; sourceTree = "<group>"; };
+		97DF61000005C0 /* json_reader.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = json_reader.cpp; path = third_party/jsoncpp/src/lib_json/json_reader.cpp; sourceTree = "<group>"; };
+		97DF61000005D0 /* json_tool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = json_tool.h; path = third_party/jsoncpp/src/lib_json/json_tool.h; sourceTree = "<group>"; };
+		97DF61000005E0 /* json_value.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = json_value.cpp; path = third_party/jsoncpp/src/lib_json/json_value.cpp; sourceTree = "<group>"; };
+		97DF61000005F0 /* json_valueiterator.inl */ = {isa = PBXFileReference; includeInIndex = 1; name = json_valueiterator.inl; path = third_party/jsoncpp/src/lib_json/json_valueiterator.inl; sourceTree = "<group>"; };
+		97DF6100000600 /* json_writer.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = json_writer.cpp; path = third_party/jsoncpp/src/lib_json/json_writer.cpp; sourceTree = "<group>"; };
+		97DF6100000720 /* ResourceBundle-LynxBaseDevToolResources-BaseDevtool-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-LynxBaseDevToolResources-BaseDevtool-Info.plist"; sourceTree = "<group>"; };
+		97DF6100000C70 /* BaseDevtool.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = BaseDevtool.debug.xcconfig; sourceTree = "<group>"; };
+		97DF6100000C80 /* BaseDevtool.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = BaseDevtool.release.xcconfig; sourceTree = "<group>"; };
+		97DF6100000C90 /* BaseDevtool-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BaseDevtool-prefix.pch"; sourceTree = "<group>"; };
+		97DF6100000CA0 /* BaseDevtool-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "BaseDevtool-dummy.m"; sourceTree = "<group>"; };
+		97DF6100000CE0 /* DebugRouter */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DebugRouter; path = DebugRouter.xcodeproj; sourceTree = "<group>"; };
+		97DF6100000D10 /* Lynx */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lynx; path = Lynx.xcodeproj; sourceTree = "<group>"; };
+		C6EE4F83ECF559C539C26588D11D1ACF /* BaseDevtool-LynxBaseDevToolResources */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "BaseDevtool-LynxBaseDevToolResources"; path = LynxBaseDevToolResources.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		97DF6100000680 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97DF61000006F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		97DF6100000010 = {
+			isa = PBXGroup;
+			children = (
+				97DF61000000B0 /* BaseDevtool */,
+				97DF61000000A0 /* Dependencies */,
+				97DF6100000060 /* Frameworks */,
+				97DF6100000020 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		97DF6100000020 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				52BC8AAA66685B687F10A60561EAE4BC /* BaseDevtool */,
+				C6EE4F83ECF559C539C26588D11D1ACF /* BaseDevtool-LynxBaseDevToolResources */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		97DF6100000060 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		97DF61000000A0 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				97DF6100000CE0 /* DebugRouter */,
+				97DF6100000D10 /* Lynx */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		97DF61000000B0 /* BaseDevtool */ = {
+			isa = PBXGroup;
+			children = (
+				97DF61000000C0 /* framework */,
+				97DF6100000710 /* Support Files */,
+			);
+			name = BaseDevtool;
+			path = BaseDevtool;
+			sourceTree = "<group>";
+		};
+		97DF61000000C0 /* framework */ = {
+			isa = PBXGroup;
+			children = (
+				97DF61000002B0 /* abstract_devtool.cc */,
+				97DF6100000400 /* abstract_devtool.h */,
+				97DF6100000510 /* allocator.h */,
+				97DF6100000100 /* alog_wrapper.h */,
+				97DF6100000520 /* assertions.h */,
+				97DF6100000530 /* autolink.h */,
+				97DF61000000D0 /* backtrace.h */,
+				97DF6100000410 /* base_devtool_export.h */,
+				97DF61000002C0 /* cdp_domain_agent_base.cc */,
+				97DF6100000420 /* cdp_domain_agent_base.h */,
+				97DF6100000540 /* config.h */,
+				97DF6100000310 /* debug_router_message_subscriber.h */,
+				97DF6100000320 /* devtool_global_slot.cc */,
+				97DF6100000330 /* devtool_global_slot.h */,
+				97DF61000002D0 /* devtool_global_slot_ios.h */,
+				97DF61000002E0 /* devtool_global_slot_ios.mm */,
+				97DF6100000340 /* devtool_message_dispatcher.cc */,
+				97DF6100000430 /* devtool_message_dispatcher.h */,
+				97DF6100000440 /* devtool_message_handler.h */,
+				97DF6100000350 /* devtool_slot.cc */,
+				97DF6100000360 /* devtool_slot.h */,
+				97DF61000002F0 /* devtool_slot_ios.h */,
+				97DF6100000300 /* devtool_slot_ios.mm */,
+				97DF6100000370 /* devtool_status.cc */,
+				97DF6100000450 /* devtool_status.h */,
+				97DF6100000130 /* DevToolDownloader.h */,
+				97DF6100000140 /* DevToolDownloader.m */,
+				97DF6100000150 /* DevToolFileLoadUtils.h */,
+				97DF6100000160 /* DevToolFileLoadUtils.mm */,
+				97DF6100000190 /* DevToolGlobalSlotIOS.h */,
+				97DF61000001A0 /* DevToolGlobalSlotIOS.mm */,
+				97DF61000001D0 /* DevToolLogBox.h */,
+				97DF61000001E0 /* DevToolLogBox.mm */,
+				97DF61000001F0 /* DevToolLogBoxEnv.h */,
+				97DF6100000200 /* DevToolLogBoxEnv.mm */,
+				97DF6100000210 /* DevToolLogBoxHelper.h */,
+				97DF6100000220 /* DevToolLogBoxManager.h */,
+				97DF6100000230 /* DevToolLogBoxManager.m */,
+				97DF6100000240 /* DevToolLogBoxNotification.h */,
+				97DF6100000250 /* DevToolLogBoxNotification.m */,
+				97DF6100000260 /* DevToolLogBoxOwner.h */,
+				97DF6100000270 /* DevToolLogBoxOwner.mm */,
+				97DF6100000280 /* DevToolLogBoxProxy.h */,
+				97DF6100000290 /* DevToolLogBoxProxy.mm */,
+				97DF61000002A0 /* DevToolLogBoxResProvider.h */,
+				97DF61000001B0 /* DevToolSlotIOS.h */,
+				97DF61000001C0 /* DevToolSlotIOS.mm */,
+				97DF6100000170 /* DevToolToast.h */,
+				97DF6100000180 /* DevToolToast.m */,
+				97DF6100000550 /* features.h */,
+				97DF6100000560 /* forwards.h */,
+				97DF6100000380 /* global_message_channel.cc */,
+				97DF6100000390 /* global_message_channel.h */,
+				97DF61000003A0 /* global_message_dispatcher.cc */,
+				97DF61000003B0 /* global_message_dispatcher.h */,
+				97DF61000004B0 /* inspector_client_delegate.h */,
+				97DF61000003C0 /* inspector_client_delegate_base_impl.cc */,
+				97DF61000003D0 /* inspector_client_delegate_base_impl.h */,
+				97DF61000004C0 /* inspector_client_ng.cc */,
+				97DF61000004D0 /* inspector_client_ng.h */,
+				97DF61000004E0 /* inspector_client_quickjs_delegate.h */,
+				97DF61000004F0 /* inspector_client_v8_delegate.h */,
+				97DF6100000500 /* inspector_const.h */,
+				97DF6100000570 /* json.h */,
+				97DF61000005C0 /* json_reader.cpp */,
+				97DF61000005D0 /* json_tool.h */,
+				97DF61000005E0 /* json_value.cpp */,
+				97DF61000005F0 /* json_valueiterator.inl */,
+				97DF6100000600 /* json_writer.cpp */,
+				97DF6100000110 /* log_stream.h */,
+				97DF6100000120 /* logging.h */,
+				97DF61000000E0 /* lynx_assert.h */,
+				97DF61000000F0 /* lynx_error.h */,
+				97DF6100000460 /* message_sender.h */,
+				97DF6100000580 /* reader.h */,
+				97DF61000003E0 /* script_manager_ng.cc */,
+				97DF61000003F0 /* script_manager_ng.h */,
+				97DF6100000590 /* value.h */,
+				97DF61000005A0 /* version.h */,
+				97DF6100000470 /* view_message_channel.cc */,
+				97DF6100000480 /* view_message_channel.h */,
+				97DF6100000490 /* view_message_dispatcher.cc */,
+				97DF61000004A0 /* view_message_dispatcher.h */,
+				97DF61000005B0 /* writer.h */,
+			);
+			name = framework;
+			sourceTree = "<group>";
+		};
+		97DF6100000710 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				97DF6100000CA0 /* BaseDevtool-dummy.m */,
+				97DF6100000C90 /* BaseDevtool-prefix.pch */,
+				97DF6100000C70 /* BaseDevtool.debug.xcconfig */,
+				97DF6100000C80 /* BaseDevtool.release.xcconfig */,
+				97DF6100000720 /* ResourceBundle-LynxBaseDevToolResources-BaseDevtool-Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/BaseDevtool";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		97DF6100000660 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97DF6100000AC0 /* abstract_devtool.h in Headers */,
+				97DF6100000BA0 /* allocator.h in Headers */,
+				97DF6100000930 /* alog_wrapper.h in Headers */,
+				97DF6100000BB0 /* assertions.h in Headers */,
+				97DF6100000BC0 /* autolink.h in Headers */,
+				97DF6100000900 /* backtrace.h in Headers */,
+				97DF6100000AD0 /* base_devtool_export.h in Headers */,
+				97DF6100000AE0 /* cdp_domain_agent_base.h in Headers */,
+				97DF6100000BD0 /* config.h in Headers */,
+				97DF6100000A50 /* debug_router_message_subscriber.h in Headers */,
+				97DF6100000A60 /* devtool_global_slot.h in Headers */,
+				97DF6100000A30 /* devtool_global_slot_ios.h in Headers */,
+				97DF6100000AF0 /* devtool_message_dispatcher.h in Headers */,
+				97DF6100000B00 /* devtool_message_handler.h in Headers */,
+				97DF6100000A70 /* devtool_slot.h in Headers */,
+				97DF6100000A40 /* devtool_slot_ios.h in Headers */,
+				97DF6100000B10 /* devtool_status.h in Headers */,
+				97DF6100000960 /* DevToolDownloader.h in Headers */,
+				97DF6100000970 /* DevToolFileLoadUtils.h in Headers */,
+				97DF6100000990 /* DevToolGlobalSlotIOS.h in Headers */,
+				97DF61000009B0 /* DevToolLogBox.h in Headers */,
+				97DF61000009C0 /* DevToolLogBoxEnv.h in Headers */,
+				97DF61000009D0 /* DevToolLogBoxHelper.h in Headers */,
+				97DF61000009E0 /* DevToolLogBoxManager.h in Headers */,
+				97DF61000009F0 /* DevToolLogBoxNotification.h in Headers */,
+				97DF6100000A00 /* DevToolLogBoxOwner.h in Headers */,
+				97DF6100000A10 /* DevToolLogBoxProxy.h in Headers */,
+				97DF6100000A20 /* DevToolLogBoxResProvider.h in Headers */,
+				97DF61000009A0 /* DevToolSlotIOS.h in Headers */,
+				97DF6100000980 /* DevToolToast.h in Headers */,
+				97DF6100000BE0 /* features.h in Headers */,
+				97DF6100000BF0 /* forwards.h in Headers */,
+				97DF6100000A80 /* global_message_channel.h in Headers */,
+				97DF6100000A90 /* global_message_dispatcher.h in Headers */,
+				97DF6100000B50 /* inspector_client_delegate.h in Headers */,
+				97DF6100000AA0 /* inspector_client_delegate_base_impl.h in Headers */,
+				97DF6100000B60 /* inspector_client_ng.h in Headers */,
+				97DF6100000B70 /* inspector_client_quickjs_delegate.h in Headers */,
+				97DF6100000B80 /* inspector_client_v8_delegate.h in Headers */,
+				97DF6100000B90 /* inspector_const.h in Headers */,
+				97DF6100000C00 /* json.h in Headers */,
+				97DF6100000C50 /* json_tool.h in Headers */,
+				97DF6100000C60 /* json_valueiterator.inl in Headers */,
+				97DF6100000940 /* log_stream.h in Headers */,
+				97DF6100000950 /* logging.h in Headers */,
+				97DF6100000910 /* lynx_assert.h in Headers */,
+				97DF6100000920 /* lynx_error.h in Headers */,
+				97DF6100000B20 /* message_sender.h in Headers */,
+				97DF6100000C10 /* reader.h in Headers */,
+				97DF6100000AB0 /* script_manager_ng.h in Headers */,
+				97DF6100000C20 /* value.h in Headers */,
+				97DF6100000C30 /* version.h in Headers */,
+				97DF6100000B30 /* view_message_channel.h in Headers */,
+				97DF6100000B40 /* view_message_dispatcher.h in Headers */,
+				97DF6100000C40 /* writer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		39F535CD6B827322ABE2D02881CA3256 /* BaseDevtool-LynxBaseDevToolResources */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97DF61000006A0 /* Build configuration list for PBXNativeTarget "BaseDevtool-LynxBaseDevToolResources" */;
+			buildPhases = (
+				97DF61000006E0 /* Sources */,
+				97DF61000006F0 /* Frameworks */,
+				97DF6100000700 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "BaseDevtool-LynxBaseDevToolResources";
+			productName = LynxBaseDevToolResources;
+			productReference = C6EE4F83ECF559C539C26588D11D1ACF /* BaseDevtool-LynxBaseDevToolResources */;
+			productType = "com.apple.product-type.bundle";
+		};
+		582E86E5BD36CD49941EF20CF3D69957 /* BaseDevtool */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97DF6100000620 /* Build configuration list for PBXNativeTarget "BaseDevtool" */;
+			buildPhases = (
+				97DF6100000660 /* Headers */,
+				97DF6100000670 /* Sources */,
+				97DF6100000680 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				97DF6100000CD0 /* PBXTargetDependency */,
+				97DF6100000D00 /* PBXTargetDependency */,
+				97DF6100000D30 /* PBXTargetDependency */,
+			);
+			name = BaseDevtool;
+			productName = BaseDevtool;
+			productReference = 52BC8AAA66685B687F10A60561EAE4BC /* BaseDevtool */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		97DF6100000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = 97DF6100000030 /* Build configuration list for PBXProject "BaseDevtool" */;
+			compatibilityVersion = "Xcode 16.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 97DF6100000010;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 97DF6100000020 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProjectRef = 97DF6100000CE0 /* DebugRouter */;
+				},
+				{
+					ProjectRef = 97DF6100000D10 /* Lynx */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				582E86E5BD36CD49941EF20CF3D69957 /* BaseDevtool */,
+				39F535CD6B827322ABE2D02881CA3256 /* BaseDevtool-LynxBaseDevToolResources */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		97DF6100000700 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		97DF6100000670 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97DF61000007E0 /* abstract_devtool.cc in Sources */,
+				97DF6100000CB0 /* BaseDevtool-dummy.m in Sources */,
+				97DF61000007F0 /* cdp_domain_agent_base.cc in Sources */,
+				97DF6100000820 /* devtool_global_slot.cc in Sources */,
+				97DF6100000800 /* devtool_global_slot_ios.mm in Sources */,
+				97DF6100000830 /* devtool_message_dispatcher.cc in Sources */,
+				97DF6100000840 /* devtool_slot.cc in Sources */,
+				97DF6100000810 /* devtool_slot_ios.mm in Sources */,
+				97DF6100000850 /* devtool_status.cc in Sources */,
+				97DF6100000730 /* DevToolDownloader.m in Sources */,
+				97DF6100000740 /* DevToolFileLoadUtils.mm in Sources */,
+				97DF6100000760 /* DevToolGlobalSlotIOS.mm in Sources */,
+				97DF6100000780 /* DevToolLogBox.mm in Sources */,
+				97DF6100000790 /* DevToolLogBoxEnv.mm in Sources */,
+				97DF61000007A0 /* DevToolLogBoxManager.m in Sources */,
+				97DF61000007B0 /* DevToolLogBoxNotification.m in Sources */,
+				97DF61000007C0 /* DevToolLogBoxOwner.mm in Sources */,
+				97DF61000007D0 /* DevToolLogBoxProxy.mm in Sources */,
+				97DF6100000770 /* DevToolSlotIOS.mm in Sources */,
+				97DF6100000750 /* DevToolToast.m in Sources */,
+				97DF6100000860 /* global_message_channel.cc in Sources */,
+				97DF6100000870 /* global_message_dispatcher.cc in Sources */,
+				97DF6100000880 /* inspector_client_delegate_base_impl.cc in Sources */,
+				97DF61000008C0 /* inspector_client_ng.cc in Sources */,
+				97DF61000008D0 /* json_reader.cpp in Sources */,
+				97DF61000008E0 /* json_value.cpp in Sources */,
+				97DF61000008F0 /* json_writer.cpp in Sources */,
+				97DF6100000890 /* script_manager_ng.cc in Sources */,
+				97DF61000008A0 /* view_message_channel.cc in Sources */,
+				97DF61000008B0 /* view_message_dispatcher.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97DF61000006E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		97DF6100000CD0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "BaseDevtool-LynxBaseDevToolResources";
+			target = 39F535CD6B827322ABE2D02881CA3256 /* BaseDevtool-LynxBaseDevToolResources */;
+			targetProxy = 97DF6100000CC0 /* PBXContainerItemProxy */;
+		};
+		97DF6100000D00 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = DebugRouter;
+			targetProxy = 97DF6100000CF0 /* PBXContainerItemProxy */;
+		};
+		97DF6100000D30 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Lynx;
+			targetProxy = 97DF6100000D20 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		97DF6100000040 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		97DF6100000050 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		97DF6100000630 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97DF6100000C80 /* BaseDevtool.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/BaseDevtool/BaseDevtool-prefix.pch";
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = BaseDevtool;
+				PRODUCT_NAME = BaseDevtool;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		97DF6100000640 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97DF6100000C70 /* BaseDevtool.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/BaseDevtool/BaseDevtool-prefix.pch";
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = BaseDevtool;
+				PRODUCT_NAME = BaseDevtool;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		97DF61000006B0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97DF6100000C80 /* BaseDevtool.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/BaseDevtool";
+				IBSC_MODULE = BaseDevtool;
+				INFOPLIST_FILE = "Target Support Files/BaseDevtool/ResourceBundle-LynxBaseDevToolResources-BaseDevtool-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_NAME = LynxBaseDevToolResources;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		97DF61000006C0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97DF6100000C70 /* BaseDevtool.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/BaseDevtool";
+				IBSC_MODULE = BaseDevtool;
+				INFOPLIST_FILE = "Target Support Files/BaseDevtool/ResourceBundle-LynxBaseDevToolResources-BaseDevtool-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				PRODUCT_NAME = LynxBaseDevToolResources;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		97DF6100000030 /* Build configuration list for PBXProject "BaseDevtool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97DF6100000040 /* Debug */,
+				97DF6100000050 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		97DF6100000620 /* Build configuration list for PBXNativeTarget "BaseDevtool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97DF6100000640 /* Debug */,
+				97DF6100000630 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		97DF61000006A0 /* Build configuration list for PBXNativeTarget "BaseDevtool-LynxBaseDevToolResources" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97DF61000006C0 /* Debug */,
+				97DF61000006B0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 97DF6100000000 /* Project object */;
+}

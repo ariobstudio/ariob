@@ -84,7 +84,7 @@ export interface ButtonProps {
 export type InputSize = 'sm' | 'md' | 'lg';
 export type InputVariant = 'outline' | 'filled' | 'ghost';
 
-export interface InputProps extends Omit<RNTextInputProps, 'style' | 'onChangeText'> {
+export interface InputProps extends Omit<RNTextInputProps, 'style' | 'onChangeText' | 'onChange'> {
   value: string;
   onChange: (text: string) => void;
   placeholder?: string;

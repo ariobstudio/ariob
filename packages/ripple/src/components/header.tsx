@@ -15,8 +15,8 @@ interface HeaderProps {
 export const Header = ({ author, timestamp, avatar, variant = 'default', badges, onAvatarPress }: HeaderProps) => {
   return (
     <View style={styles.container}>
-      <Avatar 
-        label={avatar || (author ? author[0] : '?')} 
+      <Avatar
+        char={avatar || (author ? author[0] : '?')}
         variant={variant}
         onPress={onAvatarPress}
       />

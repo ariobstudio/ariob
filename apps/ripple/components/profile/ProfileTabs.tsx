@@ -2,10 +2,12 @@
  * ProfileTabs - Segment control for profile sections
  *
  * Tabs: Drafts | Published | Friends | Activity
+ * Refactored to use Unistyles for theme reactivity
  */
 
 import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 export type ProfileTab = 'drafts' | 'published' | 'friends' | 'activity';
 
@@ -59,41 +61,41 @@ export function ProfileTabs({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flexDirection: 'row',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    gap: 8,
+    paddingHorizontal: theme.spacing.xl,
+    paddingVertical: theme.spacing.md,
+    gap: theme.spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    borderBottomColor: theme.colors.borderSubtle,
   },
   tab: {
     flex: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    paddingVertical: theme.spacing.md,
+    paddingHorizontal: theme.spacing.lg,
+    borderRadius: theme.radii.sm,
+    backgroundColor: theme.colors.surfaceMuted,
     alignItems: 'center',
   },
   tabActive: {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: theme.colors.surface,
   },
   tabLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: 'rgba(255, 255, 255, 0.6)',
+    color: theme.colors.textSecondary,
     marginBottom: 4,
   },
   tabLabelActive: {
-    color: '#FFF',
+    color: theme.colors.textPrimary,
   },
   tabCount: {
     fontSize: 18,
     fontWeight: '700',
-    color: 'rgba(255, 255, 255, 0.4)',
+    color: theme.colors.textMuted,
   },
   tabCountActive: {
-    color: '#FFF',
+    color: theme.colors.textPrimary,
   },
-});
+}));

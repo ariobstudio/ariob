@@ -21,7 +21,7 @@ export interface UseInputOptions<T = string> {
 }
 
 /** Hook for controlled text input. */
-function useInput<T = string>(initial: T, options?: UseInputOptions<T>) {
+function useInput<T extends string = string>(initial: T, options?: UseInputOptions<T>) {
   const [value, setValue] = useState<T>(initial);
 
   const reset = useCallback(() => {
@@ -34,7 +34,8 @@ function useInput<T = string>(initial: T, options?: UseInputOptions<T>) {
 
   const handle = useCallback(
     (e: InputEvent | string) => {
-      const raw = typeof e === 'string' ? e : (e.detail?.value as T);
+      const rawValue = typeof e === 'string' ? e : (e.detail?.value ?? '');
+      const raw = rawValue as T;
       const formatted = options?.format ? options.format(raw) : raw;
 
       if (options?.validate && !options.validate(formatted)) {

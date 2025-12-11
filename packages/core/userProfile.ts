@@ -25,16 +25,21 @@ export interface UserProfile {
  * Hook for managing user profile data
  */
 export function useUserProfile(graph: IGunChainReference) {
-  const { user, isLoggedIn } = useAuth(graph);
+  const { user, isAuthenticated } = useAuth();
 
   // Subscribe to user profile node
   const userPub = user?.pub;
   const profilePath = userPub ? `~${userPub}/profile` : null;
 
-  const { data: profile, loading, error } = useNode<UserProfile>(profilePath || '', {
+  const { data: profile, isLoading, error } = useNode<UserProfile>({
+    path: profilePath || '',
     graph,
-    persist: true,
+    enabled: !!profilePath,
   });
+
+  // Alias for backward compatibility
+  const loading = isLoading;
+  const isLoggedIn = isAuthenticated;
 
   /**
    * Update user profile

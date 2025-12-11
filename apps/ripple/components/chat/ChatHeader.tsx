@@ -4,6 +4,7 @@
  * Displays chat partner info, typing indicators, and live presence status.
  * The header adapts to show different states based on the conversation
  * and friend's activity.
+ * Refactored to use Unistyles for theme reactivity
  *
  * @example
  * ```tsx
@@ -40,10 +41,10 @@
  * @see MessageBubble - Chat message components
  * @see ImmersiveView - Parent container for chat
  */
-import { View, Text, StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { theme, colors } from '../../theme';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 type FriendPresence = 'live' | 'left';
 type HonkState = 'idle' | 'me' | 'friend';
@@ -61,9 +62,7 @@ export function ChatHeader({
   honkState,
   isFriendTyping,
 }: ChatHeaderProps) {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
-  const palette = isDark ? darkPalette : lightPalette;
+  const { theme } = useUnistyles();
   const router = useRouter();
 
   const stateLabel = (() => {
@@ -82,18 +81,18 @@ export function ChatHeader({
   })();
 
   const avatarCore = (
-    <View style={[styles.avatar, { backgroundColor: palette.avatar }]}>
-      <Text style={[styles.avatarText, { color: palette.accent }]}>{friendName[0]}</Text>
+    <View style={[styles.avatar, { backgroundColor: theme.colors.surfaceElevated }]}>
+      <Text style={[styles.avatarText, { color: theme.colors.accent }]}>{friendName[0]}</Text>
       {isFriendTyping && (
         <View
           style={[
             styles.typingPill,
-            { borderColor: palette.surface, backgroundColor: palette.surface },
+            { borderColor: theme.colors.surface, backgroundColor: theme.colors.surface },
           ]}
         >
-          <View style={[styles.typingDot, styles.typingDot1, { backgroundColor: palette.subtext }]} />
-          <View style={[styles.typingDot, styles.typingDot2, { backgroundColor: palette.subtext }]} />
-          <View style={[styles.typingDot, styles.typingDot3, { backgroundColor: palette.subtext }]} />
+          <View style={[styles.typingDot, styles.typingDot1, { backgroundColor: theme.colors.textSecondary }]} />
+          <View style={[styles.typingDot, styles.typingDot2, { backgroundColor: theme.colors.textSecondary }]} />
+          <View style={[styles.typingDot, styles.typingDot3, { backgroundColor: theme.colors.textSecondary }]} />
         </View>
       )}
     </View>
@@ -104,7 +103,7 @@ export function ChatHeader({
       <View
         style={[
           styles.liveRing,
-          { borderColor: palette.accent },
+          { borderColor: theme.colors.accent },
         ]}
       >
         {avatarCore}
@@ -114,23 +113,23 @@ export function ChatHeader({
     );
 
   return (
-    <View style={[styles.header, { backgroundColor: palette.surface }]}>
+    <View style={styles.header}>
       <TouchableOpacity
         onPress={() => router.back()}
         accessibilityRole="button"
         accessibilityLabel="Go back"
-        style={[styles.navButton, { backgroundColor: palette.navBg }]}
+        style={styles.navButton}
         activeOpacity={0.7}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       >
-        <Ionicons name="chevron-back" size={24} color={palette.icon} />
+        <Ionicons name="chevron-back" size={24} color={theme.colors.textPrimary} />
       </TouchableOpacity>
 
       <View style={styles.headerCenter}>
-        <Text style={[styles.headerName, { color: palette.title }]}>
+        <Text style={styles.headerName}>
           {friendName}
         </Text>
-        <Text style={[styles.subLabel, { color: palette.subtext }]}>
+        <Text style={styles.subLabel}>
           {stateLabel}
         </Text>
       </View>
@@ -140,36 +139,16 @@ export function ChatHeader({
   );
 }
 
-// Using theme tokens for palettes
-const lightPalette = {
-  surface: theme.colors.light.surface,
-  title: theme.colors.light.text,
-  subtext: theme.colors.light.textSecondary,
-  icon: theme.colors.light.text,
-  avatar: `${theme.colors.light.primary}20`,
-  accent: theme.colors.light.primary,
-  navBg: theme.colors.light.surface,
-};
-
-const darkPalette = {
-  surface: theme.colors.background,
-  title: theme.colors.text,
-  subtext: theme.colors.textSecondary,
-  icon: theme.colors.text,
-  avatar: theme.colors.surfaceElevated,
-  accent: theme.colors.primary,
-  navBg: theme.colors.surfaceElevated,
-};
-
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.sm,
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: 0.5,
     borderBottomColor: theme.colors.border,
+    backgroundColor: theme.colors.background,
   },
   navButton: {
     width: 46,
@@ -178,7 +157,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: theme.spacing.sm,
-    ...theme.shadows.md,
+    backgroundColor: theme.colors.surfaceElevated,
+    ...theme.effects.shadow.subtle,
   },
   headerCenter: {
     flex: 1,
@@ -186,11 +166,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerName: {
+    ...theme.typography.heading,
     fontSize: 18,
-    fontWeight: '600',
+    color: theme.colors.textPrimary,
   },
   subLabel: {
-    fontSize: 13,
+    ...theme.typography.caption,
+    color: theme.colors.textSecondary,
     marginTop: 2,
   },
   avatarWrapper: {
@@ -244,4 +226,4 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     position: 'relative',
   },
-});
+}));

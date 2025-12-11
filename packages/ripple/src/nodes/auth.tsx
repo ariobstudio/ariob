@@ -1,5 +1,5 @@
 import { View, Text, Pressable } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { Ionicons } from '@expo/vector-icons';
 
 export interface AuthData {
@@ -11,47 +11,49 @@ interface AuthProps {
 }
 
 export const Auth = ({ data }: AuthProps) => {
+  const { theme } = useUnistyles();
+
   return (
     <View style={styles.container}>
       <Pressable style={styles.option}>
         <View style={[styles.icon, styles.keyIcon]}>
-          <Ionicons name="key-outline" size={18} color="#7856FF" />
+          <Ionicons name="key-outline" size={18} color={theme.colors.indicator.auth} />
         </View>
         <View style={styles.text}>
           <Text style={styles.title}>Import Private Key</Text>
           <Text style={styles.subtitle}>Restore an existing node</Text>
         </View>
-        <Ionicons name="chevron-forward" size={18} color="#71767B" />
+        <Ionicons name="chevron-forward" size={18} color={theme.colors.textMuted} />
       </Pressable>
-      
+
       <Pressable style={styles.option}>
         <View style={[styles.icon, styles.walletIcon]}>
-          <Ionicons name="wallet-outline" size={18} color="#1D9BF0" />
+          <Ionicons name="wallet-outline" size={18} color={theme.colors.indicator.message} />
         </View>
         <View style={styles.text}>
           <Text style={styles.title}>Connect Wallet</Text>
           <Text style={styles.subtitle}>Use external signer</Text>
         </View>
-        <Ionicons name="chevron-forward" size={18} color="#71767B" />
+        <Ionicons name="chevron-forward" size={18} color={theme.colors.textMuted} />
       </Pressable>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
-    marginTop: 8,
-    gap: 8,
+    marginTop: theme.spacing.sm,
+    gap: theme.spacing.sm,
   },
   option: {
     flexDirection: 'row' as const,
     alignItems: 'center' as const,
-    padding: 12,
-    backgroundColor: 'rgba(255,255,255,0.02)',
+    padding: theme.spacing.md,
+    backgroundColor: theme.colors.surfaceMuted,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
-    borderRadius: 12,
-    gap: 12,
+    borderColor: theme.colors.border,
+    borderRadius: theme.radii.md,
+    gap: theme.spacing.md,
   },
   icon: {
     width: 36,
@@ -61,10 +63,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center' as const,
   },
   keyIcon: {
-    backgroundColor: 'rgba(120, 86, 255, 0.15)',
+    backgroundColor: theme.colors.accentSoft,
   },
   walletIcon: {
-    backgroundColor: 'rgba(29, 155, 240, 0.15)',
+    backgroundColor: theme.colors.accentSoft,
   },
   text: {
     flex: 1,
@@ -72,11 +74,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontWeight: '600' as const,
-    color: '#E7E9EA',
+    color: theme.colors.textPrimary,
     marginBottom: 2,
   },
   subtitle: {
     fontSize: 12,
-    color: '#71767B',
+    color: theme.colors.textMuted,
   },
-});
+}));

@@ -1,0 +1,185 @@
+BUILD_CONFIGURATIONS:
+  Debug: :debug
+  Release: :release
+CACHE_KEYS:
+  BaseDevtool:
+    BUILD_SETTINGS_CHECKSUM:
+      BaseDevtool:
+        :debug: ae58e1876782ea88250ad1676a930572
+        :release: ae58e1876782ea88250ad1676a930572
+    CHECKSUM: b12ec65464bf33ec98f3621af55c0fda1bf08055
+    PROJECT_NAME: BaseDevtool
+    RESOURCES:
+      - "${PODS_CONFIGURATION_BUILD_DIR}/Lynx/LynxResources.bundle"
+    SPECS:
+      - BaseDevtool (3.4.1-dev)
+      - BaseDevtool/framework (3.4.1-dev)
+  DebugRouter:
+    BUILD_SETTINGS_CHECKSUM:
+      DebugRouter:
+        :debug: 47deb629f0fb26b10b4a6fbad2dbcb65
+        :release: 47deb629f0fb26b10b4a6fbad2dbcb65
+    CHECKSUM: 886acbbb1ef587265ba3d51ee77e323514b0c063
+    PROJECT_NAME: DebugRouter
+    RESOURCES:
+      []
+    SPECS:
+      - DebugRouter (5.0.13)
+      - DebugRouter/Framework (5.0.13)
+      - DebugRouter/MessageTransceiverEnable (5.0.13)
+      - DebugRouter/Native (5.0.13)
+      - DebugRouter/third_party (5.0.13)
+      - DebugRouter/third_party/jsoncpp (5.0.13)
+  libwebp:
+    BUILD_SETTINGS_CHECKSUM:
+      libwebp:
+        :debug: e2d3342b7608ee5ae6256dda8f2ce3ef
+        :release: e2d3342b7608ee5ae6256dda8f2ce3ef
+    CHECKSUM: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
+    PROJECT_NAME: libwebp
+    RESOURCES:
+      []
+    SPECS:
+      - libwebp (1.5.0)
+      - libwebp/demux (1.5.0)
+      - libwebp/mux (1.5.0)
+      - libwebp/sharpyuv (1.5.0)
+      - libwebp/webp (1.5.0)
+  Lynx:
+    BUILD_SETTINGS_CHECKSUM:
+      Lynx:
+        :debug: 080e0f8cb82f95c7e47071231c0ebfc8
+        :release: 080e0f8cb82f95c7e47071231c0ebfc8
+    CHECKSUM: 48bc11066eb3762bbfff69bd60607c95facf18c1
+    PROJECT_NAME: Lynx
+    RESOURCES:
+      - "${PODS_CONFIGURATION_BUILD_DIR}/Lynx/LynxResources.bundle"
+    SPECS:
+      - Lynx (3.4.1-dev)
+      - Lynx/Framework (3.4.1-dev)
+      - Lynx/Framework/Recorder (3.4.1-dev)
+      - Lynx/Framework/Replay (3.4.1-dev)
+      - Lynx/ReleaseResource (3.4.1-dev)
+  LynxDevtool:
+    BUILD_SETTINGS_CHECKSUM:
+      LynxDevtool:
+        :debug: 16ab0519c37db9b2af7373fe04970609
+        :release: 16ab0519c37db9b2af7373fe04970609
+    CHECKSUM: c2b9eb1858be818fd5b74955cd88375ac82a3689
+    PROJECT_NAME: LynxDevtool
+    RESOURCES:
+      - "${PODS_CONFIGURATION_BUILD_DIR}/BaseDevtool/LynxBaseDevToolResources.bundle"
+      - "${PODS_CONFIGURATION_BUILD_DIR}/Lynx/LynxResources.bundle"
+      - "${PODS_CONFIGURATION_BUILD_DIR}/LynxDevtool/LynxDebugResources.bundle"
+    SPECS:
+      - LynxDevtool (3.4.1-dev)
+      - LynxDevtool/Framework (3.4.1-dev)
+      - LynxDevtool/Framework/zlib (3.4.1-dev)
+      - LynxDevtool/LynxCore (3.4.1-dev)
+      - LynxDevtool/LynxRecorder (3.4.1-dev)
+  LynxService:
+    BUILD_SETTINGS_CHECKSUM:
+      LynxService:
+        :debug: 64061a512c86cfb57b2caa69bfb4858c
+        :release: 64061a512c86cfb57b2caa69bfb4858c
+    CHECKSUM: e0eead667db26490b74f52ad3d97663b4b079007
+    PROJECT_NAME: LynxService
+    RESOURCES:
+      - "${PODS_CONFIGURATION_BUILD_DIR}/Lynx/LynxResources.bundle"
+      - "${PODS_CONFIGURATION_BUILD_DIR}/LynxDevtool/LynxDebugResources.bundle"
+    SPECS:
+      - LynxService/Devtool (3.4.1-dev)
+      - LynxService/Http (3.4.1-dev)
+      - LynxService/Image (3.4.1-dev)
+      - LynxService/Log (3.4.1-dev)
+  Pods-Ariob:
+    BUILD_SETTINGS_CHECKSUM:
+      Debug: 99f2932b538de1202d927eedce73755e
+      Release: 99f2932b538de1202d927eedce73755e
+    FILES:
+      - "${PODS_CONFIGURATION_BUILD_DIR}/BaseDevtool/LynxBaseDevToolResources.bundle"
+      - "${PODS_CONFIGURATION_BUILD_DIR}/Lynx/LynxResources.bundle"
+      - "${PODS_CONFIGURATION_BUILD_DIR}/LynxDevtool/LynxDebugResources.bundle"
+  PrimJS:
+    BUILD_SETTINGS_CHECKSUM:
+      PrimJS:
+        :debug: f6311b597c1bd72b17ba5d1ca42aaf62
+        :release: f6311b597c1bd72b17ba5d1ca42aaf62
+    CHECKSUM: 0254a97a9fddf92d492a69dc8e98e62480bf79ff
+    PROJECT_NAME: PrimJS
+    RESOURCES:
+      []
+    SPECS:
+      - PrimJS/log (2.14.0-rc.1)
+      - PrimJS/napi (2.14.0-rc.1)
+      - PrimJS/napi/adapter (2.14.0-rc.1)
+      - PrimJS/napi/core (2.14.0-rc.1)
+      - PrimJS/napi/env (2.14.0-rc.1)
+      - PrimJS/napi/jsc (2.14.0-rc.1)
+      - PrimJS/napi/quickjs (2.14.0-rc.1)
+      - PrimJS/quickjs (2.14.0-rc.1)
+      - PrimJS/quickjs_debugger (2.14.0-rc.1)
+      - PrimJS/quickjs_heapprofiler (2.14.0-rc.1)
+      - PrimJS/quickjs_profiler (2.14.0-rc.1)
+  SDWebImage:
+    BUILD_SETTINGS_CHECKSUM:
+      SDWebImage:
+        :debug: 3806397e8ca474d83eba7ca4f5108131
+        :release: 3806397e8ca474d83eba7ca4f5108131
+    CHECKSUM: fd7e1a22f00303e058058278639bf6196ee431fe
+    PROJECT_NAME: SDWebImage
+    SPECS:
+      - SDWebImage (5.15.5)
+      - SDWebImage/Core (5.15.5)
+  SDWebImageWebPCoder:
+    BUILD_SETTINGS_CHECKSUM:
+      SDWebImageWebPCoder:
+        :debug: 5d5359361c3c41c8583941332321c556
+        :release: 5d5359361c3c41c8583941332321c556
+    CHECKSUM: 295a6573c512f54ad2dd58098e64e17dcf008499
+    PROJECT_NAME: SDWebImageWebPCoder
+    RESOURCES:
+      []
+    SPECS:
+      - SDWebImageWebPCoder (0.11.0)
+  SocketRocket:
+    BUILD_SETTINGS_CHECKSUM:
+      SocketRocket:
+        :debug: 83f19585b00f5e250126f51baac7d2e4
+        :release: 83f19585b00f5e250126f51baac7d2e4
+    CHECKSUM: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+    PROJECT_NAME: SocketRocket
+    SPECS:
+      - SocketRocket (0.6.0)
+  XElement:
+    BUILD_SETTINGS_CHECKSUM:
+      XElement:
+        :debug: 225a87c606c96658fb873caf97a1d1de
+        :release: 225a87c606c96658fb873caf97a1d1de
+    CHECKSUM: 42a3518089f0453176324b79873acf22a48b910b
+    PROJECT_NAME: XElement
+    RESOURCES:
+      - "${PODS_CONFIGURATION_BUILD_DIR}/Lynx/LynxResources.bundle"
+    SPECS:
+      - XElement (3.4.1-dev)
+      - XElement/Behavior (3.4.1-dev)
+      - XElement/Input (3.4.1-dev)
+INSTALLATION_OPTIONS:
+  clean: true
+  deduplicate_targets: true
+  deterministic_uuids: false
+  disable_input_output_paths: false
+  generate_multiple_pod_projects: true
+  incremental_installation: true
+  integrate_targets: true
+  lock_pod_sources: false
+  parallel_pod_download_thread_pool_size: 40
+  parallel_pod_downloads: false
+  preserve_pod_file_structure: false
+  share_schemes_for_development_pods: false
+  skip_pods_project_generation: false
+  warn_for_multiple_pod_sources: false
+  warn_for_unused_master_specs_repo: true
+OBJECT_VERSION: 77
+PLUGINS:
+  {}

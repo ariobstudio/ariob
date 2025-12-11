@@ -25,7 +25,7 @@ export const barStyles = StyleSheet.create((theme) => ({
     overflow: 'hidden', // Clip the BlurView
   },
   glassContainer: {
-    backgroundColor: theme.colors.glass, // Fallback or tint
+    backgroundColor: theme.colors.surfaceElevated, // Solid background - no transparency
   },
   // Content row for Action Mode
   actionRow: {

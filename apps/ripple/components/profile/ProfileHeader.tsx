@@ -4,6 +4,7 @@
  * Displays user identity with large, light-weight typography following
  * the Liquid Trust design aesthetic. Includes settings access and
  * optional bio text.
+ * Refactored to use Unistyles for theme reactivity
  *
  * @example
  * ```tsx
@@ -24,19 +25,21 @@
  * @see ProfileTabs - Content tabs below the header
  */
 
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { theme } from '../../theme';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { AnimatedPressable } from '../AnimatedPressable';
 
-interface ProfileHeaderProps {
+export interface ProfileHeaderProps {
   alias: string;
   bio?: string;
   onSettingsPress: () => void;
 }
 
 export function ProfileHeader({ alias, bio, onSettingsPress }: ProfileHeaderProps) {
+  const { theme } = useUnistyles();
+
   return (
     <Animated.View entering={FadeInDown.duration(400)} style={styles.container}>
       {/* Settings icon - minimal, top right */}
@@ -57,31 +60,29 @@ export function ProfileHeader({ alias, bio, onSettingsPress }: ProfileHeaderProp
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 32,
+    paddingHorizontal: theme.spacing.xxl,
+    paddingTop: theme.spacing.lg,
+    paddingBottom: theme.spacing.xxl,
   },
   settingsRow: {
     alignItems: 'flex-end',
-    marginBottom: 24,
+    marginBottom: theme.spacing.xxl,
   },
   settingsButton: {
-    padding: 8,
+    padding: theme.spacing.sm,
   },
   name: {
     fontSize: 40,
     fontWeight: '300', // Light weight for elegance
-    color: theme.colors.text,
+    color: theme.colors.textPrimary,
     letterSpacing: -1,
-    marginBottom: 8,
+    marginBottom: theme.spacing.sm,
   },
   bio: {
-    fontSize: 16,
-    lineHeight: 24,
+    ...theme.typography.body,
     color: theme.colors.textSecondary,
-    fontWeight: '400',
     maxWidth: 320,
   },
-});
+}));
