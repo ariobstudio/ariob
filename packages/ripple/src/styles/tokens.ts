@@ -219,6 +219,38 @@ export const rippleTypography: Record<
   },
 };
 
+const shadowSubtle = {
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.05,
+  shadowRadius: 6,
+  elevation: 2,
+} as const;
+
+const shadowMedium = {
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.08,
+  shadowRadius: 12,
+  elevation: 4,
+} as const;
+
+const shadowStrong = {
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 12 },
+  shadowOpacity: 0.12,
+  shadowRadius: 24,
+  elevation: 10,
+} as const;
+
+const shadowGlow = {
+  shadowColor: '#007AFF',
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.15,
+  shadowRadius: 16,
+  elevation: 8,
+} as const;
+
 export const rippleEffects = {
   divider: {
     subtle: 'rgba(0,0,0,0.05)',
@@ -235,35 +267,15 @@ export const rippleEffects = {
     danger: 'rgba(255,59,48,0.2)',
   },
   shadow: {
-    subtle: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.05,
-      shadowRadius: 6,
-      elevation: 2,
-    },
-    medium: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.08,
-      shadowRadius: 12,
-      elevation: 4,
-    },
-    strong: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 12 },
-      shadowOpacity: 0.12,
-      shadowRadius: 24,
-      elevation: 10,
-    },
-    glow: {
-      // Retain a very subtle glow capability if needed, but much softer
-      shadowColor: '#007AFF',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.15,
-      shadowRadius: 16,
-      elevation: 8,
-    },
+    // Primary naming (Ripple)
+    subtle: shadowSubtle,
+    medium: shadowMedium,
+    strong: shadowStrong,
+    glow: shadowGlow,
+    // Aliases for Andromeda compatibility
+    sm: shadowSubtle,
+    md: shadowMedium,
+    lg: shadowStrong,
   },
 } as const;
 

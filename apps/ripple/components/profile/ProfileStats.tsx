@@ -3,6 +3,7 @@
  *
  * A horizontal row displaying key user metrics with bold values and
  * uppercase labels. Designed for profile headers.
+ * Refactored to use Unistyles for theme reactivity
  *
  * @example
  * ```tsx
@@ -24,7 +25,8 @@
  */
 
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 export interface ProfileStatsProps {
   postsCount: number;
@@ -51,25 +53,24 @@ export function ProfileStats({ postsCount, draftsCount, connectionsCount }: Prof
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flexDirection: 'row',
-    gap: 32,
-    paddingBottom: 16,
+    gap: theme.spacing.xxl,
+    paddingBottom: theme.spacing.lg,
   },
   stat: {
     alignItems: 'center',
   },
   statValue: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#FFF',
+    ...theme.typography.heading,
+    color: theme.colors.textPrimary,
     marginBottom: 4,
   },
   statLabel: {
-    fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.6)',
+    ...theme.typography.mono,
+    color: theme.colors.textSecondary,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
-});
+}));

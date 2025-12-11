@@ -8,6 +8,10 @@
     ".": "./index.ts",
     "./gun/*": "./gun/*"
   },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
   "dependencies": {
     "zod": "^3.24.4",
     "zustand": "^5.0.8"
@@ -19,6 +23,7 @@
     "@ariob/webcrypto": "workspace:*"
   },
   "devDependencies": {
-    "@types/react": "^18.3.20"
+    "@types/react": "^18.3.20",
+    "vitest": "^2.1.9"
   }
 }

@@ -45,23 +45,22 @@ export const theme: Theme = {
 // Unistyles Configuration
 // ─────────────────────────────────────────────────────────────────────────────
 
-declare module 'react-native-unistyles' {
-  export interface UnistylesThemes {
-    dark: Data;
-    light: Data;
-  }
-}
+// NOTE: Type augmentation for UnistylesThemes is handled by the consuming app
+// (e.g., apps/ripple/unistyles.d.ts) to avoid conflicts between packages.
+// Andromeda provides themes as data; apps configure unistyles with their types.
 
 /**
  * Initialize the theme system with Unistyles.
  * Call this once at app startup before rendering.
+ *
+ * @deprecated Use app-level unistyles.config.ts instead for proper type inference
  */
 export function init() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   StyleSheet.configure({
-    themes,
+    themes: themes as any, // Type handled by app-level augmentation
     settings: {
       adaptiveThemes: true,
-      initialTheme: 'dark',
     },
   });
 }

@@ -1,15 +1,16 @@
 import { useLocalSearchParams, router, useFocusEffect, useNavigation } from 'expo-router';
-import { View, Text, Pressable, ActivityIndicator } from 'react-native';
+import { View, Text, Pressable, ActivityIndicator, FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCallback, useEffect, useRef, useMemo } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useBar, Avatar } from '@ariob/ripple';
 import { useUnistyles } from 'react-native-unistyles';
 import { useRippleAI } from '@ariob/ml';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, runOnJS, useAnimatedReaction } from 'react-native-reanimated';
 import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
 import { messageStyles as styles } from '../../styles/message.styles';
 import { useRippleConversation } from '../../stores/rippleConversation';
+import { useState } from 'react';
 
 // Bar heights for calculating proper bottom padding
 const BAR_HEIGHT = 52;
@@ -28,19 +29,25 @@ export default function MessageThread() {
   const insets = useSafeAreaInsets();
   const { theme } = useUnistyles();
   const bar = useBar();
-  const flatListRef = useRef<Animated.FlatList<ChatMessage>>(null);
+  const flatListRef = useRef<FlatList<ChatMessage>>(null);
   const { height: keyboardHeight } = useReanimatedKeyboardAnimation();
 
-  // Animated padding for FlatList content - pushes content up above keyboard + Bar
-  // keyboardHeight.value is negative when keyboard is open
-  const animatedContentStyle = useAnimatedStyle(() => {
-    // When keyboard is closed, just need space for Bar + bottom inset
-    // When keyboard is open, add keyboard height (absolute value since it's negative)
-    const keyboardPadding = Math.abs(keyboardHeight.value);
-    return {
-      paddingBottom: keyboardPadding + BAR_HEIGHT + insets.bottom + 16,
-    };
-  });
+  // Track keyboard padding as state (synced from UI thread)
+  const [keyboardPadding, setKeyboardPadding] = useState(0);
+
+  // Sync keyboard height from UI thread to JS thread
+  useAnimatedReaction(
+    () => Math.abs(keyboardHeight.value),
+    (currentPadding, previousPadding) => {
+      if (currentPadding !== previousPadding) {
+        runOnJS(setKeyboardPadding)(currentPadding);
+      }
+    },
+    [keyboardHeight]
+  );
+
+  // Calculate content container padding
+  const contentPadding = keyboardPadding + BAR_HEIGHT + insets.bottom + 16;
 
   // Shared conversation store
   const rippleMessages = useRippleConversation((state) => state.messages);
@@ -210,12 +217,12 @@ export default function MessageThread() {
         </View>
       </View>
 
-      <Animated.FlatList
+      <FlatList
         ref={flatListRef}
         data={messages}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={[styles.listContent, animatedContentStyle]}
+        contentContainerStyle={[styles.listContent, { paddingBottom: contentPadding }]}
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         keyboardDismissMode="on-drag"

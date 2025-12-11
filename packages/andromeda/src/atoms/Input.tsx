@@ -13,7 +13,8 @@ import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated'
 
 export interface InputProps extends TextInputProps {
   label?: string;
-  error?: string;
+  /** Error state - can be a message string or boolean for styling only */
+  error?: string | boolean;
   leftIcon?: keyof typeof Ionicons.glyphMap;
   rightIcon?: keyof typeof Ionicons.glyphMap;
   onRightIconPress?: () => void;

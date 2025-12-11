@@ -2,8 +2,10 @@ import { View, Text } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 export interface PostData {
+  id?: string;
   content: string;
   image?: string;
+  images?: string[];
   authorAlias?: string; // Optional context
   degree?: number;
 }

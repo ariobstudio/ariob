@@ -73,7 +73,7 @@ export const messageStyles = StyleSheet.create((theme) => ({
     lineHeight: 20,
   },
   textMe: {
-    color: '#000',
+    color: theme.colors.background, // Dark text on accent bubble
   },
   textThem: {
     color: theme.colors.textPrimary,
@@ -122,8 +122,8 @@ export const messageStyles = StyleSheet.create((theme) => ({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#00E5FF',
-    shadowColor: '#00E5FF',
+    backgroundColor: theme.colors.indicator.ai,
+    shadowColor: theme.colors.indicator.ai,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
     shadowRadius: 4,

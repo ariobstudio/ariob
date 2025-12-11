@@ -43,10 +43,88 @@ apps/ripple/
 │   ├── thread/[id].tsx     # Thread detail
 │   └── user/[id].tsx       # Profile view
 ├── components/             # App-specific components
-│   └── views/              # View compositions
+│   ├── index.ts            # Component exports
+│   ├── Renderer.tsx        # Modular feed item renderer
+│   ├── views/              # View compositions
+│   ├── profile/            # Profile components
+│   ├── chat/               # Chat components
+│   └── composers/          # Content creation components
 ├── styles/                 # App styles (Unistyles)
 ├── unistyles.config.ts     # Theme configuration
 └── package.json
+```
+
+### Renderer Component
+
+The `Renderer` is a modular wrapper that transforms application-level feed items into `@ariob/ripple` Node components. It lives in `components/Renderer.tsx` as it contains app-specific business logic.
+
+**Features:**
+- Type mapping (app item types → node types)
+- Data transformation (feed items → NodeData)
+- Customizable via `typeMapper` and `dataTransformer` props
+- Timestamp formatting utility
+
+**Basic Usage:**
+
+```typescript
+import { Renderer } from '../components/Renderer';
+
+function FeedItem({ item }) {
+  return (
+    <Renderer
+      item={item}
+      onPress={() => router.push(`/thread/${item.id}`)}
+      onAvatarPress={() => router.push(`/user/${item.author}`)}
+    />
+  );
+}
+```
+
+**Custom Type Mapping:**
+
+```typescript
+// Add new item types or override existing mappings
+const customTypeMapper = (itemType: string) => {
+  if (itemType === 'sponsored') return 'post';
+  if (itemType === 'system-alert') return 'sync';
+  return defaultTypeMapper(itemType);
+};
+
+<Renderer
+  item={item}
+  typeMapper={customTypeMapper}
+/>
+```
+
+**Custom Data Transformation:**
+
+```typescript
+// Extend the base transformation with custom fields
+const customTransformer = (item, baseData) => ({
+  ...baseData,
+  // Add custom fields or modify existing ones
+  aiModel: item.aiModel ? { id: item.aiModel, selected: false } : undefined,
+});
+
+<Renderer
+  item={item}
+  dataTransformer={customTransformer}
+/>
+```
+
+**Exported Types:**
+
+```typescript
+export interface FeedItem {
+  id?: string;
+  type: string;
+  author?: string;
+  content?: string;
+  // ... see Renderer.tsx for full interface
+}
+
+export type ViewMode = 'preview' | 'full' | 'immersive';
+export interface RendererProps { /* ... */ }
 ```
 
 ### Navigation
@@ -391,6 +469,69 @@ pnpm --filter ripple ios
 
 # Clear cache
 npx expo start -c
+```
+
+### Testing
+
+The app includes a test suite using Vitest:
+
+```bash
+# Run tests
+pnpm --filter ripple test
+
+# Watch mode
+pnpm --filter ripple test --watch
+```
+
+**Test Structure:**
+
+```
+apps/ripple/
+├── __tests__/
+│   └── actions.test.ts    # Action picker tests
+└── vitest.config.ts       # Vitest configuration
+```
+
+**Action Picker Tests:**
+
+Tests the `resolve` function from `@ariob/ripple` which determines what actions to show in the floating action bar based on:
+- Current degree (0-4)
+- Authentication state
+- View state (focused node, detail view, feed view)
+
+### TypeScript
+
+```bash
+# Type check
+pnpm --filter ripple typecheck
+```
+
+**Type Configuration:**
+
+The app uses a dedicated `unistyles.d.ts` file for proper type augmentation:
+
+```typescript
+// unistyles.d.ts - Type declarations (must be .d.ts for proper resolution)
+import type { RippleTheme } from '@ariob/ripple/styles';
+
+declare module 'react-native-unistyles' {
+  export interface UnistylesThemes {
+    dark: RippleTheme;
+    light: RippleTheme;
+  }
+}
+```
+
+```typescript
+// unistyles.config.ts - Runtime configuration
+import { StyleSheet } from 'react-native-unistyles';
+import { appThemes, appBreakpoints, appSettings } from './theme/tokens';
+
+StyleSheet.configure({
+  themes: appThemes,
+  breakpoints: appBreakpoints,
+  settings: appSettings,
+});
 ```
 
 ### Debug

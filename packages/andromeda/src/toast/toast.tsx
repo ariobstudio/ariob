@@ -57,7 +57,7 @@ export function ToastItem({
   onDismiss,
 }: ToastItemProps) {
   const translateX = useSharedValue(0);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Reverse index so newest (highest index) appears at top (position 0)
   const reverseIndex = total - 1 - index;

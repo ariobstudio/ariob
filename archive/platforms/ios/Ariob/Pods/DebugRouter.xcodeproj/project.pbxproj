@@ -1,0 +1,819 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D780B800000830 /* DebugRouter.mm in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000001B0 /* DebugRouter.mm */; };
+		D780B800000840 /* DebugRouterEventSender.mm in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000001C0 /* DebugRouterEventSender.mm */; };
+		D780B800000850 /* DebugRouterInternalStateListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000001E0 /* DebugRouterInternalStateListener.m */; };
+		D780B800000860 /* DebugRouterLog.mm in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000200 /* DebugRouterLog.mm */; };
+		D780B800000870 /* DebugRouterMessageHandleResult.m in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000210 /* DebugRouterMessageHandleResult.m */; };
+		D780B800000880 /* DebugRouterSlot.mm in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000220 /* DebugRouterSlot.mm */; };
+		D780B800000890 /* DebugRouterUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000240 /* DebugRouterUtil.m */; };
+		D780B8000008A0 /* DebugRouterVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000260 /* DebugRouterVersion.m */; };
+		D780B8000008B0 /* LocalNetworkPermissionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000270 /* LocalNetworkPermissionChecker.m */; };
+		D780B8000008C0 /* DebugRouterReport.m in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000002A0 /* DebugRouterReport.m */; };
+		D780B8000008D0 /* DebugRouterToast.m in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000002C0 /* DebugRouterToast.m */; };
+		D780B8000008E0 /* DebugRouterReportServiceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000002D0 /* DebugRouterReportServiceUtil.m */; };
+		D780B8000008F0 /* DebugRouterService.m in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000002E0 /* DebugRouterService.m */; };
+		D780B800000900 /* DebugRouter.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000000D0 /* DebugRouter.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000910 /* DebugRouterCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000000E0 /* DebugRouterCommon.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000920 /* DebugRouterEventSender.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000000F0 /* DebugRouterEventSender.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000930 /* DebugRouterGlobalHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000100 /* DebugRouterGlobalHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000940 /* DebugRouterMessageHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000110 /* DebugRouterMessageHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000950 /* DebugRouterMessageHandleResult.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000120 /* DebugRouterMessageHandleResult.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000960 /* DebugRouterSessionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000130 /* DebugRouterSessionHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000970 /* DebugRouterSlot.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000140 /* DebugRouterSlot.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000980 /* LocalNetworkPermissionChecker.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000150 /* LocalNetworkPermissionChecker.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000990 /* DebugRouterDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000160 /* DebugRouterDefines.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B8000009A0 /* DebugRouterReportServiceProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000170 /* DebugRouterReportServiceProtocol.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B8000009B0 /* DebugRouterReportServiceUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000180 /* DebugRouterReportServiceUtil.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B8000009C0 /* DebugRouterService.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000190 /* DebugRouterService.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B8000009D0 /* DebugRouterServiceProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000001A0 /* DebugRouterServiceProtocol.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B8000009E0 /* DebugRouterInternalStateListener.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000001D0 /* DebugRouterInternalStateListener.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B8000009F0 /* DebugRouterLog.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000001F0 /* DebugRouterLog.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000A00 /* DebugRouterUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000230 /* DebugRouterUtil.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000A10 /* DebugRouterVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000250 /* DebugRouterVersion.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000A20 /* WebSocketClient.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000280 /* WebSocketClient.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000A30 /* DebugRouterReport.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000290 /* DebugRouterReport.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000A40 /* DebugRouterToast.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000002B0 /* DebugRouterToast.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000A50 /* debug_router_export.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000300 /* debug_router_export.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000A60 /* debug_router_config.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000360 /* debug_router_config.cc */; };
+		D780B800000A70 /* debug_router_core.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000380 /* debug_router_core.cc */; };
+		D780B800000A80 /* debug_router_state_listener.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000003D0 /* debug_router_state_listener.cc */; };
+		D780B800000A90 /* message_transceiver.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000003F0 /* message_transceiver.cc */; };
+		D780B800000AA0 /* native_slot.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000410 /* native_slot.cc */; };
+		D780B800000AB0 /* util.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000430 /* util.cc */; };
+		D780B800000AC0 /* logging.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000450 /* logging.cc */; };
+		D780B800000AD0 /* socket_server_client.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000480 /* socket_server_client.cc */; };
+		D780B800000AE0 /* websocket_client.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000004A0 /* websocket_client.cc */; };
+		D780B800000AF0 /* websocket_task.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000004C0 /* websocket_task.cc */; };
+		D780B800000B00 /* message_assembler.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000004E0 /* message_assembler.cc */; };
+		D780B800000B10 /* processor.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000510 /* processor.cc */; };
+		D780B800000B20 /* md5.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000550 /* md5.cc */; };
+		D780B800000B30 /* protocol.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000570 /* protocol.cc */; };
+		D780B800000B40 /* count_down_latch.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000005B0 /* count_down_latch.cc */; };
+		D780B800000B50 /* socket_server_posix.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000005D0 /* socket_server_posix.cc */; };
+		D780B800000B60 /* socket_server_api.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B8000005F0 /* socket_server_api.cc */; };
+		D780B800000B70 /* usb_client.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000620 /* usb_client.cc */; };
+		D780B800000B80 /* work_thread_executor.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000650 /* work_thread_executor.cc */; };
+		D780B800000B90 /* debug_router_executor.cc in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000670 /* debug_router_executor.cc */; };
+		D780B800000BA0 /* no_destructor.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000330 /* no_destructor.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000BB0 /* socket_guard.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000340 /* socket_guard.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000BC0 /* debug_router_config.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000370 /* debug_router_config.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000BD0 /* debug_router_core.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000390 /* debug_router_core.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000BE0 /* debug_router_global_handler.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000003A0 /* debug_router_global_handler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000BF0 /* debug_router_message_handler.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000003B0 /* debug_router_message_handler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000C00 /* debug_router_session_handler.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000003C0 /* debug_router_session_handler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000C10 /* debug_router_state_listener.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000003E0 /* debug_router_state_listener.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000C20 /* message_transceiver.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000400 /* message_transceiver.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000C30 /* native_slot.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000420 /* native_slot.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000C40 /* util.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000440 /* util.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000C50 /* logging.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000460 /* logging.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000C60 /* IMessageProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000470 /* IMessageProcessor.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000C70 /* socket_server_client.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000490 /* socket_server_client.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000C80 /* websocket_client.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000004B0 /* websocket_client.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000C90 /* websocket_task.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000004D0 /* websocket_task.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000CA0 /* message_assembler.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000004F0 /* message_assembler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000CB0 /* message_handler.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000500 /* message_handler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000CC0 /* processor.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000520 /* processor.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000CD0 /* state_listener.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000530 /* state_listener.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000CE0 /* events.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000540 /* events.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000CF0 /* md5.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000560 /* md5.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000D00 /* protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000580 /* protocol.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000D10 /* debug_router_native_report.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000590 /* debug_router_native_report.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000D20 /* blocking_queue.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000005A0 /* blocking_queue.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000D30 /* count_down_latch.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000005C0 /* count_down_latch.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000D40 /* socket_server_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000005E0 /* socket_server_posix.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000D50 /* socket_server_api.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000600 /* socket_server_api.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000D60 /* socket_server_type.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000610 /* socket_server_type.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000D70 /* usb_client.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000630 /* usb_client.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000D80 /* usb_client_listener.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000640 /* usb_client_listener.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000D90 /* work_thread_executor.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000660 /* work_thread_executor.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000DA0 /* debug_router_executor.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000680 /* debug_router_executor.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000DB0 /* LICENSE in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000320 /* LICENSE */; };
+		D780B800000DC0 /* BUILD.gn in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000350 /* BUILD.gn */; };
+		D780B800000DD0 /* json_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000770 /* json_reader.cpp */; settings = {COMPILER_FLAGS = "-Wno-documentation -Wno-deprecated"; }; };
+		D780B800000DE0 /* json_value.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000780 /* json_value.cpp */; settings = {COMPILER_FLAGS = "-Wno-documentation -Wno-deprecated"; }; };
+		D780B800000DF0 /* json_writer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000790 /* json_writer.cpp */; settings = {COMPILER_FLAGS = "-Wno-documentation -Wno-deprecated"; }; };
+		D780B800000E00 /* allocator.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000006B0 /* allocator.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000E10 /* assertions.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000006C0 /* assertions.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000E20 /* autolink.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000006D0 /* autolink.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000E30 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000006E0 /* config.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000E40 /* features.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000006F0 /* features.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000E50 /* forwards.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000700 /* forwards.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000E60 /* json.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000710 /* json.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000E70 /* reader.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000720 /* reader.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000E80 /* value.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000730 /* value.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000E90 /* version.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000740 /* version.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000EA0 /* writer.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000750 /* writer.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000EB0 /* json_tool.h in Headers */ = {isa = PBXBuildFile; fileRef = D780B800000760 /* json_tool.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000EC0 /* json_valueiterator.inl in Headers */ = {isa = PBXBuildFile; fileRef = D780B8000007A0 /* json_valueiterator.inl */; settings = {ATTRIBUTES = (Project, ); }; };
+		D780B800000F20 /* DebugRouter-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D780B800000F10 /* DebugRouter-dummy.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		505C317B7F936805EFA866E371CCF076 /* DebugRouter */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = DebugRouter; path = libDebugRouter.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D780B8000000D0 /* DebugRouter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouter.h; path = debug_router/ios/public/DebugRouter.h; sourceTree = "<group>"; };
+		D780B8000000E0 /* DebugRouterCommon.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterCommon.h; path = debug_router/ios/public/DebugRouterCommon.h; sourceTree = "<group>"; };
+		D780B8000000F0 /* DebugRouterEventSender.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterEventSender.h; path = debug_router/ios/public/DebugRouterEventSender.h; sourceTree = "<group>"; };
+		D780B800000100 /* DebugRouterGlobalHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterGlobalHandler.h; path = debug_router/ios/public/DebugRouterGlobalHandler.h; sourceTree = "<group>"; };
+		D780B800000110 /* DebugRouterMessageHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterMessageHandler.h; path = debug_router/ios/public/DebugRouterMessageHandler.h; sourceTree = "<group>"; };
+		D780B800000120 /* DebugRouterMessageHandleResult.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterMessageHandleResult.h; path = debug_router/ios/public/DebugRouterMessageHandleResult.h; sourceTree = "<group>"; };
+		D780B800000130 /* DebugRouterSessionHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterSessionHandler.h; path = debug_router/ios/public/DebugRouterSessionHandler.h; sourceTree = "<group>"; };
+		D780B800000140 /* DebugRouterSlot.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterSlot.h; path = debug_router/ios/public/DebugRouterSlot.h; sourceTree = "<group>"; };
+		D780B800000150 /* LocalNetworkPermissionChecker.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LocalNetworkPermissionChecker.h; path = debug_router/ios/public/LocalNetworkPermissionChecker.h; sourceTree = "<group>"; };
+		D780B800000160 /* DebugRouterDefines.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterDefines.h; path = debug_router/ios/public/base/DebugRouterDefines.h; sourceTree = "<group>"; };
+		D780B800000170 /* DebugRouterReportServiceProtocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterReportServiceProtocol.h; path = debug_router/ios/public/base/DebugRouterReportServiceProtocol.h; sourceTree = "<group>"; };
+		D780B800000180 /* DebugRouterReportServiceUtil.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterReportServiceUtil.h; path = debug_router/ios/public/base/DebugRouterReportServiceUtil.h; sourceTree = "<group>"; };
+		D780B800000190 /* DebugRouterService.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterService.h; path = debug_router/ios/public/base/DebugRouterService.h; sourceTree = "<group>"; };
+		D780B8000001A0 /* DebugRouterServiceProtocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterServiceProtocol.h; path = debug_router/ios/public/base/DebugRouterServiceProtocol.h; sourceTree = "<group>"; };
+		D780B8000001B0 /* DebugRouter.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = DebugRouter.mm; path = debug_router/ios/DebugRouter.mm; sourceTree = "<group>"; };
+		D780B8000001C0 /* DebugRouterEventSender.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = DebugRouterEventSender.mm; path = debug_router/ios/DebugRouterEventSender.mm; sourceTree = "<group>"; };
+		D780B8000001D0 /* DebugRouterInternalStateListener.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterInternalStateListener.h; path = debug_router/ios/DebugRouterInternalStateListener.h; sourceTree = "<group>"; };
+		D780B8000001E0 /* DebugRouterInternalStateListener.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DebugRouterInternalStateListener.m; path = debug_router/ios/DebugRouterInternalStateListener.m; sourceTree = "<group>"; };
+		D780B8000001F0 /* DebugRouterLog.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterLog.h; path = debug_router/ios/DebugRouterLog.h; sourceTree = "<group>"; };
+		D780B800000200 /* DebugRouterLog.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = DebugRouterLog.mm; path = debug_router/ios/DebugRouterLog.mm; sourceTree = "<group>"; };
+		D780B800000210 /* DebugRouterMessageHandleResult.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DebugRouterMessageHandleResult.m; path = debug_router/ios/DebugRouterMessageHandleResult.m; sourceTree = "<group>"; };
+		D780B800000220 /* DebugRouterSlot.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = DebugRouterSlot.mm; path = debug_router/ios/DebugRouterSlot.mm; sourceTree = "<group>"; };
+		D780B800000230 /* DebugRouterUtil.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterUtil.h; path = debug_router/ios/DebugRouterUtil.h; sourceTree = "<group>"; };
+		D780B800000240 /* DebugRouterUtil.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DebugRouterUtil.m; path = debug_router/ios/DebugRouterUtil.m; sourceTree = "<group>"; };
+		D780B800000250 /* DebugRouterVersion.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterVersion.h; path = debug_router/ios/DebugRouterVersion.h; sourceTree = "<group>"; };
+		D780B800000260 /* DebugRouterVersion.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DebugRouterVersion.m; path = debug_router/ios/DebugRouterVersion.m; sourceTree = "<group>"; };
+		D780B800000270 /* LocalNetworkPermissionChecker.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LocalNetworkPermissionChecker.m; path = debug_router/ios/net/LocalNetworkPermissionChecker.m; sourceTree = "<group>"; };
+		D780B800000280 /* WebSocketClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = WebSocketClient.h; path = debug_router/ios/net/WebSocketClient.h; sourceTree = "<group>"; };
+		D780B800000290 /* DebugRouterReport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterReport.h; path = debug_router/ios/report/DebugRouterReport.h; sourceTree = "<group>"; };
+		D780B8000002A0 /* DebugRouterReport.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DebugRouterReport.m; path = debug_router/ios/report/DebugRouterReport.m; sourceTree = "<group>"; };
+		D780B8000002B0 /* DebugRouterToast.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugRouterToast.h; path = debug_router/ios/base/DebugRouterToast.h; sourceTree = "<group>"; };
+		D780B8000002C0 /* DebugRouterToast.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DebugRouterToast.m; path = debug_router/ios/base/DebugRouterToast.m; sourceTree = "<group>"; };
+		D780B8000002D0 /* DebugRouterReportServiceUtil.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DebugRouterReportServiceUtil.m; path = debug_router/ios/base/report/DebugRouterReportServiceUtil.m; sourceTree = "<group>"; };
+		D780B8000002E0 /* DebugRouterService.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DebugRouterService.m; path = debug_router/ios/base/service/DebugRouterService.m; sourceTree = "<group>"; };
+		D780B800000300 /* debug_router_export.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = debug_router_export.h; path = debug_router/common/debug_router_export.h; sourceTree = "<group>"; };
+		D780B800000320 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = debug_router/native/base/LICENSE; sourceTree = "<group>"; };
+		D780B800000330 /* no_destructor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = no_destructor.h; path = debug_router/native/base/no_destructor.h; sourceTree = "<group>"; };
+		D780B800000340 /* socket_guard.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = socket_guard.h; path = debug_router/native/base/socket_guard.h; sourceTree = "<group>"; };
+		D780B800000350 /* BUILD.gn */ = {isa = PBXFileReference; includeInIndex = 1; name = BUILD.gn; path = debug_router/native/BUILD.gn; sourceTree = "<group>"; };
+		D780B800000360 /* debug_router_config.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = debug_router_config.cc; path = debug_router/native/core/debug_router_config.cc; sourceTree = "<group>"; };
+		D780B800000370 /* debug_router_config.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = debug_router_config.h; path = debug_router/native/core/debug_router_config.h; sourceTree = "<group>"; };
+		D780B800000380 /* debug_router_core.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = debug_router_core.cc; path = debug_router/native/core/debug_router_core.cc; sourceTree = "<group>"; };
+		D780B800000390 /* debug_router_core.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = debug_router_core.h; path = debug_router/native/core/debug_router_core.h; sourceTree = "<group>"; };
+		D780B8000003A0 /* debug_router_global_handler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = debug_router_global_handler.h; path = debug_router/native/core/debug_router_global_handler.h; sourceTree = "<group>"; };
+		D780B8000003B0 /* debug_router_message_handler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = debug_router_message_handler.h; path = debug_router/native/core/debug_router_message_handler.h; sourceTree = "<group>"; };
+		D780B8000003C0 /* debug_router_session_handler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = debug_router_session_handler.h; path = debug_router/native/core/debug_router_session_handler.h; sourceTree = "<group>"; };
+		D780B8000003D0 /* debug_router_state_listener.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = debug_router_state_listener.cc; path = debug_router/native/core/debug_router_state_listener.cc; sourceTree = "<group>"; };
+		D780B8000003E0 /* debug_router_state_listener.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = debug_router_state_listener.h; path = debug_router/native/core/debug_router_state_listener.h; sourceTree = "<group>"; };
+		D780B8000003F0 /* message_transceiver.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = message_transceiver.cc; path = debug_router/native/core/message_transceiver.cc; sourceTree = "<group>"; };
+		D780B800000400 /* message_transceiver.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = message_transceiver.h; path = debug_router/native/core/message_transceiver.h; sourceTree = "<group>"; };
+		D780B800000410 /* native_slot.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = native_slot.cc; path = debug_router/native/core/native_slot.cc; sourceTree = "<group>"; };
+		D780B800000420 /* native_slot.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = native_slot.h; path = debug_router/native/core/native_slot.h; sourceTree = "<group>"; };
+		D780B800000430 /* util.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = util.cc; path = debug_router/native/core/util.cc; sourceTree = "<group>"; };
+		D780B800000440 /* util.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = util.h; path = debug_router/native/core/util.h; sourceTree = "<group>"; };
+		D780B800000450 /* logging.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = logging.cc; path = debug_router/native/log/logging.cc; sourceTree = "<group>"; };
+		D780B800000460 /* logging.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = logging.h; path = debug_router/native/log/logging.h; sourceTree = "<group>"; };
+		D780B800000470 /* IMessageProcessor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IMessageProcessor.h; path = debug_router/native/net/IMessageProcessor.h; sourceTree = "<group>"; };
+		D780B800000480 /* socket_server_client.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = socket_server_client.cc; path = debug_router/native/net/socket_server_client.cc; sourceTree = "<group>"; };
+		D780B800000490 /* socket_server_client.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = socket_server_client.h; path = debug_router/native/net/socket_server_client.h; sourceTree = "<group>"; };
+		D780B8000004A0 /* websocket_client.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = websocket_client.cc; path = debug_router/native/net/websocket_client.cc; sourceTree = "<group>"; };
+		D780B8000004B0 /* websocket_client.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = websocket_client.h; path = debug_router/native/net/websocket_client.h; sourceTree = "<group>"; };
+		D780B8000004C0 /* websocket_task.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = websocket_task.cc; path = debug_router/native/net/websocket_task.cc; sourceTree = "<group>"; };
+		D780B8000004D0 /* websocket_task.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = websocket_task.h; path = debug_router/native/net/websocket_task.h; sourceTree = "<group>"; };
+		D780B8000004E0 /* message_assembler.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = message_assembler.cc; path = debug_router/native/processor/message_assembler.cc; sourceTree = "<group>"; };
+		D780B8000004F0 /* message_assembler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = message_assembler.h; path = debug_router/native/processor/message_assembler.h; sourceTree = "<group>"; };
+		D780B800000500 /* message_handler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = message_handler.h; path = debug_router/native/processor/message_handler.h; sourceTree = "<group>"; };
+		D780B800000510 /* processor.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = processor.cc; path = debug_router/native/processor/processor.cc; sourceTree = "<group>"; };
+		D780B800000520 /* processor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = processor.h; path = debug_router/native/processor/processor.h; sourceTree = "<group>"; };
+		D780B800000530 /* state_listener.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = state_listener.h; path = debug_router/native/processor/state_listener.h; sourceTree = "<group>"; };
+		D780B800000540 /* events.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = events.h; path = debug_router/native/protocol/events.h; sourceTree = "<group>"; };
+		D780B800000550 /* md5.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = md5.cc; path = debug_router/native/protocol/md5.cc; sourceTree = "<group>"; };
+		D780B800000560 /* md5.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = md5.h; path = debug_router/native/protocol/md5.h; sourceTree = "<group>"; };
+		D780B800000570 /* protocol.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = protocol.cc; path = debug_router/native/protocol/protocol.cc; sourceTree = "<group>"; };
+		D780B800000580 /* protocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = protocol.h; path = debug_router/native/protocol/protocol.h; sourceTree = "<group>"; };
+		D780B800000590 /* debug_router_native_report.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = debug_router_native_report.h; path = debug_router/native/report/debug_router_native_report.h; sourceTree = "<group>"; };
+		D780B8000005A0 /* blocking_queue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = blocking_queue.h; path = debug_router/native/socket/blocking_queue.h; sourceTree = "<group>"; };
+		D780B8000005B0 /* count_down_latch.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = count_down_latch.cc; path = debug_router/native/socket/count_down_latch.cc; sourceTree = "<group>"; };
+		D780B8000005C0 /* count_down_latch.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = count_down_latch.h; path = debug_router/native/socket/count_down_latch.h; sourceTree = "<group>"; };
+		D780B8000005D0 /* socket_server_posix.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = socket_server_posix.cc; path = debug_router/native/socket/posix/socket_server_posix.cc; sourceTree = "<group>"; };
+		D780B8000005E0 /* socket_server_posix.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = socket_server_posix.h; path = debug_router/native/socket/posix/socket_server_posix.h; sourceTree = "<group>"; };
+		D780B8000005F0 /* socket_server_api.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = socket_server_api.cc; path = debug_router/native/socket/socket_server_api.cc; sourceTree = "<group>"; };
+		D780B800000600 /* socket_server_api.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = socket_server_api.h; path = debug_router/native/socket/socket_server_api.h; sourceTree = "<group>"; };
+		D780B800000610 /* socket_server_type.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = socket_server_type.h; path = debug_router/native/socket/socket_server_type.h; sourceTree = "<group>"; };
+		D780B800000620 /* usb_client.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = usb_client.cc; path = debug_router/native/socket/usb_client.cc; sourceTree = "<group>"; };
+		D780B800000630 /* usb_client.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = usb_client.h; path = debug_router/native/socket/usb_client.h; sourceTree = "<group>"; };
+		D780B800000640 /* usb_client_listener.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = usb_client_listener.h; path = debug_router/native/socket/usb_client_listener.h; sourceTree = "<group>"; };
+		D780B800000650 /* work_thread_executor.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = work_thread_executor.cc; path = debug_router/native/socket/work_thread_executor.cc; sourceTree = "<group>"; };
+		D780B800000660 /* work_thread_executor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = work_thread_executor.h; path = debug_router/native/socket/work_thread_executor.h; sourceTree = "<group>"; };
+		D780B800000670 /* debug_router_executor.cc */ = {isa = PBXFileReference; includeInIndex = 1; name = debug_router_executor.cc; path = debug_router/native/thread/debug_router_executor.cc; sourceTree = "<group>"; };
+		D780B800000680 /* debug_router_executor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = debug_router_executor.h; path = debug_router/native/thread/debug_router_executor.h; sourceTree = "<group>"; };
+		D780B8000006B0 /* allocator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = allocator.h; path = third_party/jsoncpp/include/json/allocator.h; sourceTree = "<group>"; };
+		D780B8000006C0 /* assertions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = assertions.h; path = third_party/jsoncpp/include/json/assertions.h; sourceTree = "<group>"; };
+		D780B8000006D0 /* autolink.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = autolink.h; path = third_party/jsoncpp/include/json/autolink.h; sourceTree = "<group>"; };
+		D780B8000006E0 /* config.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = config.h; path = third_party/jsoncpp/include/json/config.h; sourceTree = "<group>"; };
+		D780B8000006F0 /* features.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = features.h; path = third_party/jsoncpp/include/json/features.h; sourceTree = "<group>"; };
+		D780B800000700 /* forwards.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = forwards.h; path = third_party/jsoncpp/include/json/forwards.h; sourceTree = "<group>"; };
+		D780B800000710 /* json.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = json.h; path = third_party/jsoncpp/include/json/json.h; sourceTree = "<group>"; };
+		D780B800000720 /* reader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = reader.h; path = third_party/jsoncpp/include/json/reader.h; sourceTree = "<group>"; };
+		D780B800000730 /* value.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = value.h; path = third_party/jsoncpp/include/json/value.h; sourceTree = "<group>"; };
+		D780B800000740 /* version.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = version.h; path = third_party/jsoncpp/include/json/version.h; sourceTree = "<group>"; };
+		D780B800000750 /* writer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = writer.h; path = third_party/jsoncpp/include/json/writer.h; sourceTree = "<group>"; };
+		D780B800000760 /* json_tool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = json_tool.h; path = third_party/jsoncpp/src/lib_json/json_tool.h; sourceTree = "<group>"; };
+		D780B800000770 /* json_reader.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = json_reader.cpp; path = third_party/jsoncpp/src/lib_json/json_reader.cpp; sourceTree = "<group>"; };
+		D780B800000780 /* json_value.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = json_value.cpp; path = third_party/jsoncpp/src/lib_json/json_value.cpp; sourceTree = "<group>"; };
+		D780B800000790 /* json_writer.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = json_writer.cpp; path = third_party/jsoncpp/src/lib_json/json_writer.cpp; sourceTree = "<group>"; };
+		D780B8000007A0 /* json_valueiterator.inl */ = {isa = PBXFileReference; includeInIndex = 1; name = json_valueiterator.inl; path = third_party/jsoncpp/src/lib_json/json_valueiterator.inl; sourceTree = "<group>"; };
+		D780B800000EE0 /* DebugRouter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DebugRouter.debug.xcconfig; sourceTree = "<group>"; };
+		D780B800000EF0 /* DebugRouter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DebugRouter.release.xcconfig; sourceTree = "<group>"; };
+		D780B800000F00 /* DebugRouter-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DebugRouter-prefix.pch"; sourceTree = "<group>"; };
+		D780B800000F10 /* DebugRouter-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "DebugRouter-dummy.m"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D780B800000820 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D780B800000010 = {
+			isa = PBXGroup;
+			children = (
+				D780B8000000B0 /* DebugRouter */,
+				D780B800000060 /* Frameworks */,
+				D780B800000020 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D780B800000020 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				505C317B7F936805EFA866E371CCF076 /* DebugRouter */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D780B800000060 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D780B8000000B0 /* DebugRouter */ = {
+			isa = PBXGroup;
+			children = (
+				D780B8000000C0 /* Framework */,
+				D780B8000002F0 /* MessageTransceiverEnable */,
+				D780B800000310 /* Native */,
+				D780B800000ED0 /* Support Files */,
+				D780B800000690 /* third_party */,
+			);
+			name = DebugRouter;
+			path = DebugRouter;
+			sourceTree = "<group>";
+		};
+		D780B8000000C0 /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				D780B8000000D0 /* DebugRouter.h */,
+				D780B8000001B0 /* DebugRouter.mm */,
+				D780B8000000E0 /* DebugRouterCommon.h */,
+				D780B800000160 /* DebugRouterDefines.h */,
+				D780B8000000F0 /* DebugRouterEventSender.h */,
+				D780B8000001C0 /* DebugRouterEventSender.mm */,
+				D780B800000100 /* DebugRouterGlobalHandler.h */,
+				D780B8000001D0 /* DebugRouterInternalStateListener.h */,
+				D780B8000001E0 /* DebugRouterInternalStateListener.m */,
+				D780B8000001F0 /* DebugRouterLog.h */,
+				D780B800000200 /* DebugRouterLog.mm */,
+				D780B800000110 /* DebugRouterMessageHandler.h */,
+				D780B800000120 /* DebugRouterMessageHandleResult.h */,
+				D780B800000210 /* DebugRouterMessageHandleResult.m */,
+				D780B800000290 /* DebugRouterReport.h */,
+				D780B8000002A0 /* DebugRouterReport.m */,
+				D780B800000170 /* DebugRouterReportServiceProtocol.h */,
+				D780B800000180 /* DebugRouterReportServiceUtil.h */,
+				D780B8000002D0 /* DebugRouterReportServiceUtil.m */,
+				D780B800000190 /* DebugRouterService.h */,
+				D780B8000002E0 /* DebugRouterService.m */,
+				D780B8000001A0 /* DebugRouterServiceProtocol.h */,
+				D780B800000130 /* DebugRouterSessionHandler.h */,
+				D780B800000140 /* DebugRouterSlot.h */,
+				D780B800000220 /* DebugRouterSlot.mm */,
+				D780B8000002B0 /* DebugRouterToast.h */,
+				D780B8000002C0 /* DebugRouterToast.m */,
+				D780B800000230 /* DebugRouterUtil.h */,
+				D780B800000240 /* DebugRouterUtil.m */,
+				D780B800000250 /* DebugRouterVersion.h */,
+				D780B800000260 /* DebugRouterVersion.m */,
+				D780B800000150 /* LocalNetworkPermissionChecker.h */,
+				D780B800000270 /* LocalNetworkPermissionChecker.m */,
+				D780B800000280 /* WebSocketClient.h */,
+			);
+			name = Framework;
+			sourceTree = "<group>";
+		};
+		D780B8000002F0 /* MessageTransceiverEnable */ = {
+			isa = PBXGroup;
+			children = (
+				D780B800000300 /* debug_router_export.h */,
+			);
+			name = MessageTransceiverEnable;
+			sourceTree = "<group>";
+		};
+		D780B800000310 /* Native */ = {
+			isa = PBXGroup;
+			children = (
+				D780B8000005A0 /* blocking_queue.h */,
+				D780B800000350 /* BUILD.gn */,
+				D780B8000005B0 /* count_down_latch.cc */,
+				D780B8000005C0 /* count_down_latch.h */,
+				D780B800000360 /* debug_router_config.cc */,
+				D780B800000370 /* debug_router_config.h */,
+				D780B800000380 /* debug_router_core.cc */,
+				D780B800000390 /* debug_router_core.h */,
+				D780B800000670 /* debug_router_executor.cc */,
+				D780B800000680 /* debug_router_executor.h */,
+				D780B8000003A0 /* debug_router_global_handler.h */,
+				D780B8000003B0 /* debug_router_message_handler.h */,
+				D780B800000590 /* debug_router_native_report.h */,
+				D780B8000003C0 /* debug_router_session_handler.h */,
+				D780B8000003D0 /* debug_router_state_listener.cc */,
+				D780B8000003E0 /* debug_router_state_listener.h */,
+				D780B800000540 /* events.h */,
+				D780B800000470 /* IMessageProcessor.h */,
+				D780B800000320 /* LICENSE */,
+				D780B800000450 /* logging.cc */,
+				D780B800000460 /* logging.h */,
+				D780B800000550 /* md5.cc */,
+				D780B800000560 /* md5.h */,
+				D780B8000004E0 /* message_assembler.cc */,
+				D780B8000004F0 /* message_assembler.h */,
+				D780B800000500 /* message_handler.h */,
+				D780B8000003F0 /* message_transceiver.cc */,
+				D780B800000400 /* message_transceiver.h */,
+				D780B800000410 /* native_slot.cc */,
+				D780B800000420 /* native_slot.h */,
+				D780B800000330 /* no_destructor.h */,
+				D780B800000510 /* processor.cc */,
+				D780B800000520 /* processor.h */,
+				D780B800000570 /* protocol.cc */,
+				D780B800000580 /* protocol.h */,
+				D780B800000340 /* socket_guard.h */,
+				D780B8000005F0 /* socket_server_api.cc */,
+				D780B800000600 /* socket_server_api.h */,
+				D780B800000480 /* socket_server_client.cc */,
+				D780B800000490 /* socket_server_client.h */,
+				D780B8000005D0 /* socket_server_posix.cc */,
+				D780B8000005E0 /* socket_server_posix.h */,
+				D780B800000610 /* socket_server_type.h */,
+				D780B800000530 /* state_listener.h */,
+				D780B800000620 /* usb_client.cc */,
+				D780B800000630 /* usb_client.h */,
+				D780B800000640 /* usb_client_listener.h */,
+				D780B800000430 /* util.cc */,
+				D780B800000440 /* util.h */,
+				D780B8000004A0 /* websocket_client.cc */,
+				D780B8000004B0 /* websocket_client.h */,
+				D780B8000004C0 /* websocket_task.cc */,
+				D780B8000004D0 /* websocket_task.h */,
+				D780B800000650 /* work_thread_executor.cc */,
+				D780B800000660 /* work_thread_executor.h */,
+			);
+			name = Native;
+			sourceTree = "<group>";
+		};
+		D780B800000690 /* third_party */ = {
+			isa = PBXGroup;
+			children = (
+				D780B8000006A0 /* jsoncpp */,
+			);
+			name = third_party;
+			sourceTree = "<group>";
+		};
+		D780B8000006A0 /* jsoncpp */ = {
+			isa = PBXGroup;
+			children = (
+				D780B8000006B0 /* allocator.h */,
+				D780B8000006C0 /* assertions.h */,
+				D780B8000006D0 /* autolink.h */,
+				D780B8000006E0 /* config.h */,
+				D780B8000006F0 /* features.h */,
+				D780B800000700 /* forwards.h */,
+				D780B800000710 /* json.h */,
+				D780B800000770 /* json_reader.cpp */,
+				D780B800000760 /* json_tool.h */,
+				D780B800000780 /* json_value.cpp */,
+				D780B8000007A0 /* json_valueiterator.inl */,
+				D780B800000790 /* json_writer.cpp */,
+				D780B800000720 /* reader.h */,
+				D780B800000730 /* value.h */,
+				D780B800000740 /* version.h */,
+				D780B800000750 /* writer.h */,
+			);
+			name = jsoncpp;
+			sourceTree = "<group>";
+		};
+		D780B800000ED0 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				D780B800000F10 /* DebugRouter-dummy.m */,
+				D780B800000F00 /* DebugRouter-prefix.pch */,
+				D780B800000EE0 /* DebugRouter.debug.xcconfig */,
+				D780B800000EF0 /* DebugRouter.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/DebugRouter";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D780B800000800 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D780B800000E00 /* allocator.h in Headers */,
+				D780B800000E10 /* assertions.h in Headers */,
+				D780B800000E20 /* autolink.h in Headers */,
+				D780B800000D20 /* blocking_queue.h in Headers */,
+				D780B800000E30 /* config.h in Headers */,
+				D780B800000D30 /* count_down_latch.h in Headers */,
+				D780B800000BC0 /* debug_router_config.h in Headers */,
+				D780B800000BD0 /* debug_router_core.h in Headers */,
+				D780B800000DA0 /* debug_router_executor.h in Headers */,
+				D780B800000A50 /* debug_router_export.h in Headers */,
+				D780B800000BE0 /* debug_router_global_handler.h in Headers */,
+				D780B800000BF0 /* debug_router_message_handler.h in Headers */,
+				D780B800000D10 /* debug_router_native_report.h in Headers */,
+				D780B800000C00 /* debug_router_session_handler.h in Headers */,
+				D780B800000C10 /* debug_router_state_listener.h in Headers */,
+				D780B800000900 /* DebugRouter.h in Headers */,
+				D780B800000910 /* DebugRouterCommon.h in Headers */,
+				D780B800000990 /* DebugRouterDefines.h in Headers */,
+				D780B800000920 /* DebugRouterEventSender.h in Headers */,
+				D780B800000930 /* DebugRouterGlobalHandler.h in Headers */,
+				D780B8000009E0 /* DebugRouterInternalStateListener.h in Headers */,
+				D780B8000009F0 /* DebugRouterLog.h in Headers */,
+				D780B800000940 /* DebugRouterMessageHandler.h in Headers */,
+				D780B800000950 /* DebugRouterMessageHandleResult.h in Headers */,
+				D780B800000A30 /* DebugRouterReport.h in Headers */,
+				D780B8000009A0 /* DebugRouterReportServiceProtocol.h in Headers */,
+				D780B8000009B0 /* DebugRouterReportServiceUtil.h in Headers */,
+				D780B8000009C0 /* DebugRouterService.h in Headers */,
+				D780B8000009D0 /* DebugRouterServiceProtocol.h in Headers */,
+				D780B800000960 /* DebugRouterSessionHandler.h in Headers */,
+				D780B800000970 /* DebugRouterSlot.h in Headers */,
+				D780B800000A40 /* DebugRouterToast.h in Headers */,
+				D780B800000A00 /* DebugRouterUtil.h in Headers */,
+				D780B800000A10 /* DebugRouterVersion.h in Headers */,
+				D780B800000CE0 /* events.h in Headers */,
+				D780B800000E40 /* features.h in Headers */,
+				D780B800000E50 /* forwards.h in Headers */,
+				D780B800000C60 /* IMessageProcessor.h in Headers */,
+				D780B800000E60 /* json.h in Headers */,
+				D780B800000EB0 /* json_tool.h in Headers */,
+				D780B800000EC0 /* json_valueiterator.inl in Headers */,
+				D780B800000980 /* LocalNetworkPermissionChecker.h in Headers */,
+				D780B800000C50 /* logging.h in Headers */,
+				D780B800000CF0 /* md5.h in Headers */,
+				D780B800000CA0 /* message_assembler.h in Headers */,
+				D780B800000CB0 /* message_handler.h in Headers */,
+				D780B800000C20 /* message_transceiver.h in Headers */,
+				D780B800000C30 /* native_slot.h in Headers */,
+				D780B800000BA0 /* no_destructor.h in Headers */,
+				D780B800000CC0 /* processor.h in Headers */,
+				D780B800000D00 /* protocol.h in Headers */,
+				D780B800000E70 /* reader.h in Headers */,
+				D780B800000BB0 /* socket_guard.h in Headers */,
+				D780B800000D50 /* socket_server_api.h in Headers */,
+				D780B800000C70 /* socket_server_client.h in Headers */,
+				D780B800000D40 /* socket_server_posix.h in Headers */,
+				D780B800000D60 /* socket_server_type.h in Headers */,
+				D780B800000CD0 /* state_listener.h in Headers */,
+				D780B800000D70 /* usb_client.h in Headers */,
+				D780B800000D80 /* usb_client_listener.h in Headers */,
+				D780B800000C40 /* util.h in Headers */,
+				D780B800000E80 /* value.h in Headers */,
+				D780B800000E90 /* version.h in Headers */,
+				D780B800000C80 /* websocket_client.h in Headers */,
+				D780B800000C90 /* websocket_task.h in Headers */,
+				D780B800000A20 /* WebSocketClient.h in Headers */,
+				D780B800000D90 /* work_thread_executor.h in Headers */,
+				D780B800000EA0 /* writer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		42E8F82F4C188A1341C0E421F5B5CC12 /* DebugRouter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D780B8000007C0 /* Build configuration list for PBXNativeTarget "DebugRouter" */;
+			buildPhases = (
+				D780B800000800 /* Headers */,
+				D780B800000810 /* Sources */,
+				D780B800000820 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DebugRouter;
+			productName = DebugRouter;
+			productReference = 505C317B7F936805EFA866E371CCF076 /* DebugRouter */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D780B800000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = D780B800000030 /* Build configuration list for PBXProject "DebugRouter" */;
+			compatibilityVersion = "Xcode 16.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = D780B800000010;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = D780B800000020 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				42E8F82F4C188A1341C0E421F5B5CC12 /* DebugRouter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D780B800000810 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D780B800000DC0 /* BUILD.gn in Sources */,
+				D780B800000B40 /* count_down_latch.cc in Sources */,
+				D780B800000A60 /* debug_router_config.cc in Sources */,
+				D780B800000A70 /* debug_router_core.cc in Sources */,
+				D780B800000B90 /* debug_router_executor.cc in Sources */,
+				D780B800000A80 /* debug_router_state_listener.cc in Sources */,
+				D780B800000830 /* DebugRouter.mm in Sources */,
+				D780B800000F20 /* DebugRouter-dummy.m in Sources */,
+				D780B800000840 /* DebugRouterEventSender.mm in Sources */,
+				D780B800000850 /* DebugRouterInternalStateListener.m in Sources */,
+				D780B800000860 /* DebugRouterLog.mm in Sources */,
+				D780B800000870 /* DebugRouterMessageHandleResult.m in Sources */,
+				D780B8000008C0 /* DebugRouterReport.m in Sources */,
+				D780B8000008E0 /* DebugRouterReportServiceUtil.m in Sources */,
+				D780B8000008F0 /* DebugRouterService.m in Sources */,
+				D780B800000880 /* DebugRouterSlot.mm in Sources */,
+				D780B8000008D0 /* DebugRouterToast.m in Sources */,
+				D780B800000890 /* DebugRouterUtil.m in Sources */,
+				D780B8000008A0 /* DebugRouterVersion.m in Sources */,
+				D780B800000DD0 /* json_reader.cpp in Sources */,
+				D780B800000DE0 /* json_value.cpp in Sources */,
+				D780B800000DF0 /* json_writer.cpp in Sources */,
+				D780B800000DB0 /* LICENSE in Sources */,
+				D780B8000008B0 /* LocalNetworkPermissionChecker.m in Sources */,
+				D780B800000AC0 /* logging.cc in Sources */,
+				D780B800000B20 /* md5.cc in Sources */,
+				D780B800000B00 /* message_assembler.cc in Sources */,
+				D780B800000A90 /* message_transceiver.cc in Sources */,
+				D780B800000AA0 /* native_slot.cc in Sources */,
+				D780B800000B10 /* processor.cc in Sources */,
+				D780B800000B30 /* protocol.cc in Sources */,
+				D780B800000B60 /* socket_server_api.cc in Sources */,
+				D780B800000AD0 /* socket_server_client.cc in Sources */,
+				D780B800000B50 /* socket_server_posix.cc in Sources */,
+				D780B800000B70 /* usb_client.cc in Sources */,
+				D780B800000AB0 /* util.cc in Sources */,
+				D780B800000AE0 /* websocket_client.cc in Sources */,
+				D780B800000AF0 /* websocket_task.cc in Sources */,
+				D780B800000B80 /* work_thread_executor.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D780B800000040 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		D780B800000050 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		D780B8000007D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D780B800000EF0 /* DebugRouter.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/DebugRouter/DebugRouter-prefix.pch";
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = DebugRouter;
+				PRODUCT_NAME = DebugRouter;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D780B8000007E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D780B800000EE0 /* DebugRouter.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/DebugRouter/DebugRouter-prefix.pch";
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = DebugRouter;
+				PRODUCT_NAME = DebugRouter;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D780B800000030 /* Build configuration list for PBXProject "DebugRouter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D780B800000040 /* Debug */,
+				D780B800000050 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D780B8000007C0 /* Build configuration list for PBXNativeTarget "DebugRouter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D780B8000007E0 /* Debug */,
+				D780B8000007D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D780B800000000 /* Project object */;
+}

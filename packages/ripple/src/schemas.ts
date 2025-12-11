@@ -78,7 +78,7 @@ export const ThreadMetadataSchema = Thing.extend({
   participants: z.array(z.string()).length(2), // [pubKeyA, pubKeyB]
   lastMessage: z.string().optional(),
   lastMessageAt: z.number().optional(),
-  unreadCount: z.number().default(0),
+  unreadCount: z.number().optional(), // Defaults to 0 in UI layer
   created: z.number(),
 });
 

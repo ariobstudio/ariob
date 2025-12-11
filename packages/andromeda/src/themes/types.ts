@@ -32,16 +32,19 @@ export interface Indicator {
 }
 
 export interface Palette {
-  bg: string;
+  // Primary color names (Ripple style)
+  background: string;
   surface: string;
-  elevated: string;
-  muted: string;
-  text: string;
-  dim: string;
-  faint: string;
+  surfaceElevated: string;
+  surfaceMuted: string;
+  textPrimary: string;
+  textSecondary: string;
+  textMuted: string;
   accent: string;
+  accentSoft: string;
+  accentGlow: string;
   success: string;
-  warn: string;
+  warning: string;
   danger: string;
   info: string;
   glow: Glow;
@@ -52,6 +55,15 @@ export interface Palette {
   borderStrong: string;
   glass: string;
   overlay: string;
+  // Shorthand aliases (Andromeda compatibility)
+  bg: string;
+  elevated: string;
+  muted: string;
+  text: string;
+  textTertiary: string;
+  dim: string;
+  faint: string;
+  warn: string;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -82,10 +94,10 @@ export interface Radii {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface FontStyle {
-  size: number;
-  weight: string;
-  spacing?: number;
-  height?: number;
+  fontSize: number;
+  fontWeight: string;
+  letterSpacing?: number;
+  lineHeight?: number;
 }
 
 export interface Font {
@@ -125,7 +137,14 @@ export interface Shadow {
   elevation: number;
 }
 
+/** Shadow styles - supports both Andromeda (sm/md/lg) and Ripple (subtle/medium/strong) naming */
 export interface Shadows {
+  // Ripple naming
+  subtle: Shadow;
+  medium: Shadow;
+  strong: Shadow;
+  glow: Shadow;
+  // Andromeda naming (aliases)
   sm: Shadow;
   md: Shadow;
   lg: Shadow;
@@ -137,8 +156,19 @@ export interface Shadows {
 
 export interface Data {
   colors: Palette;
-  space: Scale;
+  // Primary names (Ripple style)
+  spacing: Scale;
   radii: Radii;
+  typography: Font;
+  effects: {
+    divider: { subtle: string; strong: string };
+    outline: { focus: string; glow: string };
+    glow: { accent: string; cyan: string; success: string; danger: string };
+    shadow: Shadows;
+  };
+  springs: Springs;
+  // Shorthand aliases (Andromeda compatibility)
+  space: Scale;
   font: Font;
   spring: Springs;
   shadow: Shadows;

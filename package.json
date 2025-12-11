@@ -13,15 +13,10 @@
   ],
   "scripts": {
     "dev": "turbo run dev",
-    "dev:brana": "turbo run dev --filter=brana",
-    "dev:chat": "turbo run dev --filter=chat",
     "build": "turbo run build",
-    "build:brana": "turbo run build --filter=brana",
-    "build:chat": "turbo run build --filter=chat",
-    "bundle:ios": "./scripts/bundle-ios.sh",
-    "bundle:ios:help": "./scripts/bundle-ios.sh --help",
-    "bundle:android": "./scripts/bundle-android.sh",
-    "relay": "pnpm run --filter=relay start"
+    "relay": "pnpm run --filter=relay start",
+    "android": "cd apps/ripple && npx expo run:android",
+    "ios": "cd apps/ripple && npx expo run:ios"
   },
   "packageManager": "pnpm@10.20.0",
   "pnpm": {
@@ -34,5 +29,10 @@
   },
   "devDependencies": {
     "turbo": "^2.5.2"
+  },
+  "dependencies": {
+    "expo": "~54.0.23",
+    "react": "19.1.0",
+    "react-native": "0.81.5"
   }
 }

@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 export interface SyncData {
   teaser: string;
@@ -10,16 +10,18 @@ interface SyncProps {
 }
 
 export const Sync = ({ data }: SyncProps) => {
+  const { theme } = useUnistyles();
+
   return (
     <View style={styles.container}>
       <View style={styles.avatars}>
-        <View style={[styles.avatar, { backgroundColor: '#1D9BF0' }]}>
+        <View style={[styles.avatar, { backgroundColor: theme.colors.indicator.message }]}>
           <Text style={styles.avatarText}>EF</Text>
         </View>
-        <View style={[styles.avatar, { backgroundColor: '#7856FF' }]}>
+        <View style={[styles.avatar, { backgroundColor: theme.colors.indicator.auth }]}>
           <Text style={styles.avatarText}>CD</Text>
         </View>
-        <View style={[styles.avatar, { backgroundColor: '#1F2226' }]}>
+        <View style={[styles.avatar, { backgroundColor: theme.colors.surfaceMuted }]}>
           <Text style={styles.avatarText}>+2</Text>
         </View>
       </View>
@@ -32,22 +34,22 @@ export const Sync = ({ data }: SyncProps) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   container: {
     alignItems: 'center' as const,
-    padding: 16,
-    gap: 8,
+    padding: theme.spacing.lg,
+    gap: theme.spacing.sm,
   },
   avatars: {
     flexDirection: 'row' as const,
-    marginLeft: 12,
+    marginLeft: theme.spacing.md,
   },
   avatar: {
     width: 32,
     height: 32,
     borderRadius: 16,
     borderWidth: 2,
-    borderColor: '#111',
+    borderColor: theme.colors.background,
     alignItems: 'center' as const,
     justifyContent: 'center' as const,
     marginLeft: -12,
@@ -55,29 +57,29 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 10,
     fontWeight: 'bold' as const,
-    color: '#FFF',
+    color: theme.colors.textPrimary,
   },
   title: {
-    color: '#E7E9EA',
+    color: theme.colors.textPrimary,
     fontWeight: '500' as const,
     fontSize: 14,
   },
   subtitle: {
-    color: '#71767B',
+    color: theme.colors.textMuted,
     fontSize: 12,
-    marginBottom: 4,
+    marginBottom: theme.spacing.xs,
   },
   button: {
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.05)',
+    paddingHorizontal: theme.spacing.lg,
+    paddingVertical: theme.spacing.xs,
+    borderRadius: theme.radii.pill,
+    backgroundColor: theme.colors.surfaceMuted,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
+    borderColor: theme.colors.border,
   },
   buttonText: {
     fontSize: 12,
-    color: '#E7E9EA',
+    color: theme.colors.textPrimary,
     fontWeight: 'bold' as const,
   },
-});
+}));

@@ -1,5 +1,7 @@
 /**
  * Tests for Ripple theme tokens
+ *
+ * Updated to reflect Apple iOS design system colors.
  */
 
 import {
@@ -25,53 +27,59 @@ describe('ripplePalettes', () => {
   describe('dark palette', () => {
     const dark = ripplePalettes.dark;
 
-    it('has all required background colors', () => {
+    it('has all required background colors (iOS System Colors)', () => {
       expect(dark.background).toBe('#000000');
-      expect(dark.surface).toBe('#0F1216');
-      expect(dark.surfaceElevated).toBe('#16181C');
-      expect(dark.surfaceMuted).toBe('#1F2226');
-      expect(dark.overlay).toBe('rgba(0,0,0,0.85)');
+      expect(dark.surface).toBe('#1C1C1E');  // iOS System Gray 6 Dark
+      expect(dark.surfaceElevated).toBe('#2C2C2E');  // iOS System Gray 5 Dark
+      expect(dark.surfaceMuted).toBe('#151517');
+      expect(dark.overlay).toBe('rgba(0,0,0,0.7)');
     });
 
     it('has all required border colors', () => {
-      expect(dark.borderSubtle).toBe('rgba(255,255,255,0.04)');
-      expect(dark.border).toBe('rgba(255,255,255,0.08)');
-      expect(dark.borderStrong).toBe('rgba(255,255,255,0.15)');
+      expect(dark.borderSubtle).toBe('rgba(255,255,255,0.08)');
+      expect(dark.border).toBe('rgba(255,255,255,0.12)');
+      expect(dark.borderStrong).toBe('rgba(255,255,255,0.2)');
     });
 
     it('has all required text colors', () => {
-      expect(dark.textPrimary).toBe('#E7E9EA');
-      expect(dark.textSecondary).toBe('#A0A4AA');
-      expect(dark.textMuted).toBe('#6B6F76');
-      expect(dark.text).toBe('#E7E9EA'); // alias
-      expect(dark.textTertiary).toBe('#6B6F76'); // alias
+      expect(dark.textPrimary).toBe('#F5F5F7');
+      expect(dark.textSecondary).toBe('#98989D');
+      expect(dark.textMuted).toBe('#636366');
+      expect(dark.text).toBe('#F5F5F7'); // alias
+      expect(dark.textTertiary).toBe('#636366'); // alias
     });
 
-    it('has all semantic colors', () => {
-      expect(dark.accent).toBe('#1D9BF0');
-      expect(dark.accentSoft).toBe('rgba(29,155,240,0.15)');
-      expect(dark.accentGlow).toBe('#00E5FF');
-      expect(dark.success).toBe('#00BA7C');
-      expect(dark.warning).toBe('#F5A524');
-      expect(dark.danger).toBe('#F91880');
-      expect(dark.info).toBe('#7A7FFF');
-      expect(dark.glass).toBe('rgba(16,18,22,0.9)');
+    it('has all semantic colors (iOS style)', () => {
+      expect(dark.accent).toBe('#0A84FF');  // iOS Blue
+      expect(dark.accentSoft).toBe('rgba(10,132,255,0.15)');
+      expect(dark.accentGlow).toBe('rgba(10,132,255,0.3)');
+      expect(dark.success).toBe('#30D158');  // iOS Green
+      expect(dark.warning).toBe('#FFD60A');  // iOS Yellow
+      expect(dark.danger).toBe('#FF453A');   // iOS Red
+      expect(dark.info).toBe('#5E5CE6');     // iOS Indigo
+      expect(dark.glass).toBe('rgba(30,30,30,0.8)');
     });
 
-    it('has all five degree colors', () => {
-      expect(dark.degree[0]).toBe('#FF6B9D'); // Me
-      expect(dark.degree[1]).toBe('#00E5FF'); // Friends
-      expect(dark.degree[2]).toBe('#7C4DFF'); // World
-      expect(dark.degree[3]).toBe('#FFC107'); // Discover
-      expect(dark.degree[4]).toBe('#78909C'); // Noise
+    it('has all five degree colors (iOS inspired)', () => {
+      expect(dark.degree[0]).toBe('#FF375F'); // Me (Pink)
+      expect(dark.degree[1]).toBe('#64D2FF'); // Friends (Cyan)
+      expect(dark.degree[2]).toBe('#BF5AF2'); // World (Purple)
+      expect(dark.degree[3]).toBe('#FFD60A'); // Discover (Yellow)
+      expect(dark.degree[4]).toBe('#8E8E93'); // Noise (Gray)
     });
 
     it('has all indicator colors', () => {
-      expect(dark.indicator.profile).toBe('#00BA7C');
-      expect(dark.indicator.message).toBe('#1D9BF0');
-      expect(dark.indicator.auth).toBe('#7856FF');
-      expect(dark.indicator.ai).toBe('#FACC15');
-      expect(dark.indicator.post).toBe('#E7E9EA');
+      expect(dark.indicator.profile).toBe('#30D158');
+      expect(dark.indicator.message).toBe('#0A84FF');
+      expect(dark.indicator.auth).toBe('#5E5CE6');
+      expect(dark.indicator.ai).toBe('#FF9F0A');
+      expect(dark.indicator.post).toBe('#F5F5F7');
+    });
+
+    it('has glow colors for effects', () => {
+      expect(dark.glow.cyan).toBe('#64D2FF');
+      expect(dark.glow.teal).toBe('#6AC4DC');
+      expect(dark.glow.blue).toBe('#409CFF');
     });
   });
 
@@ -79,23 +87,30 @@ describe('ripplePalettes', () => {
     const light = ripplePalettes.light;
 
     it('has different background colors than dark', () => {
-      expect(light.background).toBe('#F7F7FA');
+      expect(light.background).toBe('#F5F5F7');  // iOS System Gray 6
       expect(light.surface).toBe('#FFFFFF');
-      expect(light.surfaceElevated).toBe('#F2F3F7');
+      expect(light.surfaceElevated).toBe('#FFFFFF');
+      expect(light.surfaceMuted).toBe('#F2F2F7');
     });
 
     it('has appropriate light mode text colors', () => {
-      expect(light.textPrimary).toBe('#1F2125');
-      expect(light.textSecondary).toBe('#4A4D52');
-      expect(light.textMuted).toBe('#6F737C');
+      expect(light.textPrimary).toBe('#1D1D1F');
+      expect(light.textSecondary).toBe('#86868B');
+      expect(light.textMuted).toBe('#AEAEB2');
     });
 
     it('has adjusted degree colors for light mode', () => {
-      expect(light.degree[0]).toBe('#E91E63'); // Darker pink
-      expect(light.degree[1]).toBe('#00B8D4'); // Darker cyan
-      expect(light.degree[2]).toBe('#651FFF'); // Darker purple
-      expect(light.degree[3]).toBe('#FF8F00'); // Darker amber
-      expect(light.degree[4]).toBe('#546E7A'); // Darker gray
+      expect(light.degree[0]).toBe('#FF2D55'); // Darker pink
+      expect(light.degree[1]).toBe('#5AC8FA'); // iOS Cyan
+      expect(light.degree[2]).toBe('#AF52DE'); // iOS Purple
+      expect(light.degree[3]).toBe('#FFCC00'); // iOS Yellow
+      expect(light.degree[4]).toBe('#8E8E93'); // iOS Gray
+    });
+
+    it('has light mode accent colors', () => {
+      expect(light.accent).toBe('#0071E3');  // Apple vibrant blue
+      expect(light.success).toBe('#34C759'); // iOS Green Light
+      expect(light.danger).toBe('#FF3B30');  // iOS Red Light
     });
   });
 });
@@ -132,11 +147,17 @@ describe('rippleSpacing', () => {
 
 describe('rippleRadii', () => {
   it('exports border radii with correct values', () => {
-    expect(rippleRadii.sm).toBe(6);
-    expect(rippleRadii.md).toBe(12);
-    expect(rippleRadii.lg).toBe(18);
-    expect(rippleRadii.xl).toBe(24);
+    expect(rippleRadii.sm).toBe(8);
+    expect(rippleRadii.md).toBe(16);
+    expect(rippleRadii.lg).toBe(24);
+    expect(rippleRadii.xl).toBe(32);
     expect(rippleRadii.pill).toBe(999);
+  });
+
+  it('has increasing values (except pill)', () => {
+    expect(rippleRadii.md).toBeGreaterThan(rippleRadii.sm);
+    expect(rippleRadii.lg).toBeGreaterThan(rippleRadii.md);
+    expect(rippleRadii.xl).toBeGreaterThan(rippleRadii.lg);
   });
 });
 
@@ -150,34 +171,49 @@ describe('rippleTypography', () => {
   });
 
   it('title has correct properties', () => {
-    expect(rippleTypography.title.fontSize).toBe(24);
+    expect(rippleTypography.title.fontSize).toBe(28);
     expect(rippleTypography.title.fontWeight).toBe('700');
     expect(rippleTypography.title.letterSpacing).toBe(-0.5);
   });
 
+  it('heading has correct properties', () => {
+    expect(rippleTypography.heading.fontSize).toBe(20);
+    expect(rippleTypography.heading.fontWeight).toBe('600');
+  });
+
   it('body has correct properties including lineHeight', () => {
-    expect(rippleTypography.body.fontSize).toBe(15);
-    expect(rippleTypography.body.fontWeight).toBe('500');
-    expect(rippleTypography.body.lineHeight).toBe(20);
+    expect(rippleTypography.body.fontSize).toBe(16);
+    expect(rippleTypography.body.fontWeight).toBe('400');
+    expect(rippleTypography.body.lineHeight).toBe(24);
+  });
+
+  it('caption has correct properties', () => {
+    expect(rippleTypography.caption.fontSize).toBe(13);
+    expect(rippleTypography.caption.fontWeight).toBe('400');
+  });
+
+  it('mono has correct properties', () => {
+    expect(rippleTypography.mono.fontSize).toBe(12);
+    expect(rippleTypography.mono.fontWeight).toBe('500');
   });
 });
 
 describe('rippleEffects', () => {
   it('exports divider effects', () => {
-    expect(rippleEffects.divider.subtle).toBe('rgba(255,255,255,0.03)');
-    expect(rippleEffects.divider.strong).toBe('rgba(255,255,255,0.08)');
+    expect(rippleEffects.divider.subtle).toBe('rgba(0,0,0,0.05)');
+    expect(rippleEffects.divider.strong).toBe('rgba(0,0,0,0.1)');
   });
 
   it('exports outline effects', () => {
-    expect(rippleEffects.outline.focus).toBe('rgba(29,155,240,0.45)');
-    expect(rippleEffects.outline.glow).toBe('rgba(0,229,255,0.30)');
+    expect(rippleEffects.outline.focus).toBe('rgba(0,113,227,0.4)');
+    expect(rippleEffects.outline.glow).toBe('rgba(90,200,250,0.3)');
   });
 
   it('exports glow effects', () => {
-    expect(rippleEffects.glow.accent).toBe('rgba(29,155,240,0.35)');
-    expect(rippleEffects.glow.cyan).toBe('rgba(0,229,255,0.40)');
-    expect(rippleEffects.glow.success).toBe('rgba(0,186,124,0.35)');
-    expect(rippleEffects.glow.danger).toBe('rgba(249,24,128,0.35)');
+    expect(rippleEffects.glow.accent).toBe('rgba(0,113,227,0.2)');
+    expect(rippleEffects.glow.cyan).toBe('rgba(90,200,250,0.25)');
+    expect(rippleEffects.glow.success).toBe('rgba(52,199,89,0.2)');
+    expect(rippleEffects.glow.danger).toBe('rgba(255,59,48,0.2)');
   });
 
   it('exports shadow presets with correct structure', () => {
@@ -188,7 +224,18 @@ describe('rippleEffects', () => {
       elevation: expect.any(Number),
     });
 
-    expect(rippleEffects.shadow.glow.shadowColor).toBe('#00E5FF');
+    expect(rippleEffects.shadow.medium).toHaveProperty('shadowColor');
+    expect(rippleEffects.shadow.strong).toHaveProperty('elevation');
+    expect(rippleEffects.shadow.glow.shadowColor).toBe('#007AFF');
+  });
+
+  it('shadow presets have increasing intensity', () => {
+    expect(rippleEffects.shadow.medium.shadowOpacity).toBeGreaterThan(
+      rippleEffects.shadow.subtle.shadowOpacity
+    );
+    expect(rippleEffects.shadow.strong.shadowOpacity).toBeGreaterThan(
+      rippleEffects.shadow.medium.shadowOpacity
+    );
   });
 });
 
@@ -214,12 +261,18 @@ describe('rippleSprings', () => {
     });
   });
 
-  it('snappy has highest stiffness for quick interactions', () => {
-    expect(rippleSprings.snappy.stiffness).toBeGreaterThan(
-      rippleSprings.smooth.stiffness
+  it('smooth has highest stiffness for Apple-style animations', () => {
+    expect(rippleSprings.smooth.stiffness).toBeGreaterThan(
+      rippleSprings.snappy.stiffness
     );
-    expect(rippleSprings.snappy.stiffness).toBeGreaterThan(
+    expect(rippleSprings.smooth.stiffness).toBeGreaterThan(
       rippleSprings.bouncy.stiffness
+    );
+  });
+
+  it('gentle has lowest stiffness for slow reveals', () => {
+    expect(rippleSprings.gentle.stiffness).toBeLessThan(
+      rippleSprings.snappy.stiffness
     );
   });
 });
@@ -231,6 +284,13 @@ describe('rippleBreakpoints', () => {
     expect(rippleBreakpoints.md).toBe(768);
     expect(rippleBreakpoints.lg).toBe(1024);
     expect(rippleBreakpoints.xl).toBe(1440);
+  });
+
+  it('has increasing values', () => {
+    expect(rippleBreakpoints.sm).toBeGreaterThan(rippleBreakpoints.xs);
+    expect(rippleBreakpoints.md).toBeGreaterThan(rippleBreakpoints.sm);
+    expect(rippleBreakpoints.lg).toBeGreaterThan(rippleBreakpoints.md);
+    expect(rippleBreakpoints.xl).toBeGreaterThan(rippleBreakpoints.lg);
   });
 });
 
@@ -250,6 +310,13 @@ describe('createRippleTheme', () => {
     const theme = createRippleTheme('light');
 
     expect(theme.colors).toBe(ripplePalettes.light);
+  });
+
+  it('includes Andromeda compatibility aliases', () => {
+    const theme = createRippleTheme('dark');
+
+    expect(theme.space).toBe(rippleSpacing);
+    expect(theme.shadow).toBe(rippleEffects.shadow);
   });
 });
 

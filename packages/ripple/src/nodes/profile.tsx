@@ -4,8 +4,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { profileStyles as styles } from './profile.styles';
 
 export interface ProfileData {
-  avatar: string;
+  avatar?: string;
   handle: string;
+  name?: string;
+  bio?: string;
+  verified?: boolean;
+  stats?: { posts: number; followers: number; following: number };
   pubkey?: string;
   mode?: 'view' | 'create';
 }

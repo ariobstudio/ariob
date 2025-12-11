@@ -1,30 +1,33 @@
 /**
  * Me Screen - Shows current user's posts
+ *
+ * Refactored to use Unistyles for theme reactivity
  */
 
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
-import { useFeed, FeedItemComponent } from '@ariob/ripple';
+import { useFeed } from '@ariob/ripple';
+import { Renderer } from '../components/Renderer';
 import { useAuth } from '@ariob/core';
-import { theme } from '../theme';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function MeScreen() {
   const router = useRouter();
   const { user } = useAuth();
   const { items, loading } = useFeed({ degree: '0' });
+  const { theme } = useUnistyles();
 
   const renderItem = ({ item }: { item: any }) => {
-    return <FeedItemComponent item={item.data} />;
+    return <Renderer item={item.data || item} />;
   };
 
   const renderEmpty = () => {
     if (loading) {
       return (
         <View style={styles.emptyContainer}>
-          <ActivityIndicator size="large" color={theme.colors.text} />
+          <ActivityIndicator size="large" color={theme.colors.textPrimary} />
           <Text style={styles.emptyText}>Loading your posts...</Text>
         </View>
       );
@@ -64,10 +67,9 @@ export default function MeScreen() {
         )}
 
         {/* Feed */}
-        <FlashList
+        <FlatList
           data={items}
           renderItem={renderItem}
-          estimatedItemSize={200}
           keyExtractor={(item) => item.id}
           ListEmptyComponent={renderEmpty}
           showsVerticalScrollIndicator={false}
@@ -78,7 +80,7 @@ export default function MeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create((theme) => ({
   safeArea: {
     flex: 1,
     backgroundColor: theme.colors.background,
@@ -97,15 +99,15 @@ const styles = StyleSheet.create({
   },
   backButton: {
     fontSize: 28,
-    color: theme.colors.text,
+    color: theme.colors.textPrimary,
   },
   settingsButton: {
     fontSize: 24,
-    color: theme.colors.text,
+    color: theme.colors.textPrimary,
   },
   title: {
     ...theme.typography.heading,
-    color: theme.colors.text,
+    color: theme.colors.textPrimary,
   },
   profileSection: {
     paddingHorizontal: theme.spacing.lg,
@@ -116,7 +118,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     ...theme.typography.title,
-    color: theme.colors.text,
+    color: theme.colors.textPrimary,
     marginBottom: theme.spacing.sm,
   },
   postCount: {
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
   },
   emptyTitle: {
     ...theme.typography.heading,
-    color: theme.colors.text,
+    color: theme.colors.textPrimary,
     marginBottom: theme.spacing.sm,
   },
   emptyText: {
@@ -144,4 +146,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 24,
   },
-});
+}));

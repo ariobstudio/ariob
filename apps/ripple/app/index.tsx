@@ -498,7 +498,8 @@ export default function Index() {
         openCreationNode();
       }
     } else if (item.type === 'auth') {
-      router.push('/import-keys');
+      // TODO: Create import-keys route
+      router.push('/onboarding' as any);
     } else {
       router.push(`/thread/${item.id}`);
     }

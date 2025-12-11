@@ -27,7 +27,7 @@
  */
 
 import { useCallback, useState } from 'react';
-import type { UseRippleAIOptions, UseRippleAIResult } from '../types';
+import type { UseRippleAIOptions, UseRippleAIResult, Message, MessageRole } from '../types';
 import { useAISettings, type RippleAIProfile } from '../store';
 
 /**
@@ -85,7 +85,7 @@ export function useRippleAI(options: UseRippleAIOptions = {}): UseRippleAIResult
   // State for fallback mode
   const [response, setResponse] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [messageHistory, setMessageHistory] = useState<Array<{ role: string; content: string }>>([]);
+  const [messageHistory, setMessageHistory] = useState<Message[]>([]);
 
   // Simulated send message - provides canned responses
   const sendMessage = useCallback(
@@ -93,7 +93,7 @@ export function useRippleAI(options: UseRippleAIOptions = {}): UseRippleAIResult
       setIsGenerating(true);
 
       // Add user message to history
-      setMessageHistory(prev => [...prev, { role: 'user', content: message }]);
+      setMessageHistory(prev => [...prev, { role: 'user' as MessageRole, content: message }]);
 
       // Simulate thinking delay
       await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 700));
@@ -119,7 +119,7 @@ export function useRippleAI(options: UseRippleAIOptions = {}): UseRippleAIResult
       }
 
       setResponse(aiResponse);
-      setMessageHistory(prev => [...prev, { role: 'assistant', content: aiResponse }]);
+      setMessageHistory(prev => [...prev, { role: 'assistant' as MessageRole, content: aiResponse }]);
       setIsGenerating(false);
     },
     []
