@@ -1,7 +1,7 @@
 /** Toast - Main component with composable sub-components */
 
-import { useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { useEffect, useRef, useMemo } from 'react';
+import { PanResponder, type GestureResponderEvent, type PanResponderGestureState } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -11,7 +11,6 @@ import Animated, {
   SlideInUp,
   SlideOutUp,
 } from 'react-native-reanimated';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 import type { ToastConfig } from './context';
 import { toastStyles, type ToastVariant } from './styles';
@@ -93,30 +92,44 @@ export function ToastItem({
     };
   }, [config.duration, onDismiss]);
 
-  // Swipe-to-dismiss gesture - uses worklets for 60fps performance
-  const panGesture = Gesture.Pan()
-    .onUpdate((e) => {
-      'worklet';
-      translateX.value = e.translationX;
-    })
-    .onEnd((e) => {
-      'worklet';
-      if (Math.abs(e.translationX) > DISMISS_THRESHOLD) {
-        translateX.value = withTiming(
-          e.translationX > 0 ? 400 : -400,
-          { duration: 200 },
-          (finished) => {
-            'worklet';
-            // Only call dismiss if animation completed (not interrupted)
-            if (finished) {
-              runOnJS(onDismiss)();
-            }
+  // Stable ref for onDismiss to avoid recreating PanResponder
+  const onDismissRef = useRef(onDismiss);
+  onDismissRef.current = onDismiss;
+
+  // Swipe-to-dismiss using PanResponder (avoids gesture-handler compatibility issues)
+  const panResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onMoveShouldSetPanResponder: (_, gestureState) =>
+          Math.abs(gestureState.dx) > 5,
+        onPanResponderMove: (
+          _: GestureResponderEvent,
+          gestureState: PanResponderGestureState
+        ) => {
+          translateX.value = gestureState.dx;
+        },
+        onPanResponderRelease: (
+          _: GestureResponderEvent,
+          gestureState: PanResponderGestureState
+        ) => {
+          if (Math.abs(gestureState.dx) > DISMISS_THRESHOLD) {
+            translateX.value = withTiming(
+              gestureState.dx > 0 ? 400 : -400,
+              { duration: 200 },
+              (finished) => {
+                if (finished) {
+                  runOnJS(onDismissRef.current)();
+                }
+              }
+            );
+          } else {
+            translateX.value = withSpring(0, spring.snappy);
           }
-        );
-      } else {
-        translateX.value = withSpring(0, spring.snappy);
-      }
-    });
+        },
+      }),
+    []
+  );
 
   // Animate all stack-related properties for smooth transitions
   const animatedStyle = useAnimatedStyle(() => {
@@ -143,30 +156,29 @@ export function ToastItem({
   };
 
   return (
-    <GestureDetector gesture={panGesture}>
-      <Animated.View
-        style={[
-          toastStyles.wrapper,
-          { zIndex: index + 1 },
-          animatedStyle,
-        ]}
-        entering={SlideInUp.duration(250)}
-        exiting={SlideOutUp.duration(150)}
-        onLayout={(e) => onMeasure(config.id, e.nativeEvent.layout.height)}
-      >
-        <Parts.Root variant={config.variant} onDismiss={config.dismissible ? onDismiss : undefined}>
-          <Parts.Icon name={config.icon} />
-          <Parts.Content>
-            <Parts.Label>{config.title}</Parts.Label>
-            {config.description && <Parts.Description>{config.description}</Parts.Description>}
-          </Parts.Content>
-          {config.action && (
-            <Parts.Action onPress={handleAction}>{config.action.label}</Parts.Action>
-          )}
-          {config.dismissible && <Parts.Close />}
-        </Parts.Root>
-      </Animated.View>
-    </GestureDetector>
+    <Animated.View
+      {...panResponder.panHandlers}
+      style={[
+        toastStyles.wrapper,
+        { zIndex: index + 1 },
+        animatedStyle,
+      ]}
+      entering={SlideInUp.duration(250)}
+      exiting={SlideOutUp.duration(150)}
+      onLayout={(e) => onMeasure(config.id, e.nativeEvent.layout.height)}
+    >
+      <Parts.Root variant={config.variant} onDismiss={config.dismissible ? onDismiss : undefined}>
+        <Parts.Icon name={config.icon} />
+        <Parts.Content>
+          <Parts.Label>{config.title}</Parts.Label>
+          {config.description && <Parts.Description>{config.description}</Parts.Description>}
+        </Parts.Content>
+        {config.action && (
+          <Parts.Action onPress={handleAction}>{config.action.label}</Parts.Action>
+        )}
+        {config.dismissible && <Parts.Close />}
+      </Parts.Root>
+    </Animated.View>
   );
 }
 

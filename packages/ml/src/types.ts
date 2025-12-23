@@ -9,6 +9,7 @@ export type MessageRole = 'system' | 'user' | 'assistant';
 
 /**
  * A single message in a conversation
+ * Compatible with react-native-executorch Message type
  */
 export interface Message {
   role: MessageRole;
@@ -16,53 +17,23 @@ export interface Message {
 }
 
 /**
- * Configuration options for LLM generation
- */
-export interface LLMConfig {
-  /** System prompt to set the AI personality */
-  systemPrompt?: string;
-  /** Maximum tokens to generate (default: 256) */
-  maxTokens?: number;
-  /** Temperature for randomness (0-2, default: 0.7) */
-  temperature?: number;
-}
-
-/**
- * Model source configuration
+ * Model source configuration for ExecuTorch
  */
 export interface ModelSource {
-  /** Path to the .pte model file */
+  /** Unique identifier */
+  id: string;
+  /** Display name */
+  name: string;
+  /** Short description */
+  description: string;
+  /** RAM requirement string for display */
+  ramRequired: string;
+  /** URL to the .pte model file */
   modelSource: string;
-  /** Path to the tokenizer.json file */
+  /** URL to the tokenizer.json file */
   tokenizerSource: string;
-  /** Path to the tokenizer_config.json file */
+  /** URL to the tokenizer_config.json file (optional for some models) */
   tokenizerConfigSource?: string;
-}
-
-/**
- * Return type for the useLLM hook
- */
-export interface UseLLMResult {
-  /** The generated response (updates per token during streaming) */
-  response: string;
-  /** Whether the model is loaded and ready */
-  isReady: boolean;
-  /** Whether the model is currently generating a response */
-  isGenerating: boolean;
-  /** Model download progress (0-1) */
-  downloadProgress: number;
-  /** Error message if something went wrong */
-  error: string | null;
-  /** Generate a response from messages */
-  generate: (messages: Message[]) => Promise<void>;
-  /** Send a user message in managed mode */
-  sendMessage: (message: string) => Promise<void>;
-  /** Stop generation */
-  interrupt: () => void;
-  /** Conversation history in managed mode */
-  messageHistory: Message[];
-  /** Configure generation settings */
-  configure: (config: LLMConfig) => void;
 }
 
 /**
@@ -73,6 +44,8 @@ export interface UseRippleAIOptions {
   model?: ModelSource;
   /** Override the system prompt */
   systemPrompt?: string;
+  /** Prevent automatic model loading */
+  preventLoad?: boolean;
 }
 
 /**
@@ -87,8 +60,6 @@ export interface UseRippleAIResult {
   isGenerating: boolean;
   /** Model download progress (0-1) */
   downloadProgress: number;
-  /** Whether the model is currently downloading */
-  isDownloading: boolean;
   /** Error message if something went wrong */
   error: string | null;
   /** Send a message to Ripple AI */
@@ -97,4 +68,16 @@ export interface UseRippleAIResult {
   interrupt: () => void;
   /** Full conversation history */
   messageHistory: Message[];
+}
+
+/**
+ * AI Profile settings stored in the settings store
+ */
+export interface AIProfile {
+  /** Display name for the AI */
+  name: string;
+  /** Selected model ID */
+  modelId: string;
+  /** Custom system prompt (null = use default) */
+  systemPrompt: string | null;
 }

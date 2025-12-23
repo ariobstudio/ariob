@@ -44,6 +44,12 @@ interface NodeProps {
   onSelectModel?: (modelId: string) => void;
   /** Shared element transition tag for navigation */
   transitionTag?: string;
+  /**
+   * Inverted mode for chat-like feeds
+   * When true, timeline flows upward (dot at bottom, line up)
+   * Use with FlatList inverted={true}
+   */
+  inverted?: boolean;
 }
 
 /**
@@ -66,7 +72,7 @@ const getDotColor = (type: NodeType, author: string, colors: RipplePalette): str
   }
 };
 
-export const Node = ({ data, isLast, onPress, onAvatarPress, onSync, isThinking, onReplyPress, onAnchor, onSelectModel, transitionTag }: NodeProps) => {
+export const NodeView = ({ data, isLast, onPress, onAvatarPress, onSync, isThinking, onReplyPress, onAnchor, onSelectModel, transitionTag, inverted = false }: NodeProps) => {
   const { theme } = useUnistyles();
 
   const dotColor = getDotColor(data.type, data.author, theme.colors);
@@ -126,11 +132,24 @@ export const Node = ({ data, isLast, onPress, onAvatarPress, onSync, isThinking,
       entering={FadeIn.duration(300)}
       layout={Layout.springify()}
     >
-      {/* Left Column */}
+      {/* Left Column - Timeline
+          Normal: Line top → Dot → Line bottom (flows down)
+          Inverted: Line bottom → Dot → Line top (flows up, for chat-like feeds)
+      */}
       <View style={styles.leftColumn}>
-        <Line visible={true} style={{ height: 25, flex: 0 }} />
-        <Dot color={dotColor} />
-        <Line visible={!isLast} style={{ flex: 1 }} />
+        {inverted ? (
+          <>
+            <Line visible={!isLast} style={{ flex: 1 }} />
+            <Dot color={dotColor} />
+            <Line visible={true} style={{ height: 25, flex: 0 }} />
+          </>
+        ) : (
+          <>
+            <Line visible={true} style={{ height: 25, flex: 0 }} />
+            <Dot color={dotColor} />
+            <Line visible={!isLast} style={{ flex: 1 }} />
+          </>
+        )}
       </View>
 
       {/* Right Column */}

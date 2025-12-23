@@ -1,505 +1,384 @@
-# Menu System
+# Bar System
 
-Action system with `make` helper, Bar, and Context menu.
+Stack-based action bar with smooth morphing animations.
 
 ---
 
 ## Overview
 
-The menu system provides:
-- **`make` helper** - UNIX-style factory for creating actions
-- **ActionsProvider** - Context for actions configuration
-- **Bar** - Floating action bar with contextual actions
-- **Context** - Long-press context menu
+The Bar is a **global singleton** that maintains a stack of frames. Each frame can be:
+- **Action**: Compact pill with action buttons
+- **Input**: Full-width text input
+- **Sheet**: Expanded interface for sheets
+
+Screens configure the bar via `useBar()` hook and `useFocusEffect`.
 
 ---
 
-## make Helper
-
-Factory function for creating consistent action definitions.
-
-### Import
-
-```typescript
-import { make, type Def } from '@ariob/ripple';
-```
-
-### API
-
-```typescript
-make(name: string, options: Def): Action
-
-interface Def {
-  icon: string;       // Ionicons name
-  label: string;      // Display label
-  sub?: SubAction[];  // Optional submenu
-}
-
-interface SubAction {
-  name: string;
-  icon: string;
-  label: string;
-}
-```
-
-### Examples
-
-```typescript
-// Simple action
-const post = make('post', { icon: 'add', label: 'Post' });
-// Result: { name: 'post', icon: 'add', label: 'Post' }
-
-// Action with submenu
-const config = make('config', {
-  icon: 'settings',
-  label: 'Settings',
-  sub: [
-    { name: 'profile', icon: 'person', label: 'Profile' },
-    { name: 'theme', icon: 'color-palette', label: 'Theme' },
-    { name: 'keys', icon: 'key', label: 'Keys' },
-  ],
-});
-
-// Build action records
-const actions = {
-  post: make('post', { icon: 'add', label: 'Post' }),
-  reply: make('reply', { icon: 'arrow-undo', label: 'Reply' }),
-  save: make('save', { icon: 'bookmark-outline', label: 'Save' }),
-  share: make('share', { icon: 'share-outline', label: 'Share' }),
-  report: make('report', { icon: 'flag-outline', label: 'Report' }),
-  block: make('block', { icon: 'ban', label: 'Block' }),
-};
-```
-
----
-
-## ActionsProvider
-
-Context provider for the action system.
-
-### Import
-
-```typescript
-import { ActionsProvider, type ActionsConfig } from '@ariob/ripple';
-```
-
-### Props
-
-| Prop | Type | Description |
-|------|------|-------------|
-| `config` | `ActionsConfig` | Full actions configuration |
-| `children` | `ReactNode` | App content |
-
-### ActionsConfig Type
-
-```typescript
-interface ActionsConfig {
-  actions: Record<string, Action>;
-  feedConfig: FeedConfigs;
-  nodeMenus: NodeMenus;
-  onAction: (action: string, context: ActionContext) => void;
-}
-
-interface ActionContext {
-  node?: { id: string; type: string };
-  degree?: number;
-  mode?: 'feed' | 'detail' | 'full';
-}
-```
-
-### Example
-
-```typescript
-import { ActionsProvider, make, createFeedConfigs, createNodeMenus } from '@ariob/ripple';
-
-const config: ActionsConfig = {
-  actions: {
-    post: make('post', { icon: 'add', label: 'Post' }),
-    reply: make('reply', { icon: 'arrow-undo', label: 'Reply' }),
-    // ...
-  },
-
-  feedConfig: createFeedConfigs({
-    0: { main: 'post', left: 'config', right: 'more' },
-    1: { main: 'post', right: 'find' },
-    2: { main: 'post', left: 'trend' },
-  }),
-
-  nodeMenus: createNodeMenus({
-    post: { quick: ['reply', 'save'], detail: ['reply'], opts: ['report'] },
-    message: { quick: ['reply'], detail: ['reply'], opts: ['delete'] },
-  }),
-
-  onAction: (action, context) => {
-    console.log('Action:', action, 'Context:', context);
-    // Handle the action
-  },
-};
-
-function App() {
-  return (
-    <ActionsProvider config={config}>
-      <YourApp />
-    </ActionsProvider>
-  );
-}
-```
-
----
-
-## createFeedConfigs
-
-Helper for creating degree-specific feed configurations.
-
-### Import
-
-```typescript
-import { createFeedConfigs } from '@ariob/ripple';
-```
-
-### API
-
-```typescript
-createFeedConfigs(configs: Record<number, FeedConfig>): FeedConfigs
-
-interface FeedConfig {
-  main?: string;                // Primary action (center)
-  mainUnauthenticated?: string; // When not logged in
-  left?: string;                // Left action
-  right?: string;               // Right action
-}
-```
-
-### Example
-
-```typescript
-const feedConfig = createFeedConfigs({
-  0: {
-    main: 'post',
-    mainUnauthenticated: 'create-account',
-    left: 'config',
-    right: 'more',
-  },
-  1: {
-    main: 'post',
-    left: 'dm',
-    right: 'find',
-  },
-  2: {
-    main: 'post',
-    left: 'trend',
-    right: 'search',
-  },
-  3: {
-    main: 'discover',
-    right: 'filter',
-  },
-  4: {
-    main: 'post',
-  },
-});
-```
-
----
-
-## createNodeMenus
-
-Helper for creating node type-specific menus.
-
-### Import
-
-```typescript
-import { createNodeMenus } from '@ariob/ripple';
-```
-
-### API
-
-```typescript
-createNodeMenus(configs: Record<string, NodeMenuConfig>): NodeMenus
-
-interface NodeMenuConfig {
-  quick?: string[];   // Quick action icons (swipe)
-  detail?: string[];  // Detail view actions
-  opts?: string[];    // Options menu actions
-}
-```
-
-### Example
-
-```typescript
-const nodeMenus = createNodeMenus({
-  post: {
-    quick: ['reply', 'save', 'share'],
-    detail: ['reply', 'quote'],
-    opts: ['report', 'block', 'mute'],
-  },
-  message: {
-    quick: ['reply', 'forward'],
-    detail: ['reply'],
-    opts: ['delete', 'archive'],
-  },
-  profile: {
-    quick: ['message', 'follow'],
-    detail: ['message'],
-    opts: ['block', 'report'],
-  },
-});
-```
-
----
-
-## Bar
-
-Floating action bar component.
-
-### Import
+## Quick Start
 
 ```typescript
 import { Bar, useBar } from '@ariob/ripple';
-```
+import { useFocusEffect } from 'expo-router';
 
-### Rendering
+// In _layout.tsx - render Bar once
+function RootLayout() {
+  return (
+    <>
+      <Stack screenOptions={{ headerShown: false }} />
+      <Bar />
+    </>
+  );
+}
 
-```typescript
-// Add to your layout (usually root)
-<ActionsProvider config={config}>
-  <Stack />
-  <Bar />
-</ActionsProvider>
-```
-
-### useBar Hook
-
-Control the bar programmatically:
-
-```typescript
-const bar = useBar();
-
-// Switch modes
-bar.setMode('actions');  // Default action buttons
-bar.setMode('input');    // Text input mode
-bar.setMode('hidden');   // Hide the bar
-
-// Configure bar
-bar.configure({
-  mode: 'input',
-  persistInputMode: true,
-  placeholder: 'Type a message...',
-  inputLeft: { name: 'attach', icon: 'attach', label: 'Attach' },
-  center: null,
-  left: null,
-  right: null,
-});
-
-// Set callbacks
-bar.setCallbacks({
-  onSubmit: (text) => sendMessage(text),
-  onCancel: () => bar.setMode('actions'),
-});
-
-// Get current value (input mode)
-const inputValue = bar.getValue();
-
-// Reset to feed config
-bar.resetToFeed(currentDegree);
-```
-
-### Bar Modes
-
-| Mode | Description |
-|------|-------------|
-| `actions` | Shows action buttons (main, left, right) |
-| `input` | Shows text input with submit |
-| `hidden` | Hides the bar |
-
-### Example: Chat Input
-
-```typescript
-function ChatScreen() {
+// In screens - configure bar on focus
+function FeedScreen() {
   const bar = useBar();
 
   useFocusEffect(
     useCallback(() => {
-      bar.configure({
-        mode: 'input',
-        persistInputMode: true,
-        placeholder: 'Type a message...',
-        inputLeft: { name: 'attach', icon: 'attach', label: 'Attach' },
+      bar.setActions({
+        primary: { icon: 'add', onPress: handleCompose },
+        trailing: [{ icon: 'search', onPress: handleSearch }],
       });
-
-      bar.setCallbacks({
-        onSubmit: handleSend,
-        onCancel: () => {},
-      });
-
-      return () => {
-        bar.configure({ persistInputMode: false });
-        bar.setMode('actions');
-      };
-    }, [])
+    }, [bar.setActions])
   );
 
-  // ...
+  return <FeedList />;
 }
 ```
 
 ---
 
-## Context
+## useBar Hook
 
-Long-press context menu.
+Control the bar programmatically.
 
 ### Import
 
 ```typescript
-import { Context } from '@ariob/ripple';
+import { useBar } from '@ariob/ripple';
 ```
 
-### Rendering
+### API
 
 ```typescript
-// Add to your layout
-<ActionsProvider config={config}>
-  <Stack />
-  <Bar />
-  <Context />
-</ActionsProvider>
+const bar = useBar();
+
+interface BarActions {
+  // Stack operations
+  push: (frame: BarFrame) => void;
+  pop: () => void;
+  replace: (frame: BarFrame) => void;
+  reset: () => void;
+
+  // Quick helpers
+  setActions: (actions: FrameActions) => void;
+  openInput: (config?: InputConfig) => void;
+  openSheet: (content: ReactNode, options?: SheetOptions) => void;
+
+  // Input state
+  setInputValue: (value: string) => void;
+  clearInputValue: () => void;
+}
 ```
 
-The Context menu appears automatically when users long-press on content wrapped in a `Shell` component.
-
----
-
-## Action Hooks
-
-### useAction
-
-Get a single action definition:
+### Actions Configuration
 
 ```typescript
-import { useAction } from '@ariob/ripple';
+interface FrameActions {
+  leading?: ActionSlot[];   // Left side buttons
+  primary?: ActionSlot;     // Center primary action
+  trailing?: ActionSlot[];  // Right side buttons
+}
 
-const postAction = useAction('post');
-// { name: 'post', icon: 'add', label: 'Post' }
-```
-
-### useFeedConfig
-
-Get feed config for a degree:
-
-```typescript
-import { useFeedConfig } from '@ariob/ripple';
-
-const config = useFeedConfig(1); // Degree 1 (Friends)
-// { main: 'post', left: 'dm', right: 'find' }
-```
-
-### useNodeMenu
-
-Get menu for a node type:
-
-```typescript
-import { useNodeMenu } from '@ariob/ripple';
-
-const menu = useNodeMenu('post');
-// { quick: ['reply', 'save'], detail: ['reply'], opts: ['report'] }
+interface ActionSlot {
+  icon: string;            // Ionicons name
+  onPress: () => void;     // Press handler
+  label?: string;          // Optional text label
+}
 ```
 
 ---
 
-## Action Flow
+## Usage Patterns
 
-1. **User triggers action** (tap button, swipe, long-press)
-2. **Action name resolved** from config
-3. **`onAction` callback** called with action name and context
-4. **Your handler** performs the actual operation
+### Screen-Specific Actions
+
+Use `useFocusEffect` to set bar actions when a screen gains focus:
 
 ```typescript
-const onAction = (action: string, context: ActionContext) => {
-  switch (action) {
-    case 'post':
-      router.push('/compose');
-      break;
+function ProfileScreen() {
+  const bar = useBar();
 
-    case 'reply':
-      if (context.node) {
-        router.push(`/thread/${context.node.id}`);
-      }
-      break;
+  const handleBack = useCallback(() => router.back(), []);
+  const handleEdit = useCallback(() => console.log('Edit'), []);
 
-    case 'save':
-      if (context.node) {
-        saveNode(context.node.id);
-        toast.success('Saved!');
-      }
-      break;
+  useFocusEffect(
+    useCallback(() => {
+      bar.setActions({
+        leading: [{ icon: 'arrow-back', onPress: handleBack }],
+        primary: { icon: 'pencil', onPress: handleEdit },
+      });
+    }, [bar.setActions, handleBack, handleEdit])
+  );
 
-    case 'profile':
-      router.push('/profile');
-      break;
+  return <ProfileContent />;
+}
+```
 
-    case 'report':
-      if (context.node) {
-        openReportSheet(context.node);
-      }
-      break;
+### Opening Sheets
 
-    default:
-      console.log('Unhandled action:', action);
-  }
-};
+```typescript
+function FeedScreen() {
+  const bar = useBar();
+
+  const openCompose = useCallback(() => {
+    bar.openSheet(
+      <ComposeSheet onClose={() => bar.pop()} />
+    );
+  }, [bar]);
+
+  useFocusEffect(
+    useCallback(() => {
+      bar.setActions({
+        primary: { icon: 'add', onPress: openCompose },
+      });
+    }, [bar.setActions, openCompose])
+  );
+}
+```
+
+### Opening Input Mode
+
+```typescript
+function SearchScreen() {
+  const bar = useBar();
+
+  useFocusEffect(
+    useCallback(() => {
+      bar.openInput({
+        placeholder: 'Search...',
+        autoFocus: true,
+        onSubmit: (text) => {
+          search(text);
+          bar.pop();
+        },
+      });
+    }, [bar.openInput])
+  );
+}
+```
+
+---
+
+## Stack Operations
+
+The bar uses a stack for navigation history:
+
+| Method | Description |
+|--------|-------------|
+| `push(frame)` | Add frame to stack |
+| `pop()` | Remove current frame, go back |
+| `replace(frame)` | Replace current frame |
+| `reset()` | Clear to base frame only |
+
+```typescript
+// Push a new frame
+bar.push({
+  id: 'custom-frame',
+  mode: 'action',
+  actions: { primary: { icon: 'close', onPress: bar.pop } },
+  canDismiss: true,
+});
+
+// Go back
+bar.pop();
+
+// Reset to initial state
+bar.reset();
+```
+
+---
+
+## Frame Types
+
+### Action Frame
+
+Default mode with action buttons.
+
+```typescript
+{
+  id: 'feed-actions',
+  mode: 'action',
+  actions: {
+    leading: [{ icon: 'menu', onPress: openMenu }],
+    primary: { icon: 'add', onPress: openCompose },
+    trailing: [{ icon: 'search', onPress: openSearch }],
+  },
+}
+```
+
+### Input Frame
+
+Text input mode for search, compose, etc.
+
+```typescript
+{
+  id: 'search-input',
+  mode: 'input',
+  input: {
+    placeholder: 'Search...',
+    autoFocus: true,
+    showSendButton: true,
+    onSubmit: (text) => handleSearch(text),
+  },
+  canDismiss: true,
+}
+```
+
+### Sheet Frame
+
+Expanded sheet for complex UIs.
+
+```typescript
+{
+  id: 'compose-sheet',
+  mode: 'sheet',
+  sheet: {
+    content: <ComposeSheet />,
+    height: 'auto',
+  },
+  canDismiss: true,
+}
+```
+
+---
+
+## Bar Component
+
+Render once in your root layout.
+
+### Import
+
+```typescript
+import { Bar } from '@ariob/ripple';
+```
+
+### Usage
+
+```typescript
+// app/_layout.tsx
+import { Bar } from '@ariob/ripple';
+
+export default function RootLayout() {
+  return (
+    <View style={{ flex: 1 }}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="profile/[id]" />
+      </Stack>
+      <Bar />
+    </View>
+  );
+}
+```
+
+---
+
+## Creating Sheets
+
+Sheets are React components that receive close handler via `bar.pop()`.
+
+```typescript
+interface ComposeSheetProps {
+  onClose: () => void;
+}
+
+function ComposeSheet({ onClose }: ComposeSheetProps) {
+  const [content, setContent] = useState('');
+
+  const handleSubmit = async () => {
+    await createPost(content);
+    onClose();
+  };
+
+  return (
+    <Stack gap="md" style={styles.container}>
+      <Text size="title">New Post</Text>
+      <TextInput
+        value={content}
+        onChangeText={setContent}
+        placeholder="What's on your mind?"
+        multiline
+      />
+      <Row gap="sm">
+        <Button onPress={onClose} variant="ghost">Cancel</Button>
+        <Button onPress={handleSubmit}>Post</Button>
+      </Row>
+    </Stack>
+  );
+}
 ```
 
 ---
 
 ## Best Practices
 
-### Action Naming
-
-Use consistent, descriptive names:
+### 1. Use useFocusEffect, Not useEffect
 
 ```typescript
-// ✅ Good names
-make('post', ...)
-make('reply', ...)
-make('save', ...)
-make('share', ...)
+// Good: Resets bar when navigating back
+useFocusEffect(
+  useCallback(() => {
+    bar.setActions({ ... });
+  }, [bar.setActions])
+);
 
-// ❌ Avoid abbreviations
-make('pst', ...)
-make('rply', ...)
+// Bad: Only runs on mount
+useEffect(() => {
+  bar.setActions({ ... });
+}, []);
 ```
 
-### Memoize Config
-
-Memoize the config to prevent unnecessary re-renders:
+### 2. Stable Dependencies
 
 ```typescript
-const actionsConfig = useMemo<ActionsConfig>(() => ({
-  actions,
-  feedConfig,
-  nodeMenus,
-  onAction: handleAction,
-}), []);
+// Good: Use bar.setActions in dependencies (stable reference)
+useFocusEffect(
+  useCallback(() => {
+    bar.setActions({ primary: { icon: 'add', onPress: handleAdd } });
+  }, [bar.setActions, handleAdd])
+);
+
+// Bad: Using bar object causes infinite loop
+useFocusEffect(
+  useCallback(() => {
+    bar.setActions({ ... });
+  }, [bar])  // Don't do this!
+);
 ```
 
-### Handle All Actions
-
-Ensure your handler covers all defined actions:
+### 3. Keep Refs for Callbacks
 
 ```typescript
-const onAction = (action, context) => {
-  const handlers: Record<string, () => void> = {
-    post: () => router.push('/compose'),
-    reply: () => context.node && router.push(`/thread/${context.node.id}`),
-    // ... all actions
-  };
+// For callbacks that change frequently
+const openSheetRef = useRef(openSheet);
+openSheetRef.current = openSheet;
 
-  const handler = handlers[action];
-  if (handler) {
-    handler();
-  } else {
-    console.warn('Unhandled action:', action);
-  }
-};
+useFocusEffect(
+  useCallback(() => {
+    bar.setActions({
+      primary: { icon: 'add', onPress: () => openSheetRef.current() },
+    });
+  }, [bar.setActions])
+);
 ```
+
+---
+
+## Related Documentation
+
+- [Hooks](./HOOKS.md) - useBar and other hooks
+- [Architecture](./ARCHITECTURE.md) - Design patterns
+- [Primitives](./PRIMITIVES.md) - Shell, Avatar, etc.

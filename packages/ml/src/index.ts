@@ -28,11 +28,10 @@
 export type {
   Message,
   MessageRole,
-  LLMConfig,
   ModelSource,
-  UseLLMResult,
   UseRippleAIOptions,
   UseRippleAIResult,
+  AIProfile,
 } from './types';
 
 // Model configurations
@@ -40,20 +39,16 @@ export {
   LLAMA3_2_1B,
   SMOLLM_135M,
   QWEN_0_5B,
-  DEFAULT_RIPPLE_MODEL,
+  DEFAULT_MODEL,
+  MODELS,
+  MODEL_OPTIONS,
 } from './models/config';
 
 // AI Settings Store
-export {
-  useAISettings,
-  aiSettingsStore,
-  MODEL_OPTIONS,
-} from './store';
-export type { RippleAIProfile, ModelOptionId } from './store';
+export { useAISettings, aiSettingsStore } from './store';
 
 // Hooks
 export { useRippleAI } from './hooks/useRippleAI';
-export type { UseRippleAIResultWithProfile } from './hooks/useRippleAI';
 
 // Re-export useLLM from executorch if available (for advanced usage)
 export function getExecutorchModule() {

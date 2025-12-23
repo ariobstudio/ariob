@@ -114,6 +114,7 @@ export {
   IconButton,
   InputField,
   Tag,
+  Dropdown,
   styles as moleculeStyles,
   type AvatarProps,
   type AvatarSize,
@@ -124,6 +125,8 @@ export {
   type InputFieldProps,
   type TagProps,
   type TagTint,
+  type DropdownProps,
+  type DropdownOption,
 } from './molecules';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -178,3 +181,16 @@ export {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export * from './motions';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Nodes - Social OS node renderers
+// ─────────────────────────────────────────────────────────────────────────────
+
+export {
+  ProfileCard,
+  AICard,
+  NodeRenderer,
+  type ProfileCardProps,
+  type AICardProps,
+  type NodeRendererProps,
+} from './nodes';

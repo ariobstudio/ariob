@@ -35,3 +35,4 @@ export { Avatar } from './Avatar';
 export { IconButton } from './IconButton';
 export { InputField } from './InputField';
 export { Tag } from './Tag';
+export { Dropdown, type DropdownProps, type DropdownOption } from './Dropdown';

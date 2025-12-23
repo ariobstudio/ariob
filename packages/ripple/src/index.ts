@@ -4,8 +4,8 @@
  * Small, composable, single-purpose modules following UNIX philosophy.
  *
  * ## Structure
- * - **Nodes** - Content type components (Post, Message, Profile, Auth, etc.)
- * - **Menu** - Action system with make helper, Bar, Context menu
+ * - **Nodes** - Co-located content modules (Profile, AI, Post, Message, etc.)
+ * - **Menu** - Bar and Context menu components
  * - **Components** - Shared components (Node renderer, Header, Footer)
  * - **Primitives** - Base primitives (Shell)
  * - **Gestures** - Gesture handlers (hold, tap, swipe)
@@ -15,50 +15,128 @@
  *
  * ## Usage
  * ```tsx
- * import { make, Bar, Context, Post, Shell } from '@ariob/ripple';
+ * // Import nodes (auto-registers their actions)
+ * import { Profile, Post, Message, registry } from '@ariob/ripple';
  *
- * // Create actions using make helper
- * const actions = {
- *   post: make('post', { icon: 'add', label: 'Post' }),
- *   reply: make('reply', { icon: 'arrow-undo', label: 'Reply' }),
- * };
+ * // Execute an action
+ * const result = await registry.execute('edit', context);
  * ```
  */
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Menu System (Actions, Bar, Context)
+// Nodes (Co-located Content Modules)
+// Auto-registers actions on import
+// ─────────────────────────────────────────────────────────────────────────────
+
+export {
+  // Profile
+  Profile,
+  type ProfileData,
+  ProfileNodeSchema,
+  type ProfileNode,
+  isProfileNode,
+  PROFILE_ACTIONS,
+  profileActions,
+  profileStyles,
+  // AI
+  AI,
+  AIModel,
+  type AIModelData,
+  type ModelOption,
+  AINodeSchema,
+  type AINode,
+  isAINode,
+  AI_ACTIONS,
+  TopicSchema,
+  type Topic,
+  AIThreadSchema,
+  type AIThread,
+  aiActions,
+  aiStyles,
+  // Post
+  Post,
+  type PostData,
+  PostSchema,
+  type Post as PostNode,
+  isPost,
+  createPost,
+  POST_ACTIONS,
+  postActions,
+  postStyles,
+  // Message
+  Message,
+  type MessageData,
+  MessageSchema,
+  type Message as MessageNode,
+  isMessage,
+  createMessage,
+  MESSAGE_ACTIONS,
+  ThreadMetadataSchema,
+  type ThreadMetadata,
+  isThread,
+  createThreadId,
+  messageActions,
+  messageStyles,
+  // Simple nodes
+  Ghost,
+  type GhostData,
+  Sync,
+  type SyncData,
+  Suggestion,
+  type SuggestionData,
+  Auth,
+  type AuthData,
+  // Shared infrastructure
+  DegreeEnum,
+  VariantEnum,
+  NodeMeta,
+  BaseNode,
+  defaults,
+  type Degree,
+  type Variant,
+  // Action system
+  CategoryEnum,
+  ActionVariantEnum,
+  ActionMeta,
+  RegistryContext,
+  ActionResult,
+  success,
+  error,
+  pending,
+  type Category,
+  type ActionVariant,
+  // Registry
+  registry,
+  action,
+  define,
+  type ActionHandler,
+  type RegisteredAction,
+  // Styles
+  styles as nodeStyles,
+} from './nodes';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Protocols (Extensibility Interfaces)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export * from './protocols';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Menu System (Bar, Context)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export * from './menu';
 
-// Re-export make helper at top level for convenience
+// Legacy make helper (for backward compatibility)
 export { make, type Def } from './menu/make';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Nodes (Content Types)
-// ─────────────────────────────────────────────────────────────────────────────
-
-// Export nodes explicitly to avoid naming conflicts with schemas
-export { Post, type PostData } from './nodes/post';
-export { Message, type MessageData } from './nodes/message';
-export { Profile, type ProfileData } from './nodes/profile';
-export { Auth, type AuthData } from './nodes/auth';
-export { Sync, type SyncData } from './nodes/sync';
-export { Ghost, type GhostData } from './nodes/ghost';
-export { Suggestion, type SuggestionData } from './nodes/suggestion';
-export { AIModel, type AIModelData } from './nodes/ai-model';
-export { styles as nodeStyles } from './nodes';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Components (Shared)
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Export components explicitly to avoid naming conflicts
-export { Node, type NodeData, type NodeType } from './components/node';
+export { NodeView, NodeView as Node, type NodeData, type NodeType as ComponentNodeType } from './components/node';
 export { Header } from './components/header';
 export { Footer } from './components/footer';
-// Note: Renderer component moved to apps/ripple/components/Renderer.tsx
-// as it contains app-specific business logic (type mapping, data transformation)
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Primitives (Base)
@@ -67,18 +145,28 @@ export { Footer } from './components/footer';
 export * from './primitives';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Gestures (Handlers)
+// Gestures (Handlers) - DISABLED: GestureDetector causes "property is not writable"
+// errors with RN 0.81+. Using native onLongPress in Shell instead.
 // ─────────────────────────────────────────────────────────────────────────────
-
-export * from './gesture';
+// export * from './gesture';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Hooks (React)
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Export hooks explicitly (ViewMode already exported from components)
 export { useFeed, type FeedConfig, type Feed } from './hooks/feed';
 export { useNodeNavigation, getTransitionTag, type NavigateOptions } from './hooks/navigation';
+export {
+  useSearch,
+  useUserSearch,
+  useHashtagSearch,
+  type SearchConfig,
+  type SearchResults,
+  type Search,
+  type SearchType,
+  type UserSearch,
+  type HashtagSearch,
+} from './hooks/search';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Config (Settings)
@@ -93,24 +181,57 @@ export * from './config';
 export * from './styles';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Schemas (Data Types)
+// Schemas (Legacy exports for backward compatibility)
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Export schemas with explicit naming to avoid conflicts with component exports
 export {
-  DegreeEnum,
-  type Degree,
   DEGREES,
-  PostSchema,
-  type Post as PostSchema_Post,  // Renamed to avoid conflict with Post component
-  MessageSchema,
-  type Message as MessageSchema_Message, // Renamed to avoid conflict with Message component
   FeedItemSchema,
-  type FeedItem as FeedItemSchema_FeedItem, // Renamed to avoid conflict with FeedItem interface
+  type FeedItem as FeedItemSchema_FeedItem,
+  UserSearchResultSchema,
+  type UserSearchResult,
+  HashtagRefSchema,
+  type HashtagRef,
+  PublicProfileSchema,
+  type PublicProfile,
+  NodeSchema,
+  type Node as SchemaNode, // Renamed to avoid conflict with component
+  type NodeType,
+  type NodeOfType,
+  nodeGuards,
 } from './schemas';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Search (Decentralized Discovery)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export {
+  searchUsers,
+  searchByHashtag,
+  fetchPostsFromRefs,
+  extractHashtags,
+  extractMentions,
+  indexMyProfile,
+  indexPostHashtags,
+} from './search';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Transitions (Animations)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export * from './transitions';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Node Bar Hook (Schema-Driven Actions for Nodes)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export {
+  useNodeBar,
+  NodeBarProvider,
+  NodeBarContext,
+  useNodeBarContext,
+  useNodeBarContextSafe,
+  type NodeBarConfig,
+  type NodeBarState,
+  type NodeBarProviderProps,
+} from './menu/bar';

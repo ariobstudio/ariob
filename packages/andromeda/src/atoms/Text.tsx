@@ -14,7 +14,8 @@
 
 import { Text as RNText, type TextStyle, type TextProps as RNTextProps } from 'react-native';
 import type { ReactNode } from 'react';
-import { colors, font } from '../tokens';
+import { useUnistyles } from 'react-native-unistyles';
+import { font } from '../tokens';
 
 /**
  * Available typography sizes
@@ -68,20 +69,9 @@ const sizeStyles: Record<TextSize, TextStyle> = {
   },
 };
 
-/** Color styles using tokens */
-const colorStyles: Record<TextColor, TextStyle> = {
-  text: { color: colors.text },
-  dim: { color: colors.dim },
-  faint: { color: colors.faint },
-  accent: { color: colors.accent },
-  success: { color: colors.success },
-  warn: { color: colors.warn },
-  danger: { color: colors.danger },
-};
-
 /**
  * Text atom with predefined typography scales and semantic colors.
- * Uses design tokens - no hardcoded values.
+ * Uses theme-aware colors for dark/light mode support.
  */
 export function Text({
   children,
@@ -90,12 +80,25 @@ export function Text({
   style,
   ...rest
 }: TextProps) {
+  const { theme } = useUnistyles();
+
+  // Map semantic color to theme color
+  const colorMap: Record<TextColor, string> = {
+    text: theme.colors.text,
+    dim: theme.colors.dim,
+    faint: theme.colors.faint,
+    accent: theme.colors.accent,
+    success: theme.colors.success,
+    warn: theme.colors.warn,
+    danger: theme.colors.danger,
+  };
+
   return (
     <RNText
       style={[
         { fontWeight: '500' as const },
         sizeStyles[size],
-        colorStyles[color],
+        { color: colorMap[color] },
         style,
       ]}
       {...rest}

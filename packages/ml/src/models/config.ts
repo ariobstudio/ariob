@@ -3,25 +3,22 @@
  *
  * These configurations point to pre-quantized models optimized
  * for mobile/edge deployment via ExecuTorch.
+ *
+ * Models are served locally from the relay server.
+ * Download models using: packages/relay/download-models.sh
  */
 
 import type { ModelSource } from '../types';
 
 /**
- * LLaMA 3.2 1B Instruct - Best balance of quality and performance
- *
- * Requirements:
- * - ~3.2GB RAM on Android
- * - Recommended for devices with 4GB+ RAM
+ * Base URL for model files
+ * Default: localhost relay server
+ * Override with ML_MODEL_BASE_URL environment variable
  */
-export const LLAMA3_2_1B: ModelSource = {
-  modelSource: 'https://huggingface.co/softwaremill/llama-3.2-1B-executorch/resolve/main/llama-3.2-1B-Instruct.pte',
-  tokenizerSource: 'https://huggingface.co/softwaremill/llama-3.2-1B-executorch/resolve/main/tokenizer.json',
-  tokenizerConfigSource: 'https://huggingface.co/softwaremill/llama-3.2-1B-executorch/resolve/main/tokenizer_config.json',
-};
+const MODEL_BASE_URL = process.env.ML_MODEL_BASE_URL || 'http://localhost:8765/models';
 
 /**
- * SmolLM 135M - Ultra-lightweight model for low-end devices
+ * SmolLM2 135M - Ultra-lightweight model for low-end devices
  *
  * Requirements:
  * - ~500MB RAM
@@ -29,8 +26,13 @@ export const LLAMA3_2_1B: ModelSource = {
  * - Lower quality but very fast
  */
 export const SMOLLM_135M: ModelSource = {
-  modelSource: 'https://huggingface.co/softwaremill/smollm-135M-executorch/resolve/main/smollm-135M.pte',
-  tokenizerSource: 'https://huggingface.co/softwaremill/smollm-135M-executorch/resolve/main/tokenizer.json',
+  id: 'smollm-135m',
+  name: 'SmolLM2 135M',
+  description: 'Ultra-lightweight, works on most devices',
+  ramRequired: '500MB',
+  modelSource: `${MODEL_BASE_URL}/smollm2-135m/model.pte`,
+  tokenizerSource: `${MODEL_BASE_URL}/smollm2-135m/tokenizer.json`,
+  tokenizerConfigSource: `${MODEL_BASE_URL}/smollm2-135m/tokenizer_config.json`,
 };
 
 /**
@@ -41,12 +43,48 @@ export const SMOLLM_135M: ModelSource = {
  * - Good for mid-range devices
  */
 export const QWEN_0_5B: ModelSource = {
-  modelSource: 'https://huggingface.co/softwaremill/qwen-2.5-0.5B-executorch/resolve/main/qwen-2.5-0.5B-Instruct.pte',
-  tokenizerSource: 'https://huggingface.co/softwaremill/qwen-2.5-0.5B-executorch/resolve/main/tokenizer.json',
+  id: 'qwen-0.5b',
+  name: 'Qwen 2.5 0.5B',
+  description: 'Compact but capable, mid-range devices',
+  ramRequired: '1.5GB',
+  modelSource: `${MODEL_BASE_URL}/qwen2.5-0.5b/model.pte`,
+  tokenizerSource: `${MODEL_BASE_URL}/qwen2.5-0.5b/tokenizer.json`,
+  tokenizerConfigSource: `${MODEL_BASE_URL}/qwen2.5-0.5b/tokenizer_config.json`,
 };
 
 /**
- * Default model for Ripple AI companion
- * Using SmolLM for broad device compatibility during development
+ * LLaMA 3.2 1B Instruct - Best balance of quality and performance
+ *
+ * Requirements:
+ * - ~3.2GB RAM on Android
+ * - Recommended for devices with 4GB+ RAM
  */
-export const DEFAULT_RIPPLE_MODEL = SMOLLM_135M;
+export const LLAMA3_2_1B: ModelSource = {
+  id: 'llama-3.2-1b',
+  name: 'LLaMA 3.2 1B',
+  description: 'Best quality, requires 4GB+ RAM',
+  ramRequired: '3.2GB',
+  modelSource: `${MODEL_BASE_URL}/llama3.2-1b/model.pte`,
+  tokenizerSource: `${MODEL_BASE_URL}/llama3.2-1b/tokenizer.json`,
+  tokenizerConfigSource: `${MODEL_BASE_URL}/llama3.2-1b/tokenizer_config.json`,
+};
+
+/**
+ * All available models
+ */
+export const MODELS: Record<string, ModelSource> = {
+  'smollm-135m': SMOLLM_135M,
+  'qwen-0.5b': QWEN_0_5B,
+  'llama-3.2-1b': LLAMA3_2_1B,
+};
+
+/**
+ * Model options for UI selection
+ */
+export const MODEL_OPTIONS = Object.values(MODELS);
+
+/**
+ * Default model for Ripple AI companion
+ * Using SmolLM for broad device compatibility
+ */
+export const DEFAULT_MODEL = SMOLLM_135M;

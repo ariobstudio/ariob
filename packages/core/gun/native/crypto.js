@@ -1,30 +1,13 @@
 /**
- * WebCrypto Bridge - Expo/Web Only
+ * WebCrypto Bridge - Expo/Web
  *
- * Provides WebCrypto API for GUN/SEA in Expo and Web environments.
+ * Provides WebCrypto API for GUN/SEA.
  * - Web: Uses native browser crypto.subtle
  * - Expo: Uses @ariob/webcrypto native module
  */
 
 (() => {
-  /** Check if browser crypto is available */
-  function hasWebCrypto() {
-    try {
-      return typeof globalThis?.crypto?.subtle !== 'undefined';
-    } catch {
-      return false;
-    }
-  }
-
-  /** Check if @ariob/webcrypto is available (Expo) */
-  function hasExpoCrypto() {
-    if (typeof require === 'undefined') return false;
-    try {
-      return require('@ariob/webcrypto') != null;
-    } catch {
-      return false;
-    }
-  }
+  const LOG_PREFIX = '[Crypto]';
 
   /** Add randomBytes shim for SEA compatibility */
   function addRandomBytesShim() {
@@ -37,22 +20,33 @@
     }
   }
 
-  // Initialize crypto bridge
-  if (hasWebCrypto()) {
-    // Web environment - use native crypto
+  // Check if browser crypto is already available
+  if (typeof globalThis?.crypto?.subtle !== 'undefined') {
+    console.log(LOG_PREFIX, '✓ Using browser WebCrypto');
     addRandomBytesShim();
-  } else if (hasExpoCrypto()) {
-    // Expo environment - load bridge
-    require('./crypto.expo.js');
-  } else {
-    console.warn('[crypto] No WebCrypto available');
+    return;
   }
 
-  // Export for debugging
-  if (typeof module !== 'undefined') {
-    module.exports = {
-      environment: hasWebCrypto() ? 'web' : hasExpoCrypto() ? 'expo' : 'none',
-      ready: hasWebCrypto() || hasExpoCrypto(),
-    };
+  // Expo environment - load @ariob/webcrypto
+  console.log(LOG_PREFIX, 'Loading @ariob/webcrypto...');
+  try {
+    const mod = require('@ariob/webcrypto');
+    console.log(LOG_PREFIX, 'Module loaded:', Object.keys(mod || {}));
+
+    const { crypto } = mod;
+    console.log(LOG_PREFIX, 'crypto object:', crypto ? 'exists' : 'undefined');
+    console.log(LOG_PREFIX, 'crypto.subtle:', crypto?.subtle ? 'exists' : 'undefined');
+    console.log(LOG_PREFIX, 'crypto.getRandomValues:', typeof crypto?.getRandomValues);
+
+    if (!crypto?.subtle) {
+      throw new Error('crypto.subtle not available');
+    }
+
+    globalThis.crypto = crypto;
+    addRandomBytesShim();
+    console.log(LOG_PREFIX, '✓ Ready');
+  } catch (e) {
+    console.error(LOG_PREFIX, '✗ Failed:', e.message);
+    console.error(LOG_PREFIX, 'Stack:', e.stack);
   }
 })();

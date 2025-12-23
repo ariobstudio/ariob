@@ -10,7 +10,13 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "@react-native-async-storage/async-storage": "*"
+    "@react-native-async-storage/async-storage": "*",
+    "react-native-executorch": ">=0.4.0"
+  },
+  "peerDependenciesMeta": {
+    "react-native-executorch": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "typescript": "^5.0.0"

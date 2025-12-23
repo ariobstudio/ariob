@@ -17,13 +17,19 @@
     "zustand": "^5.0.8"
   },
   "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0"
+    "react": "^18.0.0 || ^19.0.0",
+    "expo-secure-store": "*"
+  },
+  "peerDependenciesMeta": {
+    "expo-secure-store": {
+      "optional": true
+    }
   },
   "optionalDependencies": {
     "@ariob/webcrypto": "workspace:*"
   },
   "devDependencies": {
-    "@types/react": "^18.3.20",
+    "@types/react": "^19.1.0",
     "vitest": "^2.1.9"
   }
 }

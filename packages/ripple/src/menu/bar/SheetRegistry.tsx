@@ -7,7 +7,7 @@
  */
 
 import { createContext, useContext, type ReactNode, type ComponentType } from 'react';
-import type { SheetType } from './types';
+import type { SheetType, SheetHeightConstraints } from './types';
 
 /** Props that all sheet components receive */
 export interface SheetComponentProps {
@@ -20,9 +20,13 @@ export type SheetRegistry = Partial<Record<NonNullable<SheetType>, ComponentType
 /** Registry of sheet titles */
 export type SheetTitles = Partial<Record<NonNullable<SheetType>, string>>;
 
+/** Registry of sheet height constraints */
+export type SheetHeights = Partial<Record<NonNullable<SheetType>, SheetHeightConstraints>>;
+
 interface SheetRegistryContextValue {
   sheets: SheetRegistry;
   titles: SheetTitles;
+  heights: SheetHeights;
   /** Sheets that handle their own header */
   selfHeadered: Set<string>;
 }
@@ -30,6 +34,7 @@ interface SheetRegistryContextValue {
 const SheetRegistryContext = createContext<SheetRegistryContextValue>({
   sheets: {},
   titles: {},
+  heights: {},
   selfHeadered: new Set(),
 });
 
@@ -37,6 +42,7 @@ interface SheetRegistryProviderProps {
   children: ReactNode;
   sheets?: SheetRegistry;
   titles?: SheetTitles;
+  heights?: SheetHeights;
   selfHeadered?: string[];
 }
 
@@ -50,6 +56,7 @@ interface SheetRegistryProviderProps {
  * <SheetRegistryProvider
  *   sheets={{ account: AccountSheet }}
  *   titles={{ account: 'Create Account' }}
+ *   heights={{ account: { min: 280, max: 500 } }}
  *   selfHeadered={['account']}
  * >
  *   <App />
@@ -60,6 +67,7 @@ export function SheetRegistryProvider({
   children,
   sheets = {},
   titles = {},
+  heights = {},
   selfHeadered = [],
 }: SheetRegistryProviderProps) {
   return (
@@ -67,6 +75,7 @@ export function SheetRegistryProvider({
       value={{
         sheets,
         titles,
+        heights,
         selfHeadered: new Set(selfHeadered),
       }}
     >

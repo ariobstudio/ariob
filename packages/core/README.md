@@ -16,14 +16,14 @@ Minimal, modular Gun.js primitives for React applications with automatic crypto 
 
 ## 🎯 Overview
 
-**@ariob/core** provides production-ready Gun.js primitives following React Query and Convex patterns. Works seamlessly with **LynxJS**, **Expo**, and **React Native** with automatic environment detection and native crypto bridge.
+**@ariob/core** provides production-ready Gun.js primitives following React Query and Convex patterns. Works seamlessly with **Expo**, **React Native**, and **Web** with automatic environment detection and native crypto bridge.
 
 ### Why @ariob/core?
 
 - **🎯 Minimal API** — One-word functions following Gun conventions (`init`, `node`, `pair`, `sign`)
 - **🔒 Type-Safe** — Full TypeScript support with Zod schema validation
 - **📦 Modular** — Import only what you need, zero coupling
-- **🌐 Framework-Agnostic** — Works with LynxJS, Expo, React Native, and Web
+- **🌐 Framework-Agnostic** — Works with Expo, React Native, and Web
 - **🔐 Automatic Crypto Bridge** — Detects environment and loads native crypto automatically
 - **💾 Smart State** — Zustand-powered stores with familiar DX
 - **🎨 React-Ready** — Simple `use[Noun]` hooks for UI integration
@@ -73,7 +73,6 @@ yarn add @ariob/core
 - Gun.js (included)
 
 **Optional (Framework-Specific):**
-- `@lynx-js/react` ^0.114.3 - For LynxJS applications
 - `@ariob/webcrypto` - For Expo/React Native (auto-detected)
 
 ## 🚀 Quick Start
@@ -81,6 +80,7 @@ yarn add @ariob/core
 ### 30-Second Setup
 
 ```typescript
+import { View, Text, Pressable } from 'react-native';
 import { init, useAuth, useNode, create, auth } from '@ariob/core';
 
 // 1. Initialize Gun at app startup (once in your entry point)
@@ -93,15 +93,15 @@ function App() {
   const { user, isAuthenticated } = useAuth();
 
   return (
-    <view>
+    <View>
       {isAuthenticated ? (
-        <text>Welcome, {user?.alias}!</text>
+        <Text>Welcome, {user?.alias}!</Text>
       ) : (
-        <button onTap={() => create('alice', 'password123')}>
-          Sign Up
-        </button>
+        <Pressable onPress={() => create('alice', 'password123')}>
+          <Text>Sign Up</Text>
+        </Pressable>
       )}
-    </view>
+    </View>
   );
 }
 ```
@@ -113,6 +113,7 @@ function App() {
 ### Complete Example
 
 ```typescript
+import { View, Text, Pressable } from 'react-native';
 import {
   init, graph, node, collection,
   create, auth, pair, sign, verify,
@@ -148,12 +149,14 @@ function TodoApp() {
   };
 
   return (
-    <view>
+    <View>
       {todos.items.map(({ id, data }) => (
-        <text key={id}>{data.title}</text>
+        <Text key={id}>{data.title}</Text>
       ))}
-      <button onTap={handleAdd}>Add</button>
-    </view>
+      <Pressable onPress={handleAdd}>
+        <Text>Add</Text>
+      </Pressable>
+    </View>
   );
 }
 
@@ -178,28 +181,11 @@ async function signMessage() {
 import '@ariob/core';
 
 // Crypto is automatically configured:
-// - LynxJS: NativeWebCryptoModule via crypto.lynx.js
 // - Expo/React Native: @ariob/webcrypto native module
 // - Web/Browser: Native browser WebCrypto API
 // No manual imports needed!
 
 const hash = await crypto.subtle.digest('SHA-256', data);
-```
-
-### LynxJS Applications
-
-For LynxJS-specific functionality, import from the `lynx` subpath:
-
-```typescript
-// LynxJS-specific hooks and types
-import {
-  useMainThreadImperativeHandle,
-  useTapLock,
-  useKeyboard
-} from '@ariob/core/lynx';
-
-// Type declarations for NativeModules
-/// <reference types="@ariob/core/lynx/typing" />
 ```
 
 ### Expo/React Native Applications
@@ -338,6 +324,7 @@ todoNode.off();
 **React Hook:**
 
 ```typescript
+import { Text } from 'react-native';
 import { useNode } from '@ariob/core';
 
 function TodoView() {
@@ -350,11 +337,11 @@ function TodoView() {
     return () => off();
   }, []);
 
-  if (loading) return <text>Loading...</text>;
-  if (error) return <text>Error: {error.message}</text>;
-  if (!data) return <text>No data</text>;
+  if (loading) return <Text>Loading...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
+  if (!data) return <Text>No data</Text>;
 
-  return <text>{data.title} - {data.done ? '✓' : '○'}</text>;
+  return <Text>{data.title} - {data.done ? '✓' : '○'}</Text>;
 }
 ```
 
@@ -430,6 +417,7 @@ todoColl.off();
 **React Hook:**
 
 ```typescript
+import { View, Text, Pressable } from 'react-native';
 import { useCollection } from '@ariob/core';
 
 function TodoList() {
@@ -449,21 +437,25 @@ function TodoList() {
     await update(g.get('todos'), id, { ...item, done: !item.done }, TodoSchema);
   };
 
-  if (loading) return <text>Loading...</text>;
+  if (loading) return <Text>Loading...</Text>;
 
   return (
-    <view>
+    <View>
       {items.map(({ id, data }) => (
-        <view key={id}>
-          <text>{data.title}</text>
-          <button onTap={() => handleToggle(id, data)}>
-            {data.done ? 'Undo' : 'Done'}
-          </button>
-          <button onTap={() => del(g.get('todos'), id)}>Delete</button>
-        </view>
+        <View key={id}>
+          <Text>{data.title}</Text>
+          <Pressable onPress={() => handleToggle(id, data)}>
+            <Text>{data.done ? 'Undo' : 'Done'}</Text>
+          </Pressable>
+          <Pressable onPress={() => del(g.get('todos'), id)}>
+            <Text>Delete</Text>
+          </Pressable>
+        </View>
       ))}
-      <button onTap={handleAdd}>Add Todo</button>
-    </view>
+      <Pressable onPress={handleAdd}>
+        <Text>Add Todo</Text>
+      </Pressable>
+    </View>
   );
 }
 ```
@@ -618,6 +610,7 @@ if (recallResult.ok) {
 #### React Hook
 
 ```typescript
+import { View, Text, Pressable } from 'react-native';
 import { useAuth } from '@ariob/core';
 
 function AuthView() {
@@ -630,28 +623,30 @@ function AuthView() {
 
   if (isAuthenticated) {
     return (
-      <view>
-        <text>Logged in as: {user?.alias}</text>
-        <button onTap={leave}>Logout</button>
-      </view>
+      <View>
+        <Text>Logged in as: {user?.alias}</Text>
+        <Pressable onPress={leave}>
+          <Text>Logout</Text>
+        </Pressable>
+      </View>
     );
   }
 
   return (
-    <view>
-      <button onTap={async () => {
+    <View>
+      <Pressable onPress={async () => {
         const result = await create('alice', 'password123');
         if (!result.ok) console.error('Failed:', result.error.message);
       }}>
-        Create Account
-      </button>
-      <button onTap={async () => {
+        <Text>Create Account</Text>
+      </Pressable>
+      <Pressable onPress={async () => {
         const result = await auth('alice', 'password123');
         if (!result.ok) console.error('Failed:', result.error.message);
       }}>
-        Login
-      </button>
-    </view>
+        <Text>Login</Text>
+      </Pressable>
+    </View>
   );
 }
 ```
@@ -659,6 +654,7 @@ function AuthView() {
 **Direct Store Access:**
 
 ```typescript
+import { Text } from 'react-native';
 import { authStore } from '@ariob/core';
 
 // Zustand direct selector pattern
@@ -666,7 +662,7 @@ function UserBadge() {
   const user = authStore((s) => s.user);
   const isAuthenticated = authStore((s) => s.isAuthenticated);
 
-  return <text>{user?.alias}</text>;
+  return <Text>{user?.alias}</Text>;
 }
 ```
 
@@ -705,13 +701,13 @@ const unsubscribe = userStore.subscribe(() => {
 // React - direct selector (RECOMMENDED)
 function UserName() {
   const name = userStore((s) => s.name);
-  return <text>{name}</text>;
+  return <Text>{name}</Text>;
 }
 
 // React - full store (re-renders on any change)
 function UserProfile() {
   const state = userStore();
-  return <text>{state.name} ({state.age})</text>;
+  return <Text>{state.name} ({state.age})</Text>;
 }
 ```
 
@@ -765,6 +761,7 @@ resetPeers();
 Real-time visibility into Gun's mesh network for production monitoring.
 
 ```typescript
+import { View, Text } from 'react-native';
 import { useMesh, usePeer, initMeshMonitoring } from '@ariob/core';
 
 // Optional: Initialize early (auto-initializes on first hook use)
@@ -776,10 +773,10 @@ function NetworkStatus() {
   const connected = peers.filter(p => p.connected).length;
 
   return (
-    <view>
-      <text>Peers: {connected}/{peers.length}</text>
-      <text>Messages: ↓{totalIn} ↑{totalOut}</text>
-    </view>
+    <View>
+      <Text>Peers: {connected}/{peers.length}</Text>
+      <Text>Messages: ↓{totalIn} ↑{totalOut}</Text>
+    </View>
   );
 }
 
@@ -787,15 +784,15 @@ function NetworkStatus() {
 function PeerMonitor({ url }: { url: string }) {
   const peer = usePeer(url);
 
-  if (!peer) return <text>Peer not found</text>;
+  if (!peer) return <Text>Peer not found</Text>;
 
   return (
-    <view>
-      <text>{peer.url}</text>
-      <text>{peer.connected ? '🟢' : '🔴'}</text>
-      <text>Last seen: {new Date(peer.lastSeen).toLocaleTimeString()}</text>
-      <text>↓{peer.messagesIn} ↑{peer.messagesOut}</text>
-    </view>
+    <View>
+      <Text>{peer.url}</Text>
+      <Text>{peer.connected ? '🟢' : '🔴'}</Text>
+      <Text>Last seen: {new Date(peer.lastSeen).toLocaleTimeString()}</Text>
+      <Text>↓{peer.messagesIn} ↑{peer.messagesOut}</Text>
+    </View>
   );
 }
 ```
@@ -803,6 +800,7 @@ function PeerMonitor({ url }: { url: string }) {
 **Direct Store Access:**
 
 ```typescript
+import { Text } from 'react-native';
 import { meshStore } from '@ariob/core';
 
 // Zustand direct selectors
@@ -811,7 +809,7 @@ function OfflineIndicator() {
   const hasConnection = peers.some(p => p.connected);
 
   if (hasConnection) return null;
-  return <text>⚠️ Offline</text>;
+  return <Text>⚠️ Offline</Text>;
 }
 ```
 
@@ -889,6 +887,7 @@ function OfflineIndicator() {
 ### Complete Todo App
 
 ```typescript
+import { View, Text, TextInput, Pressable } from 'react-native';
 import { init, graph, useCollection, useAuth, create, auth } from '@ariob/core';
 import { Thing, z } from '@ariob/core';
 
@@ -926,27 +925,35 @@ function TodoApp() {
 
   if (!isAuthenticated) {
     return (
-      <view>
-        <button onTap={() => create('alice', 'password')}>Sign Up</button>
-        <button onTap={() => auth('alice', 'password')}>Login</button>
-      </view>
+      <View>
+        <Pressable onPress={() => create('alice', 'password')}>
+          <Text>Sign Up</Text>
+        </Pressable>
+        <Pressable onPress={() => auth('alice', 'password')}>
+          <Text>Login</Text>
+        </Pressable>
+      </View>
     );
   }
 
   return (
-    <view>
-      <input value={title} onChange={(e) => setTitle(e.target.value)} />
-      <button onTap={handleAdd}>Add</button>
+    <View>
+      <TextInput value={title} onChangeText={setTitle} />
+      <Pressable onPress={handleAdd}>
+        <Text>Add</Text>
+      </Pressable>
       {todos.items.map(({ id, data }) => (
-        <view key={id}>
-          <text>{data.title}</text>
-          <button onTap={() => todos.update(g.get('todos'), id, { ...data, done: !data.done }, TodoSchema)}>
-            {data.done ? '✓' : '○'}
-          </button>
-          <button onTap={() => todos.del(g.get('todos'), id)}>Delete</button>
-        </view>
+        <View key={id}>
+          <Text>{data.title}</Text>
+          <Pressable onPress={() => todos.update(g.get('todos'), id, { ...data, done: !data.done }, TodoSchema)}>
+            <Text>{data.done ? '✓' : '○'}</Text>
+          </Pressable>
+          <Pressable onPress={() => todos.del(g.get('todos'), id)}>
+            <Text>Delete</Text>
+          </Pressable>
+        </View>
       ))}
-    </view>
+    </View>
   );
 }
 ```
@@ -999,13 +1006,13 @@ Only subscribe to what you need:
 // ✅ EFFICIENT - Only re-renders when name changes
 function UserName() {
   const name = authStore((s) => s.user?.alias);
-  return <text>{name}</text>;
+  return <Text>{name}</Text>;
 }
 
 // ❌ INEFFICIENT - Re-renders on any auth state change
 function UserName() {
   const state = authStore();
-  return <text>{state.user?.alias}</text>;
+  return <Text>{state.user?.alias}</Text>;
 }
 ```
 

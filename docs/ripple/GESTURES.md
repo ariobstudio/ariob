@@ -4,6 +4,10 @@ Touch interaction handlers for rich mobile interactions.
 
 ---
 
+> **⚠️ Important**: The gesture hooks (`useHold`, `useSwipe`, `useDoubleTap`) are currently **disabled** due to compatibility issues with React Native 0.81+. GestureDetector causes "property is not writable" errors. The `Shell` component uses native `onLongPress` instead. See [Workarounds](#workarounds) for alternatives.
+
+---
+
 ## Overview
 
 Ripple provides gesture handlers that integrate with the menu system:
@@ -453,3 +457,84 @@ Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 // Selection feedback for toggles
 Haptics.selectionAsync();
 ```
+
+---
+
+## Workarounds
+
+### Current Status
+
+As of React Native 0.81+, `GestureDetector` from react-native-gesture-handler causes errors:
+
+```
+Error: Cannot assign to read only property 'handlerTag' of object '#<Object>'
+```
+
+### Shell Component (Working)
+
+The `Shell` component uses native `onLongPress` which works reliably:
+
+```typescript
+// Shell.tsx implementation
+<Pressable
+  onPress={onPress}
+  onLongPress={() => {
+    useMenu().open(nodeRef, position);
+  }}
+  delayLongPress={400}
+>
+  {children}
+</Pressable>
+```
+
+### Native Pressable Gestures
+
+For swipe and double-tap, use native implementations:
+
+```typescript
+// Double-tap with native Pressable
+function DoubleTapView({ onDoubleTap, children }) {
+  const lastTap = useRef(0);
+
+  const handlePress = () => {
+    const now = Date.now();
+    if (now - lastTap.current < 300) {
+      onDoubleTap();
+    }
+    lastTap.current = now;
+  };
+
+  return <Pressable onPress={handlePress}>{children}</Pressable>;
+}
+```
+
+```typescript
+// Swipe with PanResponder
+import { PanResponder } from 'react-native';
+
+function SwipeView({ onSwipeLeft, onSwipeRight, children }) {
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (_, { dx }) => Math.abs(dx) > 20,
+      onPanResponderRelease: (_, { dx }) => {
+        if (dx > 80) onSwipeRight?.();
+        if (dx < -80) onSwipeLeft?.();
+      },
+    })
+  ).current;
+
+  return <View {...panResponder.panHandlers}>{children}</View>;
+}
+```
+
+### Future Fix
+
+Once react-native-gesture-handler resolves the compatibility issue with RN 0.81+, the gesture hooks will be re-enabled. Track progress at:
+- https://github.com/software-mansion/react-native-gesture-handler/issues
+
+---
+
+## Related Documentation
+
+- [Shell Primitive](./PRIMITIVES.md#shell) - Long-press wrapper
+- [Menu System](./MENU.md) - Action handling

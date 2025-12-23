@@ -43,6 +43,9 @@ export function InputMode({
   placeholder,
   inputLeft,
   onInputLeftPress,
+  inputRight,
+  onInputRightPress,
+  showSendButton = true,
   onSubmit,
   autoFocus = true,
   animatedStyle,
@@ -130,23 +133,33 @@ export function InputMode({
         />
       </View>
 
-      {/* Send button - uses animated styles for smooth 60fps transitions */}
+      {/* Right side - either send button or custom action */}
       <View style={inputModeStyles.side}>
-        <Animated.View style={[sendButtonStyle, sendButtonBgStyle, inputModeStyles.sendButton]}>
-          <Pressable
-            onPress={handleSend}
-            disabled={!canSend}
-            accessibilityRole="button"
-            accessibilityLabel="Send"
-            style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}
-          >
+        {showSendButton ? (
+          <Animated.View style={[sendButtonStyle, sendButtonBgStyle, inputModeStyles.sendButton]}>
+            <Pressable
+              onPress={handleSend}
+              disabled={!canSend}
+              accessibilityRole="button"
+              accessibilityLabel="Send"
+              style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <Ionicons
+                name="arrow-up"
+                size={18}
+                color={theme.colors.background}
+              />
+            </Pressable>
+          </Animated.View>
+        ) : inputRight ? (
+          <Pressable style={inputModeStyles.sideButton} onPress={onInputRightPress}>
             <Ionicons
-              name="arrow-up"
-              size={18}
-              color={theme.colors.background}
+              name={inputRight.icon as any}
+              size={20}
+              color={theme.colors.textMuted}
             />
           </Pressable>
-        </Animated.View>
+        ) : null}
       </View>
     </Animated.View>
   );
