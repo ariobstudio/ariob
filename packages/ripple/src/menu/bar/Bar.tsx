@@ -263,7 +263,10 @@ function BarComponent({ children, onDismiss }: BarProps) {
 
   const handleInputSubmit = useCallback((text: string) => {
     frame?.input?.onSubmit?.(text);
-    if (canGoBack) pop();
+    // Only pop if not persistent (for chat interfaces, keep input open)
+    if (canGoBack && !frame?.input?.persistent) {
+      pop();
+    }
   }, [frame, canGoBack, pop]);
 
   const handleInputCancel = useCallback(() => {

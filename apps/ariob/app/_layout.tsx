@@ -10,7 +10,7 @@ import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
-import { useUnistyles } from '@ariob/andromeda';
+import { useUnistyles, ToastProvider } from '@ariob/andromeda';
 import { Bar } from '@ariob/ripple';
 
 export default function RootLayout() {
@@ -20,13 +20,15 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: theme.colors.bg }}>
       <KeyboardProvider>
         <SafeAreaProvider>
-          <StatusBar style="light" />
-          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: theme.colors.bg } }}>
-            <Stack.Screen name="index" />
-            <Stack.Screen name="profile/[id]" />
-          </Stack>
-          {/* Bar singleton - screens configure via useBar() */}
-          <Bar />
+          <ToastProvider>
+            <StatusBar style="light" />
+            <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: theme.colors.bg } }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="profile/[id]" />
+            </Stack>
+            {/* Bar singleton - screens configure via useBar() */}
+            <Bar />
+          </ToastProvider>
         </SafeAreaProvider>
       </KeyboardProvider>
     </GestureHandlerRootView>

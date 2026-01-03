@@ -62,6 +62,8 @@ export interface BarFrame {
     rightAction?: ActionSlot;
     /** Show send button */
     showSendButton?: boolean;
+    /** Keep input open after submit (for chat interfaces) */
+    persistent?: boolean;
   };
 
   // Sheet mode configuration

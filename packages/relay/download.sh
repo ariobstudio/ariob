@@ -2,8 +2,8 @@
 #
 # Download ExecuTorch models for local serving
 #
-# Models are downloaded from HuggingFace and stored in ./models/
-# The relay server serves these from http://localhost:8765/models/
+# Models from: software-mansion/react-native-executorch-smolLm-2
+# Served from: http://localhost:8765/models/
 #
 
 set -e
@@ -11,70 +11,72 @@ set -e
 MODELS_DIR="$(dirname "$0")/models"
 mkdir -p "$MODELS_DIR"
 
+# Get HuggingFace token
+if [ -n "$HF_TOKEN" ]; then
+  TOKEN="$HF_TOKEN"
+elif [ -f ~/.huggingface/token ]; then
+  TOKEN=$(cat ~/.huggingface/token)
+elif [ -f ~/.cache/huggingface/token ]; then
+  TOKEN=$(cat ~/.cache/huggingface/token)
+else
+  echo "Error: No HuggingFace token found."
+  echo "Set HF_TOKEN or run: huggingface-cli login"
+  exit 1
+fi
+
+AUTH_HEADER="Authorization: Bearer $TOKEN"
+BASE_URL="https://huggingface.co/software-mansion/react-native-executorch-smolLm-2/resolve/main"
+
 echo "Downloading ExecuTorch models to $MODELS_DIR..."
 echo ""
 
-# SmolLM2 135M - Ultra-lightweight model
-# Source: https://huggingface.co/softmaxinc/SmolLM2-135M-Instruct-ExecuTorch
-echo "=== SmolLM2 135M Instruct ==="
+# SmolLM2 135M - Ultra-lightweight (560MB)
+echo "=== SmolLM2 135M (560MB) ==="
 mkdir -p "$MODELS_DIR/smollm2-135m"
 
 echo "  Downloading model (.pte)..."
-curl -L -# -o "$MODELS_DIR/smollm2-135m/model.pte" \
-  "https://huggingface.co/softmaxinc/SmolLM2-135M-Instruct-ExecuTorch/resolve/main/smollm2-135m-instruct-spin-q8.pte"
+curl -L --progress-bar -H "$AUTH_HEADER" -o "$MODELS_DIR/smollm2-135m/model.pte" \
+  "$BASE_URL/smolLm-2-135M/quantized/smolLm2_135M_8da4w.pte"
 
 echo "  Downloading tokenizer.json..."
-curl -L -# -o "$MODELS_DIR/smollm2-135m/tokenizer.json" \
-  "https://huggingface.co/softmaxinc/SmolLM2-135M-Instruct-ExecuTorch/resolve/main/tokenizer.json"
+curl -L -s -H "$AUTH_HEADER" -o "$MODELS_DIR/smollm2-135m/tokenizer.json" \
+  "$BASE_URL/tokenizer.json"
 
 echo "  Downloading tokenizer_config.json..."
-curl -L -# -o "$MODELS_DIR/smollm2-135m/tokenizer_config.json" \
-  "https://huggingface.co/softmaxinc/SmolLM2-135M-Instruct-ExecuTorch/resolve/main/tokenizer_config.json"
+curl -L -s -H "$AUTH_HEADER" -o "$MODELS_DIR/smollm2-135m/tokenizer_config.json" \
+  "$BASE_URL/tokenizer_config.json"
 
 echo ""
 
-# Qwen 2.5 0.5B - Compact but capable
-# Source: https://huggingface.co/softmaxinc/Qwen2.5-0.5B-Instruct-ExecuTorch
-echo "=== Qwen 2.5 0.5B Instruct ==="
-mkdir -p "$MODELS_DIR/qwen2.5-0.5b"
+# SmolLM2 360M - Mid-range (1.3GB)
+echo "=== SmolLM2 360M (1.3GB) ==="
+mkdir -p "$MODELS_DIR/smollm2-360m"
 
 echo "  Downloading model (.pte)..."
-curl -L -# -o "$MODELS_DIR/qwen2.5-0.5b/model.pte" \
-  "https://huggingface.co/softmaxinc/Qwen2.5-0.5B-Instruct-ExecuTorch/resolve/main/qwen2.5-0.5b-instruct-spin-q8.pte"
+curl -L --progress-bar -H "$AUTH_HEADER" -o "$MODELS_DIR/smollm2-360m/model.pte" \
+  "$BASE_URL/smolLm-2-360M/quantized/smolLm2_360M_8da4w.pte"
 
-echo "  Downloading tokenizer.json..."
-curl -L -# -o "$MODELS_DIR/qwen2.5-0.5b/tokenizer.json" \
-  "https://huggingface.co/softmaxinc/Qwen2.5-0.5B-Instruct-ExecuTorch/resolve/main/tokenizer.json"
-
-echo "  Downloading tokenizer_config.json..."
-curl -L -# -o "$MODELS_DIR/qwen2.5-0.5b/tokenizer_config.json" \
-  "https://huggingface.co/softmaxinc/Qwen2.5-0.5B-Instruct-ExecuTorch/resolve/main/tokenizer_config.json"
+echo "  Copying tokenizer files..."
+cp "$MODELS_DIR/smollm2-135m/tokenizer.json" "$MODELS_DIR/smollm2-360m/"
+cp "$MODELS_DIR/smollm2-135m/tokenizer_config.json" "$MODELS_DIR/smollm2-360m/"
 
 echo ""
 
-# LLaMA 3.2 1B - Best quality
-# Source: https://huggingface.co/softmaxinc/Llama-3.2-1B-Instruct-ExecuTorch
-echo "=== LLaMA 3.2 1B Instruct ==="
-mkdir -p "$MODELS_DIR/llama3.2-1b"
+# SmolLM2 1.7B - Best quality (1.3GB)
+echo "=== SmolLM2 1.7B (1.3GB) ==="
+mkdir -p "$MODELS_DIR/smollm2-1.7b"
 
 echo "  Downloading model (.pte)..."
-curl -L -# -o "$MODELS_DIR/llama3.2-1b/model.pte" \
-  "https://huggingface.co/softmaxinc/Llama-3.2-1B-Instruct-ExecuTorch/resolve/main/llama3.2-1b-instruct-spin-q8.pte"
+curl -L --progress-bar -H "$AUTH_HEADER" -o "$MODELS_DIR/smollm2-1.7b/model.pte" \
+  "$BASE_URL/smolLm-2-1.7B/quantized/smolLm2_1_7B_8da4w.pte"
 
-echo "  Downloading tokenizer.json..."
-curl -L -# -o "$MODELS_DIR/llama3.2-1b/tokenizer.json" \
-  "https://huggingface.co/softmaxinc/Llama-3.2-1B-Instruct-ExecuTorch/resolve/main/tokenizer.json"
-
-echo "  Downloading tokenizer_config.json..."
-curl -L -# -o "$MODELS_DIR/llama3.2-1b/tokenizer_config.json" \
-  "https://huggingface.co/softmaxinc/Llama-3.2-1B-Instruct-ExecuTorch/resolve/main/tokenizer_config.json"
+echo "  Copying tokenizer files..."
+cp "$MODELS_DIR/smollm2-135m/tokenizer.json" "$MODELS_DIR/smollm2-1.7b/"
+cp "$MODELS_DIR/smollm2-135m/tokenizer_config.json" "$MODELS_DIR/smollm2-1.7b/"
 
 echo ""
 echo "=== Download Complete ==="
 echo ""
-echo "Models downloaded to: $MODELS_DIR"
+ls -lh "$MODELS_DIR"/*/*.pte
 echo ""
-ls -lh "$MODELS_DIR"/*
-echo ""
-echo "Start the relay server with: npm start"
-echo "Models will be available at: http://localhost:8765/models/"
+echo "Models available at: http://localhost:8765/models/"

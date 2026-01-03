@@ -13,9 +13,10 @@ import * as Haptics from 'expo-haptics';
 import { list as listDegrees, type DegreeId, useBar } from '@ariob/ripple';
 import { useUnistyles } from '@ariob/andromeda';
 
-import { DegreeSelector, ProfileCard, AICard, type DegreeConfig } from '../components';
+import { DegreeSelector, FeedRenderer, type DegreeConfig } from '../components';
 import { CreateAccountSheet } from '../components/sheets';
 import { useAuthFlow } from '../hooks';
+import { getVisibleFeedItems, type FeedItemConfig } from '../config/feed.config';
 
 // All available degrees
 const ALL_DEGREES: DegreeConfig[] = listDegrees()
@@ -127,12 +128,6 @@ export default function Index() {
   );
 }
 
-// Feed item type
-interface FeedItem {
-  id: string;
-  type: 'profile' | 'ai';
-}
-
 // Feed Page Content
 interface FeedPageProps {
   degree: DegreeId;
@@ -143,22 +138,17 @@ interface FeedPageProps {
 }
 
 function FeedPage({ degree, user, onProfilePress, onAIPress, topInset }: FeedPageProps) {
-  // Build feed items based on degree
-  const feedItems: FeedItem[] = [];
-  if (user && degree === 0) {
-    feedItems.push({ id: 'profile', type: 'profile' });
-    feedItems.push({ id: 'ai', type: 'ai' });
-  }
+  // Get visible feed items using config-driven approach
+  const feedItems = getVisibleFeedItems(degree, !!user);
 
-  const renderItem = ({ item }: { item: FeedItem }) => {
-    if (item.type === 'profile' && user) {
-      return <ProfileCard user={user} onPress={onProfilePress} />;
-    }
-    if (item.type === 'ai') {
-      return <AICard onPress={onAIPress} />;
-    }
-    return null;
-  };
+  const renderItem = ({ item }: { item: FeedItemConfig }) => (
+    <FeedRenderer
+      config={item}
+      user={user}
+      onProfilePress={onProfilePress}
+      onAIPress={onAIPress}
+    />
+  );
 
   return (
     <FlatList

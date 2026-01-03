@@ -33,7 +33,6 @@ Be helpful and genuine. Never lecture.`;
  */
 let useLLMHook: typeof import('react-native-executorch').useLLM | null = null;
 try {
-  // Dynamic require to avoid bundler issues
   const executorch = require('react-native-executorch');
   useLLMHook = executorch.useLLM;
 } catch {
@@ -52,34 +51,29 @@ const FALLBACK_RESPONSES = [
 ];
 
 /**
- * Hook for interacting with Ripple AI companion
+ * Check if ExecuTorch is available
  */
-export function useRippleAI(options: UseRippleAIOptions = {}): UseRippleAIResult {
-  const { model: modelOverride, systemPrompt: systemPromptOverride, preventLoad } = options;
-  const { model: settingsModel, profile } = useAISettings();
-
-  // Determine which model to use
-  const model = modelOverride ?? settingsModel ?? DEFAULT_MODEL;
-  const systemPrompt = systemPromptOverride ?? profile.systemPrompt ?? DEFAULT_SYSTEM_PROMPT;
-
-  // Use ExecuTorch if available
-  if (useLLMHook) {
-    return useExecuTorchAI(model, systemPrompt, preventLoad);
-  }
-
-  // Fallback for unsupported platforms
-  return useFallbackAI(systemPrompt);
+export function isExecuTorchAvailable(): boolean {
+  return useLLMHook !== null;
 }
 
 /**
- * ExecuTorch-powered AI hook
+ * Hook for interacting with Ripple AI companion using ExecuTorch
+ *
+ * Important: Call interrupt() before unmounting to prevent crashes.
+ * See: https://docs.swmansion.com/react-native-executorch/docs/hooks/natural-language-processing/useLLM
  */
-function useExecuTorchAI(
-  model: typeof DEFAULT_MODEL,
-  systemPrompt: string,
-  preventLoad?: boolean
-): UseRippleAIResult {
-  // This will only be called if useLLMHook is available
+export function useRippleAIExecuTorch(options: UseRippleAIOptions = {}): UseRippleAIResult {
+  const { model: modelOverride, systemPrompt: systemPromptOverride, preventLoad = false } = options;
+  const { model: settingsModel, profile } = useAISettings();
+
+  const model = modelOverride ?? settingsModel ?? DEFAULT_MODEL;
+  const systemPrompt = systemPromptOverride ?? profile.systemPrompt ?? DEFAULT_SYSTEM_PROMPT;
+
+  // Track if module was unloaded (ExecuTorch limitation)
+  const [needsReload, setNeedsReload] = useState(false);
+
+  // Call the hook unconditionally
   const llm = useLLMHook!({
     model: {
       modelSource: model.modelSource,
@@ -89,25 +83,73 @@ function useExecuTorchAI(
     preventLoad,
   });
 
-  // Track if we've added the system prompt
-  const hasSystemPrompt = useRef(false);
+  // Configure system prompt when model is ready
+  const configuredRef = useRef(false);
 
-  // Add system prompt on first message
-  const sendMessage = useCallback(
-    async (message: string) => {
-      if (!hasSystemPrompt.current && llm.messageHistory.length === 0) {
-        // Add system prompt as first message context
-        await llm.generate([
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: message },
-        ]);
-        hasSystemPrompt.current = true;
-      } else {
-        await llm.sendMessage(message);
+  useEffect(() => {
+    if (llm.isReady && !configuredRef.current && llm.configure) {
+      configuredRef.current = true;
+      console.log('[useRippleAI] Configuring with system prompt');
+      llm.configure({
+        chatConfig: {
+          systemPrompt,
+        },
+      });
+    }
+  }, [llm.isReady, llm.configure, systemPrompt]);
+
+  // Clean up on unmount - call interrupt() to prevent crash
+  // Wrapped in try-catch because nativeModule may be undefined if load failed
+  useEffect(() => {
+    return () => {
+      try {
+        // Per docs: "Dismounting while generation runs causes crashes; call interrupt() first"
+        if (llm.isGenerating) {
+          llm.interrupt();
+        }
+      } catch (e) {
+        // Silently handle cleanup errors (e.g., nativeModule undefined)
+        console.warn('[useRippleAI] Cleanup error:', e);
       }
-    },
-    [llm, systemPrompt]
-  );
+    };
+  }, [llm]);
+
+  // Send message handler - always use sendMessage for stateful conversation
+  const sendMessage = useCallback(async (message: string) => {
+    // Check if module was unloaded
+    if (needsReload) {
+      throw new Error('Model was unloaded. Please reload to continue.');
+    }
+
+    // Verify model is ready
+    if (!llm.isReady || typeof llm.sendMessage !== 'function') {
+      console.log('[useRippleAI] Model not ready, ignoring message', {
+        isReady: llm.isReady,
+        hasSendMessage: typeof llm.sendMessage === 'function',
+      });
+      return;
+    }
+
+    try {
+      console.log('[useRippleAI] Sending message:', message);
+      await llm.sendMessage(message);
+      console.log('[useRippleAI] Message sent successfully');
+    } catch (error: any) {
+      console.error('[useRippleAI] Error sending message:', error);
+      // Check if it's the ModuleNotLoaded error - this happens when ExecuTorch unloads
+      if (error?.message?.includes('ModuleNotLoaded')) {
+        console.log('[useRippleAI] Module was unloaded, setting needsReload');
+        setNeedsReload(true);
+        throw new Error('Model was unloaded. Tap "Reload" to continue.');
+      }
+      throw error;
+    }
+  }, [llm, needsReload]);
+
+  // Interrupt handler
+  const interrupt = useCallback(() => {
+    llm.interrupt();
+  }, [llm]);
 
   return {
     response: llm.response,
@@ -115,47 +157,43 @@ function useExecuTorchAI(
     isGenerating: llm.isGenerating,
     downloadProgress: llm.downloadProgress,
     error: llm.error,
+    needsReload,
     sendMessage,
-    interrupt: llm.interrupt,
+    interrupt,
     messageHistory: llm.messageHistory,
   };
 }
 
 /**
- * Fallback AI hook for platforms without ExecuTorch
+ * Fallback hook for platforms without ExecuTorch
  */
-function useFallbackAI(systemPrompt: string): UseRippleAIResult {
+export function useRippleAIFallback(_options: UseRippleAIOptions = {}): UseRippleAIResult {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _settings = useAISettings();
+
   const [response, setResponse] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [messageHistory, setMessageHistory] = useState<Message[]>([]);
 
   const sendMessage = useCallback(async (message: string) => {
     setIsGenerating(true);
-
-    // Add user message
     setMessageHistory((prev) => [...prev, { role: 'user', content: message }]);
 
-    // Simulate thinking
     await new Promise((resolve) => setTimeout(resolve, 800 + Math.random() * 700));
 
-    // Simple keyword-based responses
     const lowerMessage = message.toLowerCase();
     let aiResponse: string;
 
     if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
       aiResponse = "Hello! I'm Ripple, your guide through the mesh. How can I help you today?";
     } else if (lowerMessage.includes('identity') || lowerMessage.includes('anchor')) {
-      aiResponse =
-        'Your identity is cryptographically anchored - no passwords needed, just your keypair.';
+      aiResponse = 'Your identity is cryptographically anchored - no passwords needed, just your keypair.';
     } else if (lowerMessage.includes('degree') || lowerMessage.includes('connection')) {
-      aiResponse =
-        'Degrees measure social distance: 0 is you, 1 is friends, 2 is friends-of-friends, 3 is the wider network.';
+      aiResponse = 'Degrees measure social distance: 0 is you, 1 is friends, 2 is friends-of-friends, 3 is the wider network.';
     } else if (lowerMessage.includes('mesh') || lowerMessage.includes('network')) {
-      aiResponse =
-        'The mesh is decentralized - no single server controls it. Your data flows peer-to-peer.';
+      aiResponse = 'The mesh is decentralized - no single server controls it. Your data flows peer-to-peer.';
     } else if (lowerMessage.includes('help')) {
-      aiResponse =
-        'I can explain how the mesh works, help you understand degrees of connection, or guide you through identity anchoring.';
+      aiResponse = 'I can explain how the mesh works, help you understand degrees of connection, or guide you through identity anchoring.';
     } else {
       aiResponse = FALLBACK_RESPONSES[Math.floor(Math.random() * FALLBACK_RESPONSES.length)];
     }
@@ -171,12 +209,28 @@ function useFallbackAI(systemPrompt: string): UseRippleAIResult {
 
   return {
     response,
-    isReady: true, // Fallback is always ready
+    isReady: true,
     isGenerating,
-    downloadProgress: 1, // No download needed
+    downloadProgress: 1,
     error: null,
+    needsReload: false,
     sendMessage,
     interrupt,
     messageHistory,
   };
+}
+
+/**
+ * Hook for interacting with Ripple AI companion
+ *
+ * Automatically uses ExecuTorch if available, otherwise falls back to
+ * simulated responses.
+ */
+export function useRippleAI(options: UseRippleAIOptions = {}): UseRippleAIResult {
+  // Determine which implementation to use at module load time
+  // This ensures consistent hook ordering
+  if (useLLMHook) {
+    return useRippleAIExecuTorch(options);
+  }
+  return useRippleAIFallback(options);
 }

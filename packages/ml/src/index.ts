@@ -36,9 +36,9 @@ export type {
 
 // Model configurations
 export {
-  LLAMA3_2_1B,
   SMOLLM_135M,
-  QWEN_0_5B,
+  SMOLLM_360M,
+  SMOLLM_1_7B,
   DEFAULT_MODEL,
   MODELS,
   MODEL_OPTIONS,
@@ -48,7 +48,7 @@ export {
 export { useAISettings, aiSettingsStore } from './store';
 
 // Hooks
-export { useRippleAI } from './hooks/useRippleAI';
+export { useRippleAI, isExecuTorchAvailable } from './hooks/useRippleAI';
 
 // Re-export useLLM from executorch if available (for advanced usage)
 export function getExecutorchModule() {

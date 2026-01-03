@@ -2,24 +2,24 @@
  * AI Conversation Screen
  *
  * Chat interface for Ripple AI companion.
- * Uses useBar() to configure input mode for messaging.
+ * ExecuTorch handles model caching automatically.
  */
 
-import { useCallback, useRef, useEffect, useState } from 'react';
-import { View, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
+import { useCallback, useRef, useEffect } from 'react';
+import { View, FlatList, KeyboardAvoidingView, Platform, Pressable } from 'react-native';
 import { router, useFocusEffect } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native-unistyles';
-import { Text, Avatar, Stack, Button, useUnistyles } from '@ariob/andromeda';
-import { useBar, Shell } from '@ariob/ripple';
+import { Text, Avatar, Row, Button, useUnistyles, toast } from '@ariob/andromeda';
+import { useBar } from '@ariob/ripple';
 import { useRippleAI, useAISettings, type Message } from '@ariob/ml';
+import { MessageBubble } from '../../features/ai';
 
 export default function AIConversationScreen() {
   const { theme } = useUnistyles();
+  const insets = useSafeAreaInsets();
   const bar = useBar();
   const flatListRef = useRef<FlatList>(null);
-
-  // State to control model loading - user must explicitly trigger download
-  const [shouldLoad, setShouldLoad] = useState(false);
 
   const { profile, model } = useAISettings();
   const {
@@ -28,208 +28,234 @@ export default function AIConversationScreen() {
     isGenerating,
     downloadProgress,
     error,
+    needsReload,
     sendMessage,
     interrupt,
     messageHistory,
-  } = useRippleAI({ preventLoad: !shouldLoad }); // Load only when shouldLoad is true
+  } = useRippleAI();
 
-  // Bar actions
+  // Keep refs for callbacks to avoid dependency changes
+  const sendMessageRef = useRef(sendMessage);
+  const interruptRef = useRef(interrupt);
+  const isGeneratingRef = useRef(isGenerating);
+  const barRef = useRef(bar);
+
+  sendMessageRef.current = sendMessage;
+  interruptRef.current = interrupt;
+  isGeneratingRef.current = isGenerating;
+  barRef.current = bar;
+
+  // Debug logging
+  useEffect(() => {
+    console.log('[AI] State:', {
+      isReady,
+      isGenerating,
+      downloadProgress,
+      error: error ? String(error) : null,
+      messageHistoryLength: messageHistory.length,
+    });
+  }, [isReady, isGenerating, downloadProgress, error, messageHistory.length]);
+
+  // Stable back handler that uses refs
   const handleBack = useCallback(() => {
+    if (isGeneratingRef.current) {
+      interruptRef.current();
+    }
     router.back();
   }, []);
 
+  // Navigate to settings (used by header tap and trailing action)
   const handleSettings = useCallback(() => {
+    barRef.current.pop();
     router.push('/ai/settings');
   }, []);
 
-  // Keep refs for callbacks
-  const sendMessageRef = useRef(sendMessage);
-  sendMessageRef.current = sendMessage;
+  // Reload the model by replacing the screen
+  const handleReload = useCallback(() => {
+    router.replace('/ai');
+  }, []);
 
-  const handleSend = useCallback(
-    async (text: string) => {
-      if (text.trim() && isReady) {
-        await sendMessageRef.current(text.trim());
-        bar.clearInputValue();
-      }
-    },
-    [isReady, bar]
-  );
-
-  // Set up bar when screen gains focus
+  // Set up bar when screen gains focus - use stable callbacks
   useFocusEffect(
     useCallback(() => {
-      bar.setActions({
+      barRef.current.setActions({
         leading: [{ icon: 'arrow-back', onPress: handleBack }],
         trailing: [{ icon: 'settings-outline', onPress: handleSettings }],
       });
-    }, [bar.setActions, handleBack, handleSettings])
+    }, [handleBack, handleSettings])
   );
 
-  // Open input mode only when ready
+  // Track if input is opened
+  const inputOpenedRef = useRef(false);
+
+  // Open input mode once when ready
   useEffect(() => {
-    if (isReady) {
-      bar.openInput({
+    if (isReady && !inputOpenedRef.current) {
+      inputOpenedRef.current = true;
+      barRef.current.openInput({
         placeholder: 'Message Ripple...',
         autoFocus: false,
         showSendButton: true,
-        onSubmit: handleSend,
+        persistent: true, // Keep input open for chat interface
+        onSubmit: async (text: string) => {
+          if (text.trim()) {
+            try {
+              await sendMessageRef.current(text.trim());
+              barRef.current.clearInputValue();
+            } catch (err: any) {
+              console.error('[AI] Send failed:', err);
+              toast.error(err?.message || 'Failed to send message');
+              // Don't clear input so user can retry
+            }
+          }
+        },
       });
     }
   }, [isReady]);
 
-  // Handle download button press
-  const handleStartDownload = useCallback(() => {
-    setShouldLoad(true);
-  }, []);
-
-  // Render prompt to start download
-  if (!isReady && !shouldLoad) {
+  // Render error state
+  if (error) {
+    const errorMessage = typeof error === 'string' ? error : (error as Error)?.message || 'An error occurred';
     return (
-      <View style={[styles.container, { backgroundColor: theme.colors.bg }]}>
-        <View style={styles.promptContainer}>
-          <Avatar char="✦" size="lg" tint="accent" />
-          <Text size="title" color="text" style={styles.promptTitle}>
-            {profile.name}
+      <View style={[styles.container, { backgroundColor: theme.colors.bg, paddingTop: insets.top }]}>
+        <View style={styles.centerContainer}>
+          <Avatar char="✦" size="lg" tint="warn" />
+          <Text size="body" color="danger" style={styles.centerText}>
+            {errorMessage}
           </Text>
-          <Text size="body" color="dim" style={styles.promptText}>
-            Download the AI model to start chatting.
-          </Text>
-          <Text size="caption" color="dim" style={styles.modelInfo}>
-            {model.name} • {model.ramRequired} RAM
-          </Text>
-          <Button
-            onPress={handleStartDownload}
-            variant="solid"
-            tint="accent"
-            size="lg"
-          >
-            Download Model
-          </Button>
+          <Row gap="sm">
+            <Button onPress={() => router.replace('/ai')} variant="solid" tint="accent">
+              Retry
+            </Button>
+            <Button onPress={handleBack} variant="outline" tint="default">
+              Go Back
+            </Button>
+          </Row>
         </View>
       </View>
     );
   }
 
   // Render loading/downloading state
-  if (!isReady && shouldLoad) {
+  if (!isReady) {
     const progressPercent = Math.round(downloadProgress * 100);
-    const statusText = downloadProgress > 0
-      ? `Downloading model... ${progressPercent}%`
-      : 'Preparing download...';
+    const isDownloading = downloadProgress > 0 && downloadProgress < 1;
+    const isInitializing = downloadProgress === 0;
+    const isLoading = downloadProgress >= 1;
+
+    let statusText = 'Initializing...';
+    if (isDownloading) {
+      statusText = `Downloading model... ${progressPercent}%`;
+    } else if (isLoading) {
+      statusText = 'Loading model...';
+    }
 
     return (
-      <View style={[styles.container, { backgroundColor: theme.colors.bg }]}>
-        <View style={styles.promptContainer}>
+      <View style={[styles.container, { backgroundColor: theme.colors.bg, paddingTop: insets.top }]}>
+        <View style={styles.centerContainer}>
           <Avatar char="✦" size="lg" tint="accent" />
-          <Text size="body" color="dim" style={styles.loadingText}>
+          <Text size="title" color="text" style={styles.title}>
+            {profile.name}
+          </Text>
+          <Text size="body" color="dim" style={styles.centerText}>
             {statusText}
           </Text>
-          <View style={[styles.progressBar, { backgroundColor: theme.colors.border }]}>
-            <View
-              style={[
-                styles.progressFill,
-                { width: `${progressPercent}%`, backgroundColor: theme.colors.accent },
-              ]}
-            />
-          </View>
+          {!isInitializing && (
+            <View style={[styles.progressBar, { backgroundColor: theme.colors.border }]}>
+              <View
+                style={[
+                  styles.progressFill,
+                  {
+                    width: isLoading ? '100%' : `${progressPercent}%`,
+                    backgroundColor: theme.colors.accent,
+                  },
+                ]}
+              />
+            </View>
+          )}
           <Text size="caption" color="dim">
-            {model.name}
+            {model.name} • {model.ramRequired} RAM
           </Text>
         </View>
       </View>
     );
   }
 
-  // Handle retry
-  const handleRetry = useCallback(() => {
-    setShouldLoad(false);
-    // Brief delay then retry
-    setTimeout(() => setShouldLoad(true), 100);
-  }, []);
-
-  // Render error state
-  if (error) {
-    return (
-      <View style={[styles.container, { backgroundColor: theme.colors.bg }]}>
-        <View style={styles.promptContainer}>
-          <Avatar char="✦" size="lg" tint="danger" />
-          <Text size="body" color="danger" style={styles.loadingText}>
-            {error}
-          </Text>
-          <Stack direction="row" gap="sm">
-            <Button onPress={handleRetry} variant="solid" tint="accent">
-              Retry
-            </Button>
-            <Button onPress={handleBack} variant="outline" tint="dim">
-              Go Back
-            </Button>
-          </Stack>
-        </View>
-      </View>
-    );
-  }
-
+  // Render chat interface
   return (
     <KeyboardAvoidingView
       style={[styles.container, { backgroundColor: theme.colors.bg }]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={100}
     >
-      {/* Header */}
-      <View style={styles.header}>
-        <Avatar char="✦" size="sm" tint="accent" />
-        <Text size="body" color="text" style={styles.headerName}>
-          {profile.name}
-        </Text>
-        {isGenerating && (
-          <Text size="caption" color="dim">
-            typing...
-          </Text>
-        )}
-      </View>
+      {/* Header - tappable to access profile */}
+      <Pressable onPress={handleSettings}>
+        <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
+          <Avatar char="✦" size="sm" tint="accent" />
+          <View style={styles.headerContent}>
+            <Text size="body" color="text" style={styles.headerName}>
+              {profile.name}
+            </Text>
+            {isGenerating ? (
+              <Text size="caption" color="dim">
+                typing...
+              </Text>
+            ) : (
+              <Text size="caption" color="dim">
+                {model.name}
+              </Text>
+            )}
+          </View>
+        </View>
+      </Pressable>
 
-      {/* Messages - inverted so newest at bottom */}
+      {/* Reload banner when model was unloaded */}
+      {needsReload && (
+        <Pressable onPress={handleReload} style={[styles.reloadBanner, { backgroundColor: theme.colors.warn }]}>
+          <Text size="caption" style={{ color: theme.colors.bg }}>
+            Model unloaded. Tap to reload.
+          </Text>
+        </Pressable>
+      )}
+
+      {/* Messages area - always show FlatList for consistent layout */}
       <FlatList
         ref={flatListRef}
-        data={[...messageHistory].reverse()}
+        data={(() => {
+          // Build display messages: history + streaming response if generating
+          const displayMessages: Array<Message | { role: 'streaming'; content: string }> = [];
+
+          // Add streaming response first (will appear at bottom in inverted list)
+          if (isGenerating && response) {
+            displayMessages.push({ role: 'streaming', content: response });
+          }
+
+          // Add history in reverse order (newest first for inverted list)
+          for (let i = messageHistory.length - 1; i >= 0; i--) {
+            displayMessages.push(messageHistory[i]);
+          }
+
+          return displayMessages;
+        })()}
         inverted
-        renderItem={({ item }) => <MessageBubble message={item} />}
-        keyExtractor={(_, index) => index.toString()}
-        contentContainerStyle={styles.messageList}
-        style={styles.messages}
-      />
-
-      {/* Streaming response preview */}
-      {isGenerating && response && (
-        <View style={styles.streamingPreview}>
-          <Text size="caption" color="dim">
-            {response}
-          </Text>
-        </View>
-      )}
-    </KeyboardAvoidingView>
-  );
-}
-
-// Message bubble component
-function MessageBubble({ message }: { message: Message }) {
-  const { theme } = useUnistyles();
-  const isUser = message.role === 'user';
-
-  return (
-    <View style={[styles.bubbleContainer, isUser && styles.bubbleContainerUser]}>
-      <Shell
-        style={[
-          styles.bubble,
-          isUser ? { backgroundColor: theme.colors.accent } : undefined,
+        renderItem={({ item }) => <MessageBubble message={item as Message} isStreaming={item.role === 'streaming'} />}
+        keyExtractor={(item, index) => item.role === 'streaming' ? 'streaming' : `msg-${index}`}
+        contentContainerStyle={[
+          styles.messageList,
+          messageHistory.length === 0 && !isGenerating && styles.messageListEmpty,
         ]}
-      >
-        <Text size="body" color={isUser ? 'bg' : 'text'}>
-          {message.content}
-        </Text>
-      </Shell>
-    </View>
+        style={styles.messages}
+        ListEmptyComponent={
+          !isGenerating ? (
+            <View style={styles.welcomeInline}>
+              <Text size="body" color="dim" style={styles.centerText}>
+                Ask me anything about the mesh, identity, or connections.
+              </Text>
+            </View>
+          ) : null
+        }
+      />
+    </KeyboardAvoidingView>
   );
 }
 
@@ -237,24 +263,17 @@ const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
   },
-  promptContainer: {
+  centerContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     gap: theme.space.md,
     paddingHorizontal: theme.space.xl,
   },
-  promptTitle: {
+  title: {
     fontWeight: '700',
   },
-  promptText: {
-    textAlign: 'center',
-  },
-  modelInfo: {
-    textAlign: 'center',
-    marginBottom: theme.space.md,
-  },
-  loadingText: {
+  centerText: {
     textAlign: 'center',
   },
   progressBar: {
@@ -269,15 +288,22 @@ const styles = StyleSheet.create((theme) => ({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: theme.space.sm,
+    gap: theme.space.md,
     paddingHorizontal: theme.space.lg,
-    paddingVertical: theme.space.md,
+    paddingBottom: theme.space.md,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.border,
   },
+  headerContent: {
+    flex: 1,
+  },
   headerName: {
     fontWeight: '600',
-    flex: 1,
+  },
+  reloadBanner: {
+    paddingVertical: theme.space.sm,
+    paddingHorizontal: theme.space.lg,
+    alignItems: 'center',
   },
   messages: {
     flex: 1,
@@ -285,24 +311,16 @@ const styles = StyleSheet.create((theme) => ({
   messageList: {
     paddingHorizontal: theme.space.lg,
     paddingVertical: theme.space.md,
-    paddingTop: 120, // Space for bar (inverted, so paddingTop = visual bottom)
+    // For inverted FlatList, paddingTop creates space at visual bottom (above bar)
+    paddingTop: 100,
   },
-  bubbleContainer: {
-    marginBottom: theme.space.sm,
-    alignItems: 'flex-start',
+  messageListEmpty: {
+    flex: 1,
+    justifyContent: 'center',
   },
-  bubbleContainerUser: {
-    alignItems: 'flex-end',
-  },
-  bubble: {
-    maxWidth: '80%',
-    paddingHorizontal: theme.space.md,
-    paddingVertical: theme.space.sm,
-  },
-  streamingPreview: {
-    paddingHorizontal: theme.space.lg,
-    paddingVertical: theme.space.sm,
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.border,
+  welcomeInline: {
+    alignItems: 'center',
+    paddingHorizontal: theme.space.xl,
+    // In inverted list, this appears in the center
   },
 }));

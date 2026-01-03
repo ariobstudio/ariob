@@ -5,7 +5,7 @@
  * for mobile/edge deployment via ExecuTorch.
  *
  * Models are served locally from the relay server.
- * Download models using: packages/relay/download-models.sh
+ * Download models using: packages/relay/download.sh
  */
 
 import type { ModelSource } from '../types';
@@ -14,68 +14,71 @@ import type { ModelSource } from '../types';
  * Base URL for model files
  * Default: localhost relay server
  * Override with ML_MODEL_BASE_URL environment variable
+ *
+ * Note: For iOS simulator, use the host machine's IP address.
+ * 'localhost' from the simulator refers to the simulator itself.
  */
-const MODEL_BASE_URL = process.env.ML_MODEL_BASE_URL || 'http://localhost:8765/models';
+const MODEL_BASE_URL = process.env.ML_MODEL_BASE_URL || 'http://10.0.0.246:8765/models';
 
 /**
  * SmolLM2 135M - Ultra-lightweight model for low-end devices
  *
  * Requirements:
- * - ~500MB RAM
+ * - ~500MB storage, ~1GB RAM
  * - Works on most devices
  * - Lower quality but very fast
  */
 export const SMOLLM_135M: ModelSource = {
-  id: 'smollm-135m',
+  id: 'smollm2-135m',
   name: 'SmolLM2 135M',
   description: 'Ultra-lightweight, works on most devices',
-  ramRequired: '500MB',
+  ramRequired: '1GB',
   modelSource: `${MODEL_BASE_URL}/smollm2-135m/model.pte`,
   tokenizerSource: `${MODEL_BASE_URL}/smollm2-135m/tokenizer.json`,
   tokenizerConfigSource: `${MODEL_BASE_URL}/smollm2-135m/tokenizer_config.json`,
 };
 
 /**
- * Qwen 2.5 0.5B - Compact but capable
+ * SmolLM2 360M - Mid-range model
  *
  * Requirements:
- * - ~1.5GB RAM
+ * - ~1.3GB storage, ~2GB RAM
  * - Good for mid-range devices
  */
-export const QWEN_0_5B: ModelSource = {
-  id: 'qwen-0.5b',
-  name: 'Qwen 2.5 0.5B',
-  description: 'Compact but capable, mid-range devices',
-  ramRequired: '1.5GB',
-  modelSource: `${MODEL_BASE_URL}/qwen2.5-0.5b/model.pte`,
-  tokenizerSource: `${MODEL_BASE_URL}/qwen2.5-0.5b/tokenizer.json`,
-  tokenizerConfigSource: `${MODEL_BASE_URL}/qwen2.5-0.5b/tokenizer_config.json`,
+export const SMOLLM_360M: ModelSource = {
+  id: 'smollm2-360m',
+  name: 'SmolLM2 360M',
+  description: 'Balanced quality and speed',
+  ramRequired: '2GB',
+  modelSource: `${MODEL_BASE_URL}/smollm2-360m/model.pte`,
+  tokenizerSource: `${MODEL_BASE_URL}/smollm2-360m/tokenizer.json`,
+  tokenizerConfigSource: `${MODEL_BASE_URL}/smollm2-360m/tokenizer_config.json`,
 };
 
 /**
- * LLaMA 3.2 1B Instruct - Best balance of quality and performance
+ * SmolLM2 1.7B - Best quality model
  *
  * Requirements:
- * - ~3.2GB RAM on Android
+ * - ~1.3GB storage, ~3GB RAM
  * - Recommended for devices with 4GB+ RAM
  */
-export const LLAMA3_2_1B: ModelSource = {
-  id: 'llama-3.2-1b',
-  name: 'LLaMA 3.2 1B',
+export const SMOLLM_1_7B: ModelSource = {
+  id: 'smollm2-1.7b',
+  name: 'SmolLM2 1.7B',
   description: 'Best quality, requires 4GB+ RAM',
-  ramRequired: '3.2GB',
-  modelSource: `${MODEL_BASE_URL}/llama3.2-1b/model.pte`,
-  tokenizerSource: `${MODEL_BASE_URL}/llama3.2-1b/tokenizer.json`,
-  tokenizerConfigSource: `${MODEL_BASE_URL}/llama3.2-1b/tokenizer_config.json`,
+  ramRequired: '3GB',
+  modelSource: `${MODEL_BASE_URL}/smollm2-1.7b/model.pte`,
+  tokenizerSource: `${MODEL_BASE_URL}/smollm2-1.7b/tokenizer.json`,
+  tokenizerConfigSource: `${MODEL_BASE_URL}/smollm2-1.7b/tokenizer_config.json`,
 };
 
 /**
  * All available models
  */
 export const MODELS: Record<string, ModelSource> = {
-  'smollm-135m': SMOLLM_135M,
-  'qwen-0.5b': QWEN_0_5B,
-  'llama-3.2-1b': LLAMA3_2_1B,
+  'smollm2-135m': SMOLLM_135M,
+  'smollm2-360m': SMOLLM_360M,
+  'smollm2-1.7b': SMOLLM_1_7B,
 };
 
 /**

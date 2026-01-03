@@ -62,6 +62,8 @@ export interface UseRippleAIResult {
   downloadProgress: number;
   /** Error message if something went wrong */
   error: string | null;
+  /** Whether the model was unloaded and needs to be reloaded (ExecuTorch limitation) */
+  needsReload: boolean;
   /** Send a message to Ripple AI */
   sendMessage: (message: string) => Promise<void>;
   /** Stop the current generation */

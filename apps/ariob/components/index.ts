@@ -6,6 +6,9 @@
  */
 
 export { DegreeSelector, type DegreeSelectorProps, type DegreeConfig } from './DegreeSelector';
-export { ProfileCard, type ProfileCardProps } from './ProfileCard';
-export { AICard, type AICardProps } from './AICard';
 export * from './sheets';
+export * from './feed';
+
+// Re-export from features for backwards compatibility
+export { ProfileCard, type ProfileCardProps } from '../features/profile';
+export { AICard, type AICardProps } from '../features/ai';
