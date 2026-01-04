@@ -94,6 +94,7 @@ export const font = {
   body: { size: 16, weight: '400' as const, height: 24 },
   caption: { size: 13, weight: '400' as const, spacing: 0 },
   mono: { size: 12, weight: '500' as const, spacing: 0 },
+  subheading: { size: 10, weight: '500' as const, spacing: 0 },
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────

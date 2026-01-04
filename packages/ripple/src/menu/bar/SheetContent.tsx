@@ -1,14 +1,15 @@
 /**
- * SheetContent - Dynamic sheet content router
+ * SheetContent - Sheet content router (slot-based)
  *
  * Routes to the appropriate sheet component based on the sheet type.
  * Sheet components are provided via SheetRegistryContext from the app layer.
+ * Content auto-sizes based on its natural height.
  */
 
 import { View, Text, Pressable } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { Ionicons } from '@expo/vector-icons';
-import type { SheetContentProps, SheetType } from './types';
+import type { SheetContentProps } from './types';
 import { useSheetRegistry } from './SheetRegistry';
 
 export function SheetContent({ type, onClose }: SheetContentProps) {

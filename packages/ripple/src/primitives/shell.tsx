@@ -35,12 +35,10 @@
  * @see useHold - Long-press gesture hook for context menus
  */
 
-import { Pressable } from 'react-native';
+import { Pressable, type GestureResponderEvent } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
-import { GestureDetector } from 'react-native-gesture-handler';
 import type { ReactNode } from 'react';
-import { useHold } from '../gesture/hold';
-import type { NodeRef } from '../menu/state';
+import { useMenu, type NodeRef } from '../menu/state';
 
 /**
  * Props for the Shell component
@@ -64,6 +62,9 @@ interface ShellProps {
 
 /**
  * Base container primitive for Ripple feed items.
+ *
+ * Uses React Native's built-in onLongPress for context menu support
+ * (avoids GestureDetector compatibility issues with RN 0.81+).
  */
 export const Shell = ({
   children,
@@ -74,10 +75,18 @@ export const Shell = ({
   style,
   nodeRef,
 }: ShellProps) => {
-  // Set up long-press gesture if nodeRef provided
-  const holdGesture = nodeRef ? useHold(nodeRef) : null;
+  // Get menu show function for long-press context menu
+  const showMenu = useMenu((s) => s.show);
 
-  const content = (
+  // Handle long press to show context menu
+  const handleLongPress = (event: GestureResponderEvent) => {
+    if (nodeRef) {
+      const { pageX, pageY } = event.nativeEvent;
+      showMenu(nodeRef, { x: pageX, y: pageY });
+    }
+  };
+
+  return (
     <Pressable
       style={[
         styles.shell,
@@ -88,21 +97,12 @@ export const Shell = ({
       onPress={onPress}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
+      onLongPress={nodeRef ? handleLongPress : undefined}
+      delayLongPress={400}
     >
       {children}
     </Pressable>
   );
-
-  // Wrap with gesture detector if we have a gesture
-  if (holdGesture) {
-    return (
-      <GestureDetector gesture={holdGesture}>
-        {content}
-      </GestureDetector>
-    );
-  }
-
-  return content;
 };
 
 const styles = StyleSheet.create((theme) => ({

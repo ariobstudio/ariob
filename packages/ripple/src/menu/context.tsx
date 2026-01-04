@@ -2,6 +2,7 @@
  * Context Menu - Floating action menu for long-press
  *
  * Appears near the touch point with node-specific quick actions.
+ * Uses the new registry system to get available actions.
  */
 
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -15,9 +16,19 @@ import Animated, {
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { useMenu, useMenuOpen, useMenuNode } from './state';
-import { getQuickActions } from './nodes';
-import { get, type ActName } from './acts';
+import { registry, type RegisteredAction } from '../nodes/_shared';
 import type { Act } from './types';
+
+/**
+ * Convert RegisteredAction to Act format for rendering
+ */
+function actionToAct(action: RegisteredAction): Act {
+  return {
+    name: action.meta.verb,
+    icon: action.meta.icon as any,
+    label: action.meta.label,
+  };
+}
 
 /** Single action button in context menu */
 function ContextButton({
@@ -37,8 +48,12 @@ function ContextButton({
     <Animated.View style={style}>
       <Pressable
         onPress={onPress}
-        onPressIn={() => { scale.value = withSpring(0.9); }}
-        onPressOut={() => { scale.value = withSpring(1); }}
+        onPressIn={() => {
+          scale.value = withSpring(0.9);
+        }}
+        onPressOut={() => {
+          scale.value = withSpring(1);
+        }}
         style={styles.button}
       >
         <Ionicons name={act.icon as any} size={20} color="#fff" />
@@ -55,13 +70,19 @@ export function Context() {
 
   if (!open || !node) return null;
 
-  // Get quick actions for this node type
-  const actionNames = getQuickActions(node.type);
-  const actions = actionNames.map((name) => get(name));
+  // Get quick actions from registry based on node actions
+  // Nodes define their available actions in their schema
+  const nodeActions = 'actions' in node && Array.isArray(node.actions) ? node.actions : [];
+
+  // Get first 3 actions for quick menu
+  const quickActionVerbs = nodeActions.slice(0, 3);
+  const actions = quickActionVerbs
+    .map((verb) => registry.get(verb))
+    .filter((a): a is RegisteredAction => a !== undefined)
+    .map(actionToAct);
 
   // Handle action press - just close menu, action handling delegated to parent
   const handlePress = (act: Act) => {
-    // TODO: Wire up action handling via callback prop if needed
     console.log('[Context] Action:', act.name);
     hide();
   };
@@ -86,11 +107,7 @@ export function Context() {
         <BlurView intensity={80} tint="dark" style={styles.blur}>
           <View style={styles.actions}>
             {actions.map((act) => (
-              <ContextButton
-                key={act.name}
-                act={act}
-                onPress={() => handlePress(act)}
-              />
+              <ContextButton key={act.name} act={act} onPress={() => handlePress(act)} />
             ))}
           </View>
         </BlurView>

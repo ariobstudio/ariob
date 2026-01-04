@@ -1,213 +1,231 @@
 /**
- * Bar - Context-aware floating action bar with morphing animation
+ * Bar - Stack-based morphing action bar
  *
- * A sleek floating glass capsule that transitions between three modes:
+ * A floating glass capsule that transitions between three modes:
  * - **Action**: Compact pill with action buttons
- * - **Input**: Full-width text input for replies/messages
- * - **Sheet**: Expanded interface for compose, AI config, etc.
+ * - **Input**: Full-width text input
+ * - **Sheet**: Expanded interface for sheets (auto-sizes to content)
+ *
+ * Stack-based navigation:
+ * - Bar maintains a stack of frames
+ * - Each frame has its own mode and controls
+ * - push/pop/reset for navigation
+ *
+ * @example
+ * ```tsx
+ * // Using store (recommended)
+ * const bar = useBarStore();
+ *
+ * // Set base frame actions
+ * bar.setActions({
+ *   primary: { icon: 'add', onPress: () => bar.openSheet(<MySheet />) }
+ * });
+ *
+ * // Or push a custom frame
+ * bar.push({
+ *   id: 'compose',
+ *   mode: 'sheet',
+ *   sheet: { content: <ComposeSheet /> }
+ * });
+ * ```
  */
 
-import { useEffect, useCallback } from 'react';
-import {
-  View,
-  Dimensions,
-  Platform,
-} from 'react-native';
-import { create } from 'zustand';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useEffect, useContext, useCallback, type ReactNode } from 'react';
+import { View, Dimensions, Keyboard, type LayoutChangeEvent } from 'react-native';
+import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import Animated, {
   useAnimatedStyle,
-  withSpring,
+  withTiming,
   useSharedValue,
   interpolate,
+  Easing,
 } from 'react-native-reanimated';
-import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
-import * as Haptics from 'expo-haptics';
-import { BlurView } from 'expo-blur';
 
-import type { BarProps, Act, SheetType } from './types';
-import { ActionButton } from './ActionButtons';
-import { InputMode } from './InputMode';
-import { SheetContent } from './SheetContent';
-import { Backdrop } from './Backdrop';
-import { rippleSprings } from '../../styles/tokens';
 import { barStyles } from './bar.styles';
-import { useActionsConfigSafe, useActionHandler } from '../provider';
+import { Backdrop } from './Backdrop';
+import { useBarStore, useCurrentFrame, useCanGoBack } from './store';
+import { BarButton, type BarButtonProps } from './Bar.Button';
+import { BarActions, type BarActionsProps } from './Bar.Actions';
+import { BarInput, type BarInputProps } from './Bar.Input';
+import { BarSheet, type BarSheetProps } from './Bar.Sheet';
+import type { BarMode, BarFrame, ActionSlot } from '../../protocols/bar';
+
+// Type aliases for cleaner JSX
+const AView = Animated.View;
+const RView = View;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const PILL_WIDTH = 180; // Slightly wider for comfort
-const PILL_HEIGHT = 60; // Taller for modern touch targets
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const PILL_WIDTH = 180;
+const PILL_HEIGHT = 60;
 const INPUT_PILL_WIDTH = SCREEN_WIDTH - 32;
 const SHEET_WIDTH = SCREEN_WIDTH - 16;
-const SHEET_HEIGHT = 280; // Height for sheet content
+const MIN_SHEET_HEIGHT = 100;
+const MAX_SHEET_HEIGHT = SCREEN_HEIGHT - 150;
+const DEFAULT_SHEET_HEIGHT = 200;
+const DEFAULT_INSETS = { top: 0, bottom: 34, left: 0, right: 0 };
 
-const springConfig = rippleSprings.smooth;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Legacy Store (for backward compatibility)
-// ─────────────────────────────────────────────────────────────────────────────
-
-interface BarState {
-  mode: 'action' | 'input' | 'sheet';
-  sheet: SheetType;
-  left: Act | null;
-  center: Act | null;
-  right: Act | null;
-  inputLeft: Act | null;
-  placeholder: string;
-  value: string;
-  autoFocus: boolean;
-  visible: boolean;
-  isActive: boolean;
-  persistInputMode: boolean;
-  onAction: ((action: string) => void) | null;
-  onSubmit: ((text: string) => void) | null;
-  onCancel: (() => void) | null;
-}
-
-interface BarActions {
-  setMode: (mode: 'action' | 'input' | 'sheet') => void;
-  setActions: (acts: { left?: Act | null; center?: Act | null; right?: Act | null }) => void;
-  setInputLeft: (act: Act | null) => void;
-  setValue: (value: string) => void;
-  setPlaceholder: (placeholder: string) => void;
-  show: () => void;
-  hide: () => void;
-  setActive: (active: boolean) => void;
-  setCallbacks: (cb: {
-    onAction?: ((action: string) => void) | null;
-    onSubmit?: ((text: string) => void) | null;
-    onCancel?: (() => void) | null;
-  }) => void;
-  configure: (config: Partial<BarState>) => void;
-  reset: () => void;
-  openSheet: (type: NonNullable<SheetType>) => void;
-  closeSheet: () => void;
-}
-
-const initialState: BarState = {
-  mode: 'action',
-  sheet: null,
-  left: null,
-  center: null,
-  right: null,
-  inputLeft: null,
-  placeholder: 'Message...',
-  value: '',
-  autoFocus: true,
-  visible: true,
-  isActive: false,
-  persistInputMode: false,
-  onAction: null,
-  onSubmit: null,
-  onCancel: null,
+// Fast timing config
+const timingConfig = {
+  duration: 120,
+  easing: Easing.out(Easing.ease),
 };
 
-export const useBar = create<BarState & BarActions>((set) => ({
-  ...initialState,
-  setMode: (mode) => {
-    if (Platform.OS !== 'web') Haptics.selectionAsync();
-    set({ mode });
-  },
-  setActions: ({ left, center, right }) =>
-    set((s) => ({
-      left: left !== undefined ? left : s.left,
-      center: center !== undefined ? center : s.center,
-      right: right !== undefined ? right : s.right,
-    })),
-  setInputLeft: (inputLeft) => set({ inputLeft }),
-  setValue: (value) => set({ value }),
-  setPlaceholder: (placeholder) => set({ placeholder }),
-  show: () => set({ visible: true }),
-  hide: () => set({ visible: false }),
-  setActive: (isActive) => set({ isActive }),
-  setCallbacks: ({ onAction, onSubmit, onCancel }) =>
-    set((s) => ({
-      onAction: onAction !== undefined ? onAction : s.onAction,
-      onSubmit: onSubmit !== undefined ? onSubmit : s.onSubmit,
-      onCancel: onCancel !== undefined ? onCancel : s.onCancel,
-    })),
-  configure: (config) => set((s) => ({ ...s, ...config })),
-  reset: () => set(initialState),
-  openSheet: (type) => {
-    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    set({ mode: 'sheet', sheet: type });
-  },
-  closeSheet: () => {
-    if (Platform.OS !== 'web') Haptics.selectionAsync();
-    set({ mode: 'action', sheet: null });
-  },
-}));
+// ─────────────────────────────────────────────────────────────────────────────
+// Types
+// ─────────────────────────────────────────────────────────────────────────────
 
-// Selector hooks
-export const useBarMode = () => useBar((s) => s.mode);
-export const useBarVisible = () => useBar((s) => s.visible);
+export interface BarProps {
+  /** Optional children for slot-based API (legacy) */
+  children?: ReactNode;
+  /** Callback when backdrop/sheet is dismissed */
+  onDismiss?: () => void;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ActionSlot Renderer
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ActionSlotButton({ slot }: { slot: ActionSlot }) {
+  return (
+    <BarButton
+      icon={slot.icon}
+      label={slot.label}
+      onPress={slot.onPress}
+      disabled={slot.disabled}
+    />
+  );
+}
+
+function FrameActions({ actions }: { actions: BarFrame['actions'] }) {
+  if (!actions) return null;
+
+  return (
+    <BarActions>
+      {actions.leading?.[0] && (
+        <BarButton
+          key="leading"
+          icon={actions.leading[0].icon}
+          label={actions.leading[0].label}
+          onPress={actions.leading[0].onPress}
+          disabled={actions.leading[0].disabled}
+          position="left"
+        />
+      )}
+      {actions.primary && (
+        <BarButton
+          key="primary"
+          icon={actions.primary.icon}
+          label={actions.primary.label}
+          onPress={actions.primary.onPress}
+          disabled={actions.primary.disabled}
+          position="center"
+        />
+      )}
+      {actions.trailing?.[0] && (
+        <BarButton
+          key="trailing"
+          icon={actions.trailing[0].icon}
+          label={actions.trailing[0].label}
+          onPress={actions.trailing[0].onPress}
+          disabled={actions.trailing[0].disabled}
+          position="right"
+        />
+      )}
+    </BarActions>
+  );
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Main Bar Component
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function Bar(props: BarProps) {
-  const store = useBar();
-  const insets = useSafeAreaInsets();
-  const { height: keyboardHeight } = useReanimatedKeyboardAnimation();
+function BarComponent({ children, onDismiss }: BarProps) {
+  const safeAreaInsets = useContext(SafeAreaInsetsContext);
+  const insets = safeAreaInsets ?? DEFAULT_INSETS;
 
-  // Get context-based action handling if available
-  const actionsConfig = useActionsConfigSafe();
-  const contextActionHandler = useActionHandler();
+  // Get current frame from stack
+  const frame = useCurrentFrame();
+  const canGoBack = useCanGoBack();
+  const { pop, reset, inputValue, setInputValue } = useBarStore();
 
-  // Determine if using global store or local props
-  const useGlobal = props.global === true ||
-    (props.global !== false && !props.mode && !props.center && !props.main);
+  const mode = frame?.mode ?? 'action';
 
-  // Resolve values from store or props
-  const mode = useGlobal ? store.mode : (props.mode ?? 'action');
-  const left = useGlobal ? store.left : props.left;
-  const center = useGlobal ? store.center : (props.center ?? props.main);
-  const right = useGlobal ? store.right : props.right;
-  const inputLeft = useGlobal ? store.inputLeft : props.inputLeft;
-  const placeholder = useGlobal ? store.placeholder : (props.placeholder ?? 'Message...');
-  const value = useGlobal ? store.value : (props.value ?? '');
-  const autoFocus = useGlobal ? store.autoFocus : (props.autoFocus ?? true);
-  const sheet = useGlobal ? store.sheet : null;
+  // ─────────────────────────────────────────────────────────────────────────
+  // Shared Values (UI Thread)
+  // ─────────────────────────────────────────────────────────────────────────
 
-  // Callbacks
-  const onAction = useCallback(
-    (actionName: string) => {
-      if (actionsConfig) {
-        contextActionHandler(actionName, { view: { degree: 0, profile: false } });
-        return;
-      }
-      if (useGlobal && store.onAction) {
-        store.onAction(actionName);
-      } else if (props.onAction) {
-        props.onAction(actionName);
-      }
-    },
-    [actionsConfig, contextActionHandler, useGlobal, store.onAction, props.onAction]
+  // Sheet content height - measured dynamically
+  const sheetContentHeight = useSharedValue(
+    typeof frame?.sheet?.height === 'number' ? frame.sheet.height : DEFAULT_SHEET_HEIGHT
   );
-  const onSubmit = useGlobal ? store.onSubmit : props.onSubmit;
-  const onCancel = useGlobal ? store.onCancel : props.onCancel;
-  const onChangeText = useGlobal ? store.setValue : props.onChangeText;
 
-  if (useGlobal && !store.visible) return null;
-
-  // Unified animation: 0 = action, 1 = expanded
+  // Animation progress: 0 = action, 1 = expanded
   const progress = useSharedValue(mode === 'action' ? 0 : 1);
 
-  const isInputMode = mode === 'input';
-  const isSheetMode = mode === 'sheet';
-  const isExpanded = isInputMode || isSheetMode;
+  // Target dimensions - animate together with progress
+  const targetWidth = useSharedValue(mode === 'sheet' ? SHEET_WIDTH : INPUT_PILL_WIDTH);
+  const targetHeight = useSharedValue(
+    mode === 'sheet' ? sheetContentHeight.value : PILL_HEIGHT
+  );
 
+  // Keyboard offset
+  const keyboardHeight = useSharedValue(0);
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Effects (Sync JS state to shared values)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // Update shared values when mode changes
   useEffect(() => {
-    progress.value = withSpring(isExpanded ? 1 : 0, springConfig);
-  }, [mode, isExpanded]);
+    const isExpanded = mode !== 'action';
+    const newWidth = mode === 'sheet' ? SHEET_WIDTH : INPUT_PILL_WIDTH;
+    const newHeight = mode === 'sheet' ? sheetContentHeight.value : PILL_HEIGHT;
 
-  // Animated Styles - all use 'worklet' directive for UI thread execution
+    progress.value = withTiming(isExpanded ? 1 : 0, timingConfig);
+    targetWidth.value = withTiming(newWidth, timingConfig);
+    targetHeight.value = withTiming(newHeight, timingConfig);
+  }, [mode]);
+
+  // Handle sheet layout measurement
+  const handleSheetLayout = useCallback((event: LayoutChangeEvent) => {
+    const { height } = event.nativeEvent.layout;
+    if (height > 0) {
+      const clampedHeight = Math.min(Math.max(height, MIN_SHEET_HEIGHT), MAX_SHEET_HEIGHT);
+      sheetContentHeight.value = clampedHeight;
+      if (mode === 'sheet') {
+        targetHeight.value = withTiming(clampedHeight, timingConfig);
+      }
+    }
+  }, [mode]);
+
+  // Keyboard handling
+  useEffect(() => {
+    const showSub = Keyboard.addListener('keyboardWillShow', (e) => {
+      keyboardHeight.value = withTiming(-e.endCoordinates.height, {
+        duration: 250,
+        easing: Easing.out(Easing.ease),
+      });
+    });
+    const hideSub = Keyboard.addListener('keyboardWillHide', () => {
+      keyboardHeight.value = withTiming(0, {
+        duration: 200,
+        easing: Easing.out(Easing.ease),
+      });
+    });
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Animated Styles
+  // ─────────────────────────────────────────────────────────────────────────
+
   const containerStyle = useAnimatedStyle(() => {
     'worklet';
     return {
@@ -217,139 +235,139 @@ export function Bar(props: BarProps) {
 
   const barStyle = useAnimatedStyle(() => {
     'worklet';
-    const targetWidth = isSheetMode ? SHEET_WIDTH : INPUT_PILL_WIDTH;
-    const targetHeight = isSheetMode ? SHEET_HEIGHT : PILL_HEIGHT;
-
     return {
-      width: interpolate(progress.value, [0, 1], [PILL_WIDTH, targetWidth]),
-      height: interpolate(progress.value, [0, 1], [PILL_HEIGHT, targetHeight]),
-      borderRadius: interpolate(progress.value, [0, 1], [30, 24]),
+      width: interpolate(progress.value, [0, 1], [PILL_WIDTH, targetWidth.value]),
+      height: interpolate(progress.value, [0, 1], [PILL_HEIGHT, targetHeight.value]),
+      borderRadius: interpolate(progress.value, [0, 1], [30, 20]),
     };
   });
 
-  const actionButtonsStyle = useAnimatedStyle(() => {
-    'worklet';
-    return {
-      opacity: interpolate(progress.value, [0, 0.2], [1, 0]),
-      transform: [{ scale: interpolate(progress.value, [0, 0.2], [1, 0.8]) }],
-    };
-  });
+  // ─────────────────────────────────────────────────────────────────────────
+  // Dismiss Handler
+  // ─────────────────────────────────────────────────────────────────────────
 
-  // FIXED: Use interpolate instead of ternary for flex to prevent layout thrashing
-  const contentStyle = useAnimatedStyle(() => {
-    'worklet';
-    return {
-      opacity: interpolate(progress.value, [0.3, 0.8], [0, 1]),
-      flex: interpolate(progress.value, [0, 0.2, 1], [0, 1, 1]),
-      transform: [{ scale: interpolate(progress.value, [0.3, 1], [0.95, 1]) }],
-    };
-  });
-
-  // Handlers
-  const handleAction = (act: Act) => {
-    onAction(act.name);
-  };
-
-  const handleDismiss = () => {
-    if (useGlobal) {
-      if (isSheetMode) {
-        store.closeSheet();
-      } else if (!store.persistInputMode) {
-        store.setMode('action');
-        store.setValue('');
+  const handleDismiss = useCallback(() => {
+    if (frame?.canDismiss !== false) {
+      if (canGoBack) {
+        pop();
+      } else {
+        reset();
       }
+      onDismiss?.();
     }
-    onCancel?.();
-    props.onSheetClose?.();
-  };
+  }, [frame, canGoBack, pop, reset, onDismiss]);
 
-  const handleInputLeft = () => {
-    if (inputLeft) {
-      onAction(inputLeft.name);
+  // ─────────────────────────────────────────────────────────────────────────
+  // Input Handlers
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const handleInputSubmit = useCallback((text: string) => {
+    frame?.input?.onSubmit?.(text);
+    // Only pop if not persistent (for chat interfaces, keep input open)
+    if (canGoBack && !frame?.input?.persistent) {
+      pop();
     }
-  };
+  }, [frame, canGoBack, pop]);
 
-  const handleSubmit = (text: string) => {
-    onSubmit?.(text);
-    if (useGlobal) {
-      store.setValue('');
-    }
-  };
+  const handleInputCancel = useCallback(() => {
+    frame?.input?.onCancel?.();
+    if (canGoBack) pop();
+  }, [frame, canGoBack, pop]);
 
-  if (!center && !isInputMode && !isSheetMode) return null;
+  // ─────────────────────────────────────────────────────────────────────────
+  // Render States
+  // ─────────────────────────────────────────────────────────────────────────
 
-  // Render glass container
+  const isInputMode = mode === 'input';
+  const isSheetMode = mode === 'sheet';
+  const isActionMode = mode === 'action';
+
+  // Don't render if no frame
+  if (!frame) return null;
+
   return (
     <>
-      <Backdrop
-        visible={isExpanded && !(useGlobal && store.persistInputMode && isInputMode)}
-        onPress={handleDismiss}
-      />
+      {/* Backdrop only for sheet mode */}
+      <Backdrop visible={isSheetMode} onPress={handleDismiss} />
 
-      <Animated.View
+      <AView
         style={[barStyles.container, { bottom: insets.bottom + 12 }, containerStyle]}
         pointerEvents="box-none"
       >
-        <Animated.View style={[barStyles.shadowWrapper, barStyle]}>
-          <View style={[barStyles.glassContainer, { width: '100%', height: '100%' }]}>
-            {!isExpanded && (
-              <View style={barStyles.actionRow}>
-                <View style={barStyles.side}>
-                  {left ? (
-                    <ActionButton
-                      act={left}
-                      onPress={() => handleAction(left)}
-                      position="left"
-                      animatedStyle={actionButtonsStyle}
-                    />
-                  ) : null}
-                </View>
-
-                {center ? (
-                  <ActionButton
-                    act={center}
-                    onPress={() => handleAction(center)}
-                    position="center"
-                    animatedStyle={actionButtonsStyle}
-                  />
-                ) : null}
-
-                <View style={barStyles.side}>
-                  {right ? (
-                    <ActionButton
-                      act={right}
-                      onPress={() => handleAction(right)}
-                      position="right"
-                      animatedStyle={actionButtonsStyle}
-                    />
-                  ) : null}
-                </View>
-              </View>
+        <AView style={[barStyles.shadowWrapper, barStyle]}>
+          <RView style={[barStyles.glassContainer, { width: '100%', height: '100%' }]}>
+            {/* Action mode - render actions from frame */}
+            {isActionMode && frame.actions && (
+              <RView style={{ flex: 1 }}>
+                <FrameActions actions={frame.actions} />
+              </RView>
             )}
 
-            {isInputMode && (
-              <InputMode
-                value={value}
-                onChangeText={onChangeText ?? (() => {})}
-                placeholder={placeholder}
-                inputLeft={inputLeft}
-                onInputLeftPress={handleInputLeft}
-                onSubmit={handleSubmit}
-                autoFocus={autoFocus}
-                animatedStyle={contentStyle}
-              />
+            {/* Input mode - render input with frame config */}
+            {isInputMode && frame.input && (
+              <RView style={{ flex: 1 }}>
+                <BarInput
+                  value={inputValue}
+                  onChangeText={setInputValue}
+                  placeholder={frame.input.placeholder}
+                  onSubmit={handleInputSubmit}
+                  onCancel={handleInputCancel}
+                  autoFocus={frame.input.autoFocus}
+                  showSendButton={frame.input.showSendButton}
+                  leftButton={frame.input.leftAction ? {
+                    icon: frame.input.leftAction.icon,
+                    onPress: frame.input.leftAction.onPress,
+                  } : undefined}
+                  rightButton={frame.input.rightAction ? {
+                    icon: frame.input.rightAction.icon,
+                    onPress: frame.input.rightAction.onPress,
+                  } : undefined}
+                />
+              </RView>
             )}
 
-            {isSheetMode && sheet && (
-              <Animated.View style={[{ overflow: 'hidden' }, contentStyle]}>
-                <SheetContent type={sheet} onClose={handleDismiss} />
-              </Animated.View>
+            {/* Sheet mode - render sheet content from frame */}
+            {isSheetMode && frame.sheet?.content && (
+              <RView style={{ overflow: 'hidden' }} onLayout={handleSheetLayout}>
+                {frame.sheet.content}
+              </RView>
             )}
-          </View>
-        </Animated.View>
-      </Animated.View>
+          </RView>
+        </AView>
+      </AView>
     </>
   );
 }
 
-export type ActionType = string;
+// ─────────────────────────────────────────────────────────────────────────────
+// Compound Component Pattern
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const Bar = Object.assign(BarComponent, {
+  Actions: BarActions,
+  Input: BarInput,
+  Sheet: BarSheet,
+  Button: BarButton,
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Re-export store and types
+// ─────────────────────────────────────────────────────────────────────────────
+
+export {
+  useBarStore as useBar,
+  useBarMode,
+  useBarInputValue,
+  useBarVisible,
+  useCurrentFrame,
+  useCanGoBack,
+  useStackDepth,
+} from './store';
+
+export type { BarMode, BarFrame, ActionSlot } from './store';
+
+// Re-export slot component types
+export type { BarButtonProps } from './Bar.Button';
+export type { BarActionsProps } from './Bar.Actions';
+export type { BarInputProps } from './Bar.Input';
+export type { BarSheetProps } from './Bar.Sheet';

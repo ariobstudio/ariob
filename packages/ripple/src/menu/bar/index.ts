@@ -1,42 +1,95 @@
 /**
- * Bar - Context-aware floating action bar
+ * Bar - Stack-based morphing action bar
  *
- * A morphing bottom bar that transitions between action, input, and sheet modes.
- * Uses a dispatch-based state machine for explicit state transitions.
+ * A floating capsule that transitions between action, input, and sheet modes.
+ * Uses stack-based navigation for nested interactions.
  *
  * @example
  * ```tsx
- * import { Bar, useBar, useBarMode, SheetRegistryProvider } from '@ariob/ripple';
+ * import { Bar, useBar } from '@ariob/ripple';
  *
  * function App() {
- *   return (
- *     <SheetRegistryProvider
- *       sheets={{ account: AccountSheet }}
- *       titles={{ account: 'Create Account' }}
- *       selfHeadered={['account']}
- *     >
- *       <Bar />
- *     </SheetRegistryProvider>
- *   );
+ *   const bar = useBar();
+ *
+ *   useEffect(() => {
+ *     bar.setActions({
+ *       primary: { icon: 'add', onPress: () => bar.openSheet(<MySheet />) }
+ *     });
+ *   }, []);
+ *
+ *   return <Bar />;
  * }
  * ```
  */
 
+// ─────────────────────────────────────────────────────────────────────────────
 // Main Component
-export { Bar, useBar, useBarMode, useBarVisible, type ActionType } from './Bar';
+// ─────────────────────────────────────────────────────────────────────────────
 
-// Sheet Registry (for apps to provide custom sheets)
-export { SheetRegistryProvider, useSheetRegistry, type SheetComponentProps, type SheetRegistry, type SheetTitles } from './SheetRegistry';
+export {
+  Bar,
+  useBar,
+  useBarMode,
+  useBarInputValue,
+  useBarVisible,
+  useCurrentFrame,
+  useCanGoBack,
+  useStackDepth,
+} from './Bar';
+export type {
+  BarProps,
+  BarMode,
+  BarFrame,
+  ActionSlot,
+  BarButtonProps,
+  BarActionsProps,
+  BarInputProps,
+  BarSheetProps,
+} from './Bar';
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Individual Slot Components (for direct import if needed)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export { BarButton } from './Bar.Button';
+export { BarActions } from './Bar.Actions';
+export { BarInput } from './Bar.Input';
+export { BarSheet } from './Bar.Sheet';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Store (for advanced usage)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export { useBarStore } from './store';
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Sub-components (for custom compositions)
+// ─────────────────────────────────────────────────────────────────────────────
+
 export { ActionButton } from './ActionButtons';
 export { InputMode } from './InputMode';
 export { SheetContent } from './SheetContent';
 export { Backdrop } from './Backdrop';
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Legacy Exports (for backward compatibility)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export { SheetRegistryProvider, useSheetRegistry } from './SheetRegistry';
+export type { SheetComponentProps, SheetRegistry, SheetTitles, SheetHeights } from './SheetRegistry';
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Types
+// ─────────────────────────────────────────────────────────────────────────────
+
 export type {
-  BarProps,
+  // New slot-based types
+  NewBarProps,
+  NewBarButtonProps,
+  NewBarActionsProps,
+  NewBarInputProps,
+  NewBarSheetProps,
+  // Legacy types
   ActionButtonProps,
   InputModeProps,
   SheetContentProps,
@@ -44,4 +97,12 @@ export type {
   Act,
   Acts,
   SheetType,
+  SheetHeightConstraints,
 } from './types';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Node-Aware Bar Hook
+// ─────────────────────────────────────────────────────────────────────────────
+
+export { useNodeBar, type NodeBarConfig, type NodeBarState } from './hook';
+export { NodeBarProvider, NodeBarContext, useNodeBarContext, useNodeBarContextSafe, type NodeBarProviderProps } from './context';

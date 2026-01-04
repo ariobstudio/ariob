@@ -15,7 +15,7 @@ export type {
 } from './provider';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Provider (NEW - customizable action system)
+// Provider (customizable action system)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export {
@@ -28,53 +28,16 @@ export {
   useFeedConfig,
   useActionHandler,
   useActions,
+  useActions as useMetaActions, // Legacy alias
+  createFeedConfigs,
+  createNodeMenus,
 } from './provider';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Make Helper (UNIX-style factory)
+// Make Helper (UNIX-style factory) - for backward compatibility
 // ─────────────────────────────────────────────────────────────────────────────
 
 export { make, type Def } from './make';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Factory Utilities (for creating configs)
-// ─────────────────────────────────────────────────────────────────────────────
-
-export {
-  createAction,
-  createActions,
-  createPicker,
-  createNodeMenu,
-  createNodeMenus,
-  createFeedConfig,
-  createFeedConfigs,
-  type ActionDef,
-} from './create';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Actions (legacy - kept for backward compatibility)
-// ─────────────────────────────────────────────────────────────────────────────
-
-export { acts, get, type ActName } from './acts';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Node Menus (legacy - kept for backward compatibility)
-// ─────────────────────────────────────────────────────────────────────────────
-
-export {
-  nodeMenus,
-  getNodeMenu,
-  getQuickActions,
-  getDetailAction,
-  getOptsActions,
-  type NodeMenu as NodeMenuLegacy,
-} from './nodes';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Pickers (uses context when available, falls back to defaults)
-// ─────────────────────────────────────────────────────────────────────────────
-
-export { resolve, useActs, getFeedConfig, type FeedConfig as FeedConfigLegacy } from './pick';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Menu State (context menu state management)
@@ -91,7 +54,6 @@ export {
   useBar,
   useBarMode,
   useBarVisible,
-  type ActionType,
   ActionButton,
   InputMode,
   SheetContent,
@@ -102,6 +64,11 @@ export {
 } from './bar';
 export type {
   BarProps,
+  BarMode,
+  BarButtonProps,
+  BarActionsProps,
+  BarInputProps,
+  BarSheetProps,
   ActionButtonProps,
   InputModeProps,
   SheetContentProps,
@@ -116,11 +83,3 @@ export type {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export { Context } from './context';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Legacy Aliases (deprecated, use new names)
-// ─────────────────────────────────────────────────────────────────────────────
-
-export { useActs as useMetaActions } from './pick';
-export type { Acts as MetaActions, Act as MetaAction } from './types';
-export type { ActName as ActionType_ } from './acts';

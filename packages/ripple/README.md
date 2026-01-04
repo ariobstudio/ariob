@@ -2,51 +2,92 @@
 
 > Graph-native social primitives following UNIX philosophy
 
-Small, composable modules for building decentralized social experiences.
+Small, composable modules for building decentralized social experiences with React Native.
 
 ---
 
 ## Overview
 
-**@ariob/ripple** provides:
+**@ariob/ripple** provides primitives for building social feeds:
 
-- **Menu** — Action system with `make` helper, Bar, Context menu
-- **Nodes** — Content types (Post, Message, Profile, Auth, etc.)
-- **Components** — Shared components (Node renderer, Header, Footer)
-- **Gestures** — Touch-first interactions (hold, tap, swipe)
-- **Hooks** — React hooks (useFeed, useNav)
-- **Config** — Degree and path definitions
-- **Styles** — Theme tokens and effects
+| Module | Description |
+|--------|-------------|
+| **Bar** | Morphing action bar (slot-based) |
+| **Primitives** | Base building blocks (Shell, Avatar, Badge, Dot, Line) |
+| **Node Infrastructure** | BaseNode schema, registry, useNodeBar |
+| **Hooks** | React hooks (useSearch, useUserSearch, useHashtagSearch) |
+| **Search** | Decentralized search (users, hashtags, indexing) |
+| **Config** | Degree and path definitions |
+| **Styles** | Theme tokens, palettes, and effects |
+
+**Nodes (Profile, Post, Message, etc.) live in your app, not the framework.**
 
 ---
 
 ## Quick Start
 
+### Basic Setup
+
 ```typescript
-import { make, Bar, Context, ActionsProvider } from '@ariob/ripple';
+import { Bar, useBar, Shell, Avatar } from '@ariob/ripple';
 
-// Create actions using the make helper
-const actions = {
-  post: make('post', { icon: 'add', label: 'Post' }),
-  reply: make('reply', { icon: 'arrow-undo', label: 'Reply' }),
-  config: make('config', {
-    icon: 'settings',
-    label: 'Settings',
-    sub: [
-      { name: 'profile', icon: 'person', label: 'Profile' },
-      { name: 'theme', icon: 'color-palette', label: 'Theme' },
-    ],
-  }),
-};
-
-// Provide to app
 function App() {
+  const { mode, openSheet, closeSheet, openInput, closeInput } = useBar();
+  const [sheet, setSheet] = useState(null);
+
   return (
-    <ActionsProvider config={{ actions, feedConfig, nodeMenus, onAction: handleAction }}>
+    <>
       <Feed />
-      <Bar />
-      <Context />
-    </ActionsProvider>
+
+      <Bar mode={mode}>
+        <Bar.Actions>
+          <Bar.Button icon="add" onPress={() => {
+            setSheet(<ComposeSheet onClose={closeSheet} />);
+            openSheet();
+          }} />
+          <Bar.Button icon="search" onPress={openInput} />
+        </Bar.Actions>
+
+        <Bar.Input
+          placeholder="Search..."
+          onSubmit={(text) => { search(text); closeInput(); }}
+          onCancel={closeInput}
+        />
+
+        <Bar.Sheet>
+          {sheet}
+        </Bar.Sheet>
+      </Bar>
+    </>
+  );
+}
+```
+
+### Creating App Nodes
+
+```typescript
+// your-app/nodes/post/post.schema.ts
+import { z } from 'zod';
+import { BaseNode, DegreeEnum } from '@ariob/ripple';
+
+export const PostSchema = BaseNode.extend({
+  type: z.literal('post'),
+  content: z.string(),
+  author: z.string(),
+  degree: DegreeEnum,
+});
+```
+
+```typescript
+// your-app/nodes/post/Post.tsx
+import { Shell, Avatar } from '@ariob/ripple';
+
+export function Post({ data }) {
+  return (
+    <Shell>
+      <Avatar char={data.author[0]} />
+      <Text>{data.content}</Text>
+    </Shell>
   );
 }
 ```
@@ -56,156 +97,202 @@ function App() {
 ## Architecture
 
 ```
-@ariob/ripple
-├── menu/                 # Action system
-│   ├── make.ts           # Action factory
-│   ├── types.ts          # Protocol definitions
-│   ├── Provider.tsx      # Context provider
-│   ├── bar/              # Floating action bar
-│   ├── context.tsx       # Long-press menu
-│   └── __tests__/        # Jest tests
-├── nodes/                # Content types
-│   ├── styles.ts         # Consolidated styles
-│   ├── post.tsx
-│   ├── message.tsx
-│   └── ...
-├── components/           # Shared components
-├── primitives/           # Base primitives
-├── gesture/              # Gesture handlers
-├── hooks/                # React hooks
-├── config/               # Configuration
-└── styles/               # Theme tokens
+@ariob/ripple/src/
+├── menu/bar/                 # Morphing action bar
+│   ├── Bar.tsx               # Main component with slots
+│   ├── Bar.Actions.tsx       # Action mode slot
+│   ├── Bar.Input.tsx         # Input mode slot
+│   ├── Bar.Sheet.tsx         # Sheet mode slot
+│   ├── Bar.Button.tsx        # Button primitive
+│   └── store.ts              # Minimal useBar store
+├── primitives/               # Visual building blocks
+│   ├── shell.tsx             # Container with long-press
+│   ├── avatar.tsx            # User avatar
+│   ├── badge.tsx             # Status badge
+│   ├── dot.tsx               # Timeline dot
+│   └── line.tsx              # Timeline connector
+├── nodes/_shared/            # Node infrastructure
+│   ├── base.ts               # BaseNode, DegreeEnum, VariantEnum
+│   ├── types.ts              # ActionMeta, RegistryContext
+│   └── registry.ts           # ActionRegistry singleton
+├── hooks/                    # React hooks
+│   └── search.ts             # useSearch, useUserSearch
+├── search/                   # Decentralized search
+├── config/                   # Configuration
+│   └── degrees.ts            # Five degrees of visibility
+└── styles/                   # Theme tokens
 ```
 
 ---
 
-## Make Helper
+## Exports
 
-Factory for creating actions:
-
-```typescript
-import { make } from '@ariob/ripple';
-
-// Simple action
-const post = make('post', { icon: 'add', label: 'Post' });
-// { name: 'post', icon: 'add', label: 'Post' }
-
-// Action with submenu
-const config = make('config', {
-  icon: 'settings',
-  label: 'Settings',
-  sub: [
-    { name: 'profile', icon: 'person', label: 'Profile' },
-    { name: 'theme', icon: 'color-palette', label: 'Theme' },
-  ],
-});
-
-// Build action records
-const actions = {
-  post: make('post', { icon: 'add', label: 'Post' }),
-  reply: make('reply', { icon: 'arrow-undo', label: 'Reply' }),
-  save: make('save', { icon: 'bookmark-outline', label: 'Save' }),
-};
-```
-
----
-
-## Actions Provider
-
-Configure actions for your app:
-
-```typescript
-import { ActionsProvider, make, createFeedConfigs, createNodeMenus } from '@ariob/ripple';
-
-const config = {
-  // Actions created with make helper
-  actions: {
-    post: make('post', { icon: 'add', label: 'Post' }),
-    reply: make('reply', { icon: 'arrow-undo', label: 'Reply' }),
-    // ...
-  },
-
-  // Feed config per degree
-  feedConfig: createFeedConfigs({
-    0: { main: 'post', mainUnauthenticated: 'create', left: 'config', right: 'more' },
-    1: { main: 'post', right: 'find' },
-    2: { main: 'post', left: 'trend', right: 'search' },
-  }),
-
-  // Node menus per type
-  nodeMenus: createNodeMenus({
-    post: { quick: ['reply', 'save', 'share'], detail: ['reply'], opts: ['report'] },
-    message: { quick: ['reply', 'forward'], detail: ['reply'], opts: ['delete'] },
-  }),
-
-  // Action handler
-  onAction: (action, context) => {
-    switch (action) {
-      case 'post': router.push('/compose'); break;
-      case 'reply': router.push('/thread/' + context.node?.id); break;
-    }
-  },
-};
-
-<ActionsProvider config={config}>
-  <App />
-</ActionsProvider>
-```
-
----
-
-## Menu System
-
-### Action Bar
-
-Floating action bar with contextual actions:
+### Bar (Slot-Based)
 
 ```typescript
 import { Bar, useBar } from '@ariob/ripple';
 
-// Add to layout
-<Bar />
+// Bar sub-components
+<Bar mode={mode}>
+  <Bar.Actions>
+    <Bar.Button icon="add" onPress={handleAdd} />
+  </Bar.Actions>
+  <Bar.Input placeholder="..." onSubmit={handleSubmit} />
+  <Bar.Sheet>{sheetContent}</Bar.Sheet>
+</Bar>
 
-// Control programmatically
-const { setMode, setActions, setValue } = useBar();
-
-// Switch to input mode
-setMode('input');
-
-// Update actions
-setActions({
-  left: make('back', { icon: 'arrow-back', label: 'Back' }),
-  center: make('send', { icon: 'send', label: 'Send' }),
-});
+// useBar hook
+const { mode, openSheet, closeSheet, openInput, closeInput } = useBar();
 ```
 
-### Context Menu
-
-Long-press floating menu:
+### Primitives
 
 ```typescript
-import { Context } from '@ariob/ripple';
+import { Shell, Avatar, Badge, Dot, Line } from '@ariob/ripple';
+```
 
-// Add to layout
-<Context />
+### Node Infrastructure
+
+```typescript
+import {
+  // Schemas
+  BaseNode,
+  DegreeEnum,
+  VariantEnum,
+  defaults,
+
+  // Registry
+  registry,
+  action,
+  success,
+  failure,
+
+  // Hook
+  useNodeBar,
+} from '@ariob/ripple';
+
+export type { BaseNode, NodeMeta, ActionMeta, RegistryContext } from '@ariob/ripple';
 ```
 
 ### Hooks
 
 ```typescript
-import { useFeedConfig, useNodeMenu, useAction } from '@ariob/ripple';
+import {
+  useSearch,
+  useUserSearch,
+  useHashtagSearch,
+} from '@ariob/ripple';
+```
 
-// Get feed config for current degree
-const config = useFeedConfig(degree);
-// { main: 'post', left: 'config', right: 'more' }
+### Search
 
-// Get menu for node type
-const menu = useNodeMenu('post');
-// { quick: ['reply', 'save'], detail: ['reply'], opts: ['report'] }
+```typescript
+import {
+  searchUsers,
+  searchByHashtag,
+  fetchPostsFromRefs,
+  extractHashtags,
+  extractMentions,
+  indexMyProfile,
+  indexPostHashtags,
+} from '@ariob/ripple';
+```
 
-// Get single action
-const action = useAction('post');
-// { name: 'post', icon: 'add', label: 'Post' }
+### Config & Styles
+
+```typescript
+import { getDegree, getPath, degrees } from '@ariob/ripple';
+import { rippleThemes, ripplePalettes, rippleSpacing } from '@ariob/ripple/styles';
+```
+
+---
+
+## Bar System
+
+The Bar morphs between three modes:
+
+### Action Mode (Default)
+```typescript
+<Bar mode="action">
+  <Bar.Actions>
+    <Bar.Button icon="settings" position="left" onPress={openSettings} />
+    <Bar.Button icon="add" position="center" onPress={openCompose} />
+    <Bar.Button icon="search" position="right" onPress={openSearch} />
+  </Bar.Actions>
+</Bar>
+```
+
+### Input Mode
+```typescript
+<Bar mode="input">
+  <Bar.Input
+    value={text}
+    onChangeText={setText}
+    placeholder="Message..."
+    onSubmit={handleSend}
+    onCancel={closeInput}
+  />
+</Bar>
+```
+
+### Sheet Mode
+```typescript
+<Bar mode="sheet">
+  <Bar.Sheet>
+    <AccountSheet onClose={closeSheet} />
+  </Bar.Sheet>
+</Bar>
+```
+
+---
+
+## Node-Specific Bars
+
+Nodes can declare their preferred bar configuration:
+
+```typescript
+// In your node schema
+export const MessageSchema = BaseNode.extend({
+  type: z.literal('message'),
+  content: z.string(),
+
+  bar: z.object({
+    mode: z.literal('input'),
+    actions: z.array(z.string()).default(['attach', 'emoji']),
+    input: z.object({
+      placeholder: z.string().default('Reply...'),
+      submitAction: z.literal('reply'),
+    }),
+  }).default({
+    mode: 'input',
+    actions: ['attach', 'emoji'],
+    input: { placeholder: 'Reply...', submitAction: 'reply' },
+  }),
+});
+```
+
+Use with `useNodeBar`:
+
+```typescript
+function MessageDetail({ node }) {
+  const { mode, actions, inputConfig } = useNodeBar({ node, onAction: handleAction });
+
+  return (
+    <Bar mode={mode}>
+      <Bar.Actions>
+        {actions.map(action => (
+          <Bar.Button key={action} icon={getIcon(action)} onPress={() => handleAction(action)} />
+        ))}
+      </Bar.Actions>
+      {inputConfig && (
+        <Bar.Input
+          placeholder={inputConfig.placeholder}
+          onSubmit={(text) => handleAction(inputConfig.submitAction, { text })}
+        />
+      )}
+    </Bar>
+  );
+}
 ```
 
 ---
@@ -220,130 +307,23 @@ const action = useAction('post');
 | 3 | Discover | Algorithmic recommendations |
 | 4 | Noise | Unfiltered, unverified content |
 
----
-
-## Nodes
-
-Content type components with theme-aware styles:
-
 ```typescript
-import { Post, Message, Profile, Auth, Sync, Ghost } from '@ariob/ripple';
-import { styles } from '@ariob/ripple/nodes';
+import { getDegree, getPath } from '@ariob/ripple';
 
-// Use consolidated styles
-const { post, message, auth, sync, ghost, profile, aiModel } = styles;
+const degree = getDegree('1');
+// { name: 'Friends', path: 'feeds/friends', icon: 'people', ... }
 ```
 
 ---
 
-## Gestures
+## Peer Dependencies
 
-### Hold (Long-press)
-
-Opens context menu:
-
-```typescript
-import { Shell } from '@ariob/ripple';
-
-<Shell nodeRef={{ id: post.id, type: 'post' }}>
-  <PostContent />
-</Shell>
-```
-
-### Swipe
-
-Trigger actions with swipes:
-
-```typescript
-import { useSwipe } from '@ariob/ripple';
-
-const gesture = useSwipe(message, {
-  left: () => deleteMessage(message),
-  right: () => replyTo(message),
-});
-```
-
----
-
-## Hooks
-
-### useFeed
-
-```typescript
-import { useFeed } from '@ariob/ripple';
-
-const { items, loading, error, post } = useFeed({
-  degree: '1',
-  enabled: true,
-});
-```
-
-### useNodeNavigation
-
-```typescript
-import { useNodeNavigation } from '@ariob/ripple';
-
-const { navigate, back, toProfile } = useNodeNavigation();
-
-navigate(nodeId, 'full');    // Thread detail
-toProfile(userId);           // User profile
-```
-
----
-
-## Styles
-
-Theme-aware styles using Unistyles:
-
-```typescript
-import { rippleThemes, rippleSpacing, rippleRadii } from '@ariob/ripple/styles';
-
-// Themes
-rippleThemes.dark   // Dark theme
-rippleThemes.light  // Light theme
-
-// Spacing
-rippleSpacing.sm  // 8
-rippleSpacing.md  // 12
-
-// Colors
-rippleThemes.dark.colors.accent     // '#1D9BF0'
-rippleThemes.dark.colors.degree[1]  // '#00E5FF' (Friends)
-```
-
----
-
-## Integration
-
-### With @ariob/andromeda
-
-```typescript
-import { toast } from '@ariob/andromeda';
-import { make, ActionsProvider } from '@ariob/ripple';
-
-const config = {
-  actions: { /* ... */ },
-  onAction: (action) => {
-    if (action === 'save') toast.success('Saved!');
-  },
-};
-```
-
-### With Expo Router
-
-```typescript
-// app/_layout.tsx
-import { Context as MenuContext, Bar, ActionsProvider } from '@ariob/ripple';
-import { actions, feedConfig, nodeMenus, handleAction } from '../config';
-
-export default function Layout() {
-  return (
-    <ActionsProvider config={{ actions, feedConfig, nodeMenus, onAction: handleAction }}>
-      <Stack />
-      <Bar />
-      <MenuContext />
-    </ActionsProvider>
-  );
+```json
+{
+  "react": "^18.0.0 || ^19.0.0",
+  "react-native": ">=0.71.0",
+  "react-native-unistyles": "^2.0.0",
+  "zod": "^3.23.0"
 }
 ```
 
@@ -351,19 +331,20 @@ export default function Layout() {
 
 ## Documentation
 
-For comprehensive documentation with full API references, prop tables, and detailed examples:
-
 | Document | Description |
 |----------|-------------|
-| [README](../../docs/ripple/README.md) | Overview and quick start |
-| [SETUP](../../docs/ripple/SETUP.md) | Installation and configuration |
-| [MENU](../../docs/ripple/MENU.md) | Action system, Bar, Context, hooks |
-| [NODES](../../docs/ripple/NODES.md) | Content type components |
-| [GESTURES](../../docs/ripple/GESTURES.md) | Touch interaction handlers |
-| [HOOKS](../../docs/ripple/HOOKS.md) | React hooks reference |
-| [STYLES](../../docs/ripple/STYLES.md) | Theme tokens and effects |
-| [DEGREES](../../docs/ripple/DEGREES.md) | Five Degrees of Visibility |
-| [TROUBLESHOOTING](../../docs/ripple/TROUBLESHOOTING.md) | Common issues and solutions |
+| [Overview](../../docs/ripple/README.md) | Quick start and overview |
+| [Architecture](../../docs/ripple/ARCHITECTURE.md) | Design patterns and decisions |
+| [Bar](../../docs/ripple/MENU.md) | Slot-based bar system |
+| [Nodes](../../docs/ripple/NODES.md) | Creating app-specific nodes |
+| [Registry](../../docs/ripple/REGISTRY.md) | Schema-driven action system |
+| [Search](../../docs/ripple/SEARCH.md) | Decentralized search |
+| [Primitives](../../docs/ripple/PRIMITIVES.md) | Base components |
+| [Hooks](../../docs/ripple/HOOKS.md) | React hooks reference |
+| [Styles](../../docs/ripple/STYLES.md) | Theme tokens |
+| [Degrees](../../docs/ripple/DEGREES.md) | Five Degrees of Visibility |
+| [Integration](../../docs/ripple/INTEGRATION.md) | App integration guide |
+| [API Reference](../../docs/ripple/API.md) | Complete API |
 
 ---
 

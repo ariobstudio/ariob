@@ -1,10 +1,12 @@
 # Hooks
 
-React hooks for feed management and navigation.
+React hooks for feed management, navigation, and search.
 
 ---
 
 ## Overview
+
+### Core Hooks
 
 | Hook | Purpose |
 |------|---------|
@@ -13,6 +15,21 @@ React hooks for feed management and navigation.
 | [useFeedConfig](#usefeedconfig) | Get degree feed config |
 | [useNodeMenu](#usenodemenu) | Get node type menu |
 | [useAction](#useaction) | Get single action |
+
+### Search Hooks
+
+| Hook | Purpose |
+|------|---------|
+| [useSearch](#usesearch) | Unified search with type switching |
+| [useUserSearch](#useusersearch) | Search users by alias |
+| [useHashtagSearch](#usehashtagsearch) | Search posts by hashtag |
+
+### Bar Hooks
+
+| Hook | Purpose |
+|------|---------|
+| [useBar](#usebar) | Control the action bar |
+| [useNodeBar](#usenodebar) | Schema-driven action bar (advanced) |
 
 ---
 
@@ -502,3 +519,338 @@ function FeedScreen() {
   );
 }
 ```
+
+---
+
+## useSearch
+
+Unified search hook with type switching and debouncing.
+
+### Import
+
+```typescript
+import { useSearch } from '@ariob/ripple';
+```
+
+### API
+
+```typescript
+const search = useSearch(config?: SearchConfig);
+
+interface SearchConfig {
+  type?: 'users' | 'hashtags' | 'all';
+  debounce?: number;    // Default: 300ms
+  minLength?: number;   // Default: 2
+  enabled?: boolean;
+}
+
+interface Search {
+  query: string;
+  setQuery: (query: string) => void;
+  type: SearchType;
+  setType: (type: SearchType) => void;
+  results: SearchResults;
+  isSearching: boolean;
+  error: Error | null;
+  clear: () => void;
+}
+```
+
+### Example
+
+```typescript
+function SearchScreen() {
+  const search = useSearch({ type: 'users', debounce: 300 });
+
+  return (
+    <View>
+      <TextInput
+        value={search.query}
+        onChangeText={search.setQuery}
+        placeholder="Search users..."
+      />
+
+      {search.isSearching && <ActivityIndicator />}
+
+      <FlatList
+        data={search.results.users}
+        renderItem={({ item }) => (
+          <UserCard user={item} />
+        )}
+      />
+    </View>
+  );
+}
+```
+
+---
+
+## useUserSearch
+
+Focused hook for searching users.
+
+### Import
+
+```typescript
+import { useUserSearch } from '@ariob/ripple';
+```
+
+### API
+
+```typescript
+const userSearch = useUserSearch(query: string);
+
+interface UserSearch {
+  results: UserSearchResult[];
+  isLoading: boolean;
+  error: Error | null;
+  refetch: () => Promise<void>;
+}
+```
+
+### Example
+
+```typescript
+function UserSearchResults({ query }) {
+  const { results, isLoading, error } = useUserSearch(query);
+
+  if (isLoading) return <ActivityIndicator />;
+  if (error) return <Text>Error: {error.message}</Text>;
+
+  return (
+    <FlatList
+      data={results}
+      renderItem={({ item }) => (
+        <Press onPress={() => router.push(`/user/${item.pub}`)}>
+          <Avatar source={item.avatar} fallback={item.alias[0]} />
+          <Text>{item.alias}</Text>
+          {item.name && <Text variant="caption">{item.name}</Text>}
+        </Press>
+      )}
+    />
+  );
+}
+```
+
+---
+
+## useHashtagSearch
+
+Focused hook for searching posts by hashtag.
+
+### Import
+
+```typescript
+import { useHashtagSearch } from '@ariob/ripple';
+```
+
+### API
+
+```typescript
+const hashtagSearch = useHashtagSearch(tag: string);
+
+interface HashtagSearch {
+  refs: HashtagRef[];
+  posts: Post[];
+  isLoading: boolean;
+  error: Error | null;
+  refetch: () => Promise<void>;
+}
+```
+
+### Example
+
+```typescript
+function HashtagPosts({ tag }) {
+  const { posts, isLoading } = useHashtagSearch(tag);
+
+  return (
+    <View>
+      <Text variant="heading">#{tag}</Text>
+      <FlatList
+        data={posts}
+        renderItem={({ item }) => (
+          <NodeView data={item} />
+        )}
+        ListEmptyComponent={
+          isLoading ? <Ghost message="Loading..." /> : <Ghost message="No posts found" />
+        }
+      />
+    </View>
+  );
+}
+```
+
+---
+
+## useBar
+
+Control the global action bar via stack-based navigation.
+
+### Import
+
+```typescript
+import { useBar } from '@ariob/ripple';
+import { useFocusEffect } from 'expo-router';
+```
+
+### API
+
+```typescript
+const bar = useBar();
+
+interface BarActions {
+  // Stack operations
+  push: (frame: BarFrame) => void;
+  pop: () => void;
+  replace: (frame: BarFrame) => void;
+  reset: () => void;
+
+  // Quick helpers
+  setActions: (actions: FrameActions) => void;
+  openInput: (config?: InputConfig) => void;
+  openSheet: (content: ReactNode) => void;
+
+  // Input state
+  setInputValue: (value: string) => void;
+  clearInputValue: () => void;
+}
+
+interface FrameActions {
+  leading?: ActionSlot[];   // Left buttons
+  primary?: ActionSlot;     // Center button
+  trailing?: ActionSlot[];  // Right buttons
+}
+```
+
+### Example
+
+```typescript
+function FeedScreen() {
+  const bar = useBar();
+
+  const handleCompose = useCallback(() => {
+    bar.openSheet(<ComposeSheet onClose={() => bar.pop()} />);
+  }, [bar]);
+
+  // Use useFocusEffect to reset bar when screen gains focus
+  useFocusEffect(
+    useCallback(() => {
+      bar.setActions({
+        primary: { icon: 'add', onPress: handleCompose },
+        trailing: [{ icon: 'search', onPress: openSearch }],
+      });
+    }, [bar.setActions, handleCompose])
+  );
+
+  return <FeedList />;
+}
+```
+
+### Profile Screen Example
+
+```typescript
+function ProfileScreen() {
+  const bar = useBar();
+
+  const handleBack = useCallback(() => router.back(), []);
+  const handleEdit = useCallback(() => console.log('Edit'), []);
+
+  useFocusEffect(
+    useCallback(() => {
+      bar.setActions({
+        leading: [{ icon: 'arrow-back', onPress: handleBack }],
+        primary: { icon: 'pencil', onPress: handleEdit },
+      });
+    }, [bar.setActions, handleBack, handleEdit])
+  );
+
+  return <ProfileContent />;
+}
+```
+
+### Important Notes
+
+1. **Use `useFocusEffect`** instead of `useEffect` - ensures bar resets when navigating back
+2. **Use `bar.setActions`** in dependencies, not `bar` - avoids infinite loops
+3. **Use refs** for callbacks that change frequently
+
+---
+
+## useNodeBar
+
+Schema-driven action bar for node-aware UIs. Advanced hook that uses the registry.
+
+### Import
+
+```typescript
+import { useNodeBar, NodeBarProvider } from '@ariob/ripple';
+```
+
+### API
+
+```typescript
+const bar = useNodeBar(config: NodeBarConfig);
+
+interface NodeBarConfig {
+  node: NodeData;
+  userId?: string;
+  degree: Degree;
+  variant: Variant;
+  onNavigate?: (path: string) => void;
+}
+
+interface NodeBarState {
+  primary: RegisteredAction[];
+  secondary: RegisteredAction[];
+  execute: (verb: string) => Promise<void>;
+  loading: string | null;
+}
+```
+
+### Example
+
+```typescript
+function NodeDetail({ node }) {
+  const bar = useNodeBar({
+    node,
+    userId: currentUser?.id,
+    degree: '1',
+    variant: 'full',
+    onNavigate: (path) => router.push(path),
+  });
+
+  return (
+    <View>
+      <NodeContent data={node} />
+
+      <ActionBar>
+        {bar.primary.map((action) => (
+          <ActionButton
+            key={action.meta.verb}
+            icon={action.meta.icon}
+            label={action.meta.label}
+            onPress={() => bar.execute(action.meta.verb)}
+            loading={bar.loading === action.meta.verb}
+          />
+        ))}
+      </ActionBar>
+    </View>
+  );
+}
+
+// Wrap app with provider
+<NodeBarProvider>
+  <App />
+</NodeBarProvider>
+```
+
+See [REGISTRY.md](./REGISTRY.md) for more details on the schema-driven action system.
+
+---
+
+## Related Documentation
+
+- [Menu System](./MENU.md) - Action bar and context menu
+- [Search](./SEARCH.md) - Full search documentation
+- [Registry](./REGISTRY.md) - Schema-driven actions

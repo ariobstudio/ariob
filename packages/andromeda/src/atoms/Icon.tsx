@@ -15,7 +15,7 @@
  */
 
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../tokens';
+import { useUnistyles } from 'react-native-unistyles';
 
 /**
  * Available icon sizes
@@ -46,21 +46,23 @@ const sizes: Record<IconSize, number> = {
   lg: 28,
 };
 
-/** Color values from tokens */
-const colorMap: Record<IconColor, string> = {
-  text: colors.text,
-  dim: colors.dim,
-  faint: colors.faint,
-  accent: colors.accent,
-  success: colors.success,
-  warn: colors.warn,
-  danger: colors.danger,
-};
-
 /**
  * Icon atom from Ionicons with semantic colors.
- * Uses design tokens - no hardcoded values.
+ * Uses theme-aware colors for dark/light mode support.
  */
 export function Icon({ name, size = 'md', color = 'text' }: IconProps) {
+  const { theme } = useUnistyles();
+
+  // Map semantic color to theme color
+  const colorMap: Record<IconColor, string> = {
+    text: theme.colors.text,
+    dim: theme.colors.dim,
+    faint: theme.colors.faint,
+    accent: theme.colors.accent,
+    success: theme.colors.success,
+    warn: theme.colors.warn,
+    danger: theme.colors.danger,
+  };
+
   return <Ionicons name={name as any} size={sizes[size]} color={colorMap[color]} />;
 }

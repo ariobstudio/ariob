@@ -1,21 +1,24 @@
 /**
  * Content Schemas
  *
- * Zod schemas for Ripple content types: Posts, Messages, and unified FeedItems.
+ * Zod schemas for Ripple content types: Posts, Messages, Profiles, AI, and unified FeedItems.
  * All content extends the Thing schema with unique type discriminators.
+ *
+ * Following the Node architecture:
+ * - Node = Schema + Renderer + Actions
+ * - Each node type defines default actions driven by schema
  */
 
-import { Thing, z } from '@ariob/core';
+import { Thing, Who, z } from '@ariob/core';
+import { NodeMeta, DegreeEnum, VariantEnum, defaults } from './nodes/_shared';
 
-/**
- * Degree type - visibility scope for content
- * - 0: Me (personal posts/settings)
- * - 1: Friends (direct connections)
- * - 2: World (friends-of-friends, public)
- * - 3: Discover (recommendations, trending)
- * - 4: Noise (filtered, bots, spam)
- */
-export const DegreeEnum = z.enum(['0', '1', '2', '3', '4']);
+// Re-export for consumers
+export { VariantEnum, NodeMeta, defaults, DegreeEnum } from './nodes/_shared';
+
+/** Variant type - render mode for nodes */
+export type Variant = z.infer<typeof VariantEnum>;
+
+/** Degree type - visibility scope for content */
 export type Degree = z.infer<typeof DegreeEnum>;
 
 /** Degree labels */
@@ -134,3 +137,229 @@ export function createThreadId(pubKeyA: string, pubKeyB: string): string {
   const sorted = [pubKeyA, pubKeyB].sort();
   return `thread-${sorted[0].substring(0, 8)}-${sorted[1].substring(0, 8)}`;
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Search Schemas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * User Search Result Schema
+ *
+ * Result item from searching the public profile index.
+ * Contains minimal info for display in search results.
+ */
+export const UserSearchResultSchema = z.object({
+  pub: z.string(),
+  alias: z.string(),
+  name: z.string().optional(),
+  avatar: z.string().optional(),
+  bio: z.string().optional(),
+});
+
+export type UserSearchResult = z.infer<typeof UserSearchResultSchema>;
+
+/**
+ * Hashtag Reference Schema
+ *
+ * Reference stored in the hashtag index pointing to a post.
+ */
+export const HashtagRefSchema = z.object({
+  postId: z.string(),
+  postAuthor: z.string(),
+  created: z.number(),
+});
+
+export type HashtagRef = z.infer<typeof HashtagRefSchema>;
+
+/**
+ * Public Profile Index Schema
+ *
+ * Profile data stored in `public/profiles/{pubKey}` for discoverability.
+ */
+export const PublicProfileSchema = z.object({
+  pub: z.string(),
+  alias: z.string(),
+  name: z.string().optional(),
+  avatar: z.string().optional(),
+  bio: z.string().optional(),
+  indexed: z.number(),
+});
+
+export type PublicProfile = z.infer<typeof PublicProfileSchema>;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Node Schemas (Schema-Driven Architecture)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * ProfileNode Schema
+ *
+ * Represents a user identity in the social graph.
+ * Extends Who (cryptographic identity) with social metadata.
+ *
+ * Default actions driven by ownership and context:
+ * - edit (owner only)
+ * - connect (non-owner)
+ * - message
+ * - share
+ * - block
+ */
+export const ProfileNodeSchema = Who.merge(NodeMeta).extend({
+  type: z.literal('profile'),
+
+  // Display info
+  displayName: z.string().min(1).max(50),
+  handle: z.string().regex(/^[a-z0-9_]{2,20}$/).optional(),
+  bio: z.string().max(160).optional(),
+  avatar: z.string().url().optional(),
+  cover: z.string().url().optional(),
+
+  // Social proof
+  pronouns: z.string().max(20).optional(),
+  location: z.string().max(50).optional(),
+  website: z.string().url().optional(),
+  verified: z.boolean().default(false),
+
+  // Stats (computed)
+  stats: z.object({
+    posts: z.number().default(0),
+    connections: z.number().default(0),
+    degree1: z.number().default(0), // Direct friends
+    degree2: z.number().default(0), // Friends of friends
+  }).default({}),
+
+  // Settings
+  discoverability: z.enum(['open', 'connections', 'private']).default('open'),
+  dmSettings: z.enum(['anyone', 'connections', 'none']).default('connections'),
+
+  // Default actions for profile nodes
+  actions: defaults(['edit', 'connect', 'message', 'share', 'block']),
+});
+
+export type ProfileNode = z.infer<typeof ProfileNodeSchema>;
+
+/**
+ * Type guard for ProfileNode
+ */
+export function isProfileNode(node: unknown): node is ProfileNode {
+  return ProfileNodeSchema.safeParse(node).success;
+}
+
+/**
+ * Topic Schema
+ *
+ * A topic category for AI conversations.
+ * Topics group related threads together.
+ */
+export const TopicSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1).max(50),
+  icon: z.string().optional(), // Emoji or icon name
+  lastActive: z.number(),
+  threadCount: z.number().default(0),
+  summary: z.string().max(200).optional(),
+});
+
+export type Topic = z.infer<typeof TopicSchema>;
+
+/**
+ * AIThread Schema
+ *
+ * A conversation thread within a topic.
+ */
+export const AIThreadSchema = z.object({
+  id: z.string(),
+  topicId: z.string(),
+  title: z.string().max(100).optional(), // AI-generated title
+  preview: z.string().max(200), // Last message preview
+  createdAt: z.number(),
+  updatedAt: z.number(),
+  messageCount: z.number().default(0),
+});
+
+export type AIThread = z.infer<typeof AIThreadSchema>;
+
+/**
+ * AINode Schema
+ *
+ * Personal AI assistant node.
+ * Organizes conversations into topics and threads.
+ *
+ * Default actions:
+ * - expand (navigate to full chat)
+ * - chat (continue current thread)
+ * - new-topic (start new topic)
+ * - topics (view all topics)
+ */
+export const AINodeSchema = Thing.merge(NodeMeta).extend({
+  type: z.literal('ai'),
+
+  // AI identity
+  name: z.string().default('Claude'),
+  subtitle: z.string().default('Personal Assistant'),
+  avatar: z.string().optional(),
+  model: z.string().default('claude-sonnet'),
+
+  // Topic-based organization
+  topics: z.array(TopicSchema).default([]),
+  activeTopicId: z.string().optional(),
+
+  // Current session
+  currentThread: AIThreadSchema.optional(),
+
+  // Stats
+  stats: z.object({
+    totalThreads: z.number().default(0),
+    totalMessages: z.number().default(0),
+    topicsCount: z.number().default(0),
+    lastActive: z.number().optional(),
+  }).default({}),
+
+  // Default actions for AI node
+  actions: defaults(['expand', 'chat', 'new-topic', 'topics']),
+});
+
+export type AINode = z.infer<typeof AINodeSchema>;
+
+/**
+ * Type guard for AINode
+ */
+export function isAINode(node: unknown): node is AINode {
+  return AINodeSchema.safeParse(node).success;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Node Union Type
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * All node types as discriminated union
+ */
+export const NodeSchema = z.discriminatedUnion('type', [
+  PostSchema,
+  ThreadMetadataSchema,
+  ProfileNodeSchema,
+  AINodeSchema,
+]);
+
+export type Node = z.infer<typeof NodeSchema>;
+
+/**
+ * Node type literal union
+ */
+export type NodeType = Node['type'];
+
+/**
+ * Extract node type from discriminated union
+ */
+export type NodeOfType<T extends NodeType> = Extract<Node, { type: T }>;
+
+/**
+ * Type guard map for all node types
+ */
+export const nodeGuards = {
+  post: isPost,
+  thread: isThread,
+  profile: isProfileNode,
+  ai: isAINode,
+} as const;

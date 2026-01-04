@@ -1,10 +1,11 @@
 {
   "name": "@ariob/relay",
   "version": "1.0.0",
-  "description": "GUN Relay Server",
+  "description": "GUN Relay Server with ExecuTorch Model Hosting",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "download": "./download.sh"
   },
   "keywords": [],
   "author": "",

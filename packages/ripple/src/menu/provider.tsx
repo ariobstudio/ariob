@@ -267,3 +267,23 @@ export function useActions() {
     [ctx, getAction, handleAction]
   );
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Factory Helpers (type inference)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Helper to create feed configs with type inference.
+ * Just returns the input - exists for TypeScript convenience.
+ */
+export function createFeedConfigs<T extends Record<number, FeedConfig>>(config: T): T {
+  return config;
+}
+
+/**
+ * Helper to create node menus with type inference.
+ * Just returns the input - exists for TypeScript convenience.
+ */
+export function createNodeMenus<T extends Record<string, NodeMenu>>(config: T): T {
+  return config;
+}
