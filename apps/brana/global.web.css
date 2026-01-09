@@ -1,0 +1,345 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+/* Editor Container */
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #000;
+  color: #fff;
+  font-family: 'IBM Plex Mono', 'SF Mono', 'Menlo', monospace;
+  padding: 48px 0 16px 0;
+  min-height: 100%;
+}
+
+.editor-content {
+  flex: 1;
+  outline: none;
+}
+
+/* ProseMirror Editor Styles */
+.ProseMirror {
+  outline: none;
+  color: #fff;
+  font-family: 'IBM Plex Mono', 'SF Mono', 'Menlo', monospace;
+  font-size: 17px;
+  line-height: 1.625;
+  caret-color: #007AFF;
+  padding: 0 24px; /* Side padding for content readability */
+  letter-spacing: -0.01em;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+/* Placeholder - only show when entire editor is empty */
+.ProseMirror p.is-empty.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #636366;
+  pointer-events: none;
+  float: left;
+  height: 0;
+  font-style: italic;
+}
+
+/* Alternative placeholder selector for Tiptap */
+.ProseMirror.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #636366;
+  pointer-events: none;
+  float: left;
+  height: 0;
+  font-style: italic;
+}
+
+/* Paragraphs */
+.ProseMirror p {
+  margin: 0 0 1em 0;
+}
+
+/* Headings */
+.ProseMirror h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 0.75em 0;
+  color: #fff;
+}
+
+.ProseMirror h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 0.75em 0;
+  color: #8E8E93;
+}
+
+.ProseMirror h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 0.75em 0;
+  color: #8E8E93;
+}
+
+/* Lists */
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 1.5em;
+  margin: 0 0 1em 0;
+}
+
+.ProseMirror li {
+  margin-bottom: 0.25em;
+}
+
+.ProseMirror li p {
+  margin: 0;
+}
+
+/* Bullet list */
+.ProseMirror ul {
+  list-style-type: disc;
+}
+
+.ProseMirror ul ul {
+  list-style-type: circle;
+}
+
+.ProseMirror ul ul ul {
+  list-style-type: square;
+}
+
+/* Ordered list */
+.ProseMirror ol {
+  list-style-type: decimal;
+}
+
+/* Blockquote */
+.ProseMirror blockquote {
+  border-left: 3px solid #007AFF;
+  padding-left: 1em;
+  margin: 0 0 1em 0;
+  color: #8E8E93;
+  font-style: italic;
+}
+
+/* Code */
+.ProseMirror code {
+  background-color: #1C1C1E;
+  color: #FF453A;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.9em;
+}
+
+.ProseMirror pre {
+  background-color: #1C1C1E;
+  color: #fff;
+  padding: 1em;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 0 0 1em 0;
+}
+
+.ProseMirror pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+
+/* Horizontal rule */
+.ProseMirror hr {
+  border: none;
+  border-top: 1px solid #38383A;
+  margin: 1.5em 0;
+}
+
+/* Bold and Italic */
+.ProseMirror strong {
+  font-weight: 700;
+}
+
+.ProseMirror em {
+  font-style: italic;
+}
+
+/* Strikethrough */
+.ProseMirror s {
+  text-decoration: line-through;
+}
+
+/* Selection */
+.ProseMirror ::selection {
+  background-color: rgba(0, 122, 255, 0.3);
+}
+
+/* Cursor */
+.ProseMirror .ProseMirror-cursor {
+  border-left: 2px solid #007AFF;
+}
+
+/* Task List */
+.ProseMirror ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 1em 0;
+}
+
+.ProseMirror ul[data-type="taskList"] li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
+  line-height: 1.4;
+}
+
+.ProseMirror ul[data-type="taskList"] li > label {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.ProseMirror ul[data-type="taskList"] input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  border: 2px solid #636366;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.ProseMirror ul[data-type="taskList"] input[type="checkbox"]:checked {
+  background-color: #007AFF;
+  border-color: #007AFF;
+}
+
+.ProseMirror ul[data-type="taskList"] input[type="checkbox"]:checked::before {
+  content: '✓';
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.ProseMirror ul[data-type="taskList"] li[data-checked="true"] > div > p {
+  text-decoration: line-through;
+  color: #8E8E93;
+}
+
+.ProseMirror ul[data-type="taskList"] li > div {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.ProseMirror ul[data-type="taskList"] li > div > p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Nested task lists */
+.ProseMirror ul[data-type="taskList"] ul[data-type="taskList"] {
+  margin-top: 0.5em;
+  margin-left: 1.5em;
+}
+
+/* Links */
+.ProseMirror a,
+.ProseMirror .editor-link {
+  color: #007AFF;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ProseMirror a:hover,
+.ProseMirror .editor-link:hover {
+  text-decoration: underline;
+}
+
+/* Bubble Menu */
+.bubble-menu {
+  display: flex;
+  background: #1C1C1E;
+  border-radius: 8px;
+  padding: 4px;
+  gap: 2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid #38383A;
+}
+
+.bubble-menu button {
+  background: transparent;
+  border: none;
+  color: #8E8E93;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.bubble-menu button:hover {
+  background: #2C2C2E;
+  color: #fff;
+}
+
+.bubble-menu button.is-active {
+  color: #fff;
+  background: #007AFF;
+}
+
+/* Space Command Menu */
+.space-command-menu {
+  background: #1C1C1E;
+  border-radius: 8px;
+  padding: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid #38383A;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  z-index: 100;
+}
+
+.space-command-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #fff;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  transition: all 0.15s ease;
+  min-width: 56px;
+}
+
+.space-command-item:hover {
+  background: #2C2C2E;
+}
+
+.space-command-icon {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #8E8E93;
+}
+
+.space-command-title {
+  font-size: 10px;
+  color: #636366;
+  white-space: nowrap;
+}
