@@ -19,14 +19,14 @@ export function ToolbarIconButton({
   const iconColor = active
     ? '#FFFFFF'
     : disabled
-      ? '#48484A'
+      ? '#636366'
       : '#8E8E93';
 
   return (
     <Pressable
       className={`px-3 py-2.5 rounded-lg mx-0.5 min-w-[44px] items-center justify-center ${
         active ? 'bg-blue-500' : ''
-      } ${disabled ? 'opacity-40' : ''}`}
+      }`}
       onPress={onPress}
       disabled={disabled}
       style={({ pressed }) => [

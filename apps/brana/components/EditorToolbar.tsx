@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, TextInput, Pressable } from 'react-native';
-import { KeyboardStickyView } from 'react-native-keyboard-controller';
+import { KeyboardStickyView, KeyboardController } from 'react-native-keyboard-controller';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { ToolbarIconButton } from './ToolbarIconButton';
 import type { EditorState, EditorCommand } from '../types/editor';
@@ -9,9 +9,10 @@ import { getToolbarContext } from '../types/editor';
 interface EditorToolbarProps {
   editorState: EditorState;
   onAction: (command: EditorCommand) => void;
+  isKeyboardVisible?: boolean;
 }
 
-export function EditorToolbar({ editorState, onAction }: EditorToolbarProps) {
+export function EditorToolbar({ editorState, onAction, isKeyboardVisible = false }: EditorToolbarProps) {
   const [isLinkInputMode, setIsLinkInputMode] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
 
@@ -42,6 +43,13 @@ export function EditorToolbar({ editorState, onAction }: EditorToolbarProps) {
   };
 
   const renderContent = () => {
+    // When keyboard is hidden, always show default mode
+    if (!isKeyboardVisible) {
+      return (
+        <DefaultToolbarContent editorState={editorState} onAction={onAction} isKeyboardVisible={isKeyboardVisible} />
+      );
+    }
+
     switch (context) {
       case 'link-input':
         return (
@@ -62,110 +70,110 @@ export function EditorToolbar({ editorState, onAction }: EditorToolbarProps) {
         );
       case 'list':
         return (
-          <ListToolbarContent editorState={editorState} onAction={onAction} />
+          <ListToolbarContent editorState={editorState} onAction={onAction} isKeyboardVisible={isKeyboardVisible} />
         );
       default:
         return (
-          <DefaultToolbarContent editorState={editorState} onAction={onAction} />
+          <DefaultToolbarContent editorState={editorState} onAction={onAction} isKeyboardVisible={isKeyboardVisible} />
         );
     }
   };
 
   return (
     <KeyboardStickyView offset={{ closed: 0, opened: 0 }}>
-      <View className="px-2 py-1.5">{renderContent()}</View>
+      <View className="px-2 py-1.5 bg-black">{renderContent()}</View>
     </KeyboardStickyView>
   );
 }
 
-function DefaultToolbarContent({ editorState, onAction }: EditorToolbarProps) {
+function DefaultToolbarContent({ editorState, onAction, isKeyboardVisible }: EditorToolbarProps) {
   return (
     <View className="flex-row items-center">
-      <View className="flex-row items-center">
-        <ToolbarIconButton
-          icon="heading"
-          label="1"
-          active={editorState.headingLevel === 1}
-          onPress={() => onAction({ type: 'setHeading', level: 1 })}
-        />
-        <ToolbarIconButton
-          icon="heading"
-          label="2"
-          active={editorState.headingLevel === 2}
-          onPress={() => onAction({ type: 'setHeading', level: 2 })}
-        />
-        <ToolbarIconButton
-          icon="quote-left"
-          active={editorState.isBlockquote}
-          onPress={() => onAction({ type: 'toggleBlockquote' })}
-        />
-      </View>
+      <ToolbarIconButton
+        icon="heading"
+        label="1"
+        active={editorState.headingLevel === 1}
+        onPress={() => onAction({ type: 'setHeading', level: 1 })}
+      />
+      <ToolbarIconButton
+        icon="heading"
+        label="2"
+        active={editorState.headingLevel === 2}
+        onPress={() => onAction({ type: 'setHeading', level: 2 })}
+      />
+      <ToolbarIconButton
+        icon="quote-left"
+        active={editorState.isBlockquote}
+        onPress={() => onAction({ type: 'toggleBlockquote' })}
+      />
+      <ToolbarIconButton
+        icon="list-ul"
+        active={editorState.isBulletList}
+        onPress={() => onAction({ type: 'toggleBulletList' })}
+      />
+      <ToolbarIconButton
+        icon="square-check"
+        active={editorState.isTaskList}
+        onPress={() => onAction({ type: 'toggleTaskList' })}
+      />
       <View className="w-px h-6 bg-neutral-700 mx-2" />
-      <View className="flex-row items-center">
+      <ToolbarIconButton
+        icon="scissors"
+        onPress={() => onAction({ type: 'createNewPaper' })}
+      />
+      {isKeyboardVisible && (
         <ToolbarIconButton
-          icon="list-ul"
-          active={editorState.isBulletList}
-          onPress={() => onAction({ type: 'toggleBulletList' })}
+          icon="keyboard"
+          onPress={() => KeyboardController.dismiss()}
         />
-        <ToolbarIconButton
-          icon="square-check"
-          active={editorState.isTaskList}
-          onPress={() => onAction({ type: 'toggleTaskList' })}
-        />
-        <ToolbarIconButton
-          icon="scissors"
-          onPress={() => onAction({ type: 'createNewPaper' })}
-        />
-      </View>
+      )}
     </View>
   );
 }
 
-function ListToolbarContent({ editorState, onAction }: EditorToolbarProps) {
+function ListToolbarContent({ editorState, onAction, isKeyboardVisible }: EditorToolbarProps) {
   return (
     <View className="flex-row items-center">
-      <View className="flex-row items-center">
+      <ToolbarIconButton
+        icon="list-ul"
+        active={editorState.isBulletList}
+        onPress={() => onAction({ type: 'toggleBulletList' })}
+      />
+      <ToolbarIconButton
+        icon="list-ol"
+        active={editorState.isOrderedList}
+        onPress={() => onAction({ type: 'toggleOrderedList' })}
+      />
+      <ToolbarIconButton
+        icon="square-check"
+        active={editorState.isTaskList}
+        onPress={() => onAction({ type: 'toggleTaskList' })}
+      />
+      <ToolbarIconButton
+        icon="outdent"
+        onPress={() => onAction({ type: 'outdent' })}
+        disabled={editorState.listDepth <= 1}
+      />
+      <ToolbarIconButton
+        icon="indent"
+        onPress={() => onAction({ type: 'indent' })}
+      />
+      <ToolbarIconButton
+        icon="arrow-up"
+        onPress={() => onAction({ type: 'moveUp' })}
+        disabled={editorState.listItemIndex === 0}
+      />
+      <ToolbarIconButton
+        icon="arrow-down"
+        onPress={() => onAction({ type: 'moveDown' })}
+        disabled={editorState.listItemIndex >= editorState.listLength - 1}
+      />
+      {isKeyboardVisible && (
         <ToolbarIconButton
-          icon="list-ul"
-          active={editorState.isBulletList}
-          onPress={() => onAction({ type: 'toggleBulletList' })}
+          icon="keyboard"
+          onPress={() => KeyboardController.dismiss()}
         />
-        <ToolbarIconButton
-          icon="list-ol"
-          active={editorState.isOrderedList}
-          onPress={() => onAction({ type: 'toggleOrderedList' })}
-        />
-        <ToolbarIconButton
-          icon="square-check"
-          active={editorState.isTaskList}
-          onPress={() => onAction({ type: 'toggleTaskList' })}
-        />
-      </View>
-      <View className="w-px h-6 bg-neutral-700 mx-2" />
-      <View className="flex-row items-center">
-        <ToolbarIconButton
-          icon="outdent"
-          onPress={() => onAction({ type: 'outdent' })}
-          disabled={editorState.listDepth <= 1}
-        />
-        <ToolbarIconButton
-          icon="indent"
-          onPress={() => onAction({ type: 'indent' })}
-        />
-      </View>
-      <View className="w-px h-6 bg-neutral-700 mx-2" />
-      <View className="flex-row items-center">
-        <ToolbarIconButton
-          icon="arrow-up"
-          onPress={() => onAction({ type: 'moveUp' })}
-          disabled={editorState.listItemIndex === 0}
-        />
-        <ToolbarIconButton
-          icon="arrow-down"
-          onPress={() => onAction({ type: 'moveDown' })}
-          disabled={editorState.listItemIndex >= editorState.listLength - 1}
-        />
-      </View>
+      )}
     </View>
   );
 }
@@ -181,23 +189,26 @@ function SelectionToolbarContent({
 }: SelectionToolbarContentProps) {
   return (
     <View className="flex-row items-center">
-      <View className="flex-row items-center">
-        <ToolbarIconButton
-          icon="bold"
-          active={editorState.isBold}
-          onPress={() => onAction({ type: 'toggleBold' })}
-        />
-        <ToolbarIconButton
-          icon="strikethrough"
-          active={editorState.isStrike}
-          onPress={() => onAction({ type: 'toggleStrike' })}
-        />
-        <ToolbarIconButton
-          icon="link"
-          active={editorState.isLink}
-          onPress={onLinkPress}
-        />
-      </View>
+      <ToolbarIconButton
+        icon="bold"
+        active={editorState.isBold}
+        onPress={() => onAction({ type: 'toggleBold' })}
+      />
+      <ToolbarIconButton
+        icon="italic"
+        active={editorState.isItalic}
+        onPress={() => onAction({ type: 'toggleItalic' })}
+      />
+      <ToolbarIconButton
+        icon="strikethrough"
+        active={editorState.isStrike}
+        onPress={() => onAction({ type: 'toggleStrike' })}
+      />
+      <ToolbarIconButton
+        icon="link"
+        active={editorState.isLink}
+        onPress={onLinkPress}
+      />
     </View>
   );
 }

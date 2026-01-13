@@ -7,52 +7,22 @@ import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
 import Placeholder from '@tiptap/extension-placeholder';
 import { Extension } from '@tiptap/core';
-import { useEffect, useRef, useMemo, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useMemo, useState, useCallback } from 'react';
 import type { Editor } from '@tiptap/react';
-import { TextSelection } from '@tiptap/pm/state';
 
-const placeholders = [
-  "What's on your mind?",
-  "Start writing...",
-  "Capture your thoughts...",
-  "Write something amazing...",
-  "Let your ideas flow...",
-  "Begin your story...",
-  "What are you thinking about?",
-  "Jot down your ideas...",
-  "Express yourself...",
-  "Start creating...",
-];
+// Shared utilities
+import { extractEditorState, executeCommand } from '../utils/editor';
+import { getRandomPlaceholder } from '../constants/placeholders';
+import { blockCommands, inlineCommands, listCommands, type MenuCommand } from '../constants/menuCommands';
+import type { EditorState, PendingCommand } from '../types/editor';
 
-interface EditorState {
-  headingLevel: 0 | 1 | 2;
-  isBulletList: boolean;
-  isOrderedList: boolean;
-  isBlockquote: boolean;
-  listDepth: number;
-  listItemIndex: number;
-  listLength: number;
-  isEmpty: boolean;
-  hasSelection: boolean;
-  isBold: boolean;
-  isStrike: boolean;
-  isLink: boolean;
-  linkUrl: string | null;
-  isTaskList: boolean;
-  canUndo: boolean;
-  canRedo: boolean;
-}
+// Hooks
+import { useBlockInfo, type BlockInfo } from '../hooks';
+import { clampMenuPosition } from '../hooks/useMenuPosition';
 
-interface EditorCommand {
-  type: string;
-  level?: number;
-  url?: string;
-}
-
-interface PendingCommand {
-  id: string;
-  command: EditorCommand;
-}
+// Components
+import { BlockIndicator } from '../components/indicators';
+import { BlockMenu, SelectionMenu } from '../components/menus';
 
 interface EditorProps {
   onStateChange: (state: EditorState) => Promise<void>;
@@ -63,244 +33,75 @@ interface EditorProps {
   dom?: import('expo/dom').DOMProps;
 }
 
-interface SpaceMenuCommand {
-  title: string;
-  icon: string;
-  command: (editor: Editor) => void;
-}
 
-const spaceMenuCommands: SpaceMenuCommand[] = [
-  {
-    title: 'Heading 1',
-    icon: 'H1',
-    command: (editor) => editor.chain().focus().toggleHeading({ level: 1 }).run(),
-  },
-  {
-    title: 'Heading 2',
-    icon: 'H2',
-    command: (editor) => editor.chain().focus().toggleHeading({ level: 2 }).run(),
-  },
-  {
-    title: 'Quote',
-    icon: '❝',
-    command: (editor) => editor.chain().focus().toggleBlockquote().run(),
-  },
-  {
-    title: 'Bullet List',
-    icon: '•',
-    command: (editor) => editor.chain().focus().toggleBulletList().run(),
-  },
-  {
-    title: 'Numbered List',
-    icon: '1.',
-    command: (editor) => editor.chain().focus().toggleOrderedList().run(),
-  },
-  {
-    title: 'Task List',
-    icon: '☐',
-    command: (editor) => editor.chain().focus().toggleTaskList().run(),
-  },
-];
-
-function extractEditorState(editor: Editor): EditorState {
-  const { state } = editor;
-  const { selection } = state;
-  const { $from, empty } = selection;
-
-  let listDepth = 0;
-  let listItemIndex = 0;
-  let listLength = 0;
-
-  for (let depth = $from.depth; depth > 0; depth--) {
-    const node = $from.node(depth);
-    if (node.type.name === 'bulletList' || node.type.name === 'orderedList' || node.type.name === 'taskList') {
-      listDepth++;
-      if (listLength === 0) {
-        listLength = node.childCount;
-        const listItemPos = $from.before(depth + 1);
-        let index = 0;
-        node.forEach((child, offset) => {
-          if ($from.pos >= listItemPos + offset && $from.pos <= listItemPos + offset + child.nodeSize) {
-            listItemIndex = index;
-          }
-          index++;
-        });
-      }
-    }
-  }
-
-  return {
-    headingLevel: editor.isActive('heading', { level: 1 })
-      ? 1
-      : editor.isActive('heading', { level: 2 })
-        ? 2
-        : 0,
-    isBulletList: editor.isActive('bulletList'),
-    isOrderedList: editor.isActive('orderedList'),
-    isBlockquote: editor.isActive('blockquote'),
-    listDepth,
-    listItemIndex,
-    listLength,
-    isEmpty: editor.isEmpty,
-    hasSelection: !empty,
-    isBold: editor.isActive('bold'),
-    isStrike: editor.isActive('strike'),
-    isLink: editor.isActive('link'),
-    linkUrl: editor.getAttributes('link').href || null,
-    isTaskList: editor.isActive('taskList'),
-    canUndo: editor.can().undo(),
-    canRedo: editor.can().redo(),
-  };
-}
-
-function executeCommand(editor: Editor, command: EditorCommand): void {
-  switch (command.type) {
-    case 'setHeading':
-      if (command.level) {
-        editor.chain().focus().toggleHeading({ level: command.level as 1 | 2 }).run();
-      }
-      break;
-    case 'setParagraph':
-      editor.chain().focus().setParagraph().run();
-      break;
-    case 'toggleBulletList':
-      editor.chain().focus().toggleBulletList().run();
-      break;
-    case 'toggleOrderedList':
-      editor.chain().focus().toggleOrderedList().run();
-      break;
-    case 'toggleBlockquote':
-      editor.chain().focus().toggleBlockquote().run();
-      break;
-    case 'toggleTaskList':
-      editor.chain().focus().toggleTaskList().run();
-      break;
-    case 'toggleBold':
-      editor.chain().focus().toggleBold().run();
-      break;
-    case 'toggleStrike':
-      editor.chain().focus().toggleStrike().run();
-      break;
-    case 'setLink':
-      if (command.url) {
-        editor.chain().focus().extendMarkRange('link').setLink({ href: command.url }).run();
-      }
-      break;
-    case 'unsetLink':
-      editor.chain().focus().unsetLink().run();
-      break;
-    case 'undo':
-      editor.chain().focus().undo().run();
-      break;
-    case 'redo':
-      editor.chain().focus().redo().run();
-      break;
-    case 'indent':
-      if (editor.isActive('taskList')) {
-        editor.chain().focus().sinkListItem('taskItem').run();
-      } else {
-        editor.chain().focus().sinkListItem('listItem').run();
-      }
-      break;
-    case 'outdent':
-      if (editor.isActive('taskList')) {
-        editor.chain().focus().liftListItem('taskItem').run();
-      } else {
-        editor.chain().focus().liftListItem('listItem').run();
-      }
-      break;
-    case 'moveUp':
-      moveListItem(editor, 'up');
-      break;
-    case 'moveDown':
-      moveListItem(editor, 'down');
-      break;
-  }
-}
-
-function moveListItem(editor: Editor, direction: 'up' | 'down'): void {
-  const { state, view } = editor;
-  const { $from } = state.selection;
-
-  let listItemDepth = -1;
-  for (let d = $from.depth; d > 0; d--) {
-    const node = $from.node(d);
-    if (node.type.name === 'listItem' || node.type.name === 'taskItem') {
-      listItemDepth = d;
-      break;
-    }
-  }
-
-  if (listItemDepth === -1) return;
-
-  const listItemPos = $from.before(listItemDepth);
-  const listItem = $from.node(listItemDepth);
-  const parent = $from.node(listItemDepth - 1);
-  const indexInParent = $from.index(listItemDepth - 1);
-
-  if (direction === 'up' && indexInParent === 0) return;
-  if (direction === 'down' && indexInParent >= parent.childCount - 1) return;
-
-  const tr = state.tr;
-  const listItemEnd = listItemPos + listItem.nodeSize;
-
-  if (direction === 'up') {
-    const prevSibling = parent.child(indexInParent - 1);
-    const targetPos = listItemPos - prevSibling.nodeSize;
-    const slice = tr.doc.slice(listItemPos, listItemEnd);
-    tr.delete(listItemPos, listItemEnd);
-    tr.insert(targetPos, slice.content);
-    try {
-      tr.setSelection(TextSelection.create(tr.doc, targetPos + 1));
-    } catch {
-      tr.setSelection(TextSelection.near(tr.doc.resolve(targetPos + 1)));
-    }
-  } else {
-    const nextSibling = parent.child(indexInParent + 1);
-    const insertPos = listItemPos + nextSibling.nodeSize;
-    const slice = tr.doc.slice(listItemPos, listItemEnd);
-    tr.delete(listItemPos, listItemEnd);
-    tr.insert(insertPos, slice.content);
-    try {
-      tr.setSelection(TextSelection.create(tr.doc, insertPos + 1));
-    } catch {
-      tr.setSelection(TextSelection.near(tr.doc.resolve(insertPos + 1)));
-    }
-  }
-
-  view.dispatch(tr);
-}
-
-// Custom extension to detect space on empty line
-const SpaceCommand = Extension.create({
-  name: 'spaceCommand',
+// Keyboard shortcuts extension
+const KeyboardShortcuts = Extension.create({
+  name: 'keyboardShortcuts',
 
   addKeyboardShortcuts() {
     return {
+      // Space on empty block shows menu
       ' ': ({ editor }) => {
         const { state } = editor;
-        const { selection, doc } = state;
+        const { selection } = state;
         const { $from } = selection;
 
-        // Check if we're at the start of an empty paragraph
         const isAtStart = $from.parentOffset === 0;
         const parentNode = $from.parent;
-        const isEmptyParagraph = parentNode.type.name === 'paragraph' && parentNode.content.size === 0;
+        const isEmpty = parentNode.content.size === 0;
 
-        if (isAtStart && isEmptyParagraph) {
-          // Trigger the space menu
-          const event = new CustomEvent('show-space-menu', {
+        if (isAtStart && isEmpty) {
+          const event = new CustomEvent('show-block-menu', {
             detail: { pos: $from.pos }
           });
           window.dispatchEvent(event);
           return true;
         }
-
+        return false;
+      },
+      // Shift+Space: show block menu on any block
+      'Shift- ': ({ editor }) => {
+        const { state } = editor;
+        const { $from } = state.selection;
+        window.dispatchEvent(new CustomEvent('show-block-menu', { detail: { pos: $from.pos } }));
+        return true;
+      },
+      // Alt+ArrowUp: move list item up
+      'Alt-ArrowUp': ({ editor }) => {
+        if (editor.isActive('listItem') || editor.isActive('taskItem')) {
+          executeCommand(editor, { type: 'moveUp' });
+          return true;
+        }
+        return false;
+      },
+      // Alt+ArrowDown: move list item down
+      'Alt-ArrowDown': ({ editor }) => {
+        if (editor.isActive('listItem') || editor.isActive('taskItem')) {
+          executeCommand(editor, { type: 'moveDown' });
+          return true;
+        }
+        return false;
+      },
+      // Tab: indent list item
+      'Tab': ({ editor }) => {
+        if (editor.isActive('listItem') || editor.isActive('taskItem')) {
+          executeCommand(editor, { type: 'indent' });
+          return true;
+        }
+        return false;
+      },
+      // Shift+Tab: outdent list item
+      'Shift-Tab': ({ editor }) => {
+        if (editor.isActive('listItem') || editor.isActive('taskItem')) {
+          executeCommand(editor, { type: 'outdent' });
+          return true;
+        }
         return false;
       },
     };
   },
 });
+
 
 export default function TipTapEditor({
   onStateChange,
@@ -311,12 +112,100 @@ export default function TipTapEditor({
 }: EditorProps) {
   const lastCommandId = useRef<string | null>(null);
   const initialContentRef = useRef(initialContent);
-  const [showSpaceMenu, setShowSpaceMenu] = useState(false);
+  const blockMenuRef = useRef<HTMLDivElement>(null);
+  const selectionMenuRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Block menu state
+  const [showBlockMenu, setShowBlockMenu] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [showAllBlocks, setShowAllBlocks] = useState(false); // For "back to main" functionality
 
-  const placeholder = useMemo(() => {
-    return placeholders[Math.floor(Math.random() * placeholders.length)];
+  // Selection menu state
+  const [showSelectionMenu, setShowSelectionMenu] = useState(false);
+  const [selectionMenuPosition, setSelectionMenuPosition] = useState({ top: 0, left: 0 });
+  const [selectionSelectedIndex, setSelectionSelectedIndex] = useState(0);
+
+  const placeholder = useMemo(() => getRandomPlaceholder(), []);
+
+  // Update selection menu position - using coordsAtPos for accurate positioning
+  const updateSelectionMenuPosition = useCallback((editor: Editor) => {
+    const { state, view } = editor;
+    const { selection } = state;
+    const { empty, from, to } = selection;
+
+    if (!empty && from !== to) {
+      try {
+        if (!containerRef.current) {
+          setShowSelectionMenu(false);
+          return;
+        }
+
+        // Use coordsAtPos for precise selection start/end coordinates
+        const startCoords = view.coordsAtPos(from);
+        const endCoords = view.coordsAtPos(to);
+        const containerRect = containerRef.current.getBoundingClientRect();
+
+        const menuHeight = 52; // Match block menu height
+        const menuWidth = inlineCommands.length * 46 + 8; // 42px button + 4px gap between + padding
+
+        // Calculate position relative to container (for position: absolute)
+        const selectionTop = Math.min(startCoords.top, endCoords.top);
+        const selectionBottom = Math.max(startCoords.bottom, endCoords.bottom);
+
+        // Center the menu on the selection
+        const selectionCenterX = (startCoords.left + endCoords.left) / 2;
+
+        const rawPosition = {
+          top: selectionTop - containerRect.top - menuHeight - 8, // 8px above selection
+          left: selectionCenterX - containerRect.left,
+        };
+
+        // Clamp position with flip-below and centerX behavior
+        const clampedPos = clampMenuPosition(rawPosition, menuWidth, menuHeight, {
+          flipBelow: true,
+          flipAbove: true,
+          originalTop: selectionBottom - containerRect.top,
+          centerX: true,
+        });
+        setSelectionMenuPosition(clampedPos);
+        setSelectionSelectedIndex(0);
+        setShowSelectionMenu(true);
+      } catch (error) {
+        console.warn('Could not position selection menu:', error);
+        setShowSelectionMenu(false);
+      }
+    } else {
+      setShowSelectionMenu(false);
+    }
+  }, []);
+
+  // Get active block type index
+  const getActiveBlockIndex = useCallback((editor: Editor): number => {
+    if (editor.isActive('heading', { level: 1 })) return 0;
+    if (editor.isActive('heading', { level: 2 })) return 1;
+    if (editor.isActive('blockquote')) return 2;
+    if (editor.isActive('bulletList')) return 3;
+    if (editor.isActive('taskList')) return 4;
+    return -1;
+  }, []);
+
+  // Check if inline style is active
+  const isInlineActive = useCallback((editor: Editor, cmdId: string): boolean => {
+    if (cmdId === 'bold') return editor.isActive('bold');
+    if (cmdId === 'italic') return editor.isActive('italic');
+    if (cmdId === 'strike') return editor.isActive('strike');
+    if (cmdId === 'link') return editor.isActive('link');
+    return false;
+  }, []);
+
+  // Get active list type index (for list context menu)
+  const getActiveListIndex = useCallback((editor: Editor): number => {
+    if (editor.isActive('bulletList')) return 0;
+    if (editor.isActive('orderedList')) return 1;
+    if (editor.isActive('taskList')) return 2;
+    return -1;
   }, []);
 
   const editor = useEditor({
@@ -324,20 +213,16 @@ export default function TipTapEditor({
       StarterKit,
       Link.configure({
         openOnClick: false,
-        HTMLAttributes: {
-          class: 'editor-link',
-        },
+        HTMLAttributes: { class: 'editor-link' },
       }),
       TaskList,
-      TaskItem.configure({
-        nested: true,
-      }),
+      TaskItem.configure({ nested: true }),
       Placeholder.configure({
         placeholder,
         emptyEditorClass: 'is-editor-empty',
         emptyNodeClass: 'is-empty',
       }),
-      SpaceCommand,
+      KeyboardShortcuts,
     ],
     content: initialContentRef.current,
     onUpdate: ({ editor }) => {
@@ -345,122 +230,317 @@ export default function TipTapEditor({
       if (onContentChange) {
         onContentChange(editor.getHTML());
       }
-      setShowSpaceMenu(false);
+      // Hide menu when typing
+      setShowBlockMenu(false);
     },
     onSelectionUpdate: ({ editor }) => {
       onStateChange(extractEditorState(editor));
+      updateSelectionMenuPosition(editor);
     },
   });
 
-  // Listen for space menu trigger
+  // Use the blockInfo hook for accurate positioning
+  const blockInfo = useBlockInfo(editor, containerRef);
+
+  // Listen for space command to show menu
   useEffect(() => {
-    const handleShowSpaceMenu = (e: CustomEvent) => {
-      if (editor) {
+    const handleShowMenu = (e: CustomEvent) => {
+      if (editor && containerRef.current) {
         const { view } = editor;
-        const coords = view.coordsAtPos(e.detail.pos);
-        setMenuPosition({
-          top: coords.top - 48,
-          left: coords.left,
-        });
-        setSelectedIndex(0);
-        setShowSpaceMenu(true);
+        try {
+          // Get the DOM element at this position
+          const domAtPos = view.domAtPos(e.detail.pos);
+          let element = domAtPos.node as Element;
+
+          // If it's a text node, get its parent element
+          if (element.nodeType === Node.TEXT_NODE) {
+            element = element.parentElement!;
+          }
+
+          // Find the block-level element
+          while (element && !element.classList.contains('ProseMirror')) {
+            if (element.nodeName === 'P' ||
+                element.nodeName === 'H1' ||
+                element.nodeName === 'H2' ||
+                element.nodeName === 'H3' ||
+                element.nodeName === 'LI' ||
+                element.nodeName === 'UL' ||
+                element.nodeName === 'OL' ||
+                element.nodeName === 'BLOCKQUOTE') {
+              break;
+            }
+            element = element.parentElement!;
+          }
+
+          if (!element || element.classList.contains('ProseMirror')) {
+            return;
+          }
+
+          // Use getBoundingClientRect for accurate positioning
+          const rect = element.getBoundingClientRect();
+          const containerRect = containerRef.current.getBoundingClientRect();
+
+          // Calculate position relative to container (for position: absolute)
+          setMenuPosition({
+            top: rect.top - containerRect.top,
+            left: rect.left - containerRect.left
+          });
+          setSelectedIndex(0);
+          setShowBlockMenu(true);
+        } catch {
+          // If we can't find the element, don't show the menu
+        }
       }
     };
 
-    window.addEventListener('show-space-menu', handleShowSpaceMenu as EventListener);
-    return () => {
-      window.removeEventListener('show-space-menu', handleShowSpaceMenu as EventListener);
-    };
+    window.addEventListener('show-block-menu', handleShowMenu as EventListener);
+    return () => window.removeEventListener('show-block-menu', handleShowMenu as EventListener);
   }, [editor]);
+
+  // Get context-aware commands with "back to main" support
+  const getContextCommands = useCallback((): MenuCommand[] => {
+    // If "show all blocks" is active, show block commands
+    if (showAllBlocks) {
+      return blockCommands;
+    }
+
+    // Check if cursor is in a list by examining the editor state directly
+    if (editor) {
+      const { state } = editor;
+      const { $from } = state.selection;
+
+      // Walk up the node tree to check for list nodes
+      for (let depth = $from.depth; depth > 0; depth--) {
+        const node = $from.node(depth);
+        const nodeName = node.type.name;
+        if (nodeName === 'bulletList' || nodeName === 'orderedList' || nodeName === 'taskList') {
+          return listCommands;
+        }
+      }
+    }
+
+    // Fallback to blockInfo check
+    if (blockInfo?.isInList) {
+      return listCommands;
+    }
+
+    return blockCommands;
+  }, [blockInfo, showAllBlocks, editor]);
+
+  const contextCommands = getContextCommands();
+
+  // Keyboard navigation for block menu
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!showBlockMenu || !editor) return;
+
+      const commands = contextCommands;
+
+      switch (e.key) {
+        case 'ArrowRight':
+          e.preventDefault();
+          e.stopPropagation();
+          setSelectedIndex(prev => (prev + 1) % commands.length);
+          break;
+
+        case 'ArrowLeft':
+          e.preventDefault();
+          e.stopPropagation();
+          setSelectedIndex(prev => (prev - 1 + commands.length) % commands.length);
+          break;
+
+        case 'Home':
+          e.preventDefault();
+          e.stopPropagation();
+          setSelectedIndex(0);
+          break;
+
+        case 'End':
+          e.preventDefault();
+          e.stopPropagation();
+          setSelectedIndex(commands.length - 1);
+          break;
+
+        case 'Tab':
+          // Tab cycles through menu items (Shift+Tab goes backwards)
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.shiftKey) {
+            setSelectedIndex(prev => (prev - 1 + commands.length) % commands.length);
+          } else {
+            setSelectedIndex(prev => (prev + 1) % commands.length);
+          }
+          break;
+
+        case 'Enter':
+        case ' ':
+          if (selectedIndex >= 0) {
+            e.preventDefault();
+            e.stopPropagation();
+            const cmd = commands[selectedIndex];
+            if (cmd) {
+              executeCommand(editor, cmd.command);
+              setShowBlockMenu(false);
+              editor.commands.focus();
+            }
+          }
+          break;
+
+        case 'Escape':
+          e.preventDefault();
+          e.stopPropagation();
+          // If showing all blocks, go back to list commands
+          if (showAllBlocks && blockInfo?.isInList) {
+            setShowAllBlocks(false);
+            setSelectedIndex(0);
+          } else {
+            setShowBlockMenu(false);
+            setShowAllBlocks(false);
+            editor.commands.focus();
+          }
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [showBlockMenu, selectedIndex, editor, contextCommands]);
+
 
   // Close menu on click outside
   useEffect(() => {
-    const handleClick = () => setShowSpaceMenu(false);
-    if (showSpaceMenu) {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.block-menu')) {
+        setShowBlockMenu(false);
+        setShowAllBlocks(false); // Reset when closing menu
+      }
+    };
+    if (showBlockMenu) {
       document.addEventListener('click', handleClick);
       return () => document.removeEventListener('click', handleClick);
     }
-  }, [showSpaceMenu]);
+  }, [showBlockMenu]);
 
-  // Handle keyboard navigation for space menu
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!showSpaceMenu) return;
+  const handleBlockCommand = useCallback((cmd: MenuCommand) => {
+    if (!editor) return;
 
-      if (e.key === 'Escape') {
-        setShowSpaceMenu(false);
-        editor?.commands.focus();
-      } else if (e.key === 'Tab') {
-        e.preventDefault();
-        if (e.shiftKey) {
-          setSelectedIndex((prev) => (prev - 1 + spaceMenuCommands.length) % spaceMenuCommands.length);
-        } else {
-          setSelectedIndex((prev) => (prev + 1) % spaceMenuCommands.length);
-        }
-      } else if (e.key === 'Enter') {
-        e.preventDefault();
-        if (editor) {
-          spaceMenuCommands[selectedIndex].command(editor);
-          setShowSpaceMenu(false);
+    // Handle "back to main" command specially
+    if (cmd.id === 'backToBlock') {
+      // First convert to paragraph
+      executeCommand(editor, { type: 'setParagraph' });
+      // Then show all block options
+      setShowAllBlocks(true);
+      setSelectedIndex(0);
+      return;
+    }
+
+    // Execute the command
+    executeCommand(editor, cmd.command);
+    setShowBlockMenu(false);
+    setShowAllBlocks(false); // Reset when command is executed
+    editor.commands.focus();
+  }, [editor]);
+
+  const handleInlineCommand = useCallback((cmd: MenuCommand) => {
+    if (!editor) return;
+
+    if (cmd.id === 'link') {
+      if (editor.isActive('link')) {
+        editor.chain().focus().unsetLink().run();
+      } else {
+        const url = window.prompt('Enter URL:');
+        if (url) {
+          editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
         }
       }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [showSpaceMenu, selectedIndex, editor]);
-
-  const handleSpaceMenuCommand = useCallback((cmd: SpaceMenuCommand) => {
-    if (editor) {
-      cmd.command(editor);
-      setShowSpaceMenu(false);
+    } else {
+      executeCommand(editor, cmd.command);
     }
   }, [editor]);
 
+  // Execute pending commands
   useEffect(() => {
     if (!editor || !pendingCommand) return;
     if (pendingCommand.id === lastCommandId.current) return;
-
     executeCommand(editor, pendingCommand.command);
     lastCommandId.current = pendingCommand.id;
     onCommandExecuted();
   }, [editor, pendingCommand, onCommandExecuted]);
 
+  // Report initial state
   useEffect(() => {
     if (editor) {
       onStateChange(extractEditorState(editor));
     }
   }, [editor, onStateChange]);
 
+  const activeIndex = editor ? getActiveBlockIndex(editor) : -1;
+
+  // Calculate block menu position - inline at cursor position (mindful pattern)
+  const clampedBlockMenuPosition = useMemo(() => {
+    const menuHeight = 52;
+    const menuWidth = contextCommands.length * 46; // 42px button + 4px gap
+
+    // Position inline at the block's position at the start
+    const rawPosition = {
+      top: (blockInfo ? blockInfo.position.top : menuPosition.top) - 4, // Slightly above block
+      left: (blockInfo ? blockInfo.position.left : menuPosition.left), // At start of block
+    };
+    return clampMenuPosition(rawPosition, menuWidth, menuHeight, {
+      flipBelow: false,
+      flipAbove: false,
+    });
+  }, [blockInfo, menuPosition, contextCommands.length]);
+
   return (
-    <div className="editor-container">
-      {/* Space Command Menu */}
-      {showSpaceMenu && (
-        <div
-          className="fixed flex flex-row gap-0.5 p-1 rounded-lg bg-neutral-900 border border-neutral-700 shadow-lg z-50"
-          style={{
-            top: menuPosition.top,
-            left: menuPosition.left,
-          }}
-          onClick={(e: React.MouseEvent) => e.stopPropagation()}
-        >
-          {spaceMenuCommands.map((cmd, index) => (
-            <button
-              key={cmd.title}
-              className={`flex items-center justify-center w-9 h-9 rounded-md text-sm font-medium transition-colors ${
-                index === selectedIndex
-                  ? 'bg-blue-500 text-white'
-                  : 'text-neutral-400 hover:bg-neutral-800 hover:text-white'
-              }`}
-              onClick={() => handleSpaceMenuCommand(cmd)}
-              title={cmd.title}
-            >
-              {cmd.icon}
-            </button>
-          ))}
-        </div>
+    <div ref={containerRef} className={`editor-container ${showBlockMenu ? 'menu-open' : ''}`}>
+      {/* Indicator at top of block - circular dots */}
+      {blockInfo && (
+        <BlockIndicator
+          position={blockInfo.position}
+          isActive={showBlockMenu}
+        />
       )}
 
+      {/* Block Menu - ARIA toolbar with proper keyboard navigation */}
+      <BlockMenu
+        isVisible={showBlockMenu}
+        position={clampedBlockMenuPosition}
+        commands={contextCommands}
+        selectedIndex={selectedIndex}
+        activeIndex={blockInfo?.isInList
+          ? (editor ? getActiveListIndex(editor) : -1)
+          : activeIndex}
+        onCommandClick={handleBlockCommand}
+        menuRef={blockMenuRef}
+        ariaLabel={
+          showAllBlocks
+            ? "Block formatting options"
+            : blockInfo?.isInList
+            ? "List type options"
+            : "Block formatting options"
+        }
+      />
+
       <EditorContent editor={editor} className="editor-content" />
+
+      {/* Selection Menu - ARIA toolbar for inline formatting */}
+      <SelectionMenu
+        isVisible={showSelectionMenu && editor !== null}
+        position={selectionMenuPosition}
+        commands={inlineCommands}
+        selectedIndex={selectionSelectedIndex}
+        onCommandClick={handleInlineCommand}
+        isCommandActive={(cmdId) => editor ? isInlineActive(editor, cmdId) : false}
+        menuRef={selectionMenuRef}
+      />
+
+      {/* Screen reader announcements */}
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {showBlockMenu && `Block menu open. ${contextCommands.length} options available. Use arrow keys to navigate.`}
+        {showSelectionMenu && `Formatting menu open. ${inlineCommands.length} options available.`}
+      </div>
     </div>
   );
 }

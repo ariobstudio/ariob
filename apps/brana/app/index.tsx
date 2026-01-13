@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { View, useWindowDimensions, Platform } from 'react-native';
+import { View, useWindowDimensions, Platform, Keyboard } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
@@ -32,6 +32,7 @@ export default function MainScreen() {
   const [activePaperId, setActivePaperId] = useState<string | null>(null);
   const [editorStates, setEditorStates] = useState<Record<string, EditorState>>({});
   const [pendingCommands, setPendingCommands] = useState<Record<string, PendingCommand | null>>({});
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const paperContentsRef = useRef<Record<string, string>>({});
   const scrollViewRef = useRef<Animated.ScrollView>(null);
   const insets = useSafeAreaInsets();
@@ -84,6 +85,28 @@ export default function MainScreen() {
       }
     };
     init();
+  }, []);
+
+  useEffect(() => {
+    const keyboardWillShow = Keyboard.addListener('keyboardWillShow', () => {
+      setIsKeyboardVisible(true);
+    });
+    const keyboardWillHide = Keyboard.addListener('keyboardWillHide', () => {
+      setIsKeyboardVisible(false);
+    });
+    const keyboardDidShow = Keyboard.addListener('keyboardDidShow', () => {
+      setIsKeyboardVisible(true);
+    });
+    const keyboardDidHide = Keyboard.addListener('keyboardDidHide', () => {
+      setIsKeyboardVisible(false);
+    });
+
+    return () => {
+      keyboardWillShow.remove();
+      keyboardWillHide.remove();
+      keyboardDidShow.remove();
+      keyboardDidHide.remove();
+    };
   }, []);
 
   useEffect(() => {
@@ -270,6 +293,7 @@ export default function MainScreen() {
         decelerationRate="fast"
         snapToInterval={paperContainerHeight}
         snapToAlignment="start"
+        scrollEnabled={!isKeyboardVisible}
       >
         <GestureDetector gesture={panGesture}>
           <Animated.View className="flex-1">
@@ -300,7 +324,7 @@ export default function MainScreen() {
         />
       </Animated.View>
 
-      {!isWeb && <EditorToolbar editorState={activeEditorState} onAction={handleToolbarAction} />}
+      {!isWeb && <EditorToolbar editorState={activeEditorState} onAction={handleToolbarAction} isKeyboardVisible={isKeyboardVisible} />}
     </View>
   );
 }

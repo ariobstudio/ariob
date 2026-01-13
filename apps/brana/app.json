@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "brana",
+    "name": "Brana",
     "slug": "brana",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,7 +15,12 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.brana"
+      "bundleIdentifier": "com.ariob.brana",
+      "icon": {
+        "dark": "./assets/images/ios-dark.png",
+        "light": "./assets/images/ios-light.png",
+        "tinted": "./assets/images/ios-tinted.png"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +29,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.brana",
+      "package": "com.ariob.brana",
       "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
