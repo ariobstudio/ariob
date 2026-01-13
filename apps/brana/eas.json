@@ -4,6 +4,15 @@
     "appVersionSource": "remote"
   },
   "build": {
+    "monorepo": {
+      "pnpm": "9.15.4",
+      "cache": {
+        "key": "turbo",
+        "paths": [
+          "../../node_modules/.cache/turbo"
+        ]
+      }
+    },
     "development": {
       "developmentClient": true,
       "distribution": "internal"
