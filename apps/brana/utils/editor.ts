@@ -55,6 +55,7 @@ export function extractEditorState(editor: Editor): EditorState {
     hasSelection: !empty,
     isBold: editor.isActive('bold'),
     isItalic: editor.isActive('italic'),
+    isUnderline: editor.isActive('underline'),
     isStrike: editor.isActive('strike'),
     isLink: editor.isActive('link'),
     linkUrl: editor.getAttributes('link').href || null,
@@ -92,6 +93,9 @@ export function executeCommand(editor: Editor, command: EditorCommand): void {
       break;
     case 'toggleItalic':
       editor.chain().focus().toggleItalic().run();
+      break;
+    case 'toggleUnderline':
+      editor.chain().focus().toggleUnderline().run();
       break;
     case 'toggleStrike':
       editor.chain().focus().toggleStrike().run();

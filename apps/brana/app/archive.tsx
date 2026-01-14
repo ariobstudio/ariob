@@ -3,7 +3,8 @@ import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { FontAwesome6 } from '@expo/vector-icons';
-import { loadPapers, saveCurrentPaperId } from '../utils/storage';
+import { loadPapers, saveCurrentPaperId, generateTitle } from '../utils/storage';
+import { HtmlPreview } from '../components/HtmlPreview';
 import type { PaperItem } from '../types/paper';
 
 function formatDate(timestamp: number): string {
@@ -96,12 +97,14 @@ export default function ArchiveScreen() {
                   ]}
                 >
                   <Text style={styles.paperTitle} numberOfLines={1}>
-                    {paper.data.title || 'Untitled'}
+                    {paper.data.content ? generateTitle(paper.data.content) : 'Untitled'}
                   </Text>
-                  {paper.data.preview ? (
-                    <Text style={styles.paperPreview} numberOfLines={2}>
-                      {paper.data.preview}
-                    </Text>
+                  {paper.data.content ? (
+                    <HtmlPreview
+                      html={paper.data.content}
+                      numberOfLines={2}
+                      style={styles.paperPreview}
+                    />
                   ) : null}
                 </Pressable>
               ))}

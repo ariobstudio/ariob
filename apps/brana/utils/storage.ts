@@ -77,15 +77,29 @@ export function invalidateCache(): void {
 }
 
 export function generateTitle(content: string): string {
-  const text = content.replace(/<[^>]*>/g, '').trim();
-  // Get first line only
-  const firstLine = text.split('\n')[0]?.trim() || 'Untitled';
-  return firstLine.slice(0, 40) + (firstLine.length > 40 ? '...' : '');
+  // Get the first line of text content (strip HTML, preserve spacing)
+  const text = content
+    .replace(/<\/[^>]+>/g, '\n') // Convert closing tags to newlines
+    .replace(/<[^>]*>/g, '')     // Remove remaining tags
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)[0] || 'Untitled';
+
+  return text.slice(0, 40) + (text.length > 40 ? '...' : '');
 }
 
 export function generatePreview(content: string): string {
-  const text = content.replace(/<[^>]*>/g, '').trim();
-  return text.slice(0, 100) + (text.length > 100 ? '...' : '');
+  // Get all text after the first line
+  const lines = content
+    .replace(/<\/[^>]+>/g, '\n') // Convert closing tags to newlines
+    .replace(/<[^>]*>/g, '')     // Remove remaining tags
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0);
+
+  // Skip first line (it's the title), join the rest
+  const previewText = lines.slice(1).join(' ').trim();
+  return previewText.slice(0, 100) + (previewText.length > 100 ? '...' : '');
 }
 
 export function generatePaperId(): string {

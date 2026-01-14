@@ -226,6 +226,11 @@ function SelectionToolbarContent({
         onPress={() => onAction({ type: 'toggleItalic' })}
       />
       <ToolbarIconButton
+        icon="underline"
+        active={editorState.isUnderline}
+        onPress={() => onAction({ type: 'toggleUnderline' })}
+      />
+      <ToolbarIconButton
         icon="strikethrough"
         active={editorState.isStrike}
         onPress={() => onAction({ type: 'toggleStrike' })}

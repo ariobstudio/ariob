@@ -1091,7 +1091,30 @@ html, body {
 }
 
 .archive-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   margin-bottom: 48px;
+}
+
+.archive-back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  color: var(--brana-text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: color var(--brana-transition-fast), background-color var(--brana-transition-fast);
+}
+
+.archive-back-button:hover {
+  color: var(--brana-text-primary);
+  background: var(--brana-surface-elevated);
 }
 
 .archive-title {

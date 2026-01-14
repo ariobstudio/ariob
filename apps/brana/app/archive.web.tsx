@@ -1,7 +1,7 @@
 import '../global.web.css';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'expo-router';
-import { loadPapers, saveCurrentPaperId } from '../utils/storage';
+import { loadPapers, saveCurrentPaperId, generateTitle } from '../utils/storage';
 import type { PaperItem } from '../types/paper';
 
 function formatDate(timestamp: number): string {
@@ -52,12 +52,19 @@ export default function ArchiveWebPage() {
 
   const handlePaperPress = useCallback(async (paperId: string) => {
     await saveCurrentPaperId(paperId);
-    router.back();
+    router.replace('/');
   }, [router]);
 
   return (
     <div className="archive-container">
       <header className="archive-header">
+        <button
+          className="archive-back-button"
+          onClick={() => router.replace('/')}
+          aria-label="Back to editor"
+        >
+          <i className="fa-solid fa-arrow-left" />
+        </button>
         <h1 className="archive-title">Archive</h1>
       </header>
 
@@ -78,7 +85,7 @@ export default function ArchiveWebPage() {
                   onClick={() => handlePaperPress(paper.id)}
                 >
                   <span className="archive-item-title">
-                    {paper.data.title || 'Untitled'}
+                    {paper.data.content ? generateTitle(paper.data.content) : 'Untitled'}
                   </span>
                   {paper.data.content && (
                     <div
