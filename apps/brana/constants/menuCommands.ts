@@ -19,6 +19,8 @@ export interface MenuCommand {
   iconName: string;
   /** Icon variant: 'solid' (default) or 'regular' */
   iconVariant?: IconVariant;
+  /** Optional label to show alongside icon (e.g., "1" for H1) */
+  label?: string;
   /** Editor command to execute */
   command: EditorCommand;
 }

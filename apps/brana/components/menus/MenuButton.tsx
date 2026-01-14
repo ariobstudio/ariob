@@ -15,6 +15,10 @@ export function MenuButton({ cmd, selected, active, onClick, index, selectedInde
     }
   }, [selected]);
 
+  // Show text for headings (H1, H2) like mobile
+  const isHeading = cmd.id === 'h1' || cmd.id === 'h2';
+  const headingLevel = cmd.id === 'h1' ? '1' : cmd.id === 'h2' ? '2' : null;
+
   return (
     <button
       ref={buttonRef}
@@ -28,7 +32,11 @@ export function MenuButton({ cmd, selected, active, onClick, index, selectedInde
       // Roving tabindex: only selected button is in tab order
       tabIndex={index === selectedIndex ? 0 : -1}
     >
-      <Icon name={cmd.iconName} variant={cmd.iconVariant} size="md" />
+      {isHeading ? (
+        <span className="menu-button-text">H{headingLevel}</span>
+      ) : (
+        <Icon name={cmd.iconName} variant={cmd.iconVariant} size="md" />
+      )}
     </button>
   );
 }
