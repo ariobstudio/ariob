@@ -15,6 +15,7 @@ export interface EditorState {
   // Inline formatting
   isBold: boolean;
   isItalic: boolean;
+  isUnderline: boolean;
   isStrike: boolean;
   isLink: boolean;
   linkUrl: string | null;
@@ -45,6 +46,7 @@ export type EditorCommand =
   // Inline commands
   | { type: 'toggleBold' }
   | { type: 'toggleItalic' }
+  | { type: 'toggleUnderline' }
   | { type: 'toggleStrike' }
   | { type: 'setLink'; url?: string }
   | { type: 'unsetLink' }
@@ -85,6 +87,7 @@ export const initialEditorState: EditorState = {
   listLength: 0,
   isBold: false,
   isItalic: false,
+  isUnderline: false,
   isStrike: false,
   isLink: false,
   linkUrl: null,

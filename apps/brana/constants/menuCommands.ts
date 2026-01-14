@@ -88,6 +88,13 @@ export const inlineCommands: MenuCommand[] = [
     command: { type: 'toggleItalic' },
   },
   {
+    id: 'underline',
+    title: 'Underline',
+    description: 'Underline text',
+    iconName: 'underline',
+    command: { type: 'toggleUnderline' },
+  },
+  {
     id: 'strike',
     title: 'Strikethrough',
     description: 'Cross out text',

@@ -2,6 +2,7 @@
 import '../global.web.css';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import Underline from '@tiptap/extension-underline';
 import Link from '@tiptap/extension-link';
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
@@ -152,6 +153,7 @@ export default function TipTapEditor({
   const isInlineActive = useCallback((editor: Editor, cmdId: string): boolean => {
     if (cmdId === 'bold') return editor.isActive('bold');
     if (cmdId === 'italic') return editor.isActive('italic');
+    if (cmdId === 'underline') return editor.isActive('underline');
     if (cmdId === 'strike') return editor.isActive('strike');
     if (cmdId === 'link') return editor.isActive('link');
     return false;
@@ -168,6 +170,7 @@ export default function TipTapEditor({
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Underline,
       Link.configure({
         openOnClick: false,
         HTMLAttributes: { class: 'editor-link' },
@@ -182,6 +185,7 @@ export default function TipTapEditor({
       KeyboardShortcuts,
     ],
     content: initialContentRef.current,
+    autofocus: 'end',
     immediatelyRender: true,
     shouldRerenderOnTransaction: false,
     onUpdate: ({ editor }) => {
@@ -623,10 +627,52 @@ export default function TipTapEditor({
         return;
       }
 
-      // Cmd + 5: Toggle strikethrough
-      if (e.key === '5') {
+      // Cmd + Shift + 1: Heading 1
+      if (e.key === '!' || (e.shiftKey && e.key === '1')) {
+        e.preventDefault();
+        executeCommand(editor, { type: 'setHeading', level: 1 });
+        return;
+      }
+
+      // Cmd + Shift + 2: Heading 2
+      if (e.key === '@' || (e.shiftKey && e.key === '2')) {
+        e.preventDefault();
+        executeCommand(editor, { type: 'setHeading', level: 2 });
+        return;
+      }
+
+      // Cmd + Shift + 3: Blockquote
+      if (e.key === '#' || (e.shiftKey && e.key === '3')) {
+        e.preventDefault();
+        executeCommand(editor, { type: 'toggleBlockquote' });
+        return;
+      }
+
+      // Cmd + Shift + 5: Toggle strikethrough
+      if (e.key === '%' || (e.shiftKey && e.key === '5')) {
         e.preventDefault();
         executeCommand(editor, { type: 'toggleStrike' });
+        return;
+      }
+
+      // Cmd + U: Toggle underline
+      if (e.key === 'u' && !e.shiftKey) {
+        e.preventDefault();
+        executeCommand(editor, { type: 'toggleUnderline' });
+        return;
+      }
+
+      // Cmd + Shift + 7: Bullet list
+      if (e.key === '&' || (e.shiftKey && e.key === '7')) {
+        e.preventDefault();
+        executeCommand(editor, { type: 'toggleBulletList' });
+        return;
+      }
+
+      // Cmd + Shift + 8: Numbered list
+      if (e.key === '*' || (e.shiftKey && e.key === '8')) {
+        e.preventDefault();
+        executeCommand(editor, { type: 'toggleOrderedList' });
         return;
       }
 
