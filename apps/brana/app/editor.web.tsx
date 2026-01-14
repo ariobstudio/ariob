@@ -8,7 +8,9 @@ import TaskItem from '@tiptap/extension-task-item';
 import Placeholder from '@tiptap/extension-placeholder';
 import { Extension } from '@tiptap/core';
 import React, { useEffect, useRef, useMemo, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import type { Editor } from '@tiptap/react';
+import { BubbleMenuPlugin } from '@tiptap/extension-bubble-menu';
 
 // Shared utilities
 import { extractEditorState, executeCommand } from '../utils/editor';
@@ -17,12 +19,13 @@ import { blockCommands, inlineCommands, listCommands, type MenuCommand } from '.
 import type { EditorState, PendingCommand } from '../types/editor';
 
 // Hooks
-import { useBlockInfo, type BlockInfo } from '../hooks';
+import { useBlockInfo } from '../hooks';
 import { clampMenuPosition } from '../hooks/useMenuPosition';
 
 // Components
 import { BlockIndicator } from '../components/indicators';
-import { BlockMenu, SelectionMenu } from '../components/menus';
+import { BlockMenu } from '../components/menus';
+import { Icon } from '../components/icons';
 
 interface EditorProps {
   onStateChange: (state: EditorState) => Promise<void>;
@@ -30,6 +33,9 @@ interface EditorProps {
   pendingCommand: PendingCommand | null;
   initialContent?: string;
   onContentChange?: (content: string) => void;
+  onCreateNewPaper?: () => void;
+  onNavigate?: (screen: 'archive' | 'settings') => void;
+  onNavigatePaper?: (direction: 'prev' | 'next') => void;
   dom?: import('expo/dom').DOMProps;
 }
 
@@ -109,12 +115,20 @@ export default function TipTapEditor({
   pendingCommand,
   initialContent = '',
   onContentChange,
+  onCreateNewPaper,
+  onNavigate,
+  onNavigatePaper,
 }: EditorProps) {
   const lastCommandId = useRef<string | null>(null);
   const initialContentRef = useRef(initialContent);
   const blockMenuRef = useRef<HTMLDivElement>(null);
-  const selectionMenuRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Bubble menu element ref (for selection formatting via BubbleMenuPlugin)
+  const bubbleMenuElement = useRef<HTMLDivElement | null>(null);
+  const [bubbleMenuMounted, setBubbleMenuMounted] = useState(false);
+  const [bubbleMenuVisible, setBubbleMenuVisible] = useState(false);
+  const [bubbleSelectedIndex, setBubbleSelectedIndex] = useState(0);
 
   // Block menu state
   const [showBlockMenu, setShowBlockMenu] = useState(false);
@@ -122,64 +136,7 @@ export default function TipTapEditor({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [showAllBlocks, setShowAllBlocks] = useState(false); // For "back to main" functionality
 
-  // Selection menu state
-  const [showSelectionMenu, setShowSelectionMenu] = useState(false);
-  const [selectionMenuPosition, setSelectionMenuPosition] = useState({ top: 0, left: 0 });
-  const [selectionSelectedIndex, setSelectionSelectedIndex] = useState(0);
-
   const placeholder = useMemo(() => getRandomPlaceholder(), []);
-
-  // Update selection menu position - using coordsAtPos for accurate positioning
-  const updateSelectionMenuPosition = useCallback((editor: Editor) => {
-    const { state, view } = editor;
-    const { selection } = state;
-    const { empty, from, to } = selection;
-
-    if (!empty && from !== to) {
-      try {
-        if (!containerRef.current) {
-          setShowSelectionMenu(false);
-          return;
-        }
-
-        // Use coordsAtPos for precise selection start/end coordinates
-        const startCoords = view.coordsAtPos(from);
-        const endCoords = view.coordsAtPos(to);
-        const containerRect = containerRef.current.getBoundingClientRect();
-
-        const menuHeight = 52; // Match block menu height
-        const menuWidth = inlineCommands.length * 46 + 8; // 42px button + 4px gap between + padding
-
-        // Calculate position relative to container (for position: absolute)
-        const selectionTop = Math.min(startCoords.top, endCoords.top);
-        const selectionBottom = Math.max(startCoords.bottom, endCoords.bottom);
-
-        // Center the menu on the selection
-        const selectionCenterX = (startCoords.left + endCoords.left) / 2;
-
-        const rawPosition = {
-          top: selectionTop - containerRect.top - menuHeight - 8, // 8px above selection
-          left: selectionCenterX - containerRect.left,
-        };
-
-        // Clamp position with flip-below and centerX behavior
-        const clampedPos = clampMenuPosition(rawPosition, menuWidth, menuHeight, {
-          flipBelow: true,
-          flipAbove: true,
-          originalTop: selectionBottom - containerRect.top,
-          centerX: true,
-        });
-        setSelectionMenuPosition(clampedPos);
-        setSelectionSelectedIndex(0);
-        setShowSelectionMenu(true);
-      } catch (error) {
-        console.warn('Could not position selection menu:', error);
-        setShowSelectionMenu(false);
-      }
-    } else {
-      setShowSelectionMenu(false);
-    }
-  }, []);
 
   // Get active block type index
   const getActiveBlockIndex = useCallback((editor: Editor): number => {
@@ -225,6 +182,8 @@ export default function TipTapEditor({
       KeyboardShortcuts,
     ],
     content: initialContentRef.current,
+    immediatelyRender: true,
+    shouldRerenderOnTransaction: false,
     onUpdate: ({ editor }) => {
       onStateChange(extractEditorState(editor));
       if (onContentChange) {
@@ -235,12 +194,75 @@ export default function TipTapEditor({
     },
     onSelectionUpdate: ({ editor }) => {
       onStateChange(extractEditorState(editor));
-      updateSelectionMenuPosition(editor);
+      const { selection } = editor.state;
+      const hasSelection = !selection.empty && selection.from !== selection.to;
+
+      // Track bubble menu visibility for keyboard navigation
+      if (hasSelection) {
+        if (!bubbleMenuVisible) {
+          setBubbleSelectedIndex(0); // Reset index when menu appears
+        }
+        setBubbleMenuVisible(true);
+        // Hide block menu when text is selected (bubble menu will show instead)
+        setShowBlockMenu(false);
+        setShowAllBlocks(false);
+      } else {
+        setBubbleMenuVisible(false);
+      }
     },
   });
 
   // Use the blockInfo hook for accurate positioning
   const blockInfo = useBlockInfo(editor, containerRef);
+
+  // Register BubbleMenuPlugin for selection formatting
+  useEffect(() => {
+    if (!editor || editor.isDestroyed) {
+      return;
+    }
+
+    // Create a detached element for the bubble menu
+    const element = document.createElement('div');
+    element.className = 'bubble-menu-wrapper';
+    element.style.visibility = 'hidden';
+    element.style.position = 'absolute';
+    bubbleMenuElement.current = element;
+
+    // Register the BubbleMenuPlugin
+    const plugin = BubbleMenuPlugin({
+      pluginKey: 'bubbleMenu',
+      editor,
+      element,
+      updateDelay: 0,
+      shouldShow: ({ state }) => {
+        const { selection } = state;
+        const { empty, from, to } = selection;
+        // Show only when text is selected (not empty selection)
+        return !empty && from !== to;
+      },
+      options: {
+        placement: 'top',
+        offset: { mainAxis: 8 }, // 8px gap above selection
+        flip: true,
+        shift: { padding: 8 },
+      },
+    });
+
+    editor.registerPlugin(plugin);
+    setBubbleMenuMounted(true);
+
+    return () => {
+      editor.unregisterPlugin('bubbleMenu');
+      setBubbleMenuMounted(false);
+      // Clean up the element
+      requestAnimationFrame(() => {
+        if (bubbleMenuElement.current?.parentNode) {
+          bubbleMenuElement.current.parentNode.removeChild(bubbleMenuElement.current);
+        }
+        bubbleMenuElement.current = null;
+      });
+    };
+  }, [editor]);
 
   // Listen for space command to show menu
   useEffect(() => {
@@ -338,24 +360,39 @@ export default function TipTapEditor({
 
       switch (e.key) {
         case 'ArrowRight':
+          // Shift+Arrow should extend selection, not navigate menu
+          if (e.shiftKey) return;
           e.preventDefault();
           e.stopPropagation();
           setSelectedIndex(prev => (prev + 1) % commands.length);
           break;
 
         case 'ArrowLeft':
+          // Shift+Arrow should extend selection, not navigate menu
+          if (e.shiftKey) return;
           e.preventDefault();
           e.stopPropagation();
           setSelectedIndex(prev => (prev - 1 + commands.length) % commands.length);
           break;
 
+        case 'ArrowUp':
+        case 'ArrowDown':
+          // Shift+Arrow should extend selection, not navigate menu
+          // Also allow Up/Down to extend selection vertically
+          if (e.shiftKey) return;
+          break;
+
         case 'Home':
+          // Shift+Home should extend selection to start
+          if (e.shiftKey) return;
           e.preventDefault();
           e.stopPropagation();
           setSelectedIndex(0);
           break;
 
         case 'End':
+          // Shift+End should extend selection to end
+          if (e.shiftKey) return;
           e.preventDefault();
           e.stopPropagation();
           setSelectedIndex(commands.length - 1);
@@ -405,7 +442,6 @@ export default function TipTapEditor({
     window.addEventListener('keydown', handleKeyDown, true);
     return () => window.removeEventListener('keydown', handleKeyDown, true);
   }, [showBlockMenu, selectedIndex, editor, contextCommands]);
-
 
   // Close menu on click outside
   useEffect(() => {
@@ -459,6 +495,167 @@ export default function TipTapEditor({
     }
   }, [editor]);
 
+  // Keyboard navigation for bubble menu (selection formatting)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!bubbleMenuVisible || !editor) return;
+      // Don't handle if block menu is open
+      if (showBlockMenu) return;
+
+      const commands = inlineCommands;
+
+      switch (e.key) {
+        case 'ArrowRight':
+          // Shift+Arrow should extend selection, not navigate menu
+          if (e.shiftKey) return;
+          e.preventDefault();
+          e.stopPropagation();
+          setBubbleSelectedIndex(prev => (prev + 1) % commands.length);
+          break;
+
+        case 'ArrowLeft':
+          // Shift+Arrow should extend selection, not navigate menu
+          if (e.shiftKey) return;
+          e.preventDefault();
+          e.stopPropagation();
+          setBubbleSelectedIndex(prev => (prev - 1 + commands.length) % commands.length);
+          break;
+
+        case 'ArrowUp':
+        case 'ArrowDown':
+          // Shift+Arrow should extend selection vertically
+          if (e.shiftKey) return;
+          break;
+
+        case 'Home':
+          // Shift+Home should extend selection to start
+          if (e.shiftKey) return;
+          e.preventDefault();
+          e.stopPropagation();
+          setBubbleSelectedIndex(0);
+          break;
+
+        case 'End':
+          // Shift+End should extend selection to end
+          if (e.shiftKey) return;
+          e.preventDefault();
+          e.stopPropagation();
+          setBubbleSelectedIndex(commands.length - 1);
+          break;
+
+        case 'Tab':
+          // Tab cycles through menu items (Shift+Tab goes backwards)
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.shiftKey) {
+            setBubbleSelectedIndex(prev => (prev - 1 + commands.length) % commands.length);
+          } else {
+            setBubbleSelectedIndex(prev => (prev + 1) % commands.length);
+          }
+          break;
+
+        case 'Enter':
+          if (bubbleSelectedIndex >= 0) {
+            e.preventDefault();
+            e.stopPropagation();
+            const cmd = commands[bubbleSelectedIndex];
+            if (cmd) {
+              handleInlineCommand(cmd);
+            }
+          }
+          break;
+
+        case 'Escape':
+          e.preventDefault();
+          e.stopPropagation();
+          // Clear selection to hide bubble menu
+          editor.commands.setTextSelection(editor.state.selection.from);
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [bubbleMenuVisible, bubbleSelectedIndex, editor, showBlockMenu, handleInlineCommand]);
+
+  // Global keyboard shortcuts (Cmd/Ctrl + key)
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (!editor) return;
+
+      const isMeta = e.metaKey || e.ctrlKey;
+      if (!isMeta) return;
+
+      // Cmd + O: Create new paper
+      if (e.key === 'o') {
+        e.preventDefault();
+        onCreateNewPaper?.();
+        return;
+      }
+
+      // Cmd + 9: Previous paper
+      if (e.key === '9') {
+        e.preventDefault();
+        onNavigatePaper?.('prev');
+        return;
+      }
+
+      // Cmd + 0: Next paper
+      if (e.key === '0') {
+        e.preventDefault();
+        onNavigatePaper?.('next');
+        return;
+      }
+
+      // Cmd + .: Toggle checkbox
+      if (e.key === '.') {
+        e.preventDefault();
+        executeCommand(editor, { type: 'toggleTaskList' });
+        return;
+      }
+
+      // Cmd + Shift + .: Remove checkbox (convert to paragraph)
+      if (e.key === '>') {
+        e.preventDefault();
+        if (editor.isActive('taskList')) {
+          executeCommand(editor, { type: 'setParagraph' });
+        }
+        return;
+      }
+
+      // Cmd + 5: Toggle strikethrough
+      if (e.key === '5') {
+        e.preventDefault();
+        executeCommand(editor, { type: 'toggleStrike' });
+        return;
+      }
+
+      // Cmd + Enter: Insert line below
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        editor.chain().focus().setHardBreak().run();
+        return;
+      }
+
+      // Cmd + Shift + Enter: Insert line above
+      if (e.key === 'Enter' && e.shiftKey) {
+        e.preventDefault();
+        const { $from } = editor.state.selection;
+        const lineStart = $from.start();
+        editor.chain()
+          .focus()
+          .setTextSelection(lineStart)
+          .setHardBreak()
+          .setTextSelection(lineStart)
+          .run();
+        return;
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [editor, onCreateNewPaper, onNavigatePaper]);
+
   // Execute pending commands
   useEffect(() => {
     if (!editor || !pendingCommand) return;
@@ -477,15 +674,17 @@ export default function TipTapEditor({
 
   const activeIndex = editor ? getActiveBlockIndex(editor) : -1;
 
-  // Calculate block menu position - inline at cursor position (mindful pattern)
+  // Calculate block menu position - below the block indicator (mindful pattern)
   const clampedBlockMenuPosition = useMemo(() => {
     const menuHeight = 52;
     const menuWidth = contextCommands.length * 46; // 42px button + 4px gap
+    const indicatorHeight = 20; // Height of block indicator dots
 
-    // Position inline at the block's position at the start
+    // Position below the indicator (which is 20px above the block)
+    // Adding indicatorHeight places the menu at the block's top position
     const rawPosition = {
-      top: (blockInfo ? blockInfo.position.top : menuPosition.top) - 4, // Slightly above block
-      left: (blockInfo ? blockInfo.position.left : menuPosition.left), // At start of block
+      top: (blockInfo ? blockInfo.position.top + indicatorHeight : menuPosition.top),
+      left: (blockInfo ? blockInfo.position.left : menuPosition.left),
     };
     return clampMenuPosition(rawPosition, menuWidth, menuHeight, {
       flipBelow: false,
@@ -525,22 +724,71 @@ export default function TipTapEditor({
 
       <EditorContent editor={editor} className="editor-content" />
 
-      {/* Selection Menu - ARIA toolbar for inline formatting */}
-      <SelectionMenu
-        isVisible={showSelectionMenu && editor !== null}
-        position={selectionMenuPosition}
-        commands={inlineCommands}
-        selectedIndex={selectionSelectedIndex}
-        onCommandClick={handleInlineCommand}
-        isCommandActive={(cmdId) => editor ? isInlineActive(editor, cmdId) : false}
-        menuRef={selectionMenuRef}
-      />
+      {/* Selection Menu - BubbleMenuPlugin with portal rendering */}
+      {bubbleMenuMounted && bubbleMenuElement.current && createPortal(
+        <div className="block-menu__icons" role="toolbar" aria-label="Text formatting options">
+          {inlineCommands.map((cmd, index) => {
+            const isActive = editor ? isInlineActive(editor, cmd.id) : false;
+            const isSelected = index === bubbleSelectedIndex;
+            return (
+              <button
+                key={cmd.id}
+                className="block-menu__icon"
+                data-active={isActive}
+                data-selected={isSelected}
+                tabIndex={isSelected ? 0 : -1}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  handleInlineCommand(cmd);
+                }}
+                onMouseEnter={() => setBubbleSelectedIndex(index)}
+                title={cmd.title}
+                aria-label={cmd.title}
+                aria-pressed={isActive}
+              >
+                <Icon name={cmd.iconName} variant={cmd.iconVariant} size="md" />
+              </button>
+            );
+          })}
+        </div>,
+        bubbleMenuElement.current
+      )}
 
       {/* Screen reader announcements */}
       <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {showBlockMenu && `Block menu open. ${contextCommands.length} options available. Use arrow keys to navigate.`}
-        {showSelectionMenu && `Formatting menu open. ${inlineCommands.length} options available.`}
+        {bubbleMenuVisible && `Formatting menu open. ${inlineCommands.length} options available. Use arrow keys to navigate.`}
       </div>
+
+      {/* Web Navigation Icons - using FontAwesome CSS classes */}
+      <nav className="web-nav web-nav--left" aria-label="Quick actions">
+        <button
+          className="web-nav__button"
+          onClick={() => onCreateNewPaper?.()}
+          aria-label="New paper"
+          title="New paper"
+        >
+          <i className="fa-solid fa-file" />
+        </button>
+        <button
+          className="web-nav__button"
+          onClick={() => onNavigate?.('archive')}
+          aria-label="Archive"
+          title="Archive"
+        >
+          <i className="fa-solid fa-box-archive" />
+        </button>
+      </nav>
+      <nav className="web-nav web-nav--right" aria-label="Settings">
+        <button
+          className="web-nav__button"
+          onClick={() => onNavigate?.('settings')}
+          aria-label="Settings"
+          title="Settings"
+        >
+          <i className="fa-solid fa-gear" />
+        </button>
+      </nav>
     </div>
   );
 }

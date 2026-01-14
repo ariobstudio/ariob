@@ -19,6 +19,9 @@ interface EditorProps {
   pendingCommand: PendingCommand | null;
   initialContent?: string;
   onContentChange?: (content: string) => void;
+  onCreateNewPaper?: () => void;
+  onNavigate?: (screen: 'archive' | 'settings') => void;
+  onNavigatePaper?: (direction: 'prev' | 'next') => void;
   dom?: import('expo/dom').DOMProps;
 }
 
@@ -55,6 +58,8 @@ export default function TipTapEditor({
       }),
     ],
     content: initialContentRef.current,
+    immediatelyRender: true,
+    shouldRerenderOnTransaction: false,
     onUpdate: ({ editor }) => {
       onStateChange(extractEditorState(editor));
       if (onContentChange) {

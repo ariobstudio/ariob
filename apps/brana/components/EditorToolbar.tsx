@@ -10,9 +10,10 @@ interface EditorToolbarProps {
   editorState: EditorState;
   onAction: (command: EditorCommand) => void;
   isKeyboardVisible?: boolean;
+  onNavigate?: (screen: 'archive' | 'settings') => void;
 }
 
-export function EditorToolbar({ editorState, onAction, isKeyboardVisible = false }: EditorToolbarProps) {
+export function EditorToolbar({ editorState, onAction, isKeyboardVisible = false, onNavigate }: EditorToolbarProps) {
   const [isLinkInputMode, setIsLinkInputMode] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
 
@@ -43,10 +44,10 @@ export function EditorToolbar({ editorState, onAction, isKeyboardVisible = false
   };
 
   const renderContent = () => {
-    // When keyboard is hidden, always show default mode
+    // When keyboard is hidden, show navigation menu on mobile
     if (!isKeyboardVisible) {
       return (
-        <DefaultToolbarContent editorState={editorState} onAction={onAction} isKeyboardVisible={isKeyboardVisible} />
+        <NavigationToolbarContent onAction={onAction} onNavigate={onNavigate} />
       );
     }
 
@@ -86,6 +87,30 @@ export function EditorToolbar({ editorState, onAction, isKeyboardVisible = false
   );
 }
 
+interface NavigationToolbarContentProps {
+  onAction: (command: EditorCommand) => void;
+  onNavigate?: (screen: 'archive' | 'settings') => void;
+}
+
+function NavigationToolbarContent({ onAction, onNavigate }: NavigationToolbarContentProps) {
+  return (
+    <View className="flex-row items-center justify-center gap-4">
+      <ToolbarIconButton
+        icon="file"
+        onPress={() => onAction({ type: 'createNewPaper' })}
+      />
+      <ToolbarIconButton
+        icon="box-archive"
+        onPress={() => onNavigate?.('archive')}
+      />
+      <ToolbarIconButton
+        icon="gear"
+        onPress={() => onNavigate?.('settings')}
+      />
+    </View>
+  );
+}
+
 function DefaultToolbarContent({ editorState, onAction, isKeyboardVisible }: EditorToolbarProps) {
   return (
     <View className="flex-row items-center">
@@ -116,16 +141,14 @@ function DefaultToolbarContent({ editorState, onAction, isKeyboardVisible }: Edi
         active={editorState.isTaskList}
         onPress={() => onAction({ type: 'toggleTaskList' })}
       />
-      <View className="w-px h-6 bg-neutral-700 mx-2" />
-      <ToolbarIconButton
-        icon="scissors"
-        onPress={() => onAction({ type: 'createNewPaper' })}
-      />
       {isKeyboardVisible && (
-        <ToolbarIconButton
-          icon="keyboard"
-          onPress={() => KeyboardController.dismiss()}
-        />
+        <>
+          <View className="flex-1" />
+          <ToolbarIconButton
+            icon="keyboard"
+            onPress={() => KeyboardController.dismiss()}
+          />
+        </>
       )}
     </View>
   );
@@ -169,10 +192,13 @@ function ListToolbarContent({ editorState, onAction, isKeyboardVisible }: Editor
         disabled={editorState.listItemIndex >= editorState.listLength - 1}
       />
       {isKeyboardVisible && (
-        <ToolbarIconButton
-          icon="keyboard"
-          onPress={() => KeyboardController.dismiss()}
-        />
+        <>
+          <View className="flex-1" />
+          <ToolbarIconButton
+            icon="keyboard"
+            onPress={() => KeyboardController.dismiss()}
+          />
+        </>
       )}
     </View>
   );

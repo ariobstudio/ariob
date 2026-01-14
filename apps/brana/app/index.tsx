@@ -1,15 +1,15 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { View, useWindowDimensions, Platform, Keyboard } from 'react-native';
+import { useState, useCallback, useEffect, useRef, memo, useMemo } from 'react';
+import { View, useWindowDimensions, Platform, Keyboard, FlatList, ViewToken } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  useAnimatedScrollHandler,
   withSpring,
   withTiming,
   runOnJS,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { FontAwesome6 } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import Editor from './editor';
@@ -24,8 +24,63 @@ import {
   generateTitle,
   generatePreview,
   generatePaperId,
+  flushPapers,
 } from '../utils/storage';
+import { welcomeContent } from '../constants/welcomeContent';
 import type { PaperItem } from '../types/paper';
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList<PaperItem>);
+
+// Memoized Paper Editor wrapper to prevent unnecessary re-renders
+interface PaperEditorProps {
+  paper: PaperItem;
+  height: number;
+  onStateChange: (state: EditorState) => void;
+  onCommandExecuted: () => void;
+  pendingCommand: PendingCommand | null;
+  onContentChange: (content: string) => void;
+  onCreateNewPaper: () => void;
+  onNavigate: (screen: 'archive' | 'settings') => void;
+  onNavigatePaper: (direction: 'prev' | 'next') => void;
+  isActive: boolean;
+}
+
+const PaperEditor = memo(function PaperEditor({
+  paper,
+  height,
+  onStateChange,
+  onCommandExecuted,
+  pendingCommand,
+  onContentChange,
+  onCreateNewPaper,
+  onNavigate,
+  onNavigatePaper,
+  isActive,
+}: PaperEditorProps) {
+  return (
+    <View style={{ height }}>
+      <Editor
+        onStateChange={onStateChange}
+        onCommandExecuted={onCommandExecuted}
+        pendingCommand={pendingCommand}
+        initialContent={paper.data.content}
+        onContentChange={onContentChange}
+        onCreateNewPaper={onCreateNewPaper}
+        onNavigate={onNavigate}
+        onNavigatePaper={onNavigatePaper}
+        dom={{ hideKeyboardAccessoryView: true }}
+      />
+    </View>
+  );
+}, (prevProps, nextProps) => {
+  // Only re-render if these specific props change
+  return (
+    prevProps.paper.id === nextProps.paper.id &&
+    prevProps.height === nextProps.height &&
+    prevProps.pendingCommand === nextProps.pendingCommand &&
+    prevProps.isActive === nextProps.isActive
+  );
+});
 
 export default function MainScreen() {
   const [papers, setPapers] = useState<PaperItem[]>([]);
@@ -33,13 +88,21 @@ export default function MainScreen() {
   const [editorStates, setEditorStates] = useState<Record<string, EditorState>>({});
   const [pendingCommands, setPendingCommands] = useState<Record<string, PendingCommand | null>>({});
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const paperContentsRef = useRef<Record<string, string>>({});
-  const scrollViewRef = useRef<Animated.ScrollView>(null);
+  const flatListRef = useRef<FlatList<PaperItem>>(null);
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const { height: windowHeight } = useWindowDimensions();
 
   const isWeb = Platform.OS === 'web';
   const paperContainerHeight = windowHeight - insets.top - (isWeb ? 0 : 60);
+
+  // Viewability config for detecting active paper (more efficient than scroll events)
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 50,
+    minimumViewTime: 100,
+  }).current;
 
   const activeEditorState = activePaperId
     ? editorStates[activePaperId] || initialEditorState
@@ -51,41 +114,69 @@ export default function MainScreen() {
   const hapticFired = useSharedValue(false);
   const [iconDirection, setIconDirection] = useState<'undo' | 'redo'>('undo');
 
-  useEffect(() => {
-    const init = async () => {
-      const loadedPapers = await loadPapers();
-      const savedId = await loadCurrentPaperId();
+  const loadAndScrollToPaper = useCallback(async (scrollToPaper = false) => {
+    const loadedPapers = await loadPapers();
+    const savedId = await loadCurrentPaperId();
 
-      if (loadedPapers.length > 0) {
-        setPapers(loadedPapers);
-        loadedPapers.forEach((p) => {
-          paperContentsRef.current[p.id] = p.data.content;
-        });
-        const activeId = savedId && loadedPapers.find((p) => p.id === savedId)
-          ? savedId
-          : loadedPapers[0].id;
-        setActivePaperId(activeId);
-      } else {
-        const newId = generatePaperId();
-        const newPaper: PaperItem = {
-          id: newId,
-          data: {
-            title: 'Untitled',
-            content: '',
-            createdAt: Date.now(),
-            updatedAt: Date.now(),
-            preview: '',
-          },
-        };
-        setPapers([newPaper]);
-        setActivePaperId(newId);
-        paperContentsRef.current[newId] = '';
-        await savePapers([newPaper]);
-        await saveCurrentPaperId(newId);
+    if (loadedPapers.length > 0) {
+      setPapers(loadedPapers);
+      // Cache content in memory
+      loadedPapers.forEach((p) => {
+        paperContentsRef.current[p.id] = p.data.content;
+      });
+      const activeId = savedId && loadedPapers.find((p) => p.id === savedId)
+        ? savedId
+        : loadedPapers[0].id;
+      setActivePaperId(activeId);
+
+      if (scrollToPaper && savedId) {
+        const paperIndex = loadedPapers.findIndex((p) => p.id === savedId);
+        if (paperIndex >= 0) {
+          // Use requestAnimationFrame to ensure layout is ready
+          requestAnimationFrame(() => {
+            flatListRef.current?.scrollToIndex({
+              index: paperIndex,
+              animated: true,
+              viewPosition: 0,
+            });
+          });
+        }
       }
-    };
-    init();
+      setIsReady(true);
+    } else {
+      const newId = generatePaperId();
+      const newPaper: PaperItem = {
+        id: newId,
+        data: {
+          title: generateTitle(welcomeContent),
+          content: welcomeContent,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          preview: generatePreview(welcomeContent),
+        },
+      };
+      setPapers([newPaper]);
+      setActivePaperId(newId);
+      paperContentsRef.current[newId] = welcomeContent;
+      await savePapers([newPaper]);
+      await saveCurrentPaperId(newId);
+      setIsReady(true);
+    }
+  }, [paperContainerHeight]);
+
+  useEffect(() => {
+    loadAndScrollToPaper(false);
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadAndScrollToPaper(true);
+      // Flush any pending saves when navigating away
+      return () => {
+        flushPapers();
+      };
+    }, [loadAndScrollToPaper])
+  );
 
   useEffect(() => {
     const keyboardWillShow = Keyboard.addListener('keyboardWillShow', () => {
@@ -168,10 +259,13 @@ export default function MainScreen() {
     paperContentsRef.current[newId] = '';
     await savePapers(updatedPapers);
 
-    setTimeout(() => {
-      const scrollPosition = papers.length * paperContainerHeight;
-      scrollViewRef.current?.scrollTo({ y: scrollPosition, animated: true });
-    }, 100);
+    requestAnimationFrame(() => {
+      flatListRef.current?.scrollToIndex({
+        index: papers.length, // New paper will be at this index
+        animated: true,
+        viewPosition: 0,
+      });
+    });
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   }, [activePaperId, papers, savePaperContent, paperContainerHeight]);
@@ -205,6 +299,34 @@ export default function MainScreen() {
     }
   }, [activeEditorState.canRedo, handleToolbarAction]);
 
+  const handleNavigate = useCallback((screen: 'archive' | 'settings') => {
+    router.push(`/${screen}`);
+  }, [router]);
+
+  const navigatePaper = useCallback((direction: 'prev' | 'next') => {
+    if (!activePaperId || papers.length <= 1) return;
+
+    const currentIndex = papers.findIndex((p) => p.id === activePaperId);
+    if (currentIndex === -1) return;
+
+    let targetIndex: number;
+    if (direction === 'prev') {
+      targetIndex = currentIndex > 0 ? currentIndex - 1 : papers.length - 1;
+    } else {
+      targetIndex = currentIndex < papers.length - 1 ? currentIndex + 1 : 0;
+    }
+
+    const targetPaper = papers[targetIndex];
+    if (targetPaper) {
+      setActivePaperId(targetPaper.id);
+      flatListRef.current?.scrollToIndex({
+        index: targetIndex,
+        animated: true,
+        viewPosition: 0,
+      });
+    }
+  }, [activePaperId, papers]);
+
   const triggerHaptic = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   }, []);
@@ -220,20 +342,30 @@ export default function MainScreen() {
     }, 2000);
   }, [savePaperContent]);
 
-  const updateActivePaper = useCallback((scrollPosition: number) => {
-    const paperIndex = Math.round(scrollPosition / paperContainerHeight);
-    if (papers[paperIndex] && papers[paperIndex].id !== activePaperId) {
-      setActivePaperId(papers[paperIndex].id);
+  // Use onViewableItemsChanged instead of scroll events for better performance
+  const onViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    if (viewableItems.length > 0 && viewableItems[0].item) {
+      const visiblePaper = viewableItems[0].item as PaperItem;
+      if (visiblePaper.id !== activePaperId) {
+        setActivePaperId(visiblePaper.id);
+      }
     }
-  }, [papers, activePaperId, paperContainerHeight]);
+  }, [activePaperId]);
 
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      runOnJS(updateActivePaper)(event.contentOffset.y);
+  // Stable reference for viewable items callback
+  const viewableItemsChangedRef = useRef(onViewableItemsChanged);
+  viewableItemsChangedRef.current = onViewableItemsChanged;
+
+  const handleViewableItemsChanged = useCallback(
+    (info: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
+      viewableItemsChangedRef.current(info);
     },
-  });
+    []
+  );
 
   const panGesture = Gesture.Pan()
+    .minPointers(2)
+    .maxPointers(2)
     .activeOffsetX([-20, 20])
     .failOffsetY([-20, 20])
     .onUpdate((e) => {
@@ -280,38 +412,109 @@ export default function MainScreen() {
     };
   });
 
+  // Memoized renderItem for FlatList
+  const renderItem = useCallback(({ item: paper }: { item: PaperItem }) => (
+    <PaperEditor
+      paper={paper}
+      height={paperContainerHeight}
+      onStateChange={handleStateChange(paper.id)}
+      onCommandExecuted={handleCommandExecuted(paper.id)}
+      pendingCommand={pendingCommands[paper.id] || null}
+      onContentChange={handleContentChange(paper.id)}
+      onCreateNewPaper={createNewPaper}
+      onNavigate={handleNavigate}
+      onNavigatePaper={navigatePaper}
+      isActive={paper.id === activePaperId}
+    />
+  ), [paperContainerHeight, pendingCommands, activePaperId, handleStateChange, handleCommandExecuted, handleContentChange, createNewPaper, handleNavigate, navigatePaper]);
+
+  const keyExtractor = useCallback((item: PaperItem) => item.id, []);
+
+  const getItemLayout = useCallback((_: unknown, index: number) => ({
+    length: paperContainerHeight,
+    offset: paperContainerHeight * index,
+    index,
+  }), [paperContainerHeight]);
+
+  // Handle scroll to index failure (fallback for edge cases)
+  const onScrollToIndexFailed = useCallback(
+    (info: { index: number; highestMeasuredFrameIndex: number; averageItemLength: number }) => {
+      requestAnimationFrame(() => {
+        flatListRef.current?.scrollToIndex({
+          index: info.index,
+          animated: false,
+        });
+      });
+    },
+    []
+  );
+
+  // Get initial scroll index from active paper
+  const getInitialScrollIndex = useCallback(() => {
+    if (!activePaperId || papers.length === 0) return 0;
+    const index = papers.findIndex((p) => p.id === activePaperId);
+    return index >= 0 ? index : 0;
+  }, [activePaperId, papers]);
+
+  // Get the active paper for web (single paper view)
+  const activePaper = useMemo(() => {
+    return papers.find((p) => p.id === activePaperId) || papers[0];
+  }, [papers, activePaperId]);
+
+  // Web: Single paper view (no scrolling between papers, content scrolls naturally via body)
+  if (isWeb) {
+    return (
+      <>
+        {activePaper && (
+          <Editor
+            key={activePaper.id}
+            onStateChange={handleStateChange(activePaper.id)}
+            onCommandExecuted={handleCommandExecuted(activePaper.id)}
+            pendingCommand={pendingCommands[activePaper.id] || null}
+            initialContent={activePaper.data.content}
+            onContentChange={handleContentChange(activePaper.id)}
+            onCreateNewPaper={createNewPaper}
+            onNavigate={handleNavigate}
+            onNavigatePaper={navigatePaper}
+            dom={{ hideKeyboardAccessoryView: true }}
+          />
+        )}
+      </>
+    );
+  }
+
+  // Mobile: TikTok-style paper scrolling
   return (
     <View className="flex-1 bg-black" style={{ paddingTop: insets.top }}>
-      <Animated.ScrollView
-        ref={scrollViewRef}
-        className="flex-1"
-        contentContainerStyle={{ flexGrow: 1 }}
-        scrollEventThrottle={16}
-        bounces={true}
-        showsVerticalScrollIndicator={false}
-        onScroll={scrollHandler}
-        decelerationRate="fast"
-        snapToInterval={paperContainerHeight}
-        snapToAlignment="start"
-        scrollEnabled={!isKeyboardVisible}
-      >
-        <GestureDetector gesture={panGesture}>
-          <Animated.View className="flex-1">
-            {papers.map((paper) => (
-              <View key={paper.id} className="flex-1" style={{ height: paperContainerHeight }}>
-                <Editor
-                  onStateChange={handleStateChange(paper.id)}
-                  onCommandExecuted={handleCommandExecuted(paper.id)}
-                  pendingCommand={pendingCommands[paper.id] || null}
-                  initialContent={paper.data.content}
-                  onContentChange={handleContentChange(paper.id)}
-                  dom={{ hideKeyboardAccessoryView: true }}
-                />
-              </View>
-            ))}
-          </Animated.View>
-        </GestureDetector>
-      </Animated.ScrollView>
+      <GestureDetector gesture={panGesture}>
+        <AnimatedFlatList
+          ref={flatListRef}
+          data={papers}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          getItemLayout={getItemLayout}
+          // TikTok-style snapping behavior
+          pagingEnabled
+          snapToInterval={paperContainerHeight}
+          snapToAlignment="start"
+          decelerationRate="fast"
+          bounces={true}
+          // Appearance
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={!isKeyboardVisible}
+          // Active paper detection (efficient - only fires on visibility change)
+          onViewableItemsChanged={handleViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
+          // Virtualization - only render visible items for performance
+          initialNumToRender={1}
+          maxToRenderPerBatch={2}
+          windowSize={3}
+          removeClippedSubviews={true}
+          // Scroll position recovery
+          initialScrollIndex={isReady ? getInitialScrollIndex() : 0}
+          onScrollToIndexFailed={onScrollToIndexFailed}
+        />
+      </GestureDetector>
 
       <Animated.View
         className="absolute self-center p-3 rounded-2xl bg-neutral-800/90 z-10"
@@ -324,7 +527,7 @@ export default function MainScreen() {
         />
       </Animated.View>
 
-      {!isWeb && <EditorToolbar editorState={activeEditorState} onAction={handleToolbarAction} isKeyboardVisible={isKeyboardVisible} />}
+      <EditorToolbar editorState={activeEditorState} onAction={handleToolbarAction} isKeyboardVisible={isKeyboardVisible} onNavigate={handleNavigate} />
     </View>
   );
 }

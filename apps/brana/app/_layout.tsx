@@ -1,10 +1,9 @@
 import '../global.css';
-import { useEffect, useCallback } from 'react';
-import { View } from 'react-native';
+import { useCallback } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { HeroUINativeProvider, type HeroUINativeConfig } from 'heroui-native';
-import { Slot } from 'expo-router';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import {
@@ -49,7 +48,17 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <KeyboardProvider>
         <HeroUINativeProvider config={heroConfig}>
-          <Slot />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: '#000' },
+              animation: 'default',
+            }}
+          >
+            <Stack.Screen name="index" />
+            <Stack.Screen name="archive" />
+            <Stack.Screen name="settings" />
+          </Stack>
         </HeroUINativeProvider>
       </KeyboardProvider>
     </GestureHandlerRootView>
