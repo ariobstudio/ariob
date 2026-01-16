@@ -154,9 +154,6 @@ importers:
       '@ariob/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@ariob/webcrypto':
-        specifier: workspace:*
-        version: link:../../packages/webcrypto
       '@expo-google-fonts/ibm-plex-mono':
         specifier: ^0.4.1
         version: 0.4.1

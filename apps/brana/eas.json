@@ -6,13 +6,7 @@
   "build": {
     "monorepo": {
       "node": "22.16.0",
-      "pnpm": "10.20.0",
-      "cache": {
-        "key": "turbo",
-        "paths": [
-          "../../node_modules/.cache/turbo"
-        ]
-      }
+      "pnpm": "10.20.0"
     },
     "development": {
       "extends": "monorepo",
