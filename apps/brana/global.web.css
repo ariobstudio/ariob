@@ -2,51 +2,62 @@
 @import "@heroui/styles";
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css");
 
-/* Base styles for proper scrolling and fixed positioning */
-html, body {
-  min-height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background-color: #000;
-}
-
-/* Ensure React Native Web containers don't block scrolling */
-#root, [data-rn-root] {
-  min-height: 100%;
-  overflow: visible;
-}
-
-/* =============================================================================
-   CSS Custom Properties (Design Tokens)
-   Following HeroUI semantic naming conventions
-   ============================================================================= */
+/**
+ * Brana Theme System (Web)
+ * Default: Light theme colors (always defined as fallback)
+ * Dark mode: Applied via @media (prefers-color-scheme: dark)
+ * Uses OKLCH color space for perceptual uniformity
+ */
 
 :root {
-  /* Color tokens */
-  --brana-color-primary: #007AFF;
-  --brana-color-secondary: #8E8E93;
-  --brana-color-tertiary: #636366;
-  --brana-color-danger: #FF453A;
-  --brana-color-success: #30D158;
+  /* Base colors - Light theme (default) */
+  --background: #E4E4E4;                /* Light gray paper - hex for native/web consistency */
+  --foreground: oklch(0.15 0 0);        /* Very dark gray text */
+  --muted: oklch(0.55 0 0);             /* #8E8E93 - secondary text */
+  --muted-foreground: oklch(0.95 0 0);
 
-  /* Surface colors */
-  --brana-surface-default: #000;
-  --brana-surface-elevated: #1C1C1E;
-  --brana-surface-overlay: #2C2C2E;
+  /* Surface variants */
+  --surface: oklch(0.11 0 0);           /* #1C1C1E - elevated */
+  --surface-foreground: oklch(1 0 0);
+  --overlay: oklch(0.17 0 0);           /* #2C2C2E - overlay */
+  --overlay-foreground: oklch(1 0 0);
 
-  /* Border colors */
-  --brana-border-default: #38383A;
-  --brana-border-subtle: #3A3A3C;
+  /* Accent (minimal use - primary blue) */
+  --accent: oklch(0.50 0.13 250);       /* #007AFF - iOS blue */
+  --accent-foreground: oklch(1 0 0);
 
-  /* Text colors */
-  --brana-text-primary: #fff;
-  --brana-text-secondary: #8E8E93;
-  --brana-text-muted: #636366;
+  /* Semantic colors */
+  --success: oklch(0.65 0.17 145);      /* #30D158 */
+  --success-foreground: oklch(0.05 0 0);
+  --danger: oklch(0.60 0.20 25);        /* #FF453A */
+  --danger-foreground: oklch(1 0 0);
+
+  /* Borders - subtle */
+  --divider: oklch(0.22 0 0);           /* #38383A */
+  --border: oklch(0.23 0 0);            /* #3A3A3C */
+
+  /* Fields */
+  --field-background: oklch(0.11 0 0);
+  --field-foreground: oklch(1 0 0);
+  --field-placeholder: oklch(0.39 0 0); /* #636366 */
+
+  /* Legacy brana-prefixed variables (for backwards compatibility with existing CSS) */
+  --brana-color-primary: oklch(0.50 0.13 250);
+  --brana-color-secondary: oklch(0.55 0 0);
+  --brana-color-tertiary: oklch(0.39 0 0);
+  --brana-color-danger: oklch(0.60 0.20 25);
+  --brana-color-success: oklch(0.65 0.17 145);
+  --brana-surface-default: #E4E4E4;             /* Light mode: light gray paper */
+  --brana-surface-elevated: oklch(0.11 0 0);
+  --brana-surface-overlay: oklch(0.17 0 0);
+  --brana-border-default: oklch(0.22 0 0);
+  --brana-border-subtle: oklch(0.23 0 0);
+  --brana-text-primary: oklch(0.15 0 0);        /* Light mode: dark gray text */
+  --brana-text-secondary: oklch(0.55 0 0);
+  --brana-text-muted: oklch(0.39 0 0);
 
   /* Focus ring */
-  --brana-focus-ring: rgba(0, 122, 255, 0.5);
+  --brana-focus-ring: oklch(0.50 0.13 250 / 0.5);
   --brana-focus-ring-width: 2px;
   --brana-focus-ring-offset: 2px;
 
@@ -56,12 +67,97 @@ html, body {
   --brana-transition-slow: 300ms ease-in-out;
 }
 
+/* Dark mode - activated by system preference */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Base colors - dark mode */
+    --background: #121212;                /* Dark gray paper - hex for native/web consistency */
+    --foreground: oklch(0.95 0 0);        /* Off-white text */
+    --muted: oklch(0.55 0 0);             /* #8E8E93 - same secondary */
+    --muted-foreground: oklch(0.15 0 0);
+
+    /* Surface variants */
+    --surface: oklch(0.11 0 0);           /* #1C1C1E - elevated */
+    --surface-foreground: oklch(1 0 0);
+    --overlay: oklch(0.17 0 0);           /* #2C2C2E - overlay */
+    --overlay-foreground: oklch(1 0 0);
+
+    /* Accent (same across themes) */
+    --accent: oklch(0.50 0.13 250);       /* #007AFF */
+    --accent-foreground: oklch(1 0 0);
+
+    /* Semantic colors (same across themes) */
+    --success: oklch(0.65 0.17 145);      /* #30D158 */
+    --success-foreground: oklch(0.05 0 0);
+    --danger: oklch(0.60 0.20 25);        /* #FF453A */
+    --danger-foreground: oklch(1 0 0);
+
+    /* Borders */
+    --divider: oklch(0.22 0 0);           /* #38383A */
+    --border: oklch(0.23 0 0);            /* #3A3A3C */
+
+    /* Fields */
+    --field-background: oklch(0.11 0 0);
+    --field-foreground: oklch(1 0 0);
+    --field-placeholder: oklch(0.39 0 0);
+
+    /* Legacy brana-prefixed variables (backwards compatibility) */
+    --brana-color-primary: oklch(0.50 0.13 250);
+    --brana-color-secondary: oklch(0.55 0 0);
+    --brana-color-tertiary: oklch(0.39 0 0);
+    --brana-color-danger: oklch(0.60 0.20 25);
+    --brana-color-success: oklch(0.65 0.17 145);
+    --brana-surface-default: #121212;             /* Dark mode: dark gray paper */
+    --brana-surface-elevated: oklch(0.11 0 0);
+    --brana-surface-overlay: oklch(0.17 0 0);
+    --brana-border-default: oklch(0.22 0 0);
+    --brana-border-subtle: oklch(0.23 0 0);
+    --brana-text-primary: oklch(0.95 0 0);        /* Dark mode: off-white text */
+    --brana-text-secondary: oklch(0.55 0 0);
+    --brana-text-muted: oklch(0.39 0 0);
+
+    /* Focus ring */
+    --brana-focus-ring: oklch(0.50 0.13 250 / 0.5);
+    --brana-focus-ring-width: 2px;
+    --brana-focus-ring-offset: 2px;
+
+    /* Motion - GPU-accelerated transitions */
+    --brana-transition-fast: 150ms ease;
+    --brana-transition-normal: 200ms ease-in-out;
+    --brana-transition-slow: 300ms ease-in-out;
+  }
+}
+
+@theme {
+  /* Typography - IBM Plex Mono font family variables */
+  --font-normal: 'IBM Plex Mono', 'SF Mono', 'Menlo', monospace;
+  --font-medium: 'IBM Plex Mono', 'SF Mono', 'Menlo', monospace;
+  --font-semibold: 'IBM Plex Mono', 'SF Mono', 'Menlo', monospace;
+  --font-bold: 'IBM Plex Mono', 'SF Mono', 'Menlo', monospace;
+}
+
+/* Base styles for proper scrolling and fixed positioning */
+html, body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--background);
+}
+
+/* Ensure React Native Web containers don't block scrolling */
+#root, [data-rn-root] {
+  min-height: 100%;
+  overflow: visible;
+}
+
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-  :root {
-    --brana-transition-fast: 0ms;
-    --brana-transition-normal: 0ms;
-    --brana-transition-slow: 0ms;
+  * {
+    --brana-transition-fast: 0ms !important;
+    --brana-transition-normal: 0ms !important;
+    --brana-transition-slow: 0ms !important;
   }
 }
 
@@ -103,7 +199,8 @@ html, body {
 .editor-container {
   display: flex;
   flex-direction: column;
-  background-color: var(--brana-surface-default);
+  /* Transparent background - inherits from body for seamless appearance */
+  background-color: transparent;
   color: var(--brana-text-primary);
   font-family: 'IBM Plex Mono', 'SF Mono', 'Menlo', monospace;
   min-height: 100vh;
@@ -156,8 +253,8 @@ html, body {
   padding: 16px 24px;
   background: linear-gradient(
     to bottom,
-    var(--brana-surface-default) 0%,
-    var(--brana-surface-default) 60%,
+    var(--background) 0%,
+    var(--background) 60%,
     transparent 100%
   );
   opacity: 0;
@@ -1081,7 +1178,7 @@ html, body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--brana-surface-default);
+  background-color: transparent;
   color: var(--brana-text-primary);
   font-family: 'IBM Plex Mono', 'SF Mono', 'Menlo', monospace;
   max-width: 720px;
@@ -1248,7 +1345,7 @@ html, body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--brana-surface-default);
+  background-color: transparent;
   color: var(--brana-text-primary);
   font-family: 'IBM Plex Mono', 'SF Mono', 'Menlo', monospace;
   max-width: 720px;

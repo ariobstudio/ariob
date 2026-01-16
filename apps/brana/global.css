@@ -3,3 +3,97 @@
 @import 'heroui-native/styles';
 
 @source '../../node_modules/heroui-native/lib';
+
+/**
+ * Brana Theme System
+ * Default: Light theme colors (always defined as fallback)
+ * Dark mode: Applied via @media (prefers-color-scheme: dark)
+ * Uses OKLCH color space for perceptual uniformity
+ */
+
+:root {
+  /* Base colors - Light theme (default) */
+  --background: #E4E4E4;                /* Light gray paper - hex for native/web consistency */
+  --foreground: oklch(0.15 0 0);        /* Very dark gray text */
+  --muted: oklch(0.55 0 0);             /* #8E8E93 - secondary text */
+  --muted-foreground: oklch(0.95 0 0);
+
+  /* Surface variants */
+  --surface: oklch(0.11 0 0);           /* #1C1C1E - elevated */
+  --surface-foreground: oklch(1 0 0);
+  --overlay: oklch(0.17 0 0);           /* #2C2C2E - overlay */
+  --overlay-foreground: oklch(1 0 0);
+
+  /* Accent (minimal use - primary blue) */
+  --accent: oklch(0.50 0.13 250);       /* #007AFF - iOS blue */
+  --accent-foreground: oklch(1 0 0);
+
+  /* Semantic colors */
+  --success: oklch(0.65 0.17 145);      /* #30D158 */
+  --success-foreground: oklch(0.05 0 0);
+  --danger: oklch(0.60 0.20 25);        /* #FF453A */
+  --danger-foreground: oklch(1 0 0);
+
+  /* Borders - subtle */
+  --divider: oklch(0.22 0 0);           /* #38383A */
+  --border: oklch(0.23 0 0);            /* #3A3A3C */
+
+  /* Fields */
+  --field-background: oklch(0.11 0 0);
+  --field-foreground: oklch(1 0 0);
+  --field-placeholder: oklch(0.39 0 0); /* #636366 */
+
+  /* Shadows */
+  --surface-shadow: 0 1px 2px 0 oklch(0 0 0 / 0.05);
+  --overlay-shadow: 0 4px 6px -1px oklch(0 0 0 / 0.1);
+  --field-shadow: 0 0 0 1px oklch(0.22 0 0);
+}
+
+/* Dark mode - activated by system preference */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Base colors - dark mode */
+    --background: #121212;                /* Dark gray paper - hex for native/web consistency */
+    --foreground: oklch(0.95 0 0);        /* Off-white text */
+    --muted: oklch(0.55 0 0);             /* #8E8E93 - same secondary */
+    --muted-foreground: oklch(0.15 0 0);
+
+    /* Surface variants */
+    --surface: oklch(0.11 0 0);           /* #1C1C1E - elevated */
+    --surface-foreground: oklch(1 0 0);
+    --overlay: oklch(0.17 0 0);           /* #2C2C2E - overlay */
+    --overlay-foreground: oklch(1 0 0);
+
+    /* Accent (same across themes) */
+    --accent: oklch(0.50 0.13 250);       /* #007AFF */
+    --accent-foreground: oklch(1 0 0);
+
+    /* Semantic colors (same across themes) */
+    --success: oklch(0.65 0.17 145);      /* #30D158 */
+    --success-foreground: oklch(0.05 0 0);
+    --danger: oklch(0.60 0.20 25);        /* #FF453A */
+    --danger-foreground: oklch(1 0 0);
+
+    /* Borders */
+    --divider: oklch(0.22 0 0);           /* #38383A */
+    --border: oklch(0.23 0 0);            /* #3A3A3C */
+
+    /* Fields */
+    --field-background: oklch(0.11 0 0);
+    --field-foreground: oklch(1 0 0);
+    --field-placeholder: oklch(0.39 0 0);
+
+    /* Shadows */
+    --surface-shadow: 0 1px 2px 0 oklch(0 0 0 / 0.05);
+    --overlay-shadow: 0 4px 6px -1px oklch(0 0 0 / 0.1);
+    --field-shadow: 0 0 0 1px oklch(0.22 0 0);
+  }
+}
+
+@theme {
+  /* Typography - IBM Plex Mono font family variables */
+  --font-normal: 'IBMPlexMono_400Regular';
+  --font-medium: 'IBMPlexMono_500Medium';
+  --font-semibold: 'IBMPlexMono_600SemiBold';
+  --font-bold: 'IBMPlexMono_700Bold';
+}

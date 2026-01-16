@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { View, TextInput, Pressable } from 'react-native';
+import { useState, useMemo } from 'react';
+import { View, TextInput, Pressable, useColorScheme } from 'react-native';
 import { KeyboardStickyView, KeyboardController } from 'react-native-keyboard-controller';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { ToolbarIconButton } from './ToolbarIconButton';
 import type { EditorState, EditorCommand } from '../types/editor';
 import { getToolbarContext } from '../types/editor';
+import { useThemeColor } from '@/constants/theme';
 
 interface EditorToolbarProps {
   editorState: EditorState;
@@ -17,6 +18,10 @@ export function EditorToolbar({ editorState, onAction, isKeyboardVisible = false
   const [isLinkInputMode, setIsLinkInputMode] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
 
+  const colorScheme = useColorScheme();
+  // Use direct color values to ensure consistency with paper background
+  const backgroundColor = colorScheme === 'dark' ? '#121212' : '#E4E4E4';
+  const toolbarStyle = useMemo(() => ({ backgroundColor }), [backgroundColor]);
   const context = getToolbarContext(editorState, isLinkInputMode);
 
   const handleLinkPress = () => {
@@ -82,7 +87,7 @@ export function EditorToolbar({ editorState, onAction, isKeyboardVisible = false
 
   return (
     <KeyboardStickyView offset={{ closed: 0, opened: 0 }}>
-      <View className="px-2 py-1.5 bg-black">{renderContent()}</View>
+      <View className="px-2 py-1.5" style={toolbarStyle}>{renderContent()}</View>
     </KeyboardStickyView>
   );
 }
@@ -257,25 +262,29 @@ function LinkInputContent({
   onConfirm,
   onCancel,
 }: LinkInputContentProps) {
+  const placeholderColor = useThemeColor('field-placeholder');
+  const successColor = useThemeColor('success');
+  const dangerColor = useThemeColor('danger');
+
   return (
     <View className="flex-row items-center gap-2">
       <TextInput
-        className="flex-1 h-10 bg-neutral-800 rounded-lg px-3 text-white text-base"
+        className="flex-1 h-10 bg-field-background rounded-lg px-3 text-field-foreground text-base"
         value={linkUrl}
         onChangeText={onChangeUrl}
         placeholder="Enter URL..."
-        placeholderTextColor="#636366"
+        placeholderTextColor={placeholderColor as string}
         autoCapitalize="none"
         autoCorrect={false}
         keyboardType="url"
         autoFocus
         onSubmitEditing={onConfirm}
       />
-      <Pressable className="w-10 h-10 rounded-lg items-center justify-center bg-neutral-800" onPress={onConfirm}>
-        <FontAwesome6 name="check" size={18} color="#30D158" />
+      <Pressable className="w-10 h-10 rounded-lg items-center justify-center bg-field-background" onPress={onConfirm}>
+        <FontAwesome6 name="check" size={18} color={successColor as string} />
       </Pressable>
-      <Pressable className="w-10 h-10 rounded-lg items-center justify-center bg-neutral-800" onPress={onCancel}>
-        <FontAwesome6 name="xmark" size={18} color="#FF453A" />
+      <Pressable className="w-10 h-10 rounded-lg items-center justify-center bg-field-background" onPress={onCancel}>
+        <FontAwesome6 name="xmark" size={18} color={dangerColor as string} />
       </Pressable>
     </View>
   );
