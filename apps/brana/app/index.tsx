@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef, memo, useMemo } from 'react';
-import { View, useWindowDimensions, Platform, Keyboard, FlatList, ViewToken } from 'react-native';
+import { View, useWindowDimensions, Platform, Keyboard, FlatList, ViewToken, useColorScheme } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
@@ -28,6 +28,7 @@ import {
 } from '../utils/storage';
 import { welcomeContent } from '../constants/welcomeContent';
 import type { PaperItem } from '../types/paper';
+import { useThemeColor } from '@/constants/theme';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList<PaperItem>);
 
@@ -93,6 +94,10 @@ export default function MainScreen() {
   const flatListRef = useRef<FlatList<PaperItem>>(null);
   const insets = useSafeAreaInsets();
   const router = useRouter();
+
+  // Theme colors
+  const mutedColor = useThemeColor('muted');
+  const surfaceColor = useThemeColor('surface');
   const { height: windowHeight } = useWindowDimensions();
 
   const isWeb = Platform.OS === 'web';
@@ -484,8 +489,11 @@ export default function MainScreen() {
   }
 
   // Mobile: TikTok-style paper scrolling
+  const colorSchemeMain = useColorScheme();
+  // Use direct color values to ensure consistency with toolbar background
+  const backgroundColor = colorSchemeMain === 'dark' ? '#121212' : '#E4E4E4';
   return (
-    <View className="flex-1 bg-black" style={{ paddingTop: insets.top }}>
+    <View className="flex-1" style={{ paddingTop: insets.top, backgroundColor }}>
       <GestureDetector gesture={panGesture}>
         <AnimatedFlatList
           ref={flatListRef}
@@ -517,13 +525,19 @@ export default function MainScreen() {
       </GestureDetector>
 
       <Animated.View
-        className="absolute self-center p-3 rounded-2xl bg-neutral-800/90 z-10"
-        style={[{ top: insets.top + 16 }, iconContainerStyle]}
+        className="absolute self-center p-3 rounded-2xl z-10"
+        style={[
+          {
+            top: insets.top + 16,
+            backgroundColor: `${surfaceColor}e6`, // 90% opacity
+          },
+          iconContainerStyle
+        ]}
       >
         <FontAwesome6
           name={iconDirection === 'undo' ? 'rotate-left' : 'rotate-right'}
           size={24}
-          color="#8E8E93"
+          color={mutedColor as string}
         />
       </Animated.View>
 

@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, Pressable, StyleSheet, useColorScheme } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { loadPapers, saveCurrentPaperId, generateTitle } from '../utils/storage';
 import { HtmlPreview } from '../components/HtmlPreview';
 import type { PaperItem } from '../types/paper';
+import { useThemeColor } from '@/constants/theme';
+import { textStyles, fontSize, fontFamily } from '@/constants/typography';
 
 function formatDate(timestamp: number): string {
   const date = new Date(timestamp);
@@ -47,6 +49,14 @@ export default function ArchiveScreen() {
   const [papers, setPapers] = useState<PaperItem[]>([]);
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const colorScheme = useColorScheme();
+
+  // Theme colors - use direct values for consistency
+  const backgroundColor = colorScheme === 'dark' ? '#121212' : '#E4E4E4';
+  const foregroundColor = useThemeColor('foreground');
+  const mutedColor = useThemeColor('muted');
+  const placeholderColor = useThemeColor('field-placeholder');
+  const borderColor = useThemeColor('border');
 
   useEffect(() => {
     loadPapers().then(setPapers);
@@ -61,15 +71,15 @@ export default function ArchiveScreen() {
   }, [router]);
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
+    <View style={[styles.container, { paddingTop: insets.top, backgroundColor }]}>
       <View style={styles.header}>
         <Pressable
           onPress={() => router.back()}
           style={styles.backButton}
         >
-          <FontAwesome6 name="arrow-left" size={18} color="#8E8E93" />
+          <FontAwesome6 name="arrow-left" size={18} color={mutedColor as string} />
         </Pressable>
-        <Text style={styles.headerTitle}>Archive</Text>
+        <Text style={[styles.headerTitle, { color: foregroundColor as string }]}>Archive</Text>
         <View style={styles.placeholder} />
       </View>
 
@@ -80,13 +90,13 @@ export default function ArchiveScreen() {
       >
         {papers.length === 0 ? (
           <View style={styles.emptyState}>
-            <FontAwesome6 name="box-archive" size={32} color="#3A3A3C" />
-            <Text style={styles.emptyText}>No papers yet</Text>
+            <FontAwesome6 name="box-archive" size={32} color={borderColor as string} />
+            <Text style={[styles.emptyText, { color: placeholderColor as string }]}>No papers yet</Text>
           </View>
         ) : (
           dateGroups.map((dateKey) => (
             <View key={dateKey} style={styles.dateGroup}>
-              <Text style={styles.dateLabel}>{dateKey}</Text>
+              <Text style={[styles.dateLabel, { color: mutedColor as string }]}>{dateKey}</Text>
               {groupedPapers[dateKey].map((paper) => (
                 <Pressable
                   key={paper.id}
@@ -96,14 +106,14 @@ export default function ArchiveScreen() {
                     pressed && styles.paperItemPressed,
                   ]}
                 >
-                  <Text style={styles.paperTitle} numberOfLines={1}>
+                  <Text style={[styles.paperTitle, { color: foregroundColor as string }]} numberOfLines={1}>
                     {paper.data.content ? generateTitle(paper.data.content) : 'Untitled'}
                   </Text>
                   {paper.data.content ? (
                     <HtmlPreview
                       html={paper.data.content}
                       numberOfLines={2}
-                      style={styles.paperPreview}
+                      style={{ ...styles.paperPreview, color: mutedColor as string }}
                     />
                   ) : null}
                 </Pressable>
@@ -119,7 +129,6 @@ export default function ArchiveScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
   },
   header: {
     flexDirection: 'row',
@@ -136,9 +145,7 @@ const styles = StyleSheet.create({
     marginLeft: -8,
   },
   headerTitle: {
-    color: '#fff',
-    fontSize: 18,
-    fontFamily: 'IBMPlexMono_500Medium',
+    ...textStyles.h3,
   },
   placeholder: {
     width: 40,
@@ -154,18 +161,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   emptyText: {
-    color: '#636366',
-    fontSize: 16,
-    fontFamily: 'IBMPlexMono_400Regular',
+    ...textStyles.body,
     marginTop: 16,
   },
   dateGroup: {
     marginBottom: 24,
   },
   dateLabel: {
-    color: '#8E8E93',
-    fontSize: 12,
-    fontFamily: 'IBMPlexMono_500Medium',
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.monoMedium,
     textTransform: 'uppercase',
     letterSpacing: 1,
     marginBottom: 12,
@@ -177,15 +181,11 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   paperTitle: {
-    color: '#fff',
-    fontSize: 16,
-    fontFamily: 'IBMPlexMono_500Medium',
+    fontSize: fontSize.lg,
+    fontFamily: fontFamily.monoMedium,
   },
   paperPreview: {
-    color: '#8E8E93',
-    fontSize: 14,
-    fontFamily: 'IBMPlexMono_400Regular',
+    ...textStyles.bodySmall,
     marginTop: 4,
-    lineHeight: 20,
   },
 });

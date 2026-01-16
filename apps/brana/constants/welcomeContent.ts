@@ -1,44 +1,33 @@
-// Initial welcome content shown to new users
-// Uses HTML format for TipTap editor
+// Welcome content for Native platforms (iOS/Android)
+// Emphasizes touch gestures and mobile-specific features
 
 export const welcomeContent = `
 <h1>Welcome to Brana</h1>
 
-<p>A cozy corner for your thoughts, ideas, and tasks.</p>
+<p>A minimalist editor for your thoughts—distraction-free writing for iOS and Android.</p>
 
-<p>Brana is your lightweight writing companion—ready whenever inspiration strikes. Capture ideas, organize notes, manage tasks, or draft your next article, all in one calm, distraction-free space.</p>
+<h2>Getting Started</h2>
 
-<p>Press <kbd>Space</kbd> at the start of an empty line to open the flow menu.</p>
+<p>Tap the toolbar to format text. Everything saves automatically.</p>
 
-<p>Press <kbd>Shift</kbd> + <kbd>Space</kbd> on any block to change its format.</p>
+<h2>Quick Tips</h2>
+
+<ul>
+  <li><strong>Two-finger swipe</strong> — Undo/Redo</li>
+  <li><strong>Toolbar buttons</strong> — Format your text</li>
+  <li><strong>Swipe papers</strong> — Navigate between notes</li>
+  <li><strong>Tap to type</strong> — Start writing immediately</li>
+</ul>
 
 <h2>Papers</h2>
-<ul>
-  <li><kbd>⌘</kbd> + <kbd>O</kbd> to create a new paper</li>
-  <li><kbd>⌘</kbd> + <kbd>9</kbd> to go to previous paper</li>
-  <li><kbd>⌘</kbd> + <kbd>0</kbd> to go to next paper</li>
-</ul>
+
+<p>Create multiple papers to organize your thoughts. Swipe up or down to navigate between them, or use the archive to access all your notes.</p>
 
 <h2>Formatting</h2>
-<ul>
-  <li><kbd>⌘</kbd> + <kbd>b</kbd> for bold</li>
-  <li><kbd>⌘</kbd> + <kbd>i</kbd> for italic</li>
-  <li><kbd>⌘</kbd> + <kbd>u</kbd> for underline</li>
-  <li><kbd>⌘</kbd> + <kbd>5</kbd> for strikethrough</li>
-  <li><kbd>⌘</kbd> + <kbd>k</kbd> to add a link</li>
-</ul>
 
-<h2>Blocks</h2>
-<ul>
-  <li><kbd>Tab</kbd> to indent</li>
-  <li><kbd>Shift</kbd> + <kbd>Tab</kbd> to outdent</li>
-  <li><kbd>⌘</kbd> + <kbd>Enter</kbd> to insert line below</li>
-  <li><kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd> to insert line above</li>
-</ul>
+<p>Select text to see formatting options: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, and more. Use the toolbar at the bottom to create headings, lists, and quotes.</p>
 
-<h2>Tasks</h2>
-<ul>
-  <li><kbd>⌘</kbd> + <kbd>.</kbd> to toggle a checkbox</li>
-  <li><kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>.</kbd> to remove a checkbox</li>
-</ul>
+<h2>Always There</h2>
+
+<p>Your notes sync across devices and never leave your control. Write freely, knowing everything is saved automatically.</p>
 `.trim();

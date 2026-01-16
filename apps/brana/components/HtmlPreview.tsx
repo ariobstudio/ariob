@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, TextStyle } from 'react-native';
+import { textStyles, fontFamily } from '@/constants/typography';
 
 interface HtmlPreviewProps {
   html: string;
@@ -123,13 +124,11 @@ export function HtmlPreview({ html, numberOfLines = 3, style }: HtmlPreviewProps
 
 const styles = StyleSheet.create({
   preview: {
-    color: '#8E8E93',
-    fontSize: 14,
-    fontFamily: 'IBMPlexMono_400Regular',
-    lineHeight: 20,
+    ...textStyles.bodySmall,
+    // Note: color should be provided via the style prop for proper theming
   },
   bold: {
-    fontFamily: 'IBMPlexMono_600SemiBold',
+    fontFamily: fontFamily.monoSemibold,
     fontWeight: '600',
   },
   italic: {

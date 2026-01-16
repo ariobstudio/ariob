@@ -1,30 +1,39 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, useColorScheme } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { FontAwesome6 } from '@expo/vector-icons';
+import { useThemeColor } from '@/constants/theme';
+import { textStyles } from '@/constants/typography';
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const colorScheme = useColorScheme();
+
+  // Theme colors - use direct values for consistency
+  const backgroundColor = colorScheme === 'dark' ? '#121212' : '#E4E4E4';
+  const foregroundColor = useThemeColor('foreground');
+  const mutedColor = useThemeColor('muted');
+  const borderColor = useThemeColor('border');
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
+    <View style={[styles.container, { paddingTop: insets.top, backgroundColor }]}>
       <View style={styles.header}>
         <Pressable
           onPress={() => router.back()}
           style={styles.backButton}
         >
-          <FontAwesome6 name="arrow-left" size={18} color="#8E8E93" />
+          <FontAwesome6 name="arrow-left" size={18} color={mutedColor as string} />
         </Pressable>
-        <Text style={styles.headerTitle}>Settings</Text>
+        <Text style={[styles.headerTitle, { color: foregroundColor as string }]}>Settings</Text>
         <View style={styles.placeholder} />
       </View>
 
       <View style={styles.content}>
         <View style={styles.messageContainer}>
-          <FontAwesome6 name="gear" size={28} color="#3A3A3C" />
-          <Text style={styles.title}>Settings</Text>
-          <Text style={styles.description}>
+          <FontAwesome6 name="gear" size={28} color={borderColor as string} />
+          <Text style={[styles.title, { color: foregroundColor as string }]}>Settings</Text>
+          <Text style={[styles.description, { color: mutedColor as string }]}>
             This section is being worked on.{'\n'}
             More options coming soon.
           </Text>
@@ -37,7 +46,6 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
   },
   header: {
     flexDirection: 'row',
@@ -54,9 +62,7 @@ const styles = StyleSheet.create({
     marginLeft: -8,
   },
   headerTitle: {
-    color: '#fff',
-    fontSize: 18,
-    fontFamily: 'IBMPlexMono_500Medium',
+    ...textStyles.h3,
   },
   placeholder: {
     width: 40,
@@ -71,18 +77,13 @@ const styles = StyleSheet.create({
     paddingVertical: 48,
   },
   title: {
-    color: '#fff',
-    fontSize: 16,
-    fontFamily: 'IBMPlexMono_500Medium',
+    ...textStyles.body,
     marginTop: 16,
     textAlign: 'center',
   },
   description: {
-    color: '#8E8E93',
-    fontSize: 14,
-    fontFamily: 'IBMPlexMono_400Regular',
+    ...textStyles.bodySmall,
     marginTop: 8,
     textAlign: 'center',
-    lineHeight: 20,
   },
 });

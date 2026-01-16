@@ -60,10 +60,9 @@ $RECYCLE.BIN/
 *.sln
 *.sw?
 
-# Package manager locks (if using pnpm as the main manager, keep only pnpm-lock.yaml)
-# Uncomment if needed 
-# package-lock.json
-# yarn.lock
+# Package manager locks (using pnpm - ignore other lock files)
+package-lock.json
+yarn.lock
 
 # Misc
 *.tsbuildinfo
@@ -100,8 +99,8 @@ platforms/ios/Ariob/Pods/
 platforms/ios/Ariob/build
 platforms/ios/Ariob/DerivedData
 
-# pnpm lock files
-pnpm-lock.yaml
+# Keep pnpm-lock.yaml committed for reproducible builds
+# (Do NOT ignore pnpm-lock.yaml)
 
 .cursorrules
 .cursor/
