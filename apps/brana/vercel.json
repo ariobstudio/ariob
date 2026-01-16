@@ -34,7 +34,25 @@
       ]
     },
     {
-      "source": "/(android-chrome|apple-touch|favicon).*",
+      "source": "/android-chrome:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    },
+    {
+      "source": "/apple-touch:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    },
+    {
+      "source": "/favicon:path*",
       "headers": [
         {
           "key": "Cache-Control",
